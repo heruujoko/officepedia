@@ -1,6 +1,7 @@
 $('#formedit').hide();
 $('#formview').hide();
 
+// MBRANCH SCRIPT
  function view(id){
 	$.ajax({
 		url : '/nano/public/admin-api/viewcabang/'+id,
@@ -21,6 +22,7 @@ $('#formview').hide();
 			$('#formview').show();
 		}
 	});
+	window.location = "#main";
 }
 function edit(id){
 	$.ajax({
@@ -41,7 +43,8 @@ function edit(id){
 			$('#formedit').show();
 		},
 		
-	})
+	});
+	window.location = "#main";
 }
 
 function updatecabang(){
@@ -60,30 +63,65 @@ function updatecabang(){
 	var id = $('#mbranchid').val();
 	$.post("/nano/public/admin-api/editcabang/"+id,data,function(data){
 			table.ajax.reload();
-			console.log(data.errors);
+		 	var errcode = data.code;
 			console.log(data.code);
 			console.log(data);
 			var strerr = "";
-			for(i=0;i < data.errors.length; i++){
+			
+			if (errcode == 400) {
+				for(i=0;i < data.errors.length; i++){
 				strerr = strerr + data.errors[i];
 			}
+				window.location = "#main";
 			  alert(strerr);
+	
+			}
+			else{
+			window.location = "#tableapi";
 			
-	});
+			swal({
+						title: "Pengubahan Berhasil!", 
+						type: "success",
+						timer: 1000
+						
+						});   
+			}	
+			
+			
+			});
 	
-	$('#forminput').show();
-	$('#formview').hide();
-	$('#formedit').hide();
-	window.location = "#tablembranch";
-	
+			$('#forminput').show();
+			$('#formview').hide();
+			$('#formedit').hide();
+
 	
 }
 
-function back(){
+	function back(){
+		$('#insert-mbranchcode').val('');
+		$('#insert-mbranchname').val('');
+		$('#insert-address').val('');
+		$('#insert-phone').val('');
+		$('#insert-city').val('');	
+		$('#insert-person_in_charge').val('');	
+		$('#insert-information').val('');
+
 		$('#formedit').hide();
 		$('#formview').hide();
 		$('#forminput').show();
-}
+	}
+
+	function reset(){
+
+		$('#insert-mbranchcode').val('');
+		$('#insert-mbranchname').val('');
+		$('#insert-address').val('');
+		$('#insert-phone').val('');
+		$('#insert-city').val('');	
+		$('#insert-person_in_charge').val('');	
+		$('#insert-information').val('');
+		$('.alerthide').hide();
+	}
 
 
 function validate(evt) {
@@ -96,3 +134,8 @@ function validate(evt) {
     if(theEvent.preventDefault) theEvent.preventDefault();
   }
 }
+// MBRANCH SCRIPT
+
+$('.sa-button-container'>'.cancel').hover(function(){
+	$('.sa-confirm-button-container'>'button').removeClass('confirm');
+});

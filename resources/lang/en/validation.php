@@ -93,12 +93,12 @@ return [
 
     'custom' => [
         'mbranchcode' => [
-            'required' => 'Kode cabang kosong, harap di isi!',
-            'unique' => 'Kode cabang sudah ada, harap diganti!',
+            'required' => 'Kode kosong, harap di isi!',
+            'unique' => 'Kode sudah ada, harap diganti!',
 
         ],
         'mbranchname' => [
-            'required' => 'Nama cabang kosong, harap di isi!',
+            'required' => 'Nama kosong, harap di isi!',
         ],
 
         'address' => [

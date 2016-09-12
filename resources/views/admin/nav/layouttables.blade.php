@@ -86,6 +86,7 @@
 	}
 	</style>
 	<style>
+	
 	/*CSS UNTUK FORM INPUT*/
 	.hasinput > input{
 	font-size: 11px;
@@ -136,6 +137,12 @@
 	}
 	.sorting_1{
 	text-align: center;
+   }
+   .sa-confirm-button-container:hover > button{
+   	background-color: rgb(212, 103, 82)!important;
+   }
+   .sa-button-container > .cancel:hover{
+   	background-color: rgb(212, 103, 82)!important;
    }
 /* CSS UNTUK MODIFIKASI TABLE */
 </style>

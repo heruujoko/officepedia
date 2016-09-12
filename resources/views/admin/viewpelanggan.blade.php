@@ -15,7 +15,7 @@
 
 		<!-- breadcrumb -->
 		<ol class="breadcrumb">
-			<li>Home</li><li>Master</li><li>Cabang</li>
+			<li>Home</li><li>Master</li><li>Pelanggan</li>
 		</ol>
 
 		<!-- end breadcrumb -->
@@ -36,9 +36,9 @@
 <div class="col-xs-12 col-sm-7 col-md-7 col-lg-4">
 	<h1 class="page-title txt-color-blueDark">
 		<i class="fa fa-table fa-fw "></i>
-		CABANG
+		Pelanggan
 		<span>
-			Data Cabang
+			Data Pelanggan
 		</span>
 	</h1>
 </div>
@@ -120,7 +120,7 @@
 
 						<span class="widget-icon"> <i class="fa fa-table"></i> </span>
 
-						<h2>Tambah Cabang </h2>
+						<h2>Tambah Pelanggan </h2>
 
 
 
@@ -173,39 +173,53 @@
 								</br>
 
 								<div style="height: 21px;" class="form-group">
-									<label class="col-md-3 control-label"><b>Kode Cabang</b> (<font color="red">*</font>) &nbsp  :</label>
+									<label class="col-md-3 control-label"><b>ID Pelanggan</b> (<font color="red">*</font>) &nbsp  :</label>
 									<div class="col-md-7">
 										<div class="icon-addon addon-md">
-											<input id="insert-mbranchcode" value="{{old('mbranchcode')}}" name="mbranchcode" class="form-control forminput" placeholder="Kode Cabang" type="text" required @if (Session::has('autofocus')) autofocus @endif >
-											<label for="mgoodsgroup1" class="glyphicon glyphicon-barcode" rel="tooltip" title="Kode Cabang"></label>
+											<input id="insert-mcustomerid" value="{{old('mcustomerid')}}" name="mcustomerid" class="form-control forminput" placeholder="ID Pelanggan" type="text" required @if (Session::has('autofocus')) autofocus @endif >
+											<label for="mgoodsgroup1" class="glyphicon glyphicon-barcode" rel="tooltip" title="ID Pelanggan"></label>
 										</div>
 									</div>
 								</div>
 								<div style="height: 21px;" class="form-group">
-									<label class="col-md-3 control-label"><b>Nama Cabang</b> (<font color="red">*</font>) &nbsp  :</label>
+									<label class="col-md-3 control-label"><b>Nama Pelanggan</b> (<font color="red">*</font>) &nbsp  :</label>
 									<div class="col-md-7">
 										<div class="icon-addon addon-md">
-											<input id="insert-mbranchname" value="{{old('mbranchname')}}" name="mbranchname" class="form-control forminput" placeholder="Nama Cabang" type="text" required @if (Session::has('autofocus')) autofocus @endif >
-											<label for="mgoodsgroup1" class="glyphicon glyphicon-chevron-right" rel="tooltip" title="Nama Cabang"></label>
+											<input id="insert-mcustomername" value="{{old('mcustomername')}}" name="mcustomername" class="form-control forminput" placeholder="Nama Pelanggan" type="text" required @if (Session::has('autofocus')) autofocus @endif >
+											<label for="mgoodsgroup1" class="glyphicon glyphicon-chevron-right" rel="tooltip" title="Nama Pelanggan"></label>
 										</div>
 									</div>
 								</div>
 								<div style="height: 21px;" class="form-group">
-									<label class="col-md-3 control-label"><b>Alamat</b> (<font color="red">*</font>) &nbsp  :</label>
+									<label class="col-md-3 control-label"><b>Email</b> (<font color="red">*</font>) &nbsp  :</label>
 									<div class="col-md-7">
 										<div class="icon-addon addon-md">
-											<input id="insert-address" value="{{old('address')}}" name="address" class="form-control forminput" placeholder="Alamat" type="text" required @if (Session::has('autofocus')) autofocus @endif >
-											<label for="mgoodsgroup1" class="glyphicon glyphicon-home" rel="tooltip" title="Alamat"></label>
+											<input id="insert-email" value="{{old('email')}}" name="email" class="form-control forminput" placeholder="Email" type="text" required @if (Session::has('autofocus')) autofocus @endif >
+											<label for="mgoodsgroup1" class="glyphicon glyphicon-home" rel="tooltip" title="Email"></label>
 										</div>
 									</div>
 								</div>
 								<div class="form-group">
-									<label class="col-md-3 control-label"><b>Telepon</b> (<font color="red">*</font>) &nbsp  :</label>
+									<label class="col-md-3 control-label"><b>Telepon Kantor</b> (<font color="red">*</font>) &nbsp  :</label>
 									<div  class="col-md-7">
 										<div class="icon-addon addon-md">
-											<input id="insert-phone" value="{{old('phone')}}" name="phone" class="form-control forminput" placeholder="Telepon" type="number" required @if (Session::has('autofocus')) autofocus @endif >
+											<input id="insert-officephone" value="{{old('officephone')}}" name="officephone" class="form-control forminput" placeholder="Telepon Kantor" type="number" required @if (Session::has('autofocus')) autofocus @endif >
 											
-											<label for="mgoodsgroup1" class="glyphicon glyphicon-phone-alt" rel="tooltip" title="Telepon"></label>
+											<label for="mgoodsgroup1" class="glyphicon glyphicon-phone-alt" rel="tooltip" title="Telepon Kantor"></label>
+											
+										<div style="height: 5px;">
+										<h5 style="font-size: 11px; margin-top: 36px;">&nbsp Example: 0542123456</h5>
+										</div>
+										</div>
+									</div>
+								</div>
+								<div class="form-group">
+									<label class="col-md-3 control-label"><b>Fax Kantor</b> (<font color="red">*</font>) &nbsp  :</label>
+									<div  class="col-md-7">
+										<div class="icon-addon addon-md">
+											<input id="insert-mcustomerfaxphone" value="{{old('mcustomerfaxphone')}}" name="mcustomerfaxphone" class="form-control forminput" placeholder="Fax Kantor" type="number" required @if (Session::has('autofocus')) autofocus @endif >
+											
+											<label for="mgoodsgroup1" class="glyphicon glyphicon-phone-alt" rel="tooltip" title="Fax Kantor"></label>
 											
 										<div style="height: 5px;">
 										<h5 style="font-size: 11px; margin-top: 36px;">&nbsp Example: 0542123456</h5>
@@ -214,32 +228,15 @@
 									</div>
 								</div>
 								<div style="height: 21px;" class="form-group">
-									<label class="col-md-3 control-label"><b>Kota</b> (<font color="red">*</font>) &nbsp  :</label>
+									<label class="col-md-3 control-label"><b>Website</b> (<font color="red">*</font>) &nbsp  :</label>
 									<div class="col-md-7">
 										<div class="icon-addon addon-md">
-											<input id="insert-city" value="{{old('city')}}" name="city" class="form-control forminput" placeholder="Kota" type="text" required @if (Session::has('autofocus')) autofocus @endif >
-											<label for="mgoodsgroup1" class="glyphicon glyphicon-road" rel="tooltip" title="Kota"></label>
+											<input id="insert-mcustomerwebsite" value="{{old('mcustomerwebsite')}}" name="mcustomerwebsite" class="form-control forminput" placeholder="Website" type="text" required @if (Session::has('autofocus')) autofocus @endif >
+											<label for="mgoodsgroup1" class="glyphicon glyphicon-road" rel="tooltip" title="Website"></label>
 										</div>
 									</div>
 								</div>
-								<div style="height: 21px;" class="form-group">
-									<label class="col-md-3 control-label"><b>Orang Yang Bertanggung Jawab</b> (<font color="red">*</font>) &nbsp  :</label>
-									<div class="col-md-7">
-										<div class="icon-addon addon-md">
-											<input id="insert-person_in_charge" value="{{old('person_in_charge')}}" name="person_in_charge" class="form-control forminput" placeholder="Orang Yang Bertanggung Jawab" type="text" required @if (Session::has('autofocus')) autofocus @endif >
-											<label for="mgoodsgroup1" class="glyphicon glyphicon-user" rel="tooltip" title="Orang Yang Bertanggung Jawab"></label>
-										</div>
-									</div>
-								</div>
-								<div class="form-group">
-									<label class="col-md-3 control-label"><b>Keterangan</b> &nbsp  :</label>
-									<div class="col-md-7">
-										<div class="icon-addon addon-md">
-											<input id="insert-information" value="{{old('information')}}" name="information" class="form-control forminput" placeholder="Keterangan" type="text" @if (Session::has('autofocus')) autofocus @endif >
-											<label for="mgoodsgroup1" class="glyphicon glyphicon-search" rel="tooltip" title="Keterangan"></label>
-										</div>
-									</div>
-								</div>
+								
 								<input type="hidden" name="void" value="0">
 								<center>
 									<div class="row">
@@ -623,7 +620,7 @@
 					-->
 					<header>
 						<span class="widget-icon"> <i class="fa fa-table"></i> </span>
-						<h2>Master Cabang </h2>
+						<h2>Master Pelanggan </h2>
 					</header>
 
 					<!-- widget div-->
@@ -647,19 +644,22 @@
 											<input type="text" class="form-control" placeholder="Filter No" />
 										</th>
 										<th class="hasinput" style="width:9%">
-											<input type="text" class="form-control" placeholder="Filter Kode Cabang" />
+											<input type="text" class="form-control" placeholder="Filter ID Pelanggan" />
 										</th>
 										<th class="hasinput" style="width:9%">
-											<input type="text" class="form-control" placeholder="Filter Nama Cabang" />
+											<input type="text" class="form-control" placeholder="Filter Nama Pelanggan" />
 										</th>
 										<th class="hasinput" style="width:10%">
-											<input type="text" class="form-control" placeholder="Filter Alamat" />
+											<input type="text" class="form-control" placeholder="Filter Email" />
 										</th>
 										<th class="hasinput" style="width:10%">
-											<input type="text" class="form-control" placeholder="Filter Telepon" />
+											<input type="text" class="form-control" placeholder="Filter No Telp Kantor" />
 										</th>
 										<th class="hasinput" style="width:10%">
-											<input type="text" class="form-control" placeholder="Filter Kota" />
+											<input type="text" class="form-control" placeholder="Filter No Fax Kantor" />
+										</th>
+										<th class="hasinput" style="width:10%">
+											<input type="text" class="form-control" placeholder="Filter Website" />
 										</th>
 
 										<th class="hasinput" style="width:15%">
@@ -668,11 +668,12 @@
 									</tr>
 									<tr>
 										<th data-hide="no"><center>No</center></th>
-										<th data-hide="mbranchcode"><center>Kode Cabang</center></th>
-										<th data-hide="mbranchname"><center>Nama Cabang</center></th>
-										<th data-hide="address"><center>Alamat</center></th>
-										<th data-hide="phone"><center>Telepon</center></th>
-										<th data-hide="city"><center>Kota</center></th>
+										<th data-hide="mcustomerid"><center>ID Pelanggan</center></th>
+										<th data-hide="mcustomername"><center>Nama Pelanggan</center></th>
+										<th data-hide="email"><center>Email</center></th>
+										<th data-hide="officephone"><center>No Telp Kantor</center></th>
+										<th data-hide="mcustomerfaxphone"><center>No Fax Kantor</center></th>
+										<th data-hide="website"><center>Website</center></th>
 										<th data-hide="action"><center>Aksi</center></th>
 										
 										
@@ -714,7 +715,7 @@
             {
                 extend: 'excelFlash',
                 exportOptions: {
-                    columns: [ 0, 1, 2, 3, 4, 5] //setting kolom mana yg mau di export
+	                    columns: [ 0, 1, 2, 3, 4, 5] //setting kolom mana yg mau di export
                 }
             },
             {
@@ -741,6 +742,7 @@
 										{data: 'mbranchcode', mbranchcode: 'mbranchcode'},
 										{data: 'mbranchname', mbranchname: 'mbranchname'},
 										{data: 'address', address: 'address'},
+										{data: 'phone', phone: 'phone'},
 										{data: 'phone', phone: 'phone'},
 										{data: 'city', city: 'city'},
 										{data: 'action', name:'action', searchable: false, orderable: false}

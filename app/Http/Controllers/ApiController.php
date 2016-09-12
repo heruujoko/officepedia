@@ -25,7 +25,7 @@ class ApiController extends Controller
     public function getDatacabang(){
 
         $this->iteration = 0;    
-        $mbranch = MBRANCH::where('void', '0')->orderby('created_at','asc')->get();
+        $mbranch = MBRANCH::where('void', '0')->orderby('created_at','desc')->get();
         return Datatables::of($mbranch)->addColumn('action', function($mbranch){
           return '<center><div class="button">
           <a class="btn btn-info btn-xs dropdown-toggle fa fa-eye" onclick="view('.$mbranch->id.')"> <font style="">Lihat</font></a>
@@ -87,6 +87,7 @@ class ApiController extends Controller
 
     public function postEditcabang(Request $request, $id){
         $statuscode = 400;
+        $sukses = 200;
         $validator = Validator::make($request->all(),[
         'mbranchcode'=>'required|unique:mbranch,mbranchcode,'.$id,
 
@@ -110,7 +111,7 @@ class ApiController extends Controller
         $data->person_in_charge = $request->input('person_in_charge');
         $data->information = $request->input('information');
         $data->save();
-    return 'OK';
+        return $sukses;
 
 
 }	
