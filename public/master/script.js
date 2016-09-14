@@ -26,7 +26,7 @@ $('#formview').hide();
 }
 function edit(id){
 	$.ajax({
-	
+
 		url : '/nano/public/admin-api/editcabang/'+id,
 		type : 'GET',
 		success : function(response){
@@ -42,13 +42,13 @@ function edit(id){
 			$('#formview').hide();
 			$('#formedit').show();
 		},
-		
+
 	});
 	window.location = "#main";
 }
 
 function updatecabang(){
-	
+
 	var data = {
 		mbranchcode : $('#mbranchcode').val(),
 		mbranchname : $('#mbranchname').val(),
@@ -59,7 +59,7 @@ function updatecabang(){
 		information : $('#information').val(),
 
 	}
-	
+
 	var id = $('#mbranchid').val();
 	$.post("/nano/public/admin-api/editcabang/"+id,data,function(data){
 			table.ajax.reload();
@@ -67,34 +67,34 @@ function updatecabang(){
 			console.log(data.code);
 			console.log(data);
 			var strerr = "";
-			
+
 			if (errcode == 400) {
 				for(i=0;i < data.errors.length; i++){
 				strerr = strerr + data.errors[i];
 			}
 				window.location = "#main";
 			  alert(strerr);
-	
+
 			}
 			else{
 			window.location = "#tableapi";
-			
+
 			swal({
-						title: "Pengubahan Berhasil!", 
+						title: "Pengubahan Berhasil!",
 						type: "success",
 						timer: 1000
-						
-						});   
-			}	
-			
-			
+
+						});
+			}
+
+
 			});
-	
+
 			$('#forminput').show();
 			$('#formview').hide();
 			$('#formedit').hide();
 
-	
+
 }
 
 	function back(){
@@ -102,8 +102,8 @@ function updatecabang(){
 		$('#insert-mbranchname').val('');
 		$('#insert-address').val('');
 		$('#insert-phone').val('');
-		$('#insert-city').val('');	
-		$('#insert-person_in_charge').val('');	
+		$('#insert-city').val('');
+		$('#insert-person_in_charge').val('');
 		$('#insert-information').val('');
 
 		$('#formedit').hide();
@@ -117,8 +117,8 @@ function updatecabang(){
 		$('#insert-mbranchname').val('');
 		$('#insert-address').val('');
 		$('#insert-phone').val('');
-		$('#insert-city').val('');	
-		$('#insert-person_in_charge').val('');	
+		$('#insert-city').val('');
+		$('#insert-person_in_charge').val('');
 		$('#insert-information').val('');
 		$('.alerthide').hide();
 	}

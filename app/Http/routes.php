@@ -8,10 +8,11 @@ Route::get('/', function () {
 
 Route::group(['prefix'=>'admin-nano'],function(){
 
-Route::controllers([
-	'/'=>'AdminController'
+  Route::get('mcoagrandparent','MCOAGrandParentController@index');
 
-]);
+  Route::controllers([
+  	'/'=>'AdminController'
+  ]);
 
 });
 

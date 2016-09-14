@@ -15,30 +15,17 @@
 
 		<!-- breadcrumb -->
 		<ol class="breadcrumb">
-			<li>Home</li><li>Master</li><li>Cabang</li>
+			<li>Home</li><li>Master</li><li>MCO Grand Parent</li>
 		</ol>
-
 		<!-- end breadcrumb -->
-
-		<!-- You can also add more buttons to the
-		ribbon for further usability
-
-		Example below:
-
-		<span class="ribbon-button-alignment pull-right">
-		<span id="search" class="btn btn-ribbon hidden-xs" data-title="search"><i class="fa-grid"></i> Change Grid</span>
-		<span id="add" class="btn btn-ribbon hidden-xs" data-title="add"><i class="fa-plus"></i> Add</span>
-		<span id="search" class="btn btn-ribbon" data-title="search"><i class="fa-search"></i> <span class="hidden-mobile">Search</span></span>
-	</span> -->
-
 </div>
 <!-- END RIBBON -->
 <div class="col-xs-12 col-sm-7 col-md-7 col-lg-4">
 	<h1 class="page-title txt-color-blueDark">
 		<i class="fa fa-table fa-fw "></i>
-		CABANG
+		MCO Grand Parent
 		<span>
-			Data Cabang
+			Data MCO Grand Parent
 		</span>
 	</h1>
 </div>
@@ -72,69 +59,22 @@
 	</div>
 
 	<section id="widget-grid" class="">
-
 		<!-- row -->
 		<!-- row -->
-
 		<div class="row">
-
-
-
 			<!-- NEW WIDGET START -->
-
 			<article class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-
-
-
 				<!-- Widget ID (each widget will need unique ID)-->
-
 				<div id="forminput" class="forminput jarviswidget jarviswidget-color-darken" id="wid-id-0" data-widget-editbutton="false" data-widget-colorbutton="false" data-widget-deletebutton="false">
-
-						<!-- widget options:
-
-						usage: <div class="jarviswidget" id="wid-id-0" data-widget-editbutton="false">
-
-
-
-						data-widget-colorbutton="false"
-
-						data-widget-editbutton="false"
-
-						data-widget-togglebutton="false"
-
-						data-widget-deletebutton="false"
-
-						data-widget-fullscreenbutton="false"
-
-						data-widget-custombutton="false"
-
-						data-widget-collapsed="true"
-
-						data-widget-sortable="false"
-
-
-
-					-->
-
 					<header>
-
 						<span class="widget-icon"> <i class="fa fa-table"></i> </span>
-
 						<h2>Tambah Cabang </h2>
-
-
-
 					</header>
-
-
-
 					<!-- widget div-->
 					<div>
-
 						<!-- widget edit box -->
 						<div class="jarviswidget-editbox">
 							<!-- This area used as dropdown edit box -->
-
 						</div>
 						<!-- end widget edit box -->
 						<h3 style="font-weight: bold; color: #1883B8;font-size: 19px;">Mode : INSERT</h3>
@@ -146,32 +86,20 @@
 								border-color: #2F9ACF;
 							}
 						</style>
-
-						@if(count($errors) > 0)
-
-						<div class="alert alert-info alerthide" role="alert">
-
-							@foreach($errors->all() as $error)
-
-							<span class="sr-only">Error:</span>
-
-							<span class="sr-only"></span>
-							<li><b>{{ $error }}</b></li>
-
-
-							@endforeach
-						</div>
-						@endif
-
+  						@if(count($errors) > 0)
+    						<div class="alert alert-info alerthide" role="alert">
+    							@foreach($errors->all() as $error)
+      							<span class="sr-only">Error:</span>
+      							<span class="sr-only"></span>
+      							<li><b>{{ $error }}</b></li>
+    							@endforeach
+    						</div>
+  						@endif
 						<div class="widget-body no-padding">
-
 							<form id="teste" class="form-horizontal" action="{{URL::to('/')}}/admin-nano/tambahcabang" method="post">
 								{{ csrf_field() }}
 								<div class="container">
-
-
 								</br>
-
 								<div style="height: 21px;" class="form-group">
 									<label class="col-md-3 control-label"><b>Kode Cabang</b> (<font color="red">*</font>) &nbsp  :</label>
 									<div class="col-md-7">
@@ -204,9 +132,7 @@
 									<div  class="col-md-7">
 										<div class="icon-addon addon-md">
 											<input id="insert-phone" value="{{old('phone')}}" name="phone" class="form-control forminput" placeholder="Telepon" type="number" required @if (Session::has('autofocus')) autofocus @endif >
-
 											<label for="mgoodsgroup1" class="glyphicon glyphicon-phone-alt" rel="tooltip" title="Telepon"></label>
-
 										<div style="height: 5px;">
 										<h5 style="font-size: 11px; margin-top: 36px;">&nbsp Example: 0542123456</h5>
 										</div>
@@ -252,87 +178,34 @@
 								</center>
 							</br>
 						</div>
-
 					</form>
-
 				</div>
 				<!-- end widget content -->
-
 			</div>
 			<!-- end widget div -->
-
 		</div>
 		<!-- end widget -->
 		<div class="row">
-
-
-
 			<!-- NEW WIDGET START -->
-
 			<article class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-
-
-
 				<!-- Widget ID (each widget will need unique ID)-->
-
 				<div id="formedit" class="jarviswidget jarviswidget-color-darken" id="wid-id-0" data-widget-editbutton="false" data-widget-colorbutton="false" data-widget-deletebutton="false">
-
-						<!-- widget options:
-
-						usage: <div class="jarviswidget" id="wid-id-0" data-widget-editbutton="false">
-
-
-
-						data-widget-colorbutton="false"
-
-						data-widget-editbutton="false"
-
-						data-widget-togglebutton="false"
-
-						data-widget-deletebutton="false"
-
-						data-widget-fullscreenbutton="false"
-
-						data-widget-custombutton="false"
-
-						data-widget-collapsed="true"
-
-						data-widget-sortable="false"
-
-
-
-					-->
-
 					<header>
-
 						<span class="widget-icon"> <i class="fa fa-table"></i> </span>
-
-						<h2>Pengubahan Cabang </h2>
-
-
-
+						<h2>Pengubahan Cabang</h2>
 					</header>
-
-
-
 					<!-- widget div-->
 					<div>
-
 						<!-- widget edit box -->
 						<div class="jarviswidget-editbox">
 							<!-- This area used as dropdown edit box -->
-
 						</div>
 						<!-- end widget edit box -->
 						<h3 style="font-weight: bold; color: #C91503;font-size: 19px;">Mode : EDIT</h3>
 
 						<input type="hidden" id="mbranchid" value=""></input>
 						<div class="form-horizontal">
-
 							<div class="container">
-
-
-
 								<style>
 									.alert-info {
 										color: #D9ECF5;
@@ -340,10 +213,7 @@
 										border-color: #2F9ACF;
 									}
 								</style>
-
-
-
-											<div style="height: 21px;" class="form-group">
+								<div style="height: 21px;" class="form-group">
 									<label class="col-md-3 control-label"><b>Kode Cabang</b> (<font color="red">*</font>) &nbsp  :</label>
 									<div class="col-md-7">
 										<div class="icon-addon addon-md">
@@ -411,89 +281,41 @@
 										</div>
 									</div>
 								</div>
-
 								<center>
 									<div class="row">
 										<div class="col-md-12">
 											<a onclick="back()" title="" class="btn btn-default">Batal</a>
 											<button onclick="updatecabang()" class="btn btn-primary" type="submit">
 												<i class="fa fa-save"></i> Simpan</button>
-
-
 											</div>
 										</center>
 									</br>
-
 								</div>
 							</div>
 						</div>
-
-
 					</div>
 					<div class="row">
-
-
-
 						<!-- NEW WIDGET START -->
-
 						<article class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-
-
-
 							<!-- Widget ID (each widget will need unique ID)-->
-
 							<div id="formview" class="jarviswidget jarviswidget-color-darken" id="wid-id-0" data-widget-editbutton="false" data-widget-colorbutton="false" data-widget-deletebutton="false">
+					      <header>
+						      <span class="widget-icon"> <i class="fa fa-table"></i> </span>
+                  <h2>View Cabang </h2>
+						    </header>
+  						<!-- widget div-->
+  					  <div>
+						  <!-- widget edit box -->
+						    <div class="jarviswidget-editbox">
+							  <!-- This area used as dropdown edit box -->
+						    </div>
+						    <!-- end widget edit box -->
+						    <h3 style="font-weight: bold; color: #291817;font-size: 19px;">Mode : VIEW</h3>
 
-						<!-- widget options:
+						    <input type="hidden" id="mbranchid" value=""></input>
+						    <div class="form-horizontal">
 
-						usage: <div class="jarviswidget" id="wid-id-0" data-widget-editbutton="false">
-
-
-
-						data-widget-colorbutton="false"
-
-						data-widget-editbutton="false"
-
-						data-widget-togglebutton="false"
-
-						data-widget-deletebutton="false"
-
-						data-widget-fullscreenbutton="false"
-
-						data-widget-custombutton="false"
-
-						data-widget-collapsed="true"
-
-						data-widget-sortable="false"
-
-
-
-					-->
-
-					<header>
-
-						<span class="widget-icon"> <i class="fa fa-table"></i> </span>
-
-						<h2>View Cabang </h2>
-						</header>
-						<!-- widget div-->
-					<div>
-
-						<!-- widget edit box -->
-						<div class="jarviswidget-editbox">
-							<!-- This area used as dropdown edit box -->
-
-						</div>
-						<!-- end widget edit box -->
-						<h3 style="font-weight: bold; color: #291817;font-size: 19px;">Mode : VIEW</h3>
-
-						<input type="hidden" id="mbranchid" value=""></input>
-						<div class="form-horizontal">
-
-							<div class="container">
-
-
-
+							  <div class="container">
 								<style>
 									.alert-info {
 										color: #D9ECF5;
@@ -501,8 +323,6 @@
 										border-color: #2F9ACF;
 									}
 								</style>
-
-
 								<div style="height: 21px;" class="form-group">
 									<label class="col-md-3 control-label"><b>Kode Cabang</b> (<font color="red">*</font>) &nbsp  :</label>
 									<div class="col-md-7">
@@ -571,68 +391,32 @@
 										<div class="col-md-12">
 											</br>
 											<button onclick="back()" class="btn btn-default" type="submit">
-												<i class="fa fa-save"></i> Kembali</button>
-
-
-											</div>
-										</center>
+												<i class="fa fa-save"></i> Kembali
+                      </button>
+										</div>
+									</center>
 									</br>
-
 								</div>
 							</div>
 						</div>
-
-
-
 					</div>
-
-
-					<!-- end widget -->
-
-
-
-
-
-
-
-
-					<!-- widget grid -->
 					<article class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
 						<section id="widget-grid" class="">
-
 							<!-- row -->
 							<div class="row">
-
 								<!-- NEW WIDGET START -->
-
-
 								<!-- Widget ID (each widget will need unique ID)-->
 								<div class="jarviswidget jarviswidget-color-darken" id="wid-id-1" data-widget-editbutton="false" data-widget-colorbutton="false" data-widget-deletebutton="false">
-						<!-- widget options:
-						usage: <div class="jarviswidget" id="wid-id-0" data-widget-editbutton="false">
-
-						data-widget-colorbutton="false"
-						data-widget-editbutton="false"
-						data-widget-togglebutton="false"
-						data-widget-deletebutton="false"
-						data-widget-fullscreenbutton="false"
-						data-widget-custombutton="false"
-						data-widget-collapsed="true"
-						data-widget-sortable="false"
-
-					-->
 					<header>
 						<span class="widget-icon"> <i class="fa fa-table"></i> </span>
 						<h2>Master Cabang </h2>
 					</header>
-
 					<!-- widget div-->
 					<div>
 					</br>
 					<!-- widget edit box -->
 					<div class="jarviswidget-editbox">
 						<!-- This area used as dropdown edit box -->
-
 					</div>
 					<!-- end widget edit box -->
 
@@ -674,9 +458,6 @@
 										<th data-hide="phone"><center>Telepon</center></th>
 										<th data-hide="city"><center>Kota</center></th>
 										<th data-hide="action"><center>Aksi</center></th>
-
-
-
 									</tr>
 								</thead>
 								<tbody>
@@ -686,170 +467,129 @@
 							@push('scripts')
 							<tfoot>
 							<script>
+			            var table;
+			            $(function(){
+			                 table = $('.tableapi').DataTable({
+                  			      dom: "<'dtpadding' <'row' <'clmn' C> <'srch' f> <'tablerow' l> <'clear'> <'masterbutton' B> r> <'row pb' tip>>",
+                                  "autoWidth" : true,
+                                  "oLanguage": {
+                                    "sSearch": '<span class="input-group-addon"><i class="glyphicon glyphicon-search"></i></span>'
+                                  },
+                              buttons: [ {
+                                    extend: 'copyHtml5',
+                                    exportOptions: {
+                                        columns: [ 0,1,2]
+                                    }
+                                  },
+                                  {
+                                      extend: 'csvFlash',
+                                      exportOptions: {
+                                          columns: [ 0, 1, 2, 3, 4, 5] //setting kolom mana yg mau di export
+                                      }
+                                  },
+                                  {
+                                      extend: 'excelFlash',
+                                      exportOptions: {
+                                          columns: [ 0, 1, 2, 3, 4, 5] //setting kolom mana yg mau di export
+                                      }
+                                  },
+                                  {
+                                      extend: 'pdfFlash',
+                                      exportOptions: {
+                                          columns: [ 0, 1, 2, 3, 4, 5] //setting kolom mana yg mau di export
+                                      }
+                                  },
+                                  {
+                                      extend: 'print',
+                                      exportOptions: {
+                                          columns: [ 0, 1, 2, 3, 4, 5] //setting kolom mana yg mau di print
+                                      }
 
+                                  }
+                              ],
+					       				      processing: false,
+										          serverSide: false,
+										          ajax: '{{URL::to('/')}}/admin-api/datacabang',
+          										columns: [
+          										{data: 'no', no: 'no' },
+          										{data: 'mbranchcode', mbranchcode: 'mbranchcode'},
+          										{data: 'mbranchname', mbranchname: 'mbranchname'},
+          										{data: 'address', address: 'address'},
+          										{data: 'phone', phone: 'phone'},
+          										{data: 'city', city: 'city'},
+          										{data: 'action', name:'action', searchable: false, orderable: false}
+          										]
+									       });
 
-			var table;
+  					        $(".table thead th input[type=text]").on( 'keyup change', function () {
+  		    		            table
+  		                      .column( $(this).parent().index()+':visible' )
+  		                      .search( this.value )
+  		                      .draw();
+  		    		      });
+				          });
 
+            			function refreshtbl(){
+            			  table.ajax.reload();
+            			}
 
-			$(function(){
-
-			table = $('.tableapi').DataTable({
-			 dom: "<'dtpadding' <'row' <'clmn' C> <'srch' f> <'tablerow' l> <'clear'> <'masterbutton' B> r> <'row pb' tip>>",
-            "autoWidth" : true,
-            "oLanguage": {
-                "sSearch": '<span class="input-group-addon"><i class="glyphicon glyphicon-search"></i></span>'
-            },
-            buttons: [ {
-                extend: 'copyHtml5',
-                exportOptions: {
-                    columns: [ 0,1,2]
-                }
-            },
-            {
-                extend: 'csvFlash',
-                exportOptions: {
-                    columns: [ 0, 1, 2, 3, 4, 5] //setting kolom mana yg mau di export
-                }
-            },
-            {
-                extend: 'excelFlash',
-                exportOptions: {
-                    columns: [ 0, 1, 2, 3, 4, 5] //setting kolom mana yg mau di export
-                }
-            },
-            {
-                extend: 'pdfFlash',
-                exportOptions: {
-                    columns: [ 0, 1, 2, 3, 4, 5] //setting kolom mana yg mau di export
-                }
-            },
-            {
-                extend: 'print',
-                exportOptions: {
-                    columns: [ 0, 1, 2, 3, 4, 5] //setting kolom mana yg mau di print
-                }
-
-            },
-
-            ],
-
-					       				processing: false,
-										serverSide: false,
-										ajax: '{{URL::to('/')}}/admin-api/datacabang',
-										columns: [
-										{data: 'no', no: 'no' },
-										{data: 'mbranchcode', mbranchcode: 'mbranchcode'},
-										{data: 'mbranchname', mbranchname: 'mbranchname'},
-										{data: 'address', address: 'address'},
-										{data: 'phone', phone: 'phone'},
-										{data: 'city', city: 'city'},
-										{data: 'action', name:'action', searchable: false, orderable: false}
-										]
-									});
-
-								// table.on( 'order.dt search.dt', function () {
-								// table.column(0, {search:'applied', order:'applied'}).nodes().each( function (cell, i) {
-								// cell.innerHTML = i+1;
-								// 	} );
-								// 	} ).draw();
-
-					$(".table thead th input[type=text]").on( 'keyup change', function () {
-		    		table
-		            .column( $(this).parent().index()+':visible' )
-		            .search( this.value )
-		            .draw();
-
-		    		} );
-
-				});
-
-			function refreshtbl(){
-			table.ajax.reload();
-			}
-
-			$(document).ready(function(){
-				var columnBtn = "<span>Show / Hide columns</span>";
-				$('.ColVis_MasterButton').html(columnBtn);
-
-			});
-
-
+            			$(document).ready(function(){
+            				var columnBtn = "<span>Show / Hide columns</span>";
+            				$('.ColVis_MasterButton').html(columnBtn);
+            			});
 							</script>
 							</tfoot>
-
 							@endpush
-
-
-
-
-						<script>
-					function popupdelete(id){
+						  <script>
+					      function popupdelete(id){
 								// console.log('click');
 								// var choice = confirm('Anda yakin akan menghapus ?');
 								// if(choice){
 								// 	window.location = '{{ URL::to('/') }}'+'/admin-nano/delcabang/'+id+'/delete';
 								// }
-					swal({
-					title: "Anda Yakin Akan Mengapus ?",
-					text: "Anda Tidak Dapat Mengembalikan Data Ini!",
-					type: "warning",   showCancelButton: true,
-					confirmButtonColor: "#DD6B55",
-					confirmButtonText: "Iya, Hapus!",
-					cancelButtonText: "Tidak, Batal!",
-					closeOnConfirm: false,
-					closeOnCancel: false
-								},
-					function(isconfirm){
-					if (isconfirm) {
-					swal({
-						title: "Terhapus!",
-						text: "Data Anda Berhasil Terhapus.",
-						type: "success",
-
-						});
-					window.setTimeout(function(){
-					window.location = '{{ URL::to('/') }}'+'/admin-nano/delcabang/'+id+'/delete'
-					},1000)
-				}
-
-					else {
-
-						swal({
-
-						title: "Batal Terhapus!",
-						text: "Data Anda Batal Terhapus.",
-						type: "error",
-						timer: 1000,
-						confirmButtonText: "Ok"
-						});
-						window.location = '#main';
-					}
-					});
-					}
+        					swal({
+          					title: "Anda Yakin Akan Mengapus ?",
+          					text: "Anda Tidak Dapat Mengembalikan Data Ini!",
+          					type: "warning",   showCancelButton: true,
+          					confirmButtonColor: "#DD6B55",
+          					confirmButtonText: "Iya, Hapus!",
+          					cancelButtonText: "Tidak, Batal!",
+          					closeOnConfirm: false,
+          					closeOnCancel: false
+        					},
+        					function(isconfirm){
+        					  if (isconfirm) {
+        					    swal({
+          						  title: "Terhapus!",
+          						  text: "Data Anda Berhasil Terhapus.",
+          						  type: "success",
+        						  });
+          					  window.setTimeout(function(){
+          					    window.location = '{{ URL::to('/') }}'+'/admin-nano/delcabang/'+id+'/delete'
+          					  },1000)
+        				  } else {
+    						      swal({
+            						title: "Batal Terhapus!",
+            						text: "Data Anda Batal Terhapus.",
+            						type: "error",
+            						timer: 1000,
+            						confirmButtonText: "Ok"
+    						      });
+    						      window.location = '#main';
+					        }
+					      });
+					     }
 						</script>
-
 					</div>
-
-
 				</div>
-
 				<!-- end widget -->
-
 			</article>
-
 		</div>
-
 		<!-- end row -->
-
 	</section>
 	<!-- end widget grid -->
-
 </div>
 <!-- END MAIN CONTENT -->
-
 </div>
 <!-- END MAIN PANEL -->
-
-
-
 @stop

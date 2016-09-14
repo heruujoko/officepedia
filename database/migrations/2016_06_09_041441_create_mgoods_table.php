@@ -73,12 +73,14 @@ class CreateMgoodsTable extends Migration
          Schema::create('mcoa', function (Blueprint $table) {
             $table->increments('id');
             $table->string('mcoacode')->unique();
-            $table->string('mcoaname')->unique();
-            $table->string('mcoatype')->unique();
-            $table->string('mcoaparentcode')->unique();
-            $table->string('mcoaparentname')->unique();
-            $table->string('mcoagrandparentcode')->unique();
-            $table->string('mcoagrandparentname')->unique();
+            $table->string('mcoaname');
+            $table->string('mcoatype');
+
+            // relation cannot be unique. they only unique on their own tables.
+            $table->string('mcoaparentcode');
+            $table->string('mcoaparentname');
+            $table->string('mcoagrandparentcode');
+            $table->string('mcoagrandparentname');
             $table->string('void');
             $table->timestamps();
         });
@@ -86,9 +88,9 @@ class CreateMgoodsTable extends Migration
             $table->increments('id');
             $table->string('mcoaparentcode')->unique();
             $table->string('mcoaparentname')->unique();
-            $table->string('mcoaparenttype')->unique();
-            $table->string('mcoagrandparentcode')->unique();
-            $table->string('mcoagrandparentname')->unique();
+            $table->string('mcoaparenttype');
+            $table->string('mcoagrandparentcode');
+            $table->string('mcoagrandparentname');
             $table->string('void');
             $table->timestamps();
         });
@@ -96,7 +98,7 @@ class CreateMgoodsTable extends Migration
             $table->increments('id');
             $table->string('mcoagrandparentcode')->unique();
             $table->string('mcoagrandparentname')->unique();
-            $table->string('mcoagrandparenttype')->unique();
+            $table->string('mcoagrandparenttype');
             $table->string('void');
             $table->timestamps();
         });
@@ -110,6 +112,11 @@ class CreateMgoodsTable extends Migration
      */
     public function down()
     {
+        Schema::drop('mcoagrandparent');
+        Schema::drop('mcoaparent');
+        Schema::drop('mcoa');
         Schema::drop('mgoods');
+        Schema::drop('mbranch');
+        Schema::drop('triggermbranch');
     }
 }
