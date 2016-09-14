@@ -135,7 +135,3 @@ function validate(evt) {
   }
 }
 // MBRANCH SCRIPT
-
-$('.sa-button-container'>'.cancel').hover(function(){
-	$('.sa-confirm-button-container'>'button').removeClass('confirm');
-});

@@ -825,7 +825,18 @@
 						window.location = '#main';
 					}
 					});
+					$(".sa-button-container").parent().find(".cancel").hover(function(){
+					$(".sa-button-container").parent().find(".cancel").addClass("bg-red");
+					$(".sa-confirm-button-container").parent().find(".confirm").addClass("bg-gray");
+					
+					},
+					function(){
+					$(".sa-confirm-button-container").parent().find(".confirm").removeClass("bg-gray");
+					$(".sa-button-container").parent().find(".cancel").removeClass("bg-red");
 					}
+					);
+					}
+					
 						</script>
 
 					</div>

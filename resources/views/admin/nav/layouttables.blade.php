@@ -141,8 +141,13 @@
    .sa-confirm-button-container:hover > button{
    	background-color: rgb(212, 103, 82)!important;
    }
-   .sa-button-container > .cancel:hover{
+  
+
+   .bg-red{
    	background-color: rgb(212, 103, 82)!important;
+   }
+   .bg-gray{
+   	background: #C1C1C1 !important;
    }
 /* CSS UNTUK MODIFIKASI TABLE */
 </style>
