@@ -7,4 +7,5 @@ use Illuminate\Database\Eloquent\Model;
 class MCOAGrandParent extends Model
 {
     protected $table = "mcoagrandparent";
+    protected $fillable = ['mcoagrandparentcode','mcoagrandparentname','mcoagrandparenttype'];
 }

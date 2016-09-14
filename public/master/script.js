@@ -1,10 +1,12 @@
 $('#formedit').hide();
 $('#formview').hide();
 
+var API_URL = '/nano/public/admin-api';
+
 // MBRANCH SCRIPT
- function view(id){
+ function viewbranch(id){
 	$.ajax({
-		url : '/nano/public/admin-api/viewcabang/'+id,
+		url : API_URL+'/viewcabang/'+id,
 		type : 'GET',
 		success : function(response){
 			$('#mbranchid2').val(response.mbranch.id);
@@ -24,10 +26,10 @@ $('#formview').hide();
 	});
 	window.location = "#main";
 }
-function edit(id){
+function editbranch(id){
 	$.ajax({
 
-		url : '/nano/public/admin-api/editcabang/'+id,
+		url : API_URL+'/editcabang/'+id,
 		type : 'GET',
 		success : function(response){
 			$('#mbranchid').val(response.mbranch.id);
@@ -47,7 +49,7 @@ function edit(id){
 	window.location = "#main";
 }
 
-function updatecabang(){
+function updatebranch(){
 
 	var data = {
 		mbranchcode : $('#mbranchcode').val(),
@@ -61,7 +63,7 @@ function updatecabang(){
 	}
 
 	var id = $('#mbranchid').val();
-	$.post("/nano/public/admin-api/editcabang/"+id,data,function(data){
+	$.post(API_URL+"/editcabang/"+id,data,function(data){
 			table.ajax.reload();
 		 	var errcode = data.code;
 			console.log(data.code);
@@ -124,14 +126,143 @@ function updatecabang(){
 	}
 
 
-function validate(evt) {
-  var theEvent = evt || window.event;
-  var key = theEvent.keyCode || theEvent.which;
-  key = String.fromCharCode( key );
-  var regex = /[0-9]|\./;
-  if( !regex.test(key) ) {
-    theEvent.returnValue = false;
-    if(theEvent.preventDefault) theEvent.preventDefault();
+  function validate(evt) {
+    var theEvent = evt || window.event;
+    var key = theEvent.keyCode || theEvent.which;
+    key = String.fromCharCode( key );
+    var regex = /[0-9]|\./;
+    if( !regex.test(key) ) {
+      theEvent.returnValue = false;
+      if(theEvent.preventDefault) theEvent.preventDefault();
+    }
   }
-}
-// MBRANCH SCRIPT
+
+// MCOAGrandParent
+
+  function insertgrandparent(){
+    var data = {
+      mcoagrandparentcode: $('#insert-mcoagrandparentcode').val(),
+      mcoagrandparentname: $('#insert-mcoagrandparentname').val(),
+      mcoagrandparenttype: $('#insert-mcoagrandparenttype').val()
+    }
+    $.ajax({
+      type: "POST",
+      url: API_URL+"/mcoagrandparent",
+      data: data,
+      success: function(response){
+        console.log(response);
+        table.ajax.reload();
+        window.location = "#tableapi";
+  			swal({
+  				title: "Input Berhasil!",
+  				type: "success",
+  				timer: 1000
+  			});
+      },
+      error: function(response){
+        swal({
+  				title: "Input Gagal!",
+  				type: "error",
+  				timer: 1000
+  			});
+      }
+    });
+  }
+
+  function viewgrandparent(id){
+    $.ajax({
+      type: "GET",
+      url: API_URL+"/mcoagrandparent/"+id,
+      success: function(response){
+        $('#view-mcoagrandparentcode').val(response.mcoagrandparentcode);
+        $('#view-mcoagrandparentname').val(response.mcoagrandparentname);
+        $('#view-mcoagrandparenttype').val(response.mcoagrandparenttype);
+        $('#forminput').hide();
+  			$('#formview').show();
+  			$('#formedit').hide();
+      },
+      error: function(response){
+        swal({
+  				title: "Aksi Gagal!",
+  				type: "error",
+  				timer: 1000
+  			});
+      }
+    });
+    window.location = "#main";
+  }
+
+  function editgrandparent(id){
+    $.ajax({
+      type: "GET",
+      url: API_URL+"/mcoagrandparent/"+id,
+      success: function(response){
+        $('#mcoagrandparentid').val(response.id);
+        $('#edit-mcoagrandparentcode').val(response.mcoagrandparentcode);
+        $('#edit-mcoagrandparentname').val(response.mcoagrandparentname);
+        $('#edit-mcoagrandparenttype').val(response.mcoagrandparenttype);
+        $('#forminput').hide();
+  			$('#formview').hide();
+  			$('#formedit').show();
+      },
+      error: function(response){
+        swal({
+  				title: "Aksi Gagal!",
+  				type: "error",
+  				timer: 1000
+  			});
+      }
+    });
+    window.location = "#main";
+  }
+
+  function updategrandparent(){
+    var updateid = $('#mcoagrandparentid').val();
+    var data = {
+      mcoagrandparentcode: $('#edit-mcoagrandparentcode').val(),
+      mcoagrandparentname: $('#edit-mcoagrandparentname').val(),
+      mcoagrandparenttype: $('#edit-mcoagrandparenttype').val()
+    }
+    $.ajax({
+      type: "PUT",
+      url: API_URL+"/mcoagrandparent/"+updateid,
+      data: data,
+      success: function(response){
+        console.log(response);
+        table.ajax.reload();
+        window.location = "#tableapi";
+  			swal({
+  				title: "Pengubahan Berhasil!",
+  				type: "success",
+  				timer: 1000
+  			});
+        $('#forminput').show();
+  			$('#formview').hide();
+  			$('#formedit').hide();
+      },
+      error: function(response){
+        swal({
+  				title: "Pengubahan Gagal!",
+  				type: "error",
+  				timer: 1000
+  			});
+      }
+    });
+  }
+
+  function resetgrandparent(){
+    $('#insert-mcoagrandparentcode').val('');
+    $('#insert-mcoagrandparentname').val('');
+    $('#insert-mcoagrandparenttype').val('K');
+    $('#edit-mcoagrandparentcode').val('');
+    $('#edit-mcoagrandparentname').val('');
+    $('#edit-mcoagrandparenttype').val('K');
+  }
+
+  function backgrandparent(){
+		$('#mcoagrandparentid').val('');
+    resetgrandparent();
+		$('#formedit').hide();
+		$('#formview').hide();
+		$('#forminput').show();
+	}

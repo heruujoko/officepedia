@@ -15,7 +15,7 @@
 
 		<!-- breadcrumb -->
 		<ol class="breadcrumb">
-			<li>Home</li><li>Master</li><li>MCO Grand Parent</li>
+			<li>Home</li><li>Master</li><li>{{ $section }}</li>
 		</ol>
 		<!-- end breadcrumb -->
 </div>
@@ -23,9 +23,9 @@
 <div class="col-xs-12 col-sm-7 col-md-7 col-lg-4">
 	<h1 class="page-title txt-color-blueDark">
 		<i class="fa fa-table fa-fw "></i>
-		MCO Grand Parent
+		{{ $section }}
 		<span>
-			Data MCO Grand Parent
+			{{ $section }}
 		</span>
 	</h1>
 </div>
@@ -68,7 +68,7 @@
 				<div id="forminput" class="forminput jarviswidget jarviswidget-color-darken" id="wid-id-0" data-widget-editbutton="false" data-widget-colorbutton="false" data-widget-deletebutton="false">
 					<header>
 						<span class="widget-icon"> <i class="fa fa-table"></i> </span>
-						<h2>Tambah Cabang </h2>
+						<h2>Tambah {{ $section }}</h2>
 					</header>
 					<!-- widget div-->
 					<div>
@@ -96,73 +96,37 @@
     						</div>
   						@endif
 						<div class="widget-body no-padding">
-							<form id="teste" class="form-horizontal" action="{{URL::to('/')}}/admin-nano/tambahcabang" method="post">
+							<div id="teste" class="form-horizontal">
 								{{ csrf_field() }}
 								<div class="container">
 								</br>
 								<div style="height: 21px;" class="form-group">
-									<label class="col-md-3 control-label"><b>Kode Cabang</b> (<font color="red">*</font>) &nbsp  :</label>
+									<label class="col-md-3 control-label"><b>Kode Grand Parent</b> (<font color="red">*</font>) &nbsp  :</label>
 									<div class="col-md-7">
 										<div class="icon-addon addon-md">
-											<input id="insert-mbranchcode" value="{{old('mbranchcode')}}" name="mbranchcode" class="form-control forminput" placeholder="Kode Cabang" type="text" required @if (Session::has('autofocus')) autofocus @endif >
-											<label for="mgoodsgroup1" class="glyphicon glyphicon-barcode" rel="tooltip" title="Kode Cabang"></label>
+											<input id="insert-mcoagrandparentcode" value="{{old('mbranchcode')}}" name="mcoagrandparentcode" class="form-control forminput" placeholder="Kode Grand Parent" type="text" required @if (Session::has('autofocus')) autofocus @endif >
+											<label for="mgoodsgroup1" class="glyphicon glyphicon-barcode" rel="tooltip" title="Kode Grand Parent"></label>
 										</div>
 									</div>
 								</div>
 								<div style="height: 21px;" class="form-group">
-									<label class="col-md-3 control-label"><b>Nama Cabang</b> (<font color="red">*</font>) &nbsp  :</label>
+									<label class="col-md-3 control-label"><b>Nama Grand Parent</b> (<font color="red">*</font>) &nbsp  :</label>
 									<div class="col-md-7">
 										<div class="icon-addon addon-md">
-											<input id="insert-mbranchname" value="{{old('mbranchname')}}" name="mbranchname" class="form-control forminput" placeholder="Nama Cabang" type="text" required @if (Session::has('autofocus')) autofocus @endif >
-											<label for="mgoodsgroup1" class="glyphicon glyphicon-chevron-right" rel="tooltip" title="Nama Cabang"></label>
+											<input id="insert-mcoagrandparentname" value="{{old('mbranchname')}}" name="mcoagrandparentname" class="form-control forminput" placeholder="Nama Grand Parent" type="text" required @if (Session::has('autofocus')) autofocus @endif >
+											<label for="mgoodsgroup1" class="glyphicon glyphicon-chevron-right" rel="tooltip" title="Nama Grand Parent"></label>
 										</div>
 									</div>
 								</div>
 								<div style="height: 21px;" class="form-group">
-									<label class="col-md-3 control-label"><b>Alamat</b> (<font color="red">*</font>) &nbsp  :</label>
+									<label class="col-md-3 control-label"><b>Tipe Grand Parent</b> (<font color="red">*</font>) &nbsp  :</label>
 									<div class="col-md-7">
 										<div class="icon-addon addon-md">
-											<input id="insert-address" value="{{old('address')}}" name="address" class="form-control forminput" placeholder="Alamat" type="text" required @if (Session::has('autofocus')) autofocus @endif >
-											<label for="mgoodsgroup1" class="glyphicon glyphicon-home" rel="tooltip" title="Alamat"></label>
-										</div>
-									</div>
-								</div>
-								<div class="form-group">
-									<label class="col-md-3 control-label"><b>Telepon</b> (<font color="red">*</font>) &nbsp  :</label>
-									<div  class="col-md-7">
-										<div class="icon-addon addon-md">
-											<input id="insert-phone" value="{{old('phone')}}" name="phone" class="form-control forminput" placeholder="Telepon" type="number" required @if (Session::has('autofocus')) autofocus @endif >
-											<label for="mgoodsgroup1" class="glyphicon glyphicon-phone-alt" rel="tooltip" title="Telepon"></label>
-										<div style="height: 5px;">
-										<h5 style="font-size: 11px; margin-top: 36px;">&nbsp Example: 0542123456</h5>
-										</div>
-										</div>
-									</div>
-								</div>
-								<div style="height: 21px;" class="form-group">
-									<label class="col-md-3 control-label"><b>Kota</b> (<font color="red">*</font>) &nbsp  :</label>
-									<div class="col-md-7">
-										<div class="icon-addon addon-md">
-											<input id="insert-city" value="{{old('city')}}" name="city" class="form-control forminput" placeholder="Kota" type="text" required @if (Session::has('autofocus')) autofocus @endif >
-											<label for="mgoodsgroup1" class="glyphicon glyphicon-road" rel="tooltip" title="Kota"></label>
-										</div>
-									</div>
-								</div>
-								<div style="height: 21px;" class="form-group">
-									<label class="col-md-3 control-label"><b>Orang Yang Bertanggung Jawab</b> (<font color="red">*</font>) &nbsp  :</label>
-									<div class="col-md-7">
-										<div class="icon-addon addon-md">
-											<input id="insert-person_in_charge" value="{{old('person_in_charge')}}" name="person_in_charge" class="form-control forminput" placeholder="Orang Yang Bertanggung Jawab" type="text" required @if (Session::has('autofocus')) autofocus @endif >
-											<label for="mgoodsgroup1" class="glyphicon glyphicon-user" rel="tooltip" title="Orang Yang Bertanggung Jawab"></label>
-										</div>
-									</div>
-								</div>
-								<div class="form-group">
-									<label class="col-md-3 control-label"><b>Keterangan</b> &nbsp  :</label>
-									<div class="col-md-7">
-										<div class="icon-addon addon-md">
-											<input id="insert-information" value="{{old('information')}}" name="information" class="form-control forminput" placeholder="Keterangan" type="text" @if (Session::has('autofocus')) autofocus @endif >
-											<label for="mgoodsgroup1" class="glyphicon glyphicon-search" rel="tooltip" title="Keterangan"></label>
+                      <select id="insert-mcoagrandparenttype" value="{{old('address')}}" name="mcoagrandparenttype" class="form-control forminput" placeholder="Tipe Grand Parent" type="text" required @if (Session::has('autofocus')) autofocus @endif>
+                        <option value="K">Kredit</option>
+                        <option value="D">Debet</option>
+                      </select>
+											<!-- <label for="mgoodsgroup1" class="glyphicon glyphicon-chevron-right" rel="tooltip" title="Tipe Grand Parent"></label> -->
 										</div>
 									</div>
 								</div>
@@ -170,15 +134,14 @@
 								<center>
 									<div class="row">
 										<div class="col-md-12">
-											<a id="btn-insert-reset" onclick="reset()" class="btn btn-default" ><i class=""></i> Reset</a>
-											<button class="btn btn-primary" type="submit"><i class="fa fa-save"></i> Simpan</button>
-
+											<a id="btn-insert-reset" onclick="resetgrandparent()" class="btn btn-default" ><i class=""></i> Reset</a>
+											<button class="btn btn-primary" onclick="insertgrandparent()"><i class="fa fa-save"></i> Simpan</button>
 										</div>
 									</div>
 								</center>
 							</br>
 						</div>
-					</form>
+					</div>
 				</div>
 				<!-- end widget content -->
 			</div>
@@ -192,7 +155,7 @@
 				<div id="formedit" class="jarviswidget jarviswidget-color-darken" id="wid-id-0" data-widget-editbutton="false" data-widget-colorbutton="false" data-widget-deletebutton="false">
 					<header>
 						<span class="widget-icon"> <i class="fa fa-table"></i> </span>
-						<h2>Pengubahan Cabang</h2>
+						<h2>Pengubahan {{ $section }}</h2>
 					</header>
 					<!-- widget div-->
 					<div>
@@ -213,79 +176,43 @@
 										border-color: #2F9ACF;
 									}
 								</style>
-								<div style="height: 21px;" class="form-group">
-									<label class="col-md-3 control-label"><b>Kode Cabang</b> (<font color="red">*</font>) &nbsp  :</label>
+                <input type="hidden" id="mcoagrandparentid">
+                <div style="height: 21px;" class="form-group">
+									<label class="col-md-3 control-label"><b>Kode Grand Parent</b> (<font color="red">*</font>) &nbsp  :</label>
 									<div class="col-md-7">
 										<div class="icon-addon addon-md">
-											<input  value="" id="mbranchcode" name="mbranchcode" class="form-control forminput" placeholder="Kode Cabang" type="text" required>
-											<label for="mgoodsgroup1" class="glyphicon glyphicon-barcode" rel="tooltip" title="Kode Cabang"></label>
-										</div>
-									</div>
-								</div>
-								<div style="height: 21px;" class="form-group">
-									<label class="col-md-3 control-label"><b>Nama Cabang</b> (<font color="red">*</font>) &nbsp  :</label>
-									<div class="col-md-7">
-										<div class="icon-addon addon-md">
-											<input value="" id="mbranchname" name="mbranchname" class="form-control forminput" placeholder="Nama Cabang" type="text" required autofocus >
-											<label for="mgoodsgroup1" class="glyphicon glyphicon-chevron-right" rel="tooltip" title="Nama Cabang"></label>
+											<input id="edit-mcoagrandparentcode" value="{{old('mbranchcode')}}" name="mcoagrandparentcode" class="form-control forminput" placeholder="Kode Grand Parent" type="text" required @if (Session::has('autofocus')) autofocus @endif >
+											<label for="mgoodsgroup1" class="glyphicon glyphicon-barcode" rel="tooltip" title="Kode Grand Parent"></label>
 										</div>
 									</div>
 								</div>
 								<div style="height: 21px;" class="form-group">
-									<label class="col-md-3 control-label"><b>Alamat</b> (<font color="red">*</font>) &nbsp  :</label>
+									<label class="col-md-3 control-label"><b>Nama Grand Parent</b> (<font color="red">*</font>) &nbsp  :</label>
 									<div class="col-md-7">
 										<div class="icon-addon addon-md">
-											<input value="" id="address" name="address" class="form-control forminput" placeholder="Alamat" type="text" required>
-											<label for="mgoodsgroup1" class="glyphicon glyphicon-home" rel="tooltip" title="Alamat"></label>
-										</div>
-									</div>
-								</div>
-								<div  class="form-group">
-									<label class="col-md-3 control-label"><b>Telepon</b> (<font color="red">*</font>) &nbsp  :</label>
-									<div  class="col-md-7">
-										<div class="icon-addon addon-md">
-											<input value="" id="phone" name="phone" class="form-control forminput" placeholder="Telepon" type="number" required>
-
-											<label for="mgoodsgroup1" class="glyphicon glyphicon-phone-alt" rel="tooltip" title="Telepon"></label>
-
-										<div style="height: 5px;">
-										<h5 style="font-size: 11px; margin-top: 36px;">&nbsp Example: 0542123456</h5>
-										</div>
+											<input id="edit-mcoagrandparentname" value="{{old('mbranchname')}}" name="mcoagrandparentname" class="form-control forminput" placeholder="Nama Grand Parent" type="text" required @if (Session::has('autofocus')) autofocus @endif >
+											<label for="mgoodsgroup1" class="glyphicon glyphicon-chevron-right" rel="tooltip" title="Nama Grand Parent"></label>
 										</div>
 									</div>
 								</div>
 								<div style="height: 21px;" class="form-group">
-									<label class="col-md-3 control-label"><b>Kota</b> (<font color="red">*</font>) &nbsp  :</label>
+									<label class="col-md-3 control-label"><b>Tipe Grand Parent</b> (<font color="red">*</font>) &nbsp  :</label>
 									<div class="col-md-7">
 										<div class="icon-addon addon-md">
-											<input value="" id="city" name="city" class="form-control forminput" placeholder="Kota" type="text" required>
-											<label for="mgoodsgroup1" class="glyphicon glyphicon-road" rel="tooltip" title="Kota"></label>
+                      <select id="edit-mcoagrandparenttype" value="{{old('address')}}" name="mcoagrandparenttype" class="form-control forminput" placeholder="Tipe Grand Parent" type="text" required @if (Session::has('autofocus')) autofocus @endif>
+                        <option value="K">Kredit</option>
+                        <option value="D">Debet</option>
+                      </select>
+											<!-- <label for="mgoodsgroup1" class="glyphicon glyphicon-chevron-right" rel="tooltip" title="Tipe Grand Parent"></label> -->
 										</div>
 									</div>
 								</div>
-								<div style="height: 21px;" class="form-group">
-									<label class="col-md-3 control-label"><b>Orang Yang Bertanggung Jawab</b> (<font color="red">*</font>) &nbsp  :</label>
-									<div class="col-md-7">
-										<div class="icon-addon addon-md">
-											<input value="" id="person_in_charge" name="person_in_charge" class="form-control forminput" placeholder="Orang Yang Bertanggung Jawab" type="text" required>
-											<label for="mgoodsgroup1" class="glyphicon glyphicon-user" rel="tooltip" title="Orang Yang Bertanggung Jawab"></label>
-										</div>
-									</div>
-								</div>
-								<div class="form-group">
-									<label class="col-md-3 control-label"><b>Keterangan</b> &nbsp  :</label>
-									<div class="col-md-7">
-										<div class="icon-addon addon-md">
-											<input value="" id="information" name="information" class="form-control forminput" placeholder="Keterangan" type="text">
-											<label for="mgoodsgroup1" class="glyphicon glyphicon-search" rel="tooltip" title="Keterangan"></label>
-										</div>
-									</div>
-								</div>
+								<input type="hidden" name="void" value="0">
 								<center>
 									<div class="row">
 										<div class="col-md-12">
-											<a onclick="back()" title="" class="btn btn-default">Batal</a>
-											<button onclick="updatecabang()" class="btn btn-primary" type="submit">
+											<a onclick="backgrandparent()" title="" class="btn btn-default">Batal</a>
+											<button onclick="updategrandparent()" class="btn btn-primary" type="submit">
 												<i class="fa fa-save"></i> Simpan</button>
 											</div>
 										</center>
@@ -301,7 +228,7 @@
 							<div id="formview" class="jarviswidget jarviswidget-color-darken" id="wid-id-0" data-widget-editbutton="false" data-widget-colorbutton="false" data-widget-deletebutton="false">
 					      <header>
 						      <span class="widget-icon"> <i class="fa fa-table"></i> </span>
-                  <h2>View Cabang </h2>
+                  <h2>View {{ $section }} </h2>
 						    </header>
   						<!-- widget div-->
   					  <div>
@@ -323,66 +250,33 @@
 										border-color: #2F9ACF;
 									}
 								</style>
-								<div style="height: 21px;" class="form-group">
-									<label class="col-md-3 control-label"><b>Kode Cabang</b> (<font color="red">*</font>) &nbsp  :</label>
+                <div style="height: 21px;" class="form-group">
+									<label class="col-md-3 control-label"><b>Kode Grand Parent</b> (<font color="red">*</font>) &nbsp  :</label>
 									<div class="col-md-7">
 										<div class="icon-addon addon-md">
-											<input disabled value="" name="mbranchcode" class="form-control" placeholder="Kode Cabang" type="text" required id="mbranchcode2" @if (Session::has('autofocus')) autofocus @endif >
-											<label for="mgoodsgroup1" class="glyphicon glyphicon-barcode" rel="tooltip" title="Kode Cabang"></label>
+											<input disabled id="view-mcoagrandparentcode" value="{{old('mbranchcode')}}" name="mcoagrandparentcode" class="form-control forminput" placeholder="Kode Grand Parent" type="text" required @if (Session::has('autofocus')) autofocus @endif >
+											<label for="mgoodsgroup1" class="glyphicon glyphicon-barcode" rel="tooltip" title="Kode Grand Parent"></label>
 										</div>
 									</div>
 								</div>
 								<div style="height: 21px;" class="form-group">
-									<label class="col-md-3 control-label"><b>Nama Cabang</b> (<font color="red">*</font>) &nbsp  :</label>
+									<label class="col-md-3 control-label"><b>Nama Grand Parent</b> (<font color="red">*</font>) &nbsp  :</label>
 									<div class="col-md-7">
 										<div class="icon-addon addon-md">
-											<input disabled id="mbranchname2" value="" name="mbranchname" class="form-control" placeholder="Nama Cabang" type="text" required @if (Session::has('autofocus')) autofocus @endif >
-											<label for="mgoodsgroup1" class="glyphicon glyphicon-chevron-right" rel="tooltip" title="Nama Cabang"></label>
+											<input disabled id="view-mcoagrandparentname" value="{{old('mbranchname')}}" name="mcoagrandparentname" class="form-control forminput" placeholder="Nama Grand Parent" type="text" required @if (Session::has('autofocus')) autofocus @endif >
+											<label for="mgoodsgroup1" class="glyphicon glyphicon-chevron-right" rel="tooltip" title="Nama Grand Parent"></label>
 										</div>
 									</div>
 								</div>
 								<div style="height: 21px;" class="form-group">
-									<label class="col-md-3 control-label"><b>Alamat</b> (<font color="red">*</font>) &nbsp  :</label>
+									<label class="col-md-3 control-label"><b>Tipe Grand Parent</b> (<font color="red">*</font>) &nbsp  :</label>
 									<div class="col-md-7">
 										<div class="icon-addon addon-md">
-											<input disabled id="address2" value="" name="address" class="form-control" placeholder="Alamat" type="text" required @if (Session::has('autofocus')) autofocus @endif >
-											<label for="mgoodsgroup1" class="glyphicon glyphicon-home" rel="tooltip" title="Alamat"></label>
-										</div>
-									</div>
-								</div>
-								<div style="height: 21px;" class="form-group">
-									<label class="col-md-3 control-label"><b>Telepon</b> (<font color="red">*</font>) &nbsp  :</label>
-									<div class="col-md-7">
-										<div class="icon-addon addon-md">
-											<input disabled id="phone2" value="" name="phone" class="form-control" placeholder="Telepon" type="number" required @if (Session::has('autofocus')) autofocus @endif >
-											<label for="mgoodsgroup1" class="glyphicon glyphicon-phone-alt" rel="tooltip" title="Telepon"></label>
-										</div>
-									</div>
-								</div>
-								<div style="height: 21px;" class="form-group">
-									<label class="col-md-3 control-label"><b>Kota</b> (<font color="red">*</font>) &nbsp  :</label>
-									<div class="col-md-7">
-										<div class="icon-addon addon-md">
-											<input disabled id="city2" value="" name="city" class="form-control" placeholder="Kota" type="text" required @if (Session::has('autofocus')) autofocus @endif >
-											<label for="mgoodsgroup1" class="glyphicon glyphicon-road" rel="tooltip" title="Kota"></label>
-										</div>
-									</div>
-								</div>
-								<div style="height: 21px;" class="form-group">
-									<label class="col-md-3 control-label"><b>Orang Yang Bertanggung Jawab</b>(<font color="red">*</font>) &nbsp  :</label>
-									<div class="col-md-7">
-										<div class="icon-addon addon-md">
-											<input disabled id="person_in_charge2" value="" name="person_in_charge" class="form-control" placeholder="Orang yang bertanggung jawab" type="text" required @if (Session::has('autofocus')) autofocus @endif >
-											<label for="mgoodsgroup1" class="glyphicon glyphicon-user" rel="tooltip" title="Orang Yang Bertanggung Jawab"></label>
-										</div>
-									</div>
-								</div>
-								<div style="height: 21px;" class="form-group">
-									<label class="col-md-3 control-label"><b>Keterangan</b> &nbsp  :</label>
-									<div class="col-md-7">
-										<div class="icon-addon addon-md">
-											<input disabled value="" name="information" class="form-control" placeholder="Keterangan" type="text" id="information2" @if (Session::has('autofocus')) autofocus @endif >
-											<label for="mgoodsgroup1" class="glyphicon glyphicon-search" rel="tooltip" title="Keterangan"></label>
+                      <select disabled id="view-mcoagrandparenttype" value="{{old('address')}}" name="mcoagrandparenttype" class="form-control forminput" placeholder="Tipe Grand Parent" type="text" required @if (Session::has('autofocus')) autofocus @endif>
+                        <option value="K">Kredit</option>
+                        <option value="D">Debet</option>
+                      </select>
+											<!-- <label for="mgoodsgroup1" class="glyphicon glyphicon-chevron-right" rel="tooltip" title="Tipe Grand Parent"></label> -->
 										</div>
 									</div>
 								</div>
@@ -390,7 +284,7 @@
 									<div class="row">
 										<div class="col-md-12">
 											</br>
-											<button onclick="back()" class="btn btn-default" type="submit">
+											<button onclick="backgrandparent()" class="btn btn-default" type="submit">
 												<i class="fa fa-save"></i> Kembali
                       </button>
 										</div>
@@ -427,37 +321,28 @@
 
 								<thead>
 									<tr>
+                    <th class="hasinput" style="width:10%">
+
+										</th>
 										<th class="hasinput" style="width:5%">
 											<input type="text" class="form-control" placeholder="Filter No" />
 										</th>
 										<th class="hasinput" style="width:9%">
-											<input type="text" class="form-control" placeholder="Filter Kode Cabang" />
+											<input type="text" class="form-control" placeholder="Filter Kode MCOAGrandParent" />
 										</th>
 										<th class="hasinput" style="width:9%">
-											<input type="text" class="form-control" placeholder="Filter Nama Cabang" />
+											<input type="text" class="form-control" placeholder="Filter Nama MCOAGrandParent" />
 										</th>
 										<th class="hasinput" style="width:10%">
-											<input type="text" class="form-control" placeholder="Filter Alamat" />
-										</th>
-										<th class="hasinput" style="width:10%">
-											<input type="text" class="form-control" placeholder="Filter Telepon" />
-										</th>
-										<th class="hasinput" style="width:10%">
-											<input type="text" class="form-control" placeholder="Filter Kota" />
-										</th>
-
-										<th class="hasinput" style="width:15%">
-
+											<input type="text" class="form-control" placeholder="Filter Kode MCOAGrandParent" />
 										</th>
 									</tr>
 									<tr>
-										<th data-hide="no"><center>No</center></th>
-										<th data-hide="mbranchcode"><center>Kode Cabang</center></th>
-										<th data-hide="mbranchname"><center>Nama Cabang</center></th>
-										<th data-hide="address"><center>Alamat</center></th>
-										<th data-hide="phone"><center>Telepon</center></th>
-										<th data-hide="city"><center>Kota</center></th>
 										<th data-hide="action"><center>Aksi</center></th>
+                    <th data-hide="no"><center>No</center></th>
+										<th data-hide="mcoagrandparentcode"><center>Kode MCOAGrandParent</center></th>
+										<th data-hide="mcoagrandparentname"><center>Nama MCOAGrandParent</center></th>
+										<th data-hide="mcoagrandparenttype"><center>Tipe MCOAGrandParent</center></th>
 									</tr>
 								</thead>
 								<tbody>
@@ -478,46 +363,44 @@
                               buttons: [ {
                                     extend: 'copyHtml5',
                                     exportOptions: {
-                                        columns: [ 0,1,2]
+                                        columns: [ 1,2]
                                     }
                                   },
                                   {
                                       extend: 'csvFlash',
                                       exportOptions: {
-                                          columns: [ 0, 1, 2, 3, 4, 5] //setting kolom mana yg mau di export
+                                          columns: [ 1, 2, 3, 4] //setting kolom mana yg mau di export
                                       }
                                   },
                                   {
                                       extend: 'excelFlash',
                                       exportOptions: {
-                                          columns: [ 0, 1, 2, 3, 4, 5] //setting kolom mana yg mau di export
+                                          columns: [ 1, 2, 3, 4] //setting kolom mana yg mau di export
                                       }
                                   },
                                   {
                                       extend: 'pdfFlash',
                                       exportOptions: {
-                                          columns: [ 0, 1, 2, 3, 4, 5] //setting kolom mana yg mau di export
+                                          columns: [ 1, 2, 3, 4] //setting kolom mana yg mau di export
                                       }
                                   },
                                   {
                                       extend: 'print',
                                       exportOptions: {
-                                          columns: [ 0, 1, 2, 3, 4, 5] //setting kolom mana yg mau di print
+                                          columns: [ 1, 2, 3, 4] //setting kolom mana yg mau di export
                                       }
 
                                   }
                               ],
 					       				      processing: false,
 										          serverSide: false,
-										          ajax: '{{URL::to('/')}}/admin-api/datacabang',
+										          ajax: '{{URL::to('/')}}/admin-api/mcoagrandparent',
           										columns: [
-          										{data: 'no', no: 'no' },
-          										{data: 'mbranchcode', mbranchcode: 'mbranchcode'},
-          										{data: 'mbranchname', mbranchname: 'mbranchname'},
-          										{data: 'address', address: 'address'},
-          										{data: 'phone', phone: 'phone'},
-          										{data: 'city', city: 'city'},
-          										{data: 'action', name:'action', searchable: false, orderable: false}
+                              {data: 'action', name:'action', searchable: false, orderable: false},
+                              {data: 'no', no: 'no' },
+          										{data: 'mcoagrandparentcode', mcoagrandparentcode: 'mcoagrandparentcode'},
+          										{data: 'mcoagrandparentname', mcoagrandparentname: 'mcoagrandparentname'},
+          										{data: 'type', type: 'type'},
           										]
 									       });
 
@@ -542,11 +425,6 @@
 							@endpush
 						  <script>
 					      function popupdelete(id){
-								// console.log('click');
-								// var choice = confirm('Anda yakin akan menghapus ?');
-								// if(choice){
-								// 	window.location = '{{ URL::to('/') }}'+'/admin-nano/delcabang/'+id+'/delete';
-								// }
         					swal({
           					title: "Anda Yakin Akan Mengapus ?",
           					text: "Anda Tidak Dapat Mengembalikan Data Ini!",
@@ -559,14 +437,31 @@
         					},
         					function(isconfirm){
         					  if (isconfirm) {
-        					    swal({
-          						  title: "Terhapus!",
-          						  text: "Data Anda Berhasil Terhapus.",
-          						  type: "success",
-        						  });
-          					  window.setTimeout(function(){
-          					    window.location = '{{ URL::to('/') }}'+'/admin-nano/delcabang/'+id+'/delete'
-          					  },1000)
+                      $.ajax({
+                        type: "DELETE",
+                        url: API_URL+"/mcoagrandparent/"+id,
+                        success: function(response){
+                          console.log(response);
+                          table.ajax.reload();
+                          window.location = "#tableapi";
+                          swal({
+              						  title: "Terhapus!",
+              						  text: "Data Anda Berhasil Terhapus.",
+              						  type: "success",
+            						  });
+                          $('#forminput').show();
+                    			$('#formview').hide();
+                    			$('#formedit').hide();
+                        },
+                        error: function(response){
+                          swal({
+                    				title: "Pengubahan Gagal!",
+                    				type: "error",
+                    				timer: 1000
+                    			});
+                          window.location = "#tableapi";
+                        }
+                      });
         				  } else {
     						      swal({
             						title: "Batal Terhapus!",
@@ -578,6 +473,16 @@
     						      window.location = '#main';
 					        }
 					      });
+                $(".sa-button-container").parent().find(".cancel").hover(
+      						function(){
+      							$(".sa-button-container").parent().find(".cancel").addClass("bg-red");
+      							$(".sa-confirm-button-container").parent().find(".confirm").addClass("bg-gray");
+      						},
+      						function(){
+      							$(".sa-confirm-button-container").parent().find(".confirm").removeClass("bg-gray");
+      							$(".sa-button-container").parent().find(".cancel").removeClass("bg-red");
+      						}
+      					);
 					     }
 						</script>
 					</div>

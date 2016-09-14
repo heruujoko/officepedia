@@ -11,7 +11,7 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
 		<!-- Basic Styles -->
-		
+
 		<link rel="stylesheet" type="text/css" media="screen" href="{{URL::to('/')}}/css/bootstrap.min.css">
 		<link rel="stylesheet" type="text/css" media="screen" href="{{URL::to('/')}}/css/font-awesome.min.css">
 		<link rel="stylesheet" type="text/css" href="{{URL::to('/')}}/js/datatable/Buttons-1.2.2/css/buttons.dataTables.css">
@@ -25,7 +25,7 @@
 
 			<!-- SweetAlert  -->
 		<link rel="stylesheet" type="text/css" href="{{URL::to('/')}}/master/1/dist/sweetalert.css">
-	
+
 
 
 
@@ -86,20 +86,20 @@
 	}
 	</style>
 	<style>
-	
+
 	/*CSS UNTUK FORM INPUT*/
 	.hasinput > input{
 	font-size: 11px;
-    
+
 	}
 	.forminput{
 	font-size: 11px;
     line-height: 10px;
-    font-family: 
+    font-family:
 
-	
+
 	}
-	
+
 	/*CSS UNTUK FORM INPUT*/
 
 	/* CSS UNTUK MODIFIKASI TABLE */
@@ -127,9 +127,9 @@
     }
   	.pb {
             margin-top: 1%;
-     		
+
      }
-     td { 
+     td {
 
 		width: 1%;
 		font-size: 11px;
@@ -141,7 +141,7 @@
    .sa-confirm-button-container:hover > button{
    	background-color: rgb(212, 103, 82)!important;
    }
-  
+
 
    .bg-red{
    	background-color: rgb(212, 103, 82)!important;
@@ -152,16 +152,16 @@
 /* CSS UNTUK MODIFIKASI TABLE */
 </style>
 <style>
-	
+
 
 }
 </style>
 	<script type="text/javascript">
     function zoom() {
-    document.body.style.zoom = "90%" 
+    document.body.style.zoom = "90%"
     }
 	</script>
-	
+
 	</head>
 
 	<!--
@@ -490,6 +490,9 @@
 							<li>
 								<a href="{{URL::to('/')}}/admin-nano/barang">BARANG</a>
 							</li>
+							<li>
+								<a href="{{URL::to('/')}}/admin-nano/mcoagrandparent">MCOA Grand Parent</a>
+							</li>
 
 						</ul>
 					</li>
@@ -694,7 +697,7 @@
 			<script src="{{ url('/js/datatable/Buttons-1.2.2/js/buttons.flash.js') }}"></script>
 			<script src="{{ url('/js/datatable/pdfmake-0.1.18/build/pdfmake.js') }}"></script>
 			<script src="{{ url('/js/datatable/pdfmake-0.1.18/build/vfs_fonts.js') }}"></script>
- 
+
     		<script src="{{URL::to('/')}}/master/1/dist/sweetalert.min.js"></script>
     		<script src="{{URL::to('/')}}/master/script.js" type="text/javascript" charset="utf-8" async defer></script>
     		@stack('scripts')
@@ -790,7 +793,7 @@
     				"autoWidth" : true,
     				"oLanguage": {
     					"sSearch": '<span class="input-group-addon"><i class="glyphicon glyphicon-search"></i></span>'
-    				
+
     				},
     				"sDom": 'T<"clear">lfrtip',
         			"oTableTools": {

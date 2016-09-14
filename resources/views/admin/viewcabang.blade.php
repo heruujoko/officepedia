@@ -416,7 +416,7 @@
 									<div class="row">
 										<div class="col-md-12">
 											<a onclick="back()" title="" class="btn btn-default">Batal</a>
-											<button onclick="updatecabang()" class="btn btn-primary" type="submit">
+											<button onclick="updatebranch()" class="btn btn-primary" type="submit">
 												<i class="fa fa-save"></i> Simpan</button>
 
 
@@ -825,18 +825,18 @@
 						window.location = '#main';
 					}
 					});
-					$(".sa-button-container").parent().find(".cancel").hover(function(){
-					$(".sa-button-container").parent().find(".cancel").addClass("bg-red");
-					$(".sa-confirm-button-container").parent().find(".confirm").addClass("bg-gray");
-					
-					},
-					function(){
-					$(".sa-confirm-button-container").parent().find(".confirm").removeClass("bg-gray");
-					$(".sa-button-container").parent().find(".cancel").removeClass("bg-red");
-					}
+					$(".sa-button-container").parent().find(".cancel").hover(
+						function(){
+							$(".sa-button-container").parent().find(".cancel").addClass("bg-red");
+							$(".sa-confirm-button-container").parent().find(".confirm").addClass("bg-gray");
+						},
+						function(){
+							$(".sa-confirm-button-container").parent().find(".confirm").removeClass("bg-gray");
+							$(".sa-button-container").parent().find(".cancel").removeClass("bg-red");
+						}
 					);
 					}
-					
+
 						</script>
 
 					</div>

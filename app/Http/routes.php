@@ -19,10 +19,12 @@ Route::group(['prefix'=>'admin-nano'],function(){
 
 Route::group(['prefix'=>'admin-api',['middleware' => 'api']],function(){
 
-Route::controllers([
-	'/'=>'ApiController'
+  Route::resource('mcoagrandparent','Api\MCOAGrandParentController');
 
-]);
-Route::post('/editcabang/{id}','ApiController@postEditcabang');
+  Route::controllers([
+  	'/'=>'ApiController'
+  ]);
+
+  Route::post('/editcabang/{id}','ApiController@postEditcabang');
 
 });

@@ -15,21 +15,21 @@ use App\MGOODS;
 use Validator;
 class ApiController extends Controller
 {
-    
+
     private $iteration;
 
     public function getIndex(){
-    	echo 'Forbidden';	
+    	echo 'Forbidden';
     }
 
     public function getDatacabang(){
 
-        $this->iteration = 0;    
+        $this->iteration = 0;
         $mbranch = MBRANCH::where('void', '0')->orderby('created_at','desc')->get();
         return Datatables::of($mbranch)->addColumn('action', function($mbranch){
           return '<center><div class="button">
-          <a class="btn btn-info btn-xs dropdown-toggle fa fa-eye" onclick="view('.$mbranch->id.')"> <font style="">Lihat</font></a>
-          <a class="btn btn-primary btn-xs dropdown-toggle fa fa-pencil" onclick="edit('.$mbranch->id.')"> <font style="font-family: arial;">Ubah &nbsp</font></a>
+          <a class="btn btn-info btn-xs dropdown-toggle fa fa-eye" onclick="viewbranch('.$mbranch->id.')"> <font style="">Lihat</font></a>
+          <a class="btn btn-primary btn-xs dropdown-toggle fa fa-pencil" onclick="editbranch('.$mbranch->id.')"> <font style="font-family: arial;">Ubah &nbsp</font></a>
           <a class="btn btn-danger btn-xs dropdown-toggle fa fa-trash" onclick="popupdelete('.$mbranch->id.')">
         <input type="hidden" name="id" value="@{{ task.id }}"> <font style="font-family: arial;">Hapus </font></a>     </div></center>';
         })->addColumn('no',function($mbranch){
@@ -38,7 +38,7 @@ class ApiController extends Controller
         })
         ->make(true);
 
-        
+
     }
 
 // API
@@ -114,8 +114,7 @@ class ApiController extends Controller
         return $sukses;
 
 
-}	
-// API		
+}
+// API
 
-}    
-
+}
