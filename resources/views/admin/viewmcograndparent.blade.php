@@ -96,7 +96,7 @@
     						</div>
   						@endif
 						<div class="widget-body no-padding">
-							<div id="teste" class="form-horizontal">
+							<div id="insert-wrapper" class="form-horizontal" data-parsley-validate>
 								{{ csrf_field() }}
 								<div class="container">
 								</br>
@@ -104,7 +104,7 @@
 									<label class="col-md-3 control-label"><b>Kode Grand Parent</b> (<font color="red">*</font>) &nbsp  :</label>
 									<div class="col-md-7">
 										<div class="icon-addon addon-md">
-											<input id="insert-mcoagrandparentcode" value="{{old('mbranchcode')}}" name="mcoagrandparentcode" class="form-control forminput" placeholder="Kode Grand Parent" type="text" required @if (Session::has('autofocus')) autofocus @endif >
+											<input id="insert-mcoagrandparentcode" value="{{old('mbranchcode')}}" name="mcoagrandparentcode" class="form-control forminput" placeholder="Kode Grand Parent" type="text" required data-parsley-required-message="Field Ini Tidak Boleh Kosong" @if (Session::has('autofocus')) autofocus @endif >
 											<label for="mgoodsgroup1" class="glyphicon glyphicon-barcode" rel="tooltip" title="Kode Grand Parent"></label>
 										</div>
 									</div>
@@ -113,7 +113,7 @@
 									<label class="col-md-3 control-label"><b>Nama Grand Parent</b> (<font color="red">*</font>) &nbsp  :</label>
 									<div class="col-md-7">
 										<div class="icon-addon addon-md">
-											<input id="insert-mcoagrandparentname" value="{{old('mbranchname')}}" name="mcoagrandparentname" class="form-control forminput" placeholder="Nama Grand Parent" type="text" required @if (Session::has('autofocus')) autofocus @endif >
+											<input id="insert-mcoagrandparentname" value="{{old('mbranchname')}}" name="mcoagrandparentname" class="form-control forminput" placeholder="Nama Grand Parent" type="text" required data-parsley-required-message="Field Ini Tidak Boleh Kosong" @if (Session::has('autofocus')) autofocus @endif >
 											<label for="mgoodsgroup1" class="glyphicon glyphicon-chevron-right" rel="tooltip" title="Nama Grand Parent"></label>
 										</div>
 									</div>
@@ -122,7 +122,7 @@
 									<label class="col-md-3 control-label"><b>Tipe Grand Parent</b> (<font color="red">*</font>) &nbsp  :</label>
 									<div class="col-md-7">
 										<div class="icon-addon addon-md">
-                      <select id="insert-mcoagrandparenttype" value="{{old('address')}}" name="mcoagrandparenttype" class="form-control forminput" placeholder="Tipe Grand Parent" type="text" required @if (Session::has('autofocus')) autofocus @endif>
+                      <select id="insert-mcoagrandparenttype" value="{{old('address')}}" name="mcoagrandparenttype" class="form-control forminput" placeholder="Tipe Grand Parent" type="text" required data-parsley-required-message="Field Ini Tidak Boleh Kosong" @if (Session::has('autofocus')) autofocus @endif>
                         <option value="K">Kredit</option>
                         <option value="D">Debet</option>
                       </select>
@@ -167,7 +167,7 @@
 						<h3 style="font-weight: bold; color: #C91503;font-size: 19px;">Mode : EDIT</h3>
 
 						<input type="hidden" id="mbranchid" value=""></input>
-						<div class="form-horizontal">
+						<div id="edit-wrapper" class="form-horizontal" data-parsley-validate>
 							<div class="container">
 								<style>
 									.alert-info {
@@ -181,7 +181,7 @@
 									<label class="col-md-3 control-label"><b>Kode Grand Parent</b> (<font color="red">*</font>) &nbsp  :</label>
 									<div class="col-md-7">
 										<div class="icon-addon addon-md">
-											<input id="edit-mcoagrandparentcode" value="{{old('mbranchcode')}}" name="mcoagrandparentcode" class="form-control forminput" placeholder="Kode Grand Parent" type="text" required @if (Session::has('autofocus')) autofocus @endif >
+											<input id="edit-mcoagrandparentcode" value="{{old('mbranchcode')}}" name="mcoagrandparentcode" class="form-control forminput" placeholder="Kode Grand Parent" type="text" required data-parsley-required-message="Field Ini Tidak Boleh Kosong" @if (Session::has('autofocus')) autofocus @endif >
 											<label for="mgoodsgroup1" class="glyphicon glyphicon-barcode" rel="tooltip" title="Kode Grand Parent"></label>
 										</div>
 									</div>
@@ -190,7 +190,7 @@
 									<label class="col-md-3 control-label"><b>Nama Grand Parent</b> (<font color="red">*</font>) &nbsp  :</label>
 									<div class="col-md-7">
 										<div class="icon-addon addon-md">
-											<input id="edit-mcoagrandparentname" value="{{old('mbranchname')}}" name="mcoagrandparentname" class="form-control forminput" placeholder="Nama Grand Parent" type="text" required @if (Session::has('autofocus')) autofocus @endif >
+											<input id="edit-mcoagrandparentname" value="{{old('mbranchname')}}" name="mcoagrandparentname" class="form-control forminput" placeholder="Nama Grand Parent" type="text" required data-parsley-required-message="Field Ini Tidak Boleh Kosong" @if (Session::has('autofocus')) autofocus @endif >
 											<label for="mgoodsgroup1" class="glyphicon glyphicon-chevron-right" rel="tooltip" title="Nama Grand Parent"></label>
 										</div>
 									</div>
@@ -199,7 +199,7 @@
 									<label class="col-md-3 control-label"><b>Tipe Grand Parent</b> (<font color="red">*</font>) &nbsp  :</label>
 									<div class="col-md-7">
 										<div class="icon-addon addon-md">
-                      <select id="edit-mcoagrandparenttype" value="{{old('address')}}" name="mcoagrandparenttype" class="form-control forminput" placeholder="Tipe Grand Parent" type="text" required @if (Session::has('autofocus')) autofocus @endif>
+                      <select id="edit-mcoagrandparenttype" value="{{old('address')}}" name="mcoagrandparenttype" class="form-control forminput" placeholder="Tipe Grand Parent" type="text" required data-parsley-required-message="Field Ini Tidak Boleh Kosong" @if (Session::has('autofocus')) autofocus @endif>
                         <option value="K">Kredit</option>
                         <option value="D">Debet</option>
                       </select>
@@ -303,7 +303,7 @@
 								<div class="jarviswidget jarviswidget-color-darken" id="wid-id-1" data-widget-editbutton="false" data-widget-colorbutton="false" data-widget-deletebutton="false">
 					<header>
 						<span class="widget-icon"> <i class="fa fa-table"></i> </span>
-						<h2>Master Cabang </h2>
+						<h2>Master {{ $section }} </h2>
 					</header>
 					<!-- widget div-->
 					<div>

@@ -140,33 +140,36 @@ function updatebranch(){
 // MCOAGrandParent
 
   function insertgrandparent(){
-    var data = {
-      mcoagrandparentcode: $('#insert-mcoagrandparentcode').val(),
-      mcoagrandparentname: $('#insert-mcoagrandparentname').val(),
-      mcoagrandparenttype: $('#insert-mcoagrandparenttype').val()
-    }
-    $.ajax({
-      type: "POST",
-      url: API_URL+"/mcoagrandparent",
-      data: data,
-      success: function(response){
-        console.log(response);
-        table.ajax.reload();
-        window.location = "#tableapi";
-  			swal({
-  				title: "Input Berhasil!",
-  				type: "success",
-  				timer: 1000
-  			});
-      },
-      error: function(response){
-        swal({
-  				title: "Input Gagal!",
-  				type: "error",
-  				timer: 1000
-  			});
+    $('#insert-wrapper').parsley().validate();
+    if($('#insert-wrapper').parsley().isValid()){
+      var data = {
+        mcoagrandparentcode: $('#insert-mcoagrandparentcode').val(),
+        mcoagrandparentname: $('#insert-mcoagrandparentname').val(),
+        mcoagrandparenttype: $('#insert-mcoagrandparenttype').val()
       }
-    });
+      $.ajax({
+        type: "POST",
+        url: API_URL+"/mcoagrandparent",
+        data: data,
+        success: function(response){
+          console.log(response);
+          table.ajax.reload();
+          window.location = "#tableapi";
+      		swal({
+      			title: "Input Berhasil!",
+      			type: "success",
+      			timer: 1000
+      		});
+        },
+        error: function(response){
+          swal({
+      			title: "Input Gagal!",
+      			type: "error",
+      			timer: 1000
+      		});
+        }
+      });
+    }
   }
 
   function viewgrandparent(id){
@@ -217,37 +220,40 @@ function updatebranch(){
   }
 
   function updategrandparent(){
-    var updateid = $('#mcoagrandparentid').val();
-    var data = {
-      mcoagrandparentcode: $('#edit-mcoagrandparentcode').val(),
-      mcoagrandparentname: $('#edit-mcoagrandparentname').val(),
-      mcoagrandparenttype: $('#edit-mcoagrandparenttype').val()
-    }
-    $.ajax({
-      type: "PUT",
-      url: API_URL+"/mcoagrandparent/"+updateid,
-      data: data,
-      success: function(response){
-        console.log(response);
-        table.ajax.reload();
-        window.location = "#tableapi";
-  			swal({
-  				title: "Pengubahan Berhasil!",
-  				type: "success",
-  				timer: 1000
-  			});
-        $('#forminput').show();
-  			$('#formview').hide();
-  			$('#formedit').hide();
-      },
-      error: function(response){
-        swal({
-  				title: "Pengubahan Gagal!",
-  				type: "error",
-  				timer: 1000
-  			});
+    $('#edit-wrapper').parsley().validate();
+    if($('#edit-wrapper').parsley().isValid()){
+      var updateid = $('#mcoagrandparentid').val();
+      var data = {
+        mcoagrandparentcode: $('#edit-mcoagrandparentcode').val(),
+        mcoagrandparentname: $('#edit-mcoagrandparentname').val(),
+        mcoagrandparenttype: $('#edit-mcoagrandparenttype').val()
       }
-    });
+      $.ajax({
+        type: "PUT",
+        url: API_URL+"/mcoagrandparent/"+updateid,
+        data: data,
+        success: function(response){
+          console.log(response);
+          table.ajax.reload();
+          window.location = "#tableapi";
+          swal({
+            title: "Pengubahan Berhasil!",
+            type: "success",
+            timer: 1000
+          });
+          $('#forminput').show();
+          $('#formview').hide();
+          $('#formedit').hide();
+        },
+        error: function(response){
+          swal({
+            title: "Pengubahan Gagal!",
+            type: "error",
+            timer: 1000
+          });
+        }
+      });
+    }
   }
 
   function resetgrandparent(){
@@ -257,6 +263,8 @@ function updatebranch(){
     $('#edit-mcoagrandparentcode').val('');
     $('#edit-mcoagrandparentname').val('');
     $('#edit-mcoagrandparenttype').val('K');
+    $('#insert-wrapper').parsley().reset();
+    $('#edit-wrapper').parsley().reset();
   }
 
   function backgrandparent(){

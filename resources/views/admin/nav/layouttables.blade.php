@@ -146,6 +146,10 @@
    .bg-red{
    	background-color: rgb(212, 103, 82)!important;
    }
+	 .parsley-required{
+		 color :rgb(212, 103, 82)!important;
+		 margin-left: -6%;
+	 }
    .bg-gray{
    	background: #C1C1C1 !important;
    }
@@ -683,39 +687,39 @@
     		<script src="{{URL::to('/')}}/js/plugin/datatables/dataTables.tableTools.min.js"></script>
     		<script src="{{URL::to('/')}}/js/plugin/datatables/dataTables.bootstrap.min.js"></script>
     		<script src="{{URL::to('/')}}/js/plugin/datatable-responsive/datatables.responsive.min.js"></script>
-    		<script src="{{URL::to('/')}}/js/vue.min.js"></script>
-    		<script src="{{URL::to('/')}}/js/vue-resource.js"></script>
+    		<script src="{{ url('/') }}/js/parsley.min.js"></script>
     		<script src="{{URL::to('/')}}/master/main.js"></script>
 
     		<script src="{{ url('/js/datatable/DataTables-1.10.12/js/jquery.dataTables.min.js') }}"></script>
-			<script src="{{ url('/js/datatable/Buttons-1.2.2/js/dataTables.buttons.js') }}"></script>
-			<script src="{{ url('/js/datatable/dataTables.bootstrap.min.js') }}"></script>
-			<script src="{{ url('/js/datatable-responsive/datatables.responsive.min.js') }}"></script>
-			<script src="{{ url('/js/datatable/Buttons-1.2.2/js/buttons.html5.js') }}"></script>
-			<script src="{{ url('/js/datatable/dataTables.colVis.min.js') }}"></script>
-			<script src="{{ url('/js/datatable/Buttons-1.2.2/js/buttons.print.js') }}"></script>
-			<script src="{{ url('/js/datatable/Buttons-1.2.2/js/buttons.flash.js') }}"></script>
-			<script src="{{ url('/js/datatable/pdfmake-0.1.18/build/pdfmake.js') }}"></script>
-			<script src="{{ url('/js/datatable/pdfmake-0.1.18/build/vfs_fonts.js') }}"></script>
+				<script src="{{ url('/js/datatable/Buttons-1.2.2/js/dataTables.buttons.js') }}"></script>
+				<script src="{{ url('/js/datatable/dataTables.bootstrap.min.js') }}"></script>
+				<script src="{{ url('/js/datatable-responsive/datatables.responsive.min.js') }}"></script>
+				<script src="{{ url('/js/datatable/Buttons-1.2.2/js/buttons.html5.js') }}"></script>
+				<script src="{{ url('/js/datatable/dataTables.colVis.min.js') }}"></script>
+				<script src="{{ url('/js/datatable/Buttons-1.2.2/js/buttons.print.js') }}"></script>
+				<script src="{{ url('/js/datatable/Buttons-1.2.2/js/buttons.flash.js') }}"></script>
+				<script src="{{ url('/js/datatable/pdfmake-0.1.18/build/pdfmake.js') }}"></script>
+				<script src="{{ url('/js/datatable/pdfmake-0.1.18/build/vfs_fonts.js') }}"></script>
 
-    		<script src="{{URL::to('/')}}/master/1/dist/sweetalert.min.js"></script>
-    		<script src="{{URL::to('/')}}/master/script.js" type="text/javascript" charset="utf-8" async defer></script>
-    		@stack('scripts')
-    		@include('sweet::alert')
-    		<script>$('.confirmdelete').click(function(e) {
-            e.preventDefault();
-            var href = $(this).attr('href');
-            var jobname = $(this).data('jobname');
-            return vex.dialog.confirm({
-                message: 'Are you sure you want to withdraw job ' + jobname + '?',
-                callback: function(confirmed) {
-                    if (confirmed) {
-                        window.location.href = href;
-                    }
-                }
-            });
-        });
-</script>
+	    	<script src="{{URL::to('/')}}/master/1/dist/sweetalert.min.js"></script>
+	    	<script src="{{URL::to('/')}}/master/script.js" type="text/javascript" charset="utf-8" async defer></script>
+	    	@stack('scripts')
+	    	@include('sweet::alert')
+	    	<script>
+					$('.confirmdelete').click(function(e) {
+		            e.preventDefault();
+		            var href = $(this).attr('href');
+		            var jobname = $(this).data('jobname');
+		            return vex.dialog.confirm({
+		                message: 'Are you sure you want to withdraw job ' + jobname + '?',
+		                callback: function(confirmed) {
+		                    if (confirmed) {
+		                        window.location.href = href;
+		                    }
+		                }
+		            });
+		      });
+				</script>
     		@yield('js')
 
 
