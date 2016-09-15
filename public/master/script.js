@@ -274,3 +274,142 @@ function updatebranch(){
 		$('#formview').hide();
 		$('#forminput').show();
 	}
+
+// MCOAParent
+
+  function insertparent(){
+    $('#insert-wrapper').parsley().validate();
+    if($('#insert-wrapper').parsley().isValid()){
+      var data = {
+        mcoaparentcode: $('#insert-mcoaparentcode').val(),
+        mcoaparentname: $('#insert-mcoaparentname').val(),
+        mcoagrandparent: $('#insert-mcoagrandparent').val()
+      }
+      console.log(data);
+      $.ajax({
+        type: "POST",
+        url: API_URL+"/mcoaparent",
+        data: data,
+        success: function(response){
+          console.log(response);
+          table.ajax.reload();
+          window.location = "#tableapi";
+      		swal({
+      			title: "Input Berhasil!",
+      			type: "success",
+      			timer: 1000
+      		});
+        },
+        error: function(response){
+          swal({
+      			title: "Input Gagal!",
+      			type: "error",
+      			timer: 1000
+      		});
+        }
+      });
+    }
+  }
+
+  function editparent(id){
+    $.ajax({
+      type: "GET",
+      url: API_URL+"/mcoaparent/"+id,
+      success: function(response){
+        $('#mcoaparentid').val(response.id);
+        $('#edit-mcoaparentcode').val(response.mcoaparentcode);
+        $('#edit-mcoaparentname').val(response.mcoaparentname);
+        $('#edit-mcoagrandparent').val(response.mcoagrandparentcode);
+        $('#forminput').hide();
+  			$('#formview').hide();
+  			$('#formedit').show();
+      },
+      error: function(response){
+        swal({
+  				title: "Aksi Gagal!",
+  				type: "error",
+  				timer: 1000
+  			});
+      }
+    });
+    window.location = "#main";
+  }
+
+  function updateparent(){
+    $('#edit-wrapper').parsley().validate();
+    if($('#edit-wrapper').parsley().isValid()){
+      var updateid = $('#mcoaparentid').val();
+      var data = {
+        mcoaparentcode: $('#edit-mcoaparentcode').val(),
+        mcoaparentname: $('#edit-mcoaparentname').val(),
+        mcoagrandparent: $('#edit-mcoagrandparent').val()
+      }
+      $.ajax({
+        type: "PUT",
+        url: API_URL+"/mcoaparent/"+updateid,
+        data: data,
+        success: function(response){
+          console.log(response);
+          table.ajax.reload();
+          window.location = "#tableapi";
+          swal({
+            title: "Pengubahan Berhasil!",
+            type: "success",
+            timer: 1000
+          });
+          $('#forminput').show();
+          $('#formview').hide();
+          $('#formedit').hide();
+        },
+        error: function(response){
+          swal({
+            title: "Pengubahan Gagal!",
+            type: "error",
+            timer: 1000
+          });
+        }
+      });
+    }
+  }
+
+  function viewparent(id){
+    $.ajax({
+      type: "GET",
+      url: API_URL+"/mcoaparent/"+id,
+      success: function(response){
+        $('#view-mcoaparentcode').val(response.mcoaparentcode);
+        $('#view-mcoaparentname').val(response.mcoaparentname);
+        $('#view-mcoagrandparent').val(response.mcoagrandparentcode);
+        $('#forminput').hide();
+  			$('#formview').show();
+  			$('#formedit').hide();
+      },
+      error: function(response){
+        swal({
+  				title: "Aksi Gagal!",
+  				type: "error",
+  				timer: 1000
+  			});
+      }
+    });
+    window.location = "#main";
+  }
+
+  function resetparent(){
+    $('#insert-mcoaparentcode').val('');
+    $('#insert-mcoaparentname').val('');
+    $('#insert-mcoagrandparent').val('1000.00');
+    $('#edit-mcoaparentcode').val('');
+    $('#edit-mcoaparentname').val('');
+    $('#edit-mcoagrandparent').val('1000.00');
+    $('#insert-wrapper').parsley().reset();
+    $('#edit-wrapper').parsley().reset();
+  }
+
+  function backparent(){
+		$('#mcoaparentid').val('');
+    resetparent();
+		$('#formedit').hide();
+		$('#formview').hide();
+		$('#forminput').show();
+	}

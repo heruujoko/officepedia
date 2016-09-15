@@ -497,6 +497,9 @@
 							<li>
 								<a href="{{URL::to('/')}}/admin-nano/mcoagrandparent">MCOA Grand Parent</a>
 							</li>
+							<li>
+								<a href="{{URL::to('/')}}/admin-nano/mcoaparent">MCOA Parent</a>
+							</li>
 
 						</ul>
 					</li>

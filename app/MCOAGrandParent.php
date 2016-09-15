@@ -8,4 +8,8 @@ class MCOAGrandParent extends Model
 {
     protected $table = "mcoagrandparent";
     protected $fillable = ['mcoagrandparentcode','mcoagrandparentname','mcoagrandparenttype'];
+
+    public static function findCode($code){
+      return MCOAGrandParent::where('mcoagrandparentcode',$code)->first();
+    }
 }
