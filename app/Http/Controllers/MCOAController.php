@@ -10,6 +10,7 @@ use App\MCOAParent;
 class MCOAController extends Controller
 {
     public function index(){
+      $data['active'] = 'mcoa';
       $data['section'] = 'MCOA';
       $data['parents'] = MCOAParent::all();
 

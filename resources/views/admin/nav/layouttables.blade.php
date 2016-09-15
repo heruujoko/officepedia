@@ -488,21 +488,51 @@
 					<li>
 						<a href="#"><i class="fa fa-lg fa-fw fa-table"></i> <span class="menu-item-parent">Tables</span></a>
 						<ul>
-							<li>
-								<a href="{{URL::to('/')}}/admin-nano/cabang">CABANG</a>
-							</li>
-							<li>
-								<a href="{{URL::to('/')}}/admin-nano/barang">BARANG</a>
-							</li>
-							<li>
-								<a href="{{URL::to('/')}}/admin-nano/mcoagrandparent">MCOA Grand Parent</a>
-							</li>
-							<li>
-								<a href="{{URL::to('/')}}/admin-nano/mcoaparent">MCOA Parent</a>
-							</li>
+							@if($active == 'cabang')
+								<li class="active">
+									<a href="{{URL::to('/')}}/admin-nano/cabang">Cabang</a>
+								</li>
+							@else
+								<li>
+									<a href="{{URL::to('/')}}/admin-nano/cabang">Cabang</a>
+								</li>
+							@endif
+							@if($active == 'barang')
+								<li class="active">
+									<a href="{{URL::to('/')}}/admin-nano/barang">Barang</a>
+								</li>
+							@else
+								<li>
+									<a href="{{URL::to('/')}}/admin-nano/barang">Barang</a>
+								</li>
+							@endif
+							@if($active == 'mcoagp')
+								<li class="active">
+									<a href="{{URL::to('/')}}/admin-nano/mcoagrandparent">MCOA Grand Parent</a>
+								</li>
+							@else
+								<li>
+									<a href="{{URL::to('/')}}/admin-nano/mcoagrandparent">MCOA Grand Parent</a>
+								</li>
+							@endif
+							@if($active == 'mcoap')
+								<li class="active">
+									<a href="{{URL::to('/')}}/admin-nano/mcoaparent">MCOA Parent</a>
+								</li>
+							@else
+								<li>
+									<a href="{{URL::to('/')}}/admin-nano/mcoaparent">MCOA Parent</a>
+								</li>
+							@endif
+							@if($active == 'mcoa')
+								<li class="active">
+									<a href="{{URL::to('/')}}/admin-nano/mcoa">MCOA</a>
+								</li>
+							@else
 							<li>
 								<a href="{{URL::to('/')}}/admin-nano/mcoa">MCOA</a>
 							</li>
+							@endif
 
 						</ul>
 					</li>

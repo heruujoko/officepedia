@@ -27,6 +27,7 @@ class AdminController extends Controller
 	public function getCabang(){
 		$a = DB::table('mbranch')->orderby('created_at','desc')->where('void', '0')->get();
 		$data['a']=$a;
+		$data['active'] = 'cabang';
 		return view('admin/viewcabang', $data);
 	}
 
@@ -105,11 +106,11 @@ class AdminController extends Controller
 
 			$data = MBRANCH::find($id);
 			DB::table('mbranch')->where('id',$id)->update(['void' => '1']);
-			
+
 
 			return redirect('admin-nano/cabang#main');
-		
-	
+
+
 	return redirect('admin-nano/cabang');
 	}
 
@@ -124,6 +125,7 @@ class AdminController extends Controller
 	public function getBarang(){
 		$a = MGOODS::all();
 		$data['a']=$a;
+		$data['active'] = 'barang';
 		return view('admin/viewbarang',$data);
 	}
 
@@ -132,7 +134,7 @@ class AdminController extends Controller
 		// $data['a']=$a;
 		return view('admin/viewpelanggan');
 	}
-	 
+
 	// public function getTambahbarang(){
 	// 	return view('admin/createbarang');
 	// }
