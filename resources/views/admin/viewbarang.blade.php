@@ -113,7 +113,7 @@
 							<!-- widget content -->
 							<div class="widget-body no-padding">
 
-								<form class="form-horizontal" action="{{URL::to('/')}}/admin-nano/tambahbarang" method="post">
+								{{-- <form class="form-horizontal" action="{{URL::to('/')}}/admin-nano/tambahbarang" method="post">
 								      {{ csrf_field() }}
 								      <div class="container">
 								        <div class="jumbotron">
@@ -159,103 +159,7 @@
 									</br>
 								     <div class="tab-content padding-10">
 								       <div class="tab-pane fade in active" id="hr1">
-								            <div class="form-group">
-								             <label name="mgoodscode" class="col-md-3 control-label">GOODS CODE :</label>
-								             <div class="col-sm-5">
-								               <input  name="mgoodscode" class="form-control" placeholder="GOODS CODE" type="text">
-								             </div>
-								           </div>
-								           <div class="form-group">
-								             <label name="mgoodsbarcode" class="col-md-3 control-label">GOODS BAR CODE :</label>
-								             <div class="col-sm-5">
-								               <input name="mgoodsbarcode" class="form-control" placeholder="GOODS BAR CODE" type="text">
-								             </div>
-								           </div>
-								           <div class="form-group">
-								             <label name="mgoodsname" class="col-md-3 control-label">GOODS NAME :</label>
-								             <div class="col-sm-5">
-								               <input name="mgoodsname" class="form-control" placeholder="GOODS NAME" type="text">
-								             </div>
-								           </div>
-								           <div class="form-group">
-								             <label name="mgoodsalias" class="col-md-3 control-label">GOODS ALIAS :</label>
-								             <div class="col-sm-5">
-								               <input name="mgoodsalias" class="form-control" placeholder="GOODS ALIAS" type="text">
-								             </div>
-								           </div>
-								           <div class="form-group">
-								             <label name="goodstype" class="col-md-3 control-label">GOODS TYPE :</label>
-								             <div class="col-sm-5">
-								               <input name="mgoodstype" class="form-control" placeholder="GOODS TYPE" type="text">
-								             </div>
-								           </div>
-
-								           <div class="form-group">
-								                       <label class="control-label col-md-3" for="prepend">GOODS GROUP 1 :</label>
-								                       <div class="col-sm-5">
-								                       <div class="icon-addon addon-md">
-								                         <input name="mgoodsgroup1" type="text" placeholder="GOODS GROUP 1" class="form-control">
-								                         <label for="mgoodsgroup1" class="glyphicon glyphicon-search" rel="tooltip" title="GOODS GROUP 1"></label>
-								                       </div>
-								                     </div>
-								                     </div>
-
-								             <div class="form-group">
-								                     <label class="control-label col-md-3" for="prepend">GOODS GROUP 2 :</label>
-								                     <div class="col-sm-5">
-								                     <div class="icon-addon addon-md">
-								                       <input name="mgoodsgroup2" type="text" placeholder="GOODS GROUP 2" class="form-control">
-								                       <label for="mgoodsgroup2" class="glyphicon glyphicon-search" rel="tooltip" title="GOODS GROUP 2"></label>
-								                     </div>
-								                   </div>
-								                   </div>
-
-								           <div class="form-group">
-								                   <label class="control-label col-md-3" for="prepend">GOODS GROUP 3 :</label>
-								                   <div class="col-sm-5">
-								                   <div class="icon-addon addon-md">
-								                     <input name="mgoodsgroup3" type="text" placeholder="GOODS GROUP 3" class="form-control">
-								                     <label for="mgoodsgroup3" class="glyphicon glyphicon-search" rel="tooltip" title="GOODS GROUP 3"></label>
-								                   </div>
-								                 </div>
-								                 </div>
-								                 <fieldset>
-								                   <div class="form-group">
-								                     <label name="mgoodsremark" class="col-md-3 control-label">GOODS REMARK :</label>
-								                     <div class="col-md-5">
-								                       <textarea class="form-control" placeholder="GOODS REMARK" name="mgoodsremark" rows="8"></textarea>
-								                     </div>
-								                   </div>
-								                 </fieldset>
-								           <!-- <div class="form-group">
-								             <label class="col-md-3 control-label">GOODS REMARK :</label>
-								             <div class="col-md-10">
-								               <input name="mgoodsremark" class="form-control" type="text">
-								             </div>
-								           </div> -->
-
-								           <div class="form-group">
-								                       <label class="col-md-3 control-label">GOODS BRANCHES :</label>
-								                       <div class="col-sm-5">
-																				 <label class="radio radio-inline">
-								                           <input name="mgoodsbranches" type="radio" checked>
-								                           NO </label>
-								                         <label class="radio radio-inline">
-								                           <input name="mgoodsbranches" type="radio">
-								                           YES </label>
-								                       </div>
-								                     </div>
-
-								       <div class="form-group">
-								                   <label class="col-md-3 control-label">GOODS ACTIVE :</label>
-								                   <div class="col-ms-5">
-								                     <label class="checkbox-inline">
-								                       <input name="mgoodsactive" type="checkbox" checked>
-								                       ACTIVE </label>
-								                   </div>
-								                 </div>
-
-								           <button type="submit" name="button" class="btn btn-primary">CREATE</button>
+								          asdqwe
 								       </div>
 
 								       <div class="tab-pane fade" id="hr2">
@@ -454,7 +358,62 @@
 								</br>
 								</br>
 
-								 </form>
+								 </form> --}}
+								 <div class="container">
+  <h2>Dynamic Tabs</h2>
+  <ul class="nav nav-tabs">
+   	<li class="active"><a data-toggle="tab" href="#menu1">Spesifikasi</a></li>
+    <li><a data-toggle="tab" href="#menu2">Satuan</a></li>
+    <li><a data-toggle="tab" href="#menu3">Supplier</a></li>
+    <li><a data-toggle="tab" href="#menu4">Harga</a></li>
+    <li><a data-toggle="tab" href="#menu5">Pajak</a></li>
+    <li><a data-toggle="tab" href="#menu6">Gambar</a></li>
+
+  </ul>
+
+  <div class="tab-content">
+    <div id="menu1" class="tab-pane fade in active">
+    
+    	 </br>
+<form id="accountForm" method="post" class="form-horizontal">
+    <div class="tab-content">
+        <div class="tab-pane active" id="info-tab">
+            <div class="form-group">
+                <label class="col-xs-2 control-label">GOODS CODE :</label>
+                <div class="col-xs-5">
+                    <input type="text" class="form-control" name="mgoodscode" placeholder="GOODS CODE" />
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-xs-2 control-label">GOODS BARCODE :</label>
+                <div class="col-xs-5">
+                    <input type="text" class="form-control" name="mgoodsbarcode" placeholder="GOODS BARCODE"/>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-xs-2 control-label">GOODS ALIAS :</label>
+                <div class="col-xs-5">
+                    <input type="text" class="form-control" name="mgoodsalias" placeholder="GOODS ALIAS" />
+                </div>
+            </div>
+        </div>
+        </div><button type="submit" name="button" class="btn btn-primary">CREATE</button>
+								        
+
+    </div>
+    <div id="menu2" class="tab-pane fade">
+      <h3>Menu 2</h3>
+      <p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam.</p>
+    </div>
+    <div id="menu3" class="tab-pane fade">
+      <h3>Menu 3</h3>
+      <p>Eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.</p>
+    </div>
+  </div>
+</div>
+
 							 </div>
 	 						<!-- end widget content -->
 

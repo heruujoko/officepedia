@@ -506,6 +506,15 @@
 									<a href="{{URL::to('/')}}/admin-nano/barang">Barang</a>
 								</li>
 							@endif
+							@if($active == 'customer')
+								<li class="active">
+									<a href="{{URL::to('/')}}/admin-nano/pelanggan">Pelanggan</a>
+								</li>
+							@else
+								<li>
+									<a href="{{URL::to('/')}}/admin-nano/pelanggan">Pelanggan</a>
+								</li>
+							@endif
 							@if($active == 'mcoagp')
 								<li class="active">
 									<a href="{{URL::to('/')}}/admin-nano/mcoagrandparent">MCOA Grand Parent</a>

@@ -102,6 +102,21 @@ class CreateMgoodsTable extends Migration
             $table->string('void');
             $table->timestamps();
         });
+        Schema::create('mcustomer', function (Blueprint $table){
+            $table->increment('id');
+            $table->string('mcustomerid');
+            $table->string('mcustomername');
+            $table->string('mcustomeremail');
+            $table->string('mcustomerphone');
+            $table->string('mcustomerfax');
+            $table->string('mcustomerwebsite');
+            $table->string('mcustomeraddress');
+            $table->string('mcustomercity');
+            $table->string('mcustomerzipcode');
+            $table->string('mcustomerprovince');
+            $table->string('mcustomer');
+
+        })
 
     }
 

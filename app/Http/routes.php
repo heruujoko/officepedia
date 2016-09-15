@@ -11,7 +11,8 @@ Route::group(['prefix'=>'admin-nano'],function(){
   Route::get('mcoagrandparent','MCOAGrandParentController@index');
   Route::get('mcoaparent','MCOAParentController@index');
   Route::resource('mcoa','MCOAController');
-
+  Route::get('pelanggan','MCustomerController@index');
+  
   Route::controllers([
   	'/'=>'AdminController'
   ]);
