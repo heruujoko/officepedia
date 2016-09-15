@@ -558,3 +558,143 @@ function updatebranch(){
 		$('#formview').hide();
 		$('#forminput').show();
 	}
+
+// MPREFIX
+
+  function insertprefix(){
+    $("#insert-wrapper").parsley().validate();
+    if($("#insert-wrapper").parsley().isValid()){
+      var data = {
+        mprefix: $('#insert-prefix').val(),
+        mprefixtransaction: $('#insert-transaction').val(),
+        mprefixremark: $('#insert-remark').val()
+      }
+      console.log(data);
+      $.ajax({
+        type: "POST",
+        url: API_URL+"/mprefix",
+        data: data,
+        success: function(response){
+          console.log(response);
+          table.ajax.reload();
+          window.location = "#tableapi";
+      		swal({
+      			title: "Input Berhasil!",
+      			type: "success",
+      			timer: 1000
+      		});
+        },
+        error: function(response){
+          swal({
+      			title: "Input Gagal!",
+      			type: "error",
+      			timer: 1000
+      		});
+        }
+      });
+    }
+  }
+
+  function viewprefix(id){
+    $.ajax({
+      type: "GET",
+      url: API_URL+"/mprefix/"+id,
+      success: function(response){
+        $('#view-mprefix').val(response.mprefix);
+        $('#view-mprefixtransaction').val(response.mprefixtransaction).trigger("change");
+        $('#view-mprefixremark').val(response.mprefixremark);
+        $('#forminput').hide();
+  			$('#formview').show();
+  			$('#formedit').hide();
+      },
+      error: function(response){
+        swal({
+  				title: "Aksi Gagal!",
+  				type: "error",
+  				timer: 1000
+  			});
+      }
+    });
+    window.location = "#main";
+  }
+
+  function editprefix(id){
+    $.ajax({
+      type: "GET",
+      url: API_URL+"/mprefix/"+id,
+      success: function(response){
+        console.log(response);
+        $('#mprefixid').val(response.id);
+        $('#edit-mprefix').val(response.mprefix);
+        $('#edit-mprefixtransaction').val(response.mprefixtransaction).trigger("change");
+        $('#edit-mprefixremark').val(response.mprefixremark);
+        $('#forminput').hide();
+  			$('#formview').hide();
+  			$('#formedit').show();
+      },
+      error: function(response){
+        swal({
+  				title: "Aksi Gagal!",
+  				type: "error",
+  				timer: 1000
+  			});
+      }
+    });
+    window.location = "#main";
+  }
+
+  function updateprefix(){
+    $('#edit-wrapper').parsley().validate();
+    if($('#edit-wrapper').parsley().isValid()){
+      var updateid = $('#mprefixid').val();
+      var data = {
+        mprefix: $('#edit-mprefix').val(),
+        mprefixtransaction: $('#edit-mprefixtransaction').val(),
+        mprefixremark: $('#edit-mprefixremark').val()
+      }
+      $.ajax({
+        type: "PUT",
+        url: API_URL+"/mprefix/"+updateid,
+        data: data,
+        success: function(response){
+          console.log(response);
+          table.ajax.reload();
+          window.location = "#tableapi";
+          swal({
+            title: "Pengubahan Berhasil!",
+            type: "success",
+            timer: 1000
+          });
+          $('#forminput').show();
+          $('#formview').hide();
+          $('#formedit').hide();
+        },
+        error: function(response){
+          swal({
+            title: "Pengubahan Gagal!",
+            type: "error",
+            timer: 1000
+          });
+        }
+      });
+    }
+  }
+
+  function resetprefix(){
+    $('#insert-prefix').val('');
+    $('#insert-transaction').val('Master Barang').trigger('change');
+    $('#insert-remark').val('');
+    $('#edit-prefix').val('');
+    $('#edit-transaction').val('').trigger('change');
+    $('#edit-remark').val('');
+    $('#insert-wrapper').parsley().reset();
+    $('#edit-wrapper').parsley().reset();
+  }
+
+  function backprefix(){
+    $('#mprefixid').val('');
+    resetprefix();
+		$('#formedit').hide();
+		$('#formview').hide();
+		$('#forminput').show();
+  }
