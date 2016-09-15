@@ -26,7 +26,8 @@
 			<!-- SweetAlert  -->
 		<link rel="stylesheet" type="text/css" href="{{URL::to('/')}}/master/1/dist/sweetalert.css">
 
-
+		<link rel="stylesheet" type="text/css" href="{{ url('/css/select2.min.css') }}">
+		<link rel="stylesheet" type="text/css" href="{{ url('/css/select2-bootstrap.css') }}">
 
 
 
@@ -153,6 +154,9 @@
    .bg-gray{
    	background: #C1C1C1 !important;
    }
+	 .select2-container .select2-choice .select2-arrow b:before, .select2-selection__arrow b:before {
+		 content: "" !important;
+	 }
 /* CSS UNTUK MODIFIKASI TABLE */
 </style>
 <style>
@@ -643,7 +647,8 @@
     		<script data-pace-options='{ "restartOnRequestAfter": true }' src="{{URL::to('/')}}/js/plugin/pace/pace.min.js"></script>
 
     		<!-- Link to Google CDN's jQuery + jQueryUI; fall back to local -->
-    		<script src="{{URL::to('/')}}/js/jquery.min.js"></script>
+    		<!-- <script src="{{URL::to('/')}}/js/jquery.min.js"></script> -->
+				<script src="https://code.jquery.com/jquery-2.2.4.min.js"></script>
     		<script>
     			if (!window.jQuery) {
     				document.write('<script src="js/libs/jquery-2.1.1.min.js"><\/script>');
@@ -685,9 +690,6 @@
     		<!-- JQUERY MASKED INPUT -->
     		<script src="{{URL::to('/')}}/js/plugin/masked-input/jquery.maskedinput.min.js"></script>
 
-    		<!-- JQUERY SELECT2 INPUT -->
-    		<script src="{{URL::to('/')}}/js/plugin/select2/select2.min.js"></script>
-
     		<!-- JQUERY UI + Bootstrap Slider -->
     		<script src="{{URL::to('/')}}/js/plugin/bootstrap-slider/bootstrap-slider.min.js"></script>
 
@@ -724,6 +726,7 @@
     		<script src="{{URL::to('/')}}/js/plugin/datatables/dataTables.bootstrap.min.js"></script>
     		<script src="{{URL::to('/')}}/js/plugin/datatable-responsive/datatables.responsive.min.js"></script>
     		<script src="{{ url('/') }}/js/parsley.min.js"></script>
+				<script src="{{ url('/') }}/js/select2.min.js"></script>
     		<script src="{{URL::to('/')}}/master/main.js"></script>
 
     		<script src="{{ url('/js/datatable/DataTables-1.10.12/js/jquery.dataTables.min.js') }}"></script>
@@ -766,6 +769,9 @@
 
     		$(document).ready(function() {
 
+					$('.select2').select2({
+						width: "100%"
+					});
     			pageSetUp();
 
     			/* // DOM Position key index //
