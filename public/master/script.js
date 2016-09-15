@@ -537,3 +537,24 @@ function updatebranch(){
       });
     }
   }
+
+  function resetmcoa(){
+    $('#insert-mcoacode').val('');
+    $('#insert-mcoaname').val('');
+    $('#insert-mcoatype').val('K');
+    $('#insert-mcoaparent').val('1101.00');
+    $('#edit-mcoacode').val('');
+    $('#edit-mcoaname').val('');
+    $('#edit-mcoatype').val('K');
+    $('#edit-mcoaparent').val('1101.00');
+    $('#insert-wrapper').parsley().reset();
+    $('#edit-wrapper').parsley().reset();
+  }
+
+  function backmcoa(){
+		$('#mcoaid').val('');
+    resetparent();
+		$('#formedit').hide();
+		$('#formview').hide();
+		$('#forminput').show();
+	}
