@@ -500,6 +500,9 @@
 							<li>
 								<a href="{{URL::to('/')}}/admin-nano/mcoaparent">MCOA Parent</a>
 							</li>
+							<li>
+								<a href="{{URL::to('/')}}/admin-nano/mcoa">MCOA</a>
+							</li>
 
 						</ul>
 					</li>

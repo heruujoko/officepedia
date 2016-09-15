@@ -413,3 +413,127 @@ function updatebranch(){
 		$('#formview').hide();
 		$('#forminput').show();
 	}
+
+// MCOA
+
+  function insertmcoa(){
+    $("#insert-wrapper").parsley().validate();
+    if($("#insert-wrapper").parsley().isValid()){
+      var data = {
+        mcoacode: $('#insert-mcoacode').val(),
+        mcoaname: $('#insert-mcoaname').val(),
+        mcoatype: $('#insert-mcoatype').val(),
+        mcoaparent: $('#insert-mcoaparent').val()
+      }
+      console.log(data);
+      $.ajax({
+        type: "POST",
+        url: API_URL+"/mcoa",
+        data: data,
+        success: function(response){
+          console.log(response);
+          table.ajax.reload();
+          window.location = "#tableapi";
+      		swal({
+      			title: "Input Berhasil!",
+      			type: "success",
+      			timer: 1000
+      		});
+        },
+        error: function(response){
+          swal({
+      			title: "Input Gagal!",
+      			type: "error",
+      			timer: 1000
+      		});
+        }
+      });
+    }
+  }
+
+  function viewmcoa(id){
+    $.ajax({
+      type: "GET",
+      url: API_URL+"/mcoa/"+id,
+      success: function(response){
+        $('#view-mcoacode').val(response.mcoacode);
+        $('#view-mcoaname').val(response.mcoaname);
+        $('#view-mcoatype').val(response.mcoatype);
+        $('#view-mcoaparent').val(response.mcoaparentcode);
+        $('#forminput').hide();
+  			$('#formview').show();
+  			$('#formedit').hide();
+      },
+      error: function(response){
+        swal({
+  				title: "Aksi Gagal!",
+  				type: "error",
+  				timer: 1000
+  			});
+      }
+    });
+    window.location = "#main";
+  }
+
+  function editmcoa(id){
+    $.ajax({
+      type: "GET",
+      url: API_URL+"/mcoa/"+id,
+      success: function(response){
+        $('#mcoaid').val(response.id);
+        $('#edit-mcoacode').val(response.mcoacode);
+        $('#edit-mcoaname').val(response.mcoaname);
+        $('#edit-mcoatype').val(response.mcoatype);
+        $('#edit-mcoaparent').val(response.mcoaparentcode);
+        $('#forminput').hide();
+  			$('#formview').hide();
+  			$('#formedit').show();
+      },
+      error: function(response){
+        swal({
+  				title: "Aksi Gagal!",
+  				type: "error",
+  				timer: 1000
+  			});
+      }
+    });
+    window.location = "#main";
+  }
+
+  function updatemcoa(){
+    $('#edit-wrapper').parsley().validate();
+    if($('#edit-wrapper').parsley().isValid()){
+      var updateid = $('#mcoaid').val();
+      var data = {
+        mcoacode: $('#edit-mcoacode').val(),
+        mcoaname: $('#edit-mcoaname').val(),
+        mcoatype: $('#edit-mcoatype').val(),
+        mcoaparent: $('#edit-mcoaparent').val()
+      }
+      $.ajax({
+        type: "PUT",
+        url: API_URL+"/mcoa/"+updateid,
+        data: data,
+        success: function(response){
+          console.log(response);
+          table.ajax.reload();
+          window.location = "#tableapi";
+          swal({
+            title: "Pengubahan Berhasil!",
+            type: "success",
+            timer: 1000
+          });
+          $('#forminput').show();
+          $('#formview').hide();
+          $('#formedit').hide();
+        },
+        error: function(response){
+          swal({
+            title: "Pengubahan Gagal!",
+            type: "error",
+            timer: 1000
+          });
+        }
+      });
+    }
+  }
