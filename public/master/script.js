@@ -698,3 +698,27 @@ function updatebranch(){
 		$('#formview').hide();
 		$('#forminput').show();
   }
+
+
+// MCUSTOMER
+
+function resetcustomer(){
+$('#insert-mcustomerid').val('');
+$('#insert-mcustomername').val('');
+$('#insert-mcustomeremail').val('');
+$('#insert-mcustomerphone').val('');
+$('#insert-mcustomerfax').val('');
+$('#insert-mcustomerwebsite').val('');
+$('#insert-mcustomeraddress').val('');
+$('#insert-mcustomercity').val('');
+$('#insert-mcustomerzipcode').val('');
+$('#insert-mcustomerprovince').val('');
+$('#insert-mcustomercountry').val('');
+$('#insert-mcustomercontactname').val('');
+$('#insert-mcustomercontactposition').val('');
+$('#insert-mcustomercontactemail').val('');
+$('#insert-mcustomercontactemailphone').val('');
+
+}
+
+// MCUSTOMER

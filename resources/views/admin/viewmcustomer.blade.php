@@ -96,14 +96,14 @@
 						-->
 						<header>
 							<span class="widget-icon"> <i class="fa fa-table"></i> </span>
-							<h2>Master Barang </h2>
+							<h2>Master Pelanggan </h2>
 
 						</header>
 
 						<!-- widget div-->
 						<div>
 
-							<!-- widget edit box -->
+					 		<!-- widget edit box -->
 							<div class="jarviswidget-editbox">
 								<!-- This area used as dropdown edit box -->
 
@@ -114,7 +114,7 @@
 							<div class="widget-body no-padding">
 
 								 <div class="container">
-  <h2>Dynamic Tabs</h2>
+  <h2></h2>
   <ul class="nav nav-tabs">
    	<li class="active"><a data-toggle="tab" href="#menu1">Profil Pelanggan</a></li>
     <li><a data-toggle="tab" href="#menu2">Pengiriman</a></li>
@@ -122,8 +122,8 @@
     <li><a data-toggle="tab" href="#menu4">Penjualan</a></li>
     <li><a data-toggle="tab" href="#menu5">Pajak</a></li>
     <li><a data-toggle="tab" href="#menu6">Saldo</a></li>
-    <li><a data-toggle="tab" href="#menu6">Lain-lain</a></li>
-    <li><a data-toggle="tab" href="#menu6">Pengguna</a></li>
+    <li><a data-toggle="tab" href="#menu7">Lain-lain</a></li>
+    <li><a data-toggle="tab" href="#menu8">Pengguna</a></li>
   </ul>
 
   <div class="tab-content">
@@ -284,7 +284,7 @@
 									<label class="col-md-2 control-label"><b>Nama Lengkap</b> (<font color="red">*</font>) &nbsp  :</label>
 									<div class="col-md-4">
 										<div class="icon-addon addon-md">
-											<input id="insert-mcustomername" value="{{old('mcustomername')}}" name="mcustomername" class="form-control forminput" placeholder="Nama Lengkap" type="text" required @if (Session::has('autofocus')) autofocus @endif >
+											<input id="insert-mcustomercontactname" value="{{old('mcustomercontactname')}}" name="mcustomercontactname" class="form-control forminput" placeholder="Nama Lengkap" type="text" required @if (Session::has('autofocus')) autofocus @endif >
 											<label for="mgoodsgroup1" class="glyphicon glyphicon-chevron-right" rel="tooltip" title="Nama Lengkap"></label>
 										</div>
 									</div>
@@ -293,7 +293,7 @@
 									<label class="col-md-2 control-label"><b>Posisi Jabatan</b> (<font color="red">*</font>) &nbsp  :</label>
 									<div class="col-md-4">
 										<div class="icon-addon addon-md">
-											<input id="insert-email" value="{{old('email')}}" name="email" class="form-control forminput" placeholder="Posisi Jabatan" type="text" required @if (Session::has('autofocus')) autofocus @endif >
+											<input id="insert-mcustomercontactposition" value="{{old('mcustomercontactposition')}}" name="mcustomercontactposition" class="form-control forminput" placeholder="Posisi Jabatan" type="text" required @if (Session::has('autofocus')) autofocus @endif >
 											<label for="mgoodsgroup1" class="glyphicon glyphicon glyphicon-user" rel="tooltip" title="Posisi Jabatan"></label>
 										</div>
 									</div>
@@ -302,7 +302,7 @@
 									<label class="col-md-2 control-label"><b>Email</b> (<font color="red">*</font>) &nbsp  :</label>
 									<div class="col-md-4">
 										<div class="icon-addon addon-md">
-											<input id="insert-email" value="{{old('email')}}" name="email" class="form-control forminput" placeholder="Email" type="text" required @if (Session::has('autofocus')) autofocus @endif >
+											<input id="insert-mcustomercontactemail" value="{{old('mcustomercontactemail')}}" name="mcustomercontactemail" class="form-control forminput" placeholder="Email" type="text" required @if (Session::has('autofocus')) autofocus @endif >
 											<label for="mgoodsgroup1" class="glyphicon glyphicon-envelope" rel="tooltip" title="Email"></label>
 										</div>
 									</div>
@@ -311,7 +311,7 @@
 									<label class="col-md-2 control-label"><b>Handphone</b> (<font color="red">*</font>) &nbsp  :</label>
 									<div  class="col-md-4">
 										<div class="icon-addon addon-md">
-											<input id="insert-officephone" value="{{old('officephone')}}" name="officephone" class="form-control forminput" placeholder="Handphone" type="number" required @if (Session::has('autofocus')) autofocus @endif >
+											<input id="insert-mcustomercontactemailphone" value="{{old('mcustomercontactemailphone')}}" name="mcustomercontactemailphone" class="form-control forminput" placeholder="Handphone" type="number" required @if (Session::has('autofocus')) autofocus @endif >
 											
 											<label for="mgoodsgroup1" class="glyphicon glyphicon-phone-alt" rel="tooltip" title="Handphone"></label>
 											
@@ -334,7 +334,30 @@
        </center>
   </div>
 
-   
+	<div id="menu4" class="tab-pane fade">
+      <h3>Menu 4</h3>
+      <p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam.</p>
+    </div>
+
+	<div id="menu5" class="tab-pane fade">
+      <h3>Menu 5</h3>
+      <p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam.</p>
+    </div> 
+
+    <div id="menu6" class="tab-pane fade">
+      <h3>Menu 6</h3>
+      <p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam.</p>
+    </div>
+
+    <div id="menu7" class="tab-pane fade">
+      <h3>Menu 7</h3>
+      <p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam.</p>
+    </div>
+
+    <div id="menu8" class="tab-pane fade">
+      <h3>Menu 8</h3>
+      <p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam.</p>
+    </div>
   </div>
 
   </br>
@@ -387,7 +410,7 @@
 						-->
 							<header>
 						<span class="widget-icon"> <i class="fa fa-table"></i> </span>
-						<h2>Master Cabang </h2>
+						<h2>Master Pelanggan </h2>
 					</header>
 
 					<!-- widget div-->

@@ -103,9 +103,9 @@ class CreateMgoodsTable extends Migration
             $table->timestamps();
         });
         Schema::create('mcustomer', function (Blueprint $table){
-            $table->increment('id');
-            $table->string('mcustomerid');
-            $table->string('mcustomername');
+            $table->increments('id');
+            $table->string('mcustomerid')->unique();
+            $table->string('mcustomername')->unique();
             $table->string('mcustomeremail');
             $table->string('mcustomerphone');
             $table->string('mcustomerfax');
@@ -114,9 +114,13 @@ class CreateMgoodsTable extends Migration
             $table->string('mcustomercity');
             $table->string('mcustomerzipcode');
             $table->string('mcustomerprovince');
-            $table->string('mcustomer');
+            $table->string('mcustomercountry');
+            $table->string('mcustomercontactname');
+            $table->string('mcustomercontactposition');
+            $table->string('mcustomercontactemail');
+            $table->string('mcustomercontactemailphone');
 
-        })
+        });
 
     }
 
@@ -133,5 +137,6 @@ class CreateMgoodsTable extends Migration
         Schema::drop('mgoods');
         Schema::drop('mbranch');
         Schema::drop('triggermbranch');
+        Schema::drop('mcustomer');
     }
 }
