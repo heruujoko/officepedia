@@ -4,6 +4,60 @@ $('#formview').hide();
 var API_URL = '/nano/public/admin-api';
 
 // MBRANCH SCRIPT
+$("#insert-phone").keyup(function(){
+  var val = $("#insert-phone").val();
+  var cls = $("#phoneexample").hasClass("phonemargin")
+  console.log(val != "");
+  console.log(!cls);
+  if((val != "")){
+    console.log("add");
+    $("#phoneexample").addClass('phonemargin');
+  }
+});
+
+function insertmbranch(){
+   $('#insert-wrapper').parsley().validate();
+    if($('#insert-wrapper').parsley().isValid()){
+      var data = {
+        mbranchcode: $('#insert-mbranchcode').val(),
+        mbranchname: $('#insert-mbranchname').val(),
+        address: $('#insert-address').val(),
+        phone: $('#insert-phone').val(),
+        city: $('#insert-city').val(),
+        person_in_charge: $('#insert-person_in_charge').val(),
+        information: $('#insert-information').val()
+         
+      }
+      $.ajax({
+        type: "POST",
+        url: API_URL+"/cabang",
+        data: data,
+        success: function(response){
+          console.log(response);
+          table.ajax.reload();
+          window.location = "#tableapi";
+          swal({
+            title: "Input Berhasil!",
+            type: "success",
+            timer: 1000
+          });
+        },
+        error: function(response){
+          swal({
+            title: "Input Gagal!",
+            type: "error",
+            timer: 1000
+          });
+        }
+      });
+    }
+    if($("#insert-phone").parsley().isValid()){
+      $("#phoneexample").addClass('phonemargin');
+    } else {
+      $("#phoneexample").removeClass('phonemargin');
+    }
+}
+
  function viewbranch(id){
 	$.ajax({
 		url : API_URL+'/viewcabang/'+id,

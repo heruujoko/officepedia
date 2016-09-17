@@ -27,6 +27,7 @@ Route::group(['prefix'=>'admin-nano'],function(){
 
 Route::group(['prefix'=>'admin-api',['middleware' => 'api']],function(){
 
+  Route::resource('cabang', 'Api\MBranchController');
   Route::resource('mcoagrandparent','Api\MCOAGrandParentController');
   Route::resource('mcoaparent','Api\MCOAParentController');
   Route::resource('mcoa','Api\MCOAController');
