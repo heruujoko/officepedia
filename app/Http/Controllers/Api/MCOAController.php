@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use App\MCOA;
+use App\MCOAGrandParent;
 use Datatables;
 
 class MCOAController extends Controller
@@ -65,5 +66,48 @@ class MCOAController extends Controller
     public function destroy($id){
       $mcoa = MCOA::find($id)->delete();
       return response()->json();
+    }
+
+    public function tree(){
+      $tree_string = '<ul role="tree">';
+      $gp = MCOAGrandParent::all();
+      foreach($gp as $grand){
+        $tree_string .= '<li class="parent_li" role="treeitem">
+          <span title="Collapse this branch"><i class="fa fa-lg fa-folder-open"></i> <b>'.$grand->mcoagrandparentcode.'</b> '.$grand->mcoagrandparentname.'</span>
+          <ul role="group">';
+          foreach ($grand->childs() as $parent) {
+            $tree_string .= '<li class="parent_li" role="treeitem" style="display:none">
+              <span title="Collapse this branch"><i class="fa fa-lg fa-plus-circle"></i> <b>'.$parent->mcoaparentcode.'</b>'.$parent->mcoaparentname.'</span>
+              <ul role="group">
+                <li style="display:none">
+                  <span title="Collapse this branch" class="addtree" onclick="addcoa(\''.$parent->mcoaparentcode.'\',\''.$parent->mcoaparenttype.'\')"><i class="fa fa-lg fa-plus-circle"></i> <b>Add New</b></span>
+                </li>';
+            foreach ($parent->childs() as $coa) {
+              $tree_string .= '<li style="display:none">
+                <span title="Collapse this branch"><i class="fa fa-lg fa-plus-circle"></i> <b>'.$coa->mcoacode.'</b> '.$coa->mcoaname.'</span>
+                <div class="btn-group">
+                  <button class="btn btn-default dropdown-toggle btn-tree" data-toggle="dropdown" aria-expanded="false">
+                    Action <i class="fa fa-caret-down"></i>
+                  </button>
+                  <ul class="dropdown-menu treemenu">
+                    <li>
+                      <a onclick="viewmcoa('.$coa->id.')">View</a>
+                    </li>
+                    <li>
+                      <a onclick="editmcoa('.$coa->id.')">Edit</a>
+                    </li>
+                    <li>
+                      <a onclick="popupdelete('.$coa->id.')">Delete</a>
+                    </li>
+                  </ul>
+                </div>
+              </li>';
+            }
+            $tree_string .= "</ul></li>";
+          }
+          $tree_string .= "</ul></li>";
+      }
+      $tree_string .= "</ul>";
+      return response()->json($tree_string);
     }
 }

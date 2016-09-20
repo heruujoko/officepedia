@@ -60,6 +60,180 @@
 
 	<section id="widget-grid" class="">
 		<!-- row -->
+		<div class="row">
+			<!-- NEW WIDGET START -->
+			<article class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+				<!-- Widget ID (each widget will need unique ID)-->
+				<div id="forminputgp" class="forminput jarviswidget jarviswidget-color-darken" id="wid-id-0" data-widget-editbutton="false" data-widget-colorbutton="false" data-widget-deletebutton="false">
+					<header>
+						<span class="widget-icon"> <i class="fa fa-table"></i> </span>
+						<h2>Tambah MCOA Grand Parent</h2>
+					</header>
+					<!-- widget div-->
+					<div>
+						<!-- widget edit box -->
+						<div class="jarviswidget-editbox">
+							<!-- This area used as dropdown edit box -->
+						</div>
+						<!-- end widget edit box -->
+						<h3 style="font-weight: bold; color: #1883B8;font-size: 19px;">Mode : INSERT</h3>
+						<!-- widget content -->
+						<style>
+							.alert-info {
+								color: #D9ECF5;
+								background-color: #48AFE3;
+								border-color: #2F9ACF;
+							}
+						</style>
+  						@if(count($errors) > 0)
+    						<div class="alert alert-info alerthide" role="alert">
+    							@foreach($errors->all() as $error)
+      							<span class="sr-only">Error:</span>
+      							<span class="sr-only"></span>
+      							<li><b>{{ $error }}</b></li>
+    							@endforeach
+    						</div>
+  						@endif
+						<div class="widget-body no-padding">
+							<div id="insert-wrapper-gp" class="form-horizontal" data-parsley-validate>
+								{{ csrf_field() }}
+								<div class="container">
+								</br>
+								<div style="height: 21px;" class="form-group">
+									<label class="col-md-3 control-label"><b>Kode Grand Parent</b> (<font color="red">*</font>) &nbsp  :</label>
+									<div class="col-md-7">
+										<div class="icon-addon addon-md">
+											<input id="insert-mcoagrandparentcode" value="{{old('mbranchcode')}}" name="mcoagrandparentcode" class="form-control forminput" placeholder="Kode Grand Parent" type="text" required data-parsley-required-message="Field Ini Tidak Boleh Kosong" @if (Session::has('autofocus')) autofocus @endif >
+											<label for="mgoodsgroup1" class="glyphicon glyphicon-barcode" rel="tooltip" title="Kode Grand Parent"></label>
+										</div>
+									</div>
+								</div>
+								<div style="height: 21px;" class="form-group">
+									<label class="col-md-3 control-label"><b>Nama Grand Parent</b> (<font color="red">*</font>) &nbsp  :</label>
+									<div class="col-md-7">
+										<div class="icon-addon addon-md">
+											<input id="insert-mcoagrandparentname" value="{{old('mbranchname')}}" name="mcoagrandparentname" class="form-control forminput" placeholder="Nama Grand Parent" type="text" required data-parsley-required-message="Field Ini Tidak Boleh Kosong" @if (Session::has('autofocus')) autofocus @endif >
+											<label for="mgoodsgroup1" class="glyphicon glyphicon-chevron-right" rel="tooltip" title="Nama Grand Parent"></label>
+										</div>
+									</div>
+								</div>
+								<div style="height: 21px;" class="form-group">
+									<label class="col-md-3 control-label"><b>Tipe Grand Parent</b> (<font color="red">*</font>) &nbsp  :</label>
+									<div class="col-md-7">
+										<div class="icon-addon addon-md">
+                      <select id="insert-mcoagrandparenttype" value="{{old('address')}}" name="mcoagrandparenttype" class="form-control forminput" placeholder="Tipe Grand Parent" type="text" required data-parsley-required-message="Field Ini Tidak Boleh Kosong" @if (Session::has('autofocus')) autofocus @endif>
+                        <option value="K">Kredit</option>
+                        <option value="D">Debet</option>
+                      </select>
+											<!-- <label for="mgoodsgroup1" class="glyphicon glyphicon-chevron-right" rel="tooltip" title="Tipe Grand Parent"></label> -->
+										</div>
+									</div>
+								</div>
+								<input type="hidden" name="void" value="0">
+								<center>
+									<div class="row">
+										<div class="col-md-12">
+											<a id="btn-insert-reset" onclick="resetgrandparent()" class="btn btn-default" ><i class=""></i> Reset</a>
+											<button class="btn btn-primary" onclick="insertgrandparent()"><i class="fa fa-save"></i> Simpan</button>
+										</div>
+									</div>
+								</center>
+							</br>
+						</div>
+					</div>
+				</div>
+				<!-- end widget content -->
+			</div>
+			<!-- end widget div -->
+		</div>
+		<!-- row -->
+		<div class="row">
+			<!-- NEW WIDGET START -->
+			<article class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+				<!-- Widget ID (each widget will need unique ID)-->
+				<div id="forminputp" class="forminput jarviswidget jarviswidget-color-darken" id="wid-id-0" data-widget-editbutton="false" data-widget-colorbutton="false" data-widget-deletebutton="false">
+					<header>
+						<span class="widget-icon"> <i class="fa fa-table"></i> </span>
+						<h2>Tambah MCOA Parent</h2>
+					</header>
+					<!-- widget div-->
+					<div>
+						<!-- widget edit box -->
+						<div class="jarviswidget-editbox">
+							<!-- This area used as dropdown edit box -->
+						</div>
+						<!-- end widget edit box -->
+						<h3 style="font-weight: bold; color: #1883B8;font-size: 19px;">Mode : INSERT</h3>
+						<!-- widget content -->
+						<style>
+							.alert-info {
+								color: #D9ECF5;
+								background-color: #48AFE3;
+								border-color: #2F9ACF;
+							}
+						</style>
+  						@if(count($errors) > 0)
+    						<div class="alert alert-info alerthide" role="alert">
+    							@foreach($errors->all() as $error)
+      							<span class="sr-only">Error:</span>
+      							<span class="sr-only"></span>
+      							<li><b>{{ $error }}</b></li>
+    							@endforeach
+    						</div>
+  						@endif
+						<div class="widget-body no-padding">
+							<div id="insert-wrapper-parent" class="form-horizontal" data-parsley-validate>
+								{{ csrf_field() }}
+								<div class="container">
+								</br>
+								<div style="height: 21px;" class="form-group">
+									<label class="col-md-3 control-label"><b>Kode Parent</b> (<font color="red">*</font>) &nbsp  :</label>
+									<div class="col-md-7">
+										<div class="icon-addon addon-md">
+											<input id="insert-mcoaparentcode" value="{{old('mbranchcode')}}" name="mcoaparentcode" class="form-control forminput" placeholder="Kode Parent" type="text" required data-parsley-required-message="Field Ini Tidak Boleh Kosong" @if (Session::has('autofocus')) autofocus @endif >
+											<label for="mgoodsgroup1" class="glyphicon glyphicon-barcode" rel="tooltip" title="Kode Grand Parent"></label>
+										</div>
+									</div>
+								</div>
+								<div style="height: 21px;" class="form-group">
+									<label class="col-md-3 control-label"><b>Nama Parent</b> (<font color="red">*</font>) &nbsp  :</label>
+									<div class="col-md-7">
+										<div class="icon-addon addon-md">
+											<input id="insert-mcoaparentname" value="{{old('mbranchname')}}" name="mcoaparentname" class="form-control forminput" placeholder="Nama Parent" type="text" required data-parsley-required-message="Field Ini Tidak Boleh Kosong" @if (Session::has('autofocus')) autofocus @endif >
+											<label for="mgoodsgroup1" class="glyphicon glyphicon-chevron-right" rel="tooltip" title="Nama Grand Parent"></label>
+										</div>
+									</div>
+								</div>
+                <div style="height: 21px;" class="form-group">
+									<label class="col-md-3 control-label"><b>Grand Parent</b> (<font color="red">*</font>) &nbsp  :</label>
+									<div class="col-md-7">
+										<div class="icon-addon addon-md">
+                      <select id="insert-mcoagrandparent" value="{{old('address')}}" name="mcoagrandparent" class="form-control forminput" placeholder="Grand Parent" type="text" required data-parsley-required-message="Field Ini Tidak Boleh Kosong" @if (Session::has('autofocus')) autofocus @endif>
+                        @foreach($gparents as $gp)
+                          <option value="{{ $gp->mcoagrandparentcode }}">{{ $gp->mcoagrandparentname }}</option>
+                        @endforeach
+                      </select>
+											<!-- <label for="mgoodsgroup1" class="glyphicon glyphicon-chevron-right" rel="tooltip" title="Tipe Grand Parent"></label> -->
+										</div>
+									</div>
+								</div>
+								<input type="hidden" name="void" value="0">
+								<center>
+									<div class="row">
+										<div class="col-md-12">
+											<a id="btn-insert-reset" onclick="resetparent()" class="btn btn-default" ><i class=""></i> Reset</a>
+											<button class="btn btn-primary" onclick="insertparent()"><i class="fa fa-save"></i> Simpan</button>
+										</div>
+									</div>
+								</center>
+							</br>
+						</div>
+					</div>
+				</div>
+				<!-- end widget content -->
+			</div>
+			<!-- end widget div -->
+		</div>
 		<!-- row -->
 		<div class="row">
 			<!-- NEW WIDGET START -->
@@ -355,58 +529,85 @@
 
 					<!-- widget content -->
 					<div class="widget-body">
+						<div class="row">
+							<div class="container">
+								<div class="col-md-12">
 
-							<table  id="tableapi" class="tableapi table table-bordered" width="100%">
+									<a onclick="addgparent()" class="btn btn-primary">Add Grand Parent</a>
+									<a onclick="addparent()" class="btn btn-primary">Add Parent</a>
 
-								<thead>
-									<tr>
-                    <th class="hasinput" style="width:16%">
-
-										</th>
-										<th class="hasinput" style="width:5%">
-											<input type="text" class="form-control" placeholder="Filter No" />
-										</th>
-                    <th class="hasinput" style="width:9%">
-											<input type="text" class="form-control" placeholder="Filter Kode" />
-										</th>
-										<th class="hasinput" style="width:9%">
-											<input type="text" class="form-control" placeholder="Filter Nama" />
-										</th>
-                    <th class="hasinput" style="width:9%">
-											<input type="text" class="form-control" placeholder="Filter Kode Parent" />
-										</th>
-										<th class="hasinput" style="width:9%">
-											<input type="text" class="form-control" placeholder="Filter Nama Parent" />
-										</th>
-                    <th class="hasinput" style="width:9%">
-											<input type="text" class="form-control" placeholder="Filter Kode GrandParent" />
-										</th>
-										<th class="hasinput" style="width:9%">
-											<input type="text" class="form-control" placeholder="Filter Nama GrandParent" />
-										</th>
-										<th class="hasinput" style="width:10%">
-											<input type="text" class="form-control" placeholder="Filter Tipe" />
-										</th>
-									</tr>
-									<tr>
-										<th data-hide="action"><center>Aksi</center></th>
-                    <th data-hide="no"><center>No</center></th>
-                    <th data-hide="mcoaparentcode"><center>Kode</center></th>
-										<th data-hide="mcoaparentname"><center>Nama</center></th>
-                    <th data-hide="mcoaparentcode"><center>Kode Parent</center></th>
-										<th data-hide="mcoaparentname"><center>Nama Parent</center></th>
-                    <th data-hide="mcoagrandparentcode"><center>Kode GrandParent</center></th>
-										<th data-hide="mcoagrandparentname"><center>Nama GrandParent</center></th>
-										<th data-hide="mcoagrandparenttype"><center>Tipe</center></th>
-									</tr>
-								</thead>
-								<tbody>
-								</tbody>
-
-							</table>
+								<div class="pull-right">
+									<a onclick="addgparent()" class="btn btn-default">CSV</a>
+									<a onclick="addparent()" class="btn btn-default">Excel</a>
+									<a onclick="addgparent()" class="btn btn-default">PDF</a>
+									<a onclick="addparent()" class="btn btn-default">Print</a>
+								<div>
+								</div>
+							</div>
+					  </div>
+						<div class="row" style="margin-top:50px;">
+						<div class="tree smart-form container" id="mcoatree">
+							<ul role="tree">
+								@foreach($gparents as $gp)
+								<li class="parent_li" role="treeitem">
+									<span title="Collapse this branch"><i class="fa fa-lg fa-folder-open"></i> <b>{{ $gp->mcoagrandparentcode }}</b> {{ $gp->mcoagrandparentname }}</span>
+									<ul role="group">
+										@foreach($gp->childs() as $parent)
+										<li class="parent_li" role="treeitem" style="display:none">
+											<span title="Collapse this branch"><i class="fa fa-lg fa-plus-circle"></i> <b>{{ $parent->mcoaparentcode }}</b> {{ $parent->mcoaparentname }}</span>
+											<ul role="group">
+												<li style="display:none">
+													<span title="Collapse this branch" class="addtree" onclick="addcoa('{{ $parent->mcoaparentcode }}','{{ $parent->mcoaparenttype}}')"><i class="fa fa-lg fa-plus-circle"></i> <b>Add New</b></span>
+												</li>
+												@foreach($parent->childs() as $coa)
+												<li style="display:none">
+													<span title="Collapse this branch"><i class="fa fa-lg fa-plus-circle"></i> <b>{{ $coa->mcoacode }}</b> {{ $coa->mcoaname }}</span>
+													<div class="btn-group">
+														<button class="btn btn-default dropdown-toggle btn-tree" data-toggle="dropdown" aria-expanded="false">
+															Action <i class="fa fa-caret-down"></i>
+														</button>
+														<ul class="dropdown-menu treemenu">
+															<li>
+																<a onclick="viewmcoa({{ $coa->id }})">View</a>
+															</li>
+															<li>
+																<a onclick="editmcoa({{ $coa->id }})">Edit</a>
+															</li>
+															<li>
+																<a onclick="popupdelete({{ $coa->id }})">Delete</a>
+															</li>
+														</ul>
+													</div>
+												</li>
+												@endforeach
+											</ul>
+										</li>
+										@endforeach
+									</ul>
+								</li>
+								@endforeach
+							</ul>
+						</div>
+					</div>
 							@push('scripts')
 							<tfoot>
 							<script>
+									$(document).ready(function(){
+										$('.tree > ul').attr('role', 'tree').find('ul').attr('role', 'group');
+										$('.tree').find('li:has(ul)').addClass('parent_li').attr('role', 'treeitem').find(' > span').attr('title', 'Collapse this branch').on('click', function(e) {
+											var children = $(this).parent('li.parent_li').find(' > ul > li');
+											if (children.is(':visible')) {
+												children.hide('fast');
+												$(this).attr('title', 'Expand this branch').find(' > i').removeClass().addClass('fa fa-lg fa-plus-circle');
+											} else {
+												children.show('fast');
+												$(this).attr('title', 'Collapse this branch').find(' > i').removeClass().addClass('fa fa-lg fa-minus-circle');
+											}
+											e.stopPropagation();
+										});
+										$('#forminputgp').hide();
+										$('#forminputp').hide();
+									});
 			            var table;
 			            $(function(){
 			                 table = $('.tableapi').DataTable({
@@ -511,6 +712,7 @@
                           $('#forminput').show();
                     			$('#formview').hide();
                     			$('#formedit').hide();
+													updatetree();
                         },
                         error: function(response){
                           swal({

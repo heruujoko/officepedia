@@ -96,7 +96,7 @@
     						</div>
   						@endif
 						<div class="widget-body no-padding">
-							<div id="insert-wrapper" class="form-horizontal" data-parsley-validate>
+							<div id="insert-wrapper-gp" class="form-horizontal" data-parsley-validate>
 								{{ csrf_field() }}
 								<div class="container">
 								</br>

@@ -13,7 +13,7 @@ Route::group(['prefix'=>'admin-nano'],function(){
   Route::resource('mcoa','MCOAController');
 // <<<<<<< HEAD
   Route::get('pelanggan','MCustomerController@index');
-  
+
 // =======
   Route::resource('mprefix','MPrefixController');
 
@@ -26,7 +26,8 @@ Route::group(['prefix'=>'admin-nano'],function(){
 
 
 Route::group(['prefix'=>'admin-api',['middleware' => 'api']],function(){
-
+  Route::get('mcoa/tree','Api\MCOAController@tree');
+  
   Route::resource('cabang', 'Api\MBranchController');
   Route::resource('mcoagrandparent','Api\MCOAGrandParentController');
   Route::resource('mcoaparent','Api\MCOAParentController');

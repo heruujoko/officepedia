@@ -157,10 +157,26 @@
 	 .select2-container .select2-choice .select2-arrow b:before, .select2-selection__arrow b:before {
 		 content: "" !important;
 	 }
-/* CSS UNTUK MODIFIKASI TABLE */
+	 /* CSS UNTUK MODIFIKASI TABLE */
 
 	.phonemargin{
 		margin-top: 36px;
+	}
+	.treemenu li {
+		margin-left: -40px;
+	}
+	.treemenu li:before {
+		border-left: none !important;
+	}
+	.treemenu li:after {
+		border-top: none !important;
+	}
+	.btn-tree {
+		padding: 6px 10px 5px;
+	}
+	.addtree{
+		cursor: pointer;
+    padding: 7px;
 	}
 </style>
 <style>

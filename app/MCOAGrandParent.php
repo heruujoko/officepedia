@@ -12,4 +12,8 @@ class MCOAGrandParent extends Model
     public static function findCode($code){
       return MCOAGrandParent::where('mcoagrandparentcode',$code)->first();
     }
+
+    public function childs(){
+      return MCOAParent::where("mcoagrandparentcode",$this->mcoagrandparentcode)->get();
+    }
 }

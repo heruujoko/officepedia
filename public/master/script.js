@@ -26,7 +26,7 @@ function insertmbranch(){
         city: $('#insert-city').val(),
         person_in_charge: $('#insert-person_in_charge').val(),
         information: $('#insert-information').val()
-         
+
       }
       $.ajax({
         type: "POST",
@@ -194,8 +194,8 @@ function updatebranch(){
 // MCOAGrandParent
 
   function insertgrandparent(){
-    $('#insert-wrapper').parsley().validate();
-    if($('#insert-wrapper').parsley().isValid()){
+    $('#insert-wrapper-gp').parsley().validate();
+    if($('#insert-wrapper-gp').parsley().isValid()){
       var data = {
         mcoagrandparentcode: $('#insert-mcoagrandparentcode').val(),
         mcoagrandparentname: $('#insert-mcoagrandparentname').val(),
@@ -208,6 +208,7 @@ function updatebranch(){
         success: function(response){
           console.log(response);
           table.ajax.reload();
+          updatetree();
           window.location = "#tableapi";
       		swal({
       			title: "Input Berhasil!",
@@ -332,8 +333,8 @@ function updatebranch(){
 // MCOAParent
 
   function insertparent(){
-    $('#insert-wrapper').parsley().validate();
-    if($('#insert-wrapper').parsley().isValid()){
+    $('#insert-wrapper-parent').parsley().validate();
+    if($('#insert-wrapper-parent').parsley().isValid()){
       var data = {
         mcoaparentcode: $('#insert-mcoaparentcode').val(),
         mcoaparentname: $('#insert-mcoaparentname').val(),
@@ -347,6 +348,7 @@ function updatebranch(){
         success: function(response){
           console.log(response);
           table.ajax.reload();
+          updatetree();
           window.location = "#tableapi";
       		swal({
       			title: "Input Berhasil!",
@@ -470,6 +472,66 @@ function updatebranch(){
 
 // MCOA
 
+  function updatetree(){
+    $.ajax({
+      type: "GET",
+      url: API_URL+"/mcoa/tree",
+      success: function(response){
+        console.log(response);
+        $("#mcoatree").html(response);
+        $('.tree > ul').attr('role', 'tree').find('ul').attr('role', 'group');
+        $('.tree').find('li:has(ul)').addClass('parent_li').attr('role', 'treeitem').find(' > span').attr('title', 'Collapse this branch').on('click', function(e) {
+          var children = $(this).parent('li.parent_li').find(' > ul > li');
+          if (children.is(':visible')) {
+            children.hide('fast');
+            $(this).attr('title', 'Expand this branch').find(' > i').removeClass().addClass('fa fa-lg fa-plus-circle');
+          } else {
+            children.show('fast');
+            $(this).attr('title', 'Collapse this branch').find(' > i').removeClass().addClass('fa fa-lg fa-minus-circle');
+          }
+          e.stopPropagation();
+        });
+      },
+      error: function(response){
+        swal({
+  				title: "Aksi Gagal!",
+  				type: "error",
+  				timer: 1000
+  			});
+      }
+    });
+  }
+
+  function addparent(){
+    resetmcoa();
+    backmcoa();
+    $('#forminputgp').hide();
+    $('#forminputp').show();
+    $('#forminput').hide();
+    $('#formview').hide();
+    $('#formedit').hide();
+    window.location = "#forminputp";
+  }
+
+  function addgparent(){
+    resetmcoa();
+    backmcoa();
+    $('#forminputgp').show();
+    $('#forminputp').hide();
+    $('#forminput').hide();
+    $('#formview').hide();
+    $('#formedit').hide();
+    window.location = "#forminputgp";
+  }
+
+  function addcoa(parent,type){
+    resetmcoa();
+    backmcoa();
+    $('#insert-mcoaparent').val(parent);
+    $('#insert-mcoatype').val(type);
+    window.location = "#main";
+  }
+
   function insertmcoa(){
     $("#insert-wrapper").parsley().validate();
     if($("#insert-wrapper").parsley().isValid()){
@@ -493,6 +555,7 @@ function updatebranch(){
       			type: "success",
       			timer: 1000
       		});
+          updatetree();
         },
         error: function(response){
           swal({
@@ -580,6 +643,7 @@ function updatebranch(){
           $('#forminput').show();
           $('#formview').hide();
           $('#formedit').hide();
+          updatetree();
         },
         error: function(response){
           swal({
