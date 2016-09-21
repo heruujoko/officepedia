@@ -9,15 +9,14 @@ Route::get('/', function () {
 Route::group(['prefix'=>'admin-nano'],function(){
 
   Route::get('mcoagrandparent','MCOAGrandParentController@index');
+  Route::get('mcoa/export/print','MCOAController@xprint');
+  Route::get('mcoa/export/pdf','MCOAController@pdf');
+  Route::get('mcoa/export/excel','MCOAController@excel');
+  Route::get('mcoa/export/csv','MCOAController@csv');
   Route::get('mcoaparent','MCOAParentController@index');
   Route::resource('mcoa','MCOAController');
-// <<<<<<< HEAD
   Route::get('pelanggan','MCustomerController@index');
-
-// =======
   Route::resource('mprefix','MPrefixController');
-
-// >>>>>>> c927e24266c47558ae89e3d0b982392ba4126912
   Route::controllers([
   	'/'=>'AdminController'
   ]);
@@ -27,7 +26,7 @@ Route::group(['prefix'=>'admin-nano'],function(){
 
 Route::group(['prefix'=>'admin-api',['middleware' => 'api']],function(){
   Route::get('mcoa/tree','Api\MCOAController@tree');
-  
+
   Route::resource('cabang', 'Api\MBranchController');
   Route::resource('mcoagrandparent','Api\MCOAGrandParentController');
   Route::resource('mcoaparent','Api\MCOAParentController');

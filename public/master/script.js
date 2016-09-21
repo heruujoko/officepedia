@@ -580,6 +580,8 @@ function updatebranch(){
         $('#forminput').hide();
   			$('#formview').show();
   			$('#formedit').hide();
+        $('#forminputgp').hide();
+        $('#forminputp').hide();
       },
       error: function(response){
         swal({
@@ -605,6 +607,8 @@ function updatebranch(){
         $('#forminput').hide();
   			$('#formview').hide();
   			$('#formedit').show();
+        $('#forminputgp').hide();
+        $('#forminputp').hide();
       },
       error: function(response){
         swal({
@@ -676,6 +680,14 @@ function updatebranch(){
 		$('#formview').hide();
 		$('#forminput').show();
 	}
+
+  function printmcoa(){
+    var divToPrint = $("#mcoatree");
+    var newWin=window.open('','Print-Window');
+    newWin.document.open();
+    newWin.document.write('<html><body onload="window.print()">'+divToPrint.html()+'</body></html>');
+    newWin.document.close();
+  }
 
 // MPREFIX
 

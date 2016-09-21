@@ -537,10 +537,10 @@
 									<a onclick="addparent()" class="btn btn-primary">Add Parent</a>
 
 								<div class="pull-right">
-									<a onclick="addgparent()" class="btn btn-default">CSV</a>
-									<a onclick="addparent()" class="btn btn-default">Excel</a>
-									<a onclick="addgparent()" class="btn btn-default">PDF</a>
-									<a onclick="addparent()" class="btn btn-default">Print</a>
+									<a href="{{ url('/admin-nano/mcoa/export/csv') }}" class="btn btn-default">CSV</a>
+									<a href="{{ url('/admin-nano/mcoa/export/excel') }}" class="btn btn-default">Excel</a>
+									<a href="{{ url('/admin-nano/mcoa/export/pdf') }}" class="btn btn-default">PDF</a>
+									<a href="{{ url('/admin-nano/mcoa/export/print') }}" target="_blank" class="btn btn-default">Print</a>
 								<div>
 								</div>
 							</div>
