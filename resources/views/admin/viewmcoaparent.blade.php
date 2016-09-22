@@ -366,7 +366,7 @@
 			            var table;
 			            $(function(){
 			                 table = $('.tableapi').DataTable({
-                  			      dom: "<'dtpadding' <'row' <'clmn' C> <'srch' f> <'tablerow' l> <'clear'> <'masterbutton' B> r> <'row pb' tip>>",
+                  			      dom: "<'dtpadding' <'row' <'clmn' > <'srch' f> <'tablerow' l> <'clear'> <'masterbutton' B> r> <'row pb' tip>>",
                                   "autoWidth" : true,
                                   "oLanguage": {
                                     "sSearch": '<span class="input-group-addon"><i class="glyphicon glyphicon-search"></i></span>'
@@ -401,7 +401,11 @@
                                           columns: [ 1, 2, 3, 4,5,6] //setting kolom mana yg mau di export
                                       }
 
-                                  }
+                                  },
+																	{
+																		extend: 'colvis',
+												            columns: ':gt(1)'
+																	}
                               ],
 					       				      processing: false,
 										          serverSide: false,

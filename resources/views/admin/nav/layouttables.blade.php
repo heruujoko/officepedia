@@ -178,6 +178,9 @@
 		cursor: pointer;
     padding: 7px;
 	}
+	.masterbutton {
+		margin-right: 0 !important;
+	}
 </style>
 <style>
 
@@ -765,6 +768,7 @@
 				<script src="{{ url('/js/datatable/Buttons-1.2.2/js/buttons.html5.js') }}"></script>
 				<script src="{{ url('/js/datatable/dataTables.colVis.min.js') }}"></script>
 				<script src="{{ url('/js/datatable/Buttons-1.2.2/js/buttons.print.js') }}"></script>
+				<script src="{{ url('/js/datatable/Buttons-1.2.2/js/buttons.colVis.js') }}"></script>
 				<script src="{{ url('/js/datatable/Buttons-1.2.2/js/buttons.flash.js') }}"></script>
 				<script src="{{ url('/js/datatable/pdfmake-0.1.18/build/pdfmake.js') }}"></script>
 				<script src="{{ url('/js/datatable/pdfmake-0.1.18/build/vfs_fonts.js') }}"></script>
