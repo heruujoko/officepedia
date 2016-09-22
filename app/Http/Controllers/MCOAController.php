@@ -34,6 +34,7 @@ class MCOAController extends Controller
       $data['gparents'] = MCOAGrandParent::all();
       $pdf = PDF::loadview('admin/export/mcoapdf',$data);
       return $pdf->download('master akun.pdf');
+      // return view('admin/export/mcoapdf',$data);
     }
 
     public function excel(){

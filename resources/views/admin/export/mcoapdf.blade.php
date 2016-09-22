@@ -42,34 +42,30 @@
       padding: 5px;
       position: relative;
     }
-    .tree li:before {
-        border-left: 1px solid #999;
-        bottom: 50px;
-        height: 100%;
-        top: -11px;
-        width: 1px;
-        -webkit-transition: "border-color 0.1s ease 0.1s";
-        -moz-transition: "border-color 0.1s ease 0.1s";
-        -o-transition: "border-color 0.1s ease 0.1s";
-        transition: "border-color 0.1s ease 0.1s";
+
+    .bfr{
+      border-left: 1px solid #999;
+      bottom: 50px;
+      height: 100%;
+      top: -8px;
+      width: 1px;
+      content: '';
+      left: -20px;
+      position: absolute;
+      right: auto;
     }
-    .tree li:after {
-        border-top: 1px solid #999 !important;
-        height: 20px;
-        top: 18px;
-        width: 25px;
+    .aftr{
+      border-top: 1px solid #999 !important;
+      height: 20px;
+      top: 18px;
+      width: 25px;
+      content: '';
+      left: -20px;
+      position: absolute;
+      right: auto;
     }
-    .tree li:after, .tree li:before {
-        content: '';
-        left: -20px;
-        position: absolute;
-        right: auto;
-    }
-    .tree>ul>li:after, .tree>ul>li:before {
-        border: 0;
-    }
-    .tree li:last-child:before {
-        height: 30px;
+    .lc {
+      height: 30px;
     }
     </style>
   </head>
@@ -116,7 +112,7 @@
         @endforeach
       </tbody>
     </table>
-    <!-- <div style="page-break-after: always;"></div>
+    <div style="page-break-after: always;"></div>
     <h3> Master Akun </h3>
     <div class="tree smart-form container" id="mcoatree" style="font-size: 12px;">
       <ul role="tree">
@@ -124,26 +120,33 @@
         <li class="parent_li" role="treeitem">
           <span title="Collapse this branch"><i class="fa fa-lg fa-folder-open"></i> <b>{{ $gp->mcoagrandparentcode }}</b> {{ $gp->mcoagrandparentname }}</span>
           <ul role="group">
+            <?php $cp =0 ?>
             @foreach($gp->childs() as $parent)
+            <?php $cp++ ?>
             <li class="parent_li" role="treeitem">
+              @if($cp == count($gp->childs()))
+              <div class="bfr lc"></div>
+              @else
+              <div class="bfr"></div>
+              @endif
               <span title="Collapse this branch"><i class="fa fa-lg fa-plus-circle"></i> <b>{{ $parent->mcoaparentcode }}</b> {{ $parent->mcoaparentname }}</span>
               <ul role="group">
-                <li style="display:none">
-                  <span title="Collapse this branch" class="addtree" onclick="addcoa('{{ $parent->mcoaparentcode }}','{{ $parent->mcoaparenttype}}')"><i class="fa fa-lg fa-plus-circle"></i> <b>Add New</b></span>
-                </li>
                 @foreach($parent->childs() as $coa)
                 <li>
+                  <div class="bfr lc"></div>
                   <span title="Collapse this branch"><i class="fa fa-lg fa-plus-circle"></i> <b>{{ $coa->mcoacode }}</b> {{ $coa->mcoaname }}</span>
+                  <div class="aftr"></div>
                 </li>
                 @endforeach
               </ul>
+              <div class="aftr"></div>
             </li>
             @endforeach
           </ul>
         </li>
         @endforeach
       </ul>
-    </div> -->
+    </div>
     <br>
   </body>
 </html>

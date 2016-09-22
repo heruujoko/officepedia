@@ -5,7 +5,7 @@ namespace App;
 use Illuminate\Database\Eloquent\Model;
 use App\MCOAParent;
 
-class MCOA extends Model
+class MCOA extends \LaravelArdent\Ardent\Ardent
 {
     protected $table = "mcoa";
 
@@ -20,5 +20,13 @@ class MCOA extends Model
       $gp = $p->parent();
       $this->mcoagrandparentcode = $gp->mcoagrandparentcode;
       $this->mcoagrandparentname = $gp->mcoagrandparentname;
+    }
+
+    public function afterSave(){
+      $this->parent()->validateValue();
+    }
+
+    public function afterUpdate(){
+      $this->parent()->validateValue();
     }
 }

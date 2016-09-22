@@ -16,4 +16,13 @@ class MCOAGrandParent extends Model
     public function childs(){
       return MCOAParent::where("mcoagrandparentcode",$this->mcoagrandparentcode)->get();
     }
+
+    public function validateValue(){
+      $val = 0;
+      foreach($this->childs() as $ch){
+        $val += $ch->saldo;
+      }
+      $this->saldo = $val;
+      $this->save();
+    }
 }
