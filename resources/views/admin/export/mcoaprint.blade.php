@@ -48,6 +48,7 @@
         <th>Parent Name</th>
         <th>COA Code</th>
         <th>COA Name</th>
+        <th>Saldo</th>
       </thead>
       <tbody>
         @foreach($gparents as $gp)
@@ -58,6 +59,7 @@
             <td></td>
             <td></td>
             <td></td>
+            <td>{{ $gp->saldo }}</td>
           </tr>
           @foreach($gp->childs() as $parent)
             <tr>
@@ -67,6 +69,7 @@
               <td>{{ $parent->mcoaparentname }}</td>
               <td></td>
               <td></td>
+              <td>{{ $parent->saldo }}</td>
             </tr>
             @foreach($parent->childs() as $mcoa)
               <tr>
@@ -76,6 +79,7 @@
                 <td></td>
                 <td>{{ $mcoa->mcoacode }}</td>
                 <td>{{ $mcoa->mcoaname }}</td>
+                <td>{{ $mcoa->saldo }}</td>
               </tr>
             @endforeach
           @endforeach
@@ -88,18 +92,18 @@
       <ul role="tree">
         @foreach($gparents as $gp)
         <li class="parent_li" role="treeitem">
-          <span title="Collapse this branch"><i class="fa fa-lg fa-folder-open"></i> <b>{{ $gp->mcoagrandparentcode }}</b> {{ $gp->mcoagrandparentname }}</span>
+          <span title="Collapse this branch"><i class="fa fa-lg fa-folder-open"></i> <b>{{ $gp->mcoagrandparentcode }}</b> {{ $gp->mcoagrandparentname }} / Rp. {{ $gp->saldo }}</span>
           <ul role="group">
             @foreach($gp->childs() as $parent)
             <li class="parent_li" role="treeitem">
-              <span title="Collapse this branch"><i class="fa fa-lg fa-plus-circle"></i> <b>{{ $parent->mcoaparentcode }}</b> {{ $parent->mcoaparentname }}</span>
+              <span title="Collapse this branch"><i class="fa fa-lg fa-plus-circle"></i> <b>{{ $parent->mcoaparentcode }}</b> {{ $parent->mcoaparentname }} / Rp. {{ $parent->saldo }}</span>
               <ul role="group">
                 <li style="display:none">
                   <span title="Collapse this branch" class="addtree" onclick="addcoa('{{ $parent->mcoaparentcode }}','{{ $parent->mcoaparenttype}}')"><i class="fa fa-lg fa-plus-circle"></i> <b>Add New</b></span>
                 </li>
                 @foreach($parent->childs() as $coa)
                 <li>
-                  <span title="Collapse this branch"><i class="fa fa-lg fa-plus-circle"></i> <b>{{ $coa->mcoacode }}</b> {{ $coa->mcoaname }}</span>
+                  <span title="Collapse this branch"><i class="fa fa-lg fa-plus-circle"></i> <b>{{ $coa->mcoacode }}</b> {{ $coa->mcoaname }} / Rp. {{ $coa->saldo }}</span>
                 </li>
                 @endforeach
               </ul>

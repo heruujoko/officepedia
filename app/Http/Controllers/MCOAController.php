@@ -44,22 +44,22 @@ class MCOAController extends Controller
         $excel->sheet('Master Akun',function($sheet){
           $this->count++;
           $sheet->row($this->count,array(
-            'Grand Parent Code','Grand Parent Name','Parent Code','Parent Name','MCOA Code','MCOA Name'
+            'Grand Parent Code','Grand Parent Name','Parent Code','Parent Name','MCOA Code','MCOA Name','Saldo'
           ));
           foreach($this->gparents as $gp){
             $this->count++;
             $sheet->row($this->count,array(
-              $gp->mcoagrandparentcode,$gp->mcoagrandparentname
+              $gp->mcoagrandparentcode,$gp->mcoagrandparentname,'','','','',$gp->saldo
             ));
             foreach($gp->childs() as $parent){
               $this->count++;
               $sheet->row($this->count,array(
-                '','',$parent->mcoaparentcode,$parent->mcoaparentname
+                '','',$parent->mcoaparentcode,$parent->mcoaparentname,'','',$parent->saldo
               ));
               foreach($parent->childs() as $mcoa){
                 $this->count++;
                 $sheet->row($this->count,array(
-                  '','','','',$mcoa->mcoacode,$mcoa->mcoaname
+                  '','','','',$mcoa->mcoacode,$mcoa->mcoaname,$mcoa->saldo
                 ));
               }
             }
@@ -76,22 +76,22 @@ class MCOAController extends Controller
         $excel->sheet('Master Akun',function($sheet){
           $this->count++;
           $sheet->row($this->count,array(
-            'Grand Parent Code','Grand Parent Name','Parent Code','Parent Name','MCOA Code','MCOA Name'
+            'Grand Parent Code','Grand Parent Name','Parent Code','Parent Name','MCOA Code','MCOA Name','Saldo'
           ));
           foreach($this->gparents as $gp){
             $this->count++;
             $sheet->row($this->count,array(
-              $gp->mcoagrandparentcode,$gp->mcoagrandparentname
+              $gp->mcoagrandparentcode,$gp->mcoagrandparentname,'','','','',$gp->saldo
             ));
             foreach($gp->childs() as $parent){
               $this->count++;
               $sheet->row($this->count,array(
-                '','',$parent->mcoaparentcode,$parent->mcoaparentname
+                '','',$parent->mcoaparentcode,$parent->mcoaparentname,'','',$parent->saldo
               ));
               foreach($parent->childs() as $mcoa){
                 $this->count++;
                 $sheet->row($this->count,array(
-                  '','','','',$mcoa->mcoacode,$mcoa->mcoaname
+                  '','','','',$mcoa->mcoacode,$mcoa->mcoaname,$mcoa->saldo
                 ));
               }
             }
