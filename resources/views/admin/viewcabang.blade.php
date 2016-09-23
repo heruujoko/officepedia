@@ -694,7 +694,7 @@
 			$(function(){
 
 			table = $('.tableapi').DataTable({
-			 dom: "<'dtpadding' <'row' <'clmn' C> <'srch' f> <'tablerow' l> <'clear'> <'masterbutton' B> r> <'row pb' tip>>",
+			 dom: "<'dtpadding' <'row' <'clmn' > <'srch' f> <'tablerow' l> <'clear'> <'masterbutton' B> r> <'row pb' tip>>",
             "autoWidth" : true,
             "oLanguage": {
                 "sSearch": '<span class="input-group-addon"><i class="glyphicon glyphicon-search"></i></span>'
@@ -730,7 +730,10 @@
                 }
 
             },
-
+						{
+							extend: 'colvis',
+							columns: ':gt(1)'
+						}
             ],
 
 					       				processing: false,

@@ -542,31 +542,13 @@
 									<a href="{{URL::to('/')}}/admin-nano/pelanggan">Pelanggan</a>
 								</li>
 							@endif
-							@if($active == 'mcoagp')
-								<li class="active">
-									<a href="{{URL::to('/')}}/admin-nano/mcoagrandparent">MCOA Grand Parent</a>
-								</li>
-							@else
-								<li>
-									<a href="{{URL::to('/')}}/admin-nano/mcoagrandparent">MCOA Grand Parent</a>
-								</li>
-							@endif
-							@if($active == 'mcoap')
-								<li class="active">
-									<a href="{{URL::to('/')}}/admin-nano/mcoaparent">MCOA Parent</a>
-								</li>
-							@else
-								<li>
-									<a href="{{URL::to('/')}}/admin-nano/mcoaparent">MCOA Parent</a>
-								</li>
-							@endif
 							@if($active == 'mcoa')
 								<li class="active">
-									<a href="{{URL::to('/')}}/admin-nano/mcoa">MCOA</a>
+									<a href="{{URL::to('/')}}/admin-nano/mcoa">Akun</a>
 								</li>
 							@else
 							<li>
-								<a href="{{URL::to('/')}}/admin-nano/mcoa">MCOA</a>
+								<a href="{{URL::to('/')}}/admin-nano/mcoa">Akun</a>
 							</li>
 							@endif
 
