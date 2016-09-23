@@ -17,6 +17,7 @@ class CreateMPrefixesTable extends Migration
             $table->string('mprefix')->unique();
             $table->string('mprefixtransaction');
             $table->string('mprefixremark')->nullable();
+            $table->integer('last_count');
             $table->timestamps();
         });
     }

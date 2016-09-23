@@ -16,6 +16,8 @@ Route::group(['prefix'=>'admin-nano'],function(){
   Route::get('mcoaparent','MCOAParentController@index');
   Route::resource('mcoa','MCOAController');
   Route::get('pelanggan','MCustomerController@index');
+  Route::get('pelanggan/insert/{id}/{activetab}','MCustomerController@editmcustomercontact');
+
   Route::resource('mprefix','MPrefixController');
   Route::controllers([
   	'/'=>'AdminController'
@@ -32,7 +34,8 @@ Route::group(['prefix'=>'admin-api',['middleware' => 'api']],function(){
   Route::resource('mcoaparent','Api\MCOAParentController');
   Route::resource('mcoa','Api\MCOAController');
   Route::resource('mprefix','Api\MPrefixController');
-
+  Route::resource('pelanggan','Api\MCustomerController');
+  Route::post('pelanggan/insert/{id}','Api\MCustomerController@insertloadcontact');
   Route::controllers([
   	'/'=>'ApiController'
   ]);

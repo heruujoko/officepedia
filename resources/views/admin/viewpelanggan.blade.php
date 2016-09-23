@@ -46,7 +46,7 @@
 <div id="content">
 
 	<div class="row">
-		
+
 		<div class="col-xs-12 col-sm-5 col-md-5 col-lg-8">
 			<ul id="sparks" class="">
 				<li class="sparks-info">
@@ -146,7 +146,7 @@
 								border-color: #2F9ACF;
 							}
 						</style>
-						
+
 						@if(count($errors) > 0)
 
 						<div class="alert alert-info alerthide" role="alert">
@@ -204,9 +204,9 @@
 									<div  class="col-md-7">
 										<div class="icon-addon addon-md">
 											<input id="insert-officephone" value="{{old('officephone')}}" name="officephone" class="form-control forminput" placeholder="Telepon Kantor" type="number" required @if (Session::has('autofocus')) autofocus @endif >
-											
+
 											<label for="mgoodsgroup1" class="glyphicon glyphicon-phone-alt" rel="tooltip" title="Telepon Kantor"></label>
-											
+
 										<div style="height: 5px;">
 										<h5 style="font-size: 11px; margin-top: 36px;">&nbsp Example: 0542123456</h5>
 										</div>
@@ -218,9 +218,9 @@
 									<div  class="col-md-7">
 										<div class="icon-addon addon-md">
 											<input id="insert-mcustomerfaxphone" value="{{old('mcustomerfaxphone')}}" name="mcustomerfaxphone" class="form-control forminput" placeholder="Fax Kantor" type="number" required @if (Session::has('autofocus')) autofocus @endif >
-											
+
 											<label for="mgoodsgroup1" class="glyphicon glyphicon-phone-alt" rel="tooltip" title="Fax Kantor"></label>
-											
+
 										<div style="height: 5px;">
 										<h5 style="font-size: 11px; margin-top: 36px;">&nbsp Example: 0542123456</h5>
 										</div>
@@ -236,7 +236,7 @@
 										</div>
 									</div>
 								</div>
-								
+
 								<input type="hidden" name="void" value="0">
 								<center>
 									<div class="row">
@@ -322,12 +322,12 @@
 						</div>
 						<!-- end widget edit box -->
 						<h3 style="font-weight: bold; color: #C91503;font-size: 19px;">Mode : EDIT</h3>
-					
+
 						<input type="hidden" id="mbranchid" value=""></input>
-						<div class="form-horizontal"> 
+						<div class="form-horizontal">
 
 							<div class="container">
-								
+
 
 
 								<style>
@@ -337,8 +337,8 @@
 										border-color: #2F9ACF;
 									}
 								</style>
-								
-						
+
+
 
 											<div style="height: 21px;" class="form-group">
 									<label class="col-md-3 control-label"><b>Kode Cabang</b> (<font color="red">*</font>) &nbsp  :</label>
@@ -372,9 +372,9 @@
 									<div  class="col-md-7">
 										<div class="icon-addon addon-md">
 											<input value="" id="phone" name="phone" class="form-control forminput" placeholder="Telepon" type="number" required>
-											
+
 											<label for="mgoodsgroup1" class="glyphicon glyphicon-phone-alt" rel="tooltip" title="Telepon"></label>
-										
+
 										<div style="height: 5px;">
 										<h5 style="font-size: 11px; margin-top: 36px;">&nbsp Example: 0542123456</h5>
 										</div>
@@ -408,7 +408,7 @@
 										</div>
 									</div>
 								</div>
-					
+
 								<center>
 									<div class="row">
 										<div class="col-md-12">
@@ -416,7 +416,7 @@
 											<button onclick="updatecabang()" class="btn btn-primary" type="submit">
 												<i class="fa fa-save"></i> Simpan</button>
 
-												
+
 											</div>
 										</center>
 									</br>
@@ -425,7 +425,7 @@
 							</div>
 						</div>
 
-						
+
 					</div>
 					<div class="row">
 
@@ -483,12 +483,12 @@
 						</div>
 						<!-- end widget edit box -->
 						<h3 style="font-weight: bold; color: #291817;font-size: 19px;">Mode : VIEW</h3>
-						
+
 						<input type="hidden" id="mbranchid" value=""></input>
-						<div class="form-horizontal"> 
+						<div class="form-horizontal">
 
 							<div class="container">
-								
+
 
 
 								<style>
@@ -498,7 +498,7 @@
 										border-color: #2F9ACF;
 									}
 								</style>
-								
+
 
 								<div style="height: 21px;" class="form-group">
 									<label class="col-md-3 control-label"><b>Kode Cabang</b> (<font color="red">*</font>) &nbsp  :</label>
@@ -570,7 +570,7 @@
 											<button onclick="back()" class="btn btn-default" type="submit">
 												<i class="fa fa-save"></i> Kembali</button>
 
-												
+
 											</div>
 										</center>
 									</br>
@@ -580,19 +580,19 @@
 						</div>
 
 
-						
+
 					</div>
 
 
 					<!-- end widget -->
 
-					
 
-					
 
-					
 
-					
+
+
+
+
 					<!-- widget grid -->
 					<article class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
 						<section id="widget-grid" class="">
@@ -635,9 +635,9 @@
 
 					<!-- widget content -->
 					<div class="widget-body">
-					
+
 							<table  id="tableapi" class="tableapi table table-bordered" width="100%">
-								
+
 								<thead>
 									<tr>
 										<th class="hasinput" style="width:5%">
@@ -675,27 +675,27 @@
 										<th data-hide="mcustomerfaxphone"><center>No Fax Kantor</center></th>
 										<th data-hide="website"><center>Website</center></th>
 										<th data-hide="action"><center>Aksi</center></th>
-										
-										
+
+
 
 									</tr>
 								</thead>
 								<tbody>
 								</tbody>
-								
+
 							</table>
 							@push('scripts')
 							<tfoot>
 							<script>
-							
+
 
 			var table;
-			
-			
+
+
 			$(function(){
-			
+
 			table = $('.tableapi').DataTable({
-			 dom: "<'dtpadding' <'row' <'clmn' C> <'srch' f> <'tablerow' l> <'clear'> <'masterbutton' B> r> <'row pb' tip>>",
+			 dom: "<'dtpadding' <'row' <'clmn' > <'srch' f> <'tablerow' l> <'clear'> <'masterbutton' B> r> <'row pb' tip>>",
             "autoWidth" : true,
             "oLanguage": {
                 "sSearch": '<span class="input-group-addon"><i class="glyphicon glyphicon-search"></i></span>'
@@ -729,10 +729,13 @@
                 exportOptions: {
                     columns: [ 0, 1, 2, 3, 4, 5] //setting kolom mana yg mau di print
                 }
-       
+
             },
-			
-            ],					
+						{
+							extend: 'colvis',
+							columns: ':gt(1)'
+						}
+            ],
 
 					       				processing: false,
 										serverSide: false,
@@ -760,7 +763,7 @@
 		            .column( $(this).parent().index()+':visible' )
 		            .search( this.value )
 		            .draw();
-		            
+
 		    		} );
 
 				});
@@ -770,19 +773,19 @@
 			}
 
 			$(document).ready(function(){
-				var columnBtn = "<span>Show / Hide columns</span>";		
+				var columnBtn = "<span>Show / Hide columns</span>";
 				$('.ColVis_MasterButton').html(columnBtn);
 
 			});
-			
-	
+
+
 							</script>
 							</tfoot>
-							
-							@endpush
-						
 
-						
+							@endpush
+
+
+
 
 						<script>
 					function popupdelete(id){
@@ -792,39 +795,39 @@
 								// 	window.location = '{{ URL::to('/') }}'+'/admin-nano/delcabang/'+id+'/delete';
 								// }
 					swal({
-					title: "Anda Yakin Akan Mengapus ?",   
-					text: "Anda Tidak Dapat Mengembalikan Data Ini!",   
-					type: "warning",   showCancelButton: true,   
-					confirmButtonColor: "#DD6B55",   
-					confirmButtonText: "Iya, Hapus!",   
-					cancelButtonText: "Tidak, Batal!",   
-					closeOnConfirm: false,   
+					title: "Anda Yakin Akan Mengapus ?",
+					text: "Anda Tidak Dapat Mengembalikan Data Ini!",
+					type: "warning",   showCancelButton: true,
+					confirmButtonColor: "#DD6B55",
+					confirmButtonText: "Iya, Hapus!",
+					cancelButtonText: "Tidak, Batal!",
+					closeOnConfirm: false,
 					closeOnCancel: false
 								},
 					function(isconfirm){
-					if (isconfirm) {     
+					if (isconfirm) {
 					swal({
-						title: "Terhapus!", 
-						text: "Data Anda Berhasil Terhapus.", 
+						title: "Terhapus!",
+						text: "Data Anda Berhasil Terhapus.",
 						type: "success",
-						
-						});   
+
+						});
 					window.setTimeout(function(){
 					window.location = '{{ URL::to('/') }}'+'/admin-nano/delcabang/'+id+'/delete'
 					},1000)
-				} 
-					
-					else {     
+				}
+
+					else {
 
 						swal({
-						
-						title: "Batal Terhapus!",   
-						text: "Data Anda Batal Terhapus.",   
+
+						title: "Batal Terhapus!",
+						text: "Data Anda Batal Terhapus.",
 						type: "error",
-						timer: 1000,   
+						timer: 1000,
 						confirmButtonText: "Ok"
 						});
-						window.location = '#main';   
+						window.location = '#main';
 					}
 					});
 					}
@@ -855,4 +858,3 @@
 
 
 @stop
-

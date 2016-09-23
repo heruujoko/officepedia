@@ -257,7 +257,7 @@
 
 				</div>
 				<!-- end widget content -->
-
+				</div>
 			</div>
 			<!-- end widget div -->
 
@@ -327,8 +327,8 @@
 						<h3 style="font-weight: bold; color: #C91503;font-size: 19px;">Mode : EDIT</h3>
 
 						<input type="hidden" id="mbranchid" value=""></input>
-						<div class="form-horizontal">
-
+					 
+							<div id="edit-wrapper" class="form-horizontal" data-parsley-validate>
 							<div class="container">
 
 
@@ -347,7 +347,7 @@
 									<label class="col-md-3 control-label"><b>Kode Cabang</b> (<font color="red">*</font>) &nbsp  :</label>
 									<div class="col-md-7">
 										<div class="icon-addon addon-md">
-											<input  value="" id="mbranchcode" name="mbranchcode" class="form-control forminput" placeholder="Kode Cabang" type="text" required>
+											<input  value="" id="mbranchcode" name="mbranchcode" class="form-control forminput" placeholder="Kode Cabang" type="text" required data-parsley-required-message="Field Ini Tidak Boleh Kosong">
 											<label for="mgoodsgroup1" class="glyphicon glyphicon-barcode" rel="tooltip" title="Kode Cabang"></label>
 										</div>
 									</div>
@@ -356,7 +356,7 @@
 									<label class="col-md-3 control-label"><b>Nama Cabang</b> (<font color="red">*</font>) &nbsp  :</label>
 									<div class="col-md-7">
 										<div class="icon-addon addon-md">
-											<input value="" id="mbranchname" name="mbranchname" class="form-control forminput" placeholder="Nama Cabang" type="text" required autofocus >
+											<input value="" id="mbranchname" name="mbranchname" class="form-control forminput" placeholder="Nama Cabang" type="text" required data-parsley-required-message="Field Ini Tidak Boleh Kosong" autofocus >
 											<label for="mgoodsgroup1" class="glyphicon glyphicon-chevron-right" rel="tooltip" title="Nama Cabang"></label>
 										</div>
 									</div>
@@ -365,7 +365,7 @@
 									<label class="col-md-3 control-label"><b>Alamat</b> (<font color="red">*</font>) &nbsp  :</label>
 									<div class="col-md-7">
 										<div class="icon-addon addon-md">
-											<input value="" id="address" name="address" class="form-control forminput" placeholder="Alamat" type="text" required>
+											<input value="" id="address" name="address" class="form-control forminput" placeholder="Alamat" type="text" required data-parsley-required-message="Field Ini Tidak Boleh Kosong">
 											<label for="mgoodsgroup1" class="glyphicon glyphicon-home" rel="tooltip" title="Alamat"></label>
 										</div>
 									</div>
@@ -374,7 +374,7 @@
 									<label class="col-md-3 control-label"><b>Telepon</b> (<font color="red">*</font>) &nbsp  :</label>
 									<div  class="col-md-7">
 										<div class="icon-addon addon-md">
-											<input value="" id="phone" name="phone" class="form-control forminput" placeholder="Telepon" type="number" required>
+											<input value="" id="phone" name="phone" class="form-control forminput" placeholder="Telepon" type="number" required data-parsley-required-message="Field Ini Tidak Boleh Kosong">
 
 											<label for="mgoodsgroup1" class="glyphicon glyphicon-phone-alt" rel="tooltip" title="Telepon"></label>
 
@@ -388,7 +388,7 @@
 									<label class="col-md-3 control-label"><b>Kota</b> (<font color="red">*</font>) &nbsp  :</label>
 									<div class="col-md-7">
 										<div class="icon-addon addon-md">
-											<input value="" id="city" name="city" class="form-control forminput" placeholder="Kota" type="text" required>
+											<input value="" id="city" name="city" class="form-control forminput" placeholder="Kota" type="text" required data-parsley-required-message="Field Ini Tidak Boleh Kosong">
 											<label for="mgoodsgroup1" class="glyphicon glyphicon-road" rel="tooltip" title="Kota"></label>
 										</div>
 									</div>
@@ -397,7 +397,7 @@
 									<label class="col-md-3 control-label"><b>Orang Yang Bertanggung Jawab</b> (<font color="red">*</font>) &nbsp  :</label>
 									<div class="col-md-7">
 										<div class="icon-addon addon-md">
-											<input value="" id="person_in_charge" name="person_in_charge" class="form-control forminput" placeholder="Orang Yang Bertanggung Jawab" type="text" required>
+											<input value="" id="person_in_charge" name="person_in_charge" class="form-control forminput" placeholder="Orang Yang Bertanggung Jawab" type="text" required data-parsley-required-message="Field Ini Tidak Boleh Kosong">
 											<label for="mgoodsgroup1" class="glyphicon glyphicon-user" rel="tooltip" title="Orang Yang Bertanggung Jawab"></label>
 										</div>
 									</div>
@@ -416,7 +416,7 @@
 									<div class="row">
 										<div class="col-md-12">
 											<a onclick="back()" title="" class="btn btn-default">Batal</a>
-											<button onclick="updatebranch()" class="btn btn-primary" type="submit">
+											<button onclick="updatembranch()" class="btn btn-primary" type="submit">
 												<i class="fa fa-save"></i> Simpan</button>
 
 
@@ -426,6 +426,7 @@
 
 								</div>
 							</div>
+						</div>
 						</div>
 
 
@@ -643,6 +644,9 @@
 
 								<thead>
 									<tr>
+									<th class="hasinput" style="width:15%">
+
+										</th>
 										<th class="hasinput" style="width:5%">
 											<input type="text" class="form-control" placeholder="Filter No" />
 										</th>
@@ -662,18 +666,17 @@
 											<input type="text" class="form-control" placeholder="Filter Kota" />
 										</th>
 
-										<th class="hasinput" style="width:15%">
-
-										</th>
+										
 									</tr>
 									<tr>
+										<th data-hide="action"><center>Aksi</center></th>
 										<th data-hide="no"><center>No</center></th>
 										<th data-hide="mbranchcode"><center>Kode Cabang</center></th>
 										<th data-hide="mbranchname"><center>Nama Cabang</center></th>
 										<th data-hide="address"><center>Alamat</center></th>
 										<th data-hide="phone"><center>Telepon</center></th>
 										<th data-hide="city"><center>Kota</center></th>
-										<th data-hide="action"><center>Aksi</center></th>
+										
 
 
 
@@ -738,15 +741,16 @@
 
 					       				processing: false,
 										serverSide: false,
-										ajax: '{{URL::to('/')}}/admin-api/datacabang',
+										ajax: '{{URL::to('/')}}/admin-api/cabang',
 										columns: [
+										{data: 'action', name:'action', searchable: false, orderable: false},
 										{data: 'no', no: 'no' },
 										{data: 'mbranchcode', mbranchcode: 'mbranchcode'},
 										{data: 'mbranchname', mbranchname: 'mbranchname'},
 										{data: 'address', address: 'address'},
 										{data: 'phone', phone: 'phone'},
 										{data: 'city', city: 'city'},
-										{data: 'action', name:'action', searchable: false, orderable: false}
+										
 										]
 									});
 

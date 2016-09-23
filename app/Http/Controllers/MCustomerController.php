@@ -11,7 +11,9 @@ class MCustomerController extends Controller
 	public function index(){
 		$data['active'] = 'customer';
 		$data['section'] = 'customer';
-	    return view('admin/viewmcustomer',$data);
+    $data['activetab'] = 1;
+		$data['id'] = null;
+	  return view('admin/viewmcustomer',$data);
 	}
 
 	public function store(){
@@ -28,6 +30,16 @@ class MCustomerController extends Controller
 			$new_cust->id_pelanggan = $request->id_pelanggan;
 			$new_cust->save();
 		}
+    $data['activetab'] = 1;
+		$data['id'] = null;
+	  return view('admin/viewmcustomer',$data);
+	}
 
+	public function editmcustomercontact($id, $activetab){
+		$data['active'] = 'customer';
+		$data['section'] = 'customer';
+		$data['activetab'] = $activetab;
+		$data['id'] = $id;
+	  return view('admin/viewmcustomer',$data);
 	}
 }
