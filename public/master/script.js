@@ -2,7 +2,7 @@ $('#formedit').hide();
 $('#formview').hide();
 
 var API_URL = '/nano/public/admin-api';
-
+var WEB_URL = '/nano/public/admin-nano';
 // MBRANCH SCRIPT
 $("#insert-phone").keyup(function(){
   var val = $("#insert-phone").val();
@@ -58,21 +58,23 @@ function insertmbranch(){
     }
 }
 
- function viewbranch(id){
+ function viewmbranch(id){
+  console.log(id);
 	$.ajax({
-		url : API_URL+'/viewcabang/'+id,
-		type : 'GET',
+    type : 'GET',
+		url : API_URL+'/cabang/'+id,
 		success : function(response){
-			$('#mbranchid2').val(response.mbranch.id);
-			$('#mbranchcode2').val(response.mbranch.mbranchcode);
-			$('#mbranchname2').val(response.mbranch.mbranchname);
-			$('#address2').val(response.mbranch.address);
-			$('#phone2').val(response.mbranch.phone);
-			$('#city2').val(response.mbranch.city);
-			$('#person_in_charge2').val(response.mbranch.person_in_charge);
-			$('#information2').val(response.mbranch.information);
-			$('#created_at2').val(response.mbranch.created_at);
-			$('#updated_at2').val(response.mbranch.updated_at);
+      console.log(response);
+			$('#mbranchid2').val(response.id);
+			$('#mbranchcode2').val(response.mbranchcode);
+			$('#mbranchname2').val(response.mbranchname);
+			$('#address2').val(response.address);
+			$('#phone2').val(response.phone);
+			$('#city2').val(response.city);
+			$('#person_in_charge2').val(response.person_in_charge);
+			$('#information2').val(response.information);
+			$('#created_at2').val(response.created_at);
+			$('#updated_at2').val(response.updated_at);
 			$('#forminput').hide();
 			$('#formedit').hide();
 			$('#formview').show();
@@ -80,20 +82,20 @@ function insertmbranch(){
 	});
 	window.location = "#main";
 }
-function editbranch(id){
+function editmbranch(id){
 	$.ajax({
 
-		url : API_URL+'/editcabang/'+id,
+		url : API_URL+'/cabang/'+id,
 		type : 'GET',
 		success : function(response){
-			$('#mbranchid').val(response.mbranch.id);
-			$('#mbranchcode').val(response.mbranch.mbranchcode);
-			$('#mbranchname').val(response.mbranch.mbranchname);
-			$('#address').val(response.mbranch.address);
-			$('#phone').val(response.mbranch.phone);
-			$('#city').val(response.mbranch.city);
-			$('#person_in_charge').val(response.mbranch.person_in_charge);
-			$('#information').val(response.mbranch.information);
+			$('#mbranchid').val(response.id);
+			$('#mbranchcode').val(response.mbranchcode);
+			$('#mbranchname').val(response.mbranchname);
+			$('#address').val(response.address);
+			$('#phone').val(response.phone);
+			$('#city').val(response.city);
+			$('#person_in_charge').val(response.person_in_charge);
+			$('#information').val(response.information);
 			$('#forminput').hide();
 			$('#formview').hide();
 			$('#formedit').show();
@@ -103,55 +105,54 @@ function editbranch(id){
 	window.location = "#main";
 }
 
-function updatebranch(){
+function updatembranch(){
 
-	var data = {
-		mbranchcode : $('#mbranchcode').val(),
-		mbranchname : $('#mbranchname').val(),
-		address : $('#address').val(),
-		phone : $('#phone').val(),
-		city : $('#city').val(),
-		person_in_charge : $('#person_in_charge').val(),
-		information : $('#information').val(),
+$('#edit-wrapper').parsley().validate();
+    if($('#edit-wrapper').parsley().isValid()){
+    var updateid = $('#mbranchid').val();
+    var data = {
+    mbranchcode : $('#mbranchcode').val(),
+    mbranchname : $('#mbranchname').val(),
+    address : $('#address').val(),
+    phone : $('#phone').val(),
+    city : $('#city').val(),
+    person_in_charge : $('#person_in_charge').val(),
+    information : $('#information').val(),
 
-	}
-
-	var id = $('#mbranchid').val();
-	$.post(API_URL+"/editcabang/"+id,data,function(data){
-			table.ajax.reload();
-		 	var errcode = data.code;
-			console.log(data.code);
-			console.log(data);
-			var strerr = "";
-
-			if (errcode == 400) {
-				for(i=0;i < data.errors.length; i++){
-				strerr = strerr + data.errors[i];
-			}
-				window.location = "#main";
-			  alert(strerr);
-
-			}
-			else{
-			window.location = "#tableapi";
-
-			swal({
-						title: "Pengubahan Berhasil!",
-						type: "success",
-						timer: 1000
-
-						});
-			}
-
-
-			});
-
-			$('#forminput').show();
-			$('#formview').hide();
-			$('#formedit').hide();
+  }
+    
+   $.ajax({
+        type: "PUT",
+        url: API_URL+"/cabang/"+updateid,
+        data: data,
+        success: function(response){
+          console.log(response);
+          table.ajax.reload();
+          window.location = "#tableapi";
+          swal({
+            title: "Pengubahan Berhasil!",
+            type: "success",
+            timer: 1000
+          });
+          $('#forminput').show();
+          $('#formview').hide();
+          $('#formedit').hide();
+        },
+        error: function(response){
+          swal({
+            title: "Pengubahan Gagal!",
+            type: "error",
+            timer: 1000
+          });
+        }
+      });
+    }
+  
+  }
 
 
-}
+		
+
 
 	function back(){
 		$('#insert-mbranchcode').val('');
@@ -756,7 +757,183 @@ function updatebranch(){
 
 // MCUSTOMER
 
-function resetcustomer(){
+function insertmcustomerprofile(){
+   $('#insert-wrapper').parsley().validate();
+    if($('#insert-wrapper').parsley().isValid()){
+      var data = {
+        mcustomerid: $('#insert-mcustomerid').val(),
+        mcustomername: $('#insert-mcustomername').val(),
+        mcustomeremail: $('#insert-mcustomeremail').val(),
+        mcustomerphone: $('#insert-mcustomerphone').val(),
+        mcustomerfax: $('#insert-mcustomerfax').val(),
+        mcustomerwebsite: $('#insert-mcustomerwebsite').val(),
+        mcustomeraddress: $('#insert-mcustomeraddress').val(),
+        mcustomercity: $('#insert-mcustomercity').val(),
+        mcustomerzipcode: $('#insert-mcustomerzipcode').val(),
+        mcustomerprovince: $('#insert-mcustomerprovince').val(),
+        mcustomercountry: $('#insert-mcustomercountry').val(),
+        autogen: $('#disableforminput').val() 
+      }
+      $.ajax({
+        type: "POST",
+        url: API_URL+"/pelanggan",
+        data: data,
+        success: function(response){
+          console.log(response);
+          table.ajax.reload();
+           document.location.href = WEB_URL+"/pelanggan/insert/"+response.id+"/2"; 
+          swal({
+            title: "Input Berhasil!",
+            type: "success",
+            timer: 1000
+          });
+         
+        },
+        error: function(response){
+          swal({
+            title: "Input Gagal!",
+            type: "error",
+            timer: 1000
+          });
+        }
+      });
+    }
+    
+    if($("#insert-mcustomerphone").parsley().isValid()){
+      $("#phoneexample").addClass('phonemargin');
+    } else {
+      $("#phoneexample").removeClass('phonemargin');
+    }
+}
+
+ function insertloadcontact(id){
+  console.log(id);
+  var data = {
+      mcustomercontactname: $('#insert-mcustomercontactname').val(),
+      mcustomercontactposition: $('#insert-mcustomercontactposition').val(),
+      mcustomercontactemail: $('#insert-mcustomercontactemail').val(),
+      mcustomercontactemailphone: $('#insert-mcustomercontactemailphone').val()
+
+    };
+  $.ajax({
+    type : 'POST',
+    data : data,
+    url : API_URL+'/pelanggan/insert/'+id,
+    success : function(response){
+      console.log(response);
+      swal({
+            title: "Input Berhasil!",
+            type: "success",
+            timer: 1000
+          });
+    }
+  });
+  document.location.href = WEB_URL+"/pelanggan"; 
+}
+
+
+function editmbranch(id){
+  $.ajax({
+
+    url : API_URL+'/cabang/'+id,
+    type : 'GET',
+    success : function(response){
+      $('#mbranchid').val(response.id);
+      $('#mbranchcode').val(response.mbranchcode);
+      $('#mbranchname').val(response.mbranchname);
+      $('#address').val(response.address);
+      $('#phone').val(response.phone);
+      $('#city').val(response.city);
+      $('#person_in_charge').val(response.person_in_charge);
+      $('#information').val(response.information);
+      $('#forminput').hide();
+      $('#formview').hide();
+      $('#formedit').show();
+    },
+
+  });
+  window.location = "#main";
+}
+
+function updatembranch(){
+
+$('#edit-wrapper').parsley().validate();
+    if($('#edit-wrapper').parsley().isValid()){
+    var updateid = $('#mbranchid').val();
+    var data = {
+    mbranchcode : $('#mbranchcode').val(),
+    mbranchname : $('#mbranchname').val(),
+    address : $('#address').val(),
+    phone : $('#phone').val(),
+    city : $('#city').val(),
+    person_in_charge : $('#person_in_charge').val(),
+    information : $('#information').val(),
+
+  }
+    
+   $.ajax({
+        type: "PUT",
+        url: API_URL+"/cabang/"+updateid,
+        data: data,
+        success: function(response){
+          console.log(response);
+          table.ajax.reload();
+          window.location = "#tableapi";
+          swal({
+            title: "Pengubahan Berhasil!",
+            type: "success",
+            timer: 1000
+          });
+          $('#forminput').show();
+          $('#formview').hide();
+          $('#formedit').hide();
+        },
+        error: function(response){
+          swal({
+            title: "Pengubahan Gagal!",
+            type: "error",
+            timer: 1000
+          });
+        }
+      });
+    }
+  
+  }
+
+
+    
+
+
+  function back(){
+    $('#insert-mbranchcode').val('');
+    $('#insert-mbranchname').val('');
+    $('#insert-address').val('');
+    $('#insert-phone').val('');
+    $('#insert-city').val('');
+    $('#insert-person_in_charge').val('');
+    $('#insert-information').val('');
+
+    $('#formedit').hide();
+    $('#formview').hide();
+    $('#forminput').show();
+  }
+
+  function reset(){
+
+    $('#insert-mbranchcode').val('');
+    $('#insert-mbranchname').val('');
+    $('#insert-address').val('');
+    $('#insert-phone').val('');
+    $('#insert-city').val('');
+    $('#insert-person_in_charge').val('');
+    $('#insert-information').val('');
+    $('.alerthide').hide();
+  }
+
+
+
+
+function resetcustomer1(){
 $('#insert-mcustomerid').val('');
 $('#insert-mcustomername').val('');
 $('#insert-mcustomeremail').val('');
@@ -768,11 +945,25 @@ $('#insert-mcustomercity').val('');
 $('#insert-mcustomerzipcode').val('');
 $('#insert-mcustomerprovince').val('');
 $('#insert-mcustomercountry').val('');
+$('#insert-wrapper').parsley().reset();
+$('#edit-wrapper').parsley().reset();
+}
+function resetcustomer2(){
 $('#insert-mcustomercontactname').val('');
 $('#insert-mcustomercontactposition').val('');
 $('#insert-mcustomercontactemail').val('');
 $('#insert-mcustomercontactemailphone').val('');
-
+$('#insert-wrapper').parsley().reset();
+$('#edit-wrapper').parsley().reset();
 }
+document.getElementById('disableforminput').onchange = function() {
+    document.getElementById('insert-mcustomerid').disabled = this.checked;  
+    if($('#disableforminput').is(':checked')){
+      $('#insert-mcustomerid').removeAttr('required');
+    } else{
+      $('#insert-mcustomerid').attr('required','true');
+    }
+};
+
 
 // MCUSTOMER

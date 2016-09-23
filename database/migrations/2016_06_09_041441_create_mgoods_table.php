@@ -115,12 +115,15 @@ class CreateMgoodsTable extends Migration
             $table->string('mcustomerzipcode');
             $table->string('mcustomerprovince');
             $table->string('mcustomercountry');
-            $table->string('mcustomercontactname');
-            $table->string('mcustomercontactposition');
-            $table->string('mcustomercontactemail');
-            $table->string('mcustomercontactemailphone');
-
+            $table->string('mcustomercontactname')->nullable();
+            $table->string('mcustomercontactposition')->nullable();
+            $table->string('mcustomercontactemail')->nullable();
+            $table->string('mcustomercontactemailphone')->nullable();
+            $table->string('void');
+            $table->timestamps();
         });
+
+
 
     }
 
