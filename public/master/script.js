@@ -120,7 +120,7 @@ $('#edit-wrapper').parsley().validate();
     information : $('#information').val(),
 
   }
-    
+
    $.ajax({
         type: "PUT",
         url: API_URL+"/cabang/"+updateid,
@@ -147,11 +147,11 @@ $('#edit-wrapper').parsley().validate();
         }
       });
     }
-  
+
   }
 
 
-		
+
 
 
 	function back(){
@@ -210,6 +210,7 @@ $('#edit-wrapper').parsley().validate();
           console.log(response);
           table.ajax.reload();
           updatetree();
+          refreshGrandParentList();
           window.location = "#tableapi";
       		swal({
       			title: "Input Berhasil!",
@@ -218,10 +219,12 @@ $('#edit-wrapper').parsley().validate();
       		});
         },
         error: function(response){
+          var err_msg = response.responseJSON.errorInfo[2];
           swal({
       			title: "Input Gagal!",
+                text: err_msg,
       			type: "error",
-      			timer: 1000
+      			timer: 2000
       		});
         }
       });
@@ -302,9 +305,11 @@ $('#edit-wrapper').parsley().validate();
           $('#formedit').hide();
         },
         error: function(response){
+          var err_msg = response.responseJSON.errorInfo[2];
           swal({
             title: "Pengubahan Gagal!",
             type: "error",
+            text: err_msg,
             timer: 1000
           });
         }
@@ -347,25 +352,58 @@ $('#edit-wrapper').parsley().validate();
         url: API_URL+"/mcoaparent",
         data: data,
         success: function(response){
-          console.log(response);
           table.ajax.reload();
           updatetree();
+          refreshParentList();
           window.location = "#tableapi";
       		swal({
       			title: "Input Berhasil!",
       			type: "success",
       			timer: 1000
       		});
+
         },
         error: function(response){
+          var err_msg = response.responseJSON.errorInfo[2];
           swal({
       			title: "Input Gagal!",
+                text: err_msg,
       			type: "error",
       			timer: 1000
       		});
         }
       });
     }
+  }
+
+  function refreshParentList(){
+      $.ajax({
+          type: "GET",
+          url: API_URL+"/mcoaparent/lists",
+          success: function(response){
+              $('#insert-mcoaparent').empty().append(response);
+              $('#edit-mcoaparent').empty().append(response);
+              $('#view-mcoaparent').empty().append(response);
+          },
+          error: function(response){
+
+          }
+      });
+  }
+
+  function refreshGrandParentList(){
+      $.ajax({
+          type: "GET",
+          url: API_URL+"/mcoagrandparent/lists",
+          success: function(response){
+              $('#insert-mcoagrandparent').empty().append(response);
+              $('#edit-mcoagrandparent').empty().append(response);
+              $('#view-mcoagrandparent').empty().append(response);
+          },
+          error: function(response){
+
+          }
+      });
   }
 
   function editparent(id){
@@ -419,8 +457,10 @@ $('#edit-wrapper').parsley().validate();
           $('#formedit').hide();
         },
         error: function(response){
+          var err_msg = response.responseJSON.errorInfo[2];
           swal({
             title: "Pengubahan Gagal!",
+            text: err_msg,
             type: "error",
             timer: 1000
           });
@@ -528,6 +568,11 @@ $('#edit-wrapper').parsley().validate();
   function addcoa(parent,type){
     resetmcoa();
     backmcoa();
+      $('#forminput').show();
+      $('#formview').hide();
+      $('#formedit').hide();
+      $('#forminputgp').hide();
+      $('#forminputp').hide();
     $('#insert-mcoaparent').val(parent);
     $('#insert-mcoatype').val(type);
     window.location = "#main";
@@ -548,7 +593,6 @@ $('#edit-wrapper').parsley().validate();
         url: API_URL+"/mcoa",
         data: data,
         success: function(response){
-          console.log(response);
           table.ajax.reload();
           window.location = "#tableapi";
       		swal({
@@ -559,10 +603,12 @@ $('#edit-wrapper').parsley().validate();
           updatetree();
         },
         error: function(response){
+          var err_msg = response.responseJSON.errorInfo[2];
           swal({
       			title: "Input Gagal!",
+                text: err_msg,
       			type: "error",
-      			timer: 1000
+      			timer: 2000
       		});
         }
       });
@@ -649,12 +695,16 @@ $('#edit-wrapper').parsley().validate();
           $('#formview').hide();
           $('#formedit').hide();
           updatetree();
+          resetmcoa();
+          backmcoa();
         },
         error: function(response){
+          var err_msg = response.responseJSON.errorInfo[2];
           swal({
             title: "Pengubahan Gagal!",
+            text: err_msg,
             type: "error",
-            timer: 1000
+            timer: 2000
           });
         }
       });
@@ -848,7 +898,7 @@ function insertmcustomerprofile(){
         mcustomerzipcode: $('#insert-mcustomerzipcode').val(),
         mcustomerprovince: $('#insert-mcustomerprovince').val(),
         mcustomercountry: $('#insert-mcustomercountry').val(),
-        autogen: $('#disableforminput').val() 
+        autogen: $('#disableforminput').val()
       }
       $.ajax({
         type: "POST",
@@ -857,13 +907,13 @@ function insertmcustomerprofile(){
         success: function(response){
           console.log(response);
           table.ajax.reload();
-           document.location.href = WEB_URL+"/pelanggan/insert/"+response.id+"/2"; 
+           document.location.href = WEB_URL+"/pelanggan/insert/"+response.id+"/2";
           swal({
             title: "Input Berhasil!",
             type: "success",
             timer: 1000
           });
-         
+
         },
         error: function(response){
           swal({
@@ -874,7 +924,7 @@ function insertmcustomerprofile(){
         }
       });
     }
-    
+
     if($("#insert-mcustomerphone").parsley().isValid()){
       $("#phoneexample").addClass('phonemargin');
     } else {
@@ -904,7 +954,7 @@ function insertmcustomerprofile(){
           });
     }
   });
-  document.location.href = WEB_URL+"/pelanggan"; 
+  document.location.href = WEB_URL+"/pelanggan";
 }
 
 
@@ -946,7 +996,7 @@ $('#edit-wrapper').parsley().validate();
     information : $('#information').val(),
 
   }
-    
+
    $.ajax({
         type: "PUT",
         url: API_URL+"/cabang/"+updateid,
@@ -973,11 +1023,11 @@ $('#edit-wrapper').parsley().validate();
         }
       });
     }
-  
+
   }
 
 
-    
+
 
 
   function back(){
@@ -1033,7 +1083,7 @@ $('#insert-wrapper').parsley().reset();
 $('#edit-wrapper').parsley().reset();
 }
 document.getElementById('disableforminput').onchange = function() {
-    document.getElementById('insert-mcustomerid').disabled = this.checked;  
+    document.getElementById('insert-mcustomerid').disabled = this.checked;
     if($('#disableforminput').is(':checked')){
       $('#insert-mcustomerid').removeAttr('required');
     } else{

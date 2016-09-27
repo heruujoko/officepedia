@@ -9,6 +9,8 @@ use App\Http\Controllers\Controller;
 use DB;
 use Datatables;
 use App\MCOAGrandParent;
+use Exception;
+
 class MCOAGrandParentController extends Controller
 {
     private $iteration =0;
@@ -35,8 +37,13 @@ class MCOAGrandParentController extends Controller
     }
 
     public function store(Request $request){
-      $gp = MCOAGrandParent::create($request->all());
-      return response()->json($gp);
+      try{
+          $gp = MCOAGrandParent::create($request->all());
+          return response()->json($gp);
+      } catch(Exception $e) {
+         return response()->json($e,400);
+      }
+
     }
 
     public function show($id){
@@ -45,13 +52,27 @@ class MCOAGrandParentController extends Controller
     }
 
     public function update(Request $request,$id){
-      $gp = MCOAGrandParent::find($id);
-      $gp->update($request->all());
-      return response()->json($gp);
+      try{
+          $gp = MCOAGrandParent::find($id);
+          $gp->update($request->all());
+          return response()->json($gp);
+      } catch(Exception $e){
+          return response()->json($e,400);
+      }
+
     }
 
     public function destroy($id){
       $gp = MCOAGrandParent::find($id)->delete();
       return response()->json();
+    }
+
+    public function lists(){
+        $parents = MCOAGrandParent::all();
+        $select_str = "";
+        foreach($parents as $gp) {
+            $select_str .= "<option value=\"" . $gp->mcoagrandparentcode . "\">" . $gp->mcoagrandparentname . "</option>";
+        }
+        return response()->json($select_str);
     }
 }

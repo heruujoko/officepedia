@@ -10,6 +10,7 @@ use DB;
 use Datatables;
 use App\MCOAParent;
 use App\MCOAGrandParent;
+use Exception;
 
 class MCOAParentController extends Controller
 {
@@ -42,33 +43,52 @@ class MCOAParentController extends Controller
     }
 
     public function store(Request $request){
-      $new_parent = new MCOAParent;
-      $new_parent->mcoaparentcode = $request->mcoaparentcode;
-      $new_parent->mcoaparentname = $request->mcoaparentname;
-      $new_parent->save();
-      $gp = MCOAGrandParent::findCode($request->mcoagrandparent);
-      $new_parent->mcoagrandparentcode = $gp->mcoagrandparentcode;
-      $new_parent->mcoagrandparentname = $gp->mcoagrandparentname;
-      $new_parent->mcoaparenttype = $gp->mcoagrandparenttype;
-      $new_parent->save();
-      return response()->json($new_parent);
+      try{
+          $new_parent = new MCOAParent;
+          $new_parent->mcoaparentcode = $request->mcoaparentcode;
+          $new_parent->mcoaparentname = $request->mcoaparentname;
+          $new_parent->save();
+          $gp = MCOAGrandParent::findCode($request->mcoagrandparent);
+          $new_parent->mcoagrandparentcode = $gp->mcoagrandparentcode;
+          $new_parent->mcoagrandparentname = $gp->mcoagrandparentname;
+          $new_parent->mcoaparenttype = $gp->mcoagrandparenttype;
+          $new_parent->save();
+          return response()->json($new_parent);
+      } catch(Exception $e){
+          return response()->json($e,400);
+      }
+
     }
 
     public function update(Request $request,$id){
-      $update_parent = MCOAParent::find($id);
-      $update_parent->mcoaparentcode = $request->mcoaparentcode;
-      $update_parent->mcoaparentname = $request->mcoaparentname;
-      $update_parent->save();
-      $gp = MCOAGrandParent::findCode($request->mcoagrandparent);
-      $update_parent->mcoagrandparentcode = $gp->mcoagrandparentcode;
-      $update_parent->mcoagrandparentname = $gp->mcoagrandparentname;
-      $update_parent->mcoaparenttype = $gp->mcoagrandparenttype;
-      $update_parent->save();
-      return response()->json($update_parent);
+      try{
+          $update_parent = MCOAParent::find($id);
+          $update_parent->mcoaparentcode = $request->mcoaparentcode;
+          $update_parent->mcoaparentname = $request->mcoaparentname;
+          $update_parent->save();
+          $gp = MCOAGrandParent::findCode($request->mcoagrandparent);
+          $update_parent->mcoagrandparentcode = $gp->mcoagrandparentcode;
+          $update_parent->mcoagrandparentname = $gp->mcoagrandparentname;
+          $update_parent->mcoaparenttype = $gp->mcoagrandparenttype;
+          $update_parent->save();
+          return response()->json($update_parent);
+      } catch(Exception $e){
+          return response()->json($e,400);
+      }
+
     }
 
     public function destroy($id){
       $p = MCOAParent::find($id)->delete();
       return response()->json();
+    }
+
+    public function lists(){
+        $parents = MCOAParent::all();
+        $select_str = "";
+        foreach($parents as $gp) {
+            $select_str .= "<option value=\"" . $gp->mcoaparentcode . "\">" . $gp->mcoaparentname . "</option>";
+        }
+        return response()->json($select_str);
     }
 }

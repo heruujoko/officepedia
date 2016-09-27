@@ -9,6 +9,7 @@ use App\Http\Controllers\Controller;
 use App\MCOA;
 use App\MCOAGrandParent;
 use Datatables;
+use Exception;
 
 class MCOAController extends Controller
 {
@@ -42,25 +43,31 @@ class MCOAController extends Controller
     }
 
     public function store(Request $request){
-      $mcoa = new MCOA;
-      $mcoa->mcoacode = $request->mcoacode;
-      $mcoa->mcoaname = $request->mcoaname;
-      $mcoa->mcoatype = $request->mcoatype;
-      $mcoa->set_parent($request->mcoaparent);
-      $mcoa->save();
-
-      return response()->json($mcoa);
+      try{
+          $mcoa = new MCOA;
+          $mcoa->mcoacode = $request->mcoacode;
+          $mcoa->mcoaname = $request->mcoaname;
+          $mcoa->mcoatype = $request->mcoatype;
+          $mcoa->set_parent($request->mcoaparent);
+          $mcoa->save();
+          return response()->json($mcoa);
+      } catch(Exception $e){
+          return response()->json($e,400);
+      }
     }
 
     public function update(Request $request,$id){
-      $mcoa = MCOA::find($id);
-      $mcoa->mcoacode = $request->mcoacode;
-      $mcoa->mcoaname = $request->mcoaname;
-      $mcoa->mcoatype = $request->mcoatype;
-      $mcoa->set_parent($request->mcoaparent);
-      $mcoa->save();
-
-      return response()->json($mcoa);
+      try{
+          $mcoa = MCOA::find($id);
+          $mcoa->mcoacode = $request->mcoacode;
+          $mcoa->mcoaname = $request->mcoaname;
+          $mcoa->mcoatype = $request->mcoatype;
+          $mcoa->set_parent($request->mcoaparent);
+          $mcoa->save();
+          return response()->json($mcoa);
+      } catch(Exception $e){
+          return response()->json($e,400);
+      }
     }
 
     public function destroy($id){
@@ -76,14 +83,14 @@ class MCOAController extends Controller
           <span title="Collapse this branch"><i class="fa fa-lg fa-folder-open"></i> <b>'.$grand->mcoagrandparentcode.'</b> '.$grand->mcoagrandparentname.'</span>
           <ul role="group">';
           foreach ($grand->childs() as $parent) {
-            $tree_string .= '<li class="parent_li" role="treeitem" style="display:none">
+            $tree_string .= '<li class="parent_li" role="treeitem">
               <span title="Collapse this branch"><i class="fa fa-lg fa-plus-circle"></i> <b>'.$parent->mcoaparentcode.'</b>'.$parent->mcoaparentname.'</span>
               <ul role="group">
-                <li style="display:none">
+                <li>
                   <span title="Collapse this branch" class="addtree" onclick="addcoa(\''.$parent->mcoaparentcode.'\',\''.$parent->mcoaparenttype.'\')"><i class="fa fa-lg fa-plus-circle"></i> <b>Add New</b></span>
                 </li>';
             foreach ($parent->childs() as $coa) {
-              $tree_string .= '<li style="display:none">
+              $tree_string .= '<li>
                 <span title="Collapse this branch"><i class="fa fa-lg fa-plus-circle"></i> <b>'.$coa->mcoacode.'</b> '.$coa->mcoaname.'</span>
                 <div class="btn-group">
                   <button class="btn btn-default dropdown-toggle btn-tree" data-toggle="dropdown" aria-expanded="false">

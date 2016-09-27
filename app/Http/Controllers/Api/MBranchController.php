@@ -12,12 +12,12 @@ use Datatables;
 class MBranchController extends Controller
 {
 
-   
+
 	public function index(){
 		 $this->iteration = 0;
         $mbranch = MBRANCH::where('void', '0')->orderby('created_at','desc')->get();
         return Datatables::of($mbranch)->addColumn('action', function($mbranch){
-          
+
           return '<center><div class="button">
           <a class="btn btn-info btn-xs dropdown-toggle fa fa-eye" onclick="viewmbranch('.$mbranch->id.')"> <font style="">Lihat</font></a>
           <a class="btn btn-primary btn-xs dropdown-toggle fa fa-pencil" onclick="editmbranch('.$mbranch->id.')"> <font style="font-family: arial;">Ubah &nbsp</font></a>
@@ -38,7 +38,7 @@ class MBranchController extends Controller
     	$mbranch = MBRANCH::create($request->all());
     	$mbranch->void = 0;
     	$mbranch->save();
-     	return response()->json($p);
+     	return response()->json($mbrach);
 	}
 
 	public function update(Request $request,$id){

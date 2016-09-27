@@ -553,14 +553,14 @@
 									<span title="Collapse this branch"><i class="fa fa-lg fa-folder-open"></i> <b>{{ $gp->mcoagrandparentcode }}</b> {{ $gp->mcoagrandparentname }} / Rp. {{ $gp->saldo }}</span>
 									<ul role="group">
 										@foreach($gp->childs() as $parent)
-										<li class="parent_li" role="treeitem" style="display:none">
+										<li class="parent_li" role="treeitem">
 											<span title="Collapse this branch"><i class="fa fa-lg fa-plus-circle"></i> <b>{{ $parent->mcoaparentcode }}</b> {{ $parent->mcoaparentname }} / Rp. {{ $parent->saldo }}</span>
 											<ul role="group">
-												<li style="display:none">
+												<li>
 													<span title="Collapse this branch" class="addtree" onclick="addcoa('{{ $parent->mcoaparentcode }}','{{ $parent->mcoaparenttype}}')"><i class="fa fa-lg fa-plus-circle"></i> <b>Add New</b></span>
 												</li>
 												@foreach($parent->childs() as $coa)
-												<li style="display:none">
+												<li>
 													<span title="Collapse this branch"><i class="fa fa-lg fa-plus-circle"></i> <b>{{ $coa->mcoacode }}</b> {{ $coa->mcoaname }} / Rp. {{ $coa->saldo }}</span>
 													<div class="btn-group">
 														<button class="btn btn-default dropdown-toggle btn-tree" data-toggle="dropdown" aria-expanded="false">

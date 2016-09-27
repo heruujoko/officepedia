@@ -30,6 +30,8 @@ Route::group(['prefix'=>'admin-api',['middleware' => 'api']],function(){
   Route::get('mcoa/tree','Api\MCOAController@tree');
 
   Route::resource('cabang', 'Api\MBranchController');
+  Route::get('mcoagrandparent/lists','Api\MCOAGrandParentController@lists');
+  Route::get('mcoaparent/lists','Api\MCOAParentController@lists');
   Route::resource('mcoagrandparent','Api\MCOAGrandParentController');
   Route::resource('mcoaparent','Api\MCOAParentController');
   Route::resource('mcoa','Api\MCOAController');
@@ -41,5 +43,6 @@ Route::group(['prefix'=>'admin-api',['middleware' => 'api']],function(){
   ]);
 
   Route::post('/editcabang/{id}','ApiController@postEditcabang');
+
 
 });
