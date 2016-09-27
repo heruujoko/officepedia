@@ -665,6 +665,12 @@
 										<th class="hasinput" style="width:10%">
 											<input type="text" class="form-control" placeholder="Filter Kota" />
 										</th>
+										<th class="hasinput" style="width:10%">
+											<input type="text" class="form-control" placeholder="Filter Orang Yang Bertanggung Jawab" />
+										</th>
+										<th class="hasinput" style="width:10%">
+											<input type="text" class="form-control" placeholder="Filter Keterangan" />
+										</th>
 
 										
 									</tr>
@@ -676,10 +682,8 @@
 										<th data-hide="address"><center>Alamat</center></th>
 										<th data-hide="phone"><center>Telepon</center></th>
 										<th data-hide="city"><center>Kota</center></th>
-										
-
-
-
+										<th data-hide="phone"><center>Orang Yang Bertanggung Jawab</center></th>
+										<th data-hide="city"><center>Keterangan</center></th>
 									</tr>
 								</thead>
 								<tbody>
@@ -702,6 +706,7 @@
             "oLanguage": {
                 "sSearch": '<span class="input-group-addon"><i class="glyphicon glyphicon-search"></i></span>'
             },
+			"aoColumnDefs": [{ "bVisible": false, "aTargets": [7,8] }],
             buttons: [ {
                 extend: 'copyHtml5',
                 exportOptions: {
@@ -750,7 +755,8 @@
 										{data: 'address', address: 'address'},
 										{data: 'phone', phone: 'phone'},
 										{data: 'city', city: 'city'},
-										
+										{data: 'person_in_charge', person_in_charge: 'person_in_charge'},
+										{data: 'information', information: 'information'}
 										]
 									});
 
