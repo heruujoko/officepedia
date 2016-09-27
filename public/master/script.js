@@ -264,15 +264,15 @@ $('#edit-wrapper').parsley().validate();
         $('#edit-mcoagrandparentname').val(response.mcoagrandparentname);
         $('#edit-mcoagrandparenttype').val(response.mcoagrandparenttype);
         $('#forminput').hide();
-  			$('#formview').hide();
-  			$('#formedit').show();
+  		$('#formview').hide();
+  		$('#formedit').show();
       },
       error: function(response){
         swal({
-  				title: "Aksi Gagal!",
-  				type: "error",
-  				timer: 1000
-  			});
+  		    title: "Aksi Gagal!",
+  			type: "error",
+  			timer: 1000
+  		});
       }
     });
     window.location = "#main";
@@ -310,7 +310,7 @@ $('#edit-wrapper').parsley().validate();
             title: "Pengubahan Gagal!",
             type: "error",
             text: err_msg,
-            timer: 1000
+            timer: 2000
           });
         }
       });
@@ -551,6 +551,9 @@ $('#edit-wrapper').parsley().validate();
     $('#forminput').hide();
     $('#formview').hide();
     $('#formedit').hide();
+      setTimeout(function(){
+          $("#insert-mcoaparentcode").focus();
+      },300);
     window.location = "#forminputp";
   }
 
@@ -562,6 +565,9 @@ $('#edit-wrapper').parsley().validate();
     $('#forminput').hide();
     $('#formview').hide();
     $('#formedit').hide();
+    setTimeout(function(){
+        $("#insert-mcoagrandparentcode").focus();
+    },300);
     window.location = "#forminputgp";
   }
 
@@ -575,6 +581,9 @@ $('#edit-wrapper').parsley().validate();
       $('#forminputp').hide();
     $('#insert-mcoaparent').val(parent);
     $('#insert-mcoatype').val(type);
+    setTimeout(function(){
+        $("#insert-mcoacode").focus();
+    },300);
     window.location = "#main";
   }
 
@@ -656,6 +665,9 @@ $('#edit-wrapper').parsley().validate();
   			$('#formedit').show();
         $('#forminputgp').hide();
         $('#forminputp').hide();
+        setTimeout(function(){
+         $("#edit-mcoacode").focus();
+        },300);
       },
       error: function(response){
         swal({

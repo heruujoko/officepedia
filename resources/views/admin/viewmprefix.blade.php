@@ -152,7 +152,7 @@
 			<!-- NEW WIDGET START -->
 			<article class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
 				<!-- Widget ID (each widget will need unique ID)-->
-				<div id="formedit" class="jarviswidget jarviswidget-color-darken" id="wid-id-0" data-widget-editbutton="false" data-widget-colorbutton="false" data-widget-deletebutton="false">
+				<div id="formedit" style="display: none;" class="jarviswidget jarviswidget-color-darken" id="wid-id-0" data-widget-editbutton="false" data-widget-colorbutton="false" data-widget-deletebutton="false">
 					<header>
 						<span class="widget-icon"> <i class="fa fa-table"></i> </span>
 						<h2>Pengubahan {{ $section }}</h2>
@@ -225,7 +225,7 @@
 						<!-- NEW WIDGET START -->
 						<article class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
 							<!-- Widget ID (each widget will need unique ID)-->
-							<div id="formview" class="jarviswidget jarviswidget-color-darken" id="wid-id-0" data-widget-editbutton="false" data-widget-colorbutton="false" data-widget-deletebutton="false">
+							<div id="formview" style="display: none;" class="jarviswidget jarviswidget-color-darken" id="wid-id-0" data-widget-editbutton="false" data-widget-colorbutton="false" data-widget-deletebutton="false">
 					      <header>
 						      <span class="widget-icon"> <i class="fa fa-table"></i> </span>
                   <h2>View {{ $section }} </h2>

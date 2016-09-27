@@ -275,7 +275,7 @@
 
 				<!-- Widget ID (each widget will need unique ID)-->
 
-				<div id="formedit" class="jarviswidget jarviswidget-color-darken" id="wid-id-0" data-widget-editbutton="false" data-widget-colorbutton="false" data-widget-deletebutton="false">
+				<div id="formedit" style="display: none;" class="jarviswidget jarviswidget-color-darken" id="wid-id-0" data-widget-editbutton="false" data-widget-colorbutton="false" data-widget-deletebutton="false">
 
 						<!-- widget options:
 
@@ -443,7 +443,7 @@
 
 							<!-- Widget ID (each widget will need unique ID)-->
 
-							<div id="formview" class="jarviswidget jarviswidget-color-darken" id="wid-id-0" data-widget-editbutton="false" data-widget-colorbutton="false" data-widget-deletebutton="false">
+							<div id="formview" style="display: none;" class="jarviswidget jarviswidget-color-darken" id="wid-id-0" data-widget-editbutton="false" data-widget-colorbutton="false" data-widget-deletebutton="false">
 
 						<!-- widget options:
 
