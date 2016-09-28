@@ -708,7 +708,7 @@
 								"sLengthMenu": "Show _MENU_ Entries",
 								"sInfo": "Showing ( _START_ to _END_ ) to _TOTAL_ Entries"
             },
-			"aoColumnDefs": [{ "bVisible": false, "aTargets": [7,8] }],
+						"aoColumnDefs": [{ "bVisible": false, "aTargets": [7,8] }],
             buttons: [ {
                 extend: 'copyHtml5',
                 exportOptions: {

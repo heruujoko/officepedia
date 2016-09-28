@@ -1125,6 +1125,15 @@
 										<th class="hasinput" style="width:10%">
 											<input type="text" class="form-control" placeholder="Filter Handphone" />
 										</th>
+										<th class="hasinput" style="width:10%">
+											<input type="text" class="form-control" placeholder="Filter Email" />
+										</th>
+										<th class="hasinput" style="width:10%">
+											<input type="text" class="form-control" placeholder="Filter Telpon Kantor" />
+										</th>
+										<th class="hasinput" style="width:10%">
+											<input type="text" class="form-control" placeholder="Filter Fax" />
+										</th>
 
 
 
@@ -1136,8 +1145,9 @@
 										<th data-hide="mcustomername"><center>Nama Pelanggan</center></th>
 										<th data-hide="address"><center>Nama Lengkap</center></th>
 										<th data-hide="phone"><center>Handphone</center></th>
-
-
+										<th data-hide="mcustomeremail"><center>Email</center></th>
+										<th data-hide="mcustomerphone"><center>Telpon Kantor</center></th>
+										<th data-hide="mcustomerfax"><center>Fax</center></th>
 
 
 									</tr>
@@ -1160,12 +1170,15 @@
 			 dom: "<'dtpadding' <'row' <'clmn' > <'srch' f> <'tablerow' l> <'clear'> <'masterbutton' B> r> <'row pb' tip>>",
             "autoWidth" : true,
             "oLanguage": {
-                "sSearch": '<span class="input-group-addon"><i class="glyphicon glyphicon-search"></i></span>'
+                "sSearch": '<span class="input-group-addon"><i class="glyphicon glyphicon-search"></i></span>',
+								"sLengthMenu": "Show _MENU_ Entries",
+								"sInfo": "Showing ( _START_ to _END_ ) to _TOTAL_ Entries"
             },
+						"aoColumnDefs": [{ "bVisible": false, "aTargets": [6,7,8] }],
             buttons: [ {
                 extend: 'copyHtml5',
                 exportOptions: {
-                    columns: [ 0,1,2]
+                    columns: [ 0, 1, 2, 3, 4, 5]
                 }
             },
             {
@@ -1195,6 +1208,7 @@
             },
 						{
 							extend: 'colvis',
+							text:"Show / Hide Columns",
 							columns: ':gt(1)'
 						}
             ],
@@ -1209,6 +1223,9 @@
 										{data: 'mcustomername', mcustomername: 'mcustomername'},
 										{data: 'mcustomeremail', mcustomeremail: 'mcustomeremail'},
 										{data: 'mcustomerphone', mcustomerphone: 'mcustomerphone'},
+										{data: 'mcustomeremail', mcustomeremail: 'mcustomeremail'},
+										{data: 'mcustomerphone', mcustomerphone: 'mcustomerphone'},
+										{data: 'mcustomerfax', mcustomerfax: 'mcustomerfax'},
 
 
 										]

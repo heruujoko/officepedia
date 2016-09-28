@@ -448,7 +448,7 @@
   		                      .column( $(this).parent().index()+':visible' )
   		                      .search( this.value )
   		                      .draw();
-  		    		      	});
+  		    		      	});	
 				          });
 
             			function refreshtbl(){

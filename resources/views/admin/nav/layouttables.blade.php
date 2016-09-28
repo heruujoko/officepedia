@@ -812,6 +812,27 @@
 					});
 					$('.phoneregex').mask('(0000) 000-000');
 					$('.mobileregex').mask('0000-0000-0000');
+					$('.buttons-colvis').click(function(){
+						$('.buttons-columnVisibility').each(function(){
+							if($(this).has('input').length < 1){
+								if($(this).hasClass('active')){
+									$(this).prepend('<input type="checkbox" checked> ');
+								} else {
+									$(this).prepend('<input type="checkbox"> ');
+								}
+							}
+
+						});
+
+						$('.buttons-columnVisibility').on('click', function(){
+							console.log($(this).hasClass('active'));
+							if($(this).hasClass('active')){
+									$(this).children('input').prop('checked',true);
+							} else {
+									$(this).children('input').prop('checked',false);
+							}
+						});
+					});
     			pageSetUp();
 
     			/* // DOM Position key index //
