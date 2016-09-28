@@ -79,19 +79,13 @@ class MCOAController extends Controller
             'Grand Parent Code','Grand Parent Name','Parent Code','Parent Name','MCOA Code','MCOA Name','Saldo'
           ));
           foreach($this->gparents as $gp){
-            $this->count++;
-            $sheet->row($this->count,array(
-              $gp->mcoagrandparentcode,$gp->mcoagrandparentname,'','','','',$gp->saldo
-            ));
+            
             foreach($gp->childs() as $parent){
-              $this->count++;
-              $sheet->row($this->count,array(
-                '','',$parent->mcoaparentcode,$parent->mcoaparentname,'','',$parent->saldo
-              ));
+
               foreach($parent->childs() as $mcoa){
                 $this->count++;
                 $sheet->row($this->count,array(
-                  '','','','',$mcoa->mcoacode,$mcoa->mcoaname,$mcoa->saldo
+                  $gp->mcoagrandparentcode,$gp->mcoagrandparentname,$parent->mcoaparentcode,$parent->mcoaparentname,$mcoa->mcoacode,$mcoa->mcoaname,$mcoa->saldo
                 ));
               }
             }

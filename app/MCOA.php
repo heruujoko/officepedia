@@ -9,6 +9,13 @@ class MCOA extends \LaravelArdent\Ardent\Ardent
 {
     protected $table = "mcoa";
 
+    public static function boot(){
+        static::addGlobalScope(function(\LaravelArdent\Ardent\Builder $builder){
+          $builder->where('void',0);
+        });
+        parent::boot();
+    }
+
     public function parent(){
       return MCOAParent::findCode($this->mcoaparentcode);
     }
@@ -26,7 +33,25 @@ class MCOA extends \LaravelArdent\Ardent\Ardent
       $this->parent()->validateValue();
     }
 
+    public function afterCreate(){
+      $this->void = false;
+      $this->save();
+    }
+
     public function afterUpdate(){
       $this->parent()->validateValue();
+    }
+
+    public function auto_code(){
+      $count = count($this->parent()->childs());
+      $string_count = "";
+      if($count < 10){
+        $string_count = "0".$count;
+      } else {
+        $string_count = "".$count;
+      }
+      $parent_code = $this->parent()->mcoaparentcode;
+      $p = explode(".",$parent_code);
+      return $p[0].".".$string_count;
     }
 }

@@ -121,7 +121,7 @@
 									<label class="col-md-3 control-label"><b>Tipe Grand Parent</b> (<font color="red">*</font>) &nbsp  :</label>
 									<div class="col-md-7">
 										<div class="icon-addon addon-md">
-                      <select id="insert-mcoagrandparenttype" value="{{old('address')}}" name="mcoagrandparenttype" class="form-control forminput" placeholder="Tipe Grand Parent" type="text" required data-parsley-required-message="Field Ini Tidak Boleh Kosong" @if (Session::has('autofocus')) autofocus @endif>
+                      <select id="insert-mcoagrandparenttype" value="{{old('address')}}" name="mcoagrandparenttype" class="form-control forminput select2" placeholder="Tipe Grand Parent" type="text" required data-parsley-required-message="Field Ini Tidak Boleh Kosong" @if (Session::has('autofocus')) autofocus @endif>
                         <option value="K">Kredit</option>
                         <option value="D">Debet</option>
                       </select>
@@ -199,7 +199,7 @@
 									<label class="col-md-3 control-label"><b>Nama Parent</b> (<font color="red">*</font>) &nbsp  :</label>
 									<div class="col-md-7">
 										<div class="icon-addon addon-md">
-											<input id="insert-mcoaparentname" value="{{old('mbranchname')}}" name="mcoaparentname" class="form-control forminput" placeholder="Nama Parent" type="text" required data-parsley-required-message="Field Ini Tidak Boleh Kosong" @if (Session::has('autofocus')) autofocus @endif >
+											<input id="insert-mcoaparentname" value="{{old('mbranchname')}}" name="mcoaparentname" class="form-control forminput select2" placeholder="Nama Parent" type="text" required data-parsley-required-message="Field Ini Tidak Boleh Kosong" @if (Session::has('autofocus')) autofocus @endif >
 											<label for="mgoodsgroup1" class="glyphicon glyphicon-chevron-right" rel="tooltip" title="Nama Grand Parent"></label>
 										</div>
 									</div>
@@ -208,7 +208,7 @@
 									<label class="col-md-3 control-label"><b>Grand Parent</b> (<font color="red">*</font>) &nbsp  :</label>
 									<div class="col-md-7">
 										<div class="icon-addon addon-md">
-                      <select id="insert-mcoagrandparent" value="{{old('address')}}" name="mcoagrandparent" class="form-control forminput" placeholder="Grand Parent" type="text" required data-parsley-required-message="Field Ini Tidak Boleh Kosong" @if (Session::has('autofocus')) autofocus @endif>
+                      <select id="insert-mcoagrandparent" value="{{old('address')}}" name="mcoagrandparent" class="form-control forminput select2" placeholder="Grand Parent" type="text" required data-parsley-required-message="Field Ini Tidak Boleh Kosong" @if (Session::has('autofocus')) autofocus @endif>
                         @foreach($gparents as $gp)
                           <option value="{{ $gp->mcoagrandparentcode }}">{{ $gp->mcoagrandparentname }}</option>
                         @endforeach
@@ -278,7 +278,13 @@
 									<label class="col-md-3 control-label"><b>Kode</b> (<font color="red">*</font>) &nbsp  :</label>
 									<div class="col-md-7">
 										<div class="icon-addon addon-md">
-											<input id="insert-mcoacode" value="{{old('mbranchcode')}}" name="mcoa" class="form-control forminput" placeholder="Kode" type="text" required data-parsley-required-message="Field Ini Tidak Boleh Kosong" @if (Session::has('autofocus')) autofocus @endif >
+											<div class="input-group">
+												<input id="insert-mcoacode" value="{{old('mbranchcode')}}" name="mcoa" class="form-control forminput" placeholder="Kode" type="text" required data-parsley-required-message="Field Ini Tidak Boleh Kosong" data-parsley-errors-container=".errorBlock" @if (Session::has('autofocus')) autofocus @endif >
+												<span class="input-group-addon">
+									        <input id="insert-automcoacode" type="checkbox" name="automcoacode" title="Auto Generate Kode Akun" rel="tooltip">
+									      </span>
+											</div>
+											<div class="errorBlock"></div>
 											<label for="mgoodsgroup1" class="glyphicon glyphicon-barcode" rel="tooltip" title="Kode Grand Parent"></label>
 										</div>
 									</div>
@@ -296,7 +302,7 @@
 									<label class="col-md-3 control-label"><b>Tipe</b> (<font color="red">*</font>) &nbsp  :</label>
 									<div class="col-md-7">
 										<div class="icon-addon addon-md">
-                      <select id="insert-mcoatype" value="{{old('address')}}" name="mcoatype" class="form-control forminput" placeholder="Tipe" type="text" required data-parsley-required-message="Field Ini Tidak Boleh Kosong" @if (Session::has('autofocus')) autofocus @endif>
+                      <select id="insert-mcoatype" value="{{old('address')}}" name="mcoatype" class="form-control forminput select2" placeholder="Tipe" type="text" required data-parsley-required-message="Field Ini Tidak Boleh Kosong" @if (Session::has('autofocus')) autofocus @endif>
                         <option value="K">Kredit</option>
                         <option value="D">Debet</option>
                       </select>
@@ -308,7 +314,7 @@
 									<label class="col-md-3 control-label"><b>Parent</b> (<font color="red">*</font>) &nbsp  :</label>
 									<div class="col-md-7">
 										<div class="icon-addon addon-md">
-                      <select id="insert-mcoaparent" value="{{old('address')}}" name="mcoaparent" class="form-control forminput" placeholder="Parent" type="text" required data-parsley-required-message="Field Ini Tidak Boleh Kosong" @if (Session::has('autofocus')) autofocus @endif>
+                      <select id="insert-mcoaparent" value="{{old('address')}}" name="mcoaparent" class="form-control forminput select2" placeholder="Parent" type="text" required data-parsley-required-message="Field Ini Tidak Boleh Kosong" @if (Session::has('autofocus')) autofocus @endif>
                         @foreach($parents as $gp)
                           <option value="{{ $gp->mcoaparentcode }}">{{ $gp->mcoaparentname }}</option>
                         @endforeach
@@ -386,7 +392,7 @@
 									<label class="col-md-3 control-label"><b>Tipe</b> (<font color="red">*</font>) &nbsp  :</label>
 									<div class="col-md-7">
 										<div class="icon-addon addon-md">
-                      <select id="edit-mcoatype" value="{{old('address')}}" name="mcoatype" class="form-control forminput" placeholder="Tipe" type="text" required data-parsley-required-message="Field Ini Tidak Boleh Kosong" @if (Session::has('autofocus')) autofocus @endif>
+                      <select id="edit-mcoatype" value="{{old('address')}}" name="mcoatype" class="form-control forminput select2" placeholder="Tipe" type="text" required data-parsley-required-message="Field Ini Tidak Boleh Kosong" @if (Session::has('autofocus')) autofocus @endif>
                         <option value="K">Kredit</option>
                         <option value="D">Debet</option>
                       </select>
@@ -398,7 +404,7 @@
 									<label class="col-md-3 control-label"><b>Parent</b> (<font color="red">*</font>) &nbsp  :</label>
 									<div class="col-md-7">
 										<div class="icon-addon addon-md">
-                      <select id="edit-mcoaparent" value="{{old('address')}}" name="mcoagrandparent" class="form-control forminput" placeholder="Grand Parent" type="text" required data-parsley-required-message="Field Ini Tidak Boleh Kosong" @if (Session::has('autofocus')) autofocus @endif>
+                      <select id="edit-mcoaparent" value="{{old('address')}}" name="mcoagrandparent" class="form-control forminput select2" placeholder="Grand Parent" type="text" required data-parsley-required-message="Field Ini Tidak Boleh Kosong" @if (Session::has('autofocus')) autofocus @endif>
                         @foreach($parents as $gp)
                           <option value="{{ $gp->mcoaparentcode }}">{{ $gp->mcoaparentname }}</option>
                         @endforeach
@@ -533,14 +539,14 @@
 							<div class="container">
 								<div class="col-md-12">
 
-									<a onclick="addgparent()" class="btn btn-primary">Add Grand Parent</a>
-									<a onclick="addparent()" class="btn btn-primary">Add Parent</a>
+									<a onclick="addgparent()" class="dt-button">Add Grand Parent</a>
+									<a onclick="addparent()" class="dt-button">Add Parent</a>
 
 								<div class="pull-right">
-									<a href="{{ url('/admin-nano/mcoa/export/csv') }}" class="btn btn-default">CSV</a>
-									<a href="{{ url('/admin-nano/mcoa/export/excel') }}" class="btn btn-default">Excel</a>
-									<a href="{{ url('/admin-nano/mcoa/export/pdf') }}" class="btn btn-default">PDF</a>
-									<a href="{{ url('/admin-nano/mcoa/export/print') }}" target="_blank" class="btn btn-default">Print</a>
+									<a href="{{ url('/admin-nano/mcoa/export/csv') }}" class="dt-button">CSV</a>
+									<a href="{{ url('/admin-nano/mcoa/export/excel') }}" class="dt-button">Excel</a>
+									<a href="{{ url('/admin-nano/mcoa/export/pdf') }}" class="dt-button">PDF</a>
+									<a href="{{ url('/admin-nano/mcoa/export/print') }}" target="_blank" class="dt-button">Print</a>
 								<div>
 								</div>
 							</div>

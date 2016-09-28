@@ -5,9 +5,16 @@ namespace App;
 use Illuminate\Database\Eloquent\Model;
 use App\MCOAGrandParent;
 
-class MCOAParent extends Model
+class MCOAParent extends \LaravelArdent\Ardent\Ardent
 {
     protected $table = "mcoaparent";
+
+    public static function boot(){
+        static::addGlobalScope(function(\LaravelArdent\Ardent\Builder $builder){
+          $builder->where('void',0);
+        });
+        parent::boot();
+    }
 
     public static function findCode($code){
       return MCOAParent::where('mcoaparentcode',$code)->first();
@@ -19,6 +26,11 @@ class MCOAParent extends Model
 
     public function childs(){
       return MCOA::where("mcoaparentcode",$this->mcoaparentcode)->get();
+    }
+
+    public function afterCreate(){
+      $this->void = false;
+      $this->save();
     }
 
     public function validateValue(){

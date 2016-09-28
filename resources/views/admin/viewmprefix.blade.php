@@ -105,7 +105,7 @@
 									<div class="col-md-7">
 										<div class="icon-addon addon-md">
 											<input id="insert-prefix" value="{{old('mbranchcode')}}" name="mcoa" class="form-control forminput" placeholder="Kode" type="text" required data-parsley-required-message="Field Ini Tidak Boleh Kosong" @if (Session::has('autofocus')) autofocus @endif >
-											<label for="mgoodsgroup1" class="glyphicon glyphicon-barcode" rel="tooltip" title="Kode Grand Parent"></label>
+											<label for="mgoodsgroup1" class="glyphicon glyphicon-barcode" rel="tooltip" title="Prefix"></label>
 										</div>
 									</div>
 								</div>
@@ -126,7 +126,16 @@
 									<div class="col-md-7">
 										<div class="icon-addon addon-md">
 											<input id="insert-remark" value="{{old('mbranchname')}}" name="mcoa" class="form-control forminput" placeholder="Remark" type="text" @if (Session::has('autofocus')) autofocus @endif >
-											<label for="mgoodsgroup1" class="glyphicon glyphicon-chevron-right" rel="tooltip" title="Nama Grand Parent"></label>
+											<label for="mgoodsgroup1" class="glyphicon glyphicon-chevron-right" rel="tooltip" title="Remark"></label>
+										</div>
+									</div>
+								</div>
+								<div style="height: 21px;" class="form-group">
+									<label class="col-md-3 control-label"><b>Last Count</b> (<font color="red">*</font>) &nbsp  :</label>
+									<div class="col-md-7">
+										<div class="icon-addon addon-md">
+											<input id="insert-lastcount" name="last_count" class="form-control forminput" placeholder="Last Count" type="text" data-parsley-type="number" data-parsley-type-message="Field Ini Harus Berupa Angka">
+											<label for="mgoodsgroup1" class="glyphicon glyphicon-chevron-right" rel="tooltip" title="Last Count"></label>
 										</div>
 									</div>
 								</div>
@@ -207,6 +216,15 @@
 										</div>
 									</div>
 								</div>
+								<div style="height: 21px;" class="form-group">
+									<label class="col-md-3 control-label"><b>Last Count</b> (<font color="red">*</font>) &nbsp  :</label>
+									<div class="col-md-7">
+										<div class="icon-addon addon-md">
+											<input id="edit-lastcount" name="last_count" class="form-control forminput" placeholder="Last Count" type="text" data-parsley-type="number" data-parsley-type-message="Field Ini Harus Berupa Angka">
+											<label for="mgoodsgroup1" class="glyphicon glyphicon-chevron-right" rel="tooltip" title="Last Count"></label>
+										</div>
+									</div>
+								</div>
 								<input type="hidden" name="void" value="0">
 								<center>
 									<div class="row">
@@ -280,6 +298,15 @@
 										</div>
 									</div>
 								</div>
+								<div style="height: 21px;" class="form-group">
+									<label class="col-md-3 control-label"><b>Last Count</b> (<font color="red">*</font>) &nbsp  :</label>
+									<div class="col-md-7">
+										<div class="icon-addon addon-md">
+											<input disabled id="view-lastcount" name="last_count" class="form-control forminput" placeholder="Last Count" type="text" data-parsley-type="number" data-parsley-type-message="Field Ini Harus Berupa Angka">
+											<label for="mgoodsgroup1" class="glyphicon glyphicon-chevron-right" rel="tooltip" title="Last Count"></label>
+										</div>
+									</div>
+								</div>
 								<center>
 									<div class="row">
 										<div class="col-md-12">
@@ -336,6 +363,9 @@
 										<th class="hasinput" style="width:9%">
 											<input type="text" class="form-control" placeholder="Filter Remark" />
 										</th>
+										<th class="hasinput" style="width:9%">
+											<input type="text" class="form-control" placeholder="Filter Last Count" />
+										</th>
 									</tr>
 									<tr>
 										<th data-hide="action"><center>Aksi</center></th>
@@ -343,6 +373,7 @@
                     <th data-hide="mprefix"><center>Prefix</center></th>
 										<th data-hide="mprefixtransaction"><center>Transcation</center></th>
                     <th data-hide="mprefixremark"><center>Remark</center></th>
+										<th data-hide="last_count"><center>Last Count</center></th>
 									</tr>
 								</thead>
 								<tbody>
@@ -358,7 +389,9 @@
                   			      dom: "<'dtpadding' <'row' <'clmn' > <'srch' f> <'tablerow' l> <'clear'> <'masterbutton' B> r> <'row pb' tip>>",
                                   "autoWidth" : true,
                                   "oLanguage": {
-                                    "sSearch": '<span class="input-group-addon"><i class="glyphicon glyphicon-search"></i></span>'
+                                    "sSearch": '<span class="input-group-addon"><i class="glyphicon glyphicon-search"></i></span>',
+																		"sLengthMenu": "Show _MENU_ Entries",
+																		"sInfo": "Showing ( _START_ to _END_ ) to _TOTAL_ Entries"
                                   },
                               buttons: [ {
                                     extend: 'copyHtml5',
@@ -367,22 +400,22 @@
                                     }
                                   },
                                   {
-                                      extend: 'csvFlash',
-                                      exportOptions: {
-                                          columns: [ 1, 2, 3, 4] //setting kolom mana yg mau di export
-                                      }
+                                      text: 'CSV',
+                                      action: function(){
+																				window.location.href = "{{ url('admin-nano/mprefix/export/csv') }}";
+																			}
                                   },
                                   {
-                                      extend: 'excelFlash',
-                                      exportOptions: {
-                                          columns: [ 1, 2, 3, 4] //setting kolom mana yg mau di export
-                                      }
+																			text: 'Excel',
+																			action: function(){
+																				window.location.href = "{{ url('admin-nano/mprefix/export/excel') }}";
+																			}
                                   },
                                   {
-                                      extend: 'pdfFlash',
-                                      exportOptions: {
-                                          columns: [ 1, 2, 3, 4] //setting kolom mana yg mau di export
-                                      }
+																			text: 'PDF',
+																			action: function(){
+																				window.location.href = "{{ url('admin-nano/mprefix/export/pdf') }}";
+																			}
                                   },
                                   {
                                       extend: 'print',
@@ -391,10 +424,11 @@
                                       }
 
                                   },
-																	{
-																		extend: 'colvis',
-												            columns: ':gt(1)'
-																	}
+																  {
+																	  extend: 'colvis',
+																	  text: 'Show / Hide Columns',
+																	  columns: ':gt(1)'
+																  }
                               ],
 					       				      processing: false,
 										          serverSide: false,
@@ -404,7 +438,8 @@
                               {data: 'no', no: 'no' },
                               {data: 'mprefix', mprefix: 'mprefix'},
           										{data: 'mprefixtransaction', mprefixtransaction: 'mprefixtransaction'},
-                              {data: 'mprefixremark', mprefixremark: 'mprefixremark'}
+                              {data: 'mprefixremark', mprefixremark: 'mprefixremark'},
+															{data: 'last_count', last_count: 'last_count'}
           										]
 									       });
 
@@ -413,7 +448,7 @@
   		                      .column( $(this).parent().index()+':visible' )
   		                      .search( this.value )
   		                      .draw();
-  		    		      });
+  		    		      	});
 				          });
 
             			function refreshtbl(){

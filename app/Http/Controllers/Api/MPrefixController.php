@@ -8,6 +8,8 @@ use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use App\MPrefix;
 use Datatables;
+use Exception;
+
 class MPrefixController extends Controller
 {
     private $iteration;
@@ -32,13 +34,25 @@ class MPrefixController extends Controller
     }
 
     public function store(Request $request){
-      $p = MPrefix::create($request->all());
-      return response()->json($p);
+      if(MPrefix::where('mprefixtransaction',$request->mprefixtransaction)->first()){
+        $err = array(
+          'errorInfo' => array('111','111','Transaction Already Exist')
+        );
+        return response()->json($err,400);
+      } else {
+        $p = MPrefix::create($request->all());
+        return response()->json($p);
+      }
     }
 
     public function update(Request $request,$id){
       $p = MPrefix::find($id);
+      $cp = $p->mprefix;
       $p->update($request->all());
+      if($cp != $p->mprefix){
+        $p->last_count = 0;
+        $p->save();
+      }
       return response()->json($p);
     }
 

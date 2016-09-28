@@ -194,7 +194,7 @@
 									<label class="col-md-3 control-label"><b>Alamat</b> (<font color="red">*</font>) &nbsp  :</label>
 									<div class="col-md-7">
 										<div class="icon-addon addon-md">
-											<input id="insert-address" value="{{old('address')}}" name="address" class="form-control forminput" placeholder="Alamat" type="text" required data-parsley-required-message="Field Ini Tidak Boleh Kosong" @if (Session::has('autofocus')) autofocus @endif >
+											<input id="insert-address" value="{{old('address')}}" name="address" class="form-control forminput" placeholder="Alamat" type="text" @if (Session::has('autofocus')) autofocus @endif >
 											<label for="mgoodsgroup1" class="glyphicon glyphicon-home" rel="tooltip" title="Alamat"></label>
 										</div>
 									</div>
@@ -203,12 +203,12 @@
 									<label class="col-md-3 control-label"><b>Telepon</b> (<font color="red">*</font>) &nbsp  :</label>
 									<div  class="col-md-7">
 										<div class="icon-addon addon-md">
-											<input id="insert-phone" value="{{old('phone')}}" name="phone" class="form-control forminput" placeholder="Telepon" type="number" required data-parsley-required-message="Field Ini Tidak Boleh Kosong" @if (Session::has('autofocus')) autofocus @endif >
+											<input id="insert-phone" value="{{old('phone')}}" name="phone" class="form-control forminput phoneregex" placeholder="Telepon" type="text" @if (Session::has('autofocus')) autofocus @endif >
 
 											<label for="mgoodsgroup1" class="glyphicon glyphicon-phone-alt" rel="tooltip" title="Telepon"></label>
 
 										<div style="height: 5px;">
-										<h5 class="phonemargin" id="phoneexample" style="font-size: 11px;">&nbsp Example: 0542123456</h5>
+										<h5 class="phonemargin" id="phoneexample" style="font-size: 11px;">&nbsp Example: (0542) 123-456</h5>
 										</div>
 										</div>
 									</div>
@@ -217,7 +217,7 @@
 									<label class="col-md-3 control-label"><b>Kota</b> (<font color="red">*</font>) &nbsp  :</label>
 									<div class="col-md-7">
 										<div class="icon-addon addon-md">
-											<input id="insert-city" value="{{old('city')}}" name="city" class="form-control forminput" placeholder="Kota" type="text" required data-parsley-required-message="Field Ini Tidak Boleh Kosong" @if (Session::has('autofocus')) autofocus @endif >
+											<input id="insert-city" value="{{old('city')}}" name="city" class="form-control forminput" placeholder="Kota" type="text" @if (Session::has('autofocus')) autofocus @endif >
 											<label for="mgoodsgroup1" class="glyphicon glyphicon-road" rel="tooltip" title="Kota"></label>
 										</div>
 									</div>
@@ -226,7 +226,7 @@
 									<label class="col-md-3 control-label"><b>Orang Yang Bertanggung Jawab</b> (<font color="red">*</font>) &nbsp  :</label>
 									<div class="col-md-7">
 										<div class="icon-addon addon-md">
-											<input id="insert-person_in_charge" value="{{old('person_in_charge')}}" name="person_in_charge" class="form-control forminput" placeholder="Orang Yang Bertanggung Jawab" type="text" required data-parsley-required-message="Field Ini Tidak Boleh Kosong" @if (Session::has('autofocus')) autofocus @endif >
+											<input id="insert-person_in_charge" value="{{old('person_in_charge')}}" name="person_in_charge" class="form-control forminput" placeholder="Orang Yang Bertanggung Jawab" type="text" @if (Session::has('autofocus')) autofocus @endif >
 											<label for="mgoodsgroup1" class="glyphicon glyphicon-user" rel="tooltip" title="Orang Yang Bertanggung Jawab"></label>
 										</div>
 									</div>
@@ -327,7 +327,7 @@
 						<h3 style="font-weight: bold; color: #C91503;font-size: 19px;">Mode : EDIT</h3>
 
 						<input type="hidden" id="mbranchid" value=""></input>
-					 
+
 							<div id="edit-wrapper" class="form-horizontal" data-parsley-validate>
 							<div class="container">
 
@@ -665,8 +665,14 @@
 										<th class="hasinput" style="width:10%">
 											<input type="text" class="form-control" placeholder="Filter Kota" />
 										</th>
+										<th class="hasinput" style="width:10%">
+											<input type="text" class="form-control" placeholder="Filter Orang Yang Bertanggung Jawab" />
+										</th>
+										<th class="hasinput" style="width:10%">
+											<input type="text" class="form-control" placeholder="Filter Keterangan" />
+										</th>
 
-										
+
 									</tr>
 									<tr>
 										<th data-hide="action"><center>Aksi</center></th>
@@ -676,10 +682,8 @@
 										<th data-hide="address"><center>Alamat</center></th>
 										<th data-hide="phone"><center>Telepon</center></th>
 										<th data-hide="city"><center>Kota</center></th>
-										
-
-
-
+										<th data-hide="person_in_charge"><center>Orang Yang Bertanggung Jawab</center></th>
+										<th data-hide="information"><center>Keterangan</center></th>
 									</tr>
 								</thead>
 								<tbody>
@@ -700,31 +704,34 @@
 			 dom: "<'dtpadding' <'row' <'clmn' > <'srch' f> <'tablerow' l> <'clear'> <'masterbutton' B> r> <'row pb' tip>>",
             "autoWidth" : true,
             "oLanguage": {
-                "sSearch": '<span class="input-group-addon"><i class="glyphicon glyphicon-search"></i></span>'
+                "sSearch": '<span class="input-group-addon"><i class="glyphicon glyphicon-search"></i></span>',
+								"sLengthMenu": "Show _MENU_ Entries",
+								"sInfo": "Showing ( _START_ to _END_ ) to _TOTAL_ Entries"
             },
+			"aoColumnDefs": [{ "bVisible": false, "aTargets": [7,8] }],
             buttons: [ {
                 extend: 'copyHtml5',
                 exportOptions: {
-                    columns: [ 0,1,2]
+                    columns: [ 0, 1, 2, 3, 4, 5]
                 }
             },
             {
-                extend: 'csvFlash',
-                exportOptions: {
-                    columns: [ 0, 1, 2, 3, 4, 5] //setting kolom mana yg mau di export
-                }
+                text: 'CSV',
+                action: function(){
+									window.location.href = "{{ url('/admin-nano/cabang/export/csv') }}";
+								}
             },
             {
-                extend: 'excelFlash',
-                exportOptions: {
-                    columns: [ 0, 1, 2, 3, 4, 5] //setting kolom mana yg mau di export
-                }
+								text: 'Excel',
+								action: function(){
+									window.location.href = "{{ url('/admin-nano/cabang/export/excel') }}";
+								}
             },
             {
-                extend: 'pdfFlash',
-                exportOptions: {
-                    columns: [ 0, 1, 2, 3, 4, 5] //setting kolom mana yg mau di export
-                }
+								text: 'PDF',
+								action: function(){
+									window.location.href = "{{ url('/admin-nano/cabang/export/pdf') }}";
+								}
             },
             {
                 extend: 'print',
@@ -733,10 +740,11 @@
                 }
 
             },
-						{
-							extend: 'colvis',
-							columns: ':gt(1)'
-						}
+			{
+				extend: 'colvis',
+				text: 'Show / Hide Columns',
+				columns: ':gt(1)'
+			}
             ],
 
 					       				processing: false,
@@ -750,7 +758,8 @@
 										{data: 'address', address: 'address'},
 										{data: 'phone', phone: 'phone'},
 										{data: 'city', city: 'city'},
-										
+										{data: 'person_in_charge', person_in_charge: 'person_in_charge'},
+										{data: 'information', information: 'information'}
 										]
 									});
 
@@ -766,13 +775,21 @@
 		            .search( this.value )
 		            .draw();
 
-		    		} );
+		    		});
 
 				});
 
 			function refreshtbl(){
 			table.ajax.reload();
 			}
+
+			$(".table thead th input[type=text]").on( 'keyup change', function () {
+				table
+						.column( $(this).parent().index()+':visible' )
+						.search( this.value )
+						.draw();
+
+			});
 
 			$(document).ready(function(){
 				var columnBtn = "<span>Show / Hide columns</span>";

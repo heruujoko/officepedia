@@ -597,7 +597,8 @@ $('#edit-wrapper').parsley().validate();
         mcoacode: $('#insert-mcoacode').val(),
         mcoaname: $('#insert-mcoaname').val(),
         mcoatype: $('#insert-mcoatype').val(),
-        mcoaparent: $('#insert-mcoaparent').val()
+        mcoaparent: $('#insert-mcoaparent').val(),
+        automcoacode: $('#insert-automcoacode').is(':checked')
       }
       console.log(data);
       $.ajax({
@@ -661,8 +662,8 @@ $('#edit-wrapper').parsley().validate();
         $('#mcoaid').val(response.id);
         $('#edit-mcoacode').val(response.mcoacode);
         $('#edit-mcoaname').val(response.mcoaname);
-        $('#edit-mcoatype').val(response.mcoatype);
-        $('#edit-mcoaparent').val(response.mcoaparentcode);
+        $('#edit-mcoatype').val(response.mcoatype).trigger("change");
+        $('#edit-mcoaparent').val(response.mcoaparentcode).trigger("change");
         $('#forminput').hide();
   			$('#formview').hide();
   			$('#formedit').show();
@@ -728,6 +729,8 @@ $('#edit-wrapper').parsley().validate();
 
   function resetmcoa(){
     $('#insert-mcoacode').val('');
+    $('#insert-automcoacode').prop('checked',false);
+    $('#insert-mcoacode').prop('disabled',false);
     $('#insert-mcoaname').val('');
     $('#insert-mcoatype').val('K');
     $('#insert-mcoaparent').val('1101.00');
@@ -755,6 +758,20 @@ $('#edit-wrapper').parsley().validate();
     newWin.document.close();
   }
 
+  $('#insert-automcoacode').change(function(){
+    if($('#insert-automcoacode').is(':checked')){
+      $('#insert-mcoacode').prop('disabled',true);
+      $('#insert-mcoacode').removeAttr('required');
+      $('#insert-wrapper').parsley().reset();
+      $('#insert-wrapper').parsley().validate();
+    } else {
+      $('#insert-mcoacode').prop('disabled',false);
+      $('#insert-mcoacode').attr('required',true);
+      $('#insert-wrapper').parsley().reset();
+      $('#insert-wrapper').parsley().validate();
+    }
+  });
+
 // MPREFIX
 
   function insertprefix(){
@@ -763,7 +780,8 @@ $('#edit-wrapper').parsley().validate();
       var data = {
         mprefix: $('#insert-prefix').val(),
         mprefixtransaction: $('#insert-transaction').val(),
-        mprefixremark: $('#insert-remark').val()
+        mprefixremark: $('#insert-remark').val(),
+        last_count: $('#insert-lastcount').val()
       }
       console.log(data);
       $.ajax({
@@ -781,13 +799,18 @@ $('#edit-wrapper').parsley().validate();
       		});
         },
         error: function(response){
+          var err_msg = response.responseJSON.errorInfo[2];
+          console.log(response);
           swal({
       			title: "Input Gagal!",
+            text: err_msg,
       			type: "error",
       			timer: 1000
       		});
         }
       });
+      resetprefix();
+      backprefix();
     }
   }
 
@@ -797,6 +820,7 @@ $('#edit-wrapper').parsley().validate();
       url: API_URL+"/mprefix/"+id,
       success: function(response){
         $('#view-mprefix').val(response.mprefix);
+        $('#view-lastcount').val(response.last_count);
         $('#view-mprefixtransaction').val(response.mprefixtransaction).trigger("change");
         $('#view-mprefixremark').val(response.mprefixremark);
         $('#forminput').hide();
@@ -822,6 +846,7 @@ $('#edit-wrapper').parsley().validate();
         console.log(response);
         $('#mprefixid').val(response.id);
         $('#edit-mprefix').val(response.mprefix);
+        $('#edit-lastcount').val(response.last_count);
         $('#edit-mprefixtransaction').val(response.mprefixtransaction).trigger("change");
         $('#edit-mprefixremark').val(response.mprefixremark);
         $('#forminput').hide();
@@ -846,7 +871,8 @@ $('#edit-wrapper').parsley().validate();
       var data = {
         mprefix: $('#edit-mprefix').val(),
         mprefixtransaction: $('#edit-mprefixtransaction').val(),
-        mprefixremark: $('#edit-mprefixremark').val()
+        mprefixremark: $('#edit-mprefixremark').val(),
+        last_count: $('#edit-lastcount').val()
       }
       $.ajax({
         type: "PUT",
@@ -873,6 +899,8 @@ $('#edit-wrapper').parsley().validate();
           });
         }
       });
+      resetprefix();
+      backprefix();
     }
   }
 

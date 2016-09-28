@@ -65,9 +65,6 @@ class AdminController extends Controller
 			$data->save();
 			Alert::success('Input Berhasil', 'Success');
 			return redirect('admin-nano/cabang#tablembranch');
-			
-
-
 		}
 
 		}

@@ -17,7 +17,12 @@ Route::group(['prefix'=>'admin-nano'],function(){
   Route::resource('mcoa','MCOAController');
   Route::get('pelanggan','MCustomerController@index');
   Route::get('pelanggan/insert/{id}/{activetab}','MCustomerController@editmcustomercontact');
-
+  Route::get('mprefix/export/csv','MPrefixController@csv');
+  Route::get('mprefix/export/excel','MPrefixController@excel');
+  Route::get('mprefix/export/pdf','MPrefixController@pdf');
+  Route::get('cabang/export/csv','MBranchController@csv');
+  Route::get('cabang/export/excel','MBranchController@excel');
+  Route::get('cabang/export/pdf','MBranchController@pdf');
   Route::resource('mprefix','MPrefixController');
   Route::controllers([
   	'/'=>'AdminController'

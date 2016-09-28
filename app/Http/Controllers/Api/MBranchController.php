@@ -38,7 +38,7 @@ class MBranchController extends Controller
     	$mbranch = MBRANCH::create($request->all());
     	$mbranch->void = 0;
     	$mbranch->save();
-     	return response()->json($mbrach);
+     	return response()->json($mbranch);
 	}
 
 	public function update(Request $request,$id){
