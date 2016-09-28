@@ -391,10 +391,11 @@
                                       }
 
                                   },
-																	{
-																		extend: 'colvis',
-												            columns: ':gt(1)'
-																	}
+								  {
+									  extend: 'colvis',
+									  text: 'Show / Hide Columns',
+									  columns: ':gt(1)'
+								  }
                               ],
 					       				      processing: false,
 										          serverSide: false,

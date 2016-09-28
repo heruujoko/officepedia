@@ -682,8 +682,8 @@
 										<th data-hide="address"><center>Alamat</center></th>
 										<th data-hide="phone"><center>Telepon</center></th>
 										<th data-hide="city"><center>Kota</center></th>
-										<th data-hide="phone"><center>Orang Yang Bertanggung Jawab</center></th>
-										<th data-hide="city"><center>Keterangan</center></th>
+										<th data-hide="person_in_charge"><center>Orang Yang Bertanggung Jawab</center></th>
+										<th data-hide="information"><center>Keterangan</center></th>
 									</tr>
 								</thead>
 								<tbody>
@@ -738,10 +738,11 @@
                 }
 
             },
-						{
-							extend: 'colvis',
-							columns: ':gt(1)'
-						}
+			{
+				extend: 'colvis',
+				text: 'Show / Hide Columns',
+				columns: ':gt(1)'
+			}
             ],
 
 					       				processing: false,
@@ -772,13 +773,21 @@
 		            .search( this.value )
 		            .draw();
 
-		    		} );
+		    		});
 
 				});
 
 			function refreshtbl(){
 			table.ajax.reload();
 			}
+
+			$(".table thead th input[type=text]").on( 'keyup change', function () {
+				table
+						.column( $(this).parent().index()+':visible' )
+						.search( this.value )
+						.draw();
+
+			});
 
 			$(document).ready(function(){
 				var columnBtn = "<span>Show / Hide columns</span>";
