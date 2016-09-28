@@ -594,7 +594,8 @@ $('#edit-wrapper').parsley().validate();
         mcoacode: $('#insert-mcoacode').val(),
         mcoaname: $('#insert-mcoaname').val(),
         mcoatype: $('#insert-mcoatype').val(),
-        mcoaparent: $('#insert-mcoaparent').val()
+        mcoaparent: $('#insert-mcoaparent').val(),
+        automcoacode: $('#insert-automcoacode').is(':checked')
       }
       console.log(data);
       $.ajax({
@@ -725,6 +726,8 @@ $('#edit-wrapper').parsley().validate();
 
   function resetmcoa(){
     $('#insert-mcoacode').val('');
+    $('#insert-automcoacode').prop('checked',false);
+    $('#insert-mcoacode').prop('disabled',false);
     $('#insert-mcoaname').val('');
     $('#insert-mcoatype').val('K');
     $('#insert-mcoaparent').val('1101.00');
@@ -751,6 +754,20 @@ $('#edit-wrapper').parsley().validate();
     newWin.document.write('<html><body onload="window.print()">'+divToPrint.html()+'</body></html>');
     newWin.document.close();
   }
+
+  $('#insert-automcoacode').change(function(){
+    if($('#insert-automcoacode').is(':checked')){
+      $('#insert-mcoacode').prop('disabled',true);
+      $('#insert-mcoacode').removeAttr('required');
+      $('#insert-wrapper').parsley().reset();
+      $('#insert-wrapper').parsley().validate();
+    } else {
+      $('#insert-mcoacode').prop('disabled',false);
+      $('#insert-mcoacode').attr('required',true);
+      $('#insert-wrapper').parsley().reset();
+      $('#insert-wrapper').parsley().validate();
+    }
+  });
 
 // MPREFIX
 

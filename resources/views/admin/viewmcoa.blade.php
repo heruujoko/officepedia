@@ -278,7 +278,13 @@
 									<label class="col-md-3 control-label"><b>Kode</b> (<font color="red">*</font>) &nbsp  :</label>
 									<div class="col-md-7">
 										<div class="icon-addon addon-md">
-											<input id="insert-mcoacode" value="{{old('mbranchcode')}}" name="mcoa" class="form-control forminput" placeholder="Kode" type="text" required data-parsley-required-message="Field Ini Tidak Boleh Kosong" @if (Session::has('autofocus')) autofocus @endif >
+											<div class="input-group">
+												<input id="insert-mcoacode" value="{{old('mbranchcode')}}" name="mcoa" class="form-control forminput" placeholder="Kode" type="text" required data-parsley-required-message="Field Ini Tidak Boleh Kosong" data-parsley-errors-container=".errorBlock" @if (Session::has('autofocus')) autofocus @endif >
+												<span class="input-group-addon">
+									        <input id="insert-automcoacode" type="checkbox" name="automcoacode" title="Auto Generate Kode Akun" rel="tooltip">
+									      </span>
+											</div>
+											<div class="errorBlock"></div>
 											<label for="mgoodsgroup1" class="glyphicon glyphicon-barcode" rel="tooltip" title="Kode Grand Parent"></label>
 										</div>
 									</div>

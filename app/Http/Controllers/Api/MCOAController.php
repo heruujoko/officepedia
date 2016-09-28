@@ -50,6 +50,10 @@ class MCOAController extends Controller
           $mcoa->mcoatype = $request->mcoatype;
           $mcoa->set_parent($request->mcoaparent);
           $mcoa->save();
+          if($request->automcoacode == "true"){
+            $mcoa->mcoacode = $mcoa->auto_code();
+          }
+          $mcoa->save();
           return response()->json($mcoa);
       } catch(Exception $e){
           return response()->json($e,400);

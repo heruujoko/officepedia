@@ -185,6 +185,9 @@
 	.masterbutton {
 		margin-right: 0 !important;
 	}
+	.parsley-errors-list{
+		list-style: none;
+	}
 </style>
 <style>
 
