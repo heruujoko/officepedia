@@ -151,6 +151,10 @@
 		 color :rgb(212, 103, 82)!important;
 		 margin-left: -6%;
 	 }
+	 .parsley-type {
+		 color :rgb(212, 103, 82)!important;
+		 margin-left: -6%;
+	 }
    .bg-gray{
    	background: #C1C1C1 !important;
    }
