@@ -398,22 +398,22 @@
                                     }
                                   },
                                   {
-                                      extend: 'csvFlash',
-                                      exportOptions: {
-                                          columns: [ 1, 2, 3, 4] //setting kolom mana yg mau di export
-                                      }
+                                      text: 'CSV',
+                                      action: function(){
+																				window.location.href = "{{ url('admin-nano/mprefix/export/csv') }}";
+																			}
                                   },
                                   {
-                                      extend: 'excelFlash',
-                                      exportOptions: {
-                                          columns: [ 1, 2, 3, 4] //setting kolom mana yg mau di export
-                                      }
+																			text: 'Excel',
+																			action: function(){
+																				window.location.href = "{{ url('admin-nano/mprefix/export/excel') }}";
+																			}
                                   },
                                   {
-                                      extend: 'pdfFlash',
-                                      exportOptions: {
-                                          columns: [ 1, 2, 3, 4] //setting kolom mana yg mau di export
-                                      }
+																			text: 'PDF',
+																			action: function(){
+																				window.location.href = "{{ url('admin-nano/mprefix/export/pdf') }}";
+																			}
                                   },
                                   {
                                       extend: 'print',
