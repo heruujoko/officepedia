@@ -811,6 +811,7 @@
 						width: "100%"
 					});
 					$('.phoneregex').mask('(0000) 000-000');
+					$('.mobileregex').mask('0000-0000-0000');
     			pageSetUp();
 
     			/* // DOM Position key index //
