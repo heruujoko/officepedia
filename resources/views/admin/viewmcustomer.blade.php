@@ -80,7 +80,7 @@
 				<article class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
 
 					<!-- Widget ID (each widget will need unique ID)-->
-					<div class="jarviswidget jarviswidget-color-darken" id="wid-id-0" data-widget-editbutton="false">
+					<div id="forminput" class="forminput jarviswidget jarviswidget-color-darken" id="wid-id-0" data-widget-editbutton="false" data-widget-colorbutton="false" data-widget-deletebutton="false">
 						<!-- widget options:
 						usage: <div class="jarviswidget" id="wid-id-0" data-widget-editbutton="false">
 
@@ -147,9 +147,9 @@
 											<label for="mgoodsgroup1" class="glyphicon glyphicon-barcode" rel="tooltip" title="ID Pelanggan"></label> --}}
 											<div class="input-group">
 
-      										<input id="insert-mcustomerid" value="{{old('mcustomerid')}}" name="mcustomerid" class="form-control forminput" placeholder="ID Pelanggan" type="text" required @if (Session::has('autofocus')) autofocus @endif >
+      										<input id="insert-mcustomerid" value="{{old('mcustomerid')}}" name="mcustomerid" class="form-control forminput" placeholder="ID Pelanggan" type="text" required data-parsley-required-message="Field Ini Tidak Boleh Kosong"  @if (Session::has('autofocus')) autofocus @endif >
       										<span class="input-group-addon" style="background: none;">
-        									<input type="checkbox" id="disableforminput">
+        									<input type="checkbox" id="disableforminput" name="autogen">
       										</span>
     										</div>
 										</div>
@@ -159,7 +159,7 @@
 									<label class="control-label"><b>Nama Pelanggan</b> (<font color="red">*</font>) &nbsp  :</label>
 									<div class="">
 										<div class="icon-addon addon-md">
-											<input id="insert-mcustomername" value="{{old('mcustomername')}}" name="mcustomername" class="form-control forminput" placeholder="Nama Pelanggan" type="text" required @if (Session::has('autofocus')) autofocus @endif>
+											<input id="insert-mcustomername" value="{{old('mcustomername')}}" name="mcustomername" class="form-control forminput" placeholder="Nama Pelanggan" type="text" required data-parsley-required-message="Field Ini Tidak Boleh Kosong" @if (Session::has('autofocus')) autofocus @endif>
 											<label for="mgoodsgroup1" class="glyphicon glyphicon-chevron-right" rel="tooltip" title="Nama Pelanggan"></label>
 										</div>
 									</div>
@@ -168,7 +168,7 @@
 									<label class="control-label"><b>Email</b> (<font color="red">*</font>) &nbsp  :</label>
 									<div class="">
 										<div class="icon-addon addon-md">
-											<input id="insert-mcustomeremail" value="{{old('mcustomeremail')}}" name="mcustomeremail" class="form-control forminput" placeholder="Email" type="text" required @if (Session::has('autofocus')) autofocus @endif >
+											<input id="insert-mcustomeremail" value="{{old('mcustomeremail')}}" name="mcustomeremail" class="form-control forminput" placeholder="Email" type="text"  @if (Session::has('autofocus')) autofocus @endif >
 											<label for="mgoodsgroup1" class="glyphicon glyphicon-envelope" rel="tooltip" title="Email"></label>
 										</div>
 									</div>
@@ -177,7 +177,7 @@
 									<label class="control-label"><b>Telepon Kantor</b> (<font color="red">*</font>) &nbsp  :</label>
 									<div  class="">
 										<div class="icon-addon addon-md">
-											<input id="insert-mcustomerphone" value="{{old('mcustomerphone')}}" name="mcustomerphone" class="form-control forminput phoneexample" placeholder="Telepon Kantor" type="number" required @if (Session::has('autofocus')) autofocus @endif >
+											<input id="insert-mcustomerphone" value="{{old('mcustomerphone')}}" name="mcustomerphone" class="form-control forminput phoneexample" placeholder="Telepon Kantor" type="number" @if (Session::has('autofocus')) autofocus @endif >
 
 											<label for="mgoodsgroup1" class="glyphicon glyphicon-phone-alt" rel="tooltip" title="Telepon Kantor"></label>
 
@@ -191,7 +191,7 @@
 									<label class="control-label"><b>Fax Kantor</b> (<font color="red">*</font>) &nbsp  :</label>
 									<div  class="">
 										<div class="icon-addon addon-md">
-											<input id="insert-mcustomerfax" value="{{old('mcustomerfax')}}" name="mcustomerfax" class="form-control forminput" placeholder="Fax Kantor" type="number" required @if (Session::has('autofocus')) autofocus @endif >
+											<input id="insert-mcustomerfax" value="{{old('mcustomerfax')}}" name="mcustomerfax" class="form-control forminput" placeholder="Fax Kantor" type="number" @if (Session::has('autofocus')) autofocus @endif >
 
 											<label for="mgoodsgroup1" class="glyphicon glyphicon-phone-alt" rel="tooltip" title="Fax Kantor"></label>
 
@@ -205,7 +205,7 @@
 									<label class="control-label"><b>Website</b> (<font color="red">*</font>) &nbsp  :</label>
 									<div class="">
 										<div class="icon-addon addon-md">
-											<input id="insert-mcustomerwebsite" value="{{old('mcustomerwebsite')}}" name="mcustomerwebsite" class="form-control forminput" placeholder="Website" type="text" required @if (Session::has('autofocus')) autofocus @endif >
+											<input id="insert-mcustomerwebsite" value="{{old('mcustomerwebsite')}}" name="mcustomerwebsite" class="form-control forminput" placeholder="Website" type="text"  @if (Session::has('autofocus')) autofocus @endif >
 											<label for="mgoodsgroup1" class="glyphicon glyphicon-info-sign" rel="tooltip" title="Website"></label>
 										</div>
 									</div>
@@ -213,7 +213,7 @@
 								</br>
 								</br>
 					<div style="padding-left:400px;">
-      				<button onclick="insertmcustomerprofile()" type="submit" name="button" class="btn btn-primary">CREATE</button>
+      				<button onclick="insertmcustomer()" type="submit" name="button" class="btn btn-primary">Simpan</button>
       				<a id="btn-insert-reset" onclick="resetcustomer1()" class="btn btn-default" ><i class=""></i> Reset</a>
 
       				</br>
@@ -239,23 +239,23 @@
 								</br>
 								<div class="col-lg-12">
 										<div class="icon-addon addon-md">
-											<textarea id="insert-mcustomeraddress" value="{{old('mcustomeraddress')}}" name="mcustomeraddress" class="form-control forminput" rows="5" placeholder="Jalan" type="text" required @if (Session::has('autofocus')) autofocus @endif ></textarea>
+											<textarea id="insert-mcustomeraddress" value="{{old('mcustomeraddress')}}" name="mcustomeraddress" class="form-control forminput" rows="5" placeholder="Jalan" type="text"  @if (Session::has('autofocus')) autofocus @endif ></textarea>
 
 											<label for="mgoodsgroup1" class="glyphicon glyphicon-road" rel="tooltip" title="Jalan"></label>
 										</div>
 									</div>
 								</div>
 				<div style="" class="form-group col-lg-6">
-				<input id="insert-mcustomercity" value="{{old('mcustomercity')}}" name="mcustomercity" class="form-control forminput" placeholder="Kota" type="text" required @if (Session::has('autofocus')) autofocus @endif >
+				<input id="insert-mcustomercity" value="{{old('mcustomercity')}}" name="mcustomercity" class="form-control forminput" placeholder="Kota" type="text"  @if (Session::has('autofocus')) autofocus @endif >
 				</div>
 
 				<div style="padding-left: 21px; height: 21px;" class="form-group col-lg-6">
-				<input id="insert-mcustomerzipcode" value="{{old('mcustomerzipcode')}}" name="mcustomerzipcode" class="form-control forminput" placeholder="K.Pos" type="text" required @if (Session::has('autofocus')) autofocus @endif >
+				<input id="insert-mcustomerzipcode" value="{{old('mcustomerzipcode')}}" name="mcustomerzipcode" class="form-control forminput" placeholder="K.Pos" type="text"  @if (Session::has('autofocus')) autofocus @endif >
 				</div>
 								<div style="height: 68px;" class="form-group">
 									<div  class="col-lg-12">
 										<div class="icon-addon addon-md">
-											<input id="insert-mcustomerprovince" value="{{old('mcustomerprovince')}}" name="mcustomerprovince" class="form-control forminput" placeholder="Provinsi " type="text" required @if (Session::has('autofocus')) autofocus @endif >
+											<input id="insert-mcustomerprovince" value="{{old('mcustomerprovince')}}" name="mcustomerprovince" class="form-control forminput" placeholder="Provinsi " type="text"  @if (Session::has('autofocus')) autofocus @endif >
 
 											<label for="mgoodsgroup1" class="glyphicon glyphicon-star" rel="tooltip" title="Propinsi"></label>
 
@@ -267,7 +267,7 @@
 								<div class="form-group">
 									<div  class="col-lg-12">
 										<div class="icon-addon addon-md">
-											<input id="insert-mcustomercountry" value="{{old('mcustomercountry')}}" name="mcustomercountry" class="form-control forminput" placeholder="Negara" type="text" required @if (Session::has('autofocus')) autofocus @endif >
+											<input id="insert-mcustomercountry" value="{{old('mcustomercountry')}}" name="mcustomercountry" class="form-control forminput" placeholder="Negara" type="text"  @if (Session::has('autofocus')) autofocus @endif >
 
 											<label for="mgoodsgroup1" class="glyphicon glyphicon-star" rel="tooltip" title="Negara"></label>
 
@@ -300,13 +300,13 @@
     @else
     	<div id="menu3" class="tab-pane fade in active">
     @endif
-     <form id="teste" class="form-horizontal" action="{{URL::to('/')}}/admin-nano/tambahcabang" method="post">
+     
       <div style="height: 21px;" class="form-group">
 									<input type="hidden" value="{{$id}}" id="load-mcustomercontact2">
 									<label class="col-md-2 control-label"><b>Nama Lengkap</b> (<font color="red">*</font>) &nbsp  :</label>
 									<div class="col-md-4">
 										<div class="icon-addon addon-md">
-											<input id="insert-mcustomercontactname" value="{{old('mcustomercontactname')}}" name="mcustomercontactname" class="form-control forminput" placeholder="Nama Lengkap" type="text" required @if (Session::has('autofocus')) autofocus @endif >
+											<input id="insert-mcustomercontactname" value="{{old('mcustomercontactname')}}" name="mcustomercontactname" class="form-control forminput" placeholder="Nama Lengkap" type="text" @if (Session::has('autofocus')) autofocus @endif >
 											<label for="mgoodsgroup1" class="glyphicon glyphicon-chevron-right" rel="tooltip" title="Nama Lengkap"></label>
 										</div>
 									</div>
@@ -315,7 +315,7 @@
 									<label class="col-md-2 control-label"><b>Posisi Jabatan</b> (<font color="red">*</font>) &nbsp  :</label>
 									<div class="col-md-4">
 										<div class="icon-addon addon-md">
-											<input id="insert-mcustomercontactposition" value="{{old('mcustomercontactposition')}}" name="mcustomercontactposition" class="form-control forminput" placeholder="Posisi Jabatan" type="text" required @if (Session::has('autofocus')) autofocus @endif >
+											<input id="insert-mcustomercontactposition" value="{{old('mcustomercontactposition')}}" name="mcustomercontactposition" class="form-control forminput" placeholder="Posisi Jabatan" type="text" @if (Session::has('autofocus')) autofocus @endif >
 											<label for="mgoodsgroup1" class="glyphicon glyphicon glyphicon-user" rel="tooltip" title="Posisi Jabatan"></label>
 										</div>
 									</div>
@@ -324,7 +324,7 @@
 									<label class="col-md-2 control-label"><b>Email</b> (<font color="red">*</font>) &nbsp  :</label>
 									<div class="col-md-4">
 										<div class="icon-addon addon-md">
-											<input id="insert-mcustomercontactemail" value="{{old('mcustomercontactemail')}}" name="mcustomercontactemail" class="form-control forminput" placeholder="Email" type="text" required @if (Session::has('autofocus')) autofocus @endif >
+											<input id="insert-mcustomercontactemail" value="{{old('mcustomercontactemail')}}" name="mcustomercontactemail" class="form-control forminput" placeholder="Email" type="text" @if (Session::has('autofocus')) autofocus @endif >
 											<label for="mgoodsgroup1" class="glyphicon glyphicon-envelope" rel="tooltip" title="Email"></label>
 										</div>
 									</div>
@@ -333,7 +333,7 @@
 									<label class="col-md-2 control-label"><b>Handphone</b> (<font color="red">*</font>) &nbsp  :</label>
 									<div  class="col-md-4">
 										<div class="icon-addon addon-md">
-											<input id="insert-mcustomercontactemailphone" value="{{old('mcustomercontactemailphone')}}" name="mcustomercontactemailphone" class="form-control forminput" placeholder="Handphone" type="number" required @if (Session::has('autofocus')) autofocus @endif >
+											<input id="insert-mcustomercontactemailphone" value="{{old('mcustomercontactemailphone')}}" name="mcustomercontactemailphone" class="form-control forminput" placeholder="Handphone" type="number" @if (Session::has('autofocus')) autofocus @endif >
 
 											<label for="mgoodsgroup1" class="glyphicon glyphicon-phone-alt" rel="tooltip" title="Handphone"></label>
 
@@ -344,14 +344,14 @@
 									</div>
 								</div>
 
-  </form>
+ 
     </br>
   </br>
   </br>
   </br>
   </br>
     <center>
-       <button onclick="insertloadcontact({{$id}})" name="button" class="btn btn-primary">CREATE</button>
+       <button onclick="insertmcustomer()" name="button" class="btn btn-primary">Simpan</button>
       <a id="btn-insert-reset" onclick="resetcustomer2()" class="btn btn-default" ><i class=""></i> Reset</a>
        </center>
   </div>
@@ -362,8 +362,8 @@
     </div>
 
 	<div id="menu5" class="tab-pane fade">
-      <h3>Menu 5</h3>
-      <p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam.</p>
+      <h3>Empty</h3>
+      
     </div>
 
     <div id="menu6" class="tab-pane fade">
@@ -400,10 +400,667 @@
 
 
 
+
+<!-- row -->
+			<div class="row">
+
+				<!-- NEW WIDGET START -->
+				<article class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+
+					<!-- Widget ID (each widget will need unique ID)-->
+					<div id="formedit" class="formedit jarviswidget jarviswidget-color-darken" id="wid-id-0" data-widget-editbutton="false" data-widget-colorbutton="false" data-widget-deletebutton="false">
+						<!-- widget options:
+						usage: <div class="jarviswidget" id="wid-id-0" data-widget-editbutton="false">
+
+						data-widget-colorbutton="false"
+						data-widget-editbutton="false"
+						data-widget-togglebutton="false"
+						data-widget-deletebutton="false"
+						data-widget-fullscreenbutton="false"
+						data-widget-custombutton="false"
+						data-widget-collapsed="true"
+						data-widget-sortable="false"
+
+						-->
+						<header>
+							<span class="widget-icon"> <i class="fa fa-table"></i> </span>
+							<h2>Master Pelanggan </h2>
+
+						</header>
+
+						<!-- widget div-->
+						<div>
+
+					 		<!-- widget edit box -->
+							<div class="jarviswidget-editbox">
+								<!-- This area used as dropdown edit box -->
+
+							</div>
+							<!-- end widget edit box -->
+							<h3 style="font-weight: bold; color: #C91503;font-size: 19px;">Mode : EDIT</h3>
+							<!-- widget content -->
+							<input type="hidden" id="idmcustomerid" class="idmcustomerid" value=""></input>
+							<div class="widget-body no-padding">
+
+								 <div class="container">
+  <h2></h2>
+  <ul class="nav nav-tabs">
+  @if($activetab == 1)
+   	<li class="active"><a data-toggle="tab" href="#menuedit1">Profil Pelanggan</a></li>
+   	<li><a data-toggle="tab" href="#menuedit3">Kontak</a></li>
+   @else
+    <li><a data-toggle="tab" href="#menuedit1">Profil Pelanggan</a></li>
+   	<li class="active"><a data-toggle="tab" href="#menuedit3">Kontak</a></li>
+   @endif
+    <li><a data-toggle="tab" href="#menuedit5">Pajak</a></li>
+  </ul>
+
+  <div class="tab-content">
+  	@if($activetab == 1)
+    	<div id="menuedit1" class="tab-pane fade in active">
+    @else
+    	<div id="menuedit1" class="tab-pane fade in">
+    @endif
+    	 </br>
+<div id="edit-wrapper" class="form-horizontal" data-parsley-validate>
+    <div class="col-md-6">
+    <div style="padding-top:15px;" class="tab-content">
+        <div class="tab-pane active" id="info-tab">
+
+    <div style="height: 35px;" class="form-group">
+	<label class="control-label"><b>ID Pelanggan</b> (<font color="red">*</font>) &nbsp  :</label>
+								<div class="">
+										<div class="icon-addon addon-md">
+									{{-- 		<input id="insert-mcustomerid" value="{{old('mcustomerid')}}" name="mcustomerid" class="form-control forminput" placeholder="ID Pelanggan" type="text" required @if (Session::has('autofocus')) autofocus @endif >
+
+											<label for="mgoodsgroup1" class="glyphicon glyphicon-barcode" rel="tooltip" title="ID Pelanggan"></label> --}}
+											<div class="input-group">
+
+      										<input disabled id="mcustomerid" value="{{old('mcustomerid')}}" name="mcustomerid" class="form-control forminput" placeholder="ID Pelanggan" type="text" required data-parsley-required-message="Field Ini Tidak Boleh Kosong"  @if (Session::has('autofocus')) autofocus @endif >
+      										<span class="input-group-addon" style="background: none;">
+        									<input disabled type="checkbox" id="disableforminput" name="autogen">
+      										</span>
+    										</div>
+										</div>
+									</div>
+								</div>
+								<div style="height: 21px;" class="form-group">
+									<label class="control-label"><b>Nama Pelanggan</b> (<font color="red">*</font>) &nbsp  :</label>
+									<div class="">
+										<div class="icon-addon addon-md">
+											<input id="mcustomername" value="{{old('mcustomername')}}" name="mcustomername" class="form-control forminput" placeholder="Nama Pelanggan" type="text" required data-parsley-required-message="Field Ini Tidak Boleh Kosong" @if (Session::has('autofocus')) autofocus @endif>
+											<label for="mgoodsgroup1" class="glyphicon glyphicon-chevron-right" rel="tooltip" title="Nama Pelanggan"></label>
+										</div>
+									</div>
+								</div>
+								<div style="height: 21px;" class="form-group">
+									<label class="control-label"><b>Email</b> (<font color="red">*</font>) &nbsp  :</label>
+									<div class="">
+										<div class="icon-addon addon-md">
+											<input id="mcustomeremail" value="{{old('mcustomeremail')}}" name="mcustomeremail" class="form-control forminput" placeholder="Email" type="text"  @if (Session::has('autofocus')) autofocus @endif >
+											<label for="mgoodsgroup1" class="glyphicon glyphicon-envelope" rel="tooltip" title="Email"></label>
+										</div>
+									</div>
+								</div>
+								<div class="form-group">
+									<label class="control-label"><b>Telepon Kantor</b> (<font color="red">*</font>) &nbsp  :</label>
+									<div  class="">
+										<div class="icon-addon addon-md">
+											<input id="mcustomerphone" value="{{old('mcustomerphone')}}" name="mcustomerphone" class="form-control forminput phoneexample" placeholder="Telepon Kantor" type="number" @if (Session::has('autofocus')) autofocus @endif >
+
+											<label for="mgoodsgroup1" class="glyphicon glyphicon-phone-alt" rel="tooltip" title="Telepon Kantor"></label>
+
+										<div style="height: 5px;">
+										<h5 style="font-size: 11px; margin-top: 36px;">&nbsp Example: 0542123456</h5>
+										</div>
+										</div>
+									</div>
+								</div>
+								<div class="form-group">
+									<label class="control-label"><b>Fax Kantor</b> (<font color="red">*</font>) &nbsp  :</label>
+									<div  class="">
+										<div class="icon-addon addon-md">
+											<input id="mcustomerfax" value="{{old('mcustomerfax')}}" name="mcustomerfax" class="form-control forminput" placeholder="Fax Kantor" type="number" @if (Session::has('autofocus')) autofocus @endif >
+
+											<label for="mgoodsgroup1" class="glyphicon glyphicon-phone-alt" rel="tooltip" title="Fax Kantor"></label>
+
+										<div style="height: 5px;">
+										<h5 style="font-size: 11px; margin-top: 36px;">&nbsp Example: 0542123456</h5>
+										</div>
+										</div>
+									</div>
+								</div>
+								<div style="height: 21px;" class="form-group">
+									<label class="control-label"><b>Website</b> (<font color="red">*</font>) &nbsp  :</label>
+									<div class="">
+										<div class="icon-addon addon-md">
+											<input id="mcustomerwebsite" value="{{old('mcustomerwebsite')}}" name="mcustomerwebsite" class="form-control forminput" placeholder="Website" type="text"  @if (Session::has('autofocus')) autofocus @endif >
+											<label for="mgoodsgroup1" class="glyphicon glyphicon-info-sign" rel="tooltip" title="Website"></label>
+										</div>
+									</div>
+								</div></div>
+								</br>
+								</br>
+					<div style="padding-left:400px;">
+      				<button onclick="updatemcustomer()" type="submit" name="button" class="btn btn-primary">Simpan</button>
+      				<a id="btn-insert-reset" onclick="back()" class="btn btn-default" ><i class=""></i> Batal</a>
+
+
+      				</br>
+      				</br>
+					</div>
+
+
+					       </div>
+
+        </div>
+
+
+{{-- PEMISAH --}}
+
+
+<div class="col-md-6">
+    <div class="tab-content">
+        <div class="tab-pane active" id="info-tab">
+
+    <div style="height: 85px;" class="form-group">
+	&nbsp &nbsp &nbsp<label  class="control-label"><b>Alamat Penagihan</b> (<font color="red">*</font>) &nbsp  :</label>
+								</br>
+								</br>
+								<div class="col-lg-12">
+										<div class="icon-addon addon-md">
+											<textarea id="mcustomeraddress" value="{{old('mcustomeraddress')}}" name="mcustomeraddress" class="form-control forminput" rows="5" placeholder="Jalan" type="text"  @if (Session::has('autofocus')) autofocus @endif ></textarea>
+
+											<label for="mgoodsgroup1" class="glyphicon glyphicon-road" rel="tooltip" title="Jalan"></label>
+										</div>
+									</div>
+								</div>
+				<div style="" class="form-group col-lg-6">
+				<input id="mcustomercity" value="{{old('mcustomercity')}}" name="mcustomercity" class="form-control forminput" placeholder="Kota" type="text"  @if (Session::has('autofocus')) autofocus @endif >
+				</div>
+
+				<div style="padding-left: 21px; height: 21px;" class="form-group col-lg-6">
+				<input id="mcustomerzipcode" value="{{old('mcustomerzipcode')}}" name="mcustomerzipcode" class="form-control forminput" placeholder="K.Pos" type="text"  @if (Session::has('autofocus')) autofocus @endif >
+				</div>
+								<div style="height: 68px;" class="form-group">
+									<div  class="col-lg-12">
+										<div class="icon-addon addon-md">
+											<input id="mcustomerprovince" value="{{old('mcustomerprovince')}}" name="mcustomerprovince" class="form-control forminput" placeholder="Provinsi " type="text"  @if (Session::has('autofocus')) autofocus @endif >
+
+											<label for="mgoodsgroup1" class="glyphicon glyphicon-star" rel="tooltip" title="Propinsi"></label>
+
+
+										</div>
+									</div>
+								</div>
+
+								<div class="form-group">
+									<div  class="col-lg-12">
+										<div class="icon-addon addon-md">
+											<input id="mcustomercountry" value="{{old('mcustomercountry')}}" name="mcustomercountry" class="form-control forminput" placeholder="Negara" type="text"  @if (Session::has('autofocus')) autofocus @endif >
+
+											<label for="mgoodsgroup1" class="glyphicon glyphicon-star" rel="tooltip" title="Negara"></label>
+
+
+										</div>
+									</div>
+								</div>
+
+
+
+								</div></div>
+								</br>
+								</br>
+
+        </div>
+        </div>
+
+</div>
+</row>
+
+    </br>
+
+
+    <div id="menu2" class="tab-pane fade">
+      <h3>Menu 2</h3>
+      <p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam.</p>
+    </div>
+    @if($activetab == 1)
+    	<div id="menuedit3" class="tab-pane fade">
+    @else
+    	<div id="menuedit3" class="tab-pane fade in active">
+    @endif
+     
+      <div style="height: 21px;" class="form-group">
+									<input type="hidden" value="{{$id}}" id="load-mcustomercontact2">
+									<label class="col-md-2 control-label"><b>Nama Lengkap</b> (<font color="red">*</font>) &nbsp  :</label>
+									<div class="col-md-4">
+										<div class="icon-addon addon-md">
+											<input id="mcustomercontactname" value="{{old('mcustomercontactname')}}" name="mcustomercontactname" class="form-control forminput" placeholder="Nama Lengkap" type="text" @if (Session::has('autofocus')) autofocus @endif >
+											<label for="mgoodsgroup1" class="glyphicon glyphicon-chevron-right" rel="tooltip" title="Nama Lengkap"></label>
+										</div>
+									</div>
+								</div>
+									<div style="height: 21px;" class="form-group">
+									<label class="col-md-2 control-label"><b>Posisi Jabatan</b> (<font color="red">*</font>) &nbsp  :</label>
+									<div class="col-md-4">
+										<div class="icon-addon addon-md">
+											<input id="mcustomercontactposition" value="{{old('mcustomercontactposition')}}" name="mcustomercontactposition" class="form-control forminput" placeholder="Posisi Jabatan" type="text" @if (Session::has('autofocus')) autofocus @endif >
+											<label for="mgoodsgroup1" class="glyphicon glyphicon glyphicon-user" rel="tooltip" title="Posisi Jabatan"></label>
+										</div>
+									</div>
+								</div>
+								<div style="height: 21px;" class="form-group">
+									<label class="col-md-2 control-label"><b>Email</b> (<font color="red">*</font>) &nbsp  :</label>
+									<div class="col-md-4">
+										<div class="icon-addon addon-md">
+											<input id="mcustomercontactemail" value="{{old('mcustomercontactemail')}}" name="mcustomercontactemail" class="form-control forminput" placeholder="Email" type="text" @if (Session::has('autofocus')) autofocus @endif >
+											<label for="mgoodsgroup1" class="glyphicon glyphicon-envelope" rel="tooltip" title="Email"></label>
+										</div>
+									</div>
+								</div>
+								<div class="form-group">
+									<label class="col-md-2 control-label"><b>Handphone</b> (<font color="red">*</font>) &nbsp  :</label>
+									<div  class="col-md-4">
+										<div class="icon-addon addon-md">
+											<input id="mcustomercontactemailphone" value="{{old('mcustomercontactemailphone')}}" name="mcustomercontactemailphone" class="form-control forminput" placeholder="Handphone" type="number" @if (Session::has('autofocus')) autofocus @endif >
+
+											<label for="mgoodsgroup1" class="glyphicon glyphicon-phone-alt" rel="tooltip" title="Handphone"></label>
+
+										<div style="height: 5px;">
+										<h5 style="font-size: 11px; margin-top: 36px;">&nbsp Example: 0542123456</h5>
+										</div>
+										</div>
+									</div>
+								</div>
+
+ 
+    </br>
+  </br>
+  </br>
+  </br>
+  </br>
+    <center>
+       <button onclick="updatemcustomer()" name="button" class="btn btn-primary">Simpan</button>
+     <a id="btn-insert-reset" onclick="back()" class="btn btn-default" ><i class=""></i> Batal</a>
+       </center>
+  </div>
+
+	<div id="menu4" class="tab-pane fade">
+      <h3>Menu 4</h3>
+      <p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam.</p>
+    </div>
+
+	<div id="menuedit5" class="tab-pane fade">
+      <h3>Empty</h3>
+      
+    </div>
+
+    <div id="menu6" class="tab-pane fade">
+      <h3>Menu 6</h3>
+      <p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam.</p>
+    </div>
+
+    <div id="menu7" class="tab-pane fade">
+      <h3>Menu 7</h3>
+      <p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam.</p>
+    </div>
+
+    <div id="menu8" class="tab-pane fade">
+      <h3>Menu 8</h3>
+      <p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam.</p>
+    </div>
+  </div>
+
+  </br>
+
+
+
+		</div>
+							</div>
+						</div>
+						</div>
+
+
+					</div>
+
+
+
+	<!-- row -->
+			<div class="row">
+
+				<!-- NEW WIDGET START -->
+				<article class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+
+					<!-- Widget ID (each widget will need unique ID)-->
+					<div id="formview" class="formview jarviswidget jarviswidget-color-darken" id="wid-id-0" data-widget-editbutton="false" data-widget-colorbutton="false" data-widget-deletebutton="false">
+						<!-- widget options:
+						usage: <div class="jarviswidget" id="wid-id-0" data-widget-editbutton="false">
+
+						data-widget-colorbutton="false"
+						data-widget-editbutton="false"
+						data-widget-togglebutton="false"
+						data-widget-deletebutton="false"
+						data-widget-fullscreenbutton="false"
+						data-widget-custombutton="false"
+						data-widget-collapsed="true"
+						data-widget-sortable="false"
+
+						-->
+						<header>
+							<span class="widget-icon"> <i class="fa fa-table"></i> </span>
+							<h2>Master Pelanggan </h2>
+
+						</header>
+
+						<!-- widget div-->
+						<div>
+
+					 		<!-- widget edit box -->
+							<div class="jarviswidget-editbox">
+								<!-- This area used as dropdown edit box -->
+
+							</div>
+							<!-- end widget edit box -->
+							<h3 style="font-weight: bold; color: #291817;font-size: 19px;">Mode : VIEW</h3>
+							<!-- widget content -->
+							<div class="widget-body no-padding">
+
+								 <div class="container">
+  <h2></h2>
+  <ul class="nav nav-tabs">
+  @if($activetab == 1)
+   	<li class="active"><a data-toggle="tab" href="#menuview1">Profil Pelanggan</a></li>
+   	<li><a data-toggle="tab" href="#menuview3">Kontak</a></li>
+   @else
+    <li><a data-toggle="tab" href="#menuview1">Profil Pelanggan</a></li>
+   	<li class="active"><a data-toggle="tab" href="#menuview3">Kontak</a></li>
+   @endif
+    <li><a data-toggle="tab" href="#menuview5">Pajak</a></li>
+  </ul>
+
+  <div class="tab-content">
+  	@if($activetab == 1)
+    	<div id="menuview1" class="tab-pane fade in active">
+    @else
+    	<div id="menuview1" class="tab-pane fade in">
+    @endif
+    	 </br>
+<div id="insert-wrapper" class="form-horizontal" data-parsley-validate>
+    <div class="col-md-6">
+    <div style="padding-top:15px;" class="tab-content">
+        <div class="tab-pane active" id="info-tab">
+
+    <div style="height: 35px;" class="form-group">
+	<label class="control-label"><b>ID Pelanggan</b> (<font color="red">*</font>) &nbsp  :</label>
+								<div class="">
+										<div class="icon-addon addon-md">
+									{{-- 		<input id="insert-mcustomerid" value="{{old('mcustomerid')}}" name="mcustomerid" class="form-control forminput" placeholder="ID Pelanggan" type="text" required @if (Session::has('autofocus')) autofocus @endif >
+
+											<label for="mgoodsgroup1" class="glyphicon glyphicon-barcode" rel="tooltip" title="ID Pelanggan"></label> --}}
+											<div class="input-group">
+
+      										<input disabled id="view-mcustomerid" value="{{old('mcustomerid')}}" name="mcustomerid" class="form-control forminput" placeholder="ID Pelanggan" type="text" required data-parsley-required-message="Field Ini Tidak Boleh Kosong"  @if (Session::has('autofocus')) autofocus @endif >
+      										<span class="input-group-addon" style="background: none;">
+        									<input disabled type="checkbox" id="disableforminput" name="autogen">
+      										</span>
+    										</div>
+										</div>
+									</div>
+								</div>
+								<div style="height: 21px;" class="form-group">
+									<label class="control-label"><b>Nama Pelanggan</b> (<font color="red">*</font>) &nbsp  :</label>
+									<div class="">
+										<div class="icon-addon addon-md">
+											<input disabled id="view-mcustomername" value="{{old('mcustomername')}}" name="mcustomername" class="form-control forminput" placeholder="Nama Pelanggan" type="text" required data-parsley-required-message="Field Ini Tidak Boleh Kosong" @if (Session::has('autofocus')) autofocus @endif>
+											<label for="mgoodsgroup1" class="glyphicon glyphicon-chevron-right" rel="tooltip" title="Nama Pelanggan"></label>
+										</div>
+									</div>
+								</div>
+								<div style="height: 21px;" class="form-group">
+									<label class="control-label"><b>Email</b> (<font color="red">*</font>) &nbsp  :</label>
+									<div class="">
+										<div class="icon-addon addon-md">
+											<input disabled id="view-mcustomeremail" value="{{old('mcustomeremail')}}" name="mcustomeremail" class="form-control forminput" placeholder="Email" type="text"  @if (Session::has('autofocus')) autofocus @endif >
+											<label for="mgoodsgroup1" class="glyphicon glyphicon-envelope" rel="tooltip" title="Email"></label>
+										</div>
+									</div>
+								</div>
+								<div class="form-group">
+									<label class="control-label"><b>Telepon Kantor</b> (<font color="red">*</font>) &nbsp  :</label>
+									<div  class="">
+										<div class="icon-addon addon-md">
+											<input disabled id="view-mcustomerphone" value="{{old('mcustomerphone')}}" name="mcustomerphone" class="form-control forminput phoneexample" placeholder="Telepon Kantor" type="number" @if (Session::has('autofocus')) autofocus @endif >
+
+											<label for="mgoodsgroup1" class="glyphicon glyphicon-phone-alt" rel="tooltip" title="Telepon Kantor"></label>
+
+										<div style="height: 5px;">
+										<h5 style="font-size: 11px; margin-top: 36px;">&nbsp Example: 0542123456</h5>
+										</div>
+										</div>
+									</div>
+								</div>
+								<div class="form-group">
+									<label class="control-label"><b>Fax Kantor</b> (<font color="red">*</font>) &nbsp  :</label>
+									<div  class="">
+										<div class="icon-addon addon-md">
+											<input disabled id="view-mcustomerfax" value="{{old('mcustomerfax')}}" name="mcustomerfax" class="form-control forminput" placeholder="Fax Kantor" type="number" @if (Session::has('autofocus')) autofocus @endif >
+
+											<label for="mgoodsgroup1" class="glyphicon glyphicon-phone-alt" rel="tooltip" title="Fax Kantor"></label>
+
+										<div style="height: 5px;">
+										<h5 style="font-size: 11px; margin-top: 36px;">&nbsp Example: 0542123456</h5>
+										</div>
+										</div>
+									</div>
+								</div>
+								<div style="height: 21px;" class="form-group">
+									<label class="control-label"><b>Website</b> (<font color="red">*</font>) &nbsp  :</label>
+									<div class="">
+										<div class="icon-addon addon-md">
+											<input disabled id="view-mcustomerwebsite" value="{{old('mcustomerwebsite')}}" name="mcustomerwebsite" class="form-control forminput" placeholder="Website" type="text"  @if (Session::has('autofocus')) autofocus @endif >
+											<label for="mgoodsgroup1" class="glyphicon glyphicon-info-sign" rel="tooltip" title="Website"></label>
+										</div>
+									</div>
+								</div></div>
+								</br>
+								</br>
+					<div style="padding-left:400px;">
+      				<a id="btn-insert-reset" onclick="back()" class="btn btn-default" ><i class=""></i> Kembali</a>
+
+      				</br>
+      				</br>
+					</div>
+
+
+					       </div>
+
+        </div>
+
+
+{{-- PEMISAH --}}
+
+
+<div class="col-md-6">
+    <div class="tab-content">
+        <div class="tab-pane active" id="info-tab">
+
+    <div style="height: 85px;" class="form-group">
+	&nbsp &nbsp &nbsp<label  class="control-label"><b>Alamat Penagihan</b> (<font color="red">*</font>) &nbsp  :</label>
+								</br>
+								</br>
+								<div class="col-lg-12">
+										<div class="icon-addon addon-md">
+											<textarea disabled id="view-mcustomeraddress" value="{{old('mcustomeraddress')}}" name="mcustomeraddress" class="form-control forminput" rows="5" placeholder="Jalan" type="text"  @if (Session::has('autofocus')) autofocus @endif ></textarea>
+
+											<label for="mgoodsgroup1" class="glyphicon glyphicon-road" rel="tooltip" title="Jalan"></label>
+										</div>
+									</div>
+								</div>
+				<div style="" class="form-group col-lg-6">
+				<input disabled id="view-mcustomercity" value="{{old('mcustomercity')}}" name="mcustomercity" class="form-control forminput" placeholder="Kota" type="text"  @if (Session::has('autofocus')) autofocus @endif >
+				</div>
+
+				<div style="padding-left: 21px; height: 21px;" class="form-group col-lg-6">
+				<input disabled id="view-mcustomerzipcode" value="{{old('mcustomerzipcode')}}" name="mcustomerzipcode" class="form-control forminput" placeholder="K.Pos" type="text"  @if (Session::has('autofocus')) autofocus @endif >
+				</div>
+								<div style="height: 68px;" class="form-group">
+									<div  class="col-lg-12">
+										<div class="icon-addon addon-md">
+											<input disabled id="view-mcustomerprovince" value="{{old('mcustomerprovince')}}" name="mcustomerprovince" class="form-control forminput" placeholder="Provinsi " type="text"  @if (Session::has('autofocus')) autofocus @endif >
+
+											<label for="mgoodsgroup1" class="glyphicon glyphicon-star" rel="tooltip" title="Propinsi"></label>
+
+
+										</div>
+									</div>
+								</div>
+
+								<div class="form-group">
+									<div  class="col-lg-12">
+										<div class="icon-addon addon-md">
+											<input disabled id="view-mcustomercountry" value="{{old('mcustomercountry')}}" name="mcustomercountry" class="form-control forminput" placeholder="Negara" type="text"  @if (Session::has('autofocus')) autofocus @endif >
+
+											<label for="mgoodsgroup1" class="glyphicon glyphicon-star" rel="tooltip" title="Negara"></label>
+
+
+										</div>
+									</div>
+								</div>
+
+
+
+								</div></div>
+								</br>
+								</br>
+
+        </div>
+        </div>
+
+</div>
+</row>
+
+    </br>
+
+
+    <div id="menu2" class="tab-pane fade">
+      <h3>Menu 2</h3>
+      <p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam.</p>
+    </div>
+    @if($activetab == 1)
+    	<div id="menuview3" class="tab-pane fade">
+    @else
+    	<div id="menuview3" class="tab-pane fade in active">
+    @endif
+     
+      <div style="height: 21px;" class="form-group">
+									<input type="hidden" value="{{$id}}" id="load-mcustomercontact2">
+									<label class="col-md-2 control-label"><b>Nama Lengkap</b> (<font color="red">*</font>) &nbsp  :</label>
+									<div class="col-md-4">
+										<div class="icon-addon addon-md">
+											<input disabled id="view-mcustomercontactname" value="{{old('mcustomercontactname')}}" name="mcustomercontactname" class="form-control forminput" placeholder="Nama Lengkap" type="text" @if (Session::has('autofocus')) autofocus @endif >
+											<label for="mgoodsgroup1" class="glyphicon glyphicon-chevron-right" rel="tooltip" title="Nama Lengkap"></label>
+										</div>
+									</div>
+								</div>
+									<div style="height: 21px;" class="form-group">
+									<label class="col-md-2 control-label"><b>Posisi Jabatan</b> (<font color="red">*</font>) &nbsp  :</label>
+									<div class="col-md-4">
+										<div class="icon-addon addon-md">
+											<input disabled id="view-mcustomercontactposition" value="{{old('mcustomercontactposition')}}" name="mcustomercontactposition" class="form-control forminput" placeholder="Posisi Jabatan" type="text" @if (Session::has('autofocus')) autofocus @endif >
+											<label for="mgoodsgroup1" class="glyphicon glyphicon glyphicon-user" rel="tooltip" title="Posisi Jabatan"></label>
+										</div>
+									</div>
+								</div>
+								<div style="height: 21px;" class="form-group">
+									<label class="col-md-2 control-label"><b>Email</b> (<font color="red">*</font>) &nbsp  :</label>
+									<div class="col-md-4">
+										<div class="icon-addon addon-md">
+											<input disabled id="view-mcustomercontactemail" value="{{old('mcustomercontactemail')}}" name="mcustomercontactemail" class="form-control forminput" placeholder="Email" type="text" @if (Session::has('autofocus')) autofocus @endif >
+											<label for="mgoodsgroup1" class="glyphicon glyphicon-envelope" rel="tooltip" title="Email"></label>
+										</div>
+									</div>
+								</div>
+								<div class="form-group">
+									<label class="col-md-2 control-label"><b>Handphone</b> (<font color="red">*</font>) &nbsp  :</label>
+									<div  class="col-md-4">
+										<div class="icon-addon addon-md">
+											<input disabled id="view-mcustomercontactemailphone" value="{{old('mcustomercontactemailphone')}}" name="mcustomercontactemailphone" class="form-control forminput" placeholder="Handphone" type="number" @if (Session::has('autofocus')) autofocus @endif >
+
+											<label for="mgoodsgroup1" class="glyphicon glyphicon-phone-alt" rel="tooltip" title="Handphone"></label>
+
+										<div style="height: 5px;">
+										<h5 style="font-size: 11px; margin-top: 36px;">&nbsp Example: 0542123456</h5>
+										</div>
+										</div>
+									</div>
+								</div>
+
+ 
+    </br>
+  </br>
+  </br>
+  </br>
+  </br>
+    <center>
+       <a id="btn-insert-reset" onclick="back()" class="btn btn-default" ><i class=""></i> Kembali</a>
+       </center>
+  </div>
+`
+	<div id="menu4" class="tab-pane fade">
+      <h3>Menu 4</h3>
+      <p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam.</p>
+    </div>
+
+	<div id="menuview5" class="tab-pane fade">
+      <h3>Empty</h3>
+      
+    </div>
+
+    <div id="menu6" class="tab-pane fade">
+      <h3>Menu 6</h3>
+      <p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam.</p>
+    </div>
+
+    <div id="menu7" class="tab-pane fade">
+      <h3>Menu 7</h3>
+      <p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam.</p>
+    </div>
+
+    <div id="menu8" class="tab-pane fade">
+      <h3>Menu 8</h3>
+      <p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam.</p>
+    </div>
+  </div>
+
+  </br>
+
+
+		</div>
+							</div>
+						</div>
+						</div>
+
+
+					</div>
+
+
+
+
+
+
+
+
+
+
 	 			</article>
 	 			<!-- WIDGET END -->
 
 	 		</div>
+
+
+
+
 
 
 		<!-- widget grid -->
@@ -477,8 +1134,8 @@
 									<tr>
 										<th data-hide="action"><center>Aksi</center></th>
 										<th data-hide="no"><center>No</center></th>
-										<th data-hide="mbranchcode"><center>ID Pelanggan</center></th>
-										<th data-hide="mbranchname"><center>Nama Pelanggan</center></th>
+										<th data-hide="mcustomerid"><center>ID Pelanggan</center></th>
+										<th data-hide="mcustomername"><center>Nama Pelanggan</center></th>
 										<th data-hide="address"><center>Nama Lengkap</center></th>
 										<th data-hide="phone"><center>Handphone</center></th>
 
@@ -595,48 +1252,55 @@
 
 
 						<script>
-					function popupdelete(id){
-								// console.log('click');
-								// var choice = confirm('Anda yakin akan menghapus ?');
-								// if(choice){
-								// 	window.location = '{{ URL::to('/') }}'+'/admin-nano/delcabang/'+id+'/delete';
-								// }
-					swal({
-					title: "Anda Yakin Akan Mengapus ?",
-					text: "Anda Tidak Dapat Mengembalikan Data Ini!",
-					type: "warning",   showCancelButton: true,
-					confirmButtonColor: "#DD6B55",
-					confirmButtonText: "Iya, Hapus!",
-					cancelButtonText: "Tidak, Batal!",
-					closeOnConfirm: false,
-					closeOnCancel: false
-								},
-					function(isconfirm){
-					if (isconfirm) {
-					swal({
-						title: "Terhapus!",
-						text: "Data Anda Berhasil Terhapus.",
-						type: "success",
-
-						});
-					window.setTimeout(function(){
-					window.location = '{{ URL::to('/') }}'+'/admin-nano/delcabang/'+id+'/delete'
-					},1000)
-				}
-
-					else {
-
-						swal({
-
-						title: "Batal Terhapus!",
-						text: "Data Anda Batal Terhapus.",
-						type: "error",
-						timer: 1000,
-						confirmButtonText: "Ok"
-						});
-						window.location = '#main';
-					}
-					});
+					 function popupdelete(id){
+        					swal({
+          					title: "Anda Yakin Akan Mengapus ?",
+          					text: "Anda Tidak Dapat Mengembalikan Data Ini!",
+          					type: "warning",   showCancelButton: true,
+          					confirmButtonColor: "#DD6B55",
+          					confirmButtonText: "Iya, Hapus!",
+          					cancelButtonText: "Tidak, Batal!",
+          					closeOnConfirm: false,
+          					closeOnCancel: false
+        					},
+        					function(isconfirm){
+        					  if (isconfirm) {
+                      $.ajax({
+                        type: "DELETE",
+                        url: API_URL+"/pelanggan/"+id,
+                        success: function(response){
+                          console.log(response);
+                          table.ajax.reload();
+                          window.location = "#tableapi";
+                          swal({
+              						  title: "Terhapus!",
+              						  text: "Data Anda Berhasil Terhapus.",
+              						  type: "success",
+            						  });
+                          $('#forminput').show();
+                    			$('#formview').hide();
+                    			$('#formedit').hide();
+                        },
+                        error: function(response){
+                          swal({
+                    				title: "Pengubahan Gagal!",
+                    				type: "error",
+                    				timer: 1000
+                    			});
+                          window.location = "#tableapi";
+                        }
+                      });
+        				  } else {
+    						      swal({
+            						title: "Batal Terhapus!",
+            						text: "Data Anda Batal Terhapus.",
+            						type: "error",
+            						timer: 1000,
+            						confirmButtonText: "Ok"
+    						      });
+    						      window.location = '#main';
+					        }
+					      });
 					$(".sa-button-container").parent().find(".cancel").hover(
 						function(){
 							$(".sa-button-container").parent().find(".cancel").addClass("bg-red");

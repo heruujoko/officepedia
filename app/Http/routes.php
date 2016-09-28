@@ -37,7 +37,6 @@ Route::group(['prefix'=>'admin-api',['middleware' => 'api']],function(){
   Route::resource('mcoa','Api\MCOAController');
   Route::resource('mprefix','Api\MPrefixController');
   Route::resource('pelanggan','Api\MCustomerController');
-  Route::post('pelanggan/insert/{id}','Api\MCustomerController@insertloadcontact');
   Route::controllers([
   	'/'=>'ApiController'
   ]);

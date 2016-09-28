@@ -4,6 +4,7 @@ $('#formview').hide();
 var API_URL = '/nano/public/admin-api';
 var WEB_URL = '/nano/public/admin-nano';
 // MBRANCH SCRIPT
+
 $("#insert-phone").keyup(function(){
   var val = $("#insert-phone").val();
   var cls = $("#phoneexample").hasClass("phonemargin")
@@ -166,6 +167,8 @@ $('#edit-wrapper').parsley().validate();
 		$('#formedit').hide();
 		$('#formview').hide();
 		$('#forminput').show();
+    $('#insert-wrapper').parsley().reset();
+    $('#edit-wrapper').parsley().reset();
 	}
 
 	function reset(){
@@ -895,7 +898,7 @@ $('#edit-wrapper').parsley().validate();
 
 // MCUSTOMER
 
-function insertmcustomerprofile(){
+function insertmcustomer(){
    $('#insert-wrapper').parsley().validate();
     if($('#insert-wrapper').parsley().isValid()){
       var data = {
@@ -910,7 +913,11 @@ function insertmcustomerprofile(){
         mcustomerzipcode: $('#insert-mcustomerzipcode').val(),
         mcustomerprovince: $('#insert-mcustomerprovince').val(),
         mcustomercountry: $('#insert-mcustomercountry').val(),
-        autogen: $('#disableforminput').val()
+        mcustomercontactname: $('#insert-mcustomercontactname').val(),
+        mcustomercontactposition: $('#insert-mcustomercontactposition').val(),
+        mcustomercontactemail: $('#insert-mcustomercontactemail').val(),
+        mcustomercontactemailphone: $('#insert-mcustomercontactemailphone').val(),
+        autogen: $('#disableforminput').is(':checked')
       }
       $.ajax({
         type: "POST",
@@ -919,12 +926,12 @@ function insertmcustomerprofile(){
         success: function(response){
           console.log(response);
           table.ajax.reload();
-           document.location.href = WEB_URL+"/pelanggan/insert/"+response.id+"/2";
           swal({
             title: "Input Berhasil!",
             type: "success",
             timer: 1000
           });
+          document.location.href = WEB_URL+"/pelanggan";
 
         },
         error: function(response){
@@ -942,76 +949,100 @@ function insertmcustomerprofile(){
     } else {
       $("#phoneexample").removeClass('phonemargin');
     }
+
 }
 
- function insertloadcontact(id){
-  console.log(id);
-  var data = {
-      mcustomercontactname: $('#insert-mcustomercontactname').val(),
-      mcustomercontactposition: $('#insert-mcustomercontactposition').val(),
-      mcustomercontactemail: $('#insert-mcustomercontactemail').val(),
-      mcustomercontactemailphone: $('#insert-mcustomercontactemailphone').val()
-
-    };
+function viewmcustomer(id){
   $.ajax({
-    type : 'POST',
-    data : data,
-    url : API_URL+'/pelanggan/insert/'+id,
-    success : function(response){
-      console.log(response);
-      swal({
-            title: "Input Berhasil!",
-            type: "success",
-            timer: 1000
-          });
-    }
-  });
-  document.location.href = WEB_URL+"/pelanggan";
-}
-
-
-function editmbranch(id){
-  $.ajax({
-
-    url : API_URL+'/cabang/'+id,
+    url : API_URL+'/pelanggan/'+id,
     type : 'GET',
     success : function(response){
-      $('#mbranchid').val(response.id);
-      $('#mbranchcode').val(response.mbranchcode);
-      $('#mbranchname').val(response.mbranchname);
-      $('#address').val(response.address);
-      $('#phone').val(response.phone);
-      $('#city').val(response.city);
-      $('#person_in_charge').val(response.person_in_charge);
-      $('#information').val(response.information);
+      $('#view-idmcustomerid').val(response.id);
+      $('#view-mcustomerid').val(response.mcustomerid);
+      $('#view-mcustomername').val(response.mcustomername);
+      $('#view-mcustomeremail').val(response.mcustomercontactemail);
+      $('#view-mcustomerphone').val(response.mcustomerphone);
+      $('#view-mcustomerfax').val(response.mcustomerfax);
+      $('#view-mcustomerwebsite').val(response.mcustomerwebsite);
+      $('#view-mcustomeraddress').val(response.mcustomeraddress);
+      $('#view-mcustomercity').val(response.mcustomercity);
+      $('#view-mcustomerzipcode').val(response.mcustomerzipcode);
+      $('#view-mcustomerprovince').val(response.mcustomerprovince);
+      $('#view-mcustomercountry').val(response.mcustomercountry);
+      $('#view-mcustomercontactname').val(response.mcustomercontactname);
+      $('#view-mcustomercontactposition').val(response.mcustomercontactposition);
+      $('#view-mcustomercontactemail').val(response.mcustomercontactemail);
+      $('#view-mcustomercontactemailphone').val(response.mcustomercontactemailphone);
+      $('#forminput').hide();
+      $('#formedit').hide();
+      $('#formview').show();
+    
+      console.log(response);
+    }
+ 
+});
+  window.location = "#main";
+}
+ 
+function editmcustomer(id){
+  $.ajax({
+    url : API_URL+'/pelanggan/'+id,
+    type : 'GET',
+    success : function(response){
+      $('#idmcustomerid').val(response.id);
+      $('#mcustomerid').val(response.mcustomerid);
+      $('#mcustomername').val(response.mcustomername);
+      $('#mcustomeremail').val(response.mcustomercontactemail);
+      $('#mcustomerphone').val(response.mcustomerphone);
+      $('#mcustomerfax').val(response.mcustomerfax);
+      $('#mcustomerwebsite').val(response.mcustomerwebsite);
+      $('#mcustomeraddress').val(response.mcustomeraddress);
+      $('#mcustomercity').val(response.mcustomercity);
+      $('#mcustomerzipcode').val(response.mcustomerzipcode);
+      $('#mcustomerprovince').val(response.mcustomerprovince);
+      $('#mcustomercountry').val(response.mcustomercountry);
+      $('#mcustomercontactname').val(response.mcustomercontactname);
+      $('#mcustomercontactposition').val(response.mcustomercontactposition);
+      $('#mcustomercontactemail').val(response.mcustomercontactemail);
+      $('#mcustomercontactemailphone').val(response.mcustomercontactemailphone);
       $('#forminput').hide();
       $('#formview').hide();
       $('#formedit').show();
-    },
-
-  });
+      console.log(response);
+    }
+ 
+});
   window.location = "#main";
 }
 
-function updatembranch(){
+function updatemcustomer(){
 
 $('#edit-wrapper').parsley().validate();
     if($('#edit-wrapper').parsley().isValid()){
-    var updateid = $('#mbranchid').val();
+    var updateid = $('#idmcustomerid').val();
     var data = {
-    mbranchcode : $('#mbranchcode').val(),
-    mbranchname : $('#mbranchname').val(),
-    address : $('#address').val(),
-    phone : $('#phone').val(),
-    city : $('#city').val(),
-    person_in_charge : $('#person_in_charge').val(),
-    information : $('#information').val(),
+        mcustomerid: $('#mcustomerid').val(),
+        mcustomername: $('#mcustomername').val(),
+        mcustomeremail: $('#mcustomeremail').val(),
+        mcustomerphone: $('#mcustomerphone').val(),
+        mcustomerfax: $('#mcustomerfax').val(),
+        mcustomerwebsite: $('#mcustomerwebsite').val(),
+        mcustomeraddress: $('#mcustomeraddress').val(),
+        mcustomercity: $('#mcustomercity').val(),
+        mcustomerzipcode: $('#mcustomerzipcode').val(),
+        mcustomerprovince: $('#mcustomerprovince').val(),
+        mcustomercountry: $('#mcustomercountry').val(),
+        mcustomercontactname: $('#mcustomercontactname').val(),
+        mcustomercontactposition: $('#mcustomercontactposition').val(),
+        mcustomercontactemail: $('#mcustomercontactemail').val(),
+        mcustomercontactemailphone: $('#mcustomercontactemailphone').val(),
+        autogen: $('#disableforminput').is(':checked')
 
   }
 
    $.ajax({
         type: "PUT",
-        url: API_URL+"/cabang/"+updateid,
+        url: API_URL+"/pelanggan/"+updateid,
         data: data,
         success: function(response){
           console.log(response);
@@ -1038,39 +1069,6 @@ $('#edit-wrapper').parsley().validate();
 
   }
 
-
-
-
-
-  function back(){
-    $('#insert-mbranchcode').val('');
-    $('#insert-mbranchname').val('');
-    $('#insert-address').val('');
-    $('#insert-phone').val('');
-    $('#insert-city').val('');
-    $('#insert-person_in_charge').val('');
-    $('#insert-information').val('');
-
-    $('#formedit').hide();
-    $('#formview').hide();
-    $('#forminput').show();
-  }
-
-  function reset(){
-
-    $('#insert-mbranchcode').val('');
-    $('#insert-mbranchname').val('');
-    $('#insert-address').val('');
-    $('#insert-phone').val('');
-    $('#insert-city').val('');
-    $('#insert-person_in_charge').val('');
-    $('#insert-information').val('');
-    $('.alerthide').hide();
-  }
-
-
-
-
 function resetcustomer1(){
 $('#insert-mcustomerid').val('');
 $('#insert-mcustomername').val('');
@@ -1094,6 +1092,14 @@ $('#insert-mcustomercontactemailphone').val('');
 $('#insert-wrapper').parsley().reset();
 $('#edit-wrapper').parsley().reset();
 }
+
+
+
+
+
+
+
+
 document.getElementById('disableforminput').onchange = function() {
     document.getElementById('insert-mcustomerid').disabled = this.checked;
     if($('#disableforminput').is(':checked')){
