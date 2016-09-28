@@ -327,7 +327,7 @@
 						<h3 style="font-weight: bold; color: #C91503;font-size: 19px;">Mode : EDIT</h3>
 
 						<input type="hidden" id="mbranchid" value=""></input>
-					 
+
 							<div id="edit-wrapper" class="form-horizontal" data-parsley-validate>
 							<div class="container">
 
@@ -672,7 +672,7 @@
 											<input type="text" class="form-control" placeholder="Filter Keterangan" />
 										</th>
 
-										
+
 									</tr>
 									<tr>
 										<th data-hide="action"><center>Aksi</center></th>
@@ -710,7 +710,7 @@
             buttons: [ {
                 extend: 'copyHtml5',
                 exportOptions: {
-                    columns: [ 0,1,2]
+                    columns: [ 0, 1, 2, 3, 4, 5]
                 }
             },
             {
