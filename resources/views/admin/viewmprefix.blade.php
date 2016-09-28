@@ -389,7 +389,9 @@
                   			      dom: "<'dtpadding' <'row' <'clmn' > <'srch' f> <'tablerow' l> <'clear'> <'masterbutton' B> r> <'row pb' tip>>",
                                   "autoWidth" : true,
                                   "oLanguage": {
-                                    "sSearch": '<span class="input-group-addon"><i class="glyphicon glyphicon-search"></i></span>'
+                                    "sSearch": '<span class="input-group-addon"><i class="glyphicon glyphicon-search"></i></span>',
+																		"sLengthMenu": "Show _MENU_ Entries",
+																		"sInfo": "Showing ( _START_ to _END_ ) to _TOTAL_ Entries"
                                   },
                               buttons: [ {
                                     extend: 'copyHtml5',
