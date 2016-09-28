@@ -194,7 +194,7 @@
 									<label class="col-md-3 control-label"><b>Alamat</b> (<font color="red">*</font>) &nbsp  :</label>
 									<div class="col-md-7">
 										<div class="icon-addon addon-md">
-											<input id="insert-address" value="{{old('address')}}" name="address" class="form-control forminput" placeholder="Alamat" type="text" required data-parsley-required-message="Field Ini Tidak Boleh Kosong" @if (Session::has('autofocus')) autofocus @endif >
+											<input id="insert-address" value="{{old('address')}}" name="address" class="form-control forminput" placeholder="Alamat" type="text" @if (Session::has('autofocus')) autofocus @endif >
 											<label for="mgoodsgroup1" class="glyphicon glyphicon-home" rel="tooltip" title="Alamat"></label>
 										</div>
 									</div>
@@ -203,12 +203,12 @@
 									<label class="col-md-3 control-label"><b>Telepon</b> (<font color="red">*</font>) &nbsp  :</label>
 									<div  class="col-md-7">
 										<div class="icon-addon addon-md">
-											<input id="insert-phone" value="{{old('phone')}}" name="phone" class="form-control forminput" placeholder="Telepon" type="number" required data-parsley-required-message="Field Ini Tidak Boleh Kosong" @if (Session::has('autofocus')) autofocus @endif >
+											<input id="insert-phone" value="{{old('phone')}}" name="phone" class="form-control forminput phoneregex" placeholder="Telepon" type="text" @if (Session::has('autofocus')) autofocus @endif >
 
 											<label for="mgoodsgroup1" class="glyphicon glyphicon-phone-alt" rel="tooltip" title="Telepon"></label>
 
 										<div style="height: 5px;">
-										<h5 class="phonemargin" id="phoneexample" style="font-size: 11px;">&nbsp Example: 0542123456</h5>
+										<h5 class="phonemargin" id="phoneexample" style="font-size: 11px;">&nbsp Example: (0542) 123-456</h5>
 										</div>
 										</div>
 									</div>
@@ -217,7 +217,7 @@
 									<label class="col-md-3 control-label"><b>Kota</b> (<font color="red">*</font>) &nbsp  :</label>
 									<div class="col-md-7">
 										<div class="icon-addon addon-md">
-											<input id="insert-city" value="{{old('city')}}" name="city" class="form-control forminput" placeholder="Kota" type="text" required data-parsley-required-message="Field Ini Tidak Boleh Kosong" @if (Session::has('autofocus')) autofocus @endif >
+											<input id="insert-city" value="{{old('city')}}" name="city" class="form-control forminput" placeholder="Kota" type="text" @if (Session::has('autofocus')) autofocus @endif >
 											<label for="mgoodsgroup1" class="glyphicon glyphicon-road" rel="tooltip" title="Kota"></label>
 										</div>
 									</div>
@@ -226,7 +226,7 @@
 									<label class="col-md-3 control-label"><b>Orang Yang Bertanggung Jawab</b> (<font color="red">*</font>) &nbsp  :</label>
 									<div class="col-md-7">
 										<div class="icon-addon addon-md">
-											<input id="insert-person_in_charge" value="{{old('person_in_charge')}}" name="person_in_charge" class="form-control forminput" placeholder="Orang Yang Bertanggung Jawab" type="text" required data-parsley-required-message="Field Ini Tidak Boleh Kosong" @if (Session::has('autofocus')) autofocus @endif >
+											<input id="insert-person_in_charge" value="{{old('person_in_charge')}}" name="person_in_charge" class="form-control forminput" placeholder="Orang Yang Bertanggung Jawab" type="text" @if (Session::has('autofocus')) autofocus @endif >
 											<label for="mgoodsgroup1" class="glyphicon glyphicon-user" rel="tooltip" title="Orang Yang Bertanggung Jawab"></label>
 										</div>
 									</div>

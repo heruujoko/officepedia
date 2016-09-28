@@ -763,6 +763,7 @@
     		<script src="{{URL::to('/')}}/js/plugin/datatable-responsive/datatables.responsive.min.js"></script>
     		<script src="{{ url('/') }}/js/parsley.min.js"></script>
 				<script src="{{ url('/') }}/js/select2.min.js"></script>
+				<script src="{{ url('/') }}/js/jquery.mask.min.js"></script>
     		<script src="{{URL::to('/')}}/master/main.js"></script>
 
     		<script src="{{ url('/js/datatable/DataTables-1.10.12/js/jquery.dataTables.min.js') }}"></script>
@@ -809,6 +810,7 @@
 					$('.select2').select2({
 						width: "100%"
 					});
+					$('.phoneregex').mask('(0000) 000-000');
     			pageSetUp();
 
     			/* // DOM Position key index //
