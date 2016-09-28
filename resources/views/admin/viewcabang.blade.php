@@ -716,22 +716,22 @@
                 }
             },
             {
-                extend: 'csvFlash',
-                exportOptions: {
-                    columns: [ 0, 1, 2, 3, 4, 5] //setting kolom mana yg mau di export
-                }
+                text: 'CSV',
+                action: function(){
+									window.location.href = "{{ url('/admin-nano/cabang/export/csv') }}";
+								}
             },
             {
-                extend: 'excelFlash',
-                exportOptions: {
-                    columns: [ 0, 1, 2, 3, 4, 5] //setting kolom mana yg mau di export
-                }
+								text: 'Excel',
+								action: function(){
+									window.location.href = "{{ url('/admin-nano/cabang/export/excel') }}";
+								}
             },
             {
-                extend: 'pdfFlash',
-                exportOptions: {
-                    columns: [ 0, 1, 2, 3, 4, 5] //setting kolom mana yg mau di export
-                }
+								text: 'PDF',
+								action: function(){
+									window.location.href = "{{ url('/admin-nano/cabang/export/pdf') }}";
+								}
             },
             {
                 extend: 'print',
