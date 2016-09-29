@@ -1134,6 +1134,36 @@
 										<th class="hasinput" style="width:10%">
 											<input type="text" class="form-control" placeholder="Filter Fax" />
 										</th>
+										<th class="hasinput" style="width:10%">
+											<input type="text" class="form-control" placeholder="Filter Website" />
+										</th>
+										<th class="hasinput" style="width:10%">
+											<input type="text" class="form-control" placeholder="Filter Alamat" />
+										</th>
+										<th class="hasinput" style="width:10%">
+											<input type="text" class="form-control" placeholder="Filter Kota" />
+										</th>
+										<th class="hasinput" style="width:10%">
+											<input type="text" class="form-control" placeholder="Filter Kode Pos" />
+										</th>
+										<th class="hasinput" style="width:10%">
+											<input type="text" class="form-control" placeholder="Filter Provisi" />
+										</th>
+										<th class="hasinput" style="width:10%">
+											<input type="text" class="form-control" placeholder="Filter Negara" />
+										</th>
+										<th class="hasinput" style="width:10%">
+											<input type="text" class="form-control" placeholder="Filter Nama Kontak" />
+										</th>
+										<th class="hasinput" style="width:10%">
+											<input type="text" class="form-control" placeholder="Filter Jabatan" />
+										</th>
+										<th class="hasinput" style="width:10%">
+											<input type="text" class="form-control" placeholder="Filter Email Kontak" />
+										</th>
+										<th class="hasinput" style="width:10%">
+											<input type="text" class="form-control" placeholder="Filter Handphone" />
+										</th>
 
 
 
@@ -1148,7 +1178,16 @@
 										<th data-hide="mcustomeremail"><center>Email</center></th>
 										<th data-hide="mcustomerphone"><center>Telpon Kantor</center></th>
 										<th data-hide="mcustomerfax"><center>Fax</center></th>
-
+										<th data-hide="mcustomerwebsite"><center>Website</center></th>
+										<th data-hide="mcustomeraddress"><center>Alamat</center></th>
+										<th data-hide="mcustomercity"><center>Kota</center></th>
+										<th data-hide="mcustomerzipcode"><center>Kode Pos</center></th>
+										<th data-hide="mcustomerprovince"><center>Provinsi</center></th>
+										<th data-hide="mcustomercountry"><center>Negara</center></th>
+										<th data-hide="mcustomercontactname"><center>Nama Kontak</center></th>
+										<th data-hide="mcustomercontactposition"><center>Jabatan</center></th>
+										<th data-hide="mcustomercontactemail"><center>Email Kontak</center></th>
+										<th data-hide="mcustomercontactemailphone"><center>Handphone</center></th>
 
 									</tr>
 								</thead>
@@ -1174,35 +1213,35 @@
 								"sLengthMenu": "Show _MENU_ Entries",
 								"sInfo": "Showing ( _START_ to _END_ ) to _TOTAL_ Entries"
             },
-						"aoColumnDefs": [{ "bVisible": false, "aTargets": [6,7,8] }],
+						"aoColumnDefs": [{ "bVisible": false, "aTargets": [6,7,8,9,10,11,12,13,14,15,16,17,18] }],
             buttons: [ {
                 extend: 'copyHtml5',
                 exportOptions: {
-                    columns: [ 0, 1, 2, 3, 4, 5]
+                    columns: [ 0, 1, 2, 3, 4, 5,6,7,8,9,10,11,12,13,14,15,16,17,18]
                 }
             },
             {
-                extend: 'csvFlash',
-                exportOptions: {
-                    columns: [ 0, 1, 2, 3, 4, 5] //setting kolom mana yg mau di export
-                }
+                text: 'CSV',
+                action: function(){
+									window.location.href = "{{ url('/admin-nano/pelanggan/export/csv') }}"
+								}
             },
             {
-                extend: 'excelFlash',
-                exportOptions: {
-                    columns: [ 0, 1, 2, 3, 4, 5] //setting kolom mana yg mau di export
-                }
+								text: 'Excel',
+								action: function(){
+									window.location.href = "{{ url('/admin-nano/pelanggan/export/excel') }}"
+								}
             },
             {
-                extend: 'pdfFlash',
-                exportOptions: {
-                    columns: [ 0, 1, 2, 3, 4, 5] //setting kolom mana yg mau di export
-                }
+								text: 'PDF',
+								action: function(){
+									window.location.href = "{{ url('/admin-nano/pelanggan/export/pdf') }}"
+								}
             },
             {
                 extend: 'print',
                 exportOptions: {
-                    columns: [ 0, 1, 2, 3, 4, 5] //setting kolom mana yg mau di print
+                    columns: [ 0, 1, 2, 3, 4, 5,6,7,8,9,10,11,12,13,14,15,16,17,18] //setting kolom mana yg mau di print
                 }
 
             },
@@ -1226,8 +1265,16 @@
 										{data: 'mcustomeremail', mcustomeremail: 'mcustomeremail'},
 										{data: 'mcustomerphone', mcustomerphone: 'mcustomerphone'},
 										{data: 'mcustomerfax', mcustomerfax: 'mcustomerfax'},
-
-
+										{data: 'mcustomerwebsite', mcustomerwebsite: 'mcustomerwebsite'},
+										{data: 'mcustomeraddress', mcustomeraddress: 'mcustomeraddress'},
+										{data: 'mcustomercity', mcustomercity: 'mcustomercity'},
+										{data: 'mcustomerzipcode', mcustomerzipcode: 'mcustomerzipcode'},
+										{data: 'mcustomerprovince', mcustomerprovince: 'mcustomerprovince'},
+										{data: 'mcustomercountry', mcustomercountry: 'mcustomercountry'},
+										{data: 'mcustomercontactname', mcustomercontactname: 'mcustomercontactname'},
+										{data: 'mcustomercontactposition', mcustomercontactposition: 'mcustomercontactposition'},
+										{data: 'mcustomercontactemail', mcustomercontactemail: 'mcustomercontactemail'},
+										{data: 'mcustomercontactemailphone', mcustomercontactemailphone: 'mcustomercontactemailphone'},
 										]
 									});
 

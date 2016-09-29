@@ -5,9 +5,15 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
+use Excel;
+use PDF;
+use App\MCUSTOMER;
 
 class MCustomerController extends Controller
 {
+	private $count = 0;
+	private $customer = array();
+
 	public function index(){
 		$data['active'] = 'customer';
 		$data['section'] = 'customer';
@@ -42,4 +48,49 @@ class MCustomerController extends Controller
 		$data['id'] = $id;
 	  return view('admin/viewmcustomer',$data);
 	}
+
+	public function csv(){
+		$this->customer = MCUSTOMER::all();
+		$this->count = 0;
+		return Excel::create('Master Pelanggan',function($excel){
+			$excel->sheet('Master Pelanggan',function($sheet){
+				$this->count++;
+				$sheet->row($this->count,array(
+					'ID Pelanggan','Nama Pelanggan','Email','Phone','Fax','Website','Alamat','Kota','Kode Pos','Provinsi','Negara','Nama Kontak','Posisi','Email Kontak','Handphone'
+				));
+				foreach($this->customer as $cust){
+					$this->count++;
+					$sheet->row($this->count,array(
+						$cust->mcustomerid,$cust->mcustomername,$cust->mcustomeremail,$cust->mcustomerphone,$cust->mcustomerfax,$cust->mcustomerwebsite,$cust->mcustomeraddress,$cust->mcustomercity,$cust->mcustomerzipcode,$cust->mcustomerprovince,$cust->mcustomercountry,$cust->mcustomercontactname,$cust->mcustomercontactposition,$cust->mcustomercontactemail,$cust->mcustomercontactemailphone
+					));
+				}
+			});
+		})->export('csv');
+	}
+
+	public function excel(){
+		$this->customer = MCUSTOMER::all();
+		$this->count = 0;
+		return Excel::create('Master Pelanggan',function($excel){
+			$excel->sheet('Master Pelanggan',function($sheet){
+				$this->count++;
+				$sheet->row($this->count,array(
+					'ID Pelanggan','Nama Pelanggan','Email','Phone','Fax','Website','Alamat','Kota','Kode Pos','Provinsi','Negara','Nama Kontak','Posisi','Email Kontak','Handphone'
+				));
+				foreach($this->customer as $cust){
+					$this->count++;
+					$sheet->row($this->count,array(
+						$cust->mcustomerid,$cust->mcustomername,$cust->mcustomeremail,$cust->mcustomerphone,$cust->mcustomerfax,$cust->mcustomerwebsite,$cust->mcustomeraddress,$cust->mcustomercity,$cust->mcustomerzipcode,$cust->mcustomerprovince,$cust->mcustomercountry,$cust->mcustomercontactname,$cust->mcustomercontactposition,$cust->mcustomercontactemail,$cust->mcustomercontactemailphone
+					));
+				}
+			});
+		})->export('xlsx');
+	}
+
+	public function pdf(){
+		$data['customer'] = MCUSTOMER::all();
+		$pdf = PDF::loadview('admin/export/mcustomerpdf',$data);
+		return $pdf->setPaper('a4', 'landscape')->download('Master Pelanggan.pdf');
+	}
+
 }
