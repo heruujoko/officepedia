@@ -100,6 +100,9 @@ function editmbranch(id){
 			$('#forminput').hide();
 			$('#formview').hide();
 			$('#formedit').show();
+      setTimeout(function(){
+          $("#mbranchcode").focus();
+      },100);
 		},
 
 	});
@@ -556,7 +559,7 @@ $('#edit-wrapper').parsley().validate();
     $('#formedit').hide();
       setTimeout(function(){
           $("#insert-mcoaparentcode").focus();
-      },300);
+      },100);
     window.location = "#forminputp";
   }
 
@@ -570,7 +573,7 @@ $('#edit-wrapper').parsley().validate();
     $('#formedit').hide();
     setTimeout(function(){
         $("#insert-mcoagrandparentcode").focus();
-    },300);
+    },100);
     window.location = "#forminputgp";
   }
 
@@ -586,7 +589,7 @@ $('#edit-wrapper').parsley().validate();
     $('#insert-mcoatype').val(type);
     setTimeout(function(){
         $("#insert-mcoacode").focus();
-    },300);
+    },100);
     window.location = "#main";
   }
 
@@ -671,7 +674,7 @@ $('#edit-wrapper').parsley().validate();
         $('#forminputp').hide();
         setTimeout(function(){
          $("#edit-mcoacode").focus();
-        },300);
+       },100);
       },
       error: function(response){
         swal({
@@ -852,6 +855,9 @@ $('#edit-wrapper').parsley().validate();
         $('#forminput').hide();
   			$('#formview').hide();
   			$('#formedit').show();
+        setTimeout(function(){
+            $("#edit-mprefix").focus();
+        },100);
       },
       error: function(response){
         swal({
@@ -1004,14 +1010,14 @@ function viewmcustomer(id){
       $('#forminput').hide();
       $('#formedit').hide();
       $('#formview').show();
-    
+
       console.log(response);
     }
- 
+
 });
   window.location = "#main";
 }
- 
+
 function editmcustomer(id){
   $.ajax({
     url : API_URL+'/pelanggan/'+id,
@@ -1036,9 +1042,11 @@ function editmcustomer(id){
       $('#forminput').hide();
       $('#formview').hide();
       $('#formedit').show();
-      console.log(response);
+      setTimeout(function(){
+          $("#mcustomername").focus();
+      },100);
     }
- 
+
 });
   window.location = "#main";
 }
