@@ -406,7 +406,7 @@
 				<article class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
 
 					<!-- Widget ID (each widget will need unique ID)-->
-					<div id="formedit" class="formedit jarviswidget jarviswidget-color-darken" id="wid-id-0" data-widget-editbutton="false" data-widget-colorbutton="false" data-widget-deletebutton="false">
+					<div id="formedit" style="display:none;" class="formedit jarviswidget jarviswidget-color-darken" id="wid-id-0" data-widget-editbutton="false" data-widget-colorbutton="false" data-widget-deletebutton="false">
 						<!-- widget options:
 						usage: <div class="jarviswidget" id="wid-id-0" data-widget-editbutton="false">
 
@@ -731,7 +731,7 @@
 				<article class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
 
 					<!-- Widget ID (each widget will need unique ID)-->
-					<div id="formview" class="formview jarviswidget jarviswidget-color-darken" id="wid-id-0" data-widget-editbutton="false" data-widget-colorbutton="false" data-widget-deletebutton="false">
+					<div id="formview" style="display:none;" class="formview jarviswidget jarviswidget-color-darken" id="wid-id-0" data-widget-editbutton="false" data-widget-colorbutton="false" data-widget-deletebutton="false">
 						<!-- widget options:
 						usage: <div class="jarviswidget" id="wid-id-0" data-widget-editbutton="false">
 

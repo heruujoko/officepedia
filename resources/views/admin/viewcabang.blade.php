@@ -374,7 +374,7 @@
 									<label class="col-md-3 control-label"><b>Telepon</b> (<font color="red">*</font>) &nbsp  :</label>
 									<div  class="col-md-7">
 										<div class="icon-addon addon-md">
-											<input value="" id="phone" name="phone" class="form-control forminput" placeholder="Telepon" type="number" required data-parsley-required-message="Field Ini Tidak Boleh Kosong">
+											<input value="" id="phone" name="phone" class="form-control forminput phoneregex" placeholder="Telepon" type="text" required data-parsley-required-message="Field Ini Tidak Boleh Kosong">
 
 											<label for="mgoodsgroup1" class="glyphicon glyphicon-phone-alt" rel="tooltip" title="Telepon"></label>
 

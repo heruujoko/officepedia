@@ -217,7 +217,7 @@
 									<label class="col-md-3 control-label"><b>Fax Kantor</b> (<font color="red">*</font>) &nbsp  :</label>
 									<div  class="col-md-7">
 										<div class="icon-addon addon-md">
-											<input id="insert-mcustomerfaxphone" value="{{old('mcustomerfaxphone')}}" name="mcustomerfaxphone" class="form-control forminput" placeholder="Fax Kantor" type="number" required @if (Session::has('autofocus')) autofocus @endif >
+											<input id="insert-mcustomerfaxphone" value="{{old('mcustomerfaxphone')}}" name="mcustomerfaxphone" class="form-control forminput phoneregex" placeholder="Fax Kantor" type="text" required @if (Session::has('autofocus')) autofocus @endif >
 
 											<label for="mgoodsgroup1" class="glyphicon glyphicon-phone-alt" rel="tooltip" title="Fax Kantor"></label>
 
