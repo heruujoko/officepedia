@@ -1,8 +1,8 @@
 $('#formedit').hide();
 $('#formview').hide();
 
-var API_URL = '/nano/public/admin-api';
-var WEB_URL = '/nano/public/admin-nano';
+var API_URL = '/public/admin-api';
+var WEB_URL = '/public/admin-nano';
 // MBRANCH SCRIPT
 
 $("#insert-phone").keyup(function(){
@@ -44,8 +44,10 @@ function insertmbranch(){
           });
         },
         error: function(response){
+          var err_msg = response.responseJSON.errorInfo[2];
           swal({
             title: "Input Gagal!",
+            text: err_msg,
             type: "error",
             timer: 1000
           });
@@ -143,8 +145,10 @@ $('#edit-wrapper').parsley().validate();
           $('#formedit').hide();
         },
         error: function(response){
+          var err_msg = response.responseJSON.errorInfo[2];
           swal({
             title: "Pengubahan Gagal!",
+            text:err_msg,
             type: "error",
             timer: 1000
           });

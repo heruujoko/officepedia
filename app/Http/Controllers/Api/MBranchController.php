@@ -8,6 +8,7 @@ use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use App\MBRANCH;
 use Datatables;
+use Exception;
 
 class MBranchController extends Controller
 {
@@ -35,16 +36,26 @@ class MBranchController extends Controller
 	}
 
     public function store(Request $request){
-    	$mbranch = MBRANCH::create($request->all());
-    	$mbranch->void = 0;
-    	$mbranch->save();
-     	return response()->json($mbranch);
+			try{
+				$mbranch = MBRANCH::create($request->all());
+				$mbranch->void = 0;
+				$mbranch->save();
+				return response()->json($mbranch);
+			} catch(Exception $e){
+				return response()->json($e,400);
+			}
+
 	}
 
 	public function update(Request $request,$id){
-		$mbranch = MBRANCH::find($id);
-		$mbranch->update($request->all());
-		return response()->json($mbranch);
+		try{
+			$mbranch = MBRANCH::find($id);
+			$mbranch->update($request->all());
+			return response()->json($mbranch);
+		}catch(Exception $e){
+			return response()->json($e,400);
+		}
+
 	}
 
 	public function destroy($id){
