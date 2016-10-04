@@ -134,37 +134,44 @@
     @endif
     	 </br>
 <div id="insert-wrapper" class="form-horizontal" data-parsley-validate>
+    
     <div class="col-md-6">
+   
     <div style="padding-top:15px;" class="tab-content">
         <div class="tab-pane active" id="info-tab">
-    <div style="height: 35px;" class="form-group">
-								<label class="control-label"><b>ID Pelanggan</b> (<font color="red">*</font>) &nbsp  :</label>
-								<div class="">
+    <div style="height: 30px;" class="form-group">
+								<label class="col-md-3 control-label"><b>ID Pelanggan</b> (<font color="red">*</font>) &nbsp  :</label>
+									<div class="col-md-9">
 										<div class="icon-addon addon-md">
-											<label for="mgoodsgroup1" class="glyphicon glyphicon-barcode" rel="tooltip" title="ID Pelanggan"></label>
+											
 											<div class="input-group">
       										<input id="insert-mcustomerid" value="{{old('mcustomerid')}}" name="mcustomerid" class="form-control forminput" placeholder="ID Pelanggan" type="text" required data-parsley-required-message="Field Ini Tidak Boleh Kosong"  data-parsley-errors-container=".errorBlock1" @if (Session::has('autofocus')) autofocus @endif >
+      										<label for="mgoodsgroup1" class="glyphicon glyphicon-barcode" rel="tooltip" title="ID Pelanggan"></label>
       										<span class="input-group-addon" style="background: none;">
         									<input type="checkbox" id="disableforminput" name="autogen" rel="tooltip" title="Auto Generate ID Pelanggan">
       										</span>
     										</div>
+    										</div>
 										</div>
-									</div>
+									
 								</div>
 								<div class="errorBlock1" style="margin-left:-4% !important;"></div>
 								<div style="height: 21px;" class="form-group">
-									<label class="control-label"><b>Nama Pelanggan</b> (<font color="red">*</font>) &nbsp  :</label>
-									<div class="">
+									<label class="col-md-3 control-label"><b>Nama Pelanggan</b> (<font color="red">*</font>) &nbsp  :</label>
+									<div class="col-md-9 col-sm-12">
 										<div class="icon-addon addon-md">
+											
 											<input id="insert-mcustomername" value="{{old('mcustomername')}}" name="mcustomername" class="form-control forminput" placeholder="Nama Pelanggan" type="text" required data-parsley-required-message="Field Ini Tidak Boleh Kosong" data-parsley-errors-container=".errorBlock2" @if (Session::has('autofocus')) autofocus @endif>
 											<label for="mgoodsgroup1" class="glyphicon glyphicon-chevron-right" rel="tooltip" title="Nama Pelanggan"></label>
+											
+											
 										</div>
 									</div>
 								</div>
 								<div class="errorBlock2" style="margin-left:-4% !important;"></div>
 								<div style="height: 21px;" class="form-group">
-									<label class="control-label"><b>Email</b> (<font color="red">*</font>) &nbsp  :</label>
-									<div class="">
+									<label class="col-md-3 control-label"><b>Email</b> &nbsp  :</label>
+									<div class="col-md-9 col-sm-12">
 										<div class="icon-addon addon-md">
 											<input id="insert-mcustomeremail" value="{{old('mcustomeremail')}}" name="mcustomeremail" class="form-control forminput" placeholder="Email" type="text"  @if (Session::has('autofocus')) autofocus @endif >
 											<label for="mgoodsgroup1" class="glyphicon glyphicon-envelope" rel="tooltip" title="Email"></label>
@@ -172,8 +179,8 @@
 									</div>
 								</div>
 								<div class="form-group">
-									<label class="control-label"><b>Telepon Kantor</b> (<font color="red">*</font>) &nbsp  :</label>
-									<div  class="">
+									<label class="col-md-3 control-label"><b>Telepon Kantor</b>  &nbsp  :</label>
+									<div  class="col-md-9 col-sm-12">
 										<div class="icon-addon addon-md">
 											<input id="insert-mcustomerphone" value="{{old('mcustomerphone')}}" name="mcustomerphone" class="form-control forminput phoneexample phoneregex" placeholder="Telepon Kantor" type="text" @if (Session::has('autofocus')) autofocus @endif >
 
@@ -186,8 +193,8 @@
 									</div>
 								</div>
 								<div class="form-group">
-									<label class="control-label"><b>Fax Kantor</b> (<font color="red">*</font>) &nbsp  :</label>
-									<div  class="">
+									<label class="col-md-3 control-label"><b>Fax Kantor</b> &nbsp  :</label>
+									<div  class="col-md-9 col-sm-12">
 										<div class="icon-addon addon-md">
 											<input id="insert-mcustomerfax" value="{{old('mcustomerfax')}}" name="mcustomerfax" class="form-control forminput phoneregex" placeholder="Fax Kantor" type="text" @if (Session::has('autofocus')) autofocus @endif >
 
@@ -200,8 +207,8 @@
 									</div>
 								</div>
 								<div style="height: 21px;" class="form-group">
-									<label class="control-label"><b>Website</b> (<font color="red">*</font>) &nbsp  :</label>
-									<div class="">
+									<label class="col-md-3 control-label"><b>Website</b> &nbsp  :</label>
+									<div class="col-md-9 col-sm-12">
 										<div class="icon-addon addon-md">
 											<input id="insert-mcustomerwebsite" value="{{old('mcustomerwebsite')}}" name="mcustomerwebsite" class="form-control forminput" placeholder="Website" type="text"  @if (Session::has('autofocus')) autofocus @endif >
 											<label for="mgoodsgroup1" class="glyphicon glyphicon-info-sign" rel="tooltip" title="Website"></label>
@@ -228,11 +235,13 @@
 
 
 <div class="col-md-6">
-    <div class="tab-content">
+	<label style="padding-left: 20px; padding-top: 19px;" class="control-label"><b>Alamat Penagihan</b>  &nbsp  :</label>
+    <div class="tab-content" style="margin-top:-41px; padding-left:148px;">
+        
         <div class="tab-pane active" id="info-tab">
-
-    <div style="height: 85px;" class="form-group">
-	&nbsp &nbsp &nbsp<label  class="control-label"><b>Alamat Penagihan</b> (<font color="red">*</font>) &nbsp  :</label>
+        	
+    <div style="height: 95px;" class="form-group">
+	
 								</br>
 								</br>
 								<div class="col-lg-12">
@@ -243,14 +252,17 @@
 										</div>
 									</div>
 								</div>
+				
 				<div style="" class="form-group col-lg-6">
 				<input id="insert-mcustomercity" value="{{old('mcustomercity')}}" name="mcustomercity" class="form-control forminput" placeholder="Kota" type="text"  @if (Session::has('autofocus')) autofocus @endif >
 				</div>
 
-				<div style="padding-left: 21px; height: 21px;" class="form-group col-lg-6">
+				<div style="padding-left: 21px;" class="form-group col-lg-6">
 				<input id="insert-mcustomerzipcode" value="{{old('mcustomerzipcode')}}" name="mcustomerzipcode" class="form-control forminput" placeholder="K.Pos" type="text"  @if (Session::has('autofocus')) autofocus @endif >
 				</div>
-								<div style="height: 68px;" class="form-group">
+
+				
+								<div style="height: 80px;" class="form-group">
 									<div  class="col-lg-12">
 										<div class="icon-addon addon-md">
 											<input id="insert-mcustomerprovince" value="{{old('mcustomerprovince')}}" name="mcustomerprovince" class="form-control forminput" placeholder="Provinsi " type="text"  @if (Session::has('autofocus')) autofocus @endif >
@@ -301,7 +313,7 @@
 
       <div style="height: 21px;" class="form-group">
 									<input type="hidden" value="{{$id}}" id="load-mcustomercontact2">
-									<label class="col-md-2 control-label"><b>Nama Lengkap</b> (<font color="red">*</font>) &nbsp  :</label>
+									<label class="col-md-2 control-label"><b>Nama Lengkap</b>  &nbsp  :</label>
 									<div class="col-md-4">
 										<div class="icon-addon addon-md">
 											<input id="insert-mcustomercontactname" value="{{old('mcustomercontactname')}}" name="mcustomercontactname" class="form-control forminput" placeholder="Nama Lengkap" type="text" @if (Session::has('autofocus')) autofocus @endif >
@@ -310,7 +322,7 @@
 									</div>
 								</div>
 									<div style="height: 21px;" class="form-group">
-									<label class="col-md-2 control-label"><b>Posisi Jabatan</b> (<font color="red">*</font>) &nbsp  :</label>
+									<label class="col-md-2 control-label"><b>Posisi Jabatan</b>  &nbsp  :</label>
 									<div class="col-md-4">
 										<div class="icon-addon addon-md">
 											<input id="insert-mcustomercontactposition" value="{{old('mcustomercontactposition')}}" name="mcustomercontactposition" class="form-control forminput" placeholder="Posisi Jabatan" type="text" @if (Session::has('autofocus')) autofocus @endif >
@@ -319,7 +331,7 @@
 									</div>
 								</div>
 								<div style="height: 21px;" class="form-group">
-									<label class="col-md-2 control-label"><b>Email</b> (<font color="red">*</font>) &nbsp  :</label>
+									<label class="col-md-2 control-label"><b>Email</b>  &nbsp  :</label>
 									<div class="col-md-4">
 										<div class="icon-addon addon-md">
 											<input id="insert-mcustomercontactemail" value="{{old('mcustomercontactemail')}}" name="mcustomercontactemail" class="form-control forminput" placeholder="Email" type="text" @if (Session::has('autofocus')) autofocus @endif >
@@ -328,7 +340,7 @@
 									</div>
 								</div>
 								<div class="form-group">
-									<label class="col-md-2 control-label"><b>Handphone</b> (<font color="red">*</font>) &nbsp  :</label>
+									<label class="col-md-2 control-label"><b>Handphone</b>  &nbsp  :</label>
 									<div  class="col-md-4">
 										<div class="icon-addon addon-md">
 											<input id="insert-mcustomercontactemailphone" value="{{old('mcustomercontactemailphone')}}" name="mcustomercontactemailphone" class="form-control forminput mobileregex" placeholder="Handphone" type="text" @if (Session::has('autofocus')) autofocus @endif >
@@ -466,8 +478,8 @@
         <div class="tab-pane active" id="info-tab">
 
     <div style="height: 35px;" class="form-group">
-	<label class="control-label"><b>ID Pelanggan</b> (<font color="red">*</font>) &nbsp  :</label>
-								<div class="">
+	<label class="col-md-3 control-label"><b>ID Pelanggan</b> (<font color="red">*</font>) &nbsp  :</label>
+								<div class="col-md-9">
 										<div class="icon-addon addon-md">
 									{{-- 		<input id="insert-mcustomerid" value="{{old('mcustomerid')}}" name="mcustomerid" class="form-control forminput" placeholder="ID Pelanggan" type="text" required @if (Session::has('autofocus')) autofocus @endif >
 
@@ -475,6 +487,7 @@
 											<div class="input-group">
 
       										<input disabled id="mcustomerid" value="{{old('mcustomerid')}}" name="mcustomerid" class="form-control forminput" placeholder="ID Pelanggan" type="text" required data-parsley-required-message="Field Ini Tidak Boleh Kosong"  @if (Session::has('autofocus')) autofocus @endif >
+      										<label for="mgoodsgroup1" class="glyphicon glyphicon-barcode" rel="tooltip" title="ID Pelanggan"></label>
       										<span class="input-group-addon" style="background: none;">
         									<input disabled type="checkbox" id="disableforminput" name="autogen">
       										</span>
@@ -483,8 +496,8 @@
 									</div>
 								</div>
 								<div style="height: 21px;" class="form-group">
-									<label class="control-label"><b>Nama Pelanggan</b> (<font color="red">*</font>) &nbsp  :</label>
-									<div class="">
+									<label class="col-md-3 control-label"><b>Nama Pelanggan</b> (<font color="red">*</font>) &nbsp  :</label>
+									<div class="col-md-9 col-sm-12">
 										<div class="icon-addon addon-md">
 											<input id="mcustomername" value="{{old('mcustomername')}}" name="mcustomername" class="form-control forminput" placeholder="Nama Pelanggan" type="text" required data-parsley-required-message="Field Ini Tidak Boleh Kosong" @if (Session::has('autofocus')) autofocus @endif>
 											<label for="mgoodsgroup1" class="glyphicon glyphicon-chevron-right" rel="tooltip" title="Nama Pelanggan"></label>
@@ -492,8 +505,8 @@
 									</div>
 								</div>
 								<div style="height: 21px;" class="form-group">
-									<label class="control-label"><b>Email</b> (<font color="red">*</font>) &nbsp  :</label>
-									<div class="">
+									<label class="col-md-3 control-label"><b>Email</b>  &nbsp  :</label>
+									<div class="col-md-9 col-sm-12">
 										<div class="icon-addon addon-md">
 											<input id="mcustomeremail" value="{{old('mcustomeremail')}}" name="mcustomeremail" class="form-control forminput" placeholder="Email" type="text"  @if (Session::has('autofocus')) autofocus @endif >
 											<label for="mgoodsgroup1" class="glyphicon glyphicon-envelope" rel="tooltip" title="Email"></label>
@@ -501,8 +514,8 @@
 									</div>
 								</div>
 								<div class="form-group">
-									<label class="control-label"><b>Telepon Kantor</b> (<font color="red">*</font>) &nbsp  :</label>
-									<div  class="">
+									<label class="col-md-3 control-label"><b>Telepon Kantor</b>  &nbsp  :</label>
+									<div  class="col-md-9 col-sm-12">
 										<div class="icon-addon addon-md">
 											<input id="mcustomerphone" value="{{old('mcustomerphone')}}" name="mcustomerphone" class="form-control forminput phoneexample phoneregex" placeholder="Telepon Kantor" type="text" @if (Session::has('autofocus')) autofocus @endif >
 
@@ -515,8 +528,8 @@
 									</div>
 								</div>
 								<div class="form-group">
-									<label class="control-label"><b>Fax Kantor</b> (<font color="red">*</font>) &nbsp  :</label>
-									<div  class="">
+									<label class="col-md-3 control-label"><b>Fax Kantor</b>  &nbsp  :</label>
+									<div  class="col-md-9 col-sm-12">
 										<div class="icon-addon addon-md">
 											<input id="mcustomerfax" value="{{old('mcustomerfax')}}" name="mcustomerfax" class="form-control forminput phoneregex" placeholder="Fax Kantor" type="text" @if (Session::has('autofocus')) autofocus @endif >
 
@@ -529,8 +542,8 @@
 									</div>
 								</div>
 								<div style="height: 21px;" class="form-group">
-									<label class="control-label"><b>Website</b> (<font color="red">*</font>) &nbsp  :</label>
-									<div class="">
+									<label class="col-md-3 control-label"><b>Website</b>  &nbsp  :</label>
+									<div class="col-md-9 col-sm-12">
 										<div class="icon-addon addon-md">
 											<input id="mcustomerwebsite" value="{{old('mcustomerwebsite')}}" name="mcustomerwebsite" class="form-control forminput" placeholder="Website" type="text"  @if (Session::has('autofocus')) autofocus @endif >
 											<label for="mgoodsgroup1" class="glyphicon glyphicon-info-sign" rel="tooltip" title="Website"></label>
@@ -558,11 +571,13 @@
 
 
 <div class="col-md-6">
-    <div class="tab-content">
+	<label style="padding-left: 20px; padding-top: 19px;" class="control-label"><b>Alamat Penagihan</b>  &nbsp  :</label>
+    <div class="tab-content" style="margin-top:-41px; padding-left:148px;">
+        
         <div class="tab-pane active" id="info-tab">
+        	
+    <div style="height: 95px;" class="form-group">
 
-    <div style="height: 85px;" class="form-group">
-	&nbsp &nbsp &nbsp<label  class="control-label"><b>Alamat Penagihan</b> (<font color="red">*</font>) &nbsp  :</label>
 								</br>
 								</br>
 								<div class="col-lg-12">
@@ -631,7 +646,7 @@
 
       <div style="height: 21px;" class="form-group">
 									<input type="hidden" value="{{$id}}" id="load-mcustomercontact2">
-									<label class="col-md-2 control-label"><b>Nama Lengkap</b> (<font color="red">*</font>) &nbsp  :</label>
+									<label class="col-md-2 control-label"><b>Nama Lengkap</b>  &nbsp  :</label>
 									<div class="col-md-4">
 										<div class="icon-addon addon-md">
 											<input id="mcustomercontactname" value="{{old('mcustomercontactname')}}" name="mcustomercontactname" class="form-control forminput" placeholder="Nama Lengkap" type="text" @if (Session::has('autofocus')) autofocus @endif >
@@ -640,7 +655,7 @@
 									</div>
 								</div>
 									<div style="height: 21px;" class="form-group">
-									<label class="col-md-2 control-label"><b>Posisi Jabatan</b> (<font color="red">*</font>) &nbsp  :</label>
+									<label class="col-md-2 control-label"><b>Posisi Jabatan</b>  &nbsp  :</label>
 									<div class="col-md-4">
 										<div class="icon-addon addon-md">
 											<input id="mcustomercontactposition" value="{{old('mcustomercontactposition')}}" name="mcustomercontactposition" class="form-control forminput" placeholder="Posisi Jabatan" type="text" @if (Session::has('autofocus')) autofocus @endif >
@@ -649,7 +664,7 @@
 									</div>
 								</div>
 								<div style="height: 21px;" class="form-group">
-									<label class="col-md-2 control-label"><b>Email</b> (<font color="red">*</font>) &nbsp  :</label>
+									<label class="col-md-2 control-label"><b>Email</b>  &nbsp  :</label>
 									<div class="col-md-4">
 										<div class="icon-addon addon-md">
 											<input id="mcustomercontactemail" value="{{old('mcustomercontactemail')}}" name="mcustomercontactemail" class="form-control forminput" placeholder="Email" type="text" @if (Session::has('autofocus')) autofocus @endif >
@@ -658,7 +673,7 @@
 									</div>
 								</div>
 								<div class="form-group">
-									<label class="col-md-2 control-label"><b>Handphone</b> (<font color="red">*</font>) &nbsp  :</label>
+									<label class="col-md-2 control-label"><b>Handphone</b>  &nbsp  :</label>
 									<div  class="col-md-4">
 										<div class="icon-addon addon-md">
 											<input id="mcustomercontactemailphone" value="{{old('mcustomercontactemailphone')}}" name="mcustomercontactemailphone" class="form-control forminput mobileregex" placeholder="Handphone" type="text" @if (Session::has('autofocus')) autofocus @endif >
@@ -790,15 +805,12 @@
         <div class="tab-pane active" id="info-tab">
 
     <div style="height: 35px;" class="form-group">
-	<label class="control-label"><b>ID Pelanggan</b> (<font color="red">*</font>) &nbsp  :</label>
-								<div class="">
+	<label class="col-md-3 control-label"><b>ID Pelanggan</b>  &nbsp  :</label>
+								<div class="col-md-9">
 										<div class="icon-addon addon-md">
-									{{-- 		<input id="insert-mcustomerid" value="{{old('mcustomerid')}}" name="mcustomerid" class="form-control forminput" placeholder="ID Pelanggan" type="text" required @if (Session::has('autofocus')) autofocus @endif >
-
-											<label for="mgoodsgroup1" class="glyphicon glyphicon-barcode" rel="tooltip" title="ID Pelanggan"></label> --}}
 											<div class="input-group">
-
-      										<input disabled id="view-mcustomerid" value="{{old('mcustomerid')}}" name="mcustomerid" class="form-control forminput" placeholder="ID Pelanggan" type="text" required data-parsley-required-message="Field Ini Tidak Boleh Kosong"  @if (Session::has('autofocus')) autofocus @endif >
+											<input disabled id="view-mcustomerid" value="{{old('mcustomerid')}}" name="mcustomerid" class="form-control forminput" placeholder="ID Pelanggan" type="text" required data-parsley-required-message="Field Ini Tidak Boleh Kosong"  @if (Session::has('autofocus')) autofocus @endif >
+											<label for="mgoodsgroup1" class="glyphicon glyphicon-barcode" rel="tooltip" title="ID Pelanggan"></label>
       										<span class="input-group-addon" style="background: none;">
         									<input disabled type="checkbox" id="disableforminput" name="autogen">
       										</span>
@@ -806,9 +818,10 @@
 										</div>
 									</div>
 								</div>
+
 								<div style="height: 21px;" class="form-group">
-									<label class="control-label"><b>Nama Pelanggan</b> (<font color="red">*</font>) &nbsp  :</label>
-									<div class="">
+									<label class="col-md-3 control-label"><b>Nama Pelanggan</b>  &nbsp  :</label>
+									<div class="col-md-9 col-sm-12">
 										<div class="icon-addon addon-md">
 											<input disabled id="view-mcustomername" value="{{old('mcustomername')}}" name="mcustomername" class="form-control forminput" placeholder="Nama Pelanggan" type="text" required data-parsley-required-message="Field Ini Tidak Boleh Kosong" @if (Session::has('autofocus')) autofocus @endif>
 											<label for="mgoodsgroup1" class="glyphicon glyphicon-chevron-right" rel="tooltip" title="Nama Pelanggan"></label>
@@ -816,8 +829,8 @@
 									</div>
 								</div>
 								<div style="height: 21px;" class="form-group">
-									<label class="control-label"><b>Email</b> (<font color="red">*</font>) &nbsp  :</label>
-									<div class="">
+									<label class="col-md-3 control-label"><b>Email</b>  &nbsp  :</label>
+									<div class="col-md-9 col-sm-12">
 										<div class="icon-addon addon-md">
 											<input disabled id="view-mcustomeremail" value="{{old('mcustomeremail')}}" name="mcustomeremail" class="form-control forminput" placeholder="Email" type="text"  @if (Session::has('autofocus')) autofocus @endif >
 											<label for="mgoodsgroup1" class="glyphicon glyphicon-envelope" rel="tooltip" title="Email"></label>
@@ -825,8 +838,8 @@
 									</div>
 								</div>
 								<div class="form-group">
-									<label class="control-label"><b>Telepon Kantor</b> (<font color="red">*</font>) &nbsp  :</label>
-									<div  class="">
+									<label class="col-md-3 control-label"><b>Telepon Kantor</b>  &nbsp  :</label>
+									<div class="col-md-9 col-sm-12">
 										<div class="icon-addon addon-md">
 											<input disabled id="view-mcustomerphone" value="{{old('mcustomerphone')}}" name="mcustomerphone" class="form-control forminput phoneexample" placeholder="Telepon Kantor" type="number" @if (Session::has('autofocus')) autofocus @endif >
 
@@ -839,8 +852,8 @@
 									</div>
 								</div>
 								<div class="form-group">
-									<label class="control-label"><b>Fax Kantor</b> (<font color="red">*</font>) &nbsp  :</label>
-									<div  class="">
+									<label class="col-md-3 control-label"><b>Fax Kantor</b>  &nbsp  :</label>
+									<div  class="col-md-9 col-sm-12">
 										<div class="icon-addon addon-md">
 											<input disabled id="view-mcustomerfax" value="{{old('mcustomerfax')}}" name="mcustomerfax" class="form-control forminput" placeholder="Fax Kantor" type="number" @if (Session::has('autofocus')) autofocus @endif >
 
@@ -853,8 +866,8 @@
 									</div>
 								</div>
 								<div style="height: 21px;" class="form-group">
-									<label class="control-label"><b>Website</b> (<font color="red">*</font>) &nbsp  :</label>
-									<div class="">
+									<label class="col-md-3 control-label"><b>Website</b>  &nbsp  :</label>
+									<div class="col-md-9 col-sm-12">
 										<div class="icon-addon addon-md">
 											<input disabled id="view-mcustomerwebsite" value="{{old('mcustomerwebsite')}}" name="mcustomerwebsite" class="form-control forminput" placeholder="Website" type="text"  @if (Session::has('autofocus')) autofocus @endif >
 											<label for="mgoodsgroup1" class="glyphicon glyphicon-info-sign" rel="tooltip" title="Website"></label>
@@ -880,11 +893,12 @@
 
 
 <div class="col-md-6">
-    <div class="tab-content">
+	<label style="padding-left: 20px; padding-top: 19px;" class="control-label"><b>Alamat Penagihan</b>  &nbsp  :</label>
+    <div class="tab-content" style="margin-top:-41px; padding-left:148px;">
+        
         <div class="tab-pane active" id="info-tab">
-
-    <div style="height: 85px;" class="form-group">
-	&nbsp &nbsp &nbsp<label  class="control-label"><b>Alamat Penagihan</b> (<font color="red">*</font>) &nbsp  :</label>
+        	
+    <div style="height: 95px;" class="form-group">
 								</br>
 								</br>
 								<div class="col-lg-12">
@@ -953,7 +967,7 @@
 
       <div style="height: 21px;" class="form-group">
 									<input type="hidden" value="{{$id}}" id="load-mcustomercontact2">
-									<label class="col-md-2 control-label"><b>Nama Lengkap</b> (<font color="red">*</font>) &nbsp  :</label>
+									<label class="col-md-2 control-label"><b>Nama Lengkap</b>  &nbsp  :</label>
 									<div class="col-md-4">
 										<div class="icon-addon addon-md">
 											<input disabled id="view-mcustomercontactname" value="{{old('mcustomercontactname')}}" name="mcustomercontactname" class="form-control forminput" placeholder="Nama Lengkap" type="text" @if (Session::has('autofocus')) autofocus @endif >
@@ -962,7 +976,7 @@
 									</div>
 								</div>
 									<div style="height: 21px;" class="form-group">
-									<label class="col-md-2 control-label"><b>Posisi Jabatan</b> (<font color="red">*</font>) &nbsp  :</label>
+									<label class="col-md-2 control-label"><b>Posisi Jabatan</b>  &nbsp  :</label>
 									<div class="col-md-4">
 										<div class="icon-addon addon-md">
 											<input disabled id="view-mcustomercontactposition" value="{{old('mcustomercontactposition')}}" name="mcustomercontactposition" class="form-control forminput" placeholder="Posisi Jabatan" type="text" @if (Session::has('autofocus')) autofocus @endif >
@@ -971,7 +985,7 @@
 									</div>
 								</div>
 								<div style="height: 21px;" class="form-group">
-									<label class="col-md-2 control-label"><b>Email</b> (<font color="red">*</font>) &nbsp  :</label>
+									<label class="col-md-2 control-label"><b>Email</b>  &nbsp  :</label>
 									<div class="col-md-4">
 										<div class="icon-addon addon-md">
 											<input disabled id="view-mcustomercontactemail" value="{{old('mcustomercontactemail')}}" name="mcustomercontactemail" class="form-control forminput" placeholder="Email" type="text" @if (Session::has('autofocus')) autofocus @endif >
@@ -980,7 +994,7 @@
 									</div>
 								</div>
 								<div class="form-group">
-									<label class="col-md-2 control-label"><b>Handphone</b> (<font color="red">*</font>) &nbsp  :</label>
+									<label class="col-md-2 control-label"><b>Handphone</b>  &nbsp  :</label>
 									<div  class="col-md-4">
 										<div class="icon-addon addon-md">
 											<input disabled id="view-mcustomercontactemailphone" value="{{old('mcustomercontactemailphone')}}" name="mcustomercontactemailphone" class="form-control forminput" placeholder="Handphone" type="number" @if (Session::has('autofocus')) autofocus @endif >
