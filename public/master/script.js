@@ -158,8 +158,18 @@ $('#edit-wrapper').parsley().validate();
 
   }
 
-
-
+  function backall(){
+    $('#formviewgp').hide();
+    $('#formviewp').hide();
+    $('#formeditp').hide();
+    $('#formeditgp').hide();
+    $('#formeditp').hide();
+    $('#forminputgp').hide();
+    $('#forminputp').hide();
+    $('#forminput').hide();
+    $('#formview').hide();
+    $('#formedit').hide();
+  }
 
 
 	function back(){
@@ -219,9 +229,10 @@ $('#edit-wrapper').parsley().validate();
         success: function(response){
           console.log(response);
           table.ajax.reload();
-          updatetree();
+          // updatetree();
           refreshGrandParentList();
           window.location = "#tableapi";
+          $('#forminputgp').hide();
       		swal({
       			title: "Input Berhasil!",
       			type: "success",
@@ -264,6 +275,36 @@ $('#edit-wrapper').parsley().validate();
     window.location = "#main";
   }
 
+  function viewmcoagp(id){
+    $.ajax({
+      type: "GET",
+      url: API_URL+"/mcoagrandparent/"+id,
+      success: function(response){
+        $('#view-mcoagrandparentcode').val(response.mcoagrandparentcode);
+        $('#view-mcoagrandparentname').val(response.mcoagrandparentname);
+        $('#view-mcoagrandparenttype').val(response.mcoagrandparenttype).change();
+        $('#formviewgp').show();
+        $('#formviewp').hide();
+        $('#formeditp').hide();
+        $('#formeditgp').hide();
+        $('#formeditp').hide();
+        $('#forminputgp').hide();
+        $('#forminputp').hide();
+        $('#forminput').hide();
+  			$('#formview').hide();
+  			$('#formedit').hide();
+      },
+      error: function(response){
+        swal({
+          title: "Aksi Gagal!",
+          type: "error",
+          timer: 1000
+        });
+      }
+    });
+    window.location = "#main";
+  }
+
   function editgrandparent(id){
     $.ajax({
       type: "GET",
@@ -288,15 +329,45 @@ $('#edit-wrapper').parsley().validate();
     window.location = "#main";
   }
 
+  function editmcoagp(id){
+    $.ajax({
+      type: "GET",
+      url: API_URL+"/mcoagrandparent/"+id,
+      success: function(response){
+        $('#formeditgp').show();
+        $('#mcoagrandparentid').val(response.id);
+        $('#edit-mcoagrandparentcode').val(response.mcoagrandparentcode);
+        $('#edit-mcoagrandparentname').val(response.mcoagrandparentname);
+        $('#edit-mcoagrandparenttype').val(response.mcoagrandparenttype).change();
+        $('#formviewgp').hide();
+        $('#formviewp').hide();
+        $('#formeditp').hide();
+        $('#forminputgp').hide();
+        $('#forminputp').hide();
+        $('#forminput').hide();
+  			$('#formview').hide();
+  			$('#formedit').hide();
+      },
+      error: function(response){
+        swal({
+  		    title: "Aksi Gagal!",
+  			  type: "error",
+  			  timer: 1000
+  		});
+      }
+    });
+    window.location = "#main";
+  }
+
   function updategrandparent(){
-    $('#edit-wrapper').parsley().validate();
-    if($('#edit-wrapper').parsley().isValid()){
+    $('#edit-wrapper-gp').parsley().validate();
+    if($('#edit-wrapper-gp').parsley().isValid()){
       var updateid = $('#mcoagrandparentid').val();
       var data = {
         mcoagrandparentcode: $('#edit-mcoagrandparentcode').val(),
         mcoagrandparentname: $('#edit-mcoagrandparentname').val(),
         mcoagrandparenttype: $('#edit-mcoagrandparenttype').val()
-      }
+      };
       $.ajax({
         type: "PUT",
         url: API_URL+"/mcoagrandparent/"+updateid,
@@ -310,7 +381,7 @@ $('#edit-wrapper').parsley().validate();
             type: "success",
             timer: 1000
           });
-          $('#forminput').show();
+          $('#forminput').hide();
           $('#formview').hide();
           $('#formedit').hide();
         },
@@ -363,8 +434,8 @@ $('#edit-wrapper').parsley().validate();
         data: data,
         success: function(response){
           table.ajax.reload();
-          updatetree();
           refreshParentList();
+          $('#forminputp').hide();
           window.location = "#tableapi";
       		swal({
       			title: "Input Berhasil!",
@@ -416,6 +487,35 @@ $('#edit-wrapper').parsley().validate();
       });
   }
 
+  function viewmcoaparent(id){
+    $.ajax({
+      type: "GET",
+      url: API_URL+"/mcoaparent/"+id,
+      success: function(response){
+        $('#view-mcoaparentcode').val(response.mcoaparentcode);
+        $('#view-mcoaparentname').val(response.mcoaparentname);
+        $('#view-mcoagrandparent').val(response.mcoagrandparentcode).change();
+        $('#formviewgp').hide();
+        $('#formviewp').show();
+        $('#formeditp').hide();
+        $('#formeditgp').hide();
+        $('#forminputgp').hide();
+        $('#forminputp').hide();
+        $('#forminput').hide();
+  			$('#formview').hide();
+  			$('#formedit').hide();
+      },
+      error: function(response){
+        swal({
+  				title: "Aksi Gagal!",
+  				type: "error",
+  				timer: 1000
+  			});
+      }
+    });
+    window.location = "#main";
+  }
+
   function editparent(id){
     $.ajax({
       type: "GET",
@@ -440,9 +540,37 @@ $('#edit-wrapper').parsley().validate();
     window.location = "#main";
   }
 
+  function editmcoaparent(id){
+    $.ajax({
+      type: "GET",
+      url: API_URL+"/mcoaparent/"+id,
+      success: function(response){
+        $('#formeditp').show();
+        $('#mcoaparentid').val(response.id);
+        $('#edit-mcoaparentcode').val(response.mcoaparentcode);
+        $('#edit-mcoaparentname').val(response.mcoaparentname);
+        $('#edit-mcoagrandparent').val(response.mcoagrandparentcode).change();
+        $('#formeditgp').hide();
+        $('#forminputgp').hide();
+        $('#forminputp').hide();
+        $('#forminput').hide();
+  			$('#formview').hide();
+  			$('#formedit').hide();
+      },
+      error: function(response){
+        swal({
+  				title: "Aksi Gagal!",
+  				type: "error",
+  				timer: 1000
+  			});
+      }
+    });
+    window.location = "#main";
+  }
+
   function updateparent(){
-    $('#edit-wrapper').parsley().validate();
-    if($('#edit-wrapper').parsley().isValid()){
+    $('#edit-wrapper-parent').parsley().validate();
+    if($('#edit-wrapper-parent').parsley().isValid()){
       var updateid = $('#mcoaparentid').val();
       var data = {
         mcoaparentcode: $('#edit-mcoaparentcode').val(),
@@ -462,7 +590,7 @@ $('#edit-wrapper').parsley().validate();
             type: "success",
             timer: 1000
           });
-          $('#forminput').show();
+          $('#forminput').hide();
           $('#formview').hide();
           $('#formedit').hide();
         },
@@ -647,6 +775,10 @@ $('#edit-wrapper').parsley().validate();
         $('#forminput').hide();
   			$('#formview').show();
   			$('#formedit').hide();
+        $('#formviewgp').hide();
+        $('#formviewp').hide();
+        $('#formeditp').hide();
+        $('#formeditgp').hide();
         $('#forminputgp').hide();
         $('#forminputp').hide();
       },
@@ -674,6 +806,10 @@ $('#edit-wrapper').parsley().validate();
         $('#forminput').hide();
   			$('#formview').hide();
   			$('#formedit').show();
+        $('#formviewgp').hide();
+        $('#formviewp').hide();
+        $('#formeditp').hide();
+        $('#formeditgp').hide();
         $('#forminputgp').hide();
         $('#forminputp').hide();
         setTimeout(function(){

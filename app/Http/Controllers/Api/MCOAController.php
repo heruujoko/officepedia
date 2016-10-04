@@ -17,13 +17,38 @@ class MCOAController extends Controller
     private $iteration;
 
     public function index(){
-      $mcoa = MCOA::all();
+      $mcoa = collect();
+      $gp = MCOAGrandParent::all();
+      foreach ($gp as $g) {
+        $mcoa->push($g);
+        foreach($g->childs() as $p ){
+          $mcoa->push($p);
+          foreach($p->childs() as $c){
+            $mcoa->push($c);
+          }
+        }
+      }
       return Datatables::of($mcoa)->addColumn('action', function($mcoa){
-        return '<center><div class="button">
-        <a class="btn btn-info btn-xs dropdown-toggle fa fa-eye" onclick="viewmcoa('.$mcoa->id.')"> <font style="">Lihat</font></a>
-        <a class="btn btn-primary btn-xs dropdown-toggle fa fa-pencil" onclick="editmcoa('.$mcoa->id.')"> <font style="font-family: arial;">Ubah &nbsp</font></a>
-        <a class="btn btn-danger btn-xs dropdown-toggle fa fa-trash" onclick="popupdelete('.$mcoa->id.')">
-      <input type="hidden" name="id" value="@{{ task.id }}"> <font style="font-family: arial;">Hapus </font></a>     </div></center>';
+        if($mcoa->mcoacode){
+          return '<center><div class="button">
+          <a class="btn btn-info btn-xs dropdown-toggle fa fa-eye" onclick="viewmcoa('.$mcoa->id.')"> <font style="">Lihat</font></a>
+          <a class="btn btn-primary btn-xs dropdown-toggle fa fa-pencil" onclick="editmcoa('.$mcoa->id.')"> <font style="font-family: arial;">Ubah &nbsp</font></a>
+          <a class="btn btn-danger btn-xs dropdown-toggle fa fa-trash" onclick="popupdelete('.$mcoa->id.')">
+        <input type="hidden" name="id" value="@{{ task.id }}"> <font style="font-family: arial;">Hapus </font></a>     </div></center>';
+        } else if($mcoa->mcoaparentcode){
+          return '<center><div class="button">
+          <a class="btn btn-info btn-xs dropdown-toggle fa fa-eye" onclick="viewmcoaparent('.$mcoa->id.')"> <font style="">Lihat</font></a>
+          <a class="btn btn-primary btn-xs dropdown-toggle fa fa-pencil" onclick="editmcoaparent('.$mcoa->id.')"> <font style="font-family: arial;">Ubah &nbsp</font></a>
+          <a class="btn btn-danger btn-xs dropdown-toggle fa fa-trash" onclick="popupdeleteparent('.$mcoa->id.')">
+        <input type="hidden" name="id" value="@{{ task.id }}"> <font style="font-family: arial;">Hapus </font></a>     </div></center>';
+        } else {
+          return '<center><div class="button">
+          <a class="btn btn-info btn-xs dropdown-toggle fa fa-eye" onclick="viewmcoagp('.$mcoa->id.')"> <font style="">Lihat</font></a>
+          <a class="btn btn-primary btn-xs dropdown-toggle fa fa-pencil" onclick="editmcoagp('.$mcoa->id.')"> <font style="font-family: arial;">Ubah &nbsp</font></a>
+          <a class="btn btn-danger btn-xs dropdown-toggle fa fa-trash" onclick="popupdeletegp('.$mcoa->id.')">
+        <input type="hidden" name="id" value="@{{ task.id }}"> <font style="font-family: arial;">Hapus </font></a>     </div></center>';
+        }
+
     })->addColumn('no',function($mcoa){
           $this->iteration++;
           return "<span>".$this->iteration."</span>";
@@ -32,6 +57,22 @@ class MCOAController extends Controller
             return "Kredit";
           } else {
             return "Debet";
+          }
+      })->addColumn('code',function($mcoa){
+          if($mcoa->mcoacode){
+            return '<span style="margin-left:30px;">'.$mcoa->mcoacode.'</span>';
+          } else if($mcoa->mcoaparentcode) {
+            return '<span style="margin-left:15px;">'.$mcoa->mcoaparentcode.'</span>';
+          } else {
+            return '<span>'.$mcoa->mcoagrandparentcode.'</span>';
+          }
+      })->addColumn('name',function($mcoa){
+          if($mcoa->mcoaname){
+            return $mcoa->mcoaname;
+          } else if($mcoa->mcoaparentname) {
+            return $mcoa->mcoaparentname;
+          } else {
+            return $mcoa->mcoagrandparentname;
           }
       })
       ->make(true);

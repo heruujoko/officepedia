@@ -191,6 +191,9 @@
 	      margin-top: 336px;
 	   }
 	}
+	hr.style1{
+		border-top: 1px solid #8c8b8b;
+	}
 </style>
 <style>
 
@@ -687,6 +690,7 @@
 					$('.phoneregex').mask('(0000) 000-000');
 					$('.mobileregex').mask('0000-0000-0000');
 					$('.buttons-colvis').click(function(){
+						console.log('click');
 						$('.buttons-columnVisibility').each(function(){
 							if($(this).has('input').length < 1){
 								if($(this).hasClass('active')){

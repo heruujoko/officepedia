@@ -128,6 +128,181 @@
 			<!-- NEW WIDGET START -->
 			<article class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
 				<!-- Widget ID (each widget will need unique ID)-->
+				<div style="display: none;" id="formeditgp" class="forminput jarviswidget jarviswidget-color-darken" id="wid-id-0" data-widget-editbutton="false" data-widget-colorbutton="false" data-widget-deletebutton="false">
+					<header>
+						<span class="widget-icon"> <i class="fa fa-table"></i> </span>
+						<h2>EDIT MCOA Grand Parent</h2>
+					</header>
+					<!-- widget div-->
+					<div>
+						<!-- widget edit box -->
+						<div class="jarviswidget-editbox">
+							<!-- This area used as dropdown edit box -->
+						</div>
+						<!-- end widget edit box -->
+						<h3 style="font-weight: bold; color: #C91503;font-size: 19px;">Mode : EDIT</h3>
+						<!-- widget content -->
+						<style>
+							.alert-info {
+								color: #D9ECF5;
+								background-color: #48AFE3;
+								border-color: #2F9ACF;
+							}
+						</style>
+  						@if(count($errors) > 0)
+    						<div class="alert alert-info alerthide" role="alert">
+    							@foreach($errors->all() as $error)
+      							<span class="sr-only">Error:</span>
+      							<span class="sr-only"></span>
+      							<li><b>{{ $error }}</b></li>
+    							@endforeach
+    						</div>
+  						@endif
+						<div class="widget-body no-padding">
+							<div id="edit-wrapper-gp" class="form-horizontal" data-parsley-validate>
+								{{ csrf_field() }}
+								<div class="container">
+								</br>
+								<div style="height: 21px;" class="form-group">
+									<label class="col-md-3 control-label"><b>Kode Grand Parent</b> (<font color="red">*</font>) &nbsp  :</label>
+									<input type="hidden" id="mcoagrandparentid">
+									<div class="col-md-7">
+										<div class="icon-addon addon-md">
+											<input id="edit-mcoagrandparentcode" value="{{old('mbranchcode')}}" name="mcoagrandparentcode" class="form-control forminput" placeholder="Kode Grand Parent" type="text" required data-parsley-required-message="Field Ini Tidak Boleh Kosong" @if (Session::has('autofocus')) autofocus @endif >
+											<label for="mgoodsgroup1" class="glyphicon glyphicon-barcode" rel="tooltip" title="Kode Grand Parent"></label>
+										</div>
+									</div>
+								</div>
+								<div style="height: 21px;" class="form-group">
+									<label class="col-md-3 control-label"><b>Nama Grand Parent</b> (<font color="red">*</font>) &nbsp  :</label>
+									<div class="col-md-7">
+										<div class="icon-addon addon-md">
+											<input id="edit-mcoagrandparentname" value="{{old('mbranchname')}}" name="mcoagrandparentname" class="form-control forminput" placeholder="Nama Grand Parent" type="text" required data-parsley-required-message="Field Ini Tidak Boleh Kosong" @if (Session::has('autofocus')) autofocus @endif >
+											<label for="mgoodsgroup1" class="glyphicon glyphicon-chevron-right" rel="tooltip" title="Nama Grand Parent"></label>
+										</div>
+									</div>
+								</div>
+								<div style="height: 21px;" class="form-group">
+									<label class="col-md-3 control-label"><b>Tipe Grand Parent</b> (<font color="red">*</font>) &nbsp  :</label>
+									<div class="col-md-7">
+										<div class="icon-addon addon-md">
+                      <select id="edit-mcoagrandparenttype" value="{{old('address')}}" name="mcoagrandparenttype" class="form-control forminput select2" placeholder="Tipe Grand Parent" type="text" required data-parsley-required-message="Field Ini Tidak Boleh Kosong" @if (Session::has('autofocus')) autofocus @endif>
+                        <option value="K">Kredit</option>
+                        <option value="D">Debet</option>
+                      </select>
+											<!-- <label for="mgoodsgroup1" class="glyphicon glyphicon-chevron-right" rel="tooltip" title="Tipe Grand Parent"></label> -->
+										</div>
+									</div>
+								</div>
+								<input type="hidden" name="void" value="0">
+								<center>
+									<div class="row">
+										<div class="col-md-12">
+											<a id="btn-insert-reset" onclick="resetgrandparent()" class="btn btn-default" ><i class=""></i> Reset</a>
+											<button class="btn btn-primary" onclick="updategrandparent()"><i class="fa fa-save"></i> Simpan</button>
+										</div>
+									</div>
+								</center>
+							</br>
+						</div>
+					</div>
+				</div>
+				<!-- end widget content -->
+			</div>
+			<!-- end widget div -->
+		</div>
+		<!-- row -->
+		<div class="row">
+			<!-- NEW WIDGET START -->
+			<article class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+				<!-- Widget ID (each widget will need unique ID)-->
+				<div style="display: none;" id="formviewgp" class="forminput jarviswidget jarviswidget-color-darken" id="wid-id-0" data-widget-editbutton="false" data-widget-colorbutton="false" data-widget-deletebutton="false">
+					<header>
+						<span class="widget-icon"> <i class="fa fa-table"></i> </span>
+						<h2>View MCOA Grand Parent</h2>
+					</header>
+					<!-- widget div-->
+					<div>
+						<!-- widget edit box -->
+						<div class="jarviswidget-editbox">
+							<!-- This area used as dropdown edit box -->
+						</div>
+						<!-- end widget edit box -->
+						<h3 style="font-weight: bold; color: #291817;font-size: 19px;">Mode : VIEW</h3>
+						<!-- widget content -->
+						<style>
+							.alert-info {
+								color: #D9ECF5;
+								background-color: #48AFE3;
+								border-color: #2F9ACF;
+							}
+						</style>
+  						@if(count($errors) > 0)
+    						<div class="alert alert-info alerthide" role="alert">
+    							@foreach($errors->all() as $error)
+      							<span class="sr-only">Error:</span>
+      							<span class="sr-only"></span>
+      							<li><b>{{ $error }}</b></li>
+    							@endforeach
+    						</div>
+  						@endif
+						<div class="widget-body no-padding">
+							<div id="insert-wrapper-gp" class="form-horizontal" data-parsley-validate>
+								{{ csrf_field() }}
+								<div class="container">
+								</br>
+								<div style="height: 21px;" class="form-group">
+									<label class="col-md-3 control-label"><b>Kode Grand Parent</b> (<font color="red">*</font>) &nbsp  :</label>
+									<div class="col-md-7">
+										<div class="icon-addon addon-md">
+											<input disabled id="view-mcoagrandparentcode" value="{{old('mbranchcode')}}" name="mcoagrandparentcode" class="form-control forminput" placeholder="Kode Grand Parent" type="text" required @if (Session::has('autofocus')) autofocus @endif >
+											<label for="mgoodsgroup1" class="glyphicon glyphicon-barcode" rel="tooltip" title="Kode Grand Parent"></label>
+										</div>
+									</div>
+								</div>
+								<div style="height: 21px;" class="form-group">
+									<label class="col-md-3 control-label"><b>Nama Grand Parent</b> (<font color="red">*</font>) &nbsp  :</label>
+									<div class="col-md-7">
+										<div class="icon-addon addon-md">
+											<input disabled id="view-mcoagrandparentname" value="{{old('mbranchname')}}" name="mcoagrandparentname" class="form-control forminput" placeholder="Nama Grand Parent" type="text" required @if (Session::has('autofocus')) autofocus @endif >
+											<label for="mgoodsgroup1" class="glyphicon glyphicon-chevron-right" rel="tooltip" title="Nama Grand Parent"></label>
+										</div>
+									</div>
+								</div>
+								<div style="height: 21px;" class="form-group">
+									<label class="col-md-3 control-label"><b>Tipe Grand Parent</b> (<font color="red">*</font>) &nbsp  :</label>
+									<div class="col-md-7">
+										<div class="icon-addon addon-md">
+                      <select disabled id="view-mcoagrandparenttype" value="{{old('address')}}" name="mcoagrandparenttype" class="form-control forminput" placeholder="Tipe Grand Parent" type="text" required @if (Session::has('autofocus')) autofocus @endif>
+                        <option value="K">Kredit</option>
+                        <option value="D">Debet</option>
+                      </select>
+											<!-- <label for="mgoodsgroup1" class="glyphicon glyphicon-chevron-right" rel="tooltip" title="Tipe Grand Parent"></label> -->
+										</div>
+									</div>
+								</div>
+								<center>
+									<div class="row">
+										<div class="col-md-12">
+											</br>
+											<button onclick="backall()" class="btn btn-default" type="submit">
+												<i class="fa fa-save"></i> Kembali
+                      </button>
+										</div>
+									</center>
+							</br>
+						</div>
+					</div>
+				</div>
+				<!-- end widget content -->
+			</div>
+			<!-- end widget div -->
+		</div>
+		<!-- row -->
+		<div class="row">
+			<!-- NEW WIDGET START -->
+			<article class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+				<!-- Widget ID (each widget will need unique ID)-->
 				<div id="forminputp" style="display: none;" class="forminput jarviswidget jarviswidget-color-darken" id="wid-id-0" data-widget-editbutton="false" data-widget-colorbutton="false" data-widget-deletebutton="false">
 					<header>
 						<span class="widget-icon"> <i class="fa fa-table"></i> </span>
@@ -216,7 +391,184 @@
 			<!-- NEW WIDGET START -->
 			<article class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
 				<!-- Widget ID (each widget will need unique ID)-->
-				<div id="forminput" class="forminput jarviswidget jarviswidget-color-darken" id="wid-id-0" data-widget-editbutton="false" data-widget-colorbutton="false" data-widget-deletebutton="false">
+				<div id="formeditp" style="display: none;" class="forminput jarviswidget jarviswidget-color-darken" id="wid-id-0" data-widget-editbutton="false" data-widget-colorbutton="false" data-widget-deletebutton="false">
+					<header>
+						<span class="widget-icon"> <i class="fa fa-table"></i> </span>
+						<h2>Edit MCOA Parent</h2>
+					</header>
+					<!-- widget div-->
+					<div>
+						<!-- widget edit box -->
+						<div class="jarviswidget-editbox">
+							<!-- This area used as dropdown edit box -->
+						</div>
+						<!-- end widget edit box -->
+						<h3 style="font-weight: bold; color: #C91503;font-size: 19px;">Mode : EDIT</h3>
+						<!-- widget content -->
+						<style>
+							.alert-info {
+								color: #D9ECF5;
+								background-color: #48AFE3;
+								border-color: #2F9ACF;
+							}
+						</style>
+  						@if(count($errors) > 0)
+    						<div class="alert alert-info alerthide" role="alert">
+    							@foreach($errors->all() as $error)
+      							<span class="sr-only">Error:</span>
+      							<span class="sr-only"></span>
+      							<li><b>{{ $error }}</b></li>
+    							@endforeach
+    						</div>
+  						@endif
+						<div class="widget-body no-padding">
+							<div id="edit-wrapper-parent" class="form-horizontal" data-parsley-validate>
+								{{ csrf_field() }}
+								<div class="container">
+								</br>
+								<div style="height: 21px;" class="form-group">
+									<input type="hidden" id="mcoaparentid">
+									<label class="col-md-3 control-label"><b>Kode Parent</b> (<font color="red">*</font>) &nbsp  :</label>
+									<div class="col-md-7">
+										<div class="icon-addon addon-md">
+											<input id="edit-mcoaparentcode" value="{{old('mbranchcode')}}" name="mcoaparentcode" class="form-control forminput" placeholder="Kode Parent" type="text" required data-parsley-required-message="Field Ini Tidak Boleh Kosong" @if (Session::has('autofocus')) autofocus @endif >
+											<label for="mgoodsgroup1" class="glyphicon glyphicon-barcode" rel="tooltip" title="Kode Grand Parent"></label>
+										</div>
+									</div>
+								</div>
+								<div style="height: 21px;" class="form-group">
+									<label class="col-md-3 control-label"><b>Nama Parent</b> (<font color="red">*</font>) &nbsp  :</label>
+									<div class="col-md-7">
+										<div class="icon-addon addon-md">
+											<input id="edit-mcoaparentname" value="{{old('mbranchname')}}" name="mcoaparentname" class="form-control forminput" placeholder="Nama Parent" type="text" required data-parsley-required-message="Field Ini Tidak Boleh Kosong" @if (Session::has('autofocus')) autofocus @endif >
+											<label for="mgoodsgroup1" class="glyphicon glyphicon-chevron-right" rel="tooltip" title="Nama Grand Parent"></label>
+										</div>
+									</div>
+								</div>
+                <div style="height: 21px;" class="form-group">
+									<label class="col-md-3 control-label"><b>Grand Parent</b> (<font color="red">*</font>) &nbsp  :</label>
+									<div class="col-md-7">
+										<div class="icon-addon addon-md">
+                      <select id="edit-mcoagrandparent" value="{{old('address')}}" name="mcoagrandparent" class="form-control forminput select2" placeholder="Grand Parent" type="text" required data-parsley-required-message="Field Ini Tidak Boleh Kosong" @if (Session::has('autofocus')) autofocus @endif>
+                        @foreach($gparents as $gp)
+                          <option value="{{ $gp->mcoagrandparentcode }}">{{ $gp->mcoagrandparentname }}</option>
+                        @endforeach
+                      </select>
+											<!-- <label for="mgoodsgroup1" class="glyphicon glyphicon-chevron-right" rel="tooltip" title="Tipe Grand Parent"></label> -->
+										</div>
+									</div>
+								</div>
+								<input type="hidden" name="void" value="0">
+								<center>
+									<div class="row">
+										<div class="col-md-12">
+											<a id="btn-edit-reset" onclick="resetparent()" class="btn btn-default" ><i class=""></i> Reset</a>
+											<button class="btn btn-primary" onclick="updateparent()"><i class="fa fa-save"></i> Simpan</button>
+										</div>
+									</div>
+								</center>
+							</br>
+						</div>
+					</div>
+				</div>
+				<!-- end widget content -->
+			</div>
+			<!-- end widget div -->
+		</div>
+		<!-- row -->
+		<div class="row">
+			<!-- NEW WIDGET START -->
+			<article class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+				<!-- Widget ID (each widget will need unique ID)-->
+				<div id="formviewp" style="display: none;" class="forminput jarviswidget jarviswidget-color-darken" id="wid-id-0" data-widget-editbutton="false" data-widget-colorbutton="false" data-widget-deletebutton="false">
+					<header>
+						<span class="widget-icon"> <i class="fa fa-table"></i> </span>
+						<h2>View MCOA Parent</h2>
+					</header>
+					<!-- widget div-->
+					<div>
+						<!-- widget edit box -->
+						<div class="jarviswidget-editbox">
+							<!-- This area used as dropdown edit box -->
+						</div>
+						<!-- end widget edit box -->
+						<h3 style="font-weight: bold; color: #291817;font-size: 19px;">Mode : VIEW</h3>
+						<!-- widget content -->
+						<style>
+							.alert-info {
+								color: #D9ECF5;
+								background-color: #48AFE3;
+								border-color: #2F9ACF;
+							}
+						</style>
+  						@if(count($errors) > 0)
+    						<div class="alert alert-info alerthide" role="alert">
+    							@foreach($errors->all() as $error)
+      							<span class="sr-only">Error:</span>
+      							<span class="sr-only"></span>
+      							<li><b>{{ $error }}</b></li>
+    							@endforeach
+    						</div>
+  						@endif
+						<div class="widget-body no-padding">
+							<div id="insert-wrapper-parent" class="form-horizontal" data-parsley-validate>
+								{{ csrf_field() }}
+								<div class="container">
+								</br>
+								<div style="height: 21px;" class="form-group">
+									<label class="col-md-3 control-label"><b>Kode Parent</b> (<font color="red">*</font>) &nbsp  :</label>
+									<div class="col-md-7">
+										<div class="icon-addon addon-md">
+											<input disabled id="view-mcoaparentcode" value="{{old('mbranchcode')}}" name="mcoaparentcode" class="form-control forminput" placeholder="Kode Parent" type="text" required data-parsley-required-message="Field Ini Tidak Boleh Kosong" @if (Session::has('autofocus')) autofocus @endif >
+											<label for="mgoodsgroup1" class="glyphicon glyphicon-barcode" rel="tooltip" title="Kode Grand Parent"></label>
+										</div>
+									</div>
+								</div>
+								<div style="height: 21px;" class="form-group">
+									<label class="col-md-3 control-label"><b>Nama Parent</b> (<font color="red">*</font>) &nbsp  :</label>
+									<div class="col-md-7">
+										<div class="icon-addon addon-md">
+											<input disabled id="view-mcoaparentname" value="{{old('mbranchname')}}" name="mcoaparentname" class="form-control forminput" placeholder="Nama Parent" type="text" required data-parsley-required-message="Field Ini Tidak Boleh Kosong" @if (Session::has('autofocus')) autofocus @endif >
+											<label for="mgoodsgroup1" class="glyphicon glyphicon-chevron-right" rel="tooltip" title="Nama Grand Parent"></label>
+										</div>
+									</div>
+								</div>
+                <div style="height: 21px;" class="form-group">
+									<label class="col-md-3 control-label"><b>Grand Parent</b> (<font color="red">*</font>) &nbsp  :</label>
+									<div class="col-md-7">
+										<div class="icon-addon addon-md">
+                      <select disabled id="view-mcoagrandparent" value="{{old('address')}}" name="mcoagrandparent" class="form-control forminput" placeholder="Grand Parent" type="text" required data-parsley-required-message="Field Ini Tidak Boleh Kosong" @if (Session::has('autofocus')) autofocus @endif>
+                        @foreach($gparents as $gp)
+                          <option value="{{ $gp->mcoagrandparentcode }}">{{ $gp->mcoagrandparentname }}</option>
+                        @endforeach
+                      </select>
+											<!-- <label for="mgoodsgroup1" class="glyphicon glyphicon-chevron-right" rel="tooltip" title="Tipe Grand Parent"></label> -->
+										</div>
+									</div>
+								</div>
+								<center>
+									<div class="row">
+										<div class="col-md-12">
+											</br>
+											<button onclick="backall()" class="btn btn-default" type="submit">
+												<i class="fa fa-save"></i> Kembali
+                      </button>
+										</div>
+									</center>
+							</br>
+						</div>
+					</div>
+				</div>
+				<!-- end widget content -->
+			</div>
+			<!-- end widget div -->
+		</div>
+		<!-- row -->
+		<div class="row">
+			<!-- NEW WIDGET START -->
+			<article class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+				<!-- Widget ID (each widget will need unique ID)-->
+				<div id="forminput" style="display:none;" class="forminput jarviswidget jarviswidget-color-darken" id="wid-id-0" data-widget-editbutton="false" data-widget-colorbutton="false" data-widget-deletebutton="false">
 					<header>
 						<span class="widget-icon"> <i class="fa fa-table"></i> </span>
 						<h2>Tambah {{ $section }}</h2>
@@ -514,22 +866,44 @@
 					<div class="widget-body">
 						<div class="row">
 							<div class="container">
-								<div class="col-md-12">
+						<div class="row container">
+						<table  id="tableapi" class="tableapi table table-bordered" width="100%">
 
-									<a onclick="addgparent()" class="dt-button">Add Grand Parent</a>
-									<a onclick="addparent()" class="dt-button">Add Parent</a>
+							<thead>
+								<tr>
+									<th class="hasinput" style="width:10%">
 
-								<div class="pull-right">
-									<a href="{{ url('/admin-nano/mcoa/export/csv') }}" class="dt-button">CSV</a>
-									<a href="{{ url('/admin-nano/mcoa/export/excel') }}" class="dt-button">Excel</a>
-									<a href="{{ url('/admin-nano/mcoa/export/pdf') }}" class="dt-button">PDF</a>
-									<a href="{{ url('/admin-nano/mcoa/export/print') }}" target="_blank" class="dt-button">Print</a>
-								<div>
-								</div>
-							</div>
-					  </div>
-						<div class="row" style="margin-top:50px;">
-						<div class="tree smart-form container" id="mcoatree">
+									</th>
+									<th class="hasinput" style="width:1%">
+										<input type="text" class="form-control" placeholder="Filter No" />
+									</th>
+									<th class="hasinput" style="width:5%">
+										<input type="text" class="form-control" placeholder="Filter Kode" />
+									</th>
+									<th class="hasinput" style="width:9%">
+										<input type="text" class="form-control" placeholder="Filter Nama" />
+									</th>
+									<th class="hasinput" style="width:9%">
+										<input type="text" class="form-control" placeholder="Filter Tipe" />
+									</th>
+									<th class="hasinput" style="width:9%">
+										<input type="text" class="form-control" placeholder="Filter Saldo" />
+									</th>
+								</tr>
+								<tr>
+									<th data-hide="action"><center>Aksi</center></th>
+									<th data-hide="no"><center>No</center></th>
+									<th data-hide="code"><center>Kode</center></th>
+									<th data-hide="name"><center>Nama</center></th>
+									<th data-hide="type"><center>Tipe</center></th>
+									<th data-hide="saldo"><center>Saldo</center></th>
+								</tr>
+							</thead>
+							<tbody>
+							</tbody>
+
+						</table>
+						<!-- <div class="tree smart-form container" id="mcoatree">
 							<ul role="tree">
 								@foreach($gparents as $gp)
 								<li class="parent_li" role="treeitem">
@@ -570,8 +944,8 @@
 								</li>
 								@endforeach
 							</ul>
+						</div> -->
 						</div>
-					</div>
 							@push('scripts')
 							<tfoot>
 							<script>
@@ -596,40 +970,66 @@
 			                 table = $('.tableapi').DataTable({
                   			      dom: "<'dtpadding' <'row' <'clmn' C> <'srch' f> <'tablerow' l> <'clear'> <'masterbutton' B> r> <'row pb' tip>>",
                                   "autoWidth" : true,
-                                  "oLanguage": {
-                                    "sSearch": '<span class="input-group-addon"><i class="glyphicon glyphicon-search"></i></span>'
+																	"oLanguage": {
+                                    "sSearch": '<span class="input-group-addon"><i class="glyphicon glyphicon-search"></i></span>',
+																		"sLengthMenu": "Show _MENU_ Entries",
+																		"sInfo": "Showing ( _START_ to _END_ ) to _TOTAL_ Entries"
                                   },
-                              buttons: [ {
+                              buttons: [
+																{
+																		text: 'Add Grand Parent',
+																		action: function(){
+																			addgparent();
+																		}
+																},
+																{
+																		text: 'Add Parent',
+																		action: function(){
+																			addparent();
+																		}
+																},
+																{
+																		text: 'Add Akun',
+																		action: function(){
+																			addakun();
+																		}
+																},
+																{
                                     extend: 'copyHtml5',
                                     exportOptions: {
                                         columns: [ 1,2,3,4,5,6]
                                     }
                                   },
-                                  {
-                                      extend: 'csvFlash',
-                                      exportOptions: {
-                                          columns: [ 1, 2, 3, 4,5,6] //setting kolom mana yg mau di export
-                                      }
+																	{
+                                      text: 'CSV',
+                                      action: function(){
+																				window.location.href = "{{ url('admin-nano/mcoa/export/csv') }}";
+																			}
                                   },
                                   {
-                                      extend: 'excelFlash',
-                                      exportOptions: {
-                                          columns: [ 1, 2, 3, 4,5,6] //setting kolom mana yg mau di export
-                                      }
+																			text: 'Excel',
+																			action: function(){
+																				window.location.href = "{{ url('admin-nano/mcoa/export/excel') }}";
+																			}
                                   },
                                   {
-                                      extend: 'pdfFlash',
-                                      exportOptions: {
-                                          columns: [ 1, 2, 3, 4,5,6] //setting kolom mana yg mau di export
-                                      }
+																			text: 'PDF',
+																			action: function(){
+																				window.location.href = "{{ url('admin-nano/mcoa/export/pdf') }}";
+																			}
                                   },
                                   {
                                       extend: 'print',
                                       exportOptions: {
-                                          columns: [ 1, 2, 3, 4,5,6] //setting kolom mana yg mau di export
+                                          columns: [ 1, 2, 3, 4] //setting kolom mana yg mau di export
                                       }
 
-                                  }
+                                  },
+																  {
+																	  extend: 'colvis',
+																	  text: 'Show / Hide Columns',
+																	  columns: ':gt(1)'
+																  }
                               ],
 					       				      processing: false,
 										          serverSide: false,
@@ -637,13 +1037,10 @@
           										columns: [
                               {data: 'action', name:'action', searchable: false, orderable: false},
                               {data: 'no', no: 'no' },
-                              {data: 'mcoacode', mcoacode: 'mcoacode'},
-          										{data: 'mcoaname', mcoaname: 'mcoaname'},
-                              {data: 'mcoaparentcode', mcoaparentcode: 'mcoaparentcode'},
-          										{data: 'mcoaparentname', mcoaparentname: 'mcoaparentname'},
-          										{data: 'mcoagrandparentcode', mcoagrandparentcode: 'mcoagrandparentcode'},
-          										{data: 'mcoagrandparentname', mcoagrandparentname: 'mcoagrandparentname'},
-          										{data: 'type', type: 'type'}
+                              {data: 'code', code: 'code'},
+          										{data: 'name', name: 'name'},
+															{data: 'type', type: 'type'},
+          										{data: 'saldo', saldo: 'saldo'}
           										]
 									       });
 
