@@ -21,7 +21,7 @@
 		<link rel="stylesheet" type="text/css" media="screen" href="{{URL::to('/')}}/css/smartadmin-skins.min.css">
 
 		<!-- SmartAdmin RTL Support  -->
-		<link rel="stylesheet" type="text/css" media="screen" href="{{URL::to('/')}}/css/smartadmin-rtl.min.css">
+		<!-- <link rel="stylesheet" type="text/css" media="screen" href="{{URL::to('/')}}/css/smartadmin-rtl.min.css"> -->
 
 			<!-- SweetAlert  -->
 		<link rel="stylesheet" type="text/css" href="{{URL::to('/')}}/master/1/dist/sweetalert.css">
@@ -34,9 +34,6 @@
 		<!-- We recommend you use "your_style.css" to override SmartAdmin
 		     specific styles this will also ensure you retrain your customization with each SmartAdmin update.
 		<link rel="stylesheet" type="text/css" media="screen" href="css/your_style.css"> -->
-
-		<!-- Demo purpose only: goes with demo.js, you can delete this css when designing your own WebApp -->
-		<link rel="stylesheet" type="text/css" media="screen" href="{{URL::to('/')}}/css/demo.min.css">
 
 		<!-- FAVICONS -->
 		<link rel="shortcut icon" href="img/favicon/favicon.ico" type="image/x-icon">
@@ -261,75 +258,10 @@
 				<!-- PLACE YOUR LOGO HERE -->
 				<span id="logo"> <img src="{{URL::to('/')}}/img/logo.png" alt="SmartAdmin"> </span>
 				<!-- END LOGO PLACEHOLDER -->
-
-				<!-- Note: The activity badge color changes when clicked and resets the number to 0
-				Suggestion: You may want to set a flag when this happens to tick off all checked messages / notifications -->
-				<span id="activity" class="activity-dropdown"> <i class="fa fa-user"></i> <b class="badge"> 21 </b> </span>
-
-				<!-- AJAX-DROPDOWN : control this dropdown height, look and feel from the LESS variable file -->
-				<div class="ajax-dropdown">
-
-					<!-- the ID links are fetched via AJAX to the ajax container "ajax-notifications" -->
-					<div class="btn-group btn-group-justified" data-toggle="buttons">
-						<label class="btn btn-default">
-							<input type="radio" name="activity" id="ajax/notify/mail.html">
-							Msgs (14) </label>
-						<label class="btn btn-default">
-							<input type="radio" name="activity" id="ajax/notify/notifications.html">
-							notify (3) </label>
-						<label class="btn btn-default">
-							<input type="radio" name="activity" id="ajax/notify/tasks.html">
-							Tasks (4) </label>
-					</div>
-
-					<!-- notification content -->
-					<div class="ajax-notifications custom-scroll">
-
-						<div class="alert alert-transparent">
-							<h4>Click a button to show messages here</h4>
-							This blank page message helps protect your privacy, or you can show the first message here automatically.
-						</div>
-
-						<i class="fa fa-lock fa-4x fa-border"></i>
-
-					</div>
-					<!-- end notification content -->
-
-					<!-- footer: refresh area -->
-					<span> Last updated on: 12/12/2013 9:43AM
-						<button type="button" data-loading-text="<i class='fa fa-refresh fa-spin'></i> Loading..." class="btn btn-xs btn-default pull-right">
-							<i class="fa fa-refresh"></i>
-						</button>
-					</span>
-					<!-- end footer -->
-
-				</div>
-				<!-- END AJAX-DROPDOWN -->
 			</div>
 
 			<!-- projects dropdown -->
 			<div class="project-context hidden-xs">
-
-				<span class="label">Projects:</span>
-				<span class="project-selector dropdown-toggle" data-toggle="dropdown">Recent projects <i class="fa fa-angle-down"></i></span>
-
-				<!-- Suggestion: populate this list with fetch and push technique -->
-				<ul class="dropdown-menu">
-					<li>
-						<a href="javascript:void(0);">Online e-merchant management system - attaching integration with the iOS</a>
-					</li>
-					<li>
-						<a href="javascript:void(0);">Notes on pipeline upgradee</a>
-					</li>
-					<li>
-						<a href="javascript:void(0);">Assesment Report for merchant account</a>
-					</li>
-					<li class="divider"></li>
-					<li>
-						<a href="javascript:void(0);"><i class="fa fa-power-off"></i> Clear</a>
-					</li>
-				</ul>
-				<!-- end dropdown-menu-->
 
 			</div>
 			<!-- end projects dropdown -->
@@ -425,64 +357,10 @@
 				<!-- end fullscreen button -->
 
 				<!-- #Voice Command: Start Speech -->
-				<div id="speech-btn" class="btn-header transparent pull-right hidden-sm hidden-xs">
-					<div>
-						<a href="javascript:void(0)" title="Voice Command" data-action="voiceCommand"><i class="fa fa-microphone"></i></a>
-						<div class="popover bottom"><div class="arrow"></div>
-							<div class="popover-content">
-								<h4 class="vc-title">Voice command activated <br><small>Please speak clearly into the mic</small></h4>
-								<h4 class="vc-title-error text-center">
-									<i class="fa fa-microphone-slash"></i> Voice command failed
-									<br><small class="txt-color-red">Must <strong>"Allow"</strong> Microphone</small>
-									<br><small class="txt-color-red">Must have <strong>Internet Connection</strong></small>
-								</h4>
-								<a href="javascript:void(0);" class="btn btn-success" onclick="commands.help()">See Commands</a>
-								<a href="javascript:void(0);" class="btn bg-color-purple txt-color-white" onclick="$('#speech-btn .popover').fadeOut(50);">Close Popup</a>
-							</div>
-						</div>
-					</div>
-				</div>
+
 				<!-- end voice command -->
 
 				<!-- multiple lang dropdown : find all flags in the flags page -->
-				<ul class="header-dropdown-list hidden-xs">
-					<li>
-						<a href="#" class="dropdown-toggle" data-toggle="dropdown"> <img src="{{URL::to('')}}/img/blank.gif" class="flag flag-us" alt="United States"> <span> English (US) </span> <i class="fa fa-angle-down"></i> </a>
-						<ul class="dropdown-menu pull-right">
-							<li class="active">
-								<a href="javascript:void(0);"><img src="{{URL::to('')}}/img/blank.gif" class="flag flag-us" alt="United States"> English (US)</a>
-							</li>
-							<li>
-								<a href="javascript:void(0);"><img src="{{URL::to('')}}/img/blank.gif" class="flag flag-fr" alt="France"> Français</a>
-							</li>
-							<li>
-								<a href="javascript:void(0);"><img src="{{URL::to('')}}/img/blank.gif" class="flag flag-es" alt="Spanish"> Español</a>
-							</li>
-							<li>
-								<a href="javascript:void(0);"><img src="{{URL::to('')}}/img/blank.gif" class="flag flag-de" alt="German"> Deutsch</a>
-							</li>
-							<li>
-								<a href="javascript:void(0);"><img src="{{URL::to('')}}/img/blank.gif" class="flag flag-jp" alt="Japan"> 日本語</a>
-							</li>
-							<li>
-								<a href="javascript:void(0);"><img src="{{URL::to('')}}/img/blank.gif" class="flag flag-cn" alt="China"> 中文</a>
-							</li>
-							<li>
-								<a href="javascript:void(0);"><img src="{{URL::to('')}}/img/blank.gif" class="flag flag-it" alt="Italy"> Italiano</a>
-							</li>
-							<li>
-								<a href="javascript:void(0);"><img src="{{URL::to('')}}/img/blank.gif" class="flag flag-pt" alt="Portugal"> Portugal</a>
-							</li>
-							<li>
-								<a href="javascript:void(0);"><img src="{{URL::to('')}}/img/blank.gif" class="flag flag-ru" alt="Russia"> Русский язык</a>
-							</li>
-							<li>
-								<a href="javascript:void(0);"><img src="{{URL::to('')}}/img/blank.gif" class="flag flag-kr" alt="Korea"> 한국어</a>
-							</li>
-
-						</ul>
-					</li>
-				</ul>
 				<!-- end multiple lang -->
 
 			</div>
@@ -680,11 +558,12 @@
     		<!--================================================== -->
 
     		<!-- PACE LOADER - turn this on if you want ajax loading to show (caution: uses lots of memory on iDevices)-->
-    		<script data-pace-options='{ "restartOnRequestAfter": true }' src="{{URL::to('/')}}/js/plugin/pace/pace.min.js"></script>
+    		<!-- <script data-pace-options='{ "restartOnRequestAfter": true }' src="{{URL::to('/')}}/js/plugin/pace/pace.min.js"></script> -->
 
     		<!-- Link to Google CDN's jQuery + jQueryUI; fall back to local -->
-    		<!-- <script src="{{URL::to('/')}}/js/jquery.min.js"></script> -->
-				<script src="https://code.jquery.com/jquery-2.2.4.min.js"></script>
+    		<script src="{{URL::to('/')}}/js/jquery-2.2.4.min.js"></script>
+				<!-- <script src="https://code.jquery.com/jquery-2.2.4.min.js"></script> -->
+				<!-- <script src="{{ url('/js/jquery.min.js') }}"></script> -->
     		<script>
     			if (!window.jQuery) {
     				document.write('<script src="js/libs/jquery-2.1.1.min.js"><\/script>');
@@ -718,10 +597,10 @@
     		<script src="{{URL::to('/')}}/js/plugin/easy-pie-chart/jquery.easy-pie-chart.min.js"></script>
 
     		<!-- SPARKLINES -->
-    		<script src="{{URL::to('/')}}/js/plugin/sparkline/jquery.sparkline.min.js"></script>
+    		<!-- <script src="{{URL::to('/')}}/js/plugin/sparkline/jquery.sparkline.min.js"></script> -->
 
     		<!-- JQUERY VALIDATE -->
-    		<script src="{{URL::to('/')}}/js/plugin/jquery-validate/jquery.validate.min.js"></script>
+    		<!-- <script src="{{URL::to('/')}}/js/plugin/jquery-validate/jquery.validate.min.js"></script> -->
 
     		<!-- JQUERY MASKED INPUT -->
     		<script src="{{URL::to('/')}}/js/plugin/masked-input/jquery.maskedinput.min.js"></script>
@@ -741,19 +620,14 @@
 
     		<![endif]-->
 
-    		<!-- Demo purpose only -->
-    		<script src="{{URL::to('/')}}/js/demo.min.js"></script>
-
     		<!-- MAIN APP JS FILE -->
     		<script src="{{URL::to('/')}}/js/app.min.js"></script>
 
     		<!-- ENHANCEMENT PLUGINS : NOT A REQUIREMENT -->
-    		<!-- Voice command : plugin -->
-    		<script src="{{URL::to('/')}}/js/speech/voicecommand.min.js"></script>
 
     		<!-- SmartChat UI : plugin -->
-    		<script src="{{URL::to('/')}}/js/smart-chat-ui/smart.chat.ui.min.js"></script>
-    		<script src="{{URL::to('/')}}/js/smart-chat-ui/smart.chat.manager.min.js"></script>
+    		<!-- <script src="{{URL::to('/')}}/js/smart-chat-ui/smart.chat.ui.min.js"></script>
+    		<script src="{{URL::to('/')}}/js/smart-chat-ui/smart.chat.manager.min.js"></script> -->
 
     		<!-- PAGE RELATED PLUGIN(S) -->
     		<script src="{{URL::to('/')}}/js/plugin/datatables/jquery.dataTables.min.js"></script>
@@ -862,147 +736,22 @@
     					phone : 480
     				};
 
-    				$('#dt_basic').dataTable({
-    					"sDom": "<'dt-toolbar'<'col-xs-12 col-sm-6'f><'col-sm-6 col-xs-12 hidden-xs'l>r>"+
-    						"t"+
-    						"<'dt-toolbar-footer'<'col-sm-6 col-xs-12 hidden-xs'i><'col-xs-12 col-sm-6'p>>",
-    					"autoWidth" : true,
-    			        "oLanguage": {
-    					    "sSearch": '<span class="input-group-addon"><i class="glyphicon glyphicon-search"></i></span>'
-    					},
-    					"preDrawCallback" : function() {
-    						// Initialize the responsive datatables helper once.
-    						if (!responsiveHelper_dt_basic) {
-    							responsiveHelper_dt_basic = new ResponsiveDatatablesHelper($('#dt_basic'), breakpointDefinition);
-    						}
-    					},
-    					"rowCallback" : function(nRow) {
-    						responsiveHelper_dt_basic.createExpandIcon(nRow);
-    					},
-    					"drawCallback" : function(oSettings) {
-    						responsiveHelper_dt_basic.respond();
-    					}
-    				});
-
     			/* END BASIC */
 
     			/* COLUMN FILTER  */
-    		    var otable = $('#datatable_fixed_column').DataTable({
-    		    	//"bFilter": false,
-    		    	//"bInfo": false,
-    		    	//"bLengthChange": false
-    		    	//"bAutoWidth": false,
-    		    	//"bPaginate": false,
-    		    	//"bStateSave": true // saves sort state using localStorage
-    				"sDom": "<'dt-toolbar'<'col-xs-12 col-sm-6 hidden-xs'f><'col-sm-6 col-xs-12 hidden-xs'<'toolbar'>>r>"+
-    						"t"+
-    						"<'dt-toolbar-footer'<'col-sm-6 col-xs-12 hidden-xs'i><'col-xs-12 col-sm-6'p>>",
-    				"autoWidth" : true,
-    				"oLanguage": {
-    					"sSearch": '<span class="input-group-addon"><i class="glyphicon glyphicon-search"></i></span>'
 
-    				},
-    				"sDom": 'T<"clear">lfrtip',
-        			"oTableTools": {
-            		"sSwfPath": "/swf/copy_csv_xls_pdf.swf"
-       				},
-    				"preDrawCallback" : function() {
-    					// Initialize the responsive datatables helper once.
-    					if (!responsiveHelper_datatable_fixed_column) {
-    						responsiveHelper_datatable_fixed_column = new ResponsiveDatatablesHelper($('#datatable_fixed_column'), breakpointDefinition);
-    					}
-    				},
-    				"rowCallback" : function(nRow) {
-    					responsiveHelper_datatable_fixed_column.createExpandIcon(nRow);
-    				},
-    				"drawCallback" : function(oSettings) {
-    					responsiveHelper_datatable_fixed_column.respond();
-    				}
-
-    		    });
 
     		    // custom toolbar
     		    // $("div.toolbar").html('<div class="text-right"><img src="img/logo.png" alt="SmartAdmin" style="width: 111px; margin-top: 3px; margin-right: 10px;"></div>');
 
     		    // Apply the filter
-    		    $("#datatable_fixed_column thead th input[type=text]").on( 'keyup change', function () {
-
-    		        otable
-    		            .column( $(this).parent().index()+':visible' )
-    		            .search( this.value )
-    		            .draw();
-
-    		    } );
     		    /* END COLUMN FILTER */
 
     			/* COLUMN SHOW - HIDE */
-    			$('#datatable_col_reorder').dataTable({
-    				"sDom": "<'dt-toolbar'<'col-xs-12 col-sm-6'f><'col-sm-6 col-xs-6 hidden-xs'C>r>"+
-    						"t"+
-    						"<'dt-toolbar-footer'<'col-sm-6 col-xs-12 hidden-xs'i><'col-sm-6 col-xs-12'p>>",
-    				"autoWidth" : true,
-    				"oLanguage": {
-    					"sSearch": '<span class="input-group-addon"><i class="glyphicon glyphicon-search"></i></span>'
-    				},
-    				"preDrawCallback" : function() {
-    					// Initialize the responsive datatables helper once.
-    					if (!responsiveHelper_datatable_col_reorder) {
-    						responsiveHelper_datatable_col_reorder = new ResponsiveDatatablesHelper($('#datatable_col_reorder'), breakpointDefinition);
-    					}
-    				},
-    				"rowCallback" : function(nRow) {
-    					responsiveHelper_datatable_col_reorder.createExpandIcon(nRow);
-    				},
-    				"drawCallback" : function(oSettings) {
-    					responsiveHelper_datatable_col_reorder.respond();
-    				}
-    			});
 
     			/* END COLUMN SHOW - HIDE */
 
     			/* TABLETOOLS */
-    			$('#datatable_tabletools').dataTable({
-
-    				// Tabletools options:
-    				//   https://datatables.net/extensions/tabletools/button_options
-    				"sDom": "<'dt-toolbar'<'col-xs-12 col-sm-6'f><'col-sm-6 col-xs-6 hidden-xs'T>r>"+
-    						"t"+
-    						"<'dt-toolbar-footer'<'col-sm-6 col-xs-12 hidden-xs'i><'col-sm-6 col-xs-12'p>>",
-    				"oLanguage": {
-    					"sSearch": '<span class="input-group-addon"><i class="glyphicon glyphicon-search"></i></span>'
-    				},
-    		        "oTableTools": {
-    		        	 "aButtons": [
-    		             "copy",
-    		             "csv",
-    		             "xls",
-    		                {
-    		                    "sExtends": "pdf",
-    		                    "sTitle": "SmartAdmin_PDF",
-    		                    "sPdfMessage": "SmartAdmin PDF Export",
-    		                    "sPdfSize": "letter"
-    		                },
-    		             	{
-    	                    	"sExtends": "print",
-    	                    	"sMessage": "Generated by SmartAdmin <i>(press Esc to close)</i>"
-    	                	}
-    		             ],
-    		            "sSwfPath": "{{URL::to('/')}}/js/plugin/datatables/swf/copy_csv_xls_pdf.swf"
-    		        },
-    				"autoWidth" : true,
-    				"preDrawCallback" : function() {
-    					// Initialize the responsive datatables helper once.
-    					if (!responsiveHelper_datatable_tabletools) {
-    						responsiveHelper_datatable_tabletools = new ResponsiveDatatablesHelper($('#datatable_tabletools'), breakpointDefinition);
-    					}
-    				},
-    				"rowCallback" : function(nRow) {
-    					responsiveHelper_datatable_tabletools.createExpandIcon(nRow);
-    				},
-    				"drawCallback" : function(oSettings) {
-    					responsiveHelper_datatable_tabletools.respond();
-    				}
-    			});
 
     			/* END TABLETOOLS */
 
@@ -1011,20 +760,6 @@
     		</script>
 
     		<!-- Your GOOGLE ANALYTICS CODE Below -->
-    		<script type="text/javascript">
-    			var _gaq = _gaq || [];
-    			_gaq.push(['_setAccount', 'UA-XXXXXXXX-X']);
-    			_gaq.push(['_trackPageview']);
-
-    			(function() {
-    			var ga = document.createElement('script');
-    			ga.type = 'text/javascript';
-    			ga.async = true;
-    			ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-    			var s = document.getElementsByTagName('script')[0];
-    			s.parentNode.insertBefore(ga, s);
-    			})();
-    		</script>
 
     	</body>
 

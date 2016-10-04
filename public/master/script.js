@@ -1,8 +1,8 @@
 $('#formedit').hide();
 $('#formview').hide();
 
-var API_URL = '/public/admin-api';
-var WEB_URL = '/public/admin-nano';
+var API_URL = '/admin-api';
+var WEB_URL = '/admin-nano';
 // MBRANCH SCRIPT
 
 $("#insert-phone").keyup(function(){
