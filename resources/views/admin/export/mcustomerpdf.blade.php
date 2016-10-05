@@ -88,6 +88,11 @@
           <td><b>Jabatan</b></td>
           <td><b>Email Kontak</b></td>
           <td><b>Handphone</b></td>
+          <td><b>Limit</b></td>
+          <td><b>Akun</b></td>
+          <td><b>TOP</b></td>
+          <td><b>Maksimal Nota</b></td>
+          <td><b>Default</b></td>
         </tr>
         @foreach($customer as $ct)
           <tr>
@@ -106,6 +111,11 @@
             <td>{{ $ct->mcustomercontactposition }}</td>
             <td>{{ $ct->mcustomercontactemail }}</td>
             <td>{{ $ct->mcustomercontactemailphone }}</td>
+            <td>{{ $ct->mcustomerarlimit }}</td>
+            <td>{{ $ct->akun->mcoaname }}</td>
+            <td>{{ $ct->mcustomertop }}</td>
+            <td>{{ $ct->mcustomerarmax }}</td>
+            <td>{{ $ct->mcustomerdefaultar }}</td>
           </tr>
         @endforeach
       </tbody>

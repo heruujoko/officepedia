@@ -17,7 +17,7 @@ class MCustomerController extends Controller
 		 $this->iteration = 0;
         $mcustomer = MCUSTOMER::where('void', '0')->orderby('created_at','desc')->get();
         return Datatables::of($mcustomer)->addColumn('action', function($mcustomer){
-          
+
           return '<center><div class="button">
           <a class="btn btn-info btn-xs dropdown-toggle fa fa-eye" onclick="viewmcustomer('.$mcustomer->id.')"> <font style="">Lihat</font></a>
           <a class="btn btn-primary btn-xs dropdown-toggle fa fa-pencil" onclick="editmcustomer('.$mcustomer->id.')"> <font style="font-family: arial;">Ubah &nbsp</font></a>
@@ -26,6 +26,8 @@ class MCustomerController extends Controller
         })->addColumn('no',function($mcustomer){
             $this->iteration++;
             return "<span>".$this->iteration."</span>";
+        })->addColumn('akun',function($mcustomer){
+            return $mcustomer->akun->mcoaname;
         })
         ->make(true);
 }
@@ -37,64 +39,46 @@ class MCustomerController extends Controller
 
   public function update(Request $request,$id){
       $new_cust = MCUSTOMER::find($id);
-      $new_cust->mcustomerid = $request->mcustomerid;
-      $new_cust->mcustomername = $request->mcustomername;
-      $new_cust->mcustomeremail = $request->mcustomeremail;
-      $new_cust->mcustomerphone = $request->mcustomerphone;
-      $new_cust->mcustomerfax = $request->mcustomerfax;
-      $new_cust->mcustomerwebsite = $request->mcustomerwebsite;
-      $new_cust->mcustomeraddress = $request->mcustomeraddress;
-      $new_cust->mcustomercity = $request->mcustomercity;
-      $new_cust->mcustomerzipcode = $request->mcustomerzipcode;
-      $new_cust->mcustomerprovince = $request->mcustomerprovince;
-      $new_cust->mcustomercountry = $request->mcustomercountry;
-      $new_cust->mcustomercontactname = $request->mcustomercontactname;
-      $new_cust->mcustomercontactposition = $request->mcustomercontactposition;
-      $new_cust->mcustomercontactemail = $request->mcustomercontactemail;
-      $new_cust->mcustomercontactemailphone = $request->mcustomercontactemailphone;
-      $new_cust->mcustomercontactname = $request->mcustomercontactname;
-      $new_cust->mcustomercontactposition = $request->mcustomercontactposition;
-      $new_cust->mcustomercontactemail = $request->mcustomercontactemail;
-      $new_cust->mcustomercontactemailphone = $request->mcustomercontactemailphone;
-      $new_cust->save();
+      // $new_cust->mcustomerid = $request->mcustomerid;
+      // $new_cust->mcustomername = $request->mcustomername;
+      // $new_cust->mcustomeremail = $request->mcustomeremail;
+      // $new_cust->mcustomerphone = $request->mcustomerphone;
+      // $new_cust->mcustomerfax = $request->mcustomerfax;
+      // $new_cust->mcustomerwebsite = $request->mcustomerwebsite;
+      // $new_cust->mcustomeraddress = $request->mcustomeraddress;
+      // $new_cust->mcustomercity = $request->mcustomercity;
+      // $new_cust->mcustomerzipcode = $request->mcustomerzipcode;
+      // $new_cust->mcustomerprovince = $request->mcustomerprovince;
+      // $new_cust->mcustomercountry = $request->mcustomercountry;
+      // $new_cust->mcustomercontactname = $request->mcustomercontactname;
+      // $new_cust->mcustomercontactposition = $request->mcustomercontactposition;
+      // $new_cust->mcustomercontactemail = $request->mcustomercontactemail;
+      // $new_cust->mcustomercontactemailphone = $request->mcustomercontactemailphone;
+      // $new_cust->mcustomercontactname = $request->mcustomercontactname;
+      // $new_cust->mcustomercontactposition = $request->mcustomercontactposition;
+      // $new_cust->mcustomercontactemail = $request->mcustomercontactemail;
+      // $new_cust->mcustomercontactemailphone = $request->mcustomercontactemailphone;
+      // $new_cust->save();
+			$new_cust->update($request->all());
     return response()->json($new_cust);
   }
 
 	public function store(Request $request){
 		if ($request->autogen == 'true') {
-      $prefix = MPrefix::where('mprefixtransaction','Master Customer')->first();
-      $new_cust = new MCUSTOMER;
-      $new_cust->mcustomerid = $prefix->mprefix.'-'.$prefix->last_count;
-      $new_cust->mcustomername = $request->mcustomername;
-      $new_cust->mcustomeremail = $request->mcustomeremail;
-      $new_cust->mcustomerphone = $request->mcustomerphone;
-      $new_cust->mcustomerfax = $request->mcustomerfax;
-      $new_cust->mcustomerwebsite = $request->mcustomerwebsite;
-      $new_cust->mcustomeraddress = $request->mcustomeraddress;
-      $new_cust->mcustomercity = $request->mcustomercity;
-      $new_cust->mcustomerzipcode = $request->mcustomerzipcode;
-      $new_cust->mcustomerprovince = $request->mcustomerprovince;
-      $new_cust->mcustomercountry = $request->mcustomercountry;
-      $new_cust->mcustomercontactname = $request->mcustomercontactname;
-      $new_cust->mcustomercontactposition = $request->mcustomercontactposition;
-      $new_cust->mcustomercontactemail = $request->mcustomercontactemail;
-      $new_cust->mcustomercontactemailphone = $request->mcustomercontactemailphone;
-      $new_cust->mcustomercontactname = $request->mcustomercontactname;
-      $new_cust->mcustomercontactposition = $request->mcustomercontactposition;
-      $new_cust->mcustomercontactemail = $request->mcustomercontactemail;
-      $new_cust->mcustomercontactemailphone = $request->mcustomercontactemailphone;
-      $new_cust->void = 0;
+			$new_cust = MCUSTOMER::create($request->all());
+			$prefix = MPrefix::where('mprefixtransaction','Master Customer')->first();
+			$new_cust->void = 0;
       $prefix->last_count++;
+			$prefix->save();
+			$new_cust->mcustomerid = $prefix->mprefix.'-'.$prefix->last_count;
       $new_cust->save();
-      $prefix->save();
       return response()->json($new_cust);
     }
-
-    else{
-    $new_cust = MCUSTOMER::create($request->all());
-		$new_cust->void = 0;
-		$new_cust->save();
-		return response()->json($new_cust);
+    else {
+	    $new_cust = MCUSTOMER::create($request->all());
+			$new_cust->void = 0;
+			$new_cust->save();
+			return response()->json($new_cust);
     }
 
 

@@ -710,6 +710,18 @@ $('#edit-wrapper').parsley().validate();
     window.location = "#forminputgp";
   }
 
+  function addakun(){
+    $('#formviewgp').hide();
+    $('#formviewp').hide();
+    $('#formeditp').hide();
+    $('#formeditgp').hide();
+    $('#forminputgp').hide();
+    $('#forminputp').hide();
+    $('#formview').hide();
+    $('#formedit').hide();
+    $('#forminput').show();
+  }
+
   function addcoa(parent,type){
     resetmcoa();
     backmcoa();
@@ -749,7 +761,8 @@ $('#edit-wrapper').parsley().validate();
       			type: "success",
       			timer: 1000
       		});
-          updatetree();
+          // updatetree();
+          $('#forminput').hide();
         },
         error: function(response){
           var err_msg = response.responseJSON.errorInfo[2];
@@ -1073,8 +1086,87 @@ $('#edit-wrapper').parsley().validate();
 
 // MCUSTOMER
 
+function backcustomer(){
+  resetcustomer();
+  $('#formedit').hide();
+  $('#formview').hide();
+  $('#forminput').show();
+}
+
+function resetcustomer(){
+  $('#insert-idmcustomerid').val('');
+  $('#insert-mcustomerid').val('');
+  $('#insert-mcustomername').val('');
+  $('#insert-mcustomeremail').val('');
+  $('#insert-mcustomerphone').val('');
+  $('#insert-mcustomerfax').val('');
+  $('#insert-mcustomerwebsite').val('');
+  $('#insert-mcustomeraddress').val('');
+  $('#insert-mcustomercity').val('');
+  $('#insert-mcustomerzipcode').val('');
+  $('#insert-mcustomerprovince').val('');
+  $('#insert-mcustomercountry').val('');
+  $('#insert-mcustomercontactname').val('');
+  $('#insert-mcustomercontactposition').val('');
+  $('#insert-mcustomercontactemail').val('');
+  $('#insert-mcustomercontactemailphone').val('');
+  $('#insert-mcustomerarlimit').val('');
+  $('#insert-mcustomercoa').val(8).change();
+  $('#insert-mcustomertop').val('credit').change();
+  $('#insert-mcustomerarmax').val('');
+  $('#insert-mcustomerdefaultar').val('');
+
+  $('#edit-idmcustomerid').val('');
+  $('#edit-mcustomerid').val('');
+  $('#edit-mcustomername').val('');
+  $('#edit-mcustomeremail').val('');
+  $('#edit-mcustomerphone').val('');
+  $('#edit-mcustomerfax').val('');
+  $('#edit-mcustomerwebsite').val('');
+  $('#edit-mcustomeraddress').val('');
+  $('#edit-mcustomercity').val('');
+  $('#edit-mcustomerzipcode').val('');
+  $('#edit-mcustomerprovince').val('');
+  $('#edit-mcustomercountry').val('');
+  $('#edit-mcustomercontactname').val('');
+  $('#edit-mcustomercontactposition').val('');
+  $('#edit-mcustomercontactemail').val('');
+  $('#edit-mcustomercontactemailphone').val('');
+  $('#edit-mcustomerarlimit').val('');
+  $('#edit-mcustomercoa').val(8).change();
+  $('#edit-mcustomertop').val('credit').change();
+  $('#edit-mcustomerarmax').val('');
+  $('#edit-mcustomerdefaultar').val('');
+
+  $('#view-idmcustomerid').val('');
+  $('#view-mcustomerid').val('');
+  $('#view-mcustomername').val('');
+  $('#view-mcustomeremail').val('');
+  $('#view-mcustomerphone').val('');
+  $('#view-mcustomerfax').val('');
+  $('#view-mcustomerwebsite').val('');
+  $('#view-mcustomeraddress').val('');
+  $('#view-mcustomercity').val('');
+  $('#view-mcustomerzipcode').val('');
+  $('#view-mcustomerprovince').val('');
+  $('#view-mcustomercountry').val('');
+  $('#view-mcustomercontactname').val('');
+  $('#view-mcustomercontactposition').val('');
+  $('#view-mcustomercontactemail').val('');
+  $('#view-mcustomercontactemailphone').val('');
+  $('#view-mcustomerarlimit').val('');
+  $('#view-mcustomercoa').val(8).change();
+  $('#view-mcustomertop').val('credit').change();
+  $('#view-mcustomerarmax').val('');
+  $('#view-mcustomerdefaultar').val('');
+
+  $('#insert-wrapper').parsley().reset();
+  $('#edit-wrapper').parsley().reset();
+}
+
 function insertmcustomer(){
    $('#insert-wrapper').parsley().validate();
+   console.log($('#insert-wrapper').parsley().isValid());
     if($('#insert-wrapper').parsley().isValid()){
       var data = {
         mcustomerid: $('#insert-mcustomerid').val(),
@@ -1092,8 +1184,14 @@ function insertmcustomer(){
         mcustomercontactposition: $('#insert-mcustomercontactposition').val(),
         mcustomercontactemail: $('#insert-mcustomercontactemail').val(),
         mcustomercontactemailphone: $('#insert-mcustomercontactemailphone').val(),
-        autogen: $('#disableforminput').is(':checked')
+        autogen: $('#disableforminput').is(':checked'),
+        mcustomerarlimit: $('#insert-mcustomerarlimit').val(),
+        mcustomercoa: $('#insert-mcustomercoa').val(),
+        mcustomertop: $('#insert-mcustomertop').val(),
+        mcustomerarmax: $('#insert-mcustomerarmax').val(),
+        mcustomerdefaultar: $('#insert-mcustomerdefaultar').val()
       }
+      console.log(data);
       $.ajax({
         type: "POST",
         url: API_URL+"/pelanggan",
@@ -1106,8 +1204,8 @@ function insertmcustomer(){
             type: "success",
             timer: 1000
           });
-          document.location.href = WEB_URL+"/pelanggan";
-
+          resetcustomer();
+          window.location = "#tableapi";
         },
         error: function(response){
           swal({
@@ -1148,6 +1246,11 @@ function viewmcustomer(id){
       $('#view-mcustomercontactposition').val(response.mcustomercontactposition);
       $('#view-mcustomercontactemail').val(response.mcustomercontactemail);
       $('#view-mcustomercontactemailphone').val(response.mcustomercontactemailphone);
+      $('#view-mcustomerarlimit').val(response.mcustomerarlimit);
+      $('#view-mcustomercoa').val(response.mcustomercoa).change();
+      $('#view-mcustomertop').val(response.mcustomertop).change();
+      $('#view-mcustomerarmax').val(response.mcustomerarmax);
+      $('#view-mcustomerdefaultar').val(response.mcustomerdefaultar);
       $('#forminput').hide();
       $('#formedit').hide();
       $('#formview').show();
@@ -1164,22 +1267,27 @@ function editmcustomer(id){
     url : API_URL+'/pelanggan/'+id,
     type : 'GET',
     success : function(response){
-      $('#idmcustomerid').val(response.id);
-      $('#mcustomerid').val(response.mcustomerid);
-      $('#mcustomername').val(response.mcustomername);
-      $('#mcustomeremail').val(response.mcustomercontactemail);
-      $('#mcustomerphone').val(response.mcustomerphone);
-      $('#mcustomerfax').val(response.mcustomerfax);
-      $('#mcustomerwebsite').val(response.mcustomerwebsite);
-      $('#mcustomeraddress').val(response.mcustomeraddress);
-      $('#mcustomercity').val(response.mcustomercity);
-      $('#mcustomerzipcode').val(response.mcustomerzipcode);
-      $('#mcustomerprovince').val(response.mcustomerprovince);
-      $('#mcustomercountry').val(response.mcustomercountry);
-      $('#mcustomercontactname').val(response.mcustomercontactname);
-      $('#mcustomercontactposition').val(response.mcustomercontactposition);
-      $('#mcustomercontactemail').val(response.mcustomercontactemail);
-      $('#mcustomercontactemailphone').val(response.mcustomercontactemailphone);
+      $('#edit-idmcustomerid').val(response.id);
+      $('#edit-mcustomerid').val(response.mcustomerid);
+      $('#edit-mcustomername').val(response.mcustomername);
+      $('#edit-mcustomeremail').val(response.mcustomercontactemail);
+      $('#edit-mcustomerphone').val(response.mcustomerphone);
+      $('#edit-mcustomerfax').val(response.mcustomerfax);
+      $('#edit-mcustomerwebsite').val(response.mcustomerwebsite);
+      $('#edit-mcustomeraddress').val(response.mcustomeraddress);
+      $('#edit-mcustomercity').val(response.mcustomercity);
+      $('#edit-mcustomerzipcode').val(response.mcustomerzipcode);
+      $('#edit-mcustomerprovince').val(response.mcustomerprovince);
+      $('#edit-mcustomercountry').val(response.mcustomercountry);
+      $('#edit-mcustomercontactname').val(response.mcustomercontactname);
+      $('#edit-mcustomercontactposition').val(response.mcustomercontactposition);
+      $('#edit-mcustomercontactemail').val(response.mcustomercontactemail);
+      $('#edit-mcustomercontactemailphone').val(response.mcustomercontactemailphone);
+      $('#edit-mcustomerarlimit').val(response.mcustomerarlimit);
+      $('#edit-mcustomercoa').val(response.mcustomercoa).change();
+      $('#edit-mcustomertop').val(response.mcustomertop).change();
+      $('#edit-mcustomerarmax').val(response.mcustomerarmax);
+      $('#edit-mcustomerdefaultar').val(response.mcustomerdefaultar);
       $('#forminput').hide();
       $('#formview').hide();
       $('#formedit').show();
@@ -1193,28 +1301,31 @@ function editmcustomer(id){
 }
 
 function updatemcustomer(){
-
-$('#edit-wrapper').parsley().validate();
+  $('#edit-wrapper').parsley().validate();
     if($('#edit-wrapper').parsley().isValid()){
-    var updateid = $('#idmcustomerid').val();
+    var updateid = $('#edit-idmcustomerid').val();
     var data = {
-        mcustomerid: $('#mcustomerid').val(),
-        mcustomername: $('#mcustomername').val(),
-        mcustomeremail: $('#mcustomeremail').val(),
-        mcustomerphone: $('#mcustomerphone').val(),
-        mcustomerfax: $('#mcustomerfax').val(),
-        mcustomerwebsite: $('#mcustomerwebsite').val(),
-        mcustomeraddress: $('#mcustomeraddress').val(),
-        mcustomercity: $('#mcustomercity').val(),
-        mcustomerzipcode: $('#mcustomerzipcode').val(),
-        mcustomerprovince: $('#mcustomerprovince').val(),
-        mcustomercountry: $('#mcustomercountry').val(),
-        mcustomercontactname: $('#mcustomercontactname').val(),
-        mcustomercontactposition: $('#mcustomercontactposition').val(),
-        mcustomercontactemail: $('#mcustomercontactemail').val(),
-        mcustomercontactemailphone: $('#mcustomercontactemailphone').val(),
-        autogen: $('#disableforminput').is(':checked')
-
+        mcustomerid: $('#edit-mcustomerid').val(),
+        mcustomername: $('#edit-mcustomername').val(),
+        mcustomeremail: $('#edit-mcustomeremail').val(),
+        mcustomerphone: $('#edit-mcustomerphone').val(),
+        mcustomerfax: $('#edit-mcustomerfax').val(),
+        mcustomerwebsite: $('#edit-mcustomerwebsite').val(),
+        mcustomeraddress: $('#edit-mcustomeraddress').val(),
+        mcustomercity: $('#edit-mcustomercity').val(),
+        mcustomerzipcode: $('#edit-mcustomerzipcode').val(),
+        mcustomerprovince: $('#edit-mcustomerprovince').val(),
+        mcustomercountry: $('#edit-mcustomercountry').val(),
+        mcustomercontactname: $('#edit-mcustomercontactname').val(),
+        mcustomercontactposition: $('#edit-mcustomercontactposition').val(),
+        mcustomercontactemail: $('#edit-mcustomercontactemail').val(),
+        mcustomercontactemailphone: $('#edit-mcustomercontactemailphone').val(),
+        autogen: $('#disableforminput').is(':checked'),
+        mcustomerarlimit: $('#edit-mcustomerarlimit').val(),
+        mcustomercoa: $('#edit-mcustomercoa').val(),
+        mcustomertop: $('#edit-mcustomertop').val(),
+        mcustomerarmax: $('#edit-mcustomerarmax').val(),
+        mcustomerdefaultar: $('#edit-mcustomerdefaultar').val()
   }
 
    $.ajax({
@@ -1233,6 +1344,7 @@ $('#edit-wrapper').parsley().validate();
           $('#forminput').show();
           $('#formview').hide();
           $('#formedit').hide();
+          resetcustomer();
         },
         error: function(response){
           swal({
@@ -1281,8 +1393,10 @@ document.getElementById('disableforminput').onchange = function() {
     document.getElementById('insert-mcustomerid').disabled = this.checked;
     if($('#disableforminput').is(':checked')){
       $('#insert-mcustomerid').removeAttr('required');
+      $('#insert-wrapper').parsley().validate();
     } else{
       $('#insert-mcustomerid').attr('required','true');
+      $('#insert-wrapper').parsley().validate();
     }
 };
 
