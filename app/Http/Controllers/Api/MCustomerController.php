@@ -39,26 +39,6 @@ class MCustomerController extends Controller
 
   public function update(Request $request,$id){
       $new_cust = MCUSTOMER::find($id);
-      // $new_cust->mcustomerid = $request->mcustomerid;
-      // $new_cust->mcustomername = $request->mcustomername;
-      // $new_cust->mcustomeremail = $request->mcustomeremail;
-      // $new_cust->mcustomerphone = $request->mcustomerphone;
-      // $new_cust->mcustomerfax = $request->mcustomerfax;
-      // $new_cust->mcustomerwebsite = $request->mcustomerwebsite;
-      // $new_cust->mcustomeraddress = $request->mcustomeraddress;
-      // $new_cust->mcustomercity = $request->mcustomercity;
-      // $new_cust->mcustomerzipcode = $request->mcustomerzipcode;
-      // $new_cust->mcustomerprovince = $request->mcustomerprovince;
-      // $new_cust->mcustomercountry = $request->mcustomercountry;
-      // $new_cust->mcustomercontactname = $request->mcustomercontactname;
-      // $new_cust->mcustomercontactposition = $request->mcustomercontactposition;
-      // $new_cust->mcustomercontactemail = $request->mcustomercontactemail;
-      // $new_cust->mcustomercontactemailphone = $request->mcustomercontactemailphone;
-      // $new_cust->mcustomercontactname = $request->mcustomercontactname;
-      // $new_cust->mcustomercontactposition = $request->mcustomercontactposition;
-      // $new_cust->mcustomercontactemail = $request->mcustomercontactemail;
-      // $new_cust->mcustomercontactemailphone = $request->mcustomercontactemailphone;
-      // $new_cust->save();
 			$new_cust->update($request->all());
     return response()->json($new_cust);
   }

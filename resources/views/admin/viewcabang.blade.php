@@ -168,7 +168,7 @@
 									</div>
 								</div>
 								<div style="height: 21px;" class="form-group">
-									<label class="col-md-3 control-label"><b>Alamat</b> (<font color="red">*</font>) &nbsp  :</label>
+									<label class="col-md-3 control-label"><b>Alamat</b>  &nbsp  :</label>
 									<div class="col-md-7">
 										<div class="icon-addon addon-md">
 											<input id="insert-address" value="{{old('address')}}" name="address" class="form-control forminput" placeholder="Alamat" type="text" @if (Session::has('autofocus')) autofocus @endif >
@@ -177,7 +177,7 @@
 									</div>
 								</div>
 								<div class="form-group">
-									<label class="col-md-3 control-label"><b>Telepon</b> (<font color="red">*</font>) &nbsp  :</label>
+									<label class="col-md-3 control-label"><b>Telepon</b>  &nbsp  :</label>
 									<div  class="col-md-7">
 										<div class="icon-addon addon-md">
 											<input id="insert-phone" value="{{old('phone')}}" name="phone" class="form-control forminput phoneregex" placeholder="Telepon" type="text" @if (Session::has('autofocus')) autofocus @endif >
@@ -191,7 +191,7 @@
 									</div>
 								</div>
 								<div style="height: 21px;" class="form-group">
-									<label class="col-md-3 control-label"><b>Kota</b> (<font color="red">*</font>) &nbsp  :</label>
+									<label class="col-md-3 control-label"><b>Kota</b>  &nbsp  :</label>
 									<div class="col-md-7">
 										<div class="icon-addon addon-md">
 											<input id="insert-city" value="{{old('city')}}" name="city" class="form-control forminput" placeholder="Kota" type="text" @if (Session::has('autofocus')) autofocus @endif >
@@ -200,7 +200,7 @@
 									</div>
 								</div>
 								<div style="height: 21px;" class="form-group">
-									<label class="col-md-3 control-label"><b>Orang Yang Bertanggung Jawab</b> (<font color="red">*</font>) &nbsp  :</label>
+									<label class="col-md-3 control-label"><b>Orang Yang Bertanggung Jawab</b>  &nbsp  :</label>
 									<div class="col-md-7">
 										<div class="icon-addon addon-md">
 											<input id="insert-person_in_charge" value="{{old('person_in_charge')}}" name="person_in_charge" class="form-control forminput" placeholder="Orang Yang Bertanggung Jawab" type="text" @if (Session::has('autofocus')) autofocus @endif >
@@ -339,7 +339,7 @@
 									</div>
 								</div>
 								<div style="height: 21px;" class="form-group">
-									<label class="col-md-3 control-label"><b>Alamat</b> (<font color="red">*</font>) &nbsp  :</label>
+									<label class="col-md-3 control-label"><b>Alamat</b>  &nbsp  :</label>
 									<div class="col-md-7">
 										<div class="icon-addon addon-md">
 											<input value="" id="address" name="address" class="form-control forminput" placeholder="Alamat" type="text" required data-parsley-required-message="Field Ini Tidak Boleh Kosong">
@@ -348,7 +348,7 @@
 									</div>
 								</div>
 								<div  class="form-group">
-									<label class="col-md-3 control-label"><b>Telepon</b> (<font color="red">*</font>) &nbsp  :</label>
+									<label class="col-md-3 control-label"><b>Telepon</b>  &nbsp  :</label>
 									<div  class="col-md-7">
 										<div class="icon-addon addon-md">
 											<input value="" id="phone" name="phone" class="form-control forminput phoneregex" placeholder="Telepon" type="text" required data-parsley-required-message="Field Ini Tidak Boleh Kosong">
@@ -362,7 +362,7 @@
 									</div>
 								</div>
 								<div style="height: 21px;" class="form-group">
-									<label class="col-md-3 control-label"><b>Kota</b> (<font color="red">*</font>) &nbsp  :</label>
+									<label class="col-md-3 control-label"><b>Kota</b>  &nbsp  :</label>
 									<div class="col-md-7">
 										<div class="icon-addon addon-md">
 											<input value="" id="city" name="city" class="form-control forminput" placeholder="Kota" type="text" required data-parsley-required-message="Field Ini Tidak Boleh Kosong">
@@ -371,7 +371,7 @@
 									</div>
 								</div>
 								<div style="height: 21px;" class="form-group">
-									<label class="col-md-3 control-label"><b>Orang Yang Bertanggung Jawab</b> (<font color="red">*</font>) &nbsp  :</label>
+									<label class="col-md-3 control-label"><b>Orang Yang Bertanggung Jawab</b>  &nbsp  :</label>
 									<div class="col-md-7">
 										<div class="icon-addon addon-md">
 											<input value="" id="person_in_charge" name="person_in_charge" class="form-control forminput" placeholder="Orang Yang Bertanggung Jawab" type="text" required data-parsley-required-message="Field Ini Tidak Boleh Kosong">
@@ -482,7 +482,7 @@
 
 
 								<div style="height: 21px;" class="form-group">
-									<label class="col-md-3 control-label"><b>Kode Cabang</b> (<font color="red">*</font>) &nbsp  :</label>
+									<label class="col-md-3 control-label"><b>Kode Cabang</b>  &nbsp  :</label>
 									<div class="col-md-7">
 										<div class="icon-addon addon-md">
 											<input disabled value="" name="mbranchcode" class="form-control" placeholder="Kode Cabang" type="text" required id="mbranchcode2" @if (Session::has('autofocus')) autofocus @endif >
@@ -491,7 +491,7 @@
 									</div>
 								</div>
 								<div style="height: 21px;" class="form-group">
-									<label class="col-md-3 control-label"><b>Nama Cabang</b> (<font color="red">*</font>) &nbsp  :</label>
+									<label class="col-md-3 control-label"><b>Nama Cabang</b>  &nbsp  :</label>
 									<div class="col-md-7">
 										<div class="icon-addon addon-md">
 											<input disabled id="mbranchname2" value="" name="mbranchname" class="form-control" placeholder="Nama Cabang" type="text" required @if (Session::has('autofocus')) autofocus @endif >
@@ -500,7 +500,7 @@
 									</div>
 								</div>
 								<div style="height: 21px;" class="form-group">
-									<label class="col-md-3 control-label"><b>Alamat</b> (<font color="red">*</font>) &nbsp  :</label>
+									<label class="col-md-3 control-label"><b>Alamat</b>  &nbsp  :</label>
 									<div class="col-md-7">
 										<div class="icon-addon addon-md">
 											<input disabled id="address2" value="" name="address" class="form-control" placeholder="Alamat" type="text" required @if (Session::has('autofocus')) autofocus @endif >
@@ -509,7 +509,7 @@
 									</div>
 								</div>
 								<div style="height: 21px;" class="form-group">
-									<label class="col-md-3 control-label"><b>Telepon</b> (<font color="red">*</font>) &nbsp  :</label>
+									<label class="col-md-3 control-label"><b>Telepon</b>  &nbsp  :</label>
 									<div class="col-md-7">
 										<div class="icon-addon addon-md">
 											<input disabled id="phone2" value="" name="phone" class="form-control" placeholder="Telepon" type="number" required @if (Session::has('autofocus')) autofocus @endif >
@@ -518,7 +518,7 @@
 									</div>
 								</div>
 								<div style="height: 21px;" class="form-group">
-									<label class="col-md-3 control-label"><b>Kota</b> (<font color="red">*</font>) &nbsp  :</label>
+									<label class="col-md-3 control-label"><b>Kota</b>  &nbsp  :</label>
 									<div class="col-md-7">
 										<div class="icon-addon addon-md">
 											<input disabled id="city2" value="" name="city" class="form-control" placeholder="Kota" type="text" required @if (Session::has('autofocus')) autofocus @endif >
@@ -527,7 +527,7 @@
 									</div>
 								</div>
 								<div style="height: 21px;" class="form-group">
-									<label class="col-md-3 control-label"><b>Orang Yang Bertanggung Jawab</b>(<font color="red">*</font>) &nbsp  :</label>
+									<label class="col-md-3 control-label"><b>Orang Yang Bertanggung Jawab</b> &nbsp  :</label>
 									<div class="col-md-7">
 										<div class="icon-addon addon-md">
 											<input disabled id="person_in_charge2" value="" name="person_in_charge" class="form-control" placeholder="Orang yang bertanggung jawab" type="text" required @if (Session::has('autofocus')) autofocus @endif >
