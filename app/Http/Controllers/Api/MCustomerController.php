@@ -64,6 +64,7 @@ class MCustomerController extends Controller
 		if ($request->autogen == 'true') {
       $prefix = MPrefix::where('mprefixtransaction','Master Customer')->first();
       $new_cust = new MCUSTOMER;
+      $prefix->last_count++;
       $new_cust->mcustomerid = $prefix->mprefix.'-'.$prefix->last_count;
       $new_cust->mcustomername = $request->mcustomername;
       $new_cust->mcustomeremail = $request->mcustomeremail;
@@ -84,7 +85,6 @@ class MCustomerController extends Controller
       $new_cust->mcustomercontactemail = $request->mcustomercontactemail;
       $new_cust->mcustomercontactemailphone = $request->mcustomercontactemailphone;
       $new_cust->void = 0;
-      $prefix->last_count++;
       $new_cust->save();
       $prefix->save();
       return response()->json($new_cust);
