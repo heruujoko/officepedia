@@ -568,7 +568,7 @@
 			<!-- NEW WIDGET START -->
 			<article class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
 				<!-- Widget ID (each widget will need unique ID)-->
-				<div id="forminput" style="display:none;" class="forminput jarviswidget jarviswidget-color-darken" id="wid-id-0" data-widget-editbutton="false" data-widget-colorbutton="false" data-widget-deletebutton="false">
+				<div id="forminput" style="display:none !important;" class="forminputcoa forminput jarviswidget jarviswidget-color-darken" id="wid-id-0" data-widget-editbutton="false" data-widget-colorbutton="false" data-widget-deletebutton="false">
 					<header>
 						<span class="widget-icon"> <i class="fa fa-table"></i> </span>
 						<h2>Tambah {{ $section }}</h2>
@@ -964,6 +964,7 @@
 										});
 										$('#forminputgp').hide();
 										$('#forminputp').hide();
+										$('#forminput').hide();
 									});
 			            var table;
 			            $(function(){
@@ -1021,7 +1022,7 @@
                                   {
                                       extend: 'print',
                                       exportOptions: {
-                                          columns: [ 1, 2, 3, 4] //setting kolom mana yg mau di export
+                                          columns: [ 1, 2, 3, 4,5] //setting kolom mana yg mau di export
                                       }
 
                                   },
@@ -1089,10 +1090,10 @@
               						  text: "Data Anda Berhasil Terhapus.",
               						  type: "success",
             						  });
-                          $('#forminput').show();
+                          $('#forminput').hide();
                     			$('#formview').hide();
                     			$('#formedit').hide();
-													updatetree();
+													// updatetree();
                         },
                         error: function(response){
                           swal({

@@ -1,5 +1,6 @@
 $('#formedit').hide();
 $('#formview').hide();
+$('.forminputcoa').hide();
 
 var API_URL = '/nano/public/admin-api';
 var WEB_URL = '/nano/public/admin-nano';
@@ -1382,23 +1383,19 @@ $('#insert-wrapper').parsley().reset();
 $('#edit-wrapper').parsley().reset();
 }
 
+if(document.getElementById('disableforminput')){
+  document.getElementById('disableforminput').onchange = function() {
+      document.getElementById('insert-mcustomerid').disabled = this.checked;
+      if($('#disableforminput').is(':checked')){
+        $('#insert-mcustomerid').removeAttr('required');
+        $('#insert-wrapper').parsley().validate();
+      } else{
+        $('#insert-mcustomerid').attr('required','true');
+        $('#insert-wrapper').parsley().validate();
+      }
+  };
+}
 
-
-
-
-
-
-
-document.getElementById('disableforminput').onchange = function() {
-    document.getElementById('insert-mcustomerid').disabled = this.checked;
-    if($('#disableforminput').is(':checked')){
-      $('#insert-mcustomerid').removeAttr('required');
-      $('#insert-wrapper').parsley().validate();
-    } else{
-      $('#insert-mcustomerid').attr('required','true');
-      $('#insert-wrapper').parsley().validate();
-    }
-};
 
 
 // MCUSTOMER
