@@ -57,7 +57,9 @@ class MPrefixController extends Controller
     }
 
     public function destroy($id){
-      $p = MPrefix::find($id)->delete();
+      $p = MPrefix::find($id);
+      $p->void = 1;
+      $p->save();
       return response()->json();
     }
 }

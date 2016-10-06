@@ -63,7 +63,9 @@ class MCOAGrandParentController extends Controller
     }
 
     public function destroy($id){
-      $gp = MCOAGrandParent::find($id)->delete();
+      $gp = MCOAGrandParent::find($id);
+      $gp->void = 1;
+      $gp->save();
       return response()->json();
     }
 

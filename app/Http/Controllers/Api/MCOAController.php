@@ -116,7 +116,9 @@ class MCOAController extends Controller
     }
 
     public function destroy($id){
-      $mcoa = MCOA::find($id)->delete();
+      $mcoa = MCOA::find($id);
+      $mcoa->void = 1;
+      $mcoa->save();
       return response()->json();
     }
 

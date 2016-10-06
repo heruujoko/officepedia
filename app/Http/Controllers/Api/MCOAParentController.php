@@ -79,7 +79,9 @@ class MCOAParentController extends Controller
     }
 
     public function destroy($id){
-      $p = MCOAParent::find($id)->delete();
+      $p = MCOAParent::find($id);
+      $p->void =1;
+      $p->save();
       return response()->json();
     }
 
