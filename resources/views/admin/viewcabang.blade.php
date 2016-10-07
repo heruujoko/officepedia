@@ -482,7 +482,7 @@
 
 
 								<div style="height: 21px;" class="form-group">
-									<label class="col-md-3 control-label"><b>Kode Cabang</b>  &nbsp  :</label>
+									<label class="col-md-3 control-label"><b>Kode Cabang</b>  (<font color="red">*</font>)&nbsp  :</label>
 									<div class="col-md-7">
 										<div class="icon-addon addon-md">
 											<input disabled value="" name="mbranchcode" class="form-control" placeholder="Kode Cabang" type="text" required id="mbranchcode2" @if (Session::has('autofocus')) autofocus @endif >
@@ -491,7 +491,7 @@
 									</div>
 								</div>
 								<div style="height: 21px;" class="form-group">
-									<label class="col-md-3 control-label"><b>Nama Cabang</b>  &nbsp  :</label>
+									<label class="col-md-3 control-label"><b>Nama Cabang</b>  (<font color="red">*</font>)&nbsp  :</label>
 									<div class="col-md-7">
 										<div class="icon-addon addon-md">
 											<input disabled id="mbranchname2" value="" name="mbranchname" class="form-control" placeholder="Nama Cabang" type="text" required @if (Session::has('autofocus')) autofocus @endif >
