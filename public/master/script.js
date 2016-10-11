@@ -2,8 +2,8 @@ $('#formedit').hide();
 $('#formview').hide();
 $('.forminputcoa').hide();
 
-var API_URL = '/nano/public/admin-api';
-var WEB_URL = '/nano/public/admin-nano';
+var API_URL = '/public/admin-api';
+var WEB_URL = '/public/admin-nano';
 
 // MBRANCH SCRIPT
 

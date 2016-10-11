@@ -1,8 +1,9 @@
 <?php
 
 use Illuminate\Database\Seeder;
+use App\MConfig;
 
-class DatabaseSeeder extends Seeder
+class ConfigSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -11,7 +12,8 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        $this->call(MCOAFullSeeder::class);
-        $this->call(ConfigSeeder::class);
+        MConfig::create([
+          'msyscompname' => 'Sample Company'
+        ]);
     }
 }
