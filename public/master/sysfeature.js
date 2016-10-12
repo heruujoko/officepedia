@@ -22,9 +22,8 @@ function fetch_feature(){
   $.ajax({
     method: "GET",
     url: API_URL+"/mconfig",
-    contentType: "application/json",
-    dataType: 'json',
     success: function(response){
+      console.log(response);
       $('#edit-msysinvquotation').bootstrapSwitch('state',response.msysinvquotation);
       $('#edit-msysinvproformainvoice').bootstrapSwitch('state',response.msysinvproformainvoice);
       $('#edit-msysinvsellinginvoice').bootstrapSwitch('state',response.msysinvsellinginvoice);

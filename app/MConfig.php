@@ -16,8 +16,35 @@ class MConfig extends Model
                             'msysprefixcashreceipt','msysprefixcashout','msysprefixbankrecon'
                           ];
 
-    // protected $casts = [
-    //     'msyscomptaxable' => 'boolean',
-    //     'msysgenmanufacturingacc' => 'boolean'
-    // ];
+    protected $casts = [
+        'msyscomptaxable' => 'integer',
+        'msysgenmanufacturingacc' => 'integer',
+        'msysgenmultibranch' => 'integer',
+        'msysgenmulticurrency' => 'integer',
+        'msysgendefaulttax' => 'integer',
+        'msysgenapproval' => 'integer',
+        'msysgenfixedasset' => 'integer',
+        'msysgenfixedasset' => 'integer',
+        'msysinvquotation' => 'integer',
+        'msysinvproformainvoice' => 'integer',
+        'msysinvsellinginvoice' => 'integer',
+        'msysinvlocksellingprice' => 'integer',
+        'msysinvcreditlimit' => 'integer',
+        'msysinvspbelowcog' => 'integer',
+        'msysinvprintinvmorethanonce' => 'integer',
+        'msysinvprintdomorethanonce' => 'integer',
+        'msysinvprintordmorethanonce' => 'integer',
+        'msysinvlptdirectprinting' => 'integer',
+        'msyspurchrequest' => 'integer',
+        'msyspurchorder' => 'integer',
+        'msyspurchinvoice' => 'integer',
+        'msyspurchcreditlimit' => 'integer',
+        'msysbankminus' => 'integer',
+        'msysinventmultiwarehouse' => 'integer',
+        'msysinventmultiwarehouse' => 'integer',
+        'msysinventmultiuom' => 'integer',
+        'msysinventuseserial' => 'integer',
+        'msysinventallowminus' => 'integer',
+        'msysinventslabprice' => 'integer',
+    ];
 }
