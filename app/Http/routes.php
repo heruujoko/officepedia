@@ -26,6 +26,9 @@ Route::group(['prefix'=>'admin-nano'],function(){
   Route::get('cabang/export/csv','MBranchController@csv');
   Route::get('cabang/export/excel','MBranchController@excel');
   Route::get('cabang/export/pdf','MBranchController@pdf');
+
+  Route::get('mconfig/sysparam','MConfigController@sysparam');
+  Route::get('mconfig/sysfeature','MConfigController@sysfeature');
   Route::resource('mprefix','MPrefixController');
   Route::controllers([
   	'/'=>'AdminController'
@@ -45,6 +48,9 @@ Route::group(['prefix'=>'admin-api',['middleware' => 'api']],function(){
   Route::resource('mcoa','Api\MCOAController');
   Route::resource('mprefix','Api\MPrefixController');
   Route::resource('pelanggan','Api\MCustomerController');
+  Route::get('mconfig','Api\MConfigController@index');
+  Route::put('mconfig','Api\MConfigController@update');
+  Route::put('mconfig/feature','Api\MConfigController@update_feature');
   Route::controllers([
   	'/'=>'ApiController'
   ]);

@@ -1,4 +1,3 @@
-
 @extends('admin/nav/layouttables')
 @section('title')
 @section('content')

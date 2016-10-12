@@ -25,7 +25,7 @@ class CreateConfigsSettingTable extends Migration
           $table->string('msyscomplogo');
 
           $table->integer('msyscomptaxpayeridnumber');
-          $table->string('msyscomptaxable');
+          $table->boolean('msyscomptaxable');
           $table->date('msyscomptaxabledate');
           $table->integer('msyscomptaxablenumber');
           $table->string('msyscompklu');
@@ -91,9 +91,9 @@ class CreateConfigsSettingTable extends Migration
           $table->integer('msysprefixcashoutcount');
           $table->string('msysprefixcashoutlastcount');
 
-          $table->string('msysprefixbacnkrecon');
-          $table->integer('msysprefixbacnkreconcount');
-          $table->string('msysprefixbacnkreconlastcount');
+          $table->string('msysprefixbankrecon');
+          $table->integer('msysprefixbankreconcount');
+          $table->string('msysprefixbankreconlastcount');
 
           $table->boolean('msysinvquotation');
           $table->boolean('msysinvproformainvoice');

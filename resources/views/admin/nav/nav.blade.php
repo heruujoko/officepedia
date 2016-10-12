@@ -1,12 +1,20 @@
 <ul>
-  <li class="active">
+  <li>
     <a href="{{URL::to('admin-nano')}}" title="Dashboard"><i class="fa fa-lg fa-fw fa-home"></i> <span class="menu-item-parent">Dashboard</span></a>
   </li>
   <li>
     <a href="#"><i class="fa fa-lg fa-fw fa-cogs"></i> <span class="menu-item-parent">Setting Sistem</span></a>
     <ul>
-      <li><a href="">Parameter Sistem</a></li>
-      <li><a href="">Setting Fitur</a></li>
+      @if($active == 'sysparam')
+        <li class="active"><a href="{{ url('admin-nano/mconfig/sysparam') }}">Parameter Sistem</a></li>
+      @else
+        <li><a href="{{ url('admin-nano/mconfig/sysparam') }}">Parameter Sistem</a></li>
+      @endif
+      @if($active == 'sysfeature')
+        <li class="active"><a href="{{ url('admin-nano/mconfig/sysfeature') }}">Setting Fitur</a></li>
+      @else
+        <li><a href="{{ url('admin-nano/mconfig/sysfeature') }}">Setting Fitur</a></li>
+      @endif
       <li><a href="">Setting Laporan</a></li>
     </ul>
   </li>
