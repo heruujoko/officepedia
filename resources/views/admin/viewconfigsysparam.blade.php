@@ -74,13 +74,13 @@
                               <div class="form-group">
                                 <label class="col-md-2 control-label"><b>Telpon</b> &nbsp  :</label>
                           			<div class="col-md-9">
-                                  <input id="edit-msyscompphone" value="" name="msyscompphone" class="form-control forminput" placeholder="Telpon Perusahaan" type="text" data-parsley-required-message="Field Ini Tidak Boleh Kosong" @if (Session::has('autofocus')) autofocus @endif >
+                                  <input id="edit-msyscompphone" value="" name="msyscompphone" class="form-control forminput phoneregex" placeholder="Telpon Perusahaan" type="text" data-parsley-required-message="Field Ini Tidak Boleh Kosong" @if (Session::has('autofocus')) autofocus @endif >
                           			</div>
                               </div>
                               <div class="form-group">
                                 <label class="col-md-2 control-label"><b>Faximile</b> &nbsp  :</label>
                           			<div class="col-md-9">
-                                  <input id="edit-msyscompfax" value="" name="msyscompfax" class="form-control forminput" placeholder="Faximile Perusahaan" type="text" data-parsley-required-message="Field Ini Tidak Boleh Kosong" @if (Session::has('autofocus')) autofocus @endif >
+                                  <input id="edit-msyscompfax" value="" name="msyscompfax" class="form-control forminput phoneregex" placeholder="Faximile Perusahaan" type="text" data-parsley-required-message="Field Ini Tidak Boleh Kosong" @if (Session::has('autofocus')) autofocus @endif >
                           			</div>
                               </div>
                               <div class="form-group">
@@ -163,43 +163,43 @@
                         <div id="menu2" class="tab-pane">
                           <div class="form form-horizontal">
                             <div class="form-group" style="margin-top:21px;">
-                              <label class="col-md-2 control-label"><b>Akuntansi Manufaktur</b> &nbsp  :</label>
+                              <label class="col-md-2 control-label"><b>Akuntansi Manufaktur</b> (<font color="red">*</font>) &nbsp  :</label>
                               <div class="col-md-9">
                                 <input id="edit-msysgenmanufacturingacc" type="checkbox" class="nice-toggle" name="msysgenmanufacturingacc" placeholder="Akuntansi Manufaktur">
                               </div>
                             </div>
                             <div class="form-group">
-                              <label class="col-md-2 control-label"><b>Multi Cabang</b> &nbsp  :</label>
+                              <label class="col-md-2 control-label"><b>Multi Cabang</b> (<font color="red">*</font>) &nbsp  :</label>
                               <div class="col-md-9">
                                 <input id="edit-msysgenmultibranch" type="checkbox" class="nice-toggle" name="msysgenmultibranch" placeholder="Multi Cabang">
                               </div>
                             </div>
                             <div class="form-group">
-                              <label class="col-md-2 control-label"><b>Multi Mata Uang</b> &nbsp  :</label>
+                              <label class="col-md-2 control-label"><b>Multi Mata Uang</b> (<font color="red">*</font>) &nbsp  :</label>
                               <div class="col-md-9">
                                 <input id="edit-msysgenmulticurrency" type="checkbox" class="nice-toggle" name="msysgenmulticurrency" placeholder="Multi Mata Uang">
                               </div>
                             </div>
                             <div class="form-group">
-                              <label class="col-md-2 control-label"><b>Default PPN</b> &nbsp  :</label>
+                              <label class="col-md-2 control-label"><b>Default PPN</b> (<font color="red">*</font>) &nbsp  :</label>
                               <div class="col-md-9">
                                 <input id="edit-msysgendefaulttax" type="checkbox" class="nice-toggle" name="msysgendefaulttax" placeholder="Default PPN">
                               </div>
                             </div>
                             <div class="form-group">
-                              <label class="col-md-2 control-label"><b>Persetujuan</b> &nbsp  :</label>
+                              <label class="col-md-2 control-label"><b>Persetujuan</b> (<font color="red">*</font>) &nbsp  :</label>
                               <div class="col-md-9">
                                 <input id="edit-msysgenapproval" type="checkbox" class="nice-toggle" name="msysgenapproval" placeholder="Default Persetujuan">
                               </div>
                             </div>
                             <div class="form-group">
-                              <label class="col-md-2 control-label"><b>Persetujuan</b> &nbsp  :</label>
+                              <label class="col-md-2 control-label"><b>Persetujuan</b> (<font color="red">*</font>) &nbsp  :</label>
                               <div class="col-md-9">
                                 <input id="edit-msysgenfixedasset" type="checkbox" class="nice-toggle" name="msysgenfixedasset" placeholder="Persetujuan">
                               </div>
                             </div>
                             <div class="form-group">
-                              <label class="col-md-2 control-label"><b>Pembulatan Desimal</b> &nbsp  :</label>
+                              <label class="col-md-2 control-label"><b>Pembulatan Desimal</b> (<font color="red">*</font>) &nbsp  :</label>
                               <div class="col-md-1">
                                 <select id="edit-msysgenrounddec" class="form-control select2">
                                   <option value="0">0</option>
@@ -213,7 +213,7 @@
                           <div class="tab-pane">
                             <div class="form form-horizontal" style="margin-top:21px;">
                               <div class="form-group">
-                                <label class="col-md-2 control-label"><b>Master Barang</b> &nbsp  :</label>
+                                <label class="col-md-2 control-label"><b>Master Barang</b> (<font color="red">*</font>) &nbsp  :</label>
                                 <div class="col-md-2">
                                   <input id="edit-msysprefixgoods" type="text" maxlength="3" minlength="3" class="form-control" name="msysprefixgoods" placeholder="Prefix Master Barang">
                                 </div>
@@ -225,7 +225,7 @@
                                 </div>
                               </div>
                               <div class="form-group">
-                                <label class="col-md-2 control-label"><b>Master Supplier</b> &nbsp  :</label>
+                                <label class="col-md-2 control-label"><b>Master Supplier</b> (<font color="red">*</font>) &nbsp  :</label>
                                 <div class="col-md-2">
                                   <input id="edit-msysprefixsupplier" type="text" maxlength="3" minlength="3" class="form-control" name="msysprefixsupplier" placeholder="Prefix Master Supplier">
                                 </div>
@@ -237,7 +237,7 @@
                                 </div>
                               </div>
                               <div class="form-group">
-                                <label class="col-md-2 control-label"><b>Master Pelanggan</b> &nbsp  :</label>
+                                <label class="col-md-2 control-label"><b>Master Pelanggan</b> (<font color="red">*</font>) &nbsp  :</label>
                                 <div class="col-md-2">
                                   <input id="edit-msysprefixcustomer" type="text" maxlength="3" minlength="3" class="form-control" name="msysprefixcustomer" placeholder="Prefix Master Pelanggan">
                                 </div>
@@ -249,7 +249,7 @@
                                 </div>
                               </div>
                               <div class="form-group">
-                                <label class="col-md-2 control-label"><b>Master Karyawan</b> &nbsp  :</label>
+                                <label class="col-md-2 control-label"><b>Master Karyawan</b> (<font color="red">*</font>) &nbsp  :</label>
                                 <div class="col-md-2">
                                   <input id="edit-msysprefixemployee" type="text" maxlength="3" minlength="3" class="form-control" name="msysprefixemployee" placeholder="Prefix Master Karyawan">
                                 </div>
@@ -261,7 +261,7 @@
                                 </div>
                               </div>
                               <div class="form-group">
-                                <label class="col-md-2 control-label"><b>Penawaran Penjualan</b> &nbsp  :</label>
+                                <label class="col-md-2 control-label"><b>Penawaran Penjualan</b> (<font color="red">*</font>) &nbsp  :</label>
                                 <div class="col-md-2">
                                   <input id="edit-msysprefixinvquotation" type="text" maxlength="3" minlength="3" class="form-control" name="msysprefixinvquotation" placeholder="Prefix Penawaran Penjualan">
                                 </div>
@@ -273,7 +273,7 @@
                                 </div>
                               </div>
                               <div class="form-group">
-                                <label class="col-md-2 control-label"><b>Order Penjualan</b> &nbsp  :</label>
+                                <label class="col-md-2 control-label"><b>Order Penjualan</b> (<font color="red">*</font>) &nbsp  :</label>
                                 <div class="col-md-2">
                                   <input id="edit-msysprefixinvorder" type="text" maxlength="3" minlength="3" class="form-control" name="msysprefixinvorder" placeholder="Prefix Order Penjualan">
                                 </div>
@@ -285,7 +285,7 @@
                                 </div>
                               </div>
                               <div class="form-group">
-                                <label class="col-md-2 control-label"><b>Invoice Penjualan</b> &nbsp  :</label>
+                                <label class="col-md-2 control-label"><b>Invoice Penjualan</b> (<font color="red">*</font>) &nbsp  :</label>
                                 <div class="col-md-2">
                                   <input id="edit-msysprefixinvoice" type="text" maxlength="3" minlength="3" class="form-control" name="msysprefixinvoice" placeholder="Prefix Invoice Penjualan">
                                 </div>
@@ -297,7 +297,7 @@
                                 </div>
                               </div>
                               <div class="form-group">
-                                <label class="col-md-2 control-label"><b>Permintaan Pembelian</b> &nbsp  :</label>
+                                <label class="col-md-2 control-label"><b>Permintaan Pembelian</b> (<font color="red">*</font>) &nbsp  :</label>
                                 <div class="col-md-2">
                                   <input id="edit-msysprefixpurchrequest" type="text" maxlength="3" minlength="3" class="form-control" name="msysprefixpurchrequest" placeholder="Prefix Permintaan Pembelian">
                                 </div>
@@ -309,7 +309,7 @@
                                 </div>
                               </div>
                               <div class="form-group">
-                                <label class="col-md-2 control-label"><b>Order Pembelian</b> &nbsp  :</label>
+                                <label class="col-md-2 control-label"><b>Order Pembelian</b> (<font color="red">*</font>) &nbsp  :</label>
                                 <div class="col-md-2">
                                   <input id="edit-msysprefixpurchorder" type="text" maxlength="3" minlength="3" class="form-control" name="msysprefixpurchorder" placeholder="Prefix Order Pembelian">
                                 </div>
@@ -321,7 +321,7 @@
                                 </div>
                               </div>
                               <div class="form-group">
-                                <label class="col-md-2 control-label"><b>Invoice Pembelian</b> &nbsp  :</label>
+                                <label class="col-md-2 control-label"><b>Invoice Pembelian</b> (<font color="red">*</font>) &nbsp  :</label>
                                 <div class="col-md-2">
                                   <input id="edit-msysprefixpurchinv" type="text" maxlength="3" minlength="3" class="form-control" name="msysprefixpurchinv" placeholder="Prefix Invoice Pembelian">
                                 </div>
@@ -333,7 +333,7 @@
                                 </div>
                               </div>
                               <div class="form-group">
-                                <label class="col-md-2 control-label"><b>Pembelian Aset Tetap</b> &nbsp  :</label>
+                                <label class="col-md-2 control-label"><b>Pembelian Aset Tetap</b> (<font color="red">*</font>) &nbsp  :</label>
                                 <div class="col-md-2">
                                   <input id="edit-msysprefixedasset" type="text" maxlength="3" minlength="3" class="form-control" name="msysprefixedasset" placeholder="Prefix Pembelian Aset Tetap">
                                 </div>
@@ -345,7 +345,7 @@
                                 </div>
                               </div>
                               <div class="form-group">
-                                <label class="col-md-2 control-label"><b>Penerimaan Kas</b> &nbsp  :</label>
+                                <label class="col-md-2 control-label"><b>Penerimaan Kas</b> (<font color="red">*</font>) &nbsp  :</label>
                                 <div class="col-md-2">
                                   <input id="edit-msysprefixcashreceipt" type="text" maxlength="3" minlength="3" class="form-control" name="msysprefixcashreceipt" placeholder="Prefix Penerimaan Kas">
                                 </div>
@@ -357,7 +357,7 @@
                                 </div>
                               </div>
                               <div class="form-group">
-                                <label class="col-md-2 control-label"><b>Pengeluaran Kas</b> &nbsp  :</label>
+                                <label class="col-md-2 control-label"><b>Pengeluaran Kas</b> (<font color="red">*</font>) &nbsp  :</label>
                                 <div class="col-md-2">
                                   <input id="edit-msysprefixcashout" type="text" maxlength="3" minlength="3" class="form-control" name="msysprefixcashout" placeholder="Prefix Pengeluaran Kas">
                                 </div>
@@ -369,7 +369,7 @@
                                 </div>
                               </div>
                               <div class="form-group">
-                                <label class="col-md-2 control-label"><b>Rekonsal Bank</b> &nbsp  :</label>
+                                <label class="col-md-2 control-label"><b>Rekonsal Bank</b> (<font color="red">*</font>) &nbsp  :</label>
                                 <div class="col-md-2">
                                   <input id="edit-msysprefixbankrecon" type="text" maxlength="3" minlength="3" class="form-control" name="msysprefixbankrecon" placeholder="Prefix Rekonsal Bank">
                                 </div>
