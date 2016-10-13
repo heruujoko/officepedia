@@ -37,7 +37,15 @@
   <li>
     <a href="#"><i class="fa fa-lg fa-fw fa-money"></i> <span class="menu-item-parent">Kas Bank</span></a>
     <ul>
-      <li><a href="">Daftar Kas / Bank</a></li>
+      @if($active == 'cashbank')
+        <li class="active">
+          <a href="{{ url('/admin-nano/cashbank/list') }}">Daftar Kas / Bank</a>
+        </li>
+      @else
+      <li>
+        <a href="{{ url('/admin-nano/cashbank/list') }}">Daftar Kas / Bank</a>
+      </li>
+      @endif
       <li><a href="">Penerimaan Kas / Bank</a></li>
       <li><a href="">Pengeluaran Kas / Bank</a></li>
       <li><a href="">Rekonsal Kas / Bank</a></li>

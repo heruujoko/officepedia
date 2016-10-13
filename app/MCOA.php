@@ -4,6 +4,7 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 use App\MCOAParent;
+use DB;
 
 class MCOA extends \LaravelArdent\Ardent\Ardent
 {
@@ -43,7 +44,9 @@ class MCOA extends \LaravelArdent\Ardent\Ardent
     }
 
     public function auto_code(){
-      $count = count($this->parent()->childs());
+      $childs = DB::table('mcoa')->where('mcoaparentcode',$this->mcoaparentcode)->get();
+      $count = count($childs);
+      $count++;
       $string_count = "";
       if($count < 10){
         $string_count = "0".$count;
