@@ -9,6 +9,7 @@ use App\Http\Controllers\Controller;
 use App\MConfig;
 use Exception;
 use Carbon\Carbon;
+use Validator;
 
 class MConfigController extends Controller
 {
@@ -96,5 +97,24 @@ class MConfigController extends Controller
 
       $mconfig->save();
       return response()->json($mconfig);
+    }
+
+    public function logo(Request $request){
+
+      $validator = Validator::make($request->all(),[
+        'logo' => 'required|max:2000|mimes:png,jpg,jpeg'
+      ]);
+
+      if($validator->fails()){
+        return response()->json('File harus berupa png atau jpg dengan ukuran < 2MB',403);
+      } else {
+        $logo = $request->file('logo');
+        $filename = uniqid().'.'.$logo->extension();
+        $logo->move('logo',$filename); //ke public logo
+        $url = url('logo/'.$filename);
+        return response()->json(array('url' => $url));
+      }
+
+
     }
 }

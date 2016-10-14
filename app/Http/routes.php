@@ -29,6 +29,16 @@ Route::group(['prefix'=>'admin-nano'],function(){
 
   Route::get('mconfig/sysparam','MConfigController@sysparam');
   Route::get('mconfig/sysfeature','MConfigController@sysfeature');
+  Route::get('cashbank/list','CashBankListController@index');
+
+  Route::get('cashbank/cash/export/csv','CashBankListController@csv');
+  Route::get('cashbank/cash/export/excel','CashBankListController@excel');
+  Route::get('cashbank/cash/export/pdf','CashBankListController@pdf');
+
+  Route::get('cashbank/bank/export/csv','CashBankListController@csv_bank');
+  Route::get('cashbank/bank/export/excel','CashBankListController@excel_bank');
+  Route::get('cashbank/bank/export/pdf','CashBankListController@pdf_bank');
+
   Route::resource('mprefix','MPrefixController');
   Route::get('barang','MGoodsController@index');
   Route::controllers([
@@ -52,7 +62,18 @@ Route::group(['prefix'=>'admin-api',['middleware' => 'api']],function(){
   Route::get('mconfig','Api\MConfigController@index');
   Route::put('mconfig','Api\MConfigController@update');
   Route::put('mconfig/feature','Api\MConfigController@update_feature');
+<<<<<<< HEAD
   Route::resource('barang','Api\MGoodsController');
+=======
+  Route::post('mconfig/logo','Api\MConfigController@logo');
+  Route::get('cashbank/cash','Api\CashBankListController@cash');
+  Route::post('cashbank/cash','Api\CashBankListController@add_cash');
+  Route::put('cashbank/cash/{id}','Api\CashBankListController@update_cash');
+  Route::get('cashbank/bank','Api\CashBankListController@bank');
+  Route::post('cashbank/bank','Api\CashBankListController@add_bank');
+  Route::put('cashbank/bank/{id}','Api\CashBankListController@update_bank');
+  Route::get('cashbank/total/{code}','Api\CashBankListController@total');
+>>>>>>> 2c7f4d5875a800a0ba740f09018635d30e4c4d72
   Route::controllers([
     '/'=>'ApiController'
   ]);

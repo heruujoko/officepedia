@@ -66,6 +66,14 @@ class MCOAController extends Controller
           } else {
             return '<span>'.$mcoa->mcoagrandparentcode.'</span>';
           }
+      })->addColumn('spanname',function($mcoa){
+          if($mcoa->mcoaname){
+            return '<span style="margin-left:30px;">'.$mcoa->mcoaname.'</span>';
+          } else if($mcoa->mcoaparentname) {
+            return '<span style="margin-left:15px;">'.$mcoa->mcoaparentname.'</span>';
+          } else {
+            return '<span>'.$mcoa->mcoagrandparentname.'</span>';
+          }
       })->addColumn('name',function($mcoa){
           if($mcoa->mcoaname){
             return $mcoa->mcoaname;
@@ -74,6 +82,9 @@ class MCOAController extends Controller
           } else {
             return $mcoa->mcoagrandparentname;
           }
+      })
+      ->addColumn('saldoright',function($mcoa){
+          return "<span style=\"float:right\">".$mcoa->saldo."</span>";
       })
       ->make(true);
     }
