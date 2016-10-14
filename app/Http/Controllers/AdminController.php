@@ -120,12 +120,7 @@ class AdminController extends Controller
 	// }
 
 
-	public function getBarang(){
-		$a = MGOODS::all();
-		$data['a']=$a;
-		$data['active'] = 'barang';
-		return view('admin/viewbarang',$data);
-	}
+	
 
 	public function getPelanggan(){
 		// $a = PELANGGAN::all();

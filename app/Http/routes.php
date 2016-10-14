@@ -30,8 +30,9 @@ Route::group(['prefix'=>'admin-nano'],function(){
   Route::get('mconfig/sysparam','MConfigController@sysparam');
   Route::get('mconfig/sysfeature','MConfigController@sysfeature');
   Route::resource('mprefix','MPrefixController');
+  Route::get('barang','MGoodsController@index');
   Route::controllers([
-  	'/'=>'AdminController'
+    '/'=>'AdminController'
   ]);
 
 });
@@ -51,8 +52,9 @@ Route::group(['prefix'=>'admin-api',['middleware' => 'api']],function(){
   Route::get('mconfig','Api\MConfigController@index');
   Route::put('mconfig','Api\MConfigController@update');
   Route::put('mconfig/feature','Api\MConfigController@update_feature');
+  Route::resource('barang','Api\MGoodsController');
   Route::controllers([
-  	'/'=>'ApiController'
+    '/'=>'ApiController'
   ]);
 
   Route::post('/editcabang/{id}','ApiController@postEditcabang');
