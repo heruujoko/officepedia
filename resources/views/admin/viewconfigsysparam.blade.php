@@ -64,7 +64,7 @@
                       <div id="insert-wrapper" class="tab-content" data-parsley-validate>
                         <div id="menu1" class="tab-pane fade in active">
                           <div class="form form-horizontal" style="margin-top:21px;">
-                            <div class="col-md-12">
+                            <div class="col-md-8">
                               <div class="form-group">
                                 <label class="col-md-2 control-label"><b>Nama</b> (<font color="red">*</font>) &nbsp  :</label>
                           			<div class="col-md-9">
@@ -116,12 +116,6 @@
                           			</div>
                               </div>
                               <div class="form-group">
-                                <label class="col-md-2 control-label"><b>Logo</b> &nbsp  :</label>
-                          			<div class="col-md-9">
-                                  <input id="edit-msyscomplogo" value="" name="msyscomplogo" class="form-control forminput" placeholder="Logo Perusahaan" type="text" data-parsley-required-message="Field Ini Tidak Boleh Kosong" @if (Session::has('autofocus')) autofocus @endif >
-                          			</div>
-                              </div>
-                              <div class="form-group">
                                 <label class="col-md-2 control-label"><b>NPWP</b> &nbsp  :</label>
                           			<div class="col-md-9">
                                   <input id="edit-msyscomptaxpayeridnumber" name="msyscomptaxpayeridnumber" class="form-control forminput" placeholder="NPWP Perusahaan" type="text" data-parsley-required-message="Field Ini Tidak Boleh Kosong" @if (Session::has('autofocus')) autofocus @endif >
@@ -158,6 +152,19 @@
                           			</div>
                               </div>
                             </div>
+														<div class="col-md-4">
+															<div class="form-group">
+                                <label class="col-md-3 control-label"><b>Logo</b> &nbsp  :</label>
+                          			<div class="col-md-8">
+																	<form action="upload.php">
+															        <input type="hidden">
+															        <div id="dropzone-logo" class="dropzone"></div>
+															    </form>
+																	<br>
+                                  <input id="edit-msyscomplogo" value="" name="msyscomplogo" class="form-control forminput" placeholder="Logo Perusahaan" type="text" data-parsley-required-message="Field Ini Tidak Boleh Kosong" @if (Session::has('autofocus')) autofocus @endif >
+                          			</div>
+                              </div>
+														</div>
                           </div>
                         </div>
                         <div id="menu2" class="tab-pane">
@@ -406,12 +413,38 @@
 @section('js')
 <script src="{{ url('/js/bootstrap-switch.min.js') }}"></script>
 <script src="{{ url('/js/bootstrap-datepicker.min.js') }}"></script>
+<script src="{{ url('/js/dropzone.js') }}"></script>
 <script src="{{ url('/master/sysparam.js') }}"></script>
 <script>
+	$("#dropzone-logo").dropzone({
+		paramName: "logo",
+		url: "{{ url('admin-api/mconfig/logo/') }}",
+		success: function(response){
+			var parsed = $.parseJSON(response.xhr.response);
+			$('#edit-msyscomplogo').val(parsed.url);
+			swal({
+				title: "Upload Sukses!",
+				type: "success",
+				timer: 1000
+			});
+		},
+		error: function(response){
+			var parsed = $.parseJSON(response.xhr.response);
+			this.removeAllFiles(true);
+			swal({
+				title: "Upload Gagal!",
+				text: parsed,
+				type: "error",
+				timer: 1000
+			});
+		}
+	 });
+	// new Dropzone($("#dropzone-logo").get(0));
 </script>
 @stop
 
 @section('css')
+	<link rel="stylesheet" href="{{ url('/css/dropzone.css') }}">
   <link rel="stylesheet" href="{{ url('/css/bootstrap-switch.min.css') }}">
   <link rel="stylesheet" href="{{ url('/css/bootstrap-datepicker3.min.css') }}">
   <style>

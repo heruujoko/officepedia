@@ -61,6 +61,7 @@ Route::group(['prefix'=>'admin-api',['middleware' => 'api']],function(){
   Route::get('mconfig','Api\MConfigController@index');
   Route::put('mconfig','Api\MConfigController@update');
   Route::put('mconfig/feature','Api\MConfigController@update_feature');
+  Route::post('mconfig/logo','Api\MConfigController@logo');
   Route::get('cashbank/cash','Api\CashBankListController@cash');
   Route::post('cashbank/cash','Api\CashBankListController@add_cash');
   Route::put('cashbank/cash/{id}','Api\CashBankListController@update_cash');
