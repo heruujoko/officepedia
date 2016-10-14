@@ -877,13 +877,13 @@
 									<th class="hasinput" style="width:1%">
 										<input type="text" class="form-control" placeholder="Filter No" />
 									</th>
-									<th class="hasinput" style="width:5%">
+									<th class="hasinput" style="width:3%">
 										<input type="text" class="form-control" placeholder="Filter Kode" />
 									</th>
 									<th class="hasinput" style="width:9%">
 										<input type="text" class="form-control" placeholder="Filter Nama" />
 									</th>
-									<th class="hasinput" style="width:9%">
+									<th class="hasinput" style="width:1%">
 										<input type="text" class="form-control" placeholder="Filter Tipe" />
 									</th>
 									<th class="hasinput" style="width:9%">
@@ -1039,9 +1039,9 @@
                               {data: 'action', name:'action', searchable: false, orderable: false},
                               {data: 'no', no: 'no' },
                               {data: 'code', code: 'code'},
-          										{data: 'name', name: 'name'},
+          										{data: 'spanname', spanname: 'spanname'},
 															{data: 'type', type: 'type'},
-          										{data: 'saldo', saldo: 'saldo'}
+          										{data: 'saldoright', saldoright: 'saldoright'}
           										]
 									       });
 
