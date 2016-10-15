@@ -10,7 +10,7 @@ use App\MSupplier;
 use App\MPrefix;
 use Datatables;
 use DB;
-
+use App\MConfig;
 class MSupplierController extends Controller
 {
 	public function index(){
@@ -46,11 +46,13 @@ class MSupplierController extends Controller
 	public function store(Request $request){
 		if ($request->autogen == 'true') {
 			$new_cust = MSupplier::create($request->all());
-			$prefix = MPrefix::where('mprefixtransaction','Master Customer')->first();
+			$conf = MConfig::find(1);
+			$prefix = $conf->msysprefixsupplier;
 			$new_cust->void = 0;
-      $prefix->last_count++;
-			$prefix->save();
-			$new_cust->msupplierid = $prefix->mprefix.'-'.$prefix->last_count;
+      $conf->msysprefixsuppliercount++;
+			$conf->msysprefixsupplierlastcount = $conf->get_last_count_format($conf->msysprefixsuppliercount);
+			$conf->save();
+			$new_cust->msupplierid = $prefix.'-'.$conf->get_last_count_format($conf->msysprefixsuppliercount);
       $new_cust->save();
       return response()->json($new_cust);
     }

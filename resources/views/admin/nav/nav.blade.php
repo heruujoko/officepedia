@@ -60,7 +60,7 @@
   <li>
     <a href="#"><i class="fa fa-lg fa-fw fa-shopping-cart"></i> <span class="menu-item-parent">Pembelian</span></a>
     <ul>
-      <li><a href="">Master Supplier</a></li>
+      <li><a href="{{ url('admin-nano/msupplier') }}">Master Supplier</a></li>
       <li><a href="">Master Kategori Supplier</a></li>
     </ul>
   </li>

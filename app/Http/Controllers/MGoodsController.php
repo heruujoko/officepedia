@@ -59,9 +59,9 @@ class MGoodsController extends Controller
 	}
 
 	public function pdf(){
-		$data['barang'] = MGoods::where('void',0)->get();
+		$data['mgoods'] = MGoods::where('void',0)->get();
 		$pdf = PDF::loadview('admin/export/mgoodspdf',$data);
-		return $pdf->setPaper('a4', 'landscape')->download('Master Barang.pdf');
+		return $pdf->setPaper('a3', 'landscape')->download('Master Barang.pdf');
 	}
 
 }

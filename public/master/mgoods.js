@@ -178,7 +178,7 @@ function updatemgoods(){
         mgoodscoareturnofsellingname: $('#edit-mgoodscoareturnofsellingname').val(),
         mgoodscogs: $('#edit-mgoodscogs').val()
   }
-
+  console.log(data);
    $.ajax({
         type: "PUT",
         url: API_URL+"/barang/"+updateid,
@@ -213,6 +213,7 @@ function updatemgoods(){
     url : API_URL+'/barang/'+id,
     type : 'GET',
     success : function(response){
+      console.log(response);
       $('#view-idmgoodscodeid').val(response.id);
       $('#view-mgoodscode').val(response.mgoodscode);
       $('#view-mgoodsbarcode').val(response.mgoodsbarcode);
@@ -222,7 +223,13 @@ function updatemgoods(){
       $('#view-mgoodsunit').val(response.mgoodsunit);
       $('#view-mgoodsunit2').val(response.mgoodsunit2);
       $('#view-mgoodsunit3').val(response.mgoodsunit3);
-      $('#view-mgoodsactive').val(response.mgoodsactive);
+      if(response.mgoodsactive == 1){
+        $('#view-mgoodsactive').bootstrapSwitch('state',true);
+        $('#view-mgoodsactive').bootstrapSwitch('disabled', true);
+      } else {
+        $('#view-mgoodsactive').bootstrapSwitch('state',false);
+        $('#view-mgoodsactive').bootstrapSwitch('disabled', true);
+      }
       $('#view-mgoodspricein').val(response.mgoodspricein);
       $('#view-mgoodspriceout').val(response.mgoodspriceout);
       $('#view-mgoodstype').val(response.mgoodstype);
@@ -232,8 +239,21 @@ function updatemgoods(){
       $('#view-mgoodsgroup3').val(response.mgoodsgroup3);
       $('#view-mgoodssuppliercode').val(response.mgoodssuppliercode);
       $('#view-mgoodssuppliername').val(response.mgoodssuppliername).change();
-      $('#view-mgoodsbranches').val(response.mgoodsbranches).change();
-      $('#view-mgoodsuniquetransaction').val(response.mgoodsuniquetransaction);
+      if(response.mgoodsbranches == 1){
+          $('#view-mgoodsbranches').bootstrapSwitch('state',true);
+          $('#view-mgoodsbranches').bootstrapSwitch('disabled',true);
+      } else {
+        $('#view-mgoodsbranches').bootstrapSwitch('state',false);
+        $('#view-mgoodsbranches').bootstrapSwitch('disabled',true);
+      }
+      if(response.mgoodsuniquetransaction == 1){
+          $('#view-mgoodsuniquetransaction').bootstrapSwitch('state',true);
+          $('#view-mgoodsuniquetransaction').bootstrapSwitch('disabled',true);
+      } else {
+        $('#view-mgoodsuniquetransaction').bootstrapSwitch('state',false);
+        $('#view-mgoodsuniquetransaction').bootstrapSwitch('disabled',true);
+      }
+
       $('#view-mgoodspicture').val(response.mgoodspicture);
       $('#view-mgoodscoapurchasing').val(response.mgoodscoapurchasing);
       $('#view-mgoodscoapurchasingname').val(response.mgoodscoapurchasingname);

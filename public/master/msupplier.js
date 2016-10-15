@@ -1,3 +1,6 @@
+var API_URL = '/nano/public/admin-api';
+var WEB_URL = '/nano/public/admin-nano';
+
 function backmsupplier(){
   resetmsupplier();
   $('#formedit').hide();

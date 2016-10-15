@@ -59,7 +59,12 @@ class MGoodsController extends Controller
 	}
  public function update(Request $request,$id){
       $mgoods = MGoods::find($id);
+      // van ini lupa ya ?
       $mgoods->update($request->all());
+      $mgoods->mgoodsactive = $this->convertBoolean($request->mgoodsactive);
+      $mgoods->mgoodsbranches = $this->convertBoolean($request->mgoodsbranches);
+      $mgoods->mgoodsuniquetransaction = $this->convertBoolean($request->mgoodsuniquetransaction);
+      $mgoods->save();
     return response()->json($mgoods);
   }
 
