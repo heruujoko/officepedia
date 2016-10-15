@@ -68,7 +68,7 @@
                               <div class="form-group">
                                 <label class="col-md-2 control-label"><b>Nama</b> (<font color="red">*</font>) &nbsp  :</label>
                           			<div class="col-md-9">
-                                  <input id="edit-msyscompname" value="" name="msyscompname" class="form-control forminput" placeholder="Nama Perusahaan" type="text" data-parsley-required-message="Field Ini Tidak Boleh Kosong" @if (Session::has('autofocus')) autofocus @endif >
+                                  <input id="edit-msyscompname" value="" name="msyscompname" class="form-control forminput" placeholder="Nama Perusahaan" type="text" data-parsley-required-message="Field Ini Tidak Boleh Kosong" @if (Session::has('autofocus')) autofocus @endif required data-parsley-required-message="Field Ini Tidak Boleh Kosong">
                           			</div>
                               </div>
                               <div class="form-group">
@@ -228,7 +228,7 @@
                               <div class="form-group">
                                 <label class="col-md-2 control-label"><b>Master Barang</b> (<font color="red">*</font>) &nbsp  :</label>
                                 <div class="col-md-2">
-                                  <input id="edit-msysprefixgoods" type="text" maxlength="3" minlength="3" class="form-control" name="msysprefixgoods" placeholder="Prefix Master Barang">
+                                  <input id="edit-msysprefixgoods" type="text" maxlength="3" minlength="3" class="form-control" name="msysprefixgoods" placeholder="Prefix Master Barang" required data-parsley-required-message="Field Ini Tidak Boleh Kosong">
                                 </div>
                                 <div class="col-md-2">
                                   <input id="edit-msysprefixgoodslastcount" disabled type="text" class="form-control" name="msysprefixgoodslastcount">
@@ -240,7 +240,7 @@
                               <div class="form-group">
                                 <label class="col-md-2 control-label"><b>Master Supplier</b> (<font color="red">*</font>) &nbsp  :</label>
                                 <div class="col-md-2">
-                                  <input id="edit-msysprefixsupplier" type="text" maxlength="3" minlength="3" class="form-control" name="msysprefixsupplier" placeholder="Prefix Master Supplier">
+                                  <input id="edit-msysprefixsupplier" type="text" maxlength="3" minlength="3" class="form-control" name="msysprefixsupplier" placeholder="Prefix Master Supplier" required data-parsley-required-message="Field Ini Tidak Boleh Kosong">
                                 </div>
                                 <div class="col-md-2">
                                   <input id="edit-msysprefixsupplierlastcount" disabled type="text" class="form-control" name="msysprefixsupplierlastcount">
@@ -252,7 +252,7 @@
                               <div class="form-group">
                                 <label class="col-md-2 control-label"><b>Master Pelanggan</b> (<font color="red">*</font>) &nbsp  :</label>
                                 <div class="col-md-2">
-                                  <input id="edit-msysprefixcustomer" type="text" maxlength="3" minlength="3" class="form-control" name="msysprefixcustomer" placeholder="Prefix Master Pelanggan">
+                                  <input id="edit-msysprefixcustomer" type="text" maxlength="3" minlength="3" class="form-control" name="msysprefixcustomer" placeholder="Prefix Master Pelanggan" required data-parsley-required-message="Field Ini Tidak Boleh Kosong">
                                 </div>
                                 <div class="col-md-2">
                                   <input id="edit-msysprefixcustomerlastcount" disabled type="text" class="form-control" name="msysprefixcustomerlastcount">
@@ -264,7 +264,7 @@
                               <div class="form-group">
                                 <label class="col-md-2 control-label"><b>Master Karyawan</b> (<font color="red">*</font>) &nbsp  :</label>
                                 <div class="col-md-2">
-                                  <input id="edit-msysprefixemployee" type="text" maxlength="3" minlength="3" class="form-control" name="msysprefixemployee" placeholder="Prefix Master Karyawan">
+                                  <input id="edit-msysprefixemployee" type="text" maxlength="3" minlength="3" class="form-control" name="msysprefixemployee" placeholder="Prefix Master Karyawan" required data-parsley-required-message="Field Ini Tidak Boleh Kosong">
                                 </div>
                                 <div class="col-md-2">
                                   <input id="edit-msysprefixemployeelastcount" disabled type="text" class="form-control" name="msysprefixemployeelastcount">
@@ -276,7 +276,7 @@
                               <div class="form-group">
                                 <label class="col-md-2 control-label"><b>Penawaran Penjualan</b> (<font color="red">*</font>) &nbsp  :</label>
                                 <div class="col-md-2">
-                                  <input id="edit-msysprefixinvquotation" type="text" maxlength="3" minlength="3" class="form-control" name="msysprefixinvquotation" placeholder="Prefix Penawaran Penjualan">
+                                  <input id="edit-msysprefixinvquotation" type="text" maxlength="3" minlength="3" class="form-control" name="msysprefixinvquotation" placeholder="Prefix Penawaran Penjualan" required data-parsley-required-message="Field Ini Tidak Boleh Kosong">
                                 </div>
                                 <div class="col-md-2">
                                   <input id="edit-msysprefixinvquotationlastcount" disabled type="text" class="form-control" name="msysprefixinvquotationlastcount">
@@ -288,7 +288,7 @@
                               <div class="form-group">
                                 <label class="col-md-2 control-label"><b>Order Penjualan</b> (<font color="red">*</font>) &nbsp  :</label>
                                 <div class="col-md-2">
-                                  <input id="edit-msysprefixinvorder" type="text" maxlength="3" minlength="3" class="form-control" name="msysprefixinvorder" placeholder="Prefix Order Penjualan">
+                                  <input id="edit-msysprefixinvorder" type="text" maxlength="3" minlength="3" class="form-control" name="msysprefixinvorder" placeholder="Prefix Order Penjualan" required data-parsley-required-message="Field Ini Tidak Boleh Kosong">
                                 </div>
                                 <div class="col-md-2">
                                   <input id="edit-msysprefixinvorderlastcount" disabled type="text" class="form-control" name="msysprefixinvorderlastcount">
@@ -300,7 +300,7 @@
                               <div class="form-group">
                                 <label class="col-md-2 control-label"><b>Invoice Penjualan</b> (<font color="red">*</font>) &nbsp  :</label>
                                 <div class="col-md-2">
-                                  <input id="edit-msysprefixinvoice" type="text" maxlength="3" minlength="3" class="form-control" name="msysprefixinvoice" placeholder="Prefix Invoice Penjualan">
+                                  <input id="edit-msysprefixinvoice" type="text" maxlength="3" minlength="3" class="form-control" name="msysprefixinvoice" placeholder="Prefix Invoice Penjualan" required data-parsley-required-message="Field Ini Tidak Boleh Kosong">
                                 </div>
                                 <div class="col-md-2">
                                   <input id="edit-msysprefixinvoicelastcount" disabled type="text" class="form-control" name="msysprefixinvoicelastcount">
@@ -312,7 +312,7 @@
                               <div class="form-group">
                                 <label class="col-md-2 control-label"><b>Permintaan Pembelian</b> (<font color="red">*</font>) &nbsp  :</label>
                                 <div class="col-md-2">
-                                  <input id="edit-msysprefixpurchrequest" type="text" maxlength="3" minlength="3" class="form-control" name="msysprefixpurchrequest" placeholder="Prefix Permintaan Pembelian">
+                                  <input id="edit-msysprefixpurchrequest" type="text" maxlength="3" minlength="3" class="form-control" name="msysprefixpurchrequest" placeholder="Prefix Permintaan Pembelian" required data-parsley-required-message="Field Ini Tidak Boleh Kosong">
                                 </div>
                                 <div class="col-md-2">
                                   <input id="edit-msysprefixpurchrequestlastcount" disabled type="text" class="form-control" name="msysprefixpurchrequestlastcount">
@@ -324,7 +324,7 @@
                               <div class="form-group">
                                 <label class="col-md-2 control-label"><b>Order Pembelian</b> (<font color="red">*</font>) &nbsp  :</label>
                                 <div class="col-md-2">
-                                  <input id="edit-msysprefixpurchorder" type="text" maxlength="3" minlength="3" class="form-control" name="msysprefixpurchorder" placeholder="Prefix Order Pembelian">
+                                  <input id="edit-msysprefixpurchorder" type="text" maxlength="3" minlength="3" class="form-control" name="msysprefixpurchorder" placeholder="Prefix Order Pembelian" required data-parsley-required-message="Field Ini Tidak Boleh Kosong">
                                 </div>
                                 <div class="col-md-2">
                                   <input id="edit-msysprefixpurchorderlastcount" disabled type="text" class="form-control" name="msysprefixpurchorderlastcount">
@@ -336,7 +336,7 @@
                               <div class="form-group">
                                 <label class="col-md-2 control-label"><b>Invoice Pembelian</b> (<font color="red">*</font>) &nbsp  :</label>
                                 <div class="col-md-2">
-                                  <input id="edit-msysprefixpurchinv" type="text" maxlength="3" minlength="3" class="form-control" name="msysprefixpurchinv" placeholder="Prefix Invoice Pembelian">
+                                  <input id="edit-msysprefixpurchinv" type="text" maxlength="3" minlength="3" class="form-control" name="msysprefixpurchinv" placeholder="Prefix Invoice Pembelian" required data-parsley-required-message="Field Ini Tidak Boleh Kosong">
                                 </div>
                                 <div class="col-md-2">
                                   <input id="edit-msysprefixpurchinvlastcount" disabled type="text" class="form-control" name="msysprefixpurchinvlastcount">
@@ -348,7 +348,7 @@
                               <div class="form-group">
                                 <label class="col-md-2 control-label"><b>Pembelian Aset Tetap</b> (<font color="red">*</font>) &nbsp  :</label>
                                 <div class="col-md-2">
-                                  <input id="edit-msysprefixedasset" type="text" maxlength="3" minlength="3" class="form-control" name="msysprefixedasset" placeholder="Prefix Pembelian Aset Tetap">
+                                  <input id="edit-msysprefixedasset" type="text" maxlength="3" minlength="3" class="form-control" name="msysprefixedasset" placeholder="Prefix Pembelian Aset Tetap" required data-parsley-required-message="Field Ini Tidak Boleh Kosong">
                                 </div>
                                 <div class="col-md-2">
                                   <input id="edit-msysprefixedassetlastcount" disabled type="text" class="form-control" name="msysprefixedassetlastcount">
@@ -360,7 +360,7 @@
                               <div class="form-group">
                                 <label class="col-md-2 control-label"><b>Penerimaan Kas</b> (<font color="red">*</font>) &nbsp  :</label>
                                 <div class="col-md-2">
-                                  <input id="edit-msysprefixcashreceipt" type="text" maxlength="3" minlength="3" class="form-control" name="msysprefixcashreceipt" placeholder="Prefix Penerimaan Kas">
+                                  <input id="edit-msysprefixcashreceipt" type="text" maxlength="3" minlength="3" class="form-control" name="msysprefixcashreceipt" placeholder="Prefix Penerimaan Kas" required data-parsley-required-message="Field Ini Tidak Boleh Kosong">
                                 </div>
                                 <div class="col-md-2">
                                   <input id="edit-msysprefixcashreceiptlastcount" disabled type="text" class="form-control" name="msysprefixcashreceiptlastcount">
@@ -372,7 +372,7 @@
                               <div class="form-group">
                                 <label class="col-md-2 control-label"><b>Pengeluaran Kas</b> (<font color="red">*</font>) &nbsp  :</label>
                                 <div class="col-md-2">
-                                  <input id="edit-msysprefixcashout" type="text" maxlength="3" minlength="3" class="form-control" name="msysprefixcashout" placeholder="Prefix Pengeluaran Kas">
+                                  <input id="edit-msysprefixcashout" type="text" maxlength="3" minlength="3" class="form-control" name="msysprefixcashout" placeholder="Prefix Pengeluaran Kas" required data-parsley-required-message="Field Ini Tidak Boleh Kosong">
                                 </div>
                                 <div class="col-md-2">
                                   <input id="edit-msysprefixcashoutlastcount" disabled type="text" class="form-control" name="msysprefixcashoutlastcount">
@@ -384,7 +384,7 @@
                               <div class="form-group">
                                 <label class="col-md-2 control-label"><b>Rekonsal Bank</b> (<font color="red">*</font>) &nbsp  :</label>
                                 <div class="col-md-2">
-                                  <input id="edit-msysprefixbankrecon" type="text" maxlength="3" minlength="3" class="form-control" name="msysprefixbankrecon" placeholder="Prefix Rekonsal Bank">
+                                  <input id="edit-msysprefixbankrecon" type="text" maxlength="3" minlength="3" class="form-control" name="msysprefixbankrecon" placeholder="Prefix Rekonsal Bank" required data-parsley-required-message="Field Ini Tidak Boleh Kosong">
                                 </div>
                                 <div class="col-md-2">
                                   <input id="edit-msysprefixbankreconlastcount" disabled type="text" class="form-control" name="msysprefixbankreconlastcount">
