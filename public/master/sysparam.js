@@ -34,7 +34,8 @@ function fetch_params_data(){
       $('#edit-msyscompstartdate').val(response.msyscompstartdate);
       $('#edit-msyscompcurrency').val(response.msyscompcurrency);
       $('#edit-msyscompaddress').val(response.msyscompaddress);
-      $('#edit-msyscompcomplogo').val(response.msyscompcomplogo);
+      $('#edit-msyscomplogo').val(response.msyscomplogo);
+      $("#logoimageid").attr('src', response.msyscomplogo);
       $('#edit-msyscomptaxpayeridnumber').val(response.msyscomptaxpayeridnumber);
       if(response.msyscomptaxable == true){
         $('#edit-msyscomptaxable').bootstrapSwitch('state',true);

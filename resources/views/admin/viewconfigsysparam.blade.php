@@ -156,12 +156,18 @@
 															<div class="form-group">
                                 <label class="col-md-3 control-label"><b>Logo</b> &nbsp  :</label>
                           			<div class="col-md-8">
-																	<form action="upload.php">
-															        <input type="hidden">
-															        <div id="dropzone-logo" class="dropzone"></div>
-															    </form>
+																	<div class="row">
+																		<img id="logoimageid" width="100" height="100">
+																	</div>
 																	<br>
-                                  <input id="edit-msyscomplogo" value="" name="msyscomplogo" class="form-control forminput" placeholder="Logo Perusahaan" type="text" data-parsley-required-message="Field Ini Tidak Boleh Kosong" @if (Session::has('autofocus')) autofocus @endif >
+																	<div class="row">
+																		<form action="upload.php">
+																        <input type="hidden">
+																        <div id="dropzone-logo" class="dropzone"></div>
+																    </form>
+																		<br>
+	                                  <input id="edit-msyscomplogo" value="" name="msyscomplogo" class="form-control forminput" placeholder="Logo Perusahaan" type="text" data-parsley-required-message="Field Ini Tidak Boleh Kosong" @if (Session::has('autofocus')) autofocus @endif >
+																	</div>
                           			</div>
                               </div>
 														</div>
@@ -425,8 +431,9 @@
 			swal({
 				title: "Upload Sukses!",
 				type: "success",
-				timer: 1000
+				timer: 3000
 			});
+			$("#logoimageid").attr('src', parsed.url);
 		},
 		error: function(response){
 			var parsed = $.parseJSON(response.xhr.response);

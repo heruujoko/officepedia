@@ -112,6 +112,9 @@ class MConfigController extends Controller
         $filename = uniqid().'.'.$logo->extension();
         $logo->move('logo',$filename); //ke public logo
         $url = url('logo/'.$filename);
+        $mconfig = MConfig::find(1);
+        $mconfig->msyscomplogo = $url;
+        $mconfig->save();
         return response()->json(array('url' => $url));
       }
 

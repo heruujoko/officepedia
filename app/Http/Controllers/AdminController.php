@@ -19,9 +19,14 @@ Use Alert;
 use App;
 class AdminController extends Controller
 {
-	public function getIndex(){
-   		return view('admin/index');
+	// public function getIndex(){
+  //  		return view('admin/index');
+	//  }
 
+	 public function dashboard(){
+		 $data['active'] = 'dashboard';
+		 $data['section'] = 'Dashboard';
+		 return view('admin/index',$data);
 	 }
 
 	public function getCabang(){

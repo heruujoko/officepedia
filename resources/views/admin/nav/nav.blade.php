@@ -1,7 +1,13 @@
 <ul>
-  <li>
-    <a href="{{URL::to('admin-nano')}}" title="Dashboard"><i class="fa fa-lg fa-fw fa-home"></i> <span class="menu-item-parent">Dashboard</span></a>
-  </li>
+  @if($active == 'dashboard')
+    <li class="active">
+      <a href="{{ url('admin-nano') }}" title="Dashboard"><i class="fa fa-lg fa-fw fa-home"></i> <span class="menu-item-parent">Dashboard</span></a>
+    </li>
+  @else
+    <li>
+      <a href="{{ url('admin-nano') }}" title="Dashboard"><i class="fa fa-lg fa-fw fa-home"></i> <span class="menu-item-parent">Dashboard</span></a>
+    </li>
+  @endif
   <li>
     <a href="#"><i class="fa fa-lg fa-fw fa-cogs"></i> <span class="menu-item-parent">Setting Sistem</span></a>
     <ul>
