@@ -27,6 +27,12 @@ Route::group(['prefix'=>'admin-nano'],function(){
   Route::get('cabang/export/excel','MBranchController@excel');
   Route::get('cabang/export/pdf','MBranchController@pdf');
 
+  Route::get('msupplier','MSupplierController@index');
+  Route::get('msupplier/export/csv','MSupplierController@csv');
+  Route::get('msupplier/export/excel','MSupplierController@excel');
+  Route::get('msupplier/export/pdf','MSupplierController@pdf');
+  Route::get('msupplier/insert/{id}/{activetab}','MSupplierController@editmsuppliercontact');
+
   Route::get('mconfig/sysparam','MConfigController@sysparam');
   Route::get('mconfig/sysfeature','MConfigController@sysfeature');
   Route::get('cashbank/list','CashBankListController@index');
@@ -41,6 +47,9 @@ Route::group(['prefix'=>'admin-nano'],function(){
 
   Route::resource('mprefix','MPrefixController');
   Route::get('barang','MGoodsController@index');
+   Route::get('barang/export/csv','MGoodsController@csv');
+  Route::get('barang/export/excel','MGoodsController@excel');
+  Route::get('barang/export/pdf','MGoodsController@pdf');
   Route::controllers([
     '/'=>'AdminController'
   ]);
@@ -48,7 +57,9 @@ Route::group(['prefix'=>'admin-nano'],function(){
 });
 
 
-Route::group(['prefix'=>'admin-api',['middleware' => 'api']],function(){
+  
+  //API
+  Route::group(['prefix'=>'admin-api',['middleware' => 'api']],function(){
   Route::get('mcoa/tree','Api\MCOAController@tree');
 
   Route::resource('cabang', 'Api\MBranchController');
@@ -59,13 +70,14 @@ Route::group(['prefix'=>'admin-api',['middleware' => 'api']],function(){
   Route::resource('mcoa','Api\MCOAController');
   Route::resource('mprefix','Api\MPrefixController');
   Route::resource('pelanggan','Api\MCustomerController');
+  Route::resource('msupplier','Api\MSupplierController');
   Route::get('mconfig','Api\MConfigController@index');
   Route::put('mconfig','Api\MConfigController@update');
   Route::put('mconfig/feature','Api\MConfigController@update_feature');
-<<<<<<< HEAD
   Route::resource('barang','Api\MGoodsController');
-=======
+
   Route::post('mconfig/logo','Api\MConfigController@logo');
+  Route::post('barang/gambar','Api\MGoodsController@gambar');
   Route::get('cashbank/cash','Api\CashBankListController@cash');
   Route::post('cashbank/cash','Api\CashBankListController@add_cash');
   Route::put('cashbank/cash/{id}','Api\CashBankListController@update_cash');
@@ -73,7 +85,7 @@ Route::group(['prefix'=>'admin-api',['middleware' => 'api']],function(){
   Route::post('cashbank/bank','Api\CashBankListController@add_bank');
   Route::put('cashbank/bank/{id}','Api\CashBankListController@update_bank');
   Route::get('cashbank/total/{code}','Api\CashBankListController@total');
->>>>>>> 2c7f4d5875a800a0ba740f09018635d30e4c4d72
+
   Route::controllers([
     '/'=>'ApiController'
   ]);

@@ -8,11 +8,19 @@ use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use App\MGoods;
 use Datatables;
+use Validator;
 use Exception;
 
 class MGoodsController extends Controller
 {
 
+  private function convertBoolean($string_bool){
+      if($string_bool == "true"){
+        return 1;
+      } else {
+        return 0;
+      }
+  }
 
 	public function index(){
 		 $this->iteration = 0;
@@ -20,8 +28,8 @@ class MGoodsController extends Controller
         return Datatables::of($MGoods)->addColumn('action', function($MGoods){
 
           return '<center><div class="button">
-          <a class="btn btn-info btn-xs dropdown-toggle fa fa-eye" onclick="viewMGoods('.$MGoods->id.')"> <font style="">Lihat</font></a>
-          <a class="btn btn-primary btn-xs dropdown-toggle fa fa-pencil" onclick="editMGoods('.$MGoods->id.')"> <font style="font-family: arial;">Ubah &nbsp</font></a>
+          <a class="btn btn-info btn-xs dropdown-toggle fa fa-eye" onclick="viewmgoods('.$MGoods->id.')"> <font style="">Lihat</font></a>
+          <a class="btn btn-primary btn-xs dropdown-toggle fa fa-pencil" onclick="editmgoods('.$MGoods->id.')"> <font style="font-family: arial;">Ubah &nbsp</font></a>
           <a class="btn btn-danger btn-xs dropdown-toggle fa fa-trash" onclick="popupdelete('.$MGoods->id.')">
         <input type="hidden" name="id" value="@{{ task.id }}"> <font style="font-family: arial;">Hapus </font></a>     </div></center>';
         })->addColumn('no',function($MGoods){
@@ -39,6 +47,9 @@ class MGoodsController extends Controller
 			try{
 				$MGoods = MGoods::create($request->all());
 				$MGoods->void = 0;
+        $MGoods->mgoodsactive = $this->convertBoolean($request->mgoodsactive);
+        $MGoods->mgoodsbranches = $this->convertBoolean($request->mgoodsbranches);
+        $MGoods->mgoodsuniquetransaction = $this->convertBoolean($request->mgoodsuniquetransaction);
 				$MGoods->save();
 				return response()->json($MGoods);
 			} catch(Exception $e){
@@ -46,23 +57,36 @@ class MGoodsController extends Controller
 			}
 
 	}
-
-	public function update(Request $request,$id){
-		try{
-			$MGoods = MGoods::find($id);
-			$MGoods->update($request->all());
-			return response()->json($MGoods);
-		}catch(Exception $e){
-			return response()->json($e,400);
-		}
-
-	}
+ public function update(Request $request,$id){
+      $mgoods = MGoods::find($id);
+      $mgoods->update($request->all());
+    return response()->json($mgoods);
+  }
 
 	public function destroy($id){
 		$MGoods = MGoods::find($id);
     DB::table('MGoods')->where('id',$id)->update(['void' => '1']);
     return redirect('admin-nano/cabang#main');
 	}
+
+	  public function gambar(Request $request){
+
+      $validator = Validator::make($request->all(),[
+        'gambar' => 'required|max:2000|mimes:png,jpg,jpeg'
+      ]);
+
+      if($validator->fails()){
+        return response()->json('File harus berupa png atau jpg dengan ukuran < 2MB',403);
+      } else {
+        $gambar = $request->file('gambar');
+        $filename = uniqid().'.'.$gambar->extension();
+        $gambar->move('gambar',$filename); //ke public gambar
+        $url = url('gambar/'.$filename);
+        return response()->json(array('url' => $url));
+      }
+
+
+    }
 
 
 }

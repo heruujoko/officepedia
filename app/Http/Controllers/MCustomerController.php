@@ -18,7 +18,7 @@ class MCustomerController extends Controller
 	public function index(){
 		$data['active'] = 'customer';
 		$data['section'] = 'customer';
-    $data['activetab'] = 1;
+    	$data['activetab'] = 1;
 		$data['mcoa'] = MCOA::all();
 		$data['id'] = null;
 	  return view('admin/viewmcustomer',$data);

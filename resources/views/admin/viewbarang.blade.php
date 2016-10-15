@@ -222,7 +222,9 @@
                            <div class="col-md-4">
                               <div class="icon-addon addon-md">
                                 <select class="form-control select2" name="mgoodssuppliercode" id="insert-mgoodssuppliercode">
-                                 
+                                  @foreach($msupplier as $mg)
+                                 <option>{{$mg->msupplierid}}</option>
+                                @endforeach
                                 </select>
                               </div>
                             </div>
@@ -232,7 +234,9 @@
                                <div class="col-md-4">
                               <div class="icon-addon addon-md">
                                 <select class="form-control select2" name="mgoodssuppliername" id="insert-mgoodssuppliername">
-                                 
+                                 @foreach($msupplier as $mg)
+                                 <option>{{$mg->msuppliername}}</option>
+                                @endforeach
                                 </select>
                               </div>
                             </div>
@@ -246,20 +250,23 @@
                           <div style="height: 21px;" class="form-group">
                               <label class="col-md-3 control-label"><b>Unique Transaction </b>  &nbsp  :</label>
                               <div class="col-md-9 col-sm-12">
-                                <input id="insert-mgoodsbranches" value="" name="mgoodsbranches" class="nice-toggle" placeholder="Nama Perusahaan" type="checkbox">
+                                <input id="insert-mgoodsuniquetransaction" value="" name="mgoodsbranches" class="nice-toggle" placeholder="Nama Perusahaan" type="checkbox">
                               </div>
                           </div>
                           <div style="height: 21px;" class="form-group">
                             <label class="col-md-3 control-label"><b>Gambar</b>  &nbsp  :</label>
                             <div class="col-md-9 col-sm-12">
                               <div class="icon-addon addon-md">
-                                <input id="insert-mgoodspicture" value="{{old('mgoodspicture')}}" name="mgoodspicture" class="form-control forminput" placeholder="Gambar" type="file" @if (Session::has('autofocus')) autofocus @endif >
+                               <form action="upload.php">
+                                      <input type="hidden">
+                                      <div id="dropzone-gambar" class="dropzone"></div>
+                                  </form>
+                                  <br>
+                                  <input id="insert-mgoodspicture" value="" name="mgoodspicture" class="form-control forminput" placeholder="Gambar" type="text" data-parsley-required-message="Field Ini Tidak Boleh Kosong" @if (Session::has('autofocus')) autofocus @endif >
                                 <label for="mgoodsgroup1" class="" rel="tooltip" title="Gambar"></label>
                               </div>
                             </div>
                           </div>
-
-               
                         </div>
                       </div>
                     </div>
@@ -271,7 +278,9 @@
                             <div class="col-md-4">
                               <div class="icon-addon addon-md">
                                 <select class="form-control select2" name="mgoodcoapurchasing" id="insert-mgoodcoapurchasing">
-                                 
+                                
+                                <option value="mcoa">mcoa</option>
+                             
                                 </select>
                               </div>
                             </div>
@@ -282,16 +291,18 @@
                               <div class="icon-addon addon-md">
                                 <select class="form-control select2" name="mgoodscoapurchasingname" id="insert-mgoodscoapurchasingname">
                                  
+                                <option value="mcoa">mcoa</option>
+                              
                                 </select>
                               </div>
                             </div>
                           </div>
                           <div style="height: 21px;" class="form-group">
-                            <label class="col-md-2 control-label"><b>Hpp</b>  &nbsp  :</label>
+                            <label class="col-md-2 control-label"><b>Kode Hpp</b>  &nbsp  :</label>
                             <div class="col-md-4">
                               <div class="icon-addon addon-md">
                                 <select class="form-control select2" name="mgoodscoacogs" id="insert-mgoodscoacogs">
-                                 
+                                 <option value="mcoa">mcoa</option>
                                 </select>
                               </div>
                             </div>
@@ -301,7 +312,7 @@
                             <div class="col-md-4">
                               <div class="icon-addon addon-md">
                                 <select class="form-control select2" name="mgoodscoacogsname" id="insert-mgoodscoacogsname">
-                                 
+                                 <option value="mcoa">mcoa</option>
                                 </select>
                               </div>
                             </div>
@@ -311,7 +322,7 @@
                             <div class="col-md-4">
                               <div class="icon-addon addon-md">
                                 <select class="form-control select2" name="mgoodscoaselling" id="insert-mgoodscoaselling">
-                                 
+                                 <option value="mcoa">mcoa</option>
                                 </select>
                               </div>
                             </div>
@@ -321,7 +332,7 @@
                             <div class="col-md-4">
                               <div class="icon-addon addon-md">
                                 <select class="form-control select2" name="mgoodscoasellingname" id="insert-mgoodscoasellingname">
-                                 
+                                 <option value="mcoa">mcoa</option>
                                 </select>
                               </div>
                             </div>
@@ -332,7 +343,7 @@
                             <div class="col-md-4">
                               <div class="icon-addon addon-md">
                                 <select class="form-control select2" name="mgoodscoareturnofselling" id="insert-mgoodscoareturnofselling">
-                                 
+                                 <option value="mcoa">mcoa</option>
                                 </select>
                               </div>
                             </div>
@@ -342,7 +353,7 @@
                             <div class="col-md-4">
                               <div class="icon-addon addon-md">
                                 <select class="form-control select2" name="mgoodscoareturnofsellingname" id="insert-mgoodscoareturnofsellingname">
-                                 
+                                 <option value="mcoa">mcoa</option>
                                 </select>
                               </div>
                             </div>
@@ -363,7 +374,7 @@
                     <div class="row">
                       <div class="col-md-offset-5 col-md-5" style="margin-top:20px;margin-bottom:20px;">
                         <button onclick="insertmgoods()" type="submit" name="button" class="btn btn-primary">Simpan</button>
-                        <a id="btn-insert-reset" onclick="resetcustomer()" class="btn btn-default" ><i class=""></i> Reset</a>
+                        <a id="btn-insert-reset" onclick="resetmgoods()" class="btn btn-default" ><i class=""></i> Reset</a>
                       </div>
                     </div>
                   </div>
@@ -396,241 +407,324 @@
                     <div class="row">
                       <h2></h2>
                       <ul class="nav nav-tabs" style="padding-left:10px;">
-                        <li class="active"><a data-toggle="tab" href="#editmenu1">Profil Pelanggan</a></li>
-                        <li><a data-toggle="tab" href="#editmenu2">Kontak</a></li>
-                        <li><a data-toggle="tab" href="#editmenu3">Kredit Limit</a></li>
-                        <li><a data-toggle="tab" href="#editmenu4">Pajak</a></li>
-                      </ul>
-                      <div class="tab-content">
-                        <div id="editmenu1" class="tab-pane fade in active">
-                          <div id="edit-wrapper" class="form-horizontal" style="margin-top:21px;" data-parsley-validate>
-                            <div class="col-md-6">
-                              <input type="hidden" id="edit-idmcustomerid">
-                              <div style="" class="form-group">
-                                <label class="col-md-3 control-label"><b>ID Pelanggan</b> (<font color="red">*</font>) &nbsp  :</label>
-                                <div class="col-md-9">
+                        <li class="active"><a data-toggle="tab" href="#menuedit1">Spesifikasi</a></li>
+                        <li><a data-toggle="tab" href="#menuedit2">Spesifikasi 2</a></li>
+                        <li><a data-toggle="tab" href="#menuedit3">Pajak</a></li>
+                       </ul>
+                      <div id="edit-wrapper" class="tab-content" data-parsley-validate>
+                        <div id="menuedit1" class="tab-pane fade in active">
+                          <div class="form-horizontal" style="margin-top:21px;">
+                            <div class="col-md-10">
+                             <div class="errorBlock1" style="margin-left:23% !important;"></div>
+                              <div style="height: 21px;" class="form-group">
+                                <label class="col-md-3 control-label"><b>Kode Barang</b> (<font color="red">*</font>) &nbsp  :</label>
+                                <div class="col-md-9 col-sm-12">
+                                <input type="hidden" id="edit-idmgoodscodeid">
                                   <div class="icon-addon addon-md">
-                                    <div class="input-group">
-                                      <input id="edit-mcustomerid" value="{{old('mcustomerid')}}" name="mcustomerid" class="form-control forminput" placeholder="AUTO GENERATE" type="text" required data-parsley-required-message="Field Ini Tidak Boleh Kosong"  data-parsley-errors-container=".errorBlock3" @if (Session::has('autofocus')) autofocus @endif >
-                                      <label for="mgoodsgroup1" class="glyphicon glyphicon-barcode" rel="tooltip" title="ID Pelanggan"></label>
-                                      <span class="input-group-addon" style="background: none;">
-                                        <input type="checkbox" id="disableforminput" name="autogen" rel="tooltip" title="ON/OFF auto generate ID Pelanggan">
-                                      </span>
-                                    </div>
+                                    <input id="edit-mgoodscode" value="{{old('mgoodscode')}}" name="mgoodscode" class="form-control forminput" placeholder="Kode Barang" type="text" required data-parsley-required-message="Field Ini Tidak Boleh Kosong" data-parsley-errors-container=".errorBlock2" @if (Session::has('autofocus')) autofocus @endif>
+                                    <label for="mgoodsgroup1" class="glyphicon glyphicon-chevron-right" rel="tooltip" title="Kode Barang"></label>
                                   </div>
                                 </div>
                               </div>
-                              <div class="errorBlock3" style="margin-left:23% !important;"></div>
+                              <div class="errorBlock2" style="margin-left:23% !important;"></div>
                               <div style="height: 21px;" class="form-group">
-                                <label class="col-md-3 control-label"><b>Nama Pelanggan</b> (<font color="red">*</font>) &nbsp  :</label>
+                                <label class="col-md-3 control-label"><b>Barcode</b> &nbsp  :</label>
                                 <div class="col-md-9 col-sm-12">
                                   <div class="icon-addon addon-md">
-                                    <input id="edit-mcustomername" value="{{old('mcustomername')}}" name="mcustomername" class="form-control forminput" placeholder="Nama Pelanggan" type="text" required data-parsley-required-message="Field Ini Tidak Boleh Kosong" data-parsley-errors-container=".errorBlock4" @if (Session::has('autofocus')) autofocus @endif>
-                                    <label for="mgoodsgroup1" class="glyphicon glyphicon-chevron-right" rel="tooltip" title="Nama Pelanggan"></label>
+                                    <input id="edit-mgoodsbarcode" value="{{old('mgoodsbarcode')}}" name="mgoodsbarcode" class="form-control forminput" placeholder="Barcode" type="text"  @if (Session::has('autofocus')) autofocus @endif >
+                                    <label for="mgoodsgroup1" class="glyphicon glyphicon-info-sign" rel="tooltip" title="Barcode"></label>
                                   </div>
                                 </div>
                               </div>
-                              <div class="errorBlock4" style="margin-left:23% !important;"></div>
                               <div style="height: 21px;" class="form-group">
-                                <label class="col-md-3 control-label"><b>Email</b> &nbsp  :</label>
-                                <div class="col-md-9 col-sm-12">
-                                  <div class="icon-addon addon-md">
-                                    <input id="edit-mcustomeremail" value="{{old('mcustomeremail')}}" name="mcustomeremail" class="form-control forminput" placeholder="Email" type="text"  @if (Session::has('autofocus')) autofocus @endif >
-                                    <label for="mgoodsgroup1" class="glyphicon glyphicon-envelope" rel="tooltip" title="Email"></label>
-                                  </div>
-                                </div>
-                              </div>
-                              <div class="form-group">
-                                <label class="col-md-3 control-label"><b>Telepon Kantor</b>  &nbsp  :</label>
+                                <label class="col-md-3 control-label"><b>Nama Barang</b>  &nbsp  :</label>
                                 <div  class="col-md-9 col-sm-12">
                                   <div class="icon-addon addon-md">
-                                    <input id="edit-mcustomerphone" value="{{old('mcustomerphone')}}" name="mcustomerphone" class="form-control forminput phoneexample phoneregex" placeholder="Telepon Kantor" type="text" @if (Session::has('autofocus')) autofocus @endif >
-                                    <label for="mgoodsgroup1" class="glyphicon glyphicon-phone-alt" rel="tooltip" title="Telepon Kantor"></label>
-                                    <div style="height: 5px;">
-                                      <h5 style="font-size: 11px; margin-top: 36px;">&nbsp Example: 0542123456</h5>
-                                    </div>
+                                    <input id="edit-mgoodsname" value="{{old('mgoodsname')}}" name="mgoodsname" class="form-control forminput" placeholder="Nama Barang" type="text" @if (Session::has('autofocus')) autofocus @endif >
+                                    <label for="mgoodsgroup1" class="glyphicon glyphicon-info-sign" rel="tooltip" title="Nama Barang"></label>
+                                   
                                   </div>
                                 </div>
                               </div>
-                              <div class="form-group">
-                                <label class="col-md-3 control-label"><b>Fax Kantor</b> &nbsp  :</label>
+                                 <div style="height: 21px;" class="form-group">
+                                <label class="col-md-3 control-label"><b>Nama Barang Alias</b>  &nbsp  :</label>
                                 <div  class="col-md-9 col-sm-12">
                                   <div class="icon-addon addon-md">
-                                    <input id="edit-mcustomerfax" value="{{old('mcustomerfax')}}" name="mcustomerfax" class="form-control forminput phoneregex" placeholder="Fax Kantor" type="text" @if (Session::has('autofocus')) autofocus @endif >
-                                    <label for="mgoodsgroup1" class="glyphicon glyphicon-phone-alt" rel="tooltip" title="Fax Kantor"></label>
-                                    <div style="height: 5px;">
-                                      <h5 style="font-size: 11px; margin-top: 36px;">&nbsp Example: 0542123456</h5>
-                                    </div>
+                                    <input id="edit-mgoodsalias" value="{{old('mgoodsalias')}}" name="mgoodsalias" class="form-control forminput" placeholder="Nama Barang Alias" type="text" @if (Session::has('autofocus')) autofocus @endif >
+                                    <label for="mgoodsgroup1" class="glyphicon glyphicon-info-sign" rel="tooltip" title="Nama Barang Alias"></label>
+                                   
                                   </div>
                                 </div>
                               </div>
                               <div style="height: 21px;" class="form-group">
-                                <label class="col-md-3 control-label"><b>Website</b> &nbsp  :</label>
+                                <label class="col-md-3 control-label"><b>Keterangan</b> &nbsp  :</label>
                                 <div class="col-md-9 col-sm-12">
                                   <div class="icon-addon addon-md">
-                                    <input id="edit-mcustomerwebsite" value="{{old('mcustomerwebsite')}}" name="mcustomerwebsite" class="form-control forminput" placeholder="Website" type="text"  @if (Session::has('autofocus')) autofocus @endif >
-                                    <label for="mgoodsgroup1" class="glyphicon glyphicon-info-sign" rel="tooltip" title="Website"></label>
+                                    <input id="edit-mgoodsremark" value="{{old('mgoodsremark')}}" name="mgoodsremark" class="form-control forminput" placeholder="Keterangan" type="text"  @if (Session::has('autofocus')) autofocus @endif >
+                                    <label for="mgoodsgroup1" class="glyphicon glyphicon-info-sign" rel="tooltip" title="Keterangan"></label>
                                   </div>
                                 </div>
                               </div>
-                            </div>
-                            <div class="col-md-6">
                               <div style="height: 21px;" class="form-group">
-                                <label class="col-md-3 control-label"><b>Alamat Penagihan</b> &nbsp  :</label>
+                                <label class="col-md-3 control-label"><b>Satuan-1</b> &nbsp  :</label>
                                 <div class="col-md-9 col-sm-12">
                                   <div class="icon-addon addon-md">
-                                    <div class="icon-addon addon-md">
-                                      <textarea id="edit-mcustomeraddress" value="{{old('mcustomeraddress')}}" name="mcustomeraddress" class="form-control forminput" rows="5" placeholder="Jalan" type="text"  @if (Session::has('autofocus')) autofocus @endif ></textarea>
-                                      <label for="mgoodsgroup1" class="glyphicon glyphicon-road" rel="tooltip" title="Jalan"></label>
-                                    </div>
+                                    <input id="edit-mgoodsunit" value="{{old('mgoodsunit')}}" name="mgoodsunit" class="form-control forminput" placeholder="Satuan-1" type="text"  @if (Session::has('autofocus')) autofocus @endif >
+                                    <label for="mgoodsgroup1" class="glyphicon glyphicon-info-sign" rel="tooltip" title="Satuan-1"></label>
                                   </div>
                                 </div>
                               </div>
                               <div style="height: 21px;" class="form-group">
-                                <div class="col-md-offset-3 col-md-5 col-sm-12" style="margin-top:20px;">
+                                <label class="col-md-3 control-label"><b>Satuan-2</b> &nbsp  :</label>
+                                <div class="col-md-9 col-sm-12">
                                   <div class="icon-addon addon-md">
-                                    <div class="icon-addon addon-md">
-                                      <input id="edit-mcustomercity" value="{{old('mcustomercity')}}" name="mcustomercity" class="form-control forminput" placeholder="Kota" type="text"  @if (Session::has('autofocus')) autofocus @endif >
-                                    </div>
-                                  </div>
-                                </div>
-                                <div class="col-md-4 col-sm-12" style="margin-top:20px;">
-                                  <div class="icon-addon addon-md">
-                                    <div class="icon-addon addon-md">
-                                      <input id="edit-mcustomerzipcode" value="{{old('mcustomerzipcode')}}" name="mcustomerzipcode" class="form-control forminput" placeholder="K.Pos" type="text"  @if (Session::has('autofocus')) autofocus @endif >
-                                    </div>
+                                    <input id="edit-mgoodsunit2" value="{{old('mgoodsunit2')}}" name="mgoodsunit2" class="form-control forminput" placeholder="Satuan-2" type="text"  @if (Session::has('autofocus')) autofocus @endif >
+                                    <label for="mgoodsgroup1" class="glyphicon glyphicon-info-sign" rel="tooltip" title="Satuan-2"></label>
                                   </div>
                                 </div>
                               </div>
                               <div style="height: 21px;" class="form-group">
-                                <div class="col-md-offset-3 col-md-9 col-sm-12" style="margin-top:20px;">
+                                <label class="col-md-3 control-label"><b>Satuan-3</b> &nbsp  :</label>
+                                <div class="col-md-9 col-sm-12">
                                   <div class="icon-addon addon-md">
-                                    <div class="icon-addon addon-md">
-                                      <input id="editmcustomerprovince" value="{{old('mcustomerprovince')}}" name="mcustomerprovince" class="form-control forminput" placeholder="Provinsi " type="text"  @if (Session::has('autofocus')) autofocus @endif >
-                                      <label for="mgoodsgroup1" class="glyphicon glyphicon-star" rel="tooltip" title="Propinsi"></label>
-                                    </div>
+                                    <input id="edit-mgoodsunit3" value="{{old('mgoodsunit3')}}" name="mgoodsunit3" class="form-control forminput" placeholder="Satuan-3" type="text"  @if (Session::has('autofocus')) autofocus @endif >
+                                    <label for="mgoodsgroup1" class="glyphicon glyphicon-info-sign" rel="tooltip" title="Satuan-3"></label>
                                   </div>
                                 </div>
                               </div>
                               <div style="height: 21px;" class="form-group">
-                                <div class="col-md-offset-3 col-md-9 col-sm-12" style="margin-top:20px;">
+                                <label class="col-md-3 control-label"><b>Status</b>  &nbsp  :</label>
+                                  <div class="col-md-9">
+                                    <input id="edit-mgoodsactive" value="" name="mgoodsactive" class="nice-toggle" placeholder="mgoodsactive" type="checkbox">
+                                </div>
+                              </div>
+                                <div style="height: 21px;" class="form-group">
+                                <label class="col-md-3 control-label"><b>Harga Beli</b> &nbsp  :</label>
+                                <div class="col-md-9 col-sm-12">
                                   <div class="icon-addon addon-md">
-                                    <div class="icon-addon addon-md">
-                                      <input id="editmcustomercountry" value="{{old('mcustomercountry')}}" name="mcustomercountry" class="form-control forminput" placeholder="Negara" type="text"  @if (Session::has('autofocus')) autofocus @endif >
-                                      <label for="mgoodsgroup1" class="glyphicon glyphicon-star" rel="tooltip" title="Negara"></label>
-                                    </div>
+                                    <input id="edit-mgoodspricein" value="{{old('mgoodspricein')}}" name="mgoodspricein" class="form-control forminput" placeholder="Harga Beli" type="text"  @if (Session::has('autofocus')) autofocus @endif >
+                                    <label for="mgoodsgroup1" class="glyphicon glyphicon-info-sign" rel="tooltip" title="Harga Beli"></label>
                                   </div>
                                 </div>
                               </div>
-                            <div>
-                          </div>
+                            <div style="height: 21px;" class="form-group">
+                                <label class="col-md-3 control-label"><b>Harga Jual</b> &nbsp  :</label>
+                                <div class="col-md-9 col-sm-12">
+                                  <div class="icon-addon addon-md">
+                                    <input id="edit-mgoodspriceout" value="{{old('mgoodspriceout')}}" name="mgoodspriceout" class="form-control forminput" placeholder="Harga Beli" type="text"  @if (Session::has('autofocus')) autofocus @endif >
+                                    <label for="mgoodsgroup1" class="glyphicon glyphicon-info-sign" rel="tooltip" title="Harga Jual"></label>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
                         </div>
-                      </div>
                     </div>
-                    <div id="editmenu2" class="tab-pane fade">
+                    <div id="menuedit2" class="tab-pane fade">
                       <div class="form form-horizontal" style="margin-top:21px;">
-                        <div class="col-md-12">
+                        <div class="col-md-10">
                           <div style="height: 21px;" class="form-group">
-                            <label class="col-md-2 control-label"><b>Nama Lengkap</b>  &nbsp  :</label>
-                            <div class="col-md-4 col-sm-12">
+                            <label class="col-md-3 control-label"><b>Tipe Barang</b>  &nbsp  :</label>
+                            <div class="col-md-9 col-sm-12">
                               <div class="icon-addon addon-md">
-                                <input id="edit-mcustomercontactname" value="{{old('mcustomercontactname')}}" name="mcustomercontactname" class="form-control forminput" placeholder="Nama Lengkap" type="text" @if (Session::has('autofocus')) autofocus @endif >
-                                <label for="mgoodsgroup1" class="glyphicon glyphicon-chevron-right" rel="tooltip" title="Nama Lengkap"></label>
+                                <input id="edit-mgoodstype" value="{{old('mgoodstype')}}" name="mgoodstype" class="form-control forminput" placeholder="Tipe Barang" type="text" @if (Session::has('autofocus')) autofocus @endif >
+                                <label for="mgoodsgroup1" class="glyphicon glyphicon-chevron-right" rel="tooltip" title="Tipe Barang"></label>
                               </div>
                             </div>
                           </div>
                           <div style="height: 21px;" class="form-group">
-                            <label class="col-md-2 control-label"><b>Posisi Jabatan</b>  &nbsp  :</label>
-                            <div class="col-md-4">
+                            <label class="col-md-3 control-label"><b>Merk</b>  &nbsp  :</label>
+                            <div class="col-md-9 col-sm-12">
                               <div class="icon-addon addon-md">
-                                <input id="edit-mcustomercontactposition" value="{{old('mcustomercontactposition')}}" name="mcustomercontactposition" class="form-control forminput" placeholder="Posisi Jabatan" type="text" @if (Session::has('autofocus')) autofocus @endif >
-                                <label for="mgoodsgroup1" class="glyphicon glyphicon glyphicon-user" rel="tooltip" title="Posisi Jabatan"></label>
+                                <input id="edit-mgoodsbrand" value="{{old('mgoodsbrand')}}" name="mgoodsbrand" class="form-control forminput" placeholder="Merk" type="text" @if (Session::has('autofocus')) autofocus @endif >
+                                <label for="mgoodsgroup1" class="glyphicon glyphicon-info-sign" rel="tooltip" title="Merk"></label>
                               </div>
                             </div>
                           </div>
                           <div style="height: 21px;" class="form-group">
-                            <label class="col-md-2 control-label"><b>Email</b>  &nbsp  :</label>
-                            <div class="col-md-4">
+                            <label class="col-md-3 control-label"><b>Group Barang 1</b>  &nbsp  :</label>
+                            <div class="col-md-9 col-sm-12">
                               <div class="icon-addon addon-md">
-                                <input id="edit-mcustomercontactemail" value="{{old('mcustomercontactemail')}}" name="mcustomercontactemail" class="form-control forminput" placeholder="Email" type="text" @if (Session::has('autofocus')) autofocus @endif >
-                                <label for="mgoodsgroup1" class="glyphicon glyphicon-envelope" rel="tooltip" title="Email"></label>
+                                <input id="edit-mgoodsgroup1" value="{{old('mgoodsgroup1')}}" name="mgoodsgroup1" class="form-control forminput" placeholder="Group Barang 1" type="text" @if (Session::has('autofocus')) autofocus @endif >
+                                <label for="mgoodsgroup1" class="glyphicon glyphicon-info-sign" rel="tooltip" title="Group Barang 1"></label>
                               </div>
                             </div>
                           </div>
                           <div style="height: 21px;" class="form-group">
-                            <label class="col-md-2 control-label"><b>Handphone</b>  &nbsp  :</label>
-                            <div  class="col-md-4">
+                            <label class="col-md-3 control-label"><b>Group Barang 2</b>  &nbsp  :</label>
+                            <div class="col-md-9 col-sm-12">
                               <div class="icon-addon addon-md">
-                                <input id="edit-mcustomercontactemailphone" value="{{old('mcustomercontactemailphone')}}" name="mcustomercontactemailphone" class="form-control forminput mobileregex" placeholder="Handphone" type="text" @if (Session::has('autofocus')) autofocus @endif >
-                                <label for="mgoodsgroup1" class="glyphicon glyphicon-phone-alt" rel="tooltip" title="Handphone"></label>
-                                <div style="height: 5px;">
-                                  <h5 style="font-size: 11px; margin-top: 36px;">&nbsp Example: 0542123456</h5>
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                    <div id="editmenu3" class="tab-pane fade">
-                      <div class="form form-horizontal" style="margin-top:21px;">
-                        <div class="col-md-12">
-                          <div style="height: 21px;" class="form-group">
-                            <label class="col-md-2 control-label"><b>Limit</b>  &nbsp  :</label>
-                            <div class="col-md-4 col-sm-12">
-                              <div class="icon-addon addon-md">
-                                <input id="edit-mcustomerarlimit" value="0" name="mcustomerarlimit" class="form-control forminput" placeholder="Limit" type="text" @if (Session::has('autofocus')) autofocus @endif >
-                                <label for="mgoodsgroup1" class="glyphicon glyphicon-chevron-right" rel="tooltip" title="Limit"></label>
+                                <input id="edit-mgoodsgroup2" value="{{old('mgoodsgroup2')}}" name="mgoodsgroup2" class="form-control forminput" placeholder="Group Barang 2" type="text" @if (Session::has('autofocus')) autofocus @endif >
+                                <label for="mgoodsgroup2" class="glyphicon glyphicon-info-sign" rel="tooltip" title="Group Barang 2"></label>
                               </div>
                             </div>
                           </div>
                           <div style="height: 21px;" class="form-group">
-                            <label class="col-md-2 control-label"><b>Akun</b>  &nbsp  :</label>
-                            <div class="col-md-4">
+                            <label class="col-md-3 control-label"><b>Group Barang 3</b>  &nbsp  :</label>
+                            <div class="col-md-9 col-sm-12">
                               <div class="icon-addon addon-md">
-                                <select class="form-control select2" name="mcustomercoa" id="edit-mcustomercoa">
-                                  
+                                <input id="edit-mgoodsgroup3" value="{{old('mgoodsgroup3')}}" name="mgoodsgroup3" class="form-control forminput" placeholder="Group Barang 3" type="text" @if (Session::has('autofocus')) autofocus @endif >
+                                <label for="mgoodsgroup1" class="glyphicon glyphicon-info-sign" rel="tooltip" title="Group Barang 3"></label>
+                              </div>
+                            </div> 
+                          </div>
+                          <div style="height: 21px;" class="form-group">
+                            <label class="col-md-3 control-label"><b>Kode Supplier</b>  &nbsp  :</label>
+                           <div class="col-md-4">
+                              <div class="icon-addon addon-md">
+                                <select class="form-control select2" name="mgoodssuppliercode" id="edit-mgoodssuppliercode">
+                                  @foreach($msupplier as $mg)
+                                 <option>{{$mg->msupplierid}}</option>
+                                @endforeach
                                 </select>
                               </div>
                             </div>
                           </div>
                           <div style="height: 21px;" class="form-group">
-                            <label class="col-md-2 control-label"><b>TOP</b>  &nbsp  :</label>
-                            <div class="col-md-4">
+                            <label class="col-md-3 control-label"><b>Nama Supplier</b>  &nbsp  :</label>
+                               <div class="col-md-4">
                               <div class="icon-addon addon-md">
-                                <select class="form-control select2" name="mcustomercoatop" id="edit-mcustomertop">
-                                  <option value="cash">Cash</option>
-                                  <option selected value="credit">Credit</option>
+                                <select class="form-control select2" name="mgoodssuppliername" id="edit-mgoodssuppliername">
+                                 @foreach($msupplier as $mg)
+                                 <option>{{$mg->msuppliername}}</option>
+                                @endforeach
                                 </select>
                               </div>
                             </div>
                           </div>
                           <div style="height: 21px;" class="form-group">
-                            <label class="col-md-2 control-label"><b>Maksimal Nota</b>  &nbsp  :</label>
-                            <div  class="col-md-4">
-                              <div class="icon-addon addon-md">
-                                <input id="edit-mcustomerarmax" value="{{old('mcustomercontactemailphone')}}" name="mcustomerarmax" class="form-control forminput" placeholder="Maksimal Nota" type="text" @if (Session::has('autofocus')) autofocus @endif >
-                                <label for="mgoodsgroup1" class="glyphicon glyphicon-chevron-right" rel="tooltip" title="Maksimal Nota"></label>
+                              <label class="col-md-3 control-label"><b>Digunakan oleh semua cabang: </b>  &nbsp  :</label>
+                              <div class="col-md-9 col-sm-12">
+                                <input id="edit-mgoodsbranches" value="" name="mgoodsbranches" class="nice-toggle" placeholder="Nama Perusahaan" type="checkbox">
                               </div>
-                            </div>
                           </div>
                           <div style="height: 21px;" class="form-group">
-                            <label class="col-md-2 control-label"><b>Default</b>  &nbsp  :</label>
-                            <div  class="col-md-4">
+                              <label class="col-md-3 control-label"><b>Unique Transaction </b>  &nbsp  :</label>
+                              <div class="col-md-9 col-sm-12">
+                                <input id="edit-mgoodsuniquetransaction" value="" name="mgoodsbranches" class="nice-toggle" placeholder="Nama Perusahaan" type="checkbox">
+                              </div>
+                          </div>
+                          <div style="height: 21px;" class="form-group">
+                            <label class="col-md-3 control-label"><b>Gambar</b>  &nbsp  :</label>
+                            <div class="col-md-9 col-sm-12">
                               <div class="icon-addon addon-md">
-                                <input id="edit-mcustomerdefaultar" value="0" name="mcustomerdefaultar" class="form-control forminput" placeholder="Default" type="text" @if (Session::has('autofocus')) autofocus @endif >
-                                <label for="mgoodsgroup1" class="glyphicon glyphicon-chevron-right" rel="tooltip" title="Maksimal Nota"></label>
+                               <form action="upload.php">
+                                      <input type="hidden">
+                                      <div id="dropzone-gambar" class="dropzone"></div>
+                                  </form>
+                                  <br>
+                                  <input id="edit-mgoodspicture" value="" name="mgoodspicture" class="form-control forminput" placeholder="Gambar" type="text" data-parsley-required-message="Field Ini Tidak Boleh Kosong" @if (Session::has('autofocus')) autofocus @endif >
+                                <label for="mgoodsgroup1" class="" rel="tooltip" title="Gambar"></label>
                               </div>
                             </div>
                           </div>
                         </div>
                       </div>
                     </div>
-                    <div id="editmenu4"></div>
+                    <div id="menuedit3" class="tab-pane fade">
+                      <div class="form form-horizontal" style="margin-top:21px;">
+                        <div class="col-md-12">
+                        <div style="height: 21px;" class="form-group">
+                            <label class="col-md-2 control-label"><b>Kode Pembelian</b>  &nbsp  :</label>
+                            <div class="col-md-4">
+                              <div class="icon-addon addon-md">
+                                <select class="form-control select2" name="mgoodcoapurchasing" id="edit-mgoodcoapurchasing">
+                                
+                                <option value="mcoa">mcoa</option>
+                             
+                                </select>
+                              </div>
+                            </div>
+                          </div>
+                          <div style="height: 21px;" class="form-group">
+                            <label class="col-md-2 control-label"><b>Nama Pembelian</b>  &nbsp  :</label>
+                            <div class="col-md-4">
+                              <div class="icon-addon addon-md">
+                                <select class="form-control select2" name="mgoodscoapurchasingname" id="edit-mgoodscoapurchasingname">
+                                 
+                                <option value="mcoa">mcoa</option>
+                              
+                                </select>
+                              </div>
+                            </div>
+                          </div>
+                          <div style="height: 21px;" class="form-group">
+                            <label class="col-md-2 control-label"><b>Kode Hpp</b>  &nbsp  :</label>
+                            <div class="col-md-4">
+                              <div class="icon-addon addon-md">
+                                <select class="form-control select2" name="mgoodscoacogs" id="edit-mgoodscoacogs">
+                                 <option value="mcoa">mcoa</option>
+                                </select>
+                              </div>
+                            </div>
+                          </div>
+                          <div style="height: 21px;" class="form-group">
+                            <label class="col-md-2 control-label"><b>Nama Hpp</b>  &nbsp  :</label>
+                            <div class="col-md-4">
+                              <div class="icon-addon addon-md">
+                                <select class="form-control select2" name="mgoodscoacogsname" id="edit-mgoodscoacogsname">
+                                 <option value="mcoa">mcoa</option>
+                                </select>
+                              </div>
+                            </div>
+                          </div>
+                          <div style="height: 21px;" class="form-group">
+                            <label class="col-md-2 control-label"><b>Penjualan</b>  &nbsp  :</label>
+                            <div class="col-md-4">
+                              <div class="icon-addon addon-md">
+                                <select class="form-control select2" name="mgoodscoaselling" id="edit-mgoodscoaselling">
+                                 <option value="mcoa">mcoa</option>
+                                </select>
+                              </div>
+                            </div>
+                          </div>
+                          <div style="height: 21px;" class="form-group">
+                            <label class="col-md-2 control-label"><b>Nama Penjualan</b>  &nbsp  :</label>
+                            <div class="col-md-4">
+                              <div class="icon-addon addon-md">
+                                <select class="form-control select2" name="mgoodscoasellingname" id="edit-mgoodscoasellingname">
+                                 <option value="mcoa">mcoa</option>
+                                </select>
+                              </div>
+                            </div>
+                          </div>
+
+                          <div style="height: 21px;" class="form-group">
+                            <label class="col-md-2 control-label"><b>Retur Penjualan</b>  &nbsp  :</label>
+                            <div class="col-md-4">
+                              <div class="icon-addon addon-md">
+                                <select class="form-control select2" name="mgoodscoareturnofselling" id="edit-mgoodscoareturnofselling">
+                                 <option value="mcoa">mcoa</option>
+                                </select>
+                              </div>
+                            </div>
+                          </div>
+                          <div style="height: 21px;" class="form-group">
+                            <label class="col-md-2 control-label"><b>Nama Retur Penjualan</b>  &nbsp  :</label>
+                            <div class="col-md-4">
+                              <div class="icon-addon addon-md">
+                                <select class="form-control select2" name="mgoodscoareturnofsellingname" id="edit-mgoodscoareturnofsellingname">
+                                 <option value="mcoa">mcoa</option>
+                                </select>
+                              </div>
+                            </div>
+                          </div>
+                          <div style="height: 21px;" class="form-group">
+                            <label class="col-md-2 control-label"><b>Informasi</b>  &nbsp  :</label>
+                            <div  class="col-md-4">
+                              <div class="icon-addon addon-md">
+                                <input disabled id="edit-mgoodscogs" value="{{old('mgoodscogs')}}" name="mgoodscogs" class="form-control forminput" placeholder="Informasi" type="text" @if (Session::has('autofocus')) autofocus @endif >
+                                <label for="mgoodsgroup1" class="" rel="tooltip" title="Informasi"></label>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div id="menu4"></div>
                     <div class="row">
                       <div class="col-md-offset-5 col-md-5" style="margin-top:20px;margin-bottom:20px;">
-                        <button onclick="updatemcustomer()" type="submit" name="button" class="btn btn-primary">Simpan</button>
-                        <a id="btn-insert-reset" onclick="resetcustomer()" class="btn btn-default" ><i class=""></i> Reset</a>
+                        <button onclick="updatemgoods()" type="submit" name="button" class="btn btn-primary">Simpan</button>
+                        <a id="btn-edit-reset" onclick="reseteditmgoods()" class="btn btn-default" ><i class=""></i> Reset</a>
                       </div>
                     </div>
                   </div>
@@ -647,7 +741,7 @@
           <div id="formview" style="display:none;margin-bottom:90px;" class="forminput jarviswidget jarviswidget-color-darken" id="wid-id-0" data-widget-editbutton="false" data-widget-colorbutton="false" data-widget-deletebutton="false">
             <header>
               <span class="widget-icon"> <i class="fa fa-table"></i> </span>
-              <h2>Master Pelanggan </h2>
+              <h2>Master Barang </h2>
             </header>
             <!-- widget div-->
             <div>
@@ -663,239 +757,321 @@
                     <div class="row">
                       <h2></h2>
                       <ul class="nav nav-tabs" style="padding-left:10px;">
-                        <li class="active"><a data-toggle="tab" href="#viewmenu1">Profil Pelanggan</a></li>
-                        <li><a data-toggle="tab" href="#viewmenu2">Kontak</a></li>
-                        <li><a data-toggle="tab" href="#viewmenu3">Kredit Limit</a></li>
-                        <li><a data-toggle="tab" href="#viewmenu4">Pajak</a></li>
-                      </ul>
-                      <div id="insert-wrapper" class="tab-content" data-parsley-validate>
-                        <div id="viewmenu1" class="tab-pane fade in active">
+                        <li class="active"><a data-toggle="tab" href="#menuview1">Spesifikasi</a></li>
+                        <li><a data-toggle="tab" href="#menuview2">Spesifikasi 2</a></li>
+                        <li><a data-toggle="tab" href="#menuview3">Pajak</a></li>
+                       </ul>
+                      <div id="view-wrapper" class="tab-content" data-parsley-validate>
+                        <div id="menuview1" class="tab-pane fade in active">
                           <div class="form-horizontal" style="margin-top:21px;">
-                            <div class="col-md-6">
-                              <div style="" class="form-group">
-                                <label class="col-md-3 control-label"><b>ID Pelanggan</b> (<font color="red">*</font>) &nbsp  :</label>
-                                <div class="col-md-9">
+                            <div class="col-md-10">
+                             <div class="errorBlock1" style="margin-left:23% !important;"></div>
+                              <div style="height: 21px;" class="form-group">
+                                <label class="col-md-3 control-label"><b>Kode Barang</b> (<font color="red">*</font>) &nbsp  :</label>
+                                <div class="col-md-9 col-sm-12">
+                                <input type="hidden" id="view-idmgoodscodeid">
                                   <div class="icon-addon addon-md">
-                                    <div class="input-group">
-                                      <input disabled id="view-mcustomerid" value="{{old('mcustomerid')}}" name="mcustomerid" class="form-control forminput" placeholder="AUTO GENERATE" type="text" required data-parsley-required-message="Field Ini Tidak Boleh Kosong"  data-parsley-errors-container=".errorBlock5" @if (Session::has('autofocus')) autofocus @endif >
-                                      <label for="mgoodsgroup1" class="glyphicon glyphicon-barcode" rel="tooltip" title="ID Pelanggan"></label>
-                                      <span class="input-group-addon" style="background: none;">
-                                        <input disabled type="checkbox" id="disableforminput" name="autogen" rel="tooltip" title="ON/OFF auto generate ID Pelanggan">
-                                      </span>
-                                    </div>
+                                    <input disabled id="view-mgoodscode" value="{{old('mgoodscode')}}" name="mgoodscode" class="form-control forminput" placeholder="Kode Barang" type="text" required data-parsley-required-message="Field Ini Tidak Boleh Kosong" data-parsley-errors-container=".errorBlock2" @if (Session::has('autofocus')) autofocus @endif>
+                                    <label for="mgoodsgroup1" class="glyphicon glyphicon-chevron-right" rel="tooltip" title="Kode Barang"></label>
                                   </div>
                                 </div>
                               </div>
-                              <div class="errorBlock5" style="margin-left:23% !important;"></div>
+                              <div class="errorBlock2" style="margin-left:23% !important;"></div>
                               <div style="height: 21px;" class="form-group">
-                                <label class="col-md-3 control-label"><b>Nama Pelanggan</b> (<font color="red">*</font>) &nbsp  :</label>
+                                <label class="col-md-3 control-label"><b>Barcode</b> &nbsp  :</label>
                                 <div class="col-md-9 col-sm-12">
                                   <div class="icon-addon addon-md">
-                                    <input disabled id="view-mcustomername" value="{{old('mcustomername')}}" name="mcustomername" class="form-control forminput" placeholder="Nama Pelanggan" type="text" required data-parsley-required-message="Field Ini Tidak Boleh Kosong" data-parsley-errors-container=".errorBlock6" @if (Session::has('autofocus')) autofocus @endif>
-                                    <label for="mgoodsgroup1" class="glyphicon glyphicon-chevron-right" rel="tooltip" title="Nama Pelanggan"></label>
+                                    <input disabled id="view-mgoodsbarcode" value="{{old('mgoodsbarcode')}}" name="mgoodsbarcode" class="form-control forminput" placeholder="Barcode" type="text"  @if (Session::has('autofocus')) autofocus @endif >
+                                    <label for="mgoodsgroup1" class="glyphicon glyphicon-info-sign" rel="tooltip" title="Barcode"></label>
                                   </div>
                                 </div>
                               </div>
-                              <div class="errorBlock6" style="margin-left:23% !important;"></div>
                               <div style="height: 21px;" class="form-group">
-                                <label class="col-md-3 control-label"><b>Email</b> &nbsp  :</label>
-                                <div class="col-md-9 col-sm-12">
-                                  <div class="icon-addon addon-md">
-                                    <input disabled id="view-mcustomeremail" value="{{old('mcustomeremail')}}" name="mcustomeremail" class="form-control forminput" placeholder="Email" type="text"  @if (Session::has('autofocus')) autofocus @endif >
-                                    <label for="mgoodsgroup1" class="glyphicon glyphicon-envelope" rel="tooltip" title="Email"></label>
-                                  </div>
-                                </div>
-                              </div>
-                              <div class="form-group">
-                                <label class="col-md-3 control-label"><b>Telepon Kantor</b>  &nbsp  :</label>
+                                <label class="col-md-3 control-label"><b>Nama Barang</b>  &nbsp  :</label>
                                 <div  class="col-md-9 col-sm-12">
                                   <div class="icon-addon addon-md">
-                                    <input disabled id="view-mcustomerphone" value="{{old('mcustomerphone')}}" name="mcustomerphone" class="form-control forminput phoneexample phoneregex" placeholder="Telepon Kantor" type="text" @if (Session::has('autofocus')) autofocus @endif >
-                                    <label for="mgoodsgroup1" class="glyphicon glyphicon-phone-alt" rel="tooltip" title="Telepon Kantor"></label>
-                                    <div style="height: 5px;">
-                                      <h5 style="font-size: 11px; margin-top: 36px;">&nbsp Example: 0542123456</h5>
-                                    </div>
+                                    <input disabled id="view-mgoodsname" value="{{old('mgoodsname')}}" name="mgoodsname" class="form-control forminput" placeholder="Nama Barang" type="text" @if (Session::has('autofocus')) autofocus @endif >
+                                    <label for="mgoodsgroup1" class="glyphicon glyphicon-info-sign" rel="tooltip" title="Nama Barang"></label>
+                                   
                                   </div>
                                 </div>
                               </div>
-                              <div class="form-group">
-                                <label class="col-md-3 control-label"><b>Fax Kantor</b> &nbsp  :</label>
+                                 <div style="height: 21px;" class="form-group">
+                                <label class="col-md-3 control-label"><b>Nama Barang Alias</b>  &nbsp  :</label>
                                 <div  class="col-md-9 col-sm-12">
                                   <div class="icon-addon addon-md">
-                                    <input disabled id="view-mcustomerfax" value="{{old('mcustomerfax')}}" name="mcustomerfax" class="form-control forminput phoneregex" placeholder="Fax Kantor" type="text" @if (Session::has('autofocus')) autofocus @endif >
-                                    <label for="mgoodsgroup1" class="glyphicon glyphicon-phone-alt" rel="tooltip" title="Fax Kantor"></label>
-                                    <div style="height: 5px;">
-                                      <h5 style="font-size: 11px; margin-top: 36px;">&nbsp Example: 0542123456</h5>
-                                    </div>
+                                    <input disabled id="view-mgoodsalias" value="{{old('mgoodsalias')}}" name="mgoodsalias" class="form-control forminput" placeholder="Nama Barang Alias" type="text" @if (Session::has('autofocus')) autofocus @endif >
+                                    <label for="mgoodsgroup1" class="glyphicon glyphicon-info-sign" rel="tooltip" title="Nama Barang Alias"></label>
+                                   
                                   </div>
                                 </div>
                               </div>
                               <div style="height: 21px;" class="form-group">
-                                <label class="col-md-3 control-label"><b>Website</b> &nbsp  :</label>
+                                <label class="col-md-3 control-label"><b>Keterangan</b> &nbsp  :</label>
                                 <div class="col-md-9 col-sm-12">
                                   <div class="icon-addon addon-md">
-                                    <input disabled id="view-mcustomerwebsite" value="{{old('mcustomerwebsite')}}" name="mcustomerwebsite" class="form-control forminput" placeholder="Website" type="text"  @if (Session::has('autofocus')) autofocus @endif >
-                                    <label for="mgoodsgroup1" class="glyphicon glyphicon-info-sign" rel="tooltip" title="Website"></label>
+                                    <input disabled id="view-mgoodsremark" value="{{old('mgoodsremark')}}" name="mgoodsremark" class="form-control forminput" placeholder="Keterangan" type="text"  @if (Session::has('autofocus')) autofocus @endif >
+                                    <label for="mgoodsgroup1" class="glyphicon glyphicon-info-sign" rel="tooltip" title="Keterangan"></label>
                                   </div>
                                 </div>
                               </div>
-                            </div>
-                            <div class="col-md-6">
                               <div style="height: 21px;" class="form-group">
-                                <label class="col-md-3 control-label"><b>Alamat Penagihan</b> &nbsp  :</label>
+                                <label class="col-md-3 control-label"><b>Satuan-1</b> &nbsp  :</label>
                                 <div class="col-md-9 col-sm-12">
                                   <div class="icon-addon addon-md">
-                                    <div class="icon-addon addon-md">
-                                      <textarea disabled id="view-mcustomeraddress" value="{{old('mcustomeraddress')}}" name="mcustomeraddress" class="form-control forminput" rows="5" placeholder="Jalan" type="text"  @if (Session::has('autofocus')) autofocus @endif ></textarea>
-                                      <label for="mgoodsgroup1" class="glyphicon glyphicon-road" rel="tooltip" title="Jalan"></label>
-                                    </div>
+                                    <input disabled id="view-mgoodsunit" value="{{old('mgoodsunit')}}" name="mgoodsunit" class="form-control forminput" placeholder="Satuan-1" type="text"  @if (Session::has('autofocus')) autofocus @endif >
+                                    <label for="mgoodsgroup1" class="glyphicon glyphicon-info-sign" rel="tooltip" title="Satuan-1"></label>
                                   </div>
                                 </div>
                               </div>
                               <div style="height: 21px;" class="form-group">
-                                <div class="col-md-offset-3 col-md-5 col-sm-12" style="margin-top:20px;">
+                                <label class="col-md-3 control-label"><b>Satuan-2</b> &nbsp  :</label>
+                                <div class="col-md-9 col-sm-12">
                                   <div class="icon-addon addon-md">
-                                    <div class="icon-addon addon-md">
-                                      <input disabled id="view-mcustomercity" value="{{old('mcustomercity')}}" name="mcustomercity" class="form-control forminput" placeholder="Kota" type="text"  @if (Session::has('autofocus')) autofocus @endif >
-                                    </div>
-                                  </div>
-                                </div>
-                                <div class="col-md-4 col-sm-12" style="margin-top:20px;">
-                                  <div class="icon-addon addon-md">
-                                    <div class="icon-addon addon-md">
-                                      <input disabled id="view-mcustomerzipcode" value="{{old('mcustomerzipcode')}}" name="mcustomerzipcode" class="form-control forminput" placeholder="K.Pos" type="text"  @if (Session::has('autofocus')) autofocus @endif >
-                                    </div>
+                                    <input disabled id="view-mgoodsunit2" value="{{old('mgoodsunit2')}}" name="mgoodsunit2" class="form-control forminput" placeholder="Satuan-2" type="text"  @if (Session::has('autofocus')) autofocus @endif >
+                                    <label for="mgoodsgroup1" class="glyphicon glyphicon-info-sign" rel="tooltip" title="Satuan-2"></label>
                                   </div>
                                 </div>
                               </div>
                               <div style="height: 21px;" class="form-group">
-                                <div class="col-md-offset-3 col-md-9 col-sm-12" style="margin-top:20px;">
+                                <label class="col-md-3 control-label"><b>Satuan-3</b> &nbsp  :</label>
+                                <div class="col-md-9 col-sm-12">
                                   <div class="icon-addon addon-md">
-                                    <div class="icon-addon addon-md">
-                                      <input disabled id="editmcustomerprovince" value="{{old('mcustomerprovince')}}" name="mcustomerprovince" class="form-control forminput" placeholder="Provinsi " type="text"  @if (Session::has('autofocus')) autofocus @endif >
-                                      <label for="mgoodsgroup1" class="glyphicon glyphicon-star" rel="tooltip" title="Propinsi"></label>
-                                    </div>
+                                    <input disabled id="view-mgoodsunit3" value="{{old('mgoodsunit3')}}" name="mgoodsunit3" class="form-control forminput" placeholder="Satuan-3" type="text"  @if (Session::has('autofocus')) autofocus @endif >
+                                    <label for="mgoodsgroup1" class="glyphicon glyphicon-info-sign" rel="tooltip" title="Satuan-3"></label>
                                   </div>
                                 </div>
                               </div>
                               <div style="height: 21px;" class="form-group">
-                                <div class="col-md-offset-3 col-md-9 col-sm-12" style="margin-top:20px;">
+                                <label class="col-md-3 control-label"><b>Status</b>  &nbsp  :</label>
+                                  <div class="col-md-9">
+                                    <input disabled id="view-mgoodsactive" value="" name="mgoodsactive" class="nice-toggle" placeholder="mgoodsactive" type="checkbox">
+                                </div>
+                              </div>
+                                <div style="height: 21px;" class="form-group">
+                                <label class="col-md-3 control-label"><b>Harga Beli</b> &nbsp  :</label>
+                                <div class="col-md-9 col-sm-12">
                                   <div class="icon-addon addon-md">
-                                    <div class="icon-addon addon-md">
-                                      <input disabled id="editmcustomercountry" value="{{old('mcustomercountry')}}" name="mcustomercountry" class="form-control forminput" placeholder="Negara" type="text"  @if (Session::has('autofocus')) autofocus @endif >
-                                      <label for="mgoodsgroup1" class="glyphicon glyphicon-star" rel="tooltip" title="Negara"></label>
-                                    </div>
+                                    <input disabled id="view-mgoodspricein" value="{{old('mgoodspricein')}}" name="mgoodspricein" class="form-control forminput" placeholder="Harga Beli" type="text"  @if (Session::has('autofocus')) autofocus @endif >
+                                    <label for="mgoodsgroup1" class="glyphicon glyphicon-info-sign" rel="tooltip" title="Harga Beli"></label>
                                   </div>
                                 </div>
                               </div>
-                            <div>
-                          </div>
+                            <div style="height: 21px;" class="form-group">
+                                <label class="col-md-3 control-label"><b>Harga Jual</b> &nbsp  :</label>
+                                <div class="col-md-9 col-sm-12">
+                                  <div class="icon-addon addon-md">
+                                    <input disabled id="view-mgoodspriceout" value="{{old('mgoodspriceout')}}" name="mgoodspriceout" class="form-control forminput" placeholder="Harga Beli" type="text"  @if (Session::has('autofocus')) autofocus @endif >
+                                    <label for="mgoodsgroup1" class="glyphicon glyphicon-info-sign" rel="tooltip" title="Harga Jual"></label>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
                         </div>
-                      </div>
                     </div>
-                    <div id="viewmenu2" class="tab-pane fade">
+                    <div id="menuview2" class="tab-pane fade">
                       <div class="form form-horizontal" style="margin-top:21px;">
-                        <div class="col-md-12">
+                        <div class="col-md-10">
                           <div style="height: 21px;" class="form-group">
-                            <label class="col-md-2 control-label"><b>Nama Lengkap</b>  &nbsp  :</label>
-                            <div class="col-md-4 col-sm-12">
+                            <label class="col-md-3 control-label"><b>Tipe Barang</b>  &nbsp  :</label>
+                            <div class="col-md-9 col-sm-12">
                               <div class="icon-addon addon-md">
-                                <input disabled id="view-mcustomercontactname" value="{{old('mcustomercontactname')}}" name="mcustomercontactname" class="form-control forminput" placeholder="Nama Lengkap" type="text" @if (Session::has('autofocus')) autofocus @endif >
-                                <label for="mgoodsgroup1" class="glyphicon glyphicon-chevron-right" rel="tooltip" title="Nama Lengkap"></label>
+                                <input disabled id="view-mgoodstype" value="{{old('mgoodstype')}}" name="mgoodstype" class="form-control forminput" placeholder="Tipe Barang" type="text" @if (Session::has('autofocus')) autofocus @endif >
+                                <label for="mgoodsgroup1" class="glyphicon glyphicon-chevron-right" rel="tooltip" title="Tipe Barang"></label>
                               </div>
                             </div>
                           </div>
                           <div style="height: 21px;" class="form-group">
-                            <label class="col-md-2 control-label"><b>Posisi Jabatan</b>  &nbsp  :</label>
-                            <div class="col-md-4">
+                            <label class="col-md-3 control-label"><b>Merk</b>  &nbsp  :</label>
+                            <div class="col-md-9 col-sm-12">
                               <div class="icon-addon addon-md">
-                                <input disabled id="view-mcustomercontactposition" value="{{old('mcustomercontactposition')}}" name="mcustomercontactposition" class="form-control forminput" placeholder="Posisi Jabatan" type="text" @if (Session::has('autofocus')) autofocus @endif >
-                                <label for="mgoodsgroup1" class="glyphicon glyphicon glyphicon-user" rel="tooltip" title="Posisi Jabatan"></label>
+                                <input disabled id="view-mgoodsbrand" value="{{old('mgoodsbrand')}}" name="mgoodsbrand" class="form-control forminput" placeholder="Merk" type="text" @if (Session::has('autofocus')) autofocus @endif >
+                                <label for="mgoodsgroup1" class="glyphicon glyphicon-info-sign" rel="tooltip" title="Merk"></label>
                               </div>
                             </div>
                           </div>
                           <div style="height: 21px;" class="form-group">
-                            <label class="col-md-2 control-label"><b>Email</b>  &nbsp  :</label>
-                            <div class="col-md-4">
+                            <label class="col-md-3 control-label"><b>Group Barang 1</b>  &nbsp  :</label>
+                            <div class="col-md-9 col-sm-12">
                               <div class="icon-addon addon-md">
-                                <input disabled id="view-mcustomercontactemail" value="{{old('mcustomercontactemail')}}" name="mcustomercontactemail" class="form-control forminput" placeholder="Email" type="text" @if (Session::has('autofocus')) autofocus @endif >
-                                <label for="mgoodsgroup1" class="glyphicon glyphicon-envelope" rel="tooltip" title="Email"></label>
+                                <input disabled id="view-mgoodsgroup1" value="{{old('mgoodsgroup1')}}" name="mgoodsgroup1" class="form-control forminput" placeholder="Group Barang 1" type="text" @if (Session::has('autofocus')) autofocus @endif >
+                                <label for="mgoodsgroup1" class="glyphicon glyphicon-info-sign" rel="tooltip" title="Group Barang 1"></label>
                               </div>
                             </div>
                           </div>
                           <div style="height: 21px;" class="form-group">
-                            <label class="col-md-2 control-label"><b>Handphone</b>  &nbsp  :</label>
-                            <div  class="col-md-4">
+                            <label class="col-md-3 control-label"><b>Group Barang 2</b>  &nbsp  :</label>
+                            <div class="col-md-9 col-sm-12">
                               <div class="icon-addon addon-md">
-                                <input disabled id="view-mcustomercontactemailphone" value="{{old('mcustomercontactemailphone')}}" name="mcustomercontactemailphone" class="form-control forminput mobileregex" placeholder="Handphone" type="text" @if (Session::has('autofocus')) autofocus @endif >
-                                <label for="mgoodsgroup1" class="glyphicon glyphicon-phone-alt" rel="tooltip" title="Handphone"></label>
-                                <div style="height: 5px;">
-                                  <h5 style="font-size: 11px; margin-top: 36px;">&nbsp Example: 0542123456</h5>
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                    <div id="viewmenu3" class="tab-pane fade">
-                      <div class="form form-horizontal" style="margin-top:21px;">
-                        <div class="col-md-12">
-                          <div style="height: 21px;" class="form-group">
-                            <label class="col-md-2 control-label"><b>Limit</b>  &nbsp  :</label>
-                            <div class="col-md-4 col-sm-12">
-                              <div class="icon-addon addon-md">
-                                <input disabled id="view-mcustomerarlimit" value="0" name="mcustomerarlimit" class="form-control forminput" placeholder="Limit" type="text" @if (Session::has('autofocus')) autofocus @endif >
-                                <label for="mgoodsgroup1" class="glyphicon glyphicon-chevron-right" rel="tooltip" title="Limit"></label>
+                                <input disabled id="view-mgoodsgroup2" value="{{old('mgoodsgroup2')}}" name="mgoodsgroup2" class="form-control forminput" placeholder="Group Barang 2" type="text" @if (Session::has('autofocus')) autofocus @endif >
+                                <label for="mgoodsgroup2" class="glyphicon glyphicon-info-sign" rel="tooltip" title="Group Barang 2"></label>
                               </div>
                             </div>
                           </div>
                           <div style="height: 21px;" class="form-group">
-                            <label class="col-md-2 control-label"><b>Akun</b>  &nbsp  :</label>
-                            <div class="col-md-4">
+                            <label class="col-md-3 control-label"><b>Group Barang 3</b>  &nbsp  :</label>
+                            <div class="col-md-9 col-sm-12">
                               <div class="icon-addon addon-md">
-                                <select disabled class="form-control select2" name="mcustomercoa" id="view-mcustomercoa">
-                                  
+                                <input disabled id="view-mgoodsgroup3" value="{{old('mgoodsgroup3')}}" name="mgoodsgroup3" class="form-control forminput" placeholder="Group Barang 3" type="text" @if (Session::has('autofocus')) autofocus @endif >
+                                <label for="mgoodsgroup1" class="glyphicon glyphicon-info-sign" rel="tooltip" title="Group Barang 3"></label>
+                              </div>
+                            </div> 
+                          </div>
+                          <div style="height: 21px;" class="form-group">
+                            <label class="col-md-3 control-label"><b>Kode Supplier</b>  &nbsp  :</label>
+                           <div class="col-md-4">
+                              <div class="icon-addon addon-md">
+                                <select disabled class="form-control select2" name="mgoodssuppliercode" id="view-mgoodssuppliercode">
+                                  @foreach($msupplier as $mg)
+                                 <option>{{$mg->msupplierid}}</option>
+                                @endforeach
                                 </select>
                               </div>
                             </div>
                           </div>
                           <div style="height: 21px;" class="form-group">
-                            <label class="col-md-2 control-label"><b>TOP</b>  &nbsp  :</label>
-                            <div class="col-md-4">
+                            <label class="col-md-3 control-label"><b>Nama Supplier</b>  &nbsp  :</label>
+                               <div class="col-md-4">
                               <div class="icon-addon addon-md">
-                                <select disabled class="form-control select2" name="mcustomercoatop" id="view-mcustomertop">
-                                  <option value="cash">Cash</option>
-                                  <option selected value="credit">Credit</option>
+                                <select disabled class="form-control select2" name="mgoodssuppliername" id="view-mgoodssuppliername">
+                                 @foreach($msupplier as $mg)
+                                 <option>{{$mg->msuppliername}}</option>
+                                @endforeach
                                 </select>
                               </div>
                             </div>
                           </div>
                           <div style="height: 21px;" class="form-group">
-                            <label class="col-md-2 control-label"><b>Maksimal Nota</b>  &nbsp  :</label>
-                            <div  class="col-md-4">
-                              <div class="icon-addon addon-md">
-                                <input disabled id="view-mcustomerarmax" value="{{old('mcustomercontactemailphone')}}" name="mcustomerarmax" class="form-control forminput" placeholder="Maksimal Nota" type="text" @if (Session::has('autofocus')) autofocus @endif >
-                                <label for="mgoodsgroup1" class="glyphicon glyphicon-chevron-right" rel="tooltip" title="Maksimal Nota"></label>
+                              <label class="col-md-3 control-label"><b>Digunakan oleh semua cabang: </b>  &nbsp  :</label>
+                              <div class="col-md-9 col-sm-12">
+                                <input disabled id="view-mgoodsbranches" value="" name="mgoodsbranches" class="nice-toggle" placeholder="Nama Perusahaan" type="checkbox">
                               </div>
-                            </div>
                           </div>
                           <div style="height: 21px;" class="form-group">
-                            <label class="col-md-2 control-label"><b>Default</b>  &nbsp  :</label>
-                            <div  class="col-md-4">
+                              <label class="col-md-3 control-label"><b>Unique Transaction </b>  &nbsp  :</label>
+                              <div class="col-md-9 col-sm-12">
+                                <input disabled id="view-mgoodsuniquetransaction" value="" name="mgoodsbranches" class="nice-toggle" placeholder="Nama Perusahaan" type="checkbox">
+                              </div>
+                          </div>
+                          <div style="height: 21px;" class="form-group">
+                            <label class="col-md-3 control-label"><b>Gambar</b>  &nbsp  :</label>
+                            <div class="col-md-9 col-sm-12">
                               <div class="icon-addon addon-md">
-                                <input disabled id="view-mcustomerdefaultar" value="0" name="mcustomerdefaultar" class="form-control forminput" placeholder="Default" type="text" @if (Session::has('autofocus')) autofocus @endif >
-                                <label for="mgoodsgroup1" class="glyphicon glyphicon-chevron-right" rel="tooltip" title="Maksimal Nota"></label>
+                               
+                                  <br>
+                                  <input disabled id="view-mgoodspicture" value="" name="mgoodspicture" class="form-control forminput" placeholder="Gambar" type="text" data-parsley-required-message="Field Ini Tidak Boleh Kosong" @if (Session::has('autofocus')) autofocus @endif >
+                                <label for="mgoodsgroup1" class="" rel="tooltip" title="Gambar"></label>
                               </div>
                             </div>
                           </div>
                         </div>
                       </div>
                     </div>
-                    <div id="viewmenu4"></div>
+                    <div id="menuview3" class="tab-pane fade">
+                      <div class="form form-horizontal" style="margin-top:21px;">
+                        <div class="col-md-12">
+                        <div style="height: 21px;" class="form-group">
+                            <label class="col-md-2 control-label"><b>Kode Pembelian</b>  &nbsp  :</label>
+                            <div class="col-md-4">
+                              <div class="icon-addon addon-md">
+                                <select disabled class="form-control select2" name="mgoodcoapurchasing" id="view-mgoodcoapurchasing">
+                                
+                                <option value="mcoa">mcoa</option>
+                             
+                                </select>
+                              </div>
+                            </div>
+                          </div>
+                          <div style="height: 21px;" class="form-group">
+                            <label class="col-md-2 control-label"><b>Nama Pembelian</b>  &nbsp  :</label>
+                            <div class="col-md-4">
+                              <div class="icon-addon addon-md">
+                                <select disabled class="form-control select2" name="mgoodscoapurchasingname" id="view-mgoodscoapurchasingname">
+                                 
+                                <option value="mcoa">mcoa</option>
+                              
+                                </select>
+                              </div>
+                            </div>
+                          </div>
+                          <div style="height: 21px;" class="form-group">
+                            <label class="col-md-2 control-label"><b>Kode Hpp</b>  &nbsp  :</label>
+                            <div class="col-md-4">
+                              <div class="icon-addon addon-md">
+                                <select disabled class="form-control select2" name="mgoodscoacogs" id="view-mgoodscoacogs">
+                                 <option value="mcoa">mcoa</option>
+                                </select>
+                              </div>
+                            </div>
+                          </div>
+                          <div style="height: 21px;" class="form-group">
+                            <label class="col-md-2 control-label"><b>Nama Hpp</b>  &nbsp  :</label>
+                            <div class="col-md-4">
+                              <div class="icon-addon addon-md">
+                                <select disabled class="form-control select2" name="mgoodscoacogsname" id="view-mgoodscoacogsname">
+                                 <option value="mcoa">mcoa</option>
+                                </select>
+                              </div>
+                            </div>
+                          </div>
+                          <div style="height: 21px;" class="form-group">
+                            <label class="col-md-2 control-label"><b>Penjualan</b>  &nbsp  :</label>
+                            <div class="col-md-4">
+                              <div class="icon-addon addon-md">
+                                <select disabled class="form-control select2" name="mgoodscoaselling" id="view-mgoodscoaselling">
+                                 <option value="mcoa">mcoa</option>
+                                </select>
+                              </div>
+                            </div>
+                          </div>
+                          <div style="height: 21px;" class="form-group">
+                            <label class="col-md-2 control-label"><b>Nama Penjualan</b>  &nbsp  :</label>
+                            <div class="col-md-4">
+                              <div class="icon-addon addon-md">
+                                <select disabled class="form-control select2" name="mgoodscoasellingname" id="view-mgoodscoasellingname">
+                                 <option value="mcoa">mcoa</option>
+                                </select>
+                              </div>
+                            </div>
+                          </div>
+
+                          <div style="height: 21px;" class="form-group">
+                            <label class="col-md-2 control-label"><b>Retur Penjualan</b>  &nbsp  :</label>
+                            <div class="col-md-4">
+                              <div class="icon-addon addon-md">
+                                <select disabled class="form-control select2" name="mgoodscoareturnofselling" id="view-mgoodscoareturnofselling">
+                                 <option value="mcoa">mcoa</option>
+                                </select>
+                              </div>
+                            </div>
+                          </div>
+                          <div style="height: 21px;" class="form-group">
+                            <label class="col-md-2 control-label"><b>Nama Retur Penjualan</b>  &nbsp  :</label>
+                            <div class="col-md-4">
+                              <div class="icon-addon addon-md">
+                                <select disabled class="form-control select2" name="mgoodscoareturnofsellingname" id="view-mgoodscoareturnofsellingname">
+                                 <option value="mcoa">mcoa</option>
+                                </select>
+                              </div>
+                            </div>
+                          </div>
+                          <div style="height: 21px;" class="form-group">
+                            <label class="col-md-2 control-label"><b>Informasi</b>  &nbsp  :</label>
+                            <div  class="col-md-4">
+                              <div class="icon-addon addon-md">
+                                <input disabled id="view-mgoodscogs" value="{{old('mgoodscogs')}}" name="mgoodscogs" class="form-control forminput" placeholder="Informasi" type="text" @if (Session::has('autofocus')) autofocus @endif >
+                                <label for="mgoodsgroup1" class="" rel="tooltip" title="Informasi"></label>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div id="menuview4"></div>
                     <div class="row">
-                      <div class="col-md-offset-6 col-md-5" style="margin-top:20px;margin-bottom:20px;">
-                        <a id="btn-insert-reset" onclick="backcustomer()" class="btn btn-default" ><i class=""></i> Kembali</a>
+                      <div class="col-md-offset-5 col-md-5" style="margin-top:20px;margin-bottom:20px;">
+                        <button onclick="back()" type="submit" name="button" class="btn btn-default">Kembali</button>
+                        
                       </div>
                     </div>
                   </div>
@@ -1093,19 +1269,19 @@
         {
             text: 'CSV',
             action: function(){
-              window.location.href = "{{ url('/admin-nano/pelanggan/export/csv') }}"
+              window.location.href = "{{ url('/admin-nano/barang/export/csv') }}"
             }
         },
         {
             text: 'Excel',
             action: function(){
-              window.location.href = "{{ url('/admin-nano/pelanggan/export/excel') }}"
+              window.location.href = "{{ url('/admin-nano/barang/export/excel') }}"
             }
         },
         {
             text: 'PDF',
             action: function(){
-              window.location.href = "{{ url('/admin-nano/pelanggan/export/pdf') }}"
+              window.location.href = "{{ url('/admin-nano/barang/export/pdf') }}"
             }
         },
         {
@@ -1181,7 +1357,7 @@
         if (isconfirm) {
           $.ajax({
             type: "DELETE",
-            url: API_URL+"/pelanggan/"+id,
+            url: API_URL+"/barang/"+id,
             success: function(response){
               console.log(response);
               table.ajax.reload();
@@ -1229,8 +1405,34 @@
 </script>
 <script src="{{ url('/js/bootstrap-switch.min.js') }}"></script>
 <script src="{{ url('/js/bootstrap-datepicker.min.js') }}"></script>
+<script src="{{ url('/js/dropzone.js') }}"></script>
 <script src="{{ url('/master/mgoods.js') }}"></script>
 <script>
+$("#dropzone-gambar").dropzone({
+    paramName: "gambar",
+    url: "{{ url('admin-api/barang/gambar/') }}",
+    success: function(response){
+      var parsed = $.parseJSON(response.xhr.response);
+      console.log(parsed);
+      $('#insert-mgoodspicture').val(parsed.url);
+      swal({
+        title: "Upload Sukses!",
+        type: "success",
+        timer: 1000
+      });
+    },
+    error: function(response){
+      var parsed = $.parseJSON(response.xhr.response);
+      this.removeAllFiles(true);
+      swal({
+        title: "Upload Gagal!",
+        text: parsed,
+        type: "error",
+        timer: 1000
+      });
+    }
+   });
+   </script>
 @stop
 
 @section('css')
@@ -1242,6 +1444,7 @@
       font-size: 15px;
       color: #aaa;
     }
+
   </style>
   <style>
     .tableapi_wrapper {
