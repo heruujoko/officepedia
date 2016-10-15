@@ -47,4 +47,20 @@ class MConfig extends Model
         'msysinventallowminus' => 'integer',
         'msysinventslabprice' => 'integer',
     ];
+
+    public function get_last_count_format($count){
+      if($count < 10){
+        return "00000".$count;
+      } else if($count < 100){
+        return "0000".$count;
+      } else if($count < 1000){
+        return "000".$count;
+      } else if($count < 10000){
+        return "00".$count;
+      } else if($count < 100000){
+        return "0".$count;
+      } else {
+        return $count;
+      }
+    }
 }

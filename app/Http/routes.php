@@ -7,7 +7,7 @@ Route::get('/', function () {
 
 
 Route::group(['prefix'=>'admin-nano'],function(){
-
+  // Route::get('/','AdminController@dashboard');
   Route::get('mcoagrandparent','MCOAGrandParentController@index');
   Route::get('mcoa/export/print','MCOAController@xprint');
   Route::get('mcoa/export/pdf','MCOAController@pdf');

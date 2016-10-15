@@ -20,8 +20,9 @@ use App;
 class AdminController extends Controller
 {
 	public function getIndex(){
-   		return view('admin/index');
-
+		$data['active'] = 'dashboard';
+ 		$data['section'] = 'Dashboard';
+		return view('admin/index',$data);
 	 }
 
 	public function getCabang(){

@@ -1,4 +1,4 @@
-@extends('admin/nav/layout')
+@extends('admin/nav/layouttables')
 @section('title')
 @section('content')
 
@@ -961,5 +961,5 @@
 		</div>
 		<!-- END MAIN PANEL -->
 
-	
+
 @stop

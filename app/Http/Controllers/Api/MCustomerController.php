@@ -10,6 +10,7 @@ use App\MCUSTOMER;
 use App\MPrefix;
 use Datatables;
 use DB;
+use App\MConfig;
 
 class MCustomerController extends Controller
 {
@@ -46,11 +47,13 @@ class MCustomerController extends Controller
 	public function store(Request $request){
 		if ($request->autogen == 'true') {
 			$new_cust = MCUSTOMER::create($request->all());
-			$prefix = MPrefix::where('mprefixtransaction','Master Customer')->first();
+			$conf = MConfig::find(1);
+			$prefix = $conf->msysprefixcustomer;
 			$new_cust->void = 0;
-      $prefix->last_count++;
-			$prefix->save();
-			$new_cust->mcustomerid = $prefix->mprefix.'-'.$prefix->last_count;
+      $conf->msysprefixcustomercount++;
+			$conf->msysprefixcustomerlastcount = $conf->get_last_count_format($conf->msysprefixcustomercount);
+			$conf->save();
+			$new_cust->mcustomerid = $prefix.'-'.$conf->get_last_count_format($conf->msysprefixcustomercount);
       $new_cust->save();
       return response()->json($new_cust);
     }

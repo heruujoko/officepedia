@@ -34,7 +34,8 @@ function fetch_params_data(){
       $('#edit-msyscompstartdate').val(response.msyscompstartdate);
       $('#edit-msyscompcurrency').val(response.msyscompcurrency);
       $('#edit-msyscompaddress').val(response.msyscompaddress);
-      $('#edit-msyscompcomplogo').val(response.msyscompcomplogo);
+      $('#edit-msyscomplogo').val(response.msyscomplogo);
+      $("#logoimageid").attr('src', response.msyscomplogo);
       $('#edit-msyscomptaxpayeridnumber').val(response.msyscomptaxpayeridnumber);
       if(response.msyscomptaxable == true){
         $('#edit-msyscomptaxable').bootstrapSwitch('state',true);
@@ -113,61 +114,74 @@ function fetch_params_data(){
 }
 
 function update_params(){
+  $('#insert-wrapper').parsley().validate();
+  if($('#insert-wrapper').parsley().isValid()){
+    var data = {
+      msyscompname: $('#edit-msyscompname').val(),
+      msyscompphone: $('#edit-msyscompphone').val(),
+      msyscompfax: $('#edit-msyscompfax').val(),
+      msyscompemail: $('#edit-msyscompemail').val(),
+      msyscompwebsite: $('#edit-msyscompwebsite').val(),
+      msyscompstartdate: $('#edit-msyscompstartdate').val(),
+      msyscompcurrency: $('#edit-msyscompcurrency').val(),
+      msyscompaddress: $('#edit-msyscompaddress').val(),
+      msyscomplogo: $('#edit-msyscomplogo').val(),
+      msyscomptaxpayeridnumber: $('#edit-msyscomptaxpayeridnumber').val(),
+      msyscomptaxable: $('#edit-msyscomptaxable').is(':checked'),
+      msyscomptaxabledate: $('#edit-msyscomptaxabledate').val(),
+      msyscomptaxablenumber: $('#edit-msyscomptaxablenumber').val(),
+      msyscompklu: $('#edit-msyscompklu').val(),
+      msyscomptaxpayeridaddress: $('#edit-msyscomptaxpayeridaddress').val(),
+      msysgenmanufacturingacc: $('#edit-msysgenmanufacturingacc').is(':checked'),
+      msysgenmultibranch: $('#edit-msysgenmultibranch').is(':checked'),
+      msysgenmulticurrency: $('#edit-msysgenmulticurrency').is(':checked'),
+      msysgendefaulttax: $('#edit-msysgendefaulttax').is(':checked'),
+      msysgenapproval: $('#edit-msysgenapproval').is(':checked'),
+      msysgenfixedasset: $('#edit-msysgenfixedasset').is(':checked'),
+      msysgenrounddec: $('#edit-msysgenrounddec').val(),
+      msysprefixgoods: $('#edit-msysprefixgoods').val(),
+      msysprefixsupplier: $('#edit-msysprefixsupplier').val(),
+      msysprefixcustomer: $('#edit-msysprefixcustomer').val(),
+      msysprefixemployee: $('#edit-msysprefixemployee').val(),
+      msysprefixinvquotation: $('#edit-msysprefixinvquotation').val(),
+      msysprefixinvorder: $('#edit-msysprefixinvorder').val(),
+      msysprefixinvoice: $('#edit-msysprefixinvoice').val(),
+      msysprefixpurchrequest: $('#edit-msysprefixpurchrequest').val(),
+      msysprefixpurchorder: $('#edit-msysprefixpurchorder').val(),
+      msysprefixpurchinv: $('#edit-msysprefixpurchinv').val(),
+      msysprefixedasset: $('#edit-msysprefixedasset').val(),
+      msysprefixcashreceipt: $('#edit-msysprefixcashreceipt').val(),
+      msysprefixcashout: $('#edit-msysprefixcashout').val(),
+      msysprefixbankrecon: $('#edit-msysprefixbankrecon').val()
+    };
+    $.ajax({
+      method: 'PUT',
+      url: API_URL+"/mconfig",
+      dataType: "json",
+      data: data,
+      success: function(response){
+        console.log(response);
+        window.location.href="#forminput";
+        swal({
+          title: "Input Berhasil!",
+          type: "success",
+          timer: 1000
+        });
+      },
+      error: function(response){
+        console.log(response);
+      }
+    });
+  } else {
+    if($('#menu1').find('ul.parsley-errors-list li').length > 0){
+      $('.nav-tabs a[href="#menu1"]').tab('show')
+    } else if($('#menu2').find('ul.parsley-errors-list li').length > 0){
+      $('.nav-tabs a[href="#menu2"]').tab('show')
+    } else if($('#menu3').find('ul.parsley-errors-list li').length > 0){
+      $('.nav-tabs a[href="#menu3"]').tab('show')
+    } else {
 
-  var data = {
-    msyscompname: $('#edit-msyscompname').val(),
-    msyscompphone: $('#edit-msyscompphone').val(),
-    msyscompfax: $('#edit-msyscompfax').val(),
-    msyscompemail: $('#edit-msyscompemail').val(),
-    msyscompwebsite: $('#edit-msyscompwebsite').val(),
-    msyscompstartdate: $('#edit-msyscompstartdate').val(),
-    msyscompcurrency: $('#edit-msyscompcurrency').val(),
-    msyscompaddress: $('#edit-msyscompaddress').val(),
-    msyscomplogo: $('#edit-msyscomplogo').val(),
-    msyscomptaxpayeridnumber: $('#edit-msyscomptaxpayeridnumber').val(),
-    msyscomptaxable: $('#edit-msyscomptaxable').is(':checked'),
-    msyscomptaxabledate: $('#edit-msyscomptaxabledate').val(),
-    msyscomptaxablenumber: $('#edit-msyscomptaxablenumber').val(),
-    msyscompklu: $('#edit-msyscompklu').val(),
-    msyscomptaxpayeridaddress: $('#edit-msyscomptaxpayeridaddress').val(),
-    msysgenmanufacturingacc: $('#edit-msysgenmanufacturingacc').is(':checked'),
-    msysgenmultibranch: $('#edit-msysgenmultibranch').is(':checked'),
-    msysgenmulticurrency: $('#edit-msysgenmulticurrency').is(':checked'),
-    msysgendefaulttax: $('#edit-msysgendefaulttax').is(':checked'),
-    msysgenapproval: $('#edit-msysgenapproval').is(':checked'),
-    msysgenfixedasset: $('#edit-msysgenfixedasset').is(':checked'),
-    msysgenrounddec: $('#edit-msysgenrounddec').val(),
-    msysprefixgoods: $('#edit-msysprefixgoods').val(),
-    msysprefixsupplier: $('#edit-msysprefixsupplier').val(),
-    msysprefixcustomer: $('#edit-msysprefixcustomer').val(),
-    msysprefixemployee: $('#edit-msysprefixemployee').val(),
-    msysprefixinvquotation: $('#edit-msysprefixinvquotation').val(),
-    msysprefixinvorder: $('#edit-msysprefixinvorder').val(),
-    msysprefixinvoice: $('#edit-msysprefixinvoice').val(),
-    msysprefixpurchrequest: $('#edit-msysprefixpurchrequest').val(),
-    msysprefixpurchorder: $('#edit-msysprefixpurchorder').val(),
-    msysprefixpurchinv: $('#edit-msysprefixpurchinv').val(),
-    msysprefixedasset: $('#edit-msysprefixedasset').val(),
-    msysprefixcashreceipt: $('#edit-msysprefixcashreceipt').val(),
-    msysprefixcashout: $('#edit-msysprefixcashout').val(),
-    msysprefixbankrecon: $('#edit-msysprefixbankrecon').val()
-  };
-  $.ajax({
-    method: 'PUT',
-    url: API_URL+"/mconfig",
-    dataType: "json",
-    data: data,
-    success: function(response){
-      console.log(response);
-      window.location.href="#forminput";
-      swal({
-        title: "Input Berhasil!",
-        type: "success",
-        timer: 1000
-      });
-    },
-    error: function(response){
-      console.log(response);
     }
-  })
+  }
+
 }

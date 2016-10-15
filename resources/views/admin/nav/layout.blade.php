@@ -23,7 +23,7 @@
 		<link rel="stylesheet" type="text/css" media="screen" href="{{URL::to('/')}}/css/smartadmin-rtl.min.css">
 		<!-- SweetAlert  -->
 		<link rel="stylesheet" type="text/css" href="{{URL::to('/')}}/master/1/dist/sweetalert.css">
-		
+
 		<!-- We recommend you use "your_style.css" to override SmartAdmin
 		     specific styles this will also ensure you retrain your customization with each SmartAdmin update.
 		<link rel="stylesheet" type="text/css" media="screen" href="css/your_style.css"> -->
@@ -367,29 +367,7 @@
 				traditional href="" links. See documentation for details.
 				-->
 
-				<ul>
-					<li class="active">
-						<a href="#" title="Dashboard"><i class="fa fa-lg fa-fw fa-home"></i> <span class="menu-item-parent">Dashboard</span></a>
-				
-					</li>
-
-					<li>
-						<a href="#"><i class="fa fa-lg fa-fw fa-table"></i> <span class="menu-item-parent">Tables</span></a>
-						<ul>
-							<li>
-								<a href="{{URL::to('/')}}/admin-nano/cabang">CABANG</a>
-							</li>
-							<li>
-								<a href="{{URL::to('/')}}/admin-nano/barang">BARANG</a>	</li>
-					
-						</ul>
-					</li>
-
-								<!-- END DISPLAY USERS -->
-							</li>
-						</ul>
-					</li>
-				</ul>
+				@include('admin.nav.nav')
 			</nav>
 
 
