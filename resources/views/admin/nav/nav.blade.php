@@ -1,11 +1,11 @@
 <ul>
   @if($active == 'dashboard')
     <li class="active">
-      <a href="{{ url('admin-nano') }}" title="Dashboard"><i class="fa fa-lg fa-fw fa-home"></i> <span class="menu-item-parent">Dashboard</span></a>
+      <a href="{{ url('admin-nano/index') }}" title="Dashboard"><i class="fa fa-lg fa-fw fa-home"></i> <span class="menu-item-parent">Dashboard</span></a>
     </li>
   @else
     <li>
-      <a href="{{ url('admin-nano') }}" title="Dashboard"><i class="fa fa-lg fa-fw fa-home"></i> <span class="menu-item-parent">Dashboard</span></a>
+      <a href="{{ url('admin-nano/index') }}" title="Dashboard"><i class="fa fa-lg fa-fw fa-home"></i> <span class="menu-item-parent">Dashboard</span></a>
     </li>
   @endif
   <li>
