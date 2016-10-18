@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class RenameMgoods extends Migration
+class CreateMcategorygoods extends Migration
 {
     /**
      * Run the migrations.
@@ -12,8 +12,12 @@ class RenameMgoods extends Migration
      */
     public function up()
     {
-        Schema::table('mgoods',function(Blueprint $table){
-          $table->renameColumn('mgoodscoapurchasing','mgoodscoapurchasing');
+        Schema::create('mcategorygoods', function (Blueprint $table) {
+        $table->increments('id');
+        $table->string('category_name');
+        $table->string('information');
+        $table->string('void');
+        $table->timestamps();
         });
     }
 
@@ -24,6 +28,6 @@ class RenameMgoods extends Migration
      */
     public function down()
     {
-        //
+        Schema::drop('mcategorygoods');
     }
 }
