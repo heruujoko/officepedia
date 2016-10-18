@@ -15,7 +15,7 @@ class MBranchController extends Controller
 
 
 	public function index(){
-		 $this->iteration = 0;
+		$this->iteration = 0;
         $mbranch = MBRANCH::where('void', '0')->orderby('created_at','desc')->get();
         return Datatables::of($mbranch)->addColumn('action', function($mbranch){
 
@@ -59,7 +59,7 @@ class MBranchController extends Controller
 	}
 
 	public function destroy($id){
-		$mbranch = MBRANCH::find($id);
+	$mbranch = MBRANCH::find($id);
     DB::table('mbranch')->where('id',$id)->update(['void' => '1']);
     return redirect('admin-nano/cabang#main');
 	}
