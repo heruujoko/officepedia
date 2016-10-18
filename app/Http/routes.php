@@ -15,17 +15,17 @@ Route::group(['prefix'=>'admin-nano'],function(){
   Route::get('mcoa/export/csv','MCOAController@csv');
   Route::get('mcoaparent','MCOAParentController@index');
   Route::resource('mcoa','MCOAController');
-  
+
   Route::get('pelanggan','MCustomerController@index');
   Route::get('pelanggan/export/csv','MCustomerController@csv');
   Route::get('pelanggan/export/excel','MCustomerController@excel');
   Route::get('pelanggan/export/pdf','MCustomerController@pdf');
   Route::get('pelanggan/insert/{id}/{activetab}','MCustomerController@editmcustomercontact');
-  
+
   Route::get('mprefix/export/csv','MPrefixController@csv');
   Route::get('mprefix/export/excel','MPrefixController@excel');
   Route::get('mprefix/export/pdf','MPrefixController@pdf');
-  
+
   Route::get('cabang/export/csv','MBranchController@csv');
   Route::get('cabang/export/excel','MBranchController@excel');
   Route::get('cabang/export/pdf','MBranchController@pdf');
@@ -49,7 +49,7 @@ Route::group(['prefix'=>'admin-nano'],function(){
   Route::get('cashbank/bank/export/pdf','CashBankListController@pdf_bank');
 
   Route::resource('mprefix','MPrefixController');
-  
+
   Route::get('barang','MGoodsController@index');
   Route::get('barang/export/csv','MGoodsController@csv');
   Route::get('barang/export/excel','MGoodsController@excel');
@@ -59,22 +59,27 @@ Route::group(['prefix'=>'admin-nano'],function(){
   Route::get('mcategorycustomer/export/csv','MCategorycustomerController@csv');
   Route::get('mcategorycustomer/export/excel','MCategorycustomerController@excel');
   Route::get('mcategorycustomer/export/pdf','MCategorycustomerController@pdf');
-  
+
   Route::get('mcategorysupplier','MCategorysupplierController@index');
   Route::get('mcategorysupplier/export/csv','MCategorysupplier@csv');
   Route::get('mcategorysupplier/export/excel','MCategorysupplierController@excel');
   Route::get('mcategorysupplier/export/pdf','MCategorysupplierController@pdf');
-    
+
   Route::get('mcategorygoods','MCategorygoodsController@index');
   Route::get('mcategorygoods/export/csv','MCategorygoodsController@csv');
   Route::get('mcategorygoods/export/excel','MCategorygoodsController@excel');
   Route::get('mcategorygoods/export/pdf','MCategorygoodsController@pdf');
-  
+
   Route::get('mcategoryfixedassets','MCategoryfixedassetsController@index');
   Route::get('mcategoryfixedassets/export/csv','MCategoryfixedassetsController@csv');
   Route::get('mcategoryfixedassets/export/excel','MCategoryfixedassetsController@excel');
   Route::get('mcategoryfixedassets/export/pdf','MCategoryfixedassetsController@pdf');
-  
+
+  Route::get('mcategorygoodsmark','MGoodsMarkController@index');
+  Route::get('mcategorygoodsmark/export/csv','MGoodsMarkController@csv');
+  Route::get('mcategorygoodsmark/export/excel','MGoodsMarkController@excel');
+  Route::get('mcategorygoodsmark/export/pdf','MGoodsMarkController@pdf');
+
   Route::controllers([
     '/'=>'AdminController'
   ]);
@@ -82,7 +87,7 @@ Route::group(['prefix'=>'admin-nano'],function(){
 });
 
 
-  
+
   //API
   Route::group(['prefix'=>'admin-api',['middleware' => 'api']],function(){
   Route::get('mcoa/tree','Api\MCOAController@tree');
@@ -112,6 +117,7 @@ Route::group(['prefix'=>'admin-nano'],function(){
   Route::resource('mcategorysupplier','Api\MCategorysupplierController');
   Route::resource('mcategorygoods','Api\MCategorygoodsController');
   Route::resource('mcategoryfixedassets','Api\MCategoryfixedassetsController');
+  Route::resource('mcategorygoodsmark','Api\MGoodsMarkController');
   Route::controllers([
     '/'=>'ApiController'
   ]);

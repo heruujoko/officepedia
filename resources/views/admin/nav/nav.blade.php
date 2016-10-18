@@ -36,7 +36,7 @@
         <a href="{{URL::to('/')}}/admin-nano/mcoa">Master Akun</a>
       </li>
       @endif
-      <li><a href="">Master Kategori Aset Tetap</a></li>
+      <li><a href="{{ url('admin-nano/mcategoryfixedassets') }}">Master Kategori Aset Tetap</a></li>
       <li><a href="">Pembelian Aset Tetap</a></li>
     </ul>
   </li>
@@ -61,7 +61,7 @@
     <a href="#"><i class="fa fa-lg fa-fw fa-shopping-cart"></i> <span class="menu-item-parent">Pembelian</span></a>
     <ul>
       <li><a href="{{ url('admin-nano/msupplier') }}">Master Supplier</a></li>
-      <li><a href="">Master Kategori Supplier</a></li>
+      <li><a href="{{ url('admin-nano/mcategorysupplier') }}">Master Kategori Supplier</a></li>
     </ul>
   </li>
   <li>
@@ -76,7 +76,7 @@
           <a href="{{URL::to('/')}}/admin-nano/pelanggan">Master Customer</a>
         </li>
       @endif
-      <li><a href="">Master Kategori Customer</a></li>
+      <li><a href="{{ url('admin-nano/mcategorycustomer') }}">Master Kategori Customer</a></li>
       <li><a href="">Master Kategori Harga</a></li>
     </ul>
   </li>
@@ -92,8 +92,8 @@
           <a href="{{URL::to('/')}}/admin-nano/barang">Master Barang</a>
         </li>
       @endif
-      <li><a href="">Master Kategori Barang</a></li>
-      <li><a href="">Master Merek Barang</a></li>
+      <li><a href="{{ url('admin-nano/mcategorygoods') }}">Master Kategori Barang</a></li>
+      <li><a href="{{ url('admin-nano/mcategorygoodsmark')}}">Master Merek Barang</a></li>
     </ul>
   </li>
   <li>
