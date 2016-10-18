@@ -1,6 +1,16 @@
 var API_URL = '/nano/public/admin-api';
 var WEB_URL = '/nano/public/admin-nano';
 
+$('#edit-msyscomptaxable').on('switchChange.bootstrapSwitch',function(event,state){
+  if(state){
+    $('#edit-msyscomptaxabledate').prop('disabled',false);
+    $('#edit-msyscomptaxablenumber').prop('disabled',false);
+  } else {
+    $('#edit-msyscomptaxabledate').prop('disabled',true);
+    $('#edit-msyscomptaxablenumber').prop('disabled',true);
+  }
+});
+
 $(document).ready(function(){
 
   $('.datepicker').datepicker({

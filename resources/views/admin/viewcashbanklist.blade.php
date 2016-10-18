@@ -12,7 +12,7 @@
 		</span>
 		<!-- breadcrumb -->
 		<ol class="breadcrumb">
-			<li>Home</li><li>Pelanggan</li><li>Data Pelanggan</li>
+			<li>Home</li><li>Kas Bank</li><li>{{ $section }}</li>
 		</ol>
 	</div>
 	<!-- END RIBBON -->
@@ -22,9 +22,9 @@
 			<div class="col-xs-12 col-sm-7 col-md-7 col-lg-4">
 				<h1 class="page-title txt-color-blueDark">
 					<i class="fa fa-table fa-fw "></i>
-						Pelanggan
+						Kas Bank
 					<span>
-						Data Pelanggan
+						{{ $section }}
 					</span>
 				</h1>
 			</div>
@@ -56,10 +56,6 @@
 									<div class="container">
 										<div class="row">
 											<h2></h2>
-											<ul class="nav nav-tabs" style="padding-left:10px;">
-												<li class="active"><a data-toggle="tab" href="#menu1">Master Kas</a></li>
-												<li><a data-toggle="tab" href="#menu2">Master Bank</a></li>
-											</ul>
 											<div id="insert-wrapper" class="tab-content">
 												<div id="menu1" class="tab-pane fade in active">
 													<div class="container">
@@ -70,9 +66,6 @@
 																		<tr>
 																			<th class="hasinput" style="width:5%">
 																			</th>
-																			<th class="hasinput" style="width:1%">
-																				<input type="text" class="form-control" placeholder="Filter No" />
-																			</th>
 																			<th class="hasinput" style="width:9%">
 																				<input type="text" class="form-control" placeholder="Filter Akun" />
 																			</th>
@@ -82,7 +75,6 @@
 																		</tr>
 																		<tr>
 																				<th data-hide="action"><center>Aksi</center></th>
-																				<th data-hide="no"><center>No</center></th>
 																				<th data-hide="mcoaname"><center>Nama Akun</center></th>
 																				<th data-hide="rightsaldo"><center>Saldo</center></th>
 																		</tr>
@@ -91,7 +83,7 @@
 																	</tbody>
 																	<tfoot>
 																		<tr>
-																			<th colspan="3" style="text-align:center;">TOTAL</th>
+																			<th colspan="2" style="text-align:center;">TOTAL</th>
 																			<td style="text-align:right"><span id="totalcash">0</span></td>
 																		</tr>
 																	</tfoot>
@@ -101,44 +93,6 @@
 													<div>
 												</div>
 											</div>
-										</div>
-										<div id="menu2" class="tab-pane fade">
-											<div class="container">
-												<div class="row">
-													<div class="col-md-12" style="margin-top:30px">
-														<table id="tablebank" class="table table-bordered" width="100%">
-															<thead>
-																<tr>
-																	<th class="hasinput" style="width:5%">
-																	</th>
-																	<th class="hasinput" style="width:1%">
-																		<input type="text" class="form-control" placeholder="Filter No" />
-																	</th>
-																	<th class="hasinput" style="width:9%">
-																		<input type="text" class="form-control" placeholder="Filter Akun" />
-																	</th>
-																	<th class="hasinput" style="width:9%">
-																		<input type="text" class="form-control" placeholder="Filter Saldo" />
-																	</th>
-																</tr>
-																<tr>
-																		<th data-hide="action"><center>Aksi</center></th>
-																		<th data-hide="no"><center>No</center></th>
-																		<th data-hide="mcoaname"><center>Nama Akun</center></th>
-																		<th data-hide="rightsaldo"><center>Saldo</center></th>
-																</tr>
-															</thead>
-															<tbody>
-															</tbody>
-															<tfoot>
-																<tr>
-																	<th colspan="3" style="text-align:center;">TOTAL</th>
-																	<td style="text-align:right"><span id="totalbank">0</span></td>
-																</tr>
-															</tfoot>
-														</table>
-													</div>
-												</div>
 										</div>
 									</div>
 							</div>
@@ -179,7 +133,7 @@
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title">Tambah Master Kas</h4>
+        <h4 class="modal-title">Edit Master Kas</h4>
       </div>
 			<input type="hidden" id="mcoaid">
 			<div id="editmodalkas-wrapper" data-parsley-validate>
@@ -220,7 +174,7 @@
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title">Tambah Master Bank</h4>
+        <h4 class="modal-title">Edit Master Bank</h4>
       </div>
 			<input type="hidden" id="mcoaidbank">
 			<div id="editmodalbank-wrapper" data-parsley-validate>
@@ -256,6 +210,12 @@ $(function(){
 										text: 'Tambah Master Kas',
 										action: function(){
 											add_master_kas();
+										}
+								},
+								{
+										text: 'Tambah Master Bank',
+										action: function(){
+											add_master_bank();
 										}
 								},
 								{
@@ -300,7 +260,6 @@ $(function(){
 						ajax: '{{URL::to('/')}}/admin-api/cashbank/cash',
 						columns: [
 						{data: 'action', name:'action', searchable: false, orderable: false},
-						{data: 'no', no: 'no' },
 						{data: 'mcoaname', mcoaname: 'mcoaname'},
 						{data: 'rightsaldo', rightsaldo: 'rightsaldo'}
 						]
@@ -460,6 +419,12 @@ $(".sa-button-container").parent().find(".cancel").hover(
 
 @section('css')
   <style>
+		#tableapi {
+			border: 1px solid #ddd !important;
+		}
+		#tablebank {
+			border: 1px solid #ddd !important;
+		}
     .sorting_1 {
 			text-align: left !important;
 		}

@@ -15,7 +15,7 @@ class CashBankListController extends Controller
     private $iteration;
 
     public function cash(){
-      $kas = MCOA::where('mcoaparentcode','1101.00')->get();
+      $kas = MCOA::where('mcoaparentcode','1101.00')->orWhere('mcoaparentcode','1102.00')->get();
       return Datatables::of($kas)->addColumn('action', function($kas){
         return '<center><div class="button">
         <a class="btn btn-primary btn-xs dropdown-toggle fa fa-pencil" onclick="edit_kas('.$kas->id.')"> <font style="font-family: arial;">Ubah &nbsp</font></a>
@@ -25,7 +25,7 @@ class CashBankListController extends Controller
           $this->iteration++;
           return "<span>".$this->iteration."</span>";
       })->addColumn('rightsaldo',function($kas){
-            return "<span style=\"float:right\">".$kas->saldo."</span>";
+            return "<span style=\"float:right\">".number_format($kas->saldo,null,null,",")."</span>";
         })
       ->make(true);
     }
@@ -41,7 +41,7 @@ class CashBankListController extends Controller
           $this->iteration++;
           return "<span>".$this->iteration."</span>";
       })->addColumn('rightsaldo',function($kas){
-            return "<span style=\"float:right\">".$kas->saldo."</span>";
+            return "<span style=\"float:right\">".number_format($kas->saldo,null,null,",")."</span>";
         })
       ->make(true);
     }
@@ -105,10 +105,11 @@ class CashBankListController extends Controller
 
     public function total($code){
       $total = 0;
-      $akun = MCOA::where('mcoaparentcode',$code)->get();
+      $akun = MCOA::where('mcoaparentcode','1102.00')->orWhere('mcoaparentcode','1101.00')->get();
       foreach($akun as $ak){
         $total += $ak->saldo;
       }
+      $total = number_format($total,null,null,",");
       return response()->json($total);
     }
 }

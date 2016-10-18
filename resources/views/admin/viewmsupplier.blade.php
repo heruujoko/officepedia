@@ -248,44 +248,15 @@
                             <label class="col-md-2 control-label"><b>Akun</b>  &nbsp  :</label>
           									<div class="col-md-4">
           										<div class="icon-addon addon-md">
-          											<select class="form-control select2" name="msuppliercoa" id="insert-msuppliercoa">
+          											<select class="form-control select2-bold" name="msuppliercoa" id="insert-msuppliercoa">
                                   @foreach($mcoa as $coa)
                                     @if($coa->id == 8)
-                                      <option selected value="{{ $coa->id }}">{{ $coa->mcoaname }}</option>
+                                      <option selected value="{{ $coa->id }}">{{ $coa->mcoacode }} {{ $coa->mcoaname }}</option>
                                     @else
-                                      <option value="{{ $coa->id }}">{{ $coa->mcoaname }}</option>
+                                      <option value="{{ $coa->id }}">{{ $coa->mcoacode }} {{ $coa->mcoaname }}</option>
                                     @endif
                                   @endforeach
                                 </select>
-          										</div>
-          									</div>
-                          </div>
-                          <div style="height: 21px;" class="form-group">
-                            <label class="col-md-2 control-label"><b>TOP</b>  &nbsp  :</label>
-          									<div class="col-md-4">
-          										<div class="icon-addon addon-md">
-          											<select class="form-control select2" name="msuppliercoatop" id="insert-msuppliertop">
-                                  <option value="cash">Cash</option>
-                                  <option selected value="credit">Credit</option>
-                                </select>
-          										</div>
-          									</div>
-                          </div>
-                          <div style="height: 21px;" class="form-group">
-                            <label class="col-md-2 control-label"><b>Maksimal Nota</b>  &nbsp  :</label>
-          									<div  class="col-md-4">
-          										<div class="icon-addon addon-md">
-          											<input id="insert-msupplierarmax" value="{{old('msuppliercontactemailphone')}}" name="msupplierarmax" class="form-control forminput" placeholder="Maksimal Nota" type="text" @if (Session::has('autofocus')) autofocus @endif >
-          											<label for="mgoodsgroup1" class="glyphicon glyphicon-chevron-right" rel="tooltip" title="Maksimal Nota"></label>
-          										</div>
-          									</div>
-                          </div>
-                          <div style="height: 21px;" class="form-group">
-                            <label class="col-md-2 control-label"><b>Default</b>  &nbsp  :</label>
-          									<div  class="col-md-4">
-          										<div class="icon-addon addon-md">
-          											<input id="insert-msupplierdefaultar" value="0" name="msupplierdefaultar" class="form-control forminput" placeholder="Default" type="text" @if (Session::has('autofocus')) autofocus @endif >
-          											<label for="mgoodsgroup1" class="glyphicon glyphicon-chevron-right" rel="tooltip" title="Maksimal Nota"></label>
           										</div>
           									</div>
                           </div>
@@ -521,44 +492,15 @@
                             <label class="col-md-2 control-label"><b>Akun</b>  &nbsp  :</label>
           									<div class="col-md-4">
           										<div class="icon-addon addon-md">
-          											<select class="form-control select2" name="msuppliercoa" id="edit-msuppliercoa">
+          											<select class="form-control select2-bold" name="msuppliercoa" id="edit-msuppliercoa">
                                   @foreach($mcoa as $coa)
                                     @if($coa->id == 8)
-                                      <option selected value="{{ $coa->id }}">{{ $coa->mcoaname }}</option>
+                                      <option selected value="{{ $coa->id }}">{{ $coa->mcoacode }} {{ $coa->mcoaname }}</option>
                                     @else
-                                      <option value="{{ $coa->id }}">{{ $coa->mcoaname }}</option>
+                                      <option value="{{ $coa->id }}">{{ $coa->mcoacode }} {{ $coa->mcoaname }}</option>
                                     @endif
                                   @endforeach
                                 </select>
-          										</div>
-          									</div>
-                          </div>
-                          <div style="height: 21px;" class="form-group">
-                            <label class="col-md-2 control-label"><b>TOP</b>  &nbsp  :</label>
-          									<div class="col-md-4">
-          										<div class="icon-addon addon-md">
-          											<select class="form-control select2" name="msuppliercoatop" id="edit-msuppliertop">
-                                  <option value="cash">Cash</option>
-                                  <option selected value="credit">Credit</option>
-                                </select>
-          										</div>
-          									</div>
-                          </div>
-                          <div style="height: 21px;" class="form-group">
-                            <label class="col-md-2 control-label"><b>Maksimal Nota</b>  &nbsp  :</label>
-          									<div  class="col-md-4">
-          										<div class="icon-addon addon-md">
-          											<input id="edit-msupplierarmax" value="{{old('msuppliercontactemailphone')}}" name="msupplierarmax" class="form-control forminput" placeholder="Maksimal Nota" type="text" @if (Session::has('autofocus')) autofocus @endif >
-          											<label for="mgoodsgroup1" class="glyphicon glyphicon-chevron-right" rel="tooltip" title="Maksimal Nota"></label>
-          										</div>
-          									</div>
-                          </div>
-                          <div style="height: 21px;" class="form-group">
-                            <label class="col-md-2 control-label"><b>Default</b>  &nbsp  :</label>
-          									<div  class="col-md-4">
-          										<div class="icon-addon addon-md">
-          											<input id="edit-msupplierdefaultar" value="0" name="msupplierdefaultar" class="form-control forminput" placeholder="Default" type="text" @if (Session::has('autofocus')) autofocus @endif >
-          											<label for="mgoodsgroup1" class="glyphicon glyphicon-chevron-right" rel="tooltip" title="Maksimal Nota"></label>
           										</div>
           									</div>
                           </div>
@@ -793,44 +735,15 @@
                             <label class="col-md-2 control-label"><b>Akun</b>  &nbsp  :</label>
                             <div class="col-md-4">
                               <div class="icon-addon addon-md">
-                                <select disabled class="form-control select2" name="msuppliercoa" id="view-msuppliercoa">
+                                <select disabled class="form-control select2-bold" name="msuppliercoa" id="view-msuppliercoa">
                                   @foreach($mcoa as $coa)
                                     @if($coa->id == 8)
-                                      <option selected value="{{ $coa->id }}">{{ $coa->mcoaname }}</option>
+                                      <option selected value="{{ $coa->id }}">{{ $coa->mcoacode }} {{ $coa->mcoaname }}</option>
                                     @else
-                                      <option value="{{ $coa->id }}">{{ $coa->mcoaname }}</option>
+                                      <option value="{{ $coa->id }}">{{ $coa->mcoacode }} {{ $coa->mcoaname }}</option>
                                     @endif
                                   @endforeach
                                 </select>
-                              </div>
-                            </div>
-                          </div>
-                          <div style="height: 21px;" class="form-group">
-                            <label class="col-md-2 control-label"><b>TOP</b>  &nbsp  :</label>
-                            <div class="col-md-4">
-                              <div class="icon-addon addon-md">
-                                <select disabled class="form-control select2" name="msuppliercoatop" id="view-msuppliertop">
-                                  <option value="cash">Cash</option>
-                                  <option selected value="credit">Credit</option>
-                                </select>
-                              </div>
-                            </div>
-                          </div>
-                          <div style="height: 21px;" class="form-group">
-                            <label class="col-md-2 control-label"><b>Maksimal Nota</b>  &nbsp  :</label>
-                            <div  class="col-md-4">
-                              <div class="icon-addon addon-md">
-                                <input disabled id="view-msupplierarmax" value="{{old('msuppliercontactemailphone')}}" name="msupplierarmax" class="form-control forminput" placeholder="Maksimal Nota" type="text" @if (Session::has('autofocus')) autofocus @endif >
-                                <label for="mgoodsgroup1" class="glyphicon glyphicon-chevron-right" rel="tooltip" title="Maksimal Nota"></label>
-                              </div>
-                            </div>
-                          </div>
-                          <div style="height: 21px;" class="form-group">
-                            <label class="col-md-2 control-label"><b>Default</b>  &nbsp  :</label>
-                            <div  class="col-md-4">
-                              <div class="icon-addon addon-md">
-                                <input disabled id="view-msupplierdefaultar" value="0" name="msupplierdefaultar" class="form-control forminput" placeholder="Default" type="text" @if (Session::has('autofocus')) autofocus @endif >
-                                <label for="mgoodsgroup1" class="glyphicon glyphicon-chevron-right" rel="tooltip" title="Maksimal Nota"></label>
                               </div>
                             </div>
                           </div>

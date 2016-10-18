@@ -623,6 +623,21 @@
 					$('.select2').select2({
 						width: "100%"
 					});
+					$('.select2-bold').select2({
+						width: "100%",
+				    templateResult: formatOutput,
+						templateSelection: formatOutput
+				  });
+
+				  function formatOutput (optionElement) {
+				    if (!optionElement.id) { return optionElement.text; }
+						// optionElement.text = '<span><strong>' + optionElement.element.value + '</strong> ' + optionElement.text + '</span>'
+						var textElement = optionElement.text.split(" ");
+				    var $state = $(
+				      '<strong>' + textElement[0] + '</strong> <span>'+ textElement[1]+'</span>'
+				    );
+				    return $state;
+				  };
 					$('.phoneregex').mask('(0000) 000-000');
 					$('.mobileregex').mask('0000-0000-0000');
 					$('.buttons-colvis').click(function(){

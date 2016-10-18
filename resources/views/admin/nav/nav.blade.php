@@ -103,14 +103,6 @@
       <li><a href="">Master Mata Uang</a></li>
       <li><a href="">Master Pajak</a></li>
       <li><a href="">Master Penggajian Pegawai</a></li>
-    </ul>
-  </li>
-  <li class="">
-    <a href="{{URL::to('admin-nano')}}" title="Dashboard"><i class="fa fa-lg fa-fw fa-clipboard"></i> <span class="menu-item-parent">Laporan</span></a>
-  </li>
-  <li>
-    <a href="#"><i class="fa fa-lg fa-fw fa-random"></i> <span class="menu-item-parent">Cabang</span></a>
-    <ul>
       @if($active == 'cabang')
         <li class="active">
           <a href="{{URL::to('/')}}/admin-nano/cabang">Cabang</a>

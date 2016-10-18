@@ -100,13 +100,13 @@
                               <div class="form-group">
                                 <label class="col-md-3 control-label"><b>Foot Note Invoice</b> (<font color="red">*</font>) &nbsp  :</label>
                           			<div class="col-md-7">
-                                  <input id="edit-msysinvinvfootnote" value="" name="msysinvinvfootnote" class="form-control forminput" placeholder="Foot Note Invoice" type="text" required>
+																	<textarea rows="6" id="edit-msysinvinvfootnote" class="form-control forminput" placeholder="Foot Note Invoice" data-parsley-required-message="Field Ini Tidak Boleh Kosong" required></textarea>
                           			</div>
                               </div>
                               <div class="form-group">
                                 <label class="col-md-3 control-label"><b>Foot Note Penjualan</b> (<font color="red">*</font>) &nbsp  :</label>
                           			<div class="col-md-7">
-                                  <input id="edit-msysinvsellingfootnote" value="" name="msysinvsellingfootnote" data-parsley-required-message="Field Ini Tidak Boleh Kosong" class="form-control forminput" placeholder="Foot Note Penjualan" type="text" required>
+																	<textarea rows="6" id="edit-msysinvsellingfootnote" class="form-control forminput" placeholder="Foot Note Invoice" data-parsley-required-message="Field Ini Tidak Boleh Kosong" required></textarea>
                           			</div>
                               </div>
                               <div class="form-group">
@@ -178,13 +178,13 @@
                               <div class="form-group">
                                 <label class="col-md-3 control-label"><b>Foot Note Invoice</b> (<font color="red">*</font>) &nbsp  :</label>
                           			<div class="col-md-7">
-                                  <input id="edit-msyspurchinvfootnote" value="" name="msyspurchinvfootnote" data-parsley-required-message="Field Ini Tidak Boleh Kosong" class="form-control forminput" placeholder="Foot Note Invoice" type="text" required>
+																	<textarea rows="6" id="edit-msyspurchinvfootnote" class="form-control forminput" placeholder="Foot Note Invoice" data-parsley-required-message="Field Ini Tidak Boleh Kosong" required></textarea>
                           			</div>
                               </div>
                               <div class="form-group">
                                 <label class="col-md-3 control-label"><b>Foot Note Order Pembelian</b> (<font color="red">*</font>) &nbsp  :</label>
                           			<div class="col-md-7">
-                                  <input id="edit-msyspurchorderfootnote" value="" name="msyspurchorderfootnote" data-parsley-required-message="Field Ini Tidak Boleh Kosong" class="form-control forminput" placeholder="Foot Note Order Pembelian" type="text" required>
+																	<textarea rows="6" id="edit-msyspurchorderfootnote" class="form-control forminput" placeholder="Foot Note Invoice" data-parsley-required-message="Field Ini Tidak Boleh Kosong" required></textarea>
                           			</div>
                               </div>
                             </div>
@@ -204,9 +204,9 @@
                               <div class="form-group">
                                 <label class="col-md-3 control-label"><b>Persediaan - Pilihan Akun</b> &nbsp  :</label>
                           			<div class="col-md-4">
-                                  <select id="edit-msysaccstock" name="msysaccstock" class="form-control select2">
+                                  <select id="edit-msysaccstock" name="msysaccstock" class="form-control select2-bold">
                                     @foreach($mcoa as $c)
-                                      <option value="{{ $c->mcoacode }}">{{ $c->mcoaname }}</option>
+                                      <option value="{{ $c->mcoacode }}">{{ $c->mcoacode }} {{ $c->mcoaname }}</option>
                                     @endforeach
                                   </select>
                           			</div>
@@ -214,9 +214,9 @@
                               <div class="form-group">
                                 <label class="col-md-3 control-label"><b>Penjualan - Pilihan Akun</b> &nbsp  :</label>
                           			<div class="col-md-4">
-                                  <select id="edit-msysaccinv" name="msysaccinv" class="form-control select2">
+                                  <select id="edit-msysaccinv" name="msysaccinv" class="form-control select2-bold">
                                     @foreach($mcoa as $c)
-                                      <option value="{{ $c->mcoacode }}">{{ $c->mcoaname }}</option>
+                                      <option value="{{ $c->mcoacode }}">{{ $c->mcoacode }} {{ $c->mcoaname }}</option>
                                     @endforeach
                                   </select>
                           			</div>
@@ -224,9 +224,9 @@
                               <div class="form-group">
                                 <label class="col-md-3 control-label"><b>Retur Penjualan - Pilihan Akun</b> &nbsp  :</label>
                           			<div class="col-md-4">
-                                  <select id="edit-msysaccreturninv" name="msysaccreturninv" class="form-control select2">
+                                  <select id="edit-msysaccreturninv" name="msysaccreturninv" class="form-control select2-bold">
                                     @foreach($mcoa as $c)
-                                      <option value="{{ $c->mcoacode }}">{{ $c->mcoaname }}</option>
+                                      <option value="{{ $c->mcoacode }}">{{ $c->mcoacode }} {{ $c->mcoaname }}</option>
                                     @endforeach
                                   </select>
                           			</div>
@@ -234,9 +234,9 @@
                               <div class="form-group">
                                 <label class="col-md-3 control-label"><b>Discount Penjualan - Pilihan Akun</b> &nbsp  :</label>
                           			<div class="col-md-4">
-                                  <select id="edit-msysaccinvdisc" name="msysaccinvdisc" class="form-control select2">
+                                  <select id="edit-msysaccinvdisc" name="msysaccinvdisc" class="form-control select2-bold">
                                     @foreach($mcoa as $c)
-                                      <option value="{{ $c->mcoacode }}">{{ $c->mcoaname }}</option>
+                                      <option value="{{ $c->mcoacode }}">{{ $c->mcoacode }} {{ $c->mcoaname }}</option>
                                     @endforeach
                                   </select>
                           			</div>
@@ -244,9 +244,9 @@
                               <div class="form-group">
                                 <label class="col-md-3 control-label"><b>Barang Terkirim - Pilihan Akun</b> &nbsp  :</label>
                           			<div class="col-md-4">
-                                  <select id="edit-msysaccsentgoods" name="msysaccsentgoods" class="form-control select2">
+                                  <select id="edit-msysaccsentgoods" name="msysaccsentgoods" class="form-control select2-bold">
                                     @foreach($mcoa as $c)
-                                      <option value="{{ $c->mcoacode }}">{{ $c->mcoaname }}</option>
+                                      <option value="{{ $c->mcoacode }}">{{ $c->mcoacode }} {{ $c->mcoaname }}</option>
                                     @endforeach
                                   </select>
                           			</div>
@@ -254,9 +254,9 @@
                               <div class="form-group">
                                 <label class="col-md-3 control-label"><b>Beban Pokok Penjualan - Pilihan Akun</b> &nbsp  :</label>
                           			<div class="col-md-4">
-                                  <select id="edit-msysaccsellingexpense" name="msysaccsellingexpense" class="form-control select2">
+                                  <select id="edit-msysaccsellingexpense" name="msysaccsellingexpense" class="form-control select2-bold">
                                     @foreach($mcoa as $c)
-                                      <option value="{{ $c->mcoacode }}">{{ $c->mcoaname }}</option>
+                                      <option value="{{ $c->mcoacode }}">{{ $c->mcoacode }} {{ $c->mcoaname }}</option>
                                     @endforeach
                                   </select>
                           			</div>
@@ -264,9 +264,9 @@
                               <div class="form-group">
                                 <label class="col-md-3 control-label"><b>Retur Pembelian - Pilihan Akun</b> &nbsp  :</label>
                           			<div class="col-md-4">
-                                  <select id="edit-msysaccreturnpurchase" name="msysaccreturnpurchase" class="form-control select2">
+                                  <select id="edit-msysaccreturnpurchase" name="msysaccreturnpurchase" class="form-control select2-bold">
                                     @foreach($mcoa as $c)
-                                      <option value="{{ $c->mcoacode }}">{{ $c->mcoaname }}</option>
+                                      <option value="{{ $c->mcoacode }}">{{ $c->mcoacode }} {{ $c->mcoaname }}</option>
                                     @endforeach
                                   </select>
                           			</div>
@@ -274,9 +274,9 @@
                               <div class="form-group">
                                 <label class="col-md-3 control-label"><b>Barang Tertagih - Pilihan Akun</b> &nbsp  :</label>
                           			<div class="col-md-4">
-                                  <select id="edit-msysaccar" name="msysaccar" class="form-control select2">
+                                  <select id="edit-msysaccar" name="msysaccar" class="form-control select2-bold">
                                     @foreach($mcoa as $c)
-                                      <option value="{{ $c->mcoacode }}">{{ $c->mcoaname }}</option>
+                                      <option value="{{ $c->mcoacode }}">{{ $c->mcoacode }} {{ $c->mcoaname }}</option>
                                     @endforeach
                                   </select>
                           			</div>
@@ -284,9 +284,9 @@
                               <div class="form-group">
                                 <label class="col-md-3 control-label"><b>Modal Disetor - Pilihan Akun</b> &nbsp  :</label>
                           			<div class="col-md-4">
-                                  <select id="edit-msysaccpaidcapital" name="msysaccpaidcapital" class="form-control select2">
+                                  <select id="edit-msysaccpaidcapital" name="msysaccpaidcapital" class="form-control select2-bold">
                                     @foreach($mcoa as $c)
-                                      <option value="{{ $c->mcoacode }}">{{ $c->mcoaname }}</option>
+                                      <option value="{{ $c->mcoacode }}">{{ $c->mcoacode }} {{ $c->mcoaname }}</option>
                                     @endforeach
                                   </select>
                           			</div>
@@ -294,9 +294,9 @@
                               <div class="form-group">
                                 <label class="col-md-3 control-label"><b>Laba Ditahan - Pilihan Akun</b> &nbsp  :</label>
                           			<div class="col-md-4">
-                                  <select id="edit-msysaccretainedearning" name="msysaccretainedearning" class="form-control select2">
+                                  <select id="edit-msysaccretainedearning" name="msysaccretainedearning" class="form-control select2-bold">
                                     @foreach($mcoa as $c)
-                                      <option value="{{ $c->mcoacode }}">{{ $c->mcoaname }}</option>
+                                      <option value="{{ $c->mcoacode }}">{{ $c->mcoacode }} {{ $c->mcoaname }}</option>
                                     @endforeach
                                   </select>
                           			</div>
@@ -376,8 +376,6 @@
 <script src="{{ url('/js/bootstrap-switch.min.js') }}"></script>
 <script src="{{ url('/js/bootstrap-datepicker.min.js') }}"></script>
 <script src="{{ url('/master/sysfeature.js') }}"></script>
-<script>
-</script>
 @stop
 
 @section('css')
