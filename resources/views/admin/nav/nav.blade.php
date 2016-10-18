@@ -36,7 +36,11 @@
         <a href="{{URL::to('/')}}/admin-nano/mcoa">Master Akun</a>
       </li>
       @endif
-      <li><a href="{{ url('admin-nano/mcategoryfixedassets') }}">Master Kategori Aset Tetap</a></li>
+      @if($active == 'categoryfixedassets')
+        <li class="active"><a href="{{ url('admin-nano/mcategoryfixedassets') }}">Master Kategori Aset Tetap</a></li>
+      @else
+        <li><a href="{{ url('admin-nano/mcategoryfixedassets') }}">Master Kategori Aset Tetap</a></li>
+      @endif
       <li><a href="">Pembelian Aset Tetap</a></li>
     </ul>
   </li>
@@ -60,8 +64,16 @@
   <li>
     <a href="#"><i class="fa fa-lg fa-fw fa-shopping-cart"></i> <span class="menu-item-parent">Pembelian</span></a>
     <ul>
-      <li><a href="{{ url('admin-nano/msupplier') }}">Master Supplier</a></li>
-      <li><a href="{{ url('admin-nano/mcategorysupplier') }}">Master Kategori Supplier</a></li>
+      @if($active == 'supplier')
+        <li class="active"><a href="{{ url('admin-nano/msupplier') }}">Master Supplier</a></li>
+      @else
+        <li><a href="{{ url('admin-nano/msupplier') }}">Master Supplier</a></li>
+      @endif
+      @if($active == 'categorysupllier')
+        <li class="active"><a href="{{ url('admin-nano/mcategorysupplier') }}">Master Kategori Supplier</a></li>
+      @else
+        <li><a href="{{ url('admin-nano/mcategorysupplier') }}">Master Kategori Supplier</a></li>
+      @endif
     </ul>
   </li>
   <li>
@@ -76,7 +88,11 @@
           <a href="{{URL::to('/')}}/admin-nano/pelanggan">Master Customer</a>
         </li>
       @endif
-      <li><a href="{{ url('admin-nano/mcategorycustomer') }}">Master Kategori Customer</a></li>
+      @if($active == 'categorycustomer')
+        <li class="active"><a href="{{ url('admin-nano/mcategorycustomer') }}">Master Kategori Customer</a></li>
+      @else
+        <li><a href="{{ url('admin-nano/mcategorycustomer') }}">Master Kategori Customer</a></li>
+      @endif
       <li><a href="">Master Kategori Harga</a></li>
     </ul>
   </li>
@@ -92,14 +108,31 @@
           <a href="{{URL::to('/')}}/admin-nano/barang">Master Barang</a>
         </li>
       @endif
-      <li><a href="{{ url('admin-nano/mcategorygoods') }}">Master Kategori Barang</a></li>
-      <li><a href="{{ url('admin-nano/mcategorygoodsmark')}}">Master Merek Barang</a></li>
+      @if($active == 'categorygoods')
+        <li class="active"><a href="{{ url('admin-nano/mcategorygoods') }}">Master Kategori Barang</a></li>
+      @else
+        <li><a href="{{ url('admin-nano/mcategorygoods') }}">Master Kategori Barang</a></li>
+      @endif
+      @if($active == 'mgoodsmark')
+        <li class="active"><a href="{{ url('admin-nano/mcategorygoodsmark')}}">Master Merek Barang</a></li>
+      @else
+        <li><a href="{{ url('admin-nano/mcategorygoodsmark')}}">Master Merek Barang</a></li>
+      @endif
     </ul>
   </li>
   <li>
     <a href="#"><i class="fa fa-lg fa-fw fa-briefcase"></i> <span class="menu-item-parent">Lain-lain</span></a>
     <ul>
-      <li><a href="">Master Karyawan</a></li>
+      @if($active == 'memployee')
+        <li class="active"><a href="{{ url('admin-nano/memployee') }}">Master Karyawan</a></li>
+      @else
+        <li><a href="{{ url('admin-nano/memployee') }}">Master Karyawan</a></li>
+      @endif
+      @if($active == 'memployeelevel')
+        <li class="active"><a href="{{ url('admin-nano/memployeelevel')}}">Master Level Karyawan</a></li>
+      @else
+        <li><a href="{{ url('admin-nano/memployeelevel')}}">Master Level Karyawan</a></li>
+      @endif
       <li><a href="">Master Mata Uang</a></li>
       <li><a href="">Master Pajak</a></li>
       <li><a href="">Master Penggajian Pegawai</a></li>

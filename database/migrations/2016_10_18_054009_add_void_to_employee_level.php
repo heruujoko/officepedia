@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateEmployeeLevelCategory extends Migration
+class AddVoidToEmployeeLevel extends Migration
 {
     /**
      * Run the migrations.
@@ -12,10 +12,9 @@ class CreateEmployeeLevelCategory extends Migration
      */
     public function up()
     {
-        Schema::create('memployeelevel',function(Blueprint $table){
-          $table->increments('id');
-          $table->string('level')->nullable(false);
-          $table->string('information');
+        Schema::table('memployeelevel',function(Blueprint $table){
+          $table->integer('void');
+          $table->timestamps();
         });
     }
 
@@ -26,6 +25,6 @@ class CreateEmployeeLevelCategory extends Migration
      */
     public function down()
     {
-      Schema::drop('memployeelevel');
+        //
     }
 }
