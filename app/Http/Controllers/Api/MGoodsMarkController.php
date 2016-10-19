@@ -9,6 +9,7 @@ use App\Http\Controllers\Controller;
 use App\MGoodsMark;
 use Datatables;
 use Exception;
+use DB;
 
 class MGoodsMarkController extends Controller
 {
@@ -56,7 +57,9 @@ class MGoodsMarkController extends Controller
 	}
 	public function destroy($id){
     $mcategory = MGoodsMark::find($id);
-    DB::table('mcategorysupplier')->where('id',$id)->update(['void' => '1']);
+    // DB::table('mcategorygoodsmark')->where('id',$id)->update(['void' => '1']);
+    $mcategory->void = 1;
+    $mcategory->save();
     return response()->json();
 	}
 }

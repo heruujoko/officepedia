@@ -1020,7 +1020,7 @@
         if (isconfirm) {
           $.ajax({
             type: "DELETE",
-            url: API_URL+"/pelanggan/"+id,
+            url: API_URL+"/memployee/"+id,
             success: function(response){
               console.log(response);
               table.ajax.reload();

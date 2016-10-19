@@ -55,8 +55,10 @@ class MEmployeeLevelController extends Controller
 
   }
   public function destroy($id){
-    $mcategory = MEmployeeLevel::find($id);
-    DB::table('mcategorysupplier')->where('id',$id)->update(['void' => '1']);
+    $level = MEmployeeLevel::find($id);
+    // DB::table('memployeelevel')->where('id',$id)->update(['void' => '1']);
+    $level->void = 1;
+    $level->save();
     return response()->json();
   }
 }

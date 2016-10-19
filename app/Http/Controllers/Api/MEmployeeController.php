@@ -59,4 +59,11 @@ class MEmployeeController extends Controller
       $empl = MEmployee::find($id);
       return response()->json($empl);
     }
+
+    public function destroy($id){
+      $empl = MEmployee::find($id);
+      $empl->void =1;
+      $empl->save();
+      return response()->json();
+    }
 }

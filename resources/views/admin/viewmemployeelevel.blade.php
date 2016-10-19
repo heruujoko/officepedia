@@ -382,7 +382,7 @@
         					  if (isconfirm) {
                       $.ajax({
                         type: "DELETE",
-                        url: API_URL+"/mcategorygoodsmark/"+id,
+                        url: API_URL+"/memployeelevel/"+id,
                         success: function(response){
                           table.ajax.reload();
                           window.location = "#tableapi";
