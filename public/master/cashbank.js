@@ -148,8 +148,8 @@ function insert_bank(){
       url: API_URL+"/cashbank/bank",
       data: data,
       success: function(response){
-        tablebank.ajax.reload();
-        window.location = "#tableapi";
+        refreshtbl();
+        window.location = "#tablebank";
         refreshtotal();
         swal({
           title: "Input Berhasil!",
@@ -185,7 +185,7 @@ function update_bank(){
       url: API_URL+"/cashbank/bank/"+id,
       success: function(response){
         tablebank.ajax.reload();
-        window.location = "#tableapi";
+        window.location = "#tablebank";
         refreshtotal();
         swal({
           title: "Input Berhasil!",

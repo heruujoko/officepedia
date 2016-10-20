@@ -36,7 +36,8 @@ class MEmployeeController extends Controller
       try{
         $new_empl = MEmployee::create($request->all());
         if($request->autogen == "true"){
-          $new_empl->autogenid();
+          // $new_empl->autogenid();
+          $new_empl->autogenproc();
           $new_empl->save();
         }
         return response()->json($new_empl);
