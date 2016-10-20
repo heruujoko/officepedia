@@ -3,7 +3,7 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
-
+use DB;
 class MGOODS extends Model
 {
     protected $table = 'mgoods';
@@ -14,5 +14,9 @@ class MGOODS extends Model
         'mgoodsbranches' => 'integer',
         'mgoodsuniquetransaction' => 'integer',
         ];
+
+    public function autogen(){
+      DB::select(DB::raw('call autogenmgoods('.$this->id.')'));
+    }
 
 }

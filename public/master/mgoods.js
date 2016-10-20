@@ -6,6 +6,22 @@ var WEB_URL = '/nano/public/admin-nano';
 
 $(document).ready(function(){
 
+  $('#autogenmgoods').attr('checked',true);
+  document.getElementById('insert-mgoodscode').disabled = $('#autogenmgoods').is(':checked');
+
+  if(document.getElementById('autogenmgoods')){
+    document.getElementById('autogenmgoods').onchange = function() {
+        document.getElementById('insert-mgoodscode').disabled = this.checked;
+        if($('#autogenmgoods').is(':checked')){
+          $('#insert-mgoodscode').removeAttr('required');
+          $('#insert-wrapper').parsley().validate();
+        } else{
+          $('#insert-mgoodscode').attr('required','true');
+          $('#insert-wrapper').parsley().validate();
+        }
+    };
+  }
+
   $('.nice-toggle').bootstrapSwitch({
     size: 'mini',
     onText: "Yes",
@@ -49,8 +65,8 @@ function insertmgoods(){
         mgoodscoasellingname: $('#insert-mgoodscoasellingname').val(),
         mgoodscoareturnofselling: $('#insert-mgoodscoareturnofselling').val(),
         mgoodscoareturnofsellingname: $('#insert-mgoodscoareturnofsellingname').val(),
-        mgoodscogs: $('#insert-mgoodscogs').val()
-
+        mgoodscogs: $('#insert-mgoodscogs').val(),
+        autogen : $('#autogenmgoods').is(':checked')
       }
       console.log(data);
       $.ajax({

@@ -52,6 +52,10 @@ class MGoodsController extends Controller
         $MGoods->mgoodsbranches = $this->convertBoolean($request->mgoodsbranches);
         $MGoods->mgoodsuniquetransaction = $this->convertBoolean($request->mgoodsuniquetransaction);
 				$MGoods->save();
+        if($request->autogen == "true"){
+          $MGoods->autogen();
+          $MGoods->save();
+        }
 				return response()->json($MGoods);
 			} catch(Exception $e){
 				return response()->json($e,400);

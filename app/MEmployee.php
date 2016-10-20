@@ -25,7 +25,7 @@ class MEmployee extends Model
     }
 
     public function autogenproc(){
-      DB::select(DB::raw('call autogenkaryawan('.$this->id.')'));
+      DB::select(DB::raw('call autogenmemployee('.$this->id.')'));
     }
 
     public function akun(){
