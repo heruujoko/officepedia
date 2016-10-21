@@ -5,6 +5,7 @@ namespace App;
 use Illuminate\Database\Eloquent\Model;
 use App\MConfig;
 use DB;
+use Exception;
 
 class MEmployee extends Model
 {
@@ -25,7 +26,28 @@ class MEmployee extends Model
     }
 
     public function autogenproc(){
-      DB::select(DB::raw('call autogenmemployee('.$this->id.')'));
+      $success = false;
+      try{
+        DB::select(DB::raw('call autogenmemployee('.$this->id.')'));
+      } catch(Exception $e){
+        do{
+          try{
+            $this->doublecheck();
+            $success = true;
+          }catch(Exception $e){
+            $success = false;
+          }
+        } while($success == false);
+      }
+
+    }
+
+    public function doublecheck($in){
+      $conf = MConfig::find(1);
+      $current = "";
+      $incr = $conf->msysprefixemployeecount+$in;
+
+      DB::select(DB::raw('call finduniquememployee('.$this->id.','.$incr.')'));
     }
 
     public function akun(){
