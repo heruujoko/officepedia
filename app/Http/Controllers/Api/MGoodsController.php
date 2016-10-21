@@ -77,7 +77,7 @@ class MGoodsController extends Controller
 	public function destroy($id){
 		$MGoods = MGoods::find($id);
     DB::table('MGoods')->where('id',$id)->update(['void' => '1']);
-    return redirect('admin-nano/barang#main');
+    return response()->json();
 	}
 
 	  public function gambar(Request $request){

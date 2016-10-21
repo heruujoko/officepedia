@@ -11,7 +11,7 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        // $this->call(MCOAFullSeeder::class);
+        $this->call(MCOAFullSeeder::class);
         $this->call(ConfigSeeder::class);
     }
 }

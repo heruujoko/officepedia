@@ -283,13 +283,13 @@
                             <label class="col-md-2 control-label"><b>Pembelian</b>  &nbsp  :</label>
                             <div class="col-md-4">
                               <div class="icon-addon addon-md">
-                                <select class="form-control select2" name="mgoodscoapurchasing" id="insert-mgoodscoapurchasing">
+                                <select class="form-control select2-bold" name="mgoodscoapurchasing" id="insert-mgoodscoapurchasing">
 
                                 @foreach($mcoa as $coa)
                                     @if($coa->id == 8)
-                                      <option value="{{ $coa->mcoacode }}">{{ $coa->mcoacode }}</option>
+                                      <option value="{{ $coa->mcoacode }}">{{ $coa->mcoacode }} {{ $coa->mcoaname }}</option>
                                     @else
-                                      <option value="{{ $coa->mcoacode }}">{{ $coa->mcoacode }}</option>
+                                      <option value="{{ $coa->mcoacode }}">{{ $coa->mcoacode }} {{ $coa->mcoaname }}</option>
                                     @endif
                                   @endforeach
 
@@ -301,12 +301,12 @@
                             <label class="col-md-2 control-label"><b>Hpp</b>  &nbsp  :</label>
                             <div class="col-md-4">
                               <div class="icon-addon addon-md">
-                                <select class="form-control select2" name="mgoodscoacogs" id="insert-mgoodscoacogs">
+                                <select class="form-control select2-bold" name="mgoodscoacogs" id="insert-mgoodscoacogs">
                                  @foreach($mcoa as $coa)
                                     @if($coa->id == 8)
-                                      <option value="{{ $coa->mcoacode }}">{{ $coa->mcoacode }}</option>
+                                      <option value="{{ $coa->mcoacode }}">{{ $coa->mcoacode }} {{ $coa->mcoaname }}</option>
                                     @else
-                                      <option value="{{ $coa->mcoacode }}">{{ $coa->mcoacode }}</option>
+                                      <option value="{{ $coa->mcoacode }}">{{ $coa->mcoacode }} {{ $coa->mcoaname }}</option>
                                     @endif
                                   @endforeach
                                 </select>
@@ -317,12 +317,12 @@
                             <label class="col-md-2 control-label"><b>Penjualan</b>  &nbsp  :</label>
                             <div class="col-md-4">
                               <div class="icon-addon addon-md">
-                                <select class="form-control select2" name="mgoodscoaselling" id="insert-mgoodscoaselling">
+                                <select class="form-control select2-bold" name="mgoodscoaselling" id="insert-mgoodscoaselling">
                                  @foreach($mcoa as $coa)
                                     @if($coa->id == 8)
-                                      <option value="{{ $coa->mcoacode }}">{{ $coa->mcoacode }}</option>
+                                      <option value="{{ $coa->mcoacode }}">{{ $coa->mcoacode }} {{ $coa->mcoaname }}</option>
                                     @else
-                                      <option value="{{ $coa->mcoacode }}">{{ $coa->mcoacode }}</option>
+                                      <option value="{{ $coa->mcoacode }}">{{ $coa->mcoacode }} {{ $coa->mcoaname }}</option>
                                     @endif
                                   @endforeach
                                 </select>
@@ -333,19 +333,19 @@
                             <label class="col-md-2 control-label"><b>Retur Penjualan</b>  &nbsp  :</label>
                             <div class="col-md-4">
                               <div class="icon-addon addon-md">
-                                <select class="form-control select2" name="mgoodscoareturnofselling" id="insert-mgoodscoareturnofselling">
+                                <select class="form-control select2-bold" name="mgoodscoareturnofselling" id="insert-mgoodscoareturnofselling">
                                  @foreach($mcoa as $coa)
                                     @if($coa->id == 8)
-                                      <option value="{{ $coa->mcoacode }}">{{ $coa->mcoacode }}</option>
+                                      <option value="{{ $coa->mcoacode }}">{{ $coa->mcoacode }} {{ $coa->mcoaname }}</option>
                                     @else
-                                      <option value="{{ $coa->mcoacode }}">{{ $coa->mcoacode }}</option>
+                                      <option value="{{ $coa->mcoacode }}">{{ $coa->mcoacode }} {{ $coa->mcoaname }}</option>
                                     @endif
                                   @endforeach
                                 </select>
                               </div>
                             </div>
                           </div>
-                          
+
                           <div style="height: 21px;" class="form-group">
                             <label class="col-md-2 control-label"><b>Informasi</b>  &nbsp  :</label>
                             <div  class="col-md-4">
@@ -553,7 +553,7 @@
                           </div>
                           <div style="height: 21px;" class="form-group">
                             <label class="col-md-3 control-label"><b>Group Barang 3</b>  &nbsp  :</label>
-                            
+
                             <div class="col-md-9 col-sm-12">
                               <div class="icon-addon addon-md">
                                 <input id="edit-mgoodsgroup3" value="{{old('mgoodsgroup3')}}" name="mgoodsgroup3" class="form-control forminput" placeholder="Group Barang 3" type="text" @if (Session::has('autofocus')) autofocus @endif >
@@ -666,7 +666,7 @@
                               </div>
                             </div>
                           </div>
-                          
+
                           <div style="height: 21px;" class="form-group">
                             <label class="col-md-2 control-label"><b>Informasi</b>  &nbsp  :</label>
                             <div  class="col-md-4">
@@ -982,7 +982,7 @@
                               </div>
                             </div>
                           </div>
-                          
+
                           <div style="height: 21px;" class="form-group">
                             <label class="col-md-2 control-label"><b>Informasi</b>  &nbsp  :</label>
                             <div  class="col-md-4">
