@@ -62,16 +62,19 @@ function insertmgoods(){
           swal({
             title: "Input Berhasil!",
             type: "success",
+            text: err_msg,
             timer: 1000
           });
           resetbarang();
           window.location = "#tableapi";
         },
         error: function(response){
+          var err_msg = response.responseJSON.errorInfo[2];
           swal({
             title: "Input Gagal!",
             type: "error",
-            timer: 1000
+            text: err_msg,
+            timer: 2000
           });
         }
       });
@@ -101,18 +104,18 @@ function editmgoods(id){
       $('#edit-mgoodsgroup1').val(response.mgoodsgroup1);
       $('#edit-mgoodsgroup2').val(response.mgoodsgroup2);
       $('#edit-mgoodsgroup3').val(response.mgoodsgroup3);
-      $('#edit-mgoodssuppliercode').val(response.mgoodssuppliercode);
+      $('#edit-mgoodssuppliercode').val(response.mgoodssuppliercode).change();
       $('#edit-mgoodssuppliername').val(response.mgoodssuppliername).change();
       $('#edit-mgoodsbranches').val(response.mgoodsbranches).change();
       $('#edit-mgoodsuniquetransaction').val(response.mgoodsuniquetransaction);
       $('#edit-mgoodspicture').val(response.mgoodspicture);
-      $('#edit-mgoodscoapurchasing').val(response.mgoodscoapurchasing);
+      $('#edit-mgoodscoapurchasing').val(response.mgoodscoapurchasing).change();
       $('#edit-mgoodscoapurchasingname').val(response.mgoodscoapurchasingname);
-      $('#edit-mgoodscoacogs').val(response.mgoodscoacogs);
+      $('#edit-mgoodscoacogs').val(response.mgoodscoacogs).change();
       $('#edit-mgoodscoacogsname').val(response.mgoodscoacogsname);
-      $('#edit-mgoodscoaselling').val(response.mgoodscoaselling);
+      $('#edit-mgoodscoaselling').val(response.mgoodscoaselling).change();
       $('#edit-mgoodscoasellingname').val(response.mgoodscoasellingname);
-      $('#edit-mgoodscoareturnofselling').val(response.mgoodscoareturnofselling);
+      $('#edit-mgoodscoareturnofselling').val(response.mgoodscoareturnofselling).change();
       $('#edit-mgoodscoareturnofsellingname').val(response.mgoodscoareturnofsellingname);
       $('#edit-mgoodscogs').val(response.mgoodscogs);
       $('#forminput').hide();
@@ -198,10 +201,12 @@ function updatemgoods(){
           resetbarang();
         },
         error: function(response){
+          var err_msg = response.responseJSON.errorInfo[2];
           swal({
             title: "Pengubahan Gagal!",
             type: "error",
-            timer: 1000
+            text: err_msg,
+            timer: 2000
           });
         }
       });
@@ -223,13 +228,6 @@ function updatemgoods(){
       $('#view-mgoodsunit').val(response.mgoodsunit);
       $('#view-mgoodsunit2').val(response.mgoodsunit2);
       $('#view-mgoodsunit3').val(response.mgoodsunit3);
-      if(response.mgoodsactive == 1){
-        $('#view-mgoodsactive').bootstrapSwitch('state',true);
-        $('#view-mgoodsactive').bootstrapSwitch('disabled', true);
-      } else {
-        $('#view-mgoodsactive').bootstrapSwitch('state',false);
-        $('#view-mgoodsactive').bootstrapSwitch('disabled', true);
-      }
       $('#view-mgoodspricein').val(response.mgoodspricein);
       $('#view-mgoodspriceout').val(response.mgoodspriceout);
       $('#view-mgoodstype').val(response.mgoodstype);
@@ -237,36 +235,45 @@ function updatemgoods(){
       $('#view-mgoodsgroup1').val(response.mgoodsgroup1);
       $('#view-mgoodsgroup2').val(response.mgoodsgroup2);
       $('#view-mgoodsgroup3').val(response.mgoodsgroup3);
-      $('#view-mgoodssuppliercode').val(response.mgoodssuppliercode);
+      $('#view-mgoodssuppliercode').val(response.mgoodssuppliercode).change();
       $('#view-mgoodssuppliername').val(response.mgoodssuppliername).change();
-      if(response.mgoodsbranches == 1){
-          $('#view-mgoodsbranches').bootstrapSwitch('state',true);
-          $('#view-mgoodsbranches').bootstrapSwitch('disabled',true);
-      } else {
-        $('#view-mgoodsbranches').bootstrapSwitch('state',false);
-        $('#view-mgoodsbranches').bootstrapSwitch('disabled',true);
-      }
-      if(response.mgoodsuniquetransaction == 1){
-          $('#view-mgoodsuniquetransaction').bootstrapSwitch('state',true);
-          $('#view-mgoodsuniquetransaction').bootstrapSwitch('disabled',true);
-      } else {
-        $('#view-mgoodsuniquetransaction').bootstrapSwitch('state',false);
-        $('#view-mgoodsuniquetransaction').bootstrapSwitch('disabled',true);
-      }
-
+      $('#view-mgoodsbranches').val(response.mgoodsbranches).change();
+      $('#view-mgoodsuniquetransaction').val(response.mgoodsuniquetransaction);
       $('#view-mgoodspicture').val(response.mgoodspicture);
-      $('#view-mgoodscoapurchasing').val(response.mgoodscoapurchasing);
+      $('#view-mgoodscoapurchasing').val(response.mgoodscoapurchasing).change();
       $('#view-mgoodscoapurchasingname').val(response.mgoodscoapurchasingname);
-      $('#view-mgoodscoacogs').val(response.mgoodscoacogs);
+      $('#view-mgoodscoacogs').val(response.mgoodscoacogs).change();
       $('#view-mgoodscoacogsname').val(response.mgoodscoacogsname);
-      $('#view-mgoodscoaselling').val(response.mgoodscoaselling);
+      $('#view-mgoodscoaselling').val(response.mgoodscoaselling).change();
       $('#view-mgoodscoasellingname').val(response.mgoodscoasellingname);
-      $('#view-mgoodscoareturnofselling').val(response.mgoodscoareturnofselling);
+      $('#view-mgoodscoareturnofselling').val(response.mgoodscoareturnofselling).change();
       $('#view-mgoodscoareturnofsellingname').val(response.mgoodscoareturnofsellingname);
       $('#view-mgoodscogs').val(response.mgoodscogs);
       $('#forminput').hide();
       $('#formedit').hide();
       $('#formview').show();
+      if(response.mgoodsactive == 1){
+        $('#view-mgoodsactive').bootstrapSwitch('state',true);
+        $('#view-mgoodsactive').bootstrapSwitch('disabled', true);
+      } else {
+        $('#view-mgoodsactive').bootstrapSwitch('state',false);
+        $('#view-mgoodsactive').bootstrapSwitch('disabled', true);
+      }
+
+      if(response.mgoodsbranches == 1){
+        $('#view-mgoodsbranches').bootstrapSwitch('state',true);
+        $('#view-mgoodsbranches').bootstrapSwitch('disabled',true);
+      }else {
+        $('#view-mgoodsbranches').bootstrapSwitch('state',false);
+        $('#view-mgoodsbranches').bootstrapSwitch('disabled',true);
+      }
+      if(response.mgoodsuniquetransaction == 1){
+        $('#view-mgoodsuniquetransaction').bootstrapSwitch('state',true);
+        $('#view-mgoodsuniquetransaction').bootstrapSwitch('disabled',true);
+      } else {
+        $('#view-mgoodsuniquetransaction').bootstrapSwitch('state',false);
+        $('#view-mgoodsuniquetransaction').bootstrapSwitch('disabled',true);
+      }
       setTimeout(function(){
           $("#mgoodsname").focus();
       },100);

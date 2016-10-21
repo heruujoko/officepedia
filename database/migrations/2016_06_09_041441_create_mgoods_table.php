@@ -36,13 +36,13 @@ class CreateMgoodsTable extends Migration
             $table->boolean('mgoodsuniquetransaction');
             $table->string('mgoodspicture');
             $table->string('mgoodscoapurchasing')->unique();
-            $table->string('mgoodscoapurchasingname')->unique();
+            $table->string('mgoodscoapurchasingname');
             $table->string('mgoodscoacogs')->unique();
-            $table->string('mgoodscoacogsname')->unique();
+            $table->string('mgoodscoacogsname');
             $table->string('mgoodscoaselling')->unique();
-            $table->string('mgoodscoasellingname')->unique();
+            $table->string('mgoodscoasellingname');
             $table->string('mgoodscoareturnofselling')->unique();
-            $table->string('mgoodscoareturnofsellingname')->unique();
+            $table->string('mgoodscoareturnofsellingname');
             $table->float('mgoodscogs');
             $table->string('void');
             $table->timestamps();

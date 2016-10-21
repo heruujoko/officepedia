@@ -273,91 +273,74 @@
                     <div id="menu3" class="tab-pane fade">
                       <div class="form form-horizontal" style="margin-top:21px;">
                         <div class="col-md-12">
+
                         <div style="height: 21px;" class="form-group">
-                            <label class="col-md-2 control-label"><b>Kode Pembelian</b>  &nbsp  :</label>
+                            <label class="col-md-2 control-label"><b>Pembelian</b>  &nbsp  :</label>
                             <div class="col-md-4">
                               <div class="icon-addon addon-md">
-                                <select class="form-control select2" name="mgoodcoapurchasing" id="insert-mgoodcoapurchasing">
+                                <select class="form-control select2" name="mgoodscoapurchasing" id="insert-mgoodscoapurchasing">
 
-                                <option value="mcoa">mcoa</option>
+                                @foreach($mcoa as $coa)
+                                    @if($coa->id == 8)
+                                      <option value="{{ $coa->mcoacode }}">{{ $coa->mcoacode }}</option>
+                                    @else
+                                      <option value="{{ $coa->mcoacode }}">{{ $coa->mcoacode }}</option>
+                                    @endif
+                                  @endforeach
 
                                 </select>
                               </div>
                             </div>
                           </div>
                           <div style="height: 21px;" class="form-group">
-                            <label class="col-md-2 control-label"><b>Nama Pembelian</b>  &nbsp  :</label>
-                            <div class="col-md-4">
-                              <div class="icon-addon addon-md">
-                                <select class="form-control select2" name="mgoodscoapurchasingname" id="insert-mgoodscoapurchasingname">
-
-                                <option value="mcoa">mcoa</option>
-
-                                </select>
-                              </div>
-                            </div>
-                          </div>
-                          <div style="height: 21px;" class="form-group">
-                            <label class="col-md-2 control-label"><b>Kode Hpp</b>  &nbsp  :</label>
+                            <label class="col-md-2 control-label"><b>Hpp</b>  &nbsp  :</label>
                             <div class="col-md-4">
                               <div class="icon-addon addon-md">
                                 <select class="form-control select2" name="mgoodscoacogs" id="insert-mgoodscoacogs">
-                                 <option value="mcoa">mcoa</option>
+                                 @foreach($mcoa as $coa)
+                                    @if($coa->id == 8)
+                                      <option value="{{ $coa->mcoacode }}">{{ $coa->mcoacode }}</option>
+                                    @else
+                                      <option value="{{ $coa->mcoacode }}">{{ $coa->mcoacode }}</option>
+                                    @endif
+                                  @endforeach
                                 </select>
                               </div>
                             </div>
                           </div>
-                          <div style="height: 21px;" class="form-group">
-                            <label class="col-md-2 control-label"><b>Nama Hpp</b>  &nbsp  :</label>
-                            <div class="col-md-4">
-                              <div class="icon-addon addon-md">
-                                <select class="form-control select2" name="mgoodscoacogsname" id="insert-mgoodscoacogsname">
-                                 <option value="mcoa">mcoa</option>
-                                </select>
-                              </div>
-                            </div>
-                          </div>
-                          <div style="height: 21px;" class="form-group">
+                         <div style="height: 21px;" class="form-group">
                             <label class="col-md-2 control-label"><b>Penjualan</b>  &nbsp  :</label>
                             <div class="col-md-4">
                               <div class="icon-addon addon-md">
                                 <select class="form-control select2" name="mgoodscoaselling" id="insert-mgoodscoaselling">
-                                 <option value="mcoa">mcoa</option>
+                                 @foreach($mcoa as $coa)
+                                    @if($coa->id == 8)
+                                      <option value="{{ $coa->mcoacode }}">{{ $coa->mcoacode }}</option>
+                                    @else
+                                      <option value="{{ $coa->mcoacode }}">{{ $coa->mcoacode }}</option>
+                                    @endif
+                                  @endforeach
                                 </select>
                               </div>
                             </div>
                           </div>
-                          <div style="height: 21px;" class="form-group">
-                            <label class="col-md-2 control-label"><b>Nama Penjualan</b>  &nbsp  :</label>
-                            <div class="col-md-4">
-                              <div class="icon-addon addon-md">
-                                <select class="form-control select2" name="mgoodscoasellingname" id="insert-mgoodscoasellingname">
-                                 <option value="mcoa">mcoa</option>
-                                </select>
-                              </div>
-                            </div>
-                          </div>
-
                           <div style="height: 21px;" class="form-group">
                             <label class="col-md-2 control-label"><b>Retur Penjualan</b>  &nbsp  :</label>
                             <div class="col-md-4">
                               <div class="icon-addon addon-md">
                                 <select class="form-control select2" name="mgoodscoareturnofselling" id="insert-mgoodscoareturnofselling">
-                                 <option value="mcoa">mcoa</option>
+                                 @foreach($mcoa as $coa)
+                                    @if($coa->id == 8)
+                                      <option value="{{ $coa->mcoacode }}">{{ $coa->mcoacode }}</option>
+                                    @else
+                                      <option value="{{ $coa->mcoacode }}">{{ $coa->mcoacode }}</option>
+                                    @endif
+                                  @endforeach
                                 </select>
                               </div>
                             </div>
                           </div>
-                          <div style="height: 21px;" class="form-group">
-                            <label class="col-md-2 control-label"><b>Nama Retur Penjualan</b>  &nbsp  :</label>
-                            <div class="col-md-4">
-                              <div class="icon-addon addon-md">
-                                <select class="form-control select2" name="mgoodscoareturnofsellingname" id="insert-mgoodscoareturnofsellingname">
-                                 <option value="mcoa">mcoa</option>
-                                </select>
-                              </div>
-                            </div>
-                          </div>
+                          
                           <div style="height: 21px;" class="form-group">
                             <label class="col-md-2 control-label"><b>Informasi</b>  &nbsp  :</label>
                             <div  class="col-md-4">
@@ -560,6 +543,7 @@
                           </div>
                           <div style="height: 21px;" class="form-group">
                             <label class="col-md-3 control-label"><b>Group Barang 3</b>  &nbsp  :</label>
+                            
                             <div class="col-md-9 col-sm-12">
                               <div class="icon-addon addon-md">
                                 <input id="edit-mgoodsgroup3" value="{{old('mgoodsgroup3')}}" name="mgoodsgroup3" class="form-control forminput" placeholder="Group Barang 3" type="text" @if (Session::has('autofocus')) autofocus @endif >
@@ -573,7 +557,7 @@
                               <div class="icon-addon addon-md">
                                 <select class="form-control select2" name="mgoodssuppliercode" id="edit-mgoodssuppliercode">
                                   @foreach($msupplier as $mg)
-                                 <option>{{$mg->msupplierid}}</option>
+                                 <option selected value="{{$mg->msupplierid}}">{{$mg->msupplierid}}</option>
                                 @endforeach
                                 </select>
                               </div>
@@ -585,7 +569,7 @@
                               <div class="icon-addon addon-md">
                                 <select class="form-control select2" name="mgoodssuppliername" id="edit-mgoodssuppliername">
                                  @foreach($msupplier as $mg)
-                                 <option>{{$mg->msuppliername}}</option>
+                                 <option selected value="{{$mg->msuppliername}}">{{$mg->msuppliername}}</option>
                                 @endforeach
                                 </select>
                               </div>
@@ -624,95 +608,60 @@
                       <div class="form form-horizontal" style="margin-top:21px;">
                         <div class="col-md-12">
                         <div style="height: 21px;" class="form-group">
-                            <label class="col-md-2 control-label"><b>Kode Pembelian</b>  &nbsp  :</label>
+                            <label class="col-md-2 control-label"><b>Pembelian</b>  &nbsp  :</label>
                             <div class="col-md-4">
                               <div class="icon-addon addon-md">
-                                <select class="form-control select2" name="mgoodcoapurchasing" id="edit-mgoodcoapurchasing">
-
-                                <option value="mcoa">mcoa</option>
+                                <select class="form-control select2" name="mgoodscoapurchasing" id="edit-mgoodscoapurchasing">
+                                @foreach($mcoa as $coa)
+                                  <option selected value="{{ $coa->mcoacode }}">{{ $coa->mcoacode }}</option>
+                                @endforeach
 
                                 </select>
                               </div>
                             </div>
                           </div>
                           <div style="height: 21px;" class="form-group">
-                            <label class="col-md-2 control-label"><b>Nama Pembelian</b>  &nbsp  :</label>
-                            <div class="col-md-4">
-                              <div class="icon-addon addon-md">
-                                <select class="form-control select2" name="mgoodscoapurchasingname" id="edit-mgoodscoapurchasingname">
-
-                                <option value="mcoa">mcoa</option>
-
-                                </select>
-                              </div>
-                            </div>
-                          </div>
-                          <div style="height: 21px;" class="form-group">
-                            <label class="col-md-2 control-label"><b>Kode Hpp</b>  &nbsp  :</label>
+                            <label class="col-md-2 control-label"><b>Hpp</b>  &nbsp  :</label>
                             <div class="col-md-4">
                               <div class="icon-addon addon-md">
                                 <select class="form-control select2" name="mgoodscoacogs" id="edit-mgoodscoacogs">
-                                 <option value="mcoa">mcoa</option>
+                                 @foreach($mcoa as $coa)
+                                  <option selected value="{{ $coa->mcoacode }}">{{ $coa->mcoacode }}</option>
+                                @endforeach
                                 </select>
                               </div>
                             </div>
                           </div>
-                          <div style="height: 21px;" class="form-group">
-                            <label class="col-md-2 control-label"><b>Nama Hpp</b>  &nbsp  :</label>
-                            <div class="col-md-4">
-                              <div class="icon-addon addon-md">
-                                <select class="form-control select2" name="mgoodscoacogsname" id="edit-mgoodscoacogsname">
-                                 <option value="mcoa">mcoa</option>
-                                </select>
-                              </div>
-                            </div>
-                          </div>
-                          <div style="height: 21px;" class="form-group">
+                         <div style="height: 21px;" class="form-group">
                             <label class="col-md-2 control-label"><b>Penjualan</b>  &nbsp  :</label>
                             <div class="col-md-4">
                               <div class="icon-addon addon-md">
                                 <select class="form-control select2" name="mgoodscoaselling" id="edit-mgoodscoaselling">
-                                 <option value="mcoa">mcoa</option>
+                                 @foreach($mcoa as $coa)
+                                  <option selected value="{{ $coa->mcoacode }}">{{ $coa->mcoacode }}</option>
+                                @endforeach
                                 </select>
                               </div>
                             </div>
                           </div>
-                          <div style="height: 21px;" class="form-group">
-                            <label class="col-md-2 control-label"><b>Nama Penjualan</b>  &nbsp  :</label>
-                            <div class="col-md-4">
-                              <div class="icon-addon addon-md">
-                                <select class="form-control select2" name="mgoodscoasellingname" id="edit-mgoodscoasellingname">
-                                 <option value="mcoa">mcoa</option>
-                                </select>
-                              </div>
-                            </div>
-                          </div>
-
                           <div style="height: 21px;" class="form-group">
                             <label class="col-md-2 control-label"><b>Retur Penjualan</b>  &nbsp  :</label>
                             <div class="col-md-4">
                               <div class="icon-addon addon-md">
                                 <select class="form-control select2" name="mgoodscoareturnofselling" id="edit-mgoodscoareturnofselling">
-                                 <option value="mcoa">mcoa</option>
+                                 @foreach($mcoa as $coa)
+                                  <option selected value="{{ $coa->mcoacode }}">{{ $coa->mcoacode }}</option>
+                                @endforeach
                                 </select>
                               </div>
                             </div>
                           </div>
-                          <div style="height: 21px;" class="form-group">
-                            <label class="col-md-2 control-label"><b>Nama Retur Penjualan</b>  &nbsp  :</label>
-                            <div class="col-md-4">
-                              <div class="icon-addon addon-md">
-                                <select class="form-control select2" name="mgoodscoareturnofsellingname" id="edit-mgoodscoareturnofsellingname">
-                                 <option value="mcoa">mcoa</option>
-                                </select>
-                              </div>
-                            </div>
-                          </div>
+                          
                           <div style="height: 21px;" class="form-group">
                             <label class="col-md-2 control-label"><b>Informasi</b>  &nbsp  :</label>
                             <div  class="col-md-4">
                               <div class="icon-addon addon-md">
-                                <input disabled id="edit-mgoodscogs" value="{{old('mgoodscogs')}}" name="mgoodscogs" class="form-control forminput" placeholder="Informasi" type="text" @if (Session::has('autofocus')) autofocus @endif >
+                                <input disabled id="insert-mgoodscogs" value="{{old('mgoodscogs')}}" name="mgoodscogs" class="form-control forminput" placeholder="Informasi" type="text" @if (Session::has('autofocus')) autofocus @endif >
                                 <label for="mgoodsgroup1" class="" rel="tooltip" title="Informasi"></label>
                               </div>
                             </div>
@@ -923,7 +872,7 @@
                               <div class="icon-addon addon-md">
                                 <select disabled class="form-control select2" name="mgoodssuppliercode" id="view-mgoodssuppliercode">
                                   @foreach($msupplier as $mg)
-                                 <option>{{$mg->msupplierid}}</option>
+                                 <option selected>{{$mg->msupplierid}}</option>
                                 @endforeach
                                 </select>
                               </div>
@@ -935,7 +884,7 @@
                               <div class="icon-addon addon-md">
                                 <select disabled class="form-control select2" name="mgoodssuppliername" id="view-mgoodssuppliername">
                                  @foreach($msupplier as $mg)
-                                 <option>{{$mg->msuppliername}}</option>
+                                 <option selected>{{$mg->msuppliername}}</option>
                                 @endforeach
                                 </select>
                               </div>
@@ -971,90 +920,55 @@
                       <div class="form form-horizontal" style="margin-top:21px;">
                         <div class="col-md-12">
                         <div style="height: 21px;" class="form-group">
-                            <label class="col-md-2 control-label"><b>Kode Pembelian</b>  &nbsp  :</label>
+                            <label class="col-md-2 control-label"><b>Pembelian</b>  &nbsp  :</label>
                             <div class="col-md-4">
                               <div class="icon-addon addon-md">
-                                <select disabled class="form-control select2" name="mgoodcoapurchasing" id="view-mgoodcoapurchasing">
-
-                                <option value="mcoa">mcoa</option>
+                                <select disabled class="form-control select2" name="mgoodscoapurchasing" id="view-mgoodscoapurchasing">
+                                @foreach($mcoa as $coa)
+                                  <option disabled selected value="{{ $coa->mcoacode }}">{{ $coa->mcoacode }}</option>
+                                @endforeach
 
                                 </select>
                               </div>
                             </div>
                           </div>
                           <div style="height: 21px;" class="form-group">
-                            <label class="col-md-2 control-label"><b>Nama Pembelian</b>  &nbsp  :</label>
-                            <div class="col-md-4">
-                              <div class="icon-addon addon-md">
-                                <select disabled class="form-control select2" name="mgoodscoapurchasingname" id="view-mgoodscoapurchasingname">
-
-                                <option value="mcoa">mcoa</option>
-
-                                </select>
-                              </div>
-                            </div>
-                          </div>
-                          <div style="height: 21px;" class="form-group">
-                            <label class="col-md-2 control-label"><b>Kode Hpp</b>  &nbsp  :</label>
+                            <label class="col-md-2 control-label"><b>Hpp</b>  &nbsp  :</label>
                             <div class="col-md-4">
                               <div class="icon-addon addon-md">
                                 <select disabled class="form-control select2" name="mgoodscoacogs" id="view-mgoodscoacogs">
-                                 <option value="mcoa">mcoa</option>
+                                 @foreach($mcoa as $coa)
+                                  <option disabled selected value="{{ $coa->mcoacode }}">{{ $coa->mcoacode }}</option>
+                                @endforeach
                                 </select>
                               </div>
                             </div>
                           </div>
-                          <div style="height: 21px;" class="form-group">
-                            <label class="col-md-2 control-label"><b>Nama Hpp</b>  &nbsp  :</label>
-                            <div class="col-md-4">
-                              <div class="icon-addon addon-md">
-                                <select disabled class="form-control select2" name="mgoodscoacogsname" id="view-mgoodscoacogsname">
-                                 <option value="mcoa">mcoa</option>
-                                </select>
-                              </div>
-                            </div>
-                          </div>
-                          <div style="height: 21px;" class="form-group">
+                         <div style="height: 21px;" class="form-group">
                             <label class="col-md-2 control-label"><b>Penjualan</b>  &nbsp  :</label>
                             <div class="col-md-4">
                               <div class="icon-addon addon-md">
                                 <select disabled class="form-control select2" name="mgoodscoaselling" id="view-mgoodscoaselling">
-                                 <option value="mcoa">mcoa</option>
+                                 @foreach($mcoa as $coa)
+                                  <option disabled selected value="{{ $coa->mcoacode }}">{{ $coa->mcoacode }}</option>
+                                @endforeach
                                 </select>
                               </div>
                             </div>
                           </div>
-                          <div style="height: 21px;" class="form-group">
-                            <label class="col-md-2 control-label"><b>Nama Penjualan</b>  &nbsp  :</label>
-                            <div class="col-md-4">
-                              <div class="icon-addon addon-md">
-                                <select disabled class="form-control select2" name="mgoodscoasellingname" id="view-mgoodscoasellingname">
-                                 <option value="mcoa">mcoa</option>
-                                </select>
-                              </div>
-                            </div>
-                          </div>
-
                           <div style="height: 21px;" class="form-group">
                             <label class="col-md-2 control-label"><b>Retur Penjualan</b>  &nbsp  :</label>
                             <div class="col-md-4">
                               <div class="icon-addon addon-md">
                                 <select disabled class="form-control select2" name="mgoodscoareturnofselling" id="view-mgoodscoareturnofselling">
-                                 <option value="mcoa">mcoa</option>
+                                 @foreach($mcoa as $coa)
+                                  <option disabled selected value="{{ $coa->mcoacode }}">{{ $coa->mcoacode }}</option>
+                                @endforeach
                                 </select>
                               </div>
                             </div>
                           </div>
-                          <div style="height: 21px;" class="form-group">
-                            <label class="col-md-2 control-label"><b>Nama Retur Penjualan</b>  &nbsp  :</label>
-                            <div class="col-md-4">
-                              <div class="icon-addon addon-md">
-                                <select disabled class="form-control select2" name="mgoodscoareturnofsellingname" id="view-mgoodscoareturnofsellingname">
-                                 <option value="mcoa">mcoa</option>
-                                </select>
-                              </div>
-                            </div>
-                          </div>
+                          
                           <div style="height: 21px;" class="form-group">
                             <label class="col-md-2 control-label"><b>Informasi</b>  &nbsp  :</label>
                             <div  class="col-md-4">
