@@ -27,12 +27,14 @@ class MEmployee extends Model
 
     public function autogenproc(){
       $success = false;
+      $attempt = 0;
       try{
         DB::select(DB::raw('call autogenmemployee('.$this->id.')'));
       } catch(Exception $e){
         do{
           try{
-            $this->doublecheck();
+            $attempt++;
+            $this->doublecheck($attempt);
             $success = true;
           }catch(Exception $e){
             $success = false;
