@@ -76,9 +76,10 @@
                                       </select>
                                     </div>
                                     <div class="col-md-8" style="margin-left: -12px;">
-                                      <input id="insert-memployeename" value="" name="memployeename" class="form-control forminput" placeholder="Nama Karyawan" type="text" data-parsley-required-message="Field Ini Tidak Boleh Kosong"  data-parsley-errors-container=".errorBlock2" @if (Session::has('autofocus')) autofocus @endif required>
+                                      <input id="insert-memployeename" value="" name="memployeename" class="form-control forminput" placeholder="Nama Karyawan" type="text" data-parsley-required-message="Field Ini Tidak Boleh Kosong"  data-parsley-errors-container=".erroremplname" @if (Session::has('autofocus')) autofocus @endif required>
                                     </div>
                                   </div>
+																	<div style="margin-left:18%;" class="erroremplname"></div>
               									</div>
               								</div>
                               <div style="margin-left: 23%;" class="errorBlock2 form-group"></div>
@@ -326,9 +327,10 @@
                                       </select>
                                     </div>
                                     <div class="col-md-8" style="margin-left: -12px;">
-                                      <input id="edit-memployeename" value="" name="memployeename" class="form-control forminput" placeholder="Nama Karyawan" type="text" data-parsley-required-message="Field Ini Tidak Boleh Kosong"  data-parsley-errors-container=".errorBlock2" @if (Session::has('autofocus')) autofocus @endif required>
+                                      <input id="edit-memployeename" value="" name="memployeename" class="form-control forminput" placeholder="Nama Karyawan" type="text" data-parsley-required-message="Field Ini Tidak Boleh Kosong"  data-parsley-errors-container=".erroremplnameedit" @if (Session::has('autofocus')) autofocus @endif required>
                                     </div>
                                   </div>
+																	<div style="margin-left:18%;" class="erroremplnameedit"></div>
               									</div>
               								</div>
                               <div style="margin-left: 23%;" class="errorBlock2 form-group"></div>
