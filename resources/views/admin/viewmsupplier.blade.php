@@ -74,7 +74,7 @@
                                 		  <input id="insert-msupplierid" value="" name="msupplierid" class="form-control forminput" placeholder="AUTO GENERATE" type="text" data-parsley-required-message="Field Ini Tidak Boleh Kosong"  data-parsley-errors-container=".errorBlock1" @if (Session::has('autofocus')) autofocus @endif >
                                 			<label for="mgoodsgroup1" class="glyphicon glyphicon-barcode" rel="tooltip" title="ID Supplier"></label>
                                 			<span class="input-group-addon" style="background: none;">
-                                  		  <input type="checkbox" id="disableforminput" name="autogen" rel="tooltip" title="ON/OFF auto generate ID Supplier">
+                                  		  <input type="checkbox" id="disableforminputspl" name="autogen" rel="tooltip" title="ON/OFF auto generate ID Supplier">
                                 			</span>
                               			</div>
                               		</div>
@@ -894,8 +894,19 @@
 <script src="{{ url('/master/msupplier.js') }}"></script>
 <script>
   $(document).ready(function(){
-    $('#disableforminput').prop('checked',true);
+    $('#disableforminputspl').prop('checked',true);
     $('#insert-msupplierid').prop('disabled',true);
+		  $('#disableforminputspl').on('change',function() {
+		      console.log(document.getElementById('insert-msupplierid'));
+		      document.getElementById('insert-msupplierid').disabled = this.checked;
+		      if($('#disableforminput').is(':checked')){
+		        $('#insert-msupplierid').removeAttr('required');
+		        $('#insert-wrapper').parsley().validate();
+		      } else{
+		        $('#insert-msupplierid').attr('required','true');
+		        $('#insert-wrapper').parsley().validate();
+		      }
+		  });
   });
   var table;
   $(function(){

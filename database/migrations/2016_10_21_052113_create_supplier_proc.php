@@ -1,4 +1,19 @@
-BEGIN
+<?php
+
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Support\Facades\DB;
+
+class CreateSupplierProc extends Migration
+{
+    /**
+     * Run the migrations.
+     *
+     * @return void
+     */
+    public function up()
+    {
+        DB::unprepared("CREATE PROCEDURE `autogenmsupplier`(IN `newrow` INT(10), IN `cnt` INT(10)) NOT DETERMINISTIC NO SQL SQL SECURITY DEFINER BEGIN
   	DECLARE prfx VARCHAR(10);
     DECLARE cnt INTEGER(10);
     DECLARE last_cnt VARCHAR(10);
@@ -30,3 +45,16 @@ BEGIN
     UPDATE mconfig SET msysprefixsupplierlastcount = CONCAT('',cnt) WHERE mconfig.id = 1;
     END IF;
   END
+");
+    }
+
+    /**
+     * Reverse the migrations.
+     *
+     * @return void
+     */
+    public function down()
+    {
+        //
+    }
+}

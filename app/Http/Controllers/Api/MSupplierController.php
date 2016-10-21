@@ -44,26 +44,24 @@ class MSupplierController extends Controller
   }
 
 	public function store(Request $request){
-		if ($request->autogen == 'true') {
+		try{
 			$new_cust = MSupplier::create($request->all());
-			$conf = MConfig::find(1);
-			$prefix = $conf->msysprefixsupplier;
-			$new_cust->void = 0;
-      $conf->msysprefixsuppliercount++;
-			$conf->msysprefixsupplierlastcount = $conf->get_last_count_format($conf->msysprefixsuppliercount);
-			$conf->save();
-			$new_cust->msupplierid = $prefix.'-'.$conf->get_last_count_format($conf->msysprefixsuppliercount);
-      $new_cust->save();
-      return response()->json($new_cust);
-    }
-    else {
-	    $new_cust = MSupplier::create($request->all());
 			$new_cust->void = 0;
 			$new_cust->save();
-			return response()->json($new_cust);
-    }
-
-
+			if ($request->autogen == 'true') {
+				$new_cust->autogenproc();
+			}
+			$new_cust->save();
+      return response()->json($new_cust);
+		} catch(Exception $e){
+			if ($request->autogen == 'true') {
+				$new_cust->autogenproc();
+				$new_cust->save();
+	      return response()->json($new_cust);
+			} else {
+				return response()->json($e,400);
+			}
+		}
 	}
 
 

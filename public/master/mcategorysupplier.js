@@ -122,16 +122,3 @@ function updatemcategory(){
     }
 
   }
-
-if(document.getElementById('disableforminput')){
-  document.getElementById('disableforminput').onchange = function() {
-      document.getElementById('insert-mcategoryid').disabled = this.checked;
-      if($('#disableforminput').is(':checked')){
-        $('#insert-mcategoryid').removeAttr('required');
-        $('#insert-wrapper').parsley().validate();
-      } else{
-        $('#insert-mcategoryid').attr('required','true');
-        $('#insert-wrapper').parsley().validate();
-      }
-  };
-}

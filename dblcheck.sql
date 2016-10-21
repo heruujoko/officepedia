@@ -1,10 +1,8 @@
 BEGIN
   	DECLARE prfx VARCHAR(10);
-    DECLARE cnt INTEGER(10);
     DECLARE last_cnt VARCHAR(10);
 
     SELECT msysprefixsupplier INTO prfx FROM mconfig where mconfig.id = 1;
-	SELECT COUNT(*) INTO cnt FROM msupplier;
     IF (cnt < 10) THEN UPDATE msupplier SET msupplierid = CONCAT(prfx,'00000',cnt) WHERE msupplier.id = newrow;
     UPDATE mconfig SET msysprefixsuppliercount = cnt WHERE mconfig.id = 1;
     UPDATE mconfig SET msysprefixsupplierlastcount = CONCAT('00000',cnt) WHERE mconfig.id = 1;

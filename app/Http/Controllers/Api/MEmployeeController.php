@@ -42,16 +42,15 @@ class MEmployeeController extends Controller
           $new_empl->autogenproc();
           $new_empl->save();
         }
-        return response()->json($new_empl->memployeeid);
+        return response()->json($new_empl);
       } catch(Exception $e){
         if($request->autogen == "true"){
           $new_empl->autogenproc();
           $new_empl->save();
-          return response()->json($new_empl->memployeeid);
+          return response()->json($new_empl);
         } else {
           return response()->json($e,400);
         }
-
       }
 
     }

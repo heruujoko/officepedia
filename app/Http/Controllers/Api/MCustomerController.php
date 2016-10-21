@@ -45,24 +45,23 @@ class MCustomerController extends Controller
   }
 
 	public function store(Request $request){
-		if ($request->autogen == 'true') {
+		try{
 			$new_cust = MCUSTOMER::create($request->all());
-			$conf = MConfig::find(1);
-			$prefix = $conf->msysprefixcustomer;
-			$new_cust->void = 0;
-      $conf->msysprefixcustomercount++;
-			$conf->msysprefixcustomerlastcount = $conf->get_last_count_format($conf->msysprefixcustomercount);
-			$conf->save();
-			$new_cust->mcustomerid = $prefix.'-'.$conf->get_last_count_format($conf->msysprefixcustomercount);
-      $new_cust->save();
-      return response()->json($new_cust);
-    }
-    else {
-	    $new_cust = MCUSTOMER::create($request->all());
+			$new_cust->save();
+			if ($request->autogen == 'true') {
+				$new_cust->autogenproc();
+			}
 			$new_cust->void = 0;
 			$new_cust->save();
 			return response()->json($new_cust);
-    }
+		} catch(Exception $e){
+			if ($request->autogen == 'true') {
+				$new_cust->autogenproc();
+				$new_empl->save();
+				return response()->json($new_empl);
+			}
+			return response()->json($e,400);
+		}
 
 
 	}
