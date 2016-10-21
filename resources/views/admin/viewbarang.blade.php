@@ -69,12 +69,17 @@
                              <div class="errorBlock1" style="margin-left:23% !important;"></div>
                               <div style="height: 21px;" class="form-group">
                                 <label class="col-md-3 control-label"><b>Kode Barang</b> (<font color="red">*</font>) &nbsp  :</label>
-                                <div class="col-md-9 col-sm-12">
-                                  <div class="icon-addon addon-md">
-                                    <input id="insert-mgoodscode" value="{{old('mgoodscode')}}" name="mgoodscode" class="form-control forminput" placeholder="Kode Barang" type="text" required data-parsley-required-message="Field Ini Tidak Boleh Kosong" data-parsley-errors-container=".errorBlock2" @if (Session::has('autofocus')) autofocus @endif>
-                                    <label for="mgoodsgroup1" class="glyphicon glyphicon-chevron-right" rel="tooltip" title="Kode Barang"></label>
-                                  </div>
-                                </div>
+                                <div class="col-md-9">
+                              	   <div class="icon-addon addon-md">
+                              		     <div class="input-group">
+                                    	  <input id="insert-mgoodscode" name="mgoodscode" class="form-control forminput" placeholder="AUTO GENERATE" type="text" data-parsley-required-message="Field Ini Tidak Boleh Kosong"  data-parsley-errors-container=".errorBlock1" @if (Session::has('autofocus')) autofocus @endif >
+                                    		<label for="" class="glyphicon glyphicon-barcode" rel="tooltip" title="ID Pelanggan"></label>
+                                    		<span class="input-group-addon" style="background: none;">
+                                      	   <input type="checkbox" id="autogenmgoods" name="autogen" rel="tooltip" title="ON/OFF auto generate ID Barang">
+                                    		</span>
+                                  		</div>
+                                  	</div>
+                              		</div>
                               </div>
                               <div class="errorBlock2" style="margin-left:23% !important;"></div>
                               <div style="height: 21px;" class="form-group">
@@ -401,13 +406,17 @@
                              <div class="errorBlock1" style="margin-left:23% !important;"></div>
                               <div style="height: 21px;" class="form-group">
                                 <label class="col-md-3 control-label"><b>Kode Barang</b> (<font color="red">*</font>) &nbsp  :</label>
-                                <div class="col-md-9 col-sm-12">
-                                <input type="hidden" id="edit-idmgoodscodeid">
-                                  <div class="icon-addon addon-md">
-                                    <input id="edit-mgoodscode" value="{{old('mgoodscode')}}" name="mgoodscode" class="form-control forminput" placeholder="Kode Barang" type="text" required data-parsley-required-message="Field Ini Tidak Boleh Kosong" data-parsley-errors-container=".errorBlock2" @if (Session::has('autofocus')) autofocus @endif>
-                                    <label for="mgoodsgroup1" class="glyphicon glyphicon-chevron-right" rel="tooltip" title="Kode Barang"></label>
-                                  </div>
-                                </div>
+                                <div class="col-md-9">
+                              	   <div class="icon-addon addon-md">
+                              		     <div class="input-group">
+                                    	  <input id="edit-mgoodscode" name="mgoodscode" class="form-control forminput" placeholder="AUTO GENERATE" type="text" data-parsley-required-message="Field Ini Tidak Boleh Kosong"  data-parsley-errors-container=".errorBlock1" @if (Session::has('autofocus')) autofocus @endif >
+                                    		<label for="" class="glyphicon glyphicon-barcode" rel="tooltip" title="ID Pelanggan"></label>
+                                    		<span class="input-group-addon" style="background: none;">
+                                      	   <input type="checkbox" id="edit-autogenmgoods" name="autogen" rel="tooltip" title="ON/OFF auto generate ID Barang">
+                                    		</span>
+                                  		</div>
+                                  	</div>
+                              	</div>
                               </div>
                               <div class="errorBlock2" style="margin-left:23% !important;"></div>
                               <div style="height: 21px;" class="form-group">
@@ -717,13 +726,17 @@
                              <div class="errorBlock1" style="margin-left:23% !important;"></div>
                               <div style="height: 21px;" class="form-group">
                                 <label class="col-md-3 control-label"><b>Kode Barang</b> (<font color="red">*</font>) &nbsp  :</label>
-                                <div class="col-md-9 col-sm-12">
-                                <input type="hidden" id="view-idmgoodscodeid">
-                                  <div class="icon-addon addon-md">
-                                    <input disabled id="view-mgoodscode" value="{{old('mgoodscode')}}" name="mgoodscode" class="form-control forminput" placeholder="Kode Barang" type="text" required data-parsley-required-message="Field Ini Tidak Boleh Kosong" data-parsley-errors-container=".errorBlock2" @if (Session::has('autofocus')) autofocus @endif>
-                                    <label for="mgoodsgroup1" class="glyphicon glyphicon-chevron-right" rel="tooltip" title="Kode Barang"></label>
-                                  </div>
-                                </div>
+                                <div class="col-md-9">
+                              	   <div class="icon-addon addon-md">
+                              		     <div class="input-group">
+                                    	  <input disabled id="view-mgoodscode" name="mgoodscode" class="form-control forminput" placeholder="AUTO GENERATE" type="text" data-parsley-required-message="Field Ini Tidak Boleh Kosong"  data-parsley-errors-container=".errorBlock1" @if (Session::has('autofocus')) autofocus @endif >
+                                    		<label for="" class="glyphicon glyphicon-barcode" rel="tooltip" title="ID Pelanggan"></label>
+                                    		<span class="input-group-addon" style="background: none;">
+                                      	   <input type="checkbox" id="view-autogenmgoods" name="autogen" rel="tooltip" title="ON/OFF auto generate ID Barang">
+                                    		</span>
+                                  		</div>
+                                  	</div>
+                              	</div>
                               </div>
                               <div class="errorBlock2" style="margin-left:23% !important;"></div>
                               <div style="height: 21px;" class="form-group">

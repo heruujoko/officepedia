@@ -45,6 +45,7 @@ class MGoodsController extends Controller
 	}
 
     public function store(Request $request){
+      $MGoods = "";
 			try{
 				$MGoods = MGoods::create($request->all());
 				$MGoods->void = 0;
@@ -52,9 +53,14 @@ class MGoodsController extends Controller
         $MGoods->mgoodsbranches = $this->convertBoolean($request->mgoodsbranches);
         $MGoods->mgoodsuniquetransaction = $this->convertBoolean($request->mgoodsuniquetransaction);
 				$MGoods->save();
+        if($request->autogen == "true"){
+          $MGoods->autogenproc();
+          $MGoods->save();
+        }
 				return response()->json($MGoods);
 			} catch(Exception $e){
-				return response()->json($e,400);
+
+          return response()->json($e,400);
 			}
 
 	}

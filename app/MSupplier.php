@@ -3,6 +3,8 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use DB;
+use Exception;
 
 class MSupplier extends Model
 {
@@ -11,5 +13,32 @@ class MSupplier extends Model
 
     public function akun(){
       return $this->belongsTo('App\MCOA','msuppliercoa','id');
+    }
+
+    public function autogenproc(){
+      $success = false;
+      $attempt = 0;
+      try{
+        DB::select(DB::raw('call autogenmsupplier('.$this->id.')'));
+      } catch(Exception $e){
+        do{
+          try{
+            $attempt++;
+            $this->doublecheck($attempt);
+            $success = true;
+          }catch(Exception $e){
+            $success = false;
+          }
+        } while($success == false);
+      }
+
+    }
+
+    public function doublecheck($in){
+      $conf = MConfig::find(1);
+      $current = "";
+      $incr = $conf->msysprefixsuppliercount+$in;
+
+      DB::select(DB::raw('call finduniquemsupplier('.$this->id.','.$incr.')'));
     }
 }

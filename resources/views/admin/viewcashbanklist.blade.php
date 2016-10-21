@@ -61,6 +61,8 @@
 													<div class="container">
 														<div class="row">
 															<div class="col-md-12" style="margin-top:30px">
+																<h2 style="margin-top:-20px;">Daftar Kas</h2>
+																<br><br>
 																<table id="tableapi" class="tableapi table table-bordered" width="100%">
 																	<thead>
 																		<tr>
@@ -85,6 +87,36 @@
 																		<tr>
 																			<th colspan="2" style="text-align:center;">TOTAL</th>
 																			<td style="text-align:right"><span id="totalcash">0</span></td>
+																		</tr>
+																	</tfoot>
+																</table>
+
+																<h2 style="margin-top:-20px;">Daftar Bank</h2>
+																<br><br>
+																<table id="tablebank" class="tableapi table table-bordered" width="100%">
+																	<thead>
+																		<tr>
+																			<th class="hasinput" style="width:5%">
+																			</th>
+																			<th class="hasinput" style="width:9%">
+																				<input type="text" class="form-control" placeholder="Filter Akun" />
+																			</th>
+																			<th class="hasinput" style="width:9%">
+																				<input type="text" class="form-control" placeholder="Filter Saldo" />
+																			</th>
+																		</tr>
+																		<tr>
+																				<th data-hide="action"><center>Aksi</center></th>
+																				<th data-hide="mcoaname"><center>Nama Akun</center></th>
+																				<th data-hide="rightsaldo"><center>Saldo</center></th>
+																		</tr>
+																	</thead>
+																	<tbody>
+																	</tbody>
+																	<tfoot>
+																		<tr>
+																			<th colspan="2" style="text-align:center;">TOTAL</th>
+																			<td style="text-align:right"><span id="totalbank">0</span></td>
 																		</tr>
 																	</tfoot>
 																</table>
@@ -196,8 +228,9 @@
 <script src="{{ url('master/cashbank.js') }}"></script>
 <script>
 var tablekas;
+var tablebank;
 $(function(){
-	tablekas = $('.tableapi').DataTable({
+	tablekas = $('#tableapi').DataTable({
 						dom: "<'dtpadding' <'row' <'clmn' > <'srch' f> <'tablerow' l> <'clear'> <'masterbutton' B> r> <'row pb' tip>>",
 								"autoWidth" : true,
 								"oLanguage": {
@@ -210,12 +243,6 @@ $(function(){
 										text: 'Tambah Master Kas',
 										action: function(){
 											add_master_kas();
-										}
-								},
-								{
-										text: 'Tambah Master Bank',
-										action: function(){
-											add_master_bank();
 										}
 								},
 								{
@@ -265,17 +292,7 @@ $(function(){
 						]
 			 });
 
-	$(".table thead th input[type=text]").on( 'keyup change', function () {
-				tablekas
-					.column( $(this).parent().index()+':visible' )
-					.search( this.value )
-					.draw();
-		});
-});
-
-var tablebank;
-$(function(){
-	tablebank = $('#tablebank').DataTable({
+			 tablebank = $('#tablebank').DataTable({
 						dom: "<'dtpadding' <'row' <'clmn' > <'srch' f> <'tablerow' l> <'clear'> <'masterbutton' B> r> <'row pb' tip>>",
 								"autoWidth" : true,
 								"oLanguage": {
@@ -299,19 +316,19 @@ $(function(){
 								{
 										text: 'CSV',
 										action: function(){
-											window.location.href = "{{ url('admin-nano/cashbank/bank/export/csv') }}";
+											window.location.href = "{{ url('admin-nano/cashbank/cash/export/csv') }}";
 										}
 								},
 								{
 										text: 'Excel',
 										action: function(){
-											window.location.href = "{{ url('admin-nano/cashbank/bank/export/excel') }}";
+											window.location.href = "{{ url('admin-nano/cashbank/cash/export/excel') }}";
 										}
 								},
 								{
 										text: 'PDF',
 										action: function(){
-											window.location.href = "{{ url('admin-nano/cashbank/bank/export/pdf') }}";
+											window.location.href = "{{ url('admin-nano/cashbank/cash/export/pdf') }}";
 										}
 								},
 								{
@@ -332,22 +349,29 @@ $(function(){
 						ajax: '{{URL::to('/')}}/admin-api/cashbank/bank',
 						columns: [
 						{data: 'action', name:'action', searchable: false, orderable: false},
-						{data: 'no', no: 'no' },
 						{data: 'mcoaname', mcoaname: 'mcoaname'},
 						{data: 'rightsaldo', rightsaldo: 'rightsaldo'}
 						]
 			 });
 
-	$(".table thead th input[type=text]").on( 'keyup change', function () {
-				tablebank
+	$("#tableapi thead th input[type=text]").on( 'keyup change', function () {
+				tablekas
 					.column( $(this).parent().index()+':visible' )
 					.search( this.value )
 					.draw();
 		});
+
+		$("#tablebank thead th input[type=text]").on( 'keyup change', function () {
+					tablebank
+						.column( $(this).parent().index()+':visible' )
+						.search( this.value )
+						.draw();
+			});
 });
 
 function refreshtbl(){
 	tablekas.ajax.reload();
+	tablebank.ajax.reload();
 }
 
 $(document).ready(function(){

@@ -99,7 +99,7 @@ function insertmsupplier(){
         msuppliercontactposition: $('#insert-msuppliercontactposition').val(),
         msuppliercontactemail: $('#insert-msuppliercontactemail').val(),
         msuppliercontactemailphone: $('#insert-msuppliercontactemailphone').val(),
-        autogen: $('#disableforminput').is(':checked'),
+        autogen: $('#disableforminputspl').is(':checked'),
         msupplierarlimit: $('#insert-msupplierarlimit').val(),
         msuppliercoa: $('#insert-msuppliercoa').val(),
         msuppliertop: $('#insert-msuppliertop').val(),
@@ -295,17 +295,4 @@ $('#insert-msuppliercontactemail').val('');
 $('#insert-msuppliercontactemailphone').val('');
 $('#insert-wrapper').parsley().reset();
 $('#edit-wrapper').parsley().reset();
-}
-
-if(document.getElementById('disableforminput')){
-  document.getElementById('disableforminput').onchange = function() {
-      document.getElementById('insert-msupplierid').disabled = this.checked;
-      if($('#disableforminput').is(':checked')){
-        $('#insert-msupplierid').removeAttr('required');
-        $('#insert-wrapper').parsley().validate();
-      } else{
-        $('#insert-msupplierid').attr('required','true');
-        $('#insert-wrapper').parsley().validate();
-      }
-  };
 }

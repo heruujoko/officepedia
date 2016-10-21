@@ -76,9 +76,10 @@
                                       </select>
                                     </div>
                                     <div class="col-md-8" style="margin-left: -12px;">
-                                      <input id="insert-memployeename" value="" name="memployeename" class="form-control forminput" placeholder="Nama Karyawan" type="text" data-parsley-required-message="Field Ini Tidak Boleh Kosong"  data-parsley-errors-container=".errorBlock2" @if (Session::has('autofocus')) autofocus @endif required>
+                                      <input id="insert-memployeename" value="" name="memployeename" class="form-control forminput" placeholder="Nama Karyawan" type="text" data-parsley-required-message="Field Ini Tidak Boleh Kosong"  data-parsley-errors-container=".erroremplname" @if (Session::has('autofocus')) autofocus @endif required>
                                     </div>
                                   </div>
+																	<div style="margin-left:18%;" class="erroremplname"></div>
               									</div>
               								</div>
                               <div style="margin-left: 23%;" class="errorBlock2 form-group"></div>
@@ -124,9 +125,9 @@
                           			  <div class="icon-addon addon-md">
                           				  <div class="input-group">
                                 		  <input id="insert-memployeeid" name="memployeeid" class="form-control forminput" placeholder="AUTO GENERATE" type="text" data-parsley-required-message="Field Ini Tidak Boleh Kosong"  data-parsley-errors-container=".errorBlock1" @if (Session::has('autofocus')) autofocus @endif >
-                                			<label for="" class="glyphicon glyphicon-barcode" rel="tooltip" title="ID Pelanggan"></label>
+                                			<label for="" class="glyphicon glyphicon-barcode" rel="tooltip" title="ID Karyawan"></label>
                                 			<span class="input-group-addon" style="background: none;">
-                                  		  <input type="checkbox" id="autogenemployee" name="autogen" rel="tooltip" title="ON/OFF auto generate ID Pelanggan">
+                                  		  <input type="checkbox" id="autogenemployee" name="autogen" rel="tooltip" title="ON/OFF auto generate ID Karyawan">
                                 			</span>
                               			</div>
                               		</div>
@@ -326,9 +327,10 @@
                                       </select>
                                     </div>
                                     <div class="col-md-8" style="margin-left: -12px;">
-                                      <input id="edit-memployeename" value="" name="memployeename" class="form-control forminput" placeholder="Nama Karyawan" type="text" data-parsley-required-message="Field Ini Tidak Boleh Kosong"  data-parsley-errors-container=".errorBlock2" @if (Session::has('autofocus')) autofocus @endif required>
+                                      <input id="edit-memployeename" value="" name="memployeename" class="form-control forminput" placeholder="Nama Karyawan" type="text" data-parsley-required-message="Field Ini Tidak Boleh Kosong"  data-parsley-errors-container=".erroremplnameedit" @if (Session::has('autofocus')) autofocus @endif required>
                                     </div>
                                   </div>
+																	<div style="margin-left:18%;" class="erroremplnameedit"></div>
               									</div>
               								</div>
                               <div style="margin-left: 23%;" class="errorBlock2 form-group"></div>
@@ -374,9 +376,9 @@
                           			  <div class="icon-addon addon-md">
                           				  <div class="input-group">
                                 		  <input id="edit-memployeeid" name="memployeeid" class="form-control forminput" placeholder="AUTO GENERATE" type="text" data-parsley-required-message="Field Ini Tidak Boleh Kosong"  data-parsley-errors-container=".errorBlock1" @if (Session::has('autofocus')) autofocus @endif >
-                                			<label for="" class="glyphicon glyphicon-barcode" rel="tooltip" title="ID Pelanggan"></label>
+                                			<label for="" class="glyphicon glyphicon-barcode" rel="tooltip" title="ID Karyawan"></label>
                                 			<span class="input-group-addon" style="background: none;">
-                                  		  <input type="checkbox" id="autogenemployee" name="autogen" rel="tooltip" title="ON/OFF auto generate ID Pelanggan">
+                                  		  <input type="checkbox" id="autogenemployee" name="autogen" rel="tooltip" title="ON/OFF auto generate ID Karyawan">
                                 			</span>
                               			</div>
                               		</div>
@@ -624,9 +626,9 @@
 																	<div class="icon-addon addon-md">
 																		<div class="input-group">
 																			<input disabled id="view-memployeeid" name="memployeeid" class="form-control forminput" placeholder="AUTO GENERATE" type="text" data-parsley-required-message="Field Ini Tidak Boleh Kosong"  data-parsley-errors-container=".errorBlock1" @if (Session::has('autofocus')) autofocus @endif >
-																			<label for="" class="glyphicon glyphicon-barcode" rel="tooltip" title="ID Pelanggan"></label>
+																			<label for="" class="glyphicon glyphicon-barcode" rel="tooltip" title="ID Karyawan"></label>
 																			<span class="input-group-addon" style="background: none;">
-																				<input type="checkbox" id="autogenemployee" name="autogen" rel="tooltip" title="ON/OFF auto generate ID Pelanggan">
+																				<input type="checkbox" id="autogenemployee" name="autogen" rel="tooltip" title="ON/OFF auto generate ID Karyawan">
 																			</span>
 																		</div>
 																	</div>

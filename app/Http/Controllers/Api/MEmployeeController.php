@@ -9,6 +9,7 @@ use App\Http\Controllers\Controller;
 use Datatables;
 use App\MEmployee;
 use Exception;
+use DB;
 
 class MEmployeeController extends Controller
 {
@@ -33,16 +34,25 @@ class MEmployeeController extends Controller
     }
 
     public function store(Request $request){
+      $new_empl = "";
       try{
         $new_empl = MEmployee::create($request->all());
+        $new_empl->save();
         if($request->autogen == "true"){
-          $new_empl->autogenid();
+          $new_empl->autogenproc();
           $new_empl->save();
         }
         return response()->json($new_empl);
       } catch(Exception $e){
-        return response()->json($e);
+        if($request->autogen == "true"){
+          $new_empl->autogenproc();
+          $new_empl->save();
+          return response()->json($new_empl);
+        } else {
+          return response()->json($e,400);
+        }
       }
+
     }
 
     public function update(Request $request, $id){
