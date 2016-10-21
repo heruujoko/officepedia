@@ -389,6 +389,7 @@
               </div>
               <!-- end widget edit box -->
               <h3 style="font-weight: bold; color: #C91503;font-size: 19px;">Mode : EDIT</h3>
+              <input type="hidden" id="edit-idmgoodscodeid" value=""></input>
               <!-- widget content -->
               <div class="widget-body no-padding">
                   <div class="container">
@@ -1269,7 +1270,7 @@
             .draw();
         } );
     });
-    function popupdelete(id){
+    function popupdelete(deleteid){
       swal({
         title: "Anda Yakin Akan Mengapus ?",
         text: "Anda Tidak Dapat Mengembalikan Data Ini!",
@@ -1282,9 +1283,10 @@
       },
       function(isconfirm){
         if (isconfirm) {
+          console.log(deleteid);
           $.ajax({
             type: "DELETE",
-            url: API_URL+"/barang/"+id,
+            url: API_URL+"/barang/"+deleteid,
             success: function(response){
               console.log(response);
               table.ajax.reload();

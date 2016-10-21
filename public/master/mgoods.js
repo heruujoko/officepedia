@@ -78,7 +78,6 @@ function insertmgoods(){
           swal({
             title: "Input Berhasil!",
             type: "success",
-            text: err_msg,
             timer: 1000
           });
           resetbarang();
@@ -88,12 +87,8 @@ function insertmgoods(){
           var err_msg = response.responseJSON.errorInfo[2];
           swal({
             title: "Input Gagal!",
-            text: err_msg,
             type: "error",
-<<<<<<< HEAD
             text: err_msg,
-=======
->>>>>>> 9ab664a1b88c7cbe29fb988e4af9ecd23a337516
             timer: 2000
           });
         }
@@ -224,7 +219,6 @@ function updatemgoods(){
           var err_msg = response.responseJSON.errorInfo[2];
           swal({
             title: "Pengubahan Gagal!",
-            text: err_msg,
             type: "error",
             text: err_msg,
             timer: 2000
