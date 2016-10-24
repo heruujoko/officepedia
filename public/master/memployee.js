@@ -1,5 +1,5 @@
-var API_URL = '/nano/public/admin-api';
-var WEB_URL = '/nano/public/admin-nano';
+var API_URL = '/admin-api';
+var WEB_URL = '/admin-nano';
 
 $(document).ready(function(){
   $('#autogenemployee').attr('checked',true);

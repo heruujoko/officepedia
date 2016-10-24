@@ -1,5 +1,5 @@
-var API_URL = '/public/admin-api';
-var WEB_URL = '/public/admin-nano';
+var API_URL = '/admin-api';
+var WEB_URL = '/admin-nano';
 
 $('#edit-msyscomptaxable').on('switchChange.bootstrapSwitch',function(event,state){
   if(state){
