@@ -61,7 +61,7 @@ Route::group(['prefix'=>'admin-nano'],function(){
   Route::get('mcategorycustomer/export/pdf','MCategorycustomerController@pdf');
 
   Route::get('mcategorysupplier','MCategorysupplierController@index');
-  Route::get('mcategorysupplier/export/csv','MCategorysupplier@csv');
+  Route::get('mcategorysupplier/export/csv','MCategorysupplierController@csv');
   Route::get('mcategorysupplier/export/excel','MCategorysupplierController@excel');
   Route::get('mcategorysupplier/export/pdf','MCategorysupplierController@pdf');
 
