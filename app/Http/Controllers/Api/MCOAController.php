@@ -10,14 +10,18 @@ use App\MCOA;
 use App\MCOAGrandParent;
 use Datatables;
 use Exception;
+use App\MConfig;
 
 class MCOAController extends Controller
 {
 
     private $iteration;
+    private $round;
 
     public function index(){
       $mcoa = collect();
+      $config = MConfig::find(1);
+      $this->round = $config->msysgenrounddec;
       $gp = MCOAGrandParent::all();
       foreach ($gp as $g) {
         $mcoa->push($g);
@@ -60,19 +64,19 @@ class MCOAController extends Controller
           }
       })->addColumn('code',function($mcoa){
           if($mcoa->mcoacode){
-            return '<span style="margin-left:30px;">'.$mcoa->mcoacode.'</span>';
+            return '<span> ------ '.$mcoa->mcoacode.'</span>';
           } else if($mcoa->mcoaparentcode) {
-            return '<span style="margin-left:15px;">'.$mcoa->mcoaparentcode.'</span>';
+            return '<span> --- <span style="font-weight:bold;">'.$mcoa->mcoaparentcode.'</span></span>';
           } else {
-            return '<span>'.$mcoa->mcoagrandparentcode.'</span>';
+            return '<span><span style="font-weight:bold;">'.$mcoa->mcoagrandparentcode.'</span></span>';
           }
       })->addColumn('spanname',function($mcoa){
           if($mcoa->mcoaname){
-            return '<span style="margin-left:30px;">'.$mcoa->mcoaname.'</span>';
+            return '<span> ------ '.$mcoa->mcoaname.'</span>';
           } else if($mcoa->mcoaparentname) {
-            return '<span style="margin-left:15px;">'.$mcoa->mcoaparentname.'</span>';
+            return '<span> --- <span style="font-weight:bold;">'.$mcoa->mcoaparentname.'</span></span>';
           } else {
-            return '<span>'.$mcoa->mcoagrandparentname.'</span>';
+            return '<span><span style="font-weight:bold;">'.$mcoa->mcoagrandparentname.'</span></span>';
           }
       })->addColumn('name',function($mcoa){
           if($mcoa->mcoaname){
@@ -84,7 +88,10 @@ class MCOAController extends Controller
           }
       })
       ->addColumn('saldoright',function($mcoa){
-          return "<span style=\"float:right\">".$mcoa->saldo."</span>";
+          $decimals = $this->round;
+          $dec_point = ".";
+          $formatted_saldo = number_format($mcoa->saldo,$decimals,$dec_point,$thousands_sep = ",");
+          return "<span style=\"float:right\">".$formatted_saldo."</span>";
       })
       ->make(true);
     }

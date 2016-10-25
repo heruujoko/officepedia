@@ -1034,6 +1034,7 @@
                               ],
 					       				      processing: false,
 										          serverSide: false,
+															iDisplayLength: 100,
 										          ajax: '{{URL::to('/')}}/admin-api/mcoa',
           										columns: [
                               {data: 'action', name:'action', searchable: false, orderable: false},
