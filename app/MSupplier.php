@@ -9,7 +9,7 @@ use Exception;
 class MSupplier extends Model
 {
     protected $table = 'msupplier';
-    protected $fillable = ['msupplierid','msuppliername','msupplieremail','msupplierphone','msupplierfax','msupplierwebsite','msupplieraddress','msuppliercity','msupplierzipcode','msupplierprovince','msuppliercountry','msuppliercontactname','msuppliercontactposition','msuppliercontactemail','msuppliercontactemailphone','msupplierarlimit','msuppliercoa','msuppliertop','msupplierarmax','msupplierdefaultar'];
+    protected $fillable = ['msupplierid','msuppliername','msupplieremail','msupplierphone','msupplierfax','msupplierwebsite','msupplieraddress','msuppliercity','msupplierzipcode','msupplierprovince','msuppliercountry','msuppliercontactname','msuppliercontactposition','msuppliercontactemail','msuppliercontactemailphone','msupplierarlimit','msuppliercoa','msuppliertop','msupplierarmax','msupplierdefaultar','msuppliercategory'];
 
     public function akun(){
       return $this->belongsTo('App\MCOA','msuppliercoa','id');
@@ -40,5 +40,9 @@ class MSupplier extends Model
       $incr = $conf->msysprefixsuppliercount+$in;
 
       DB::select(DB::raw('call finduniquemsupplier('.$this->id.','.$incr.')'));
+    }
+
+    public function category(){
+      return $this->belongsTo('App\MCategorysupplier','msuppliercategory','id');
     }
 }

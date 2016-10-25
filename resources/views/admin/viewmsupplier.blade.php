@@ -90,6 +90,18 @@
               										</div>
               									</div>
               								</div>
+															<div style="margin-top: 21px;" class="form-group">
+              									<label class="col-md-3 control-label"><b>Kategori Supplier</b>  &nbsp  :</label>
+              									<div class="col-md-9 col-sm-12">
+              										<div class="icon-addon addon-md">
+              											<select class="form-control select2" id="insert-msuppliercategory" name="msuppliercategory">
+																			@foreach($categories as $cat)
+																				<option value="{{ $cat->id }}">{{ $cat->category_name }}</option>
+																			@endforeach
+																		</select>
+              										</div>
+              									</div>
+              								</div>
                               <div class="errorBlock2" style="margin-left:23% !important;"></div>
               								<div style="height: 21px;" class="form-group">
               									<label class="col-md-3 control-label"><b>Email</b> &nbsp  :</label>
@@ -331,6 +343,18 @@
               										<div class="icon-addon addon-md">
               											<input id="edit-msuppliername" value="{{old('msuppliername')}}" name="msuppliername" class="form-control forminput" placeholder="Nama Supplier" type="text" required data-parsley-required-message="Field Ini Tidak Boleh Kosong" data-parsley-errors-container=".errorBlock4" @if (Session::has('autofocus')) autofocus @endif>
               											<label for="mgoodsgroup1" class="glyphicon glyphicon-chevron-right" rel="tooltip" title="Nama Supplier"></label>
+              										</div>
+              									</div>
+              								</div>
+															<div style="margin-top: 21px;" class="form-group">
+              									<label class="col-md-3 control-label"><b>Kategori Supplier</b> &nbsp  :</label>
+              									<div class="col-md-9 col-sm-12">
+              										<div class="icon-addon addon-md">
+              											<select class="form-control select2" id="edit-msuppliercategory" name="msuppliercategory">
+																			@foreach($categories as $cat)
+																				<option value="{{ $cat->id }}">{{ $cat->category_name }}</option>
+																			@endforeach
+																		</select>
               										</div>
               									</div>
               								</div>
@@ -577,6 +601,18 @@
                                   </div>
                                 </div>
                               </div>
+															<div style="margin-top: 21px;" class="form-group">
+              									<label class="col-md-3 control-label"><b>Kategori Supplier</b>  &nbsp  :</label>
+              									<div class="col-md-9 col-sm-12">
+              										<div class="icon-addon addon-md">
+              											<select disabled class="form-control select2" id="view-msuppliercategory" name="msuppliercategory">
+																			@foreach($categories as $cat)
+																				<option value="{{ $cat->id }}">{{ $cat->category_name }}</option>
+																			@endforeach
+																		</select>
+              										</div>
+              									</div>
+              								</div>
                               <div class="errorBlock6" style="margin-left:23% !important;"></div>
                               <div style="height: 21px;" class="form-group">
                                 <label class="col-md-3 control-label"><b>Email</b> &nbsp  :</label>
@@ -796,6 +832,9 @@
       										<th class="hasinput" style="width:9%">
       											<input type="text" class="form-control" placeholder="Filter Nama Supplier" />
       										</th>
+													<th class="hasinput" style="width:9%">
+      											<input type="text" class="form-control" placeholder="Filter Kategori Supplier" />
+      										</th>
       										<th class="hasinput" style="width:10%">
       											<input type="text" class="form-control" placeholder="Filter Email" />
       										</th>
@@ -856,6 +895,7 @@
       										<th data-hide="no"><center>No</center></th>
       										<th data-hide="msupplierid"><center>ID Supplier</center></th>
       										<th data-hide="msuppliername"><center>Nama Supplier</center></th>
+													<th data-hide="category"><center>Kategori Supplier</center></th>
       										<th data-hide="msupplieremail"><center>Email</center></th>
       										<th data-hide="msupplierphone"><center>Telpon Kantor</center></th>
       										<th data-hide="msupplierfax"><center>Fax</center></th>
@@ -957,7 +997,7 @@
         }
         ],
 
-                    processing: false,
+                processing: false,
                 serverSide: false,
                 ajax: '{{URL::to('/')}}/admin-api/msupplier',
                 columns: [
@@ -965,6 +1005,7 @@
                 {data: 'no', no: 'no' },
                 {data: 'msupplierid', msupplierid: 'msupplierid'},
                 {data: 'msuppliername', msuppliername: 'msuppliername'},
+								{data: 'category', category: 'category'},
                 {data: 'msupplieremail', msupplieremail: 'msupplieremail'},
                 {data: 'msupplierphone', msupplierphone: 'msupplierphone'},
                 {data: 'msupplierfax', msupplierfax: 'msupplierfax'},

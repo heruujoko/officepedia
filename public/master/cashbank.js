@@ -4,11 +4,23 @@ var WEB_URL = '/admin-nano';
 $(document).ready(function(){
   get_cash_total("1101.00");
   get_bank_total("1102.00");
+  get_grand_total();
 });
 
 function refreshtotal(){
   get_cash_total("1101.00");
   get_bank_total("1102.00");
+  get_grand_total();
+}
+
+function get_grand_total(){
+  $.ajax({
+    method: "GET",
+    url: API_URL+"/cashbank/grandtotal",
+    success: function(response){
+      $('#grandtotal').html(response);
+    }
+  });
 }
 
 function get_bank_total(code){

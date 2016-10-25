@@ -120,6 +120,34 @@
 																		</tr>
 																	</tfoot>
 																</table>
+
+																<h2 style="margin-top:-20px;">Total Kas / Bank</h2>
+																<br><br>
+																<table id="tabletotal" class="tableapi table table-bordered" width="100%">
+																	<thead style="">
+																		<tr>
+																			<th class="hasinput" style="width:5%">
+																			</th>
+																			<th class="hasinput" style="width:9%">
+
+																			</th>
+																			<th class="hasinput" style="width:9%">
+
+																			</th>
+																		</tr>
+																		<tr>
+
+																		</tr>
+																	</thead>
+																	<tbody>
+																	</tbody>
+																	<tfoot>
+																		<tr>
+																			<th colspan="2" style="text-align:center;">TOTAL KAS / BANK</th>
+																			<td style="text-align:right"><span id="grandtotal">0</span></td>
+																		</tr>
+																	</tfoot>
+																</table>
 															</div>
 														</div>
 													<div>

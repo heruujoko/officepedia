@@ -8,6 +8,7 @@ use Excel;
 use PDF;
 use App\MSupplier;
 use App\MCOA;
+use App\MCategorysupplier;
 
 class MSupplierController extends Controller
 {
@@ -17,8 +18,9 @@ class MSupplierController extends Controller
 	public function index(){
 		$data['active'] = 'supplier';
 		$data['section'] = 'supplier';
-    	$data['activetab'] = 1;
+    $data['activetab'] = 1;
 		$data['mcoa'] = MCOA::all();
+    $data['categories'] = MCategorysupplier::all();
 		$data['id'] = null;
 	  return view('admin/viewmsupplier',$data);
 }

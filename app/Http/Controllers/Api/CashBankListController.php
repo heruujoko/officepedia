@@ -10,11 +10,15 @@ use App\MCOA;
 use App\MCOAParent;
 use Datatables;
 use Exception;
+use App\Mconfig;
 class CashBankListController extends Controller
 {
     private $iteration;
-
+    private $round;
+    private $dec_point = ".";
     public function cash(){
+      $config = MConfig::find(1);
+      $this->round = $config->msysgenrounddec;
       $kas = MCOA::where('mcoaparentcode','1101.00')->get();
       return Datatables::of($kas)->addColumn('action', function($kas){
         return '<center><div class="button">
@@ -25,12 +29,15 @@ class CashBankListController extends Controller
           $this->iteration++;
           return "<span>".$this->iteration."</span>";
       })->addColumn('rightsaldo',function($kas){
-            return "<span style=\"float:right\">".number_format($kas->saldo,null,null,",")."</span>";
+            return "<span style=\"float:right\">".number_format($kas->saldo,$this->round,$this->dec_point,",")."</span>";
         })
       ->make(true);
     }
 
     public function bank(){
+      $config = MConfig::find(1);
+      $this->round = $config->msysgenrounddec;
+      $dec_point = ".";
       $kas = MCOA::where('mcoaparentcode','1102.00')->get();
       return Datatables::of($kas)->addColumn('action', function($kas){
         return '<center><div class="button">
@@ -41,7 +48,7 @@ class CashBankListController extends Controller
           $this->iteration++;
           return "<span>".$this->iteration."</span>";
       })->addColumn('rightsaldo',function($kas){
-            return "<span style=\"float:right\">".number_format($kas->saldo,null,null,",")."</span>";
+            return "<span style=\"float:right\">".number_format($kas->saldo,$this->round,$this->dec_point,",")."</span>";
         })
       ->make(true);
     }
@@ -104,12 +111,28 @@ class CashBankListController extends Controller
     }
 
     public function total($code){
+      $config = MConfig::find(1);
+      $decimals = $config->msysgenrounddec;
+      $dec_point = ".";
       $total = 0;
       $akun = MCOA::where('mcoaparentcode',$code)->get();
       foreach($akun as $ak){
         $total += $ak->saldo;
       }
-      $total = number_format($total,null,null,",");
+      $total = number_format($total,$decimals,$dec_point,",");
+      return response()->json($total);
+    }
+
+    public function grand_total(){
+      $config = MConfig::find(1);
+      $decimals = $config->msysgenrounddec;
+      $dec_point = ".";
+      $total = 0;
+      $akun = MCOA::where('mcoaparentcode',"1101.00")->orWhere('mcoaparentcode','1102.00')->get();
+      foreach($akun as $ak){
+        $total += $ak->saldo;
+      }
+      $total = number_format($total,$decimals,$dec_point,",");
       return response()->json($total);
     }
 }

@@ -28,7 +28,9 @@ class MSupplierController extends Controller
             return "<span>".$this->iteration."</span>";
         })->addColumn('akun',function($msupplier){
             return $msupplier->akun->mcoaname;
-        })
+        })->addColumn('category',function($msupplier){
+						return $msupplier->category->category_name;
+				})
         ->make(true);
 }
 

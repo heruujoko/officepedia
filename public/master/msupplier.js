@@ -104,7 +104,8 @@ function insertmsupplier(){
         msuppliercoa: $('#insert-msuppliercoa').val(),
         msuppliertop: $('#insert-msuppliertop').val(),
         msupplierarmax: $('#insert-msupplierarmax').val(),
-        msupplierdefaultar: $('#insert-msupplierdefaultar').val()
+        msupplierdefaultar: $('#insert-msupplierdefaultar').val(),
+        msuppliercategory: $('#insert-msuppliercategory').val()
       }
       console.log(data);
       $.ajax({
@@ -166,6 +167,7 @@ function viewmsupplier(id){
       $('#view-msuppliertop').val(response.msuppliertop).change();
       $('#view-msupplierarmax').val(response.msupplierarmax);
       $('#view-msupplierdefaultar').val(response.msupplierdefaultar);
+      $('#view-msuppliercategory').val(response.msuppliercategory).change();
       $('#forminput').hide();
       $('#formedit').hide();
       $('#formview').show();
@@ -203,6 +205,7 @@ function editmsupplier(id){
       $('#edit-msuppliertop').val(response.msuppliertop).change();
       $('#edit-msupplierarmax').val(response.msupplierarmax);
       $('#edit-msupplierdefaultar').val(response.msupplierdefaultar);
+      $('#edit-msuppliercategory').val(response.msuppliercategory).change();
       $('#forminput').hide();
       $('#formview').hide();
       $('#formedit').show();
@@ -240,7 +243,8 @@ function updatemsupplier(){
         msuppliercoa: $('#edit-msuppliercoa').val(),
         msuppliertop: $('#edit-msuppliertop').val(),
         msupplierarmax: $('#edit-msupplierarmax').val(),
-        msupplierdefaultar: $('#edit-msupplierdefaultar').val()
+        msupplierdefaultar: $('#edit-msupplierdefaultar').val(),
+        msuppliercategory: $('#edit-msuppliercategory').val()
   }
 
    $.ajax({

@@ -123,6 +123,7 @@ Route::group(['prefix'=>'admin-nano'],function(){
   Route::post('cashbank/bank','Api\CashBankListController@add_bank');
   Route::put('cashbank/bank/{id}','Api\CashBankListController@update_bank');
   Route::get('cashbank/total/{code}','Api\CashBankListController@total');
+  Route::get('cashbank/grandtotal','Api\CashBankListController@grand_total');
   Route::resource('mcategorycustomer','Api\MCategorycustomerController');
   Route::resource('mcategorysupplier','Api\MCategorysupplierController');
   Route::resource('mcategorygoods','Api\MCategorygoodsController');
