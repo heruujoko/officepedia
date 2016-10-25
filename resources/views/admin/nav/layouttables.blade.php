@@ -633,8 +633,11 @@
 				    if (!optionElement.id) { return optionElement.text; }
 						// optionElement.text = '<span><strong>' + optionElement.element.value + '</strong> ' + optionElement.text + '</span>'
 						var textElement = optionElement.text.split(" ");
+						var code = textElement[0];
+						var textarray = textElement.splice(0, 1);
+						var text = textElement.join(' ');
 				    var $state = $(
-				      '<strong>' + textElement[0] + '</strong> <span>'+ textElement[1]+'</span>'
+				      '<strong>' + code + '</strong> <span>'+ text+'</span>'
 				    );
 				    return $state;
 				  };
