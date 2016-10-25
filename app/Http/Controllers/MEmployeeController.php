@@ -28,7 +28,7 @@ class MEmployeeController extends Controller
   			$excel->sheet('Master Karyawan',function($sheet){
   				$this->count++;
   				$sheet->row($this->count,array(
-  					'ID Karyawan','Sapaan','Nama Karyawan','Posisi','Level','HP','Telfon','Pin BBM','No KTP','Kota','Kode Pos','Provinsi','Negara','Nama Kontak','Posisi','Email Kontak','Handphone','Limit','Akun','TOP','Maksimum Nota','Default'
+  					'ID Karyawan','Sapaan','Nama Karyawan','Posisi','Level','HP','Telfon','Pin BBM','No KTP','Kota','Kode Pos','Provinsi','Negara','Informasi'
   				));
   				foreach($this->memployee as $empl){
   					$this->count++;
@@ -37,7 +37,7 @@ class MEmployeeController extends Controller
               $empl->memployeetitle,
               $empl->memployeename,
               $empl->memployeeposition,
-              $empl->memployeelevel,
+              $empl->level->level,
               $empl->memployeephone,
               $empl->memployeehomephone,
               $empl->memployeebbmpin,
@@ -46,15 +46,7 @@ class MEmployeeController extends Controller
               $empl->memployeezipcode,
               $empl->memployeeprovince,
               $empl->memployeecountry,
-              $empl->memployeecontactname,
-              $empl->memployeecontactposition,
-              $empl->memployeecontactemail,
-              $empl->memployeecontactemailphone,
-              $empl->memployeearlimit,
-              $empl->akun->mcoaname,
-              $empl->memployeetop,
-              $empl->memployeearmax,
-              $empl->memployeedefaultar,
+              $empl->memployeeinfo,
   					));
   				}
   			});
@@ -68,7 +60,7 @@ class MEmployeeController extends Controller
   			$excel->sheet('Master Karyawan',function($sheet){
   				$this->count++;
   				$sheet->row($this->count,array(
-  					'ID Karyawan','Sapaan','Nama Karyawan','Posisi','Level','HP','Telfon','Pin BBM','No KTP','Kota','Kode Pos','Provinsi','Negara','Nama Kontak','Posisi','Email Kontak','Handphone','Limit','Akun','TOP','Maksimum Nota','Default'
+  					'ID Karyawan','Sapaan','Nama Karyawan','Posisi','Level','HP','Telfon','Pin BBM','No KTP','Kota','Kode Pos','Provinsi','Negara','Informasi'
   				));
   				foreach($this->memployee as $empl){
   					$this->count++;
@@ -77,7 +69,7 @@ class MEmployeeController extends Controller
               $empl->memployeetitle,
               $empl->memployeename,
               $empl->memployeeposition,
-              $empl->memployeelevel,
+              $empl->level->level,
               $empl->memployeephone,
               $empl->memployeehomephone,
               $empl->memployeebbmpin,
@@ -86,15 +78,7 @@ class MEmployeeController extends Controller
               $empl->memployeezipcode,
               $empl->memployeeprovince,
               $empl->memployeecountry,
-              $empl->memployeecontactname,
-              $empl->memployeecontactposition,
-              $empl->memployeecontactemail,
-              $empl->memployeecontactemailphone,
-              $empl->memployeearlimit,
-              $empl->akun->mcoaname,
-              $empl->memployeetop,
-              $empl->memployeearmax,
-              $empl->memployeedefaultar,
+              $empl->memployeeinfo,
   					));
   				}
   			});
@@ -104,6 +88,6 @@ class MEmployeeController extends Controller
     public function pdf(){
   		$data['memployee'] = MEmployee::where('void',0)->get();
   		$pdf = PDF::loadview('admin/export/memployeepdf',$data);
-  		return $pdf->setPaper('a3', 'landscape')->download('Master Karyawan.pdf');
+  		return $pdf->setPaper('a4', 'potrait')->download('Master Karyawan.pdf');
   	}
 }

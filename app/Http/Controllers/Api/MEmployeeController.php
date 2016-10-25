@@ -24,12 +24,12 @@ class MEmployeeController extends Controller
             <a class="btn btn-danger btn-xs dropdown-toggle fa fa-trash" onclick="popupdelete('.$memployee->id.')">
           <input type="hidden" name="id" value="@{{ task.id }}"> <font style="font-family: arial;">Hapus </font></a>     </div></center>';
         })->addColumn('no',function($memployee){
-              $this->iteration++;
-              return "<span>".$this->iteration."</span>";
-          })->addColumn('akun',function($memployee){
-              $this->iteration++;
-              return "<span>".$memployee->akun->mcoaname."</span>";
-          })
+          $this->iteration++;
+          return "<span>".$this->iteration."</span>";
+        })
+        ->addColumn('level',function($memployee){
+          return "<span>".$memployee->level->level."</span>";
+        })
           ->make(true);
     }
 

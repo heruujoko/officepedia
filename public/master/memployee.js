@@ -37,15 +37,7 @@ function insertmemployee(){
       memployeezipcode: $('#insert-memployeezipcode').val(),
       memployeeprovince: $('#insert-memployeeprovince').val(),
       memployeecountry: $('#insert-memployeecountry').val(),
-      memployeecontactname: $('#insert-memployeecontactname').val(),
-      memployeecontactposition: $('#insert-memployeecontactposition').val(),
-      memployeecontactemail: $('#insert-memployeecontactemail').val(),
-      memployeecontactemailphone: $('#insert-memployeecontactemailphone').val(),
-      memployeearlimit: $('#insert-memployeearlimit').val(),
-      memployeecoa: $('#insert-memployeecoa').val(),
-      memployeetop: $('#insert-memployeetop').val(),
-      memployeearmax: $('#insert-memployeearmax').val(),
-      memployeedefaultar: $('#insert-memployeedefaultar').val(),
+      memployeeinfo: $('#insert-memployeeinfo').val(),
       autogen: $('#autogenemployee').is(':checked')
     };
 
@@ -99,14 +91,7 @@ function editmemployee(id){
       $('#edit-memployeezipcode').val(response.memployeezipcode);
       $('#edit-memployeeprovince').val(response.memployeeprovince);
       $('#edit-memployeecountry').val(response.memployeecountry);
-      $('#edit-memployeecontactname').val(response.memployeecontactname);
-      $('#edit-memployeecontactposition').val(response.memployeecontactposition);
-      $('#edit-memployeecontactemail').val(response.memployeecontactemail);
-      $('#edit-memployeecontactemailphone').val(response.memployeecontactemailphone);
-      $('#edit-memployeearlimit').val(response.memployeearlimit);
-      $('#edit-memployeecoa').val(response.memployeecoa);
-      $('#edit-memployeearmax').val(response.memployeearmax);
-      $('#edit-memployeedefaultar').val(response.memployeedefaultar);
+      $('#edit-memployeeinfo').val(response.memployeeinfo);
     },
     error : function(repsonse){
 
@@ -131,15 +116,7 @@ function updatememployee(){
       memployeezipcode: $('#edit-memployeezipcode').val(),
       memployeeprovince: $('#edit-memployeeprovince').val(),
       memployeecountry: $('#edit-memployeecountry').val(),
-      memployeecontactname: $('#edit-memployeecontactname').val(),
-      memployeecontactposition: $('#edit-memployeecontactposition').val(),
-      memployeecontactemail: $('#edit-memployeecontactemail').val(),
-      memployeecontactemailphone: $('#edit-memployeecontactemailphone').val(),
-      memployeearlimit: $('#edit-memployeearlimit').val(),
-      memployeecoa: $('#edit-memployeecoa').val(),
-      memployeetop: $('#edit-memployeetop').val(),
-      memployeearmax: $('#edit-memployeearmax').val(),
-      memployeedefaultar: $('#edit-memployeedefaultar').val()
+      memployeeinfo: $('#edit-memployeeinfo').val(),
     }
 
     $.ajax({
@@ -199,6 +176,7 @@ function viewmemployee(id){
       $('#view-memployeecoa').val(response.memployeecoa);
       $('#view-memployeearmax').val(response.memployeearmax);
       $('#view-memployeedefaultar').val(response.memployeedefaultar);
+      $('#view-memployeeinfo').val(response.memployeeinfo);
     },
     error: function(response){
 
@@ -248,6 +226,7 @@ function resetmemployee(){
   $('#edit-memployeecoa').val('');
   $('#edit-memployeearmax').val('');
   $('#edit-memployeedefaultar').val('');
+  $('#insert-memployeeinfo').val('');
 }
 
 function backmemployee(){

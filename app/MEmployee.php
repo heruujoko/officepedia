@@ -10,7 +10,7 @@ use Exception;
 class MEmployee extends Model
 {
     protected $table = "memployee";
-    protected $fillable = ['memployeeid','memployeetitle','memployeename','memployeeposition','memployeelevel','memployeephone','memployeehomephone','memployeebbmpin','memployeeidcard','memployeecity','memployeezipcode','memployeeprovince','memployeecountry','memployeecontactname','memployeecontactposition','memployeecontactemail','memployeecontactemailphone','memployeearlimit','memployeecoa','memployeetop','memployeearmax','memployeedefaultar'];
+    protected $fillable = ['memployeeid','memployeetitle','memployeename','memployeeposition','memployeelevel','memployeephone','memployeehomephone','memployeebbmpin','memployeeidcard','memployeecity','memployeezipcode','memployeeprovince','memployeecountry','memployeeinfo'];
 
     public function autogenid(){
       $conf = MConfig::find(1);
@@ -54,5 +54,9 @@ class MEmployee extends Model
 
     public function akun(){
       return $this->belongsTo('App\MCOA','memployeecoa','mcoacode');
+    }
+
+    public function level(){
+      return $this->belongsTo('App\MEmployeeLevel','memployeelevel','id');
     }
 }

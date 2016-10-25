@@ -74,7 +74,7 @@
       <tbody>
         <tr>
           <td><b>ID Karyawan</b></td>
-          <td><b>ID Sapaan</b></td>
+          <td><b>Sapaan</b></td>
           <td><b>Nama Karyawan</b></td>
           <td><b>Posisi</b></td>
           <td><b>Level</b></td>
@@ -86,22 +86,15 @@
           <td><b>Kode Pos</b></td>
           <td><b>Provinsi</b></td>
           <td><b>Negara</b></td>
-          <td><b>Nama Kontak</b></td>
-          <td><b>Jabatan</b></td>
-          <td><b>Email Kontak</b></td>
-          <td><b>Handphone</b></td>
-          <td><b>Limit</b></td>
-          <td><b>Akun</b></td>
-          <td><b>TOP</b></td>
-          <td><b>Maksimal Nota</b></td>
-          <td><b>Default</b></td>
+          <td><b>Keterangan</b></td>
         </tr>
         @foreach($memployee as $ct)
           <tr>
             <td>{{ $ct->memployeeid }}</td>
+            <td>{{ $ct->memployeetitle }}</td>
             <td>{{ $ct->memployeename }}</td>
             <td>{{ $ct->memployeeposition }}</td>
-            <td>{{ $ct->memployeelevel }}</td>
+            <td>{{ $ct->level->level }}</td>
             <td>{{ $ct->memployeephone }}</td>
             <td>{{ $ct->memployeehomephone }}</td>
             <td>{{ $ct->memployeebbmpin }}</td>
@@ -110,15 +103,7 @@
             <td>{{ $ct->memployeezipcode }}</td>
             <td>{{ $ct->memployeeprovince }}</td>
             <td>{{ $ct->memployeecountry }}</td>
-            <td>{{ $ct->memployeecontactname }}</td>
-            <td>{{ $ct->memployeecontactposition }}</td>
-            <td>{{ $ct->memployeecontactemail }}</td>
-            <td>{{ $ct->memployeecontactemailphone }}</td>
-            <td>{{ $ct->memployeearlimit }}</td>
-            <td>{{ $ct->akun->mcoaname }}</td>
-            <td>{{ $ct->memployeetop }}</td>
-            <td>{{ $ct->memployeearmax }}</td>
-            <td>{{ $ct->memployeedefaultar }}</td>
+            <td>{{ $ct->memployeeinfo }}</td>
           </tr>
         @endforeach
       </tbody>
