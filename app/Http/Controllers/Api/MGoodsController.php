@@ -37,6 +37,12 @@ class MGoodsController extends Controller
             $this->iteration++;
             return "<span>".$this->iteration."</span>";
         })
+        ->addColumn('category',function($MGoods){
+            return "<span>".$MGoods->category->category_name."</span>";
+        })
+        ->addColumn('brand',function($MGoods){
+            return "<span>".$MGoods->mark->category_name."</span>";
+        })
         ->make(true);
 	}
 	public function show($id){
@@ -53,6 +59,8 @@ class MGoodsController extends Controller
         $MGoods->mgoodsbranches = $this->convertBoolean($request->mgoodsbranches);
         $MGoods->mgoodsuniquetransaction = $this->convertBoolean($request->mgoodsuniquetransaction);
 				$MGoods->save();
+        $MGoods->mgoodssuppliername = $MGoods->supplier->msuppliername;
+        $MGoods->save();
         if($request->autogen == "true"){
           $MGoods->autogenproc();
           $MGoods->save();

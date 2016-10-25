@@ -179,19 +179,25 @@
                         <div class="col-md-10">
                           <div style="height: 21px;" class="form-group">
                             <label class="col-md-3 control-label"><b>Tipe Barang</b>  &nbsp  :</label>
-                            <div class="col-md-9 col-sm-12">
+                            <div class="col-md-4 col-sm-12">
                               <div class="icon-addon addon-md">
-                                <input id="insert-mgoodstype" value="{{old('mgoodstype')}}" name="mgoodstype" class="form-control forminput" placeholder="Tipe Barang" type="text" @if (Session::has('autofocus')) autofocus @endif >
-                                <label for="mgoodsgroup1" class="glyphicon glyphicon-chevron-right" rel="tooltip" title="Tipe Barang"></label>
+                                <select id="insert-mgoodstype" name="mgoodstype" class="form-control select2">
+                                  @foreach($categories as $cat)
+                                    <option value="{{ $cat->id }}">{{ $cat->category_name }}</option>
+                                  @endforeach
+                                </select>
                               </div>
                             </div>
                           </div>
                           <div style="height: 21px;" class="form-group">
                             <label class="col-md-3 control-label"><b>Merk</b>  &nbsp  :</label>
-                            <div class="col-md-9 col-sm-12">
+                            <div class="col-md-4 col-sm-12">
                               <div class="icon-addon addon-md">
-                                <input id="insert-mgoodsbrand" value="{{old('mgoodsbrand')}}" name="mgoodsbrand" class="form-control forminput" placeholder="Merk" type="text" @if (Session::has('autofocus')) autofocus @endif >
-                                <label for="mgoodsgroup1" class="glyphicon glyphicon-info-sign" rel="tooltip" title="Merk"></label>
+                                <select id="insert-mgoodsbrand" name="mgoodsbrand" class="form-control select2">
+                                  @foreach($marks as $cat)
+                                    <option value="{{ $cat->id }}">{{ $cat->category_name }}</option>
+                                  @endforeach
+                                </select>
                               </div>
                             </div>
                           </div>
@@ -223,25 +229,13 @@
                             </div>
                           </div>
                           <div style="height: 21px;" class="form-group">
-                            <label class="col-md-3 control-label"><b>Kode Supplier</b>  &nbsp  :</label>
+                            <label class="col-md-3 control-label"><b>Kode / Nama Supplier</b>  &nbsp  :</label>
                            <div class="col-md-4">
                               <div class="icon-addon addon-md">
-                                <select class="form-control select2" name="mgoodssuppliercode" id="insert-mgoodssuppliercode">
+                                <select class="form-control select2-bold" name="mgoodssuppliercode" id="insert-mgoodssuppliercode">
                                   @foreach($msupplier as $mg)
-                                 <option>{{$mg->msupplierid}}</option>
-                                @endforeach
-                                </select>
-                              </div>
-                            </div>
-                          </div>
-                          <div style="height: 21px;" class="form-group">
-                            <label class="col-md-3 control-label"><b>Nama Supplier</b>  &nbsp  :</label>
-                               <div class="col-md-4">
-                              <div class="icon-addon addon-md">
-                                <select class="form-control select2" name="mgoodssuppliername" id="insert-mgoodssuppliername">
-                                 @foreach($msupplier as $mg)
-                                 <option>{{$mg->msuppliername}}</option>
-                                @endforeach
+                                   <option value="{{$mg->msupplierid}}">{{$mg->msupplierid}} {{$mg->msuppliername}}</option>
+                                  @endforeach
                                 </select>
                               </div>
                             </div>
@@ -517,19 +511,25 @@
                         <div class="col-md-10">
                           <div style="height: 21px;" class="form-group">
                             <label class="col-md-3 control-label"><b>Tipe Barang</b>  &nbsp  :</label>
-                            <div class="col-md-9 col-sm-12">
+                            <div class="col-md-4 col-sm-12">
                               <div class="icon-addon addon-md">
-                                <input id="edit-mgoodstype" value="{{old('mgoodstype')}}" name="mgoodstype" class="form-control forminput" placeholder="Tipe Barang" type="text" @if (Session::has('autofocus')) autofocus @endif >
-                                <label for="mgoodsgroup1" class="glyphicon glyphicon-chevron-right" rel="tooltip" title="Tipe Barang"></label>
+                                <select class="form-control select2" id="edit-mgoodstype" name="mgoodstype">
+                                  @foreach($categories as $cat)
+                                    <option value="{{ $cat->id }}">{{ $cat->category_name }}</option>
+                                  @endforeach
+                                </select>
                               </div>
                             </div>
                           </div>
                           <div style="height: 21px;" class="form-group">
                             <label class="col-md-3 control-label"><b>Merk</b>  &nbsp  :</label>
-                            <div class="col-md-9 col-sm-12">
+                            <div class="col-md-4 col-sm-12">
                               <div class="icon-addon addon-md">
-                                <input id="edit-mgoodsbrand" value="{{old('mgoodsbrand')}}" name="mgoodsbrand" class="form-control forminput" placeholder="Merk" type="text" @if (Session::has('autofocus')) autofocus @endif >
-                                <label for="mgoodsgroup1" class="glyphicon glyphicon-info-sign" rel="tooltip" title="Merk"></label>
+                                <select class="form-control select2" id="edit-mgoodsbrand" name="mgoodsbrand">
+                                  @foreach($marks as $cat)
+                                    <option value="{{ $cat->id }}">{{ $cat->category_name }}</option>
+                                  @endforeach
+                                </select>
                               </div>
                             </div>
                           </div>
@@ -562,24 +562,12 @@
                             </div>
                           </div>
                           <div style="height: 21px;" class="form-group">
-                            <label class="col-md-3 control-label"><b>Kode Supplier</b>  &nbsp  :</label>
+                            <label class="col-md-3 control-label"><b>Kode / Nama Supplier</b>  &nbsp  :</label>
                            <div class="col-md-4">
                               <div class="icon-addon addon-md">
-                                <select class="form-control select2" name="mgoodssuppliercode" id="edit-mgoodssuppliercode">
+                                <select class="form-control select2-bold" name="mgoodssuppliercode" id="edit-mgoodssuppliercode">
                                   @foreach($msupplier as $mg)
-                                 <option selected value="{{$mg->msupplierid}}">{{$mg->msupplierid}}</option>
-                                @endforeach
-                                </select>
-                              </div>
-                            </div>
-                          </div>
-                          <div style="height: 21px;" class="form-group">
-                            <label class="col-md-3 control-label"><b>Nama Supplier</b>  &nbsp  :</label>
-                               <div class="col-md-4">
-                              <div class="icon-addon addon-md">
-                                <select class="form-control select2" name="mgoodssuppliername" id="edit-mgoodssuppliername">
-                                 @foreach($msupplier as $mg)
-                                 <option selected value="{{$mg->msuppliername}}">{{$mg->msuppliername}}</option>
+                                 <option selected value="{{$mg->msupplierid}}">{{$mg->msupplierid}} {{ $mg->msuppliername}}</option>
                                 @endforeach
                                 </select>
                               </div>
@@ -837,19 +825,25 @@
                         <div class="col-md-10">
                           <div style="height: 21px;" class="form-group">
                             <label class="col-md-3 control-label"><b>Tipe Barang</b>  &nbsp  :</label>
-                            <div class="col-md-9 col-sm-12">
+                            <div class="col-md-4 col-sm-12">
                               <div class="icon-addon addon-md">
-                                <input disabled id="view-mgoodstype" value="{{old('mgoodstype')}}" name="mgoodstype" class="form-control forminput" placeholder="Tipe Barang" type="text" @if (Session::has('autofocus')) autofocus @endif >
-                                <label for="mgoodsgroup1" class="glyphicon glyphicon-chevron-right" rel="tooltip" title="Tipe Barang"></label>
+                                <select disabled id="view-mgoodstype" name="mgoodstype" class="form-control select2">
+                                  @foreach($categories as $cat)
+                                    <option value="{{ $cat->id }}">{{ $cat->category_name }}</option>
+                                  @endforeach
+                                </select>
                               </div>
                             </div>
                           </div>
                           <div style="height: 21px;" class="form-group">
                             <label class="col-md-3 control-label"><b>Merk</b>  &nbsp  :</label>
-                            <div class="col-md-9 col-sm-12">
+                            <div class="col-md-4 col-sm-12">
                               <div class="icon-addon addon-md">
-                                <input disabled id="view-mgoodsbrand" value="{{old('mgoodsbrand')}}" name="mgoodsbrand" class="form-control forminput" placeholder="Merk" type="text" @if (Session::has('autofocus')) autofocus @endif >
-                                <label for="mgoodsgroup1" class="glyphicon glyphicon-info-sign" rel="tooltip" title="Merk"></label>
+                                <select disabled id="view-mgoodsbrand" name="mgoodsbrand" class="form-control select2">
+                                  @foreach($marks as $cat)
+                                    <option value="{{ $cat->id }}">{{ $cat->category_name }}</option>
+                                  @endforeach
+                                </select>
                               </div>
                             </div>
                           </div>
@@ -886,20 +880,8 @@
                               <div class="icon-addon addon-md">
                                 <select disabled class="form-control select2" name="mgoodssuppliercode" id="view-mgoodssuppliercode">
                                   @foreach($msupplier as $mg)
-                                 <option selected>{{$mg->msupplierid}}</option>
-                                @endforeach
-                                </select>
-                              </div>
-                            </div>
-                          </div>
-                          <div style="height: 21px;" class="form-group">
-                            <label class="col-md-3 control-label"><b>Nama Supplier</b>  &nbsp  :</label>
-                               <div class="col-md-4">
-                              <div class="icon-addon addon-md">
-                                <select disabled class="form-control select2" name="mgoodssuppliername" id="view-mgoodssuppliername">
-                                 @foreach($msupplier as $mg)
-                                 <option selected>{{$mg->msuppliername}}</option>
-                                @endforeach
+                                  <option disabled value="{{$mg->msupplierid}}">{{$mg->msupplierid}} {{ $mg->msuppliername}}</option>
+                                 @endforeach
                                 </select>
                               </div>
                             </div>
@@ -1243,8 +1225,8 @@
                 {data: 'mgoodsactive', mgoodsactive: 'mgoodsactive'},
                 {data: 'mgoodspricein', mgoodspricein: 'mgoodspricein'},
                 {data: 'mgoodspriceout', mgoodspriceout: 'mgoodspriceout'},
-                {data: 'mgoodstype', mgoodstype: 'mgoodstype'},
-                {data: 'mgoodsbrand', mgoodsbrand: 'mgoodsbrand'},
+                {data: 'category', category: 'category'},
+                {data: 'brand', brand: 'brand'},
                 {data: 'mgoodsgroup1', mgoodsgroup1: 'mgoodsgroup1'},
                 {data: 'mgoodsgroup2', mgoodsgroup2: 'mgoodsgroup2'},
                 {data: 'mgoodsgroup3', mgoodsgroup3: 'mgoodsgroup3'},
@@ -1379,5 +1361,8 @@ $("#dropzone-gambar").dropzone({
     .tableapi_wrapper {
       margin-top: 50px;
     }
+    #tableapi {
+			border: 1px solid #ddd !important;
+		}
   </style>
 @stop

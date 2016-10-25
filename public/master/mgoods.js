@@ -114,13 +114,12 @@ function editmgoods(id){
       $('#edit-mgoodsactive').val(response.mgoodsactive);
       $('#edit-mgoodspricein').val(response.mgoodspricein);
       $('#edit-mgoodspriceout').val(response.mgoodspriceout);
-      $('#edit-mgoodstype').val(response.mgoodstype);
-      $('#edit-mgoodsbrand').val(response.mgoodsbrand);
+      $('#edit-mgoodstype').val(response.mgoodstype).change();
+      $('#edit-mgoodsbrand').val(response.mgoodsbrand).change();
       $('#edit-mgoodsgroup1').val(response.mgoodsgroup1);
       $('#edit-mgoodsgroup2').val(response.mgoodsgroup2);
       $('#edit-mgoodsgroup3').val(response.mgoodsgroup3);
       $('#edit-mgoodssuppliercode').val(response.mgoodssuppliercode).change();
-      $('#edit-mgoodssuppliername').val(response.mgoodssuppliername).change();
       $('#edit-mgoodsbranches').val(response.mgoodsbranches).change();
       $('#edit-mgoodsuniquetransaction').val(response.mgoodsuniquetransaction);
       $('#edit-mgoodspicture').val(response.mgoodspicture);
@@ -245,8 +244,8 @@ function updatemgoods(){
       $('#view-mgoodsunit3').val(response.mgoodsunit3);
       $('#view-mgoodspricein').val(response.mgoodspricein);
       $('#view-mgoodspriceout').val(response.mgoodspriceout);
-      $('#view-mgoodstype').val(response.mgoodstype);
-      $('#view-mgoodsbrand').val(response.mgoodsbrand);
+      $('#view-mgoodstype').val(response.mgoodstype).change();
+      $('#view-mgoodsbrand').val(response.mgoodsbrand).change();
       $('#view-mgoodsgroup1').val(response.mgoodsgroup1);
       $('#view-mgoodsgroup2').val(response.mgoodsgroup2);
       $('#view-mgoodsgroup3').val(response.mgoodsgroup3);

@@ -10,12 +10,16 @@ use App\MCOA;
 use App\MSupplier;
 use Excel;
 use PDF;
+use App\MGoodsMark;
+use App\MCategorygoods;
 
 class MGoodsController extends Controller
 {
     public function index(){
 		$data['active'] = 'barang';
 		$data['mcoa'] = MCOA::all();
+    $data['marks'] = MGoodsMark::all();
+    $data['categories'] = MCategorygoods::all();
 		$data['msupplier'] = MSupplier::all();
 		return view('admin/viewbarang',$data);
 	}

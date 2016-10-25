@@ -48,4 +48,16 @@ class MGOODS extends Model
       DB::select(DB::raw('call finduniquemgoods('.$this->id.','.$incr.')'));
     }
 
+    public function category(){
+      return $this->belongsTo('App\MCategorygoods','mgoodstype','id');
+    }
+
+    public function mark(){
+      return $this->belongsTo('App\MGoodsMark','mgoodsbrand','id');
+    }
+
+    public function supplier(){
+      return $this->belongsTo('App\Msupplier','mgoodssuppliercode','msupplierid');
+    }
+
 }
