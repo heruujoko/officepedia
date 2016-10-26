@@ -17,25 +17,53 @@ class MGOODS extends Model
         'mgoodsuniquetransaction' => 'integer',
         ];
 
+
     public function autogen(){
       DB::select(DB::raw('call autogenmgoods('.$this->id.')'));
+    }
+
+    protected static function boot(){
+
+      parent::boot();
+
+      static::created(function($mgoods){
+        $mgoods->update_prefix_status();
+      });
+
+    }
+
+    public function doublecheckid(){
+      $check = MGoods::where('mgoodscode',$this->mgoodscode)->where('void',0)->get();
+      $cnt = count($check);
+      if($cnt > 1){
+        return false;
+      } else {
+        return true;
+      }
+    }
+
+    public function revert_creation(){
+      $conf = MConfig::find(1);
+      $conf->msysprefixgoodscount = $conf->msysprefixgoodscount-1;
+      $conf->save();
+      $this->delete();
+    }
+
+    public function update_prefix_status(){
+      $conf = MConfig::find(1);
+      $conf->msysprefixgoodscount = $conf->msysprefixgoodscount+1;
+      $conf->save();
     }
 
     public function autogenproc(){
       $success = false;
       $attempt = 0;
+      $conf = MConfig::find(1);
       try{
-        DB::select(DB::raw('call autogenmgoods('.$this->id.')'));
+        // DB::select(DB::raw('call autogenmgoods('.$this->id.')'));
+        DB::select(DB::raw('call autogen("mgoods","'.$conf->msysprefixgoods.'",'.$conf->msysprefixgoodscount.',"mgoodscode",'.$this->id.')'));
       } catch(Exception $e){
-        do{
-          try{
-            $attempt++;
-            $this->doublecheck($attempt);
-            $success = true;
-          }catch(Exception $e){
-            $success = false;
-          }
-        } while($success == false);
+        return $e;
       }
 
     }

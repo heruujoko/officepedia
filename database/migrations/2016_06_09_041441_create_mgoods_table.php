@@ -14,7 +14,7 @@ class CreateMgoodsTable extends Migration
     {
         Schema::create('mgoods', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('mgoodscode')->unique();
+            $table->string('mgoodscode');
             $table->string('mgoodsbarcode')->unique();
             $table->string('mgoodsname')->unique();
             $table->string('mgoodsalias');
@@ -50,7 +50,7 @@ class CreateMgoodsTable extends Migration
 
          Schema::create('mbranch', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('mbranchcode')->unique();
+            $table->string('mbranchcode');
             $table->string('mbranchname');
             $table->string('address');
             $table->string('phone');
@@ -102,7 +102,7 @@ class CreateMgoodsTable extends Migration
         });
         Schema::create('mcustomer', function (Blueprint $table){
             $table->increments('id');
-            $table->string('mcustomerid')->unique();
+            $table->string('mcustomerid');
             $table->string('mcustomername')->unique();
             $table->string('mcustomeremail');
             $table->string('mcustomerphone');

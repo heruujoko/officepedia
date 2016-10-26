@@ -54,15 +54,21 @@ class MSupplierController extends Controller
 				$new_cust->autogenproc();
 			}
 			$new_cust->save();
-      return response()->json($new_cust);
-		} catch(Exception $e){
-			if ($request->autogen == 'true') {
-				$new_cust->autogenproc();
-				$new_cust->save();
-	      return response()->json($new_cust);
+			$isvalid = $new_cust->doublecheckid();
+			if($isvalid){
+				return response()->json($new_cust);
 			} else {
+				$errorInfo = [
+					'err',
+					'err',
+					'Duplicate supplier ID'
+				];
+				$e = array('errorInfo' => $errorInfo);
+				$new_cust->revert_creation();
 				return response()->json($e,400);
 			}
+		} catch(Exception $e){
+			return response()->json($e,400);
 		}
 	}
 
