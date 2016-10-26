@@ -610,6 +610,16 @@
 <!-- END MAIN CONTENT -->
 </div>
 <!-- END MAIN PANEL -->
+<div id="loading_modal" class="modal" style="top: 20%;" tabindex="-1" role="dialog" data-keyboard="false" data-backdrop="static">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header" style="text-align: center">
+				<h3>Loading Data</h3>
+				<img src="{{ url('master/ajax-loader.gif') }}">
+			</div>
+		</div>
+	</div>
+</div>
 @stop
 
 @section('js')
@@ -621,7 +631,11 @@
   });
   var table;
   $(function(){
-    table = $('.tableapi').DataTable({
+    table = $('.tableapi')
+		.on('preXhr.dt',function(){
+			$('#loading_modal').modal('show');
+		})
+		.DataTable({
     dom: "<'dtpadding' <'row' <'clmn' > <'srch' f> <'tablerow' l> <'clear'> <'masterbutton' B> r> <'row pb' tip>>",
         "autoWidth" : true,
         "oLanguage": {
@@ -688,7 +702,9 @@
 								{data: 'memployeecountry', memployeecountry: 'memployeecountry'},
 								{data: 'memployeeinfo', memployeeinfo: 'memployeeinfo'},
                 ]
-              });
+              }).on('xhr.dt',function(){
+								$('#loading_modal').modal('hide');
+							});
       $(".table thead th input[type=text]").on( 'keyup change', function () {
         table
             .column( $(this).parent().index()+':visible' )
