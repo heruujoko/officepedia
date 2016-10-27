@@ -95,7 +95,8 @@ class MGoodsController extends Controller
 
 	public function destroy($id){
 		$MGoods = MGoods::find($id);
-    DB::table('MGoods')->where('id',$id)->update(['void' => '1']);
+    $MGoods->void = 1;
+    $MGoods->save();
     return response()->json();
 	}
 

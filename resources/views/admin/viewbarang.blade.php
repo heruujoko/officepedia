@@ -1151,6 +1151,8 @@
 <!-- END MAIN CONTENT -->
 </div>
 <!-- END MAIN PANEL -->
+<<<<<<< HEAD
+=======
 <div id="loading_modal" class="modal" style="top: 20%;" tabindex="-1" role="dialog" data-keyboard="false" data-backdrop="static">
 	<div class="modal-dialog">
 		<div class="modal-content">
@@ -1161,6 +1163,7 @@
 		</div>
 	</div>
 </div>
+>>>>>>> f7c713e376d2d81ea3f4ad1dbc57f77e37428c38
 @stop
 
 @section('js')

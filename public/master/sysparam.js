@@ -119,6 +119,21 @@ function fetch_params_data(){
       $('#edit-msysprefixcashoutlastcount').val(response.msysprefixcashoutlastcount);
       $('#edit-msysprefixbankrecon').val(response.msysprefixbankrecon);
       $('#edit-msysprefixbankreconlastcount').val(response.msysprefixbankreconlastcount);
+      // Example Form
+      $('#edit-msysprefixgoodsexample').text(response.msysprefixgoods+"00001");
+      $('#edit-msysprefixsupplierexample').text(response.msysprefixsupplier+"00001");
+      $('#edit-msysprefixcustomerexample').text(response.msysprefixcustomer+"00001");
+      $('#edit-msysprefixemployeeexample').text(response.msysprefixemployee+"00001");
+      $('#edit-msysprefixinvquotationexample').text(response.msysprefixinvquotation+"00001");
+      $('#edit-msysprefixinvorderexample').text(response.msysprefixinvorder+"00001");
+      $('#edit-msysprefixinvoiceexample').text(response.msysprefixinvoice+"00001");
+      $('#edit-msysprefixpurchrequestexample').text(response.msysprefixpurchrequest+"00001");
+      $('#edit-msysprefixpurchorderexample').text(response.msysprefixpurchorder+"00001");
+      $('#edit-msysprefixpurchinvexample').text(response.msysprefixpurchinv+"00001");
+      $('#edit-msysprefixedassetexample').text(response.msysprefixedasset+"00001");
+      $('#edit-msysprefixcashreceiptexample').text(response.msysprefixcashreceipt+"00001");
+      $('#edit-msysprefixcashoutexample').text(response.msysprefixcashout+"00001");
+      $('#edit-msysprefixbankreconexample').text(response.msysprefixbankrecon+"00001");
     }
   });
 }
@@ -171,7 +186,7 @@ function update_params(){
       data: data,
       success: function(response){
         console.log(response);
-        window.location.href="#forminput";
+        window.location.href="sysparam";
         swal({
           title: "Input Berhasil!",
           type: "success",

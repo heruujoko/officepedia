@@ -21,7 +21,6 @@ class MEmployee extends Model
       });
 
     }
-
     public function autogenid(){
       $conf = MConfig::find(1);
       $prefix = $conf->msysprefixemployee;
@@ -44,15 +43,6 @@ class MEmployee extends Model
         DB::select(DB::raw('call autogen("memployee","'.$conf->msysprefixemployee.'",'.$conf->msysprefixemployeecount.',"memployeeid",'.$this->id.')'));
       } catch(Exception $e){
         return $e;
-        // do{
-        //   try{
-        //     $attempt++;
-        //     $this->doublecheck($attempt);
-        //     $success = true;
-        //   }catch(Exception $e){
-        //     $success = false;
-        //   }
-        // } while($success == false);
       }
 
     }

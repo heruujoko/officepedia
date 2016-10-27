@@ -9,6 +9,7 @@ use Exception;
 class MGOODS extends Model
 {
     protected $table = 'mgoods';
+    
     protected $fillable = ['mgoodscode','mgoodsbarcode','mgoodsname','mgoodsalias','mgoodsremark','mgoodsunit','mgoodsunit2','mgoodsunit3','mgoodsactive','mgoodspricein','mgoodspriceout','mgoodstype','mgoodsbrand','mgoodsgroup1','mgoodsgroup2','mgoodsgroup3','mgoodssuppliercode','mgoodssuppliername','mgoodsbranches','mgoodsuniquetransaction','mgoodspicture','mgoodscoapurchasing','mgoodscoapurchasingname','mgoodscoacogs','mgoodscoacogsname','mgoodscoaselling','mgoodscoasellingname','mgoodscoareturnofselling','mgoodscoareturnofsellingname','mgoodscogs'];
 
         protected $casts = [
@@ -16,11 +17,6 @@ class MGOODS extends Model
         'mgoodsbranches' => 'integer',
         'mgoodsuniquetransaction' => 'integer',
         ];
-
-
-    public function autogen(){
-      DB::select(DB::raw('call autogenmgoods('.$this->id.')'));
-    }
 
     protected static function boot(){
 
@@ -60,7 +56,6 @@ class MGOODS extends Model
       $attempt = 0;
       $conf = MConfig::find(1);
       try{
-        // DB::select(DB::raw('call autogenmgoods('.$this->id.')'));
         DB::select(DB::raw('call autogen("mgoods","'.$conf->msysprefixgoods.'",'.$conf->msysprefixgoodscount.',"mgoodscode",'.$this->id.')'));
       } catch(Exception $e){
         return $e;

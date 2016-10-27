@@ -58,7 +58,7 @@ class MEmployeeController extends Controller
           $new_empl->revert_creation();
           return response()->json($e,400);
         }
-
+        
       } catch(Exception $e){
         if($request->autogen == "true"){
           $new_empl->autogenproc();

@@ -19,7 +19,7 @@ class MCUSTOMER extends Model
       });
 
     }
-    
+
     public function akun(){
       return $this->belongsTo('App\MCOA','mcustomercoa','id');
     }

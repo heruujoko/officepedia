@@ -237,6 +237,14 @@
                         <div id="menu3" class="tab-pane">
                           <div class="tab-pane">
                             <div class="form form-horizontal" style="margin-top:21px;">
+                            <div class="row">
+								<h4 class="general-text">Master</h4>
+
+									<div class="col-md-11 box-general">
+								<h6 class="prefix-tab">Prefix</h6>
+								<h6 class="lastcount-tab">Last Count</h6>
+								<h6 class="example-tab">Example</h6>
+										<div class="col-md-8">
                               <div class="form-group">
                                 <label class="col-md-3 control-label"><b>Master Barang</b> (<font color="red">*</font>) &nbsp  :</label>
                                 <div class="col-md-3">
@@ -246,7 +254,7 @@
                                   <input id="edit-msysprefixgoodslastcount" disabled type="text" class="form-control" name="msysprefixgoodslastcount">
                                 </div>
                                 <div class="col-md-3">
-                                  <label class="example-label" id="edit-msysprefixgoodsexample">BRG00001</label>
+                                  <label class="example-label" id="edit-msysprefixgoodsexample"></label>
                                 </div>
                               </div>
                               <div class="form-group">
@@ -258,7 +266,7 @@
                                   <input id="edit-msysprefixsupplierlastcount" disabled type="text" class="form-control" name="msysprefixsupplierlastcount">
                                 </div>
                                 <div class="col-md-3">
-                                  <label class="example-label" id="edit-msysprefixsupplierexample">BRG00001</label>
+                                  <label class="example-label" id="edit-msysprefixsupplierexample"></label>
                                 </div>
                               </div>
                               <div class="form-group">
@@ -270,7 +278,7 @@
                                   <input id="edit-msysprefixcustomerlastcount" disabled type="text" class="form-control" name="msysprefixcustomerlastcount">
                                 </div>
                                 <div class="col-md-3">
-                                  <label class="example-label" id="edit-msysprefixcustomerexample">BRG00001</label>
+                                  <label class="example-label" id="edit-msysprefixcustomerexample"></label>
                                 </div>
                               </div>
                               <div class="form-group">
@@ -282,9 +290,20 @@
                                   <input id="edit-msysprefixemployeelastcount" disabled type="text" class="form-control" name="msysprefixemployeelastcount">
                                 </div>
                                 <div class="col-md-3">
-                                  <label class="example-label" id="edit-msysprefixemployeeexample">BRG00001</label>
+                                  <label class="example-label" id="edit-msysprefixemployeeexample"></label>
                                 </div>
                               </div>
+                         </div>
+                         </div>
+                         </div>
+                         <div class="row">
+								<h4 class="pajak-text">Prefix</h4>
+								<div class="col-md-11 box-general">
+								<h6 class="prefix-tab">Prefix</h6>
+								<h6 class="lastcount-tab">Last Count</h6>
+								<h6 class="example-tab">Example</h6>
+
+								<div class="col-md-8">
                               <div class="form-group">
                                 <label class="col-md-3 control-label"><b>Penawaran Penjualan</b> (<font color="red">*</font>) &nbsp  :</label>
                                 <div class="col-md-3">
@@ -294,7 +313,7 @@
                                   <input id="edit-msysprefixinvquotationlastcount" disabled type="text" class="form-control" name="msysprefixinvquotationlastcount">
                                 </div>
                                 <div class="col-md-3">
-                                  <label class="example-label" id="edit-msysprefixinvquotationexample">BRG00001</label>
+                                  <label class="example-label" id="edit-msysprefixinvquotationexample"></label>
                                 </div>
                               </div>
                               <div class="form-group">
@@ -306,7 +325,7 @@
                                   <input id="edit-msysprefixinvorderlastcount" disabled type="text" class="form-control" name="msysprefixinvorderlastcount">
                                 </div>
                                 <div class="col-md-3">
-                                  <label class="example-label" id="edit-msysprefixinvorderexample">BRG00001</label>
+                                  <label class="example-label" id="edit-msysprefixinvorderexample"></label>
                                 </div>
                               </div>
                               <div class="form-group">
@@ -318,7 +337,7 @@
                                   <input id="edit-msysprefixinvoicelastcount" disabled type="text" class="form-control" name="msysprefixinvoicelastcount">
                                 </div>
                                 <div class="col-md-3">
-                                  <label class="example-label" id="edit-msysprefixinvoiceexample">BRG00001</label>
+                                  <label class="example-label" id="edit-msysprefixinvoiceexample"></label>
                                 </div>
                               </div>
                               <div class="form-group">
@@ -330,7 +349,7 @@
                                   <input id="edit-msysprefixpurchrequestlastcount" disabled type="text" class="form-control" name="msysprefixpurchrequestlastcount">
                                 </div>
                                 <div class="col-md-3">
-                                  <label class="example-label" id="edit-msysprefixpurchrequestexample">BRG00001</label>
+                                  <label class="example-label" id="edit-msysprefixpurchrequestexample"></label>
                                 </div>
                               </div>
                               <div class="form-group">
@@ -342,7 +361,7 @@
                                   <input id="edit-msysprefixpurchorderlastcount" disabled type="text" class="form-control" name="msysprefixpurchorderlastcount">
                                 </div>
                                 <div class="col-md-3">
-                                  <label class="example-label" id="edit-msysprefixpurchorderexample">BRG00001</label>
+                                  <label class="example-label" id="edit-msysprefixpurchorderexample"></label>
                                 </div>
                               </div>
                               <div class="form-group">
@@ -354,7 +373,7 @@
                                   <input id="edit-msysprefixpurchinvlastcount" disabled type="text" class="form-control" name="msysprefixpurchinvlastcount">
                                 </div>
                                 <div class="col-md-3">
-                                  <label class="example-label" id="edit-msysprefixpurchinvexample">BRG00001</label>
+                                  <label class="example-label" id="edit-msysprefixpurchinvexample"></label>
                                 </div>
                               </div>
                               <div class="form-group">
@@ -366,7 +385,7 @@
                                   <input id="edit-msysprefixedassetlastcount" disabled type="text" class="form-control" name="msysprefixedassetlastcount">
                                 </div>
                                 <div class="col-md-3">
-                                  <label class="example-label" id="edit-msysprefixedassetexample">BRG00001</label>
+                                  <label class="example-label" id="edit-msysprefixedassetexample"></label>
                                 </div>
                               </div>
                               <div class="form-group">
@@ -378,7 +397,7 @@
                                   <input id="edit-msysprefixcashreceiptlastcount" disabled type="text" class="form-control" name="msysprefixcashreceiptlastcount">
                                 </div>
                                 <div class="col-md-3">
-                                  <label class="example-label" id="edit-msysprefixcashreceiptexample">BRG00001</label>
+                                  <label class="example-label" id="edit-msysprefixcashreceiptexample"></label>
                                 </div>
                               </div>
                               <div class="form-group">
@@ -390,7 +409,7 @@
                                   <input id="edit-msysprefixcashoutlastcount" disabled type="text" class="form-control" name="msysprefixcashoutlastcount">
                                 </div>
                                 <div class="col-md-3">
-                                  <label class="example-label" id="edit-msysprefixcashoutexample">BRG00001</label>
+                                  <label class="example-label" id="edit-msysprefixcashoutexample"></label>
                                 </div>
                               </div>
                               <div class="form-group">
@@ -402,7 +421,10 @@
                                   <input id="edit-msysprefixbankreconlastcount" disabled type="text" class="form-control" name="msysprefixbankreconlastcount">
                                 </div>
                                 <div class="col-md-3">
-                                  <label class="example-label" id="edit-msysprefixbankreconexample">BRG00001</label>
+                                  <label class="example-label" id="edit-msysprefixbankreconexample"></label>
+                                  			</div>
+                                  		</div>
+                                  	</div>
                                 </div>
                               </div>
                             </div>
@@ -499,6 +521,18 @@
 			margin-left: 4%;
 			margin-bottom: 1%;
 			margin-top: 3%;
+		}
+		.prefix-tab {
+			margin-bottom: -50px;
+    		margin-left: 235px;
+		}
+		.lastcount-tab {
+			margin-top: 31px;
+    		margin-left: 387px;
+		}
+		.example-tab {
+			margin-left: 535px;
+    		margin-top: -30px;
 		}
   </style>
 @stop
