@@ -150,7 +150,7 @@
                               <div style="height: 21px;" class="form-group">
                                 <label class="col-md-3 control-label"><b>Status</b>  &nbsp  :</label>
                                   <div class="col-md-9">
-                                    <input id="insert-mgoodsactive" value="" name="mgoodsactive" class="nice-toggle" placeholder="mgoodsactive" type="checkbox">
+                                    <input id="insert-mgoodsactive" value="" name="mgoodsactive" class="active-toggle" placeholder="mgoodsactive" type="checkbox">
                                 </div>
                               </div>
                                 <div style="height: 21px;" class="form-group">
@@ -482,7 +482,7 @@
                               <div style="height: 21px;" class="form-group">
                                 <label class="col-md-3 control-label"><b>Status</b>  &nbsp  :</label>
                                   <div class="col-md-9">
-                                    <input id="edit-mgoodsactive" value="" name="mgoodsactive" class="nice-toggle" placeholder="mgoodsactive" type="checkbox">
+                                    <input id="edit-mgoodsactive" value="" name="mgoodsactive" class="active-toggle" placeholder="mgoodsactive" type="checkbox">
                                 </div>
                               </div>
                                 <div style="height: 21px;" class="form-group">
@@ -796,7 +796,7 @@
                               <div style="height: 21px;" class="form-group">
                                 <label class="col-md-3 control-label"><b>Status</b>  &nbsp  :</label>
                                   <div class="col-md-9">
-                                    <input id="view-mgoodsactive" value="" name="mgoodsactive" class="nice-toggle" placeholder="mgoodsactive" type="checkbox">
+                                    <input id="view-mgoodsactive" value="" name="mgoodsactive" class="active-toggle" placeholder="mgoodsactive" type="checkbox">
                                 </div>
                               </div>
                                 <div style="height: 21px;" class="form-group">
@@ -1376,6 +1376,10 @@ $("#dropzone-gambar").dropzone({
   <style>
     .tableapi_wrapper {
       margin-top: 50px;
+    }
+    .active-toggle {
+      padding-top: 5px;
+      margin-bottom: 5px;
     }
     #tableapi {
 			border: 1px solid #ddd !important;

@@ -22,6 +22,12 @@ $(document).ready(function(){
     };
   }
 
+  $('.active-toggle').bootstrapSwitch({
+    size: 'normal',
+    onText: "Aktif",
+    offText: "Tidak Aktif"
+  });
+
   $('.nice-toggle').bootstrapSwitch({
     size: 'mini',
     onText: "Yes",
