@@ -49,6 +49,7 @@ class MCUSTOMER extends Model
     public function revert_creation(){
       $conf = MConfig::find(1);
       $conf->msysprefixcustomercount = $conf->msysprefixcustomercount-1;
+      $conf->msysprefixcustomerlastcount = $conf->get_last_count_format($conf->msysprefixcustomercount);
       $conf->save();
       $this->delete();
     }
@@ -56,6 +57,7 @@ class MCUSTOMER extends Model
     public function update_prefix_status(){
       $conf = MConfig::find(1);
       $conf->msysprefixcustomercount = $conf->msysprefixcustomercount+1;
+      $conf->msysprefixcustomerlastcount = $conf->get_last_count_format($conf->msysprefixcustomercount);
       $conf->save();
     }
 

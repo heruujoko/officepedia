@@ -115,7 +115,26 @@
 		                              <div class="form-group">
 		                                <label class="col-md-3 control-label"><b>Alamat</b> &nbsp  :</label>
 		                          			<div class="col-md-8">
-		                                  <input id="edit-msyscompaddress" value="" name="msyscompaddress" class="form-control forminput" placeholder="Alamat Perusahaan" type="text" data-parsley-required-message="Field Ini Tidak Boleh Kosong" @if (Session::has('autofocus')) autofocus @endif >
+		                                  <!-- <input id="edit-msyscompaddress" value="" name="msyscompaddress" class="form-control forminput" placeholder="Alamat Perusahaan" type="text" data-parsley-required-message="Field Ini Tidak Boleh Kosong" @if (Session::has('autofocus')) autofocus @endif > -->
+																			<textarea class="form-control forminput" placeholder="Jalan" id="msysstreet" rows="5"></textarea>
+		                          			</div>
+		                              </div>
+																	<div class="form-group">
+		                          			<div class="col-md-4 col-md-offset-3">
+																			<input type="text" class="form-control forminput" id="msyscity" placeholder="Kota">
+		                          			</div>
+																		<div class="col-md-4">
+																			<input type="text" class="form-control forminput" id="msyszipcode" placeholder="Kode Pos">
+		                          			</div>
+		                              </div>
+																	<div class="form-group">
+		                          			<div class="col-md-8 col-md-offset-3">
+																			<input type="text" class="form-control forminput" id="msysprovince" placeholder="Provinsi">
+		                          			</div>
+		                              </div>
+																	<div class="form-group">
+		                          			<div class="col-md-8 col-md-offset-3">
+																			<input type="text" class="form-control forminput" id="msyscountry" placeholder="Negara">
 		                          			</div>
 		                              </div>
 		                            </div>

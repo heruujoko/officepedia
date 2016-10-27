@@ -60,6 +60,7 @@ class MEmployee extends Model
     public function revert_creation(){
       $conf = MConfig::find(1);
       $conf->msysprefixemployeecount = $conf->msysprefixemployeecount-1;
+      $conf->msysprefixemployeelastcount = $conf->get_last_count_format($conf->msysprefixemployeecount);
       $conf->save();
       $this->delete();
     }
@@ -67,6 +68,7 @@ class MEmployee extends Model
     public function update_prefix_status(){
       $conf = MConfig::find(1);
       $conf->msysprefixemployeecount = $conf->msysprefixemployeecount+1;
+      $conf->msysprefixemployeelastcount = $conf->get_last_count_format($conf->msysprefixemployeecount);
       $conf->save();
     }
 

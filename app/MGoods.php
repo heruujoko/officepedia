@@ -9,7 +9,7 @@ use Exception;
 class MGOODS extends Model
 {
     protected $table = 'mgoods';
-    
+
     protected $fillable = ['mgoodscode','mgoodsbarcode','mgoodsname','mgoodsalias','mgoodsremark','mgoodsunit','mgoodsunit2','mgoodsunit3','mgoodsactive','mgoodspricein','mgoodspriceout','mgoodstype','mgoodsbrand','mgoodsgroup1','mgoodsgroup2','mgoodsgroup3','mgoodssuppliercode','mgoodssuppliername','mgoodsbranches','mgoodsuniquetransaction','mgoodspicture','mgoodscoapurchasing','mgoodscoapurchasingname','mgoodscoacogs','mgoodscoacogsname','mgoodscoaselling','mgoodscoasellingname','mgoodscoareturnofselling','mgoodscoareturnofsellingname','mgoodscogs'];
 
         protected $casts = [
@@ -41,6 +41,7 @@ class MGOODS extends Model
     public function revert_creation(){
       $conf = MConfig::find(1);
       $conf->msysprefixgoodscount = $conf->msysprefixgoodscount-1;
+      $conf->msysprefixgoodslastcount = $conf->get_last_count_format($conf->msysprefixgoodscount);
       $conf->save();
       $this->delete();
     }
@@ -48,6 +49,7 @@ class MGOODS extends Model
     public function update_prefix_status(){
       $conf = MConfig::find(1);
       $conf->msysprefixgoodscount = $conf->msysprefixgoodscount+1;
+      $conf->msysprefixgoodslastcount = $conf->get_last_count_format($conf->msysprefixgoodscount);
       $conf->save();
     }
 

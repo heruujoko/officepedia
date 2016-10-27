@@ -13,7 +13,7 @@ class MConfig extends Model
                             'msysprefixgoods','msysprefixsupplier','msysprefixcustomer','msysprefixemployee',
                             'msysprefixinvquotation','msysprefixinvorder','msysprefixinvoice',
                             'msysprefixpurchrequest','msysprefixpurchorder','msysprefixpurchinv','msysprefixedasset',
-                            'msysprefixcashreceipt','msysprefixcashout','msysprefixbankrecon'
+                            'msysprefixcashreceipt','msysprefixcashout','msysprefixbankrecon','msysstreet','msyscity','msyszipcode','msysprovince','msyscountry'
                           ];
 
     protected $casts = [

@@ -38,6 +38,7 @@ class MSupplier extends Model
     public function revert_creation(){
       $conf = MConfig::find(1);
       $conf->msysprefixsuppliercount = $conf->msysprefixsuppliercount-1;
+      $conf->msysprefixsupplierlastcount = $conf->get_last_count_format($conf->msysprefixsuppliercount);
       $conf->save();
       $this->delete();
     }
@@ -45,6 +46,7 @@ class MSupplier extends Model
     public function update_prefix_status(){
       $conf = MConfig::find(1);
       $conf->msysprefixsuppliercount = $conf->msysprefixsuppliercount+1;
+      $conf->msysprefixsupplierlastcount = $conf->get_last_count_format($conf->msysprefixsuppliercount);
       $conf->save();
     }
 

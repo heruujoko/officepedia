@@ -196,7 +196,6 @@
         },
         {
             "name": "doctrine/annotations",
-<<<<<<< HEAD
             "version": "v1.3.0",
             "source": {
                 "type": "git",
@@ -207,54 +206,25 @@
                 "type": "zip",
                 "url": "https://api.github.com/repos/doctrine/annotations/zipball/30e07cf03edc3cd3ef579d0dd4dd8c58250799a5",
                 "reference": "30e07cf03edc3cd3ef579d0dd4dd8c58250799a5",
-=======
-            "version": "v1.2.7",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/doctrine/annotations.git",
-                "reference": "f25c8aab83e0c3e976fd7d19875f198ccf2f7535"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/doctrine/annotations/zipball/f25c8aab83e0c3e976fd7d19875f198ccf2f7535",
-                "reference": "f25c8aab83e0c3e976fd7d19875f198ccf2f7535",
->>>>>>> f7c713e376d2d81ea3f4ad1dbc57f77e37428c38
                 "shasum": ""
             },
             "require": {
                 "doctrine/lexer": "1.*",
-<<<<<<< HEAD
                 "php": "^5.6 || ^7.0"
             },
             "require-dev": {
                 "doctrine/cache": "1.*",
                 "phpunit/phpunit": "^5.6.1"
-=======
-                "php": ">=5.3.2"
-            },
-            "require-dev": {
-                "doctrine/cache": "1.*",
-                "phpunit/phpunit": "4.*"
->>>>>>> f7c713e376d2d81ea3f4ad1dbc57f77e37428c38
             },
             "type": "library",
             "extra": {
                 "branch-alias": {
-<<<<<<< HEAD
                     "dev-master": "1.4.x-dev"
                 }
             },
             "autoload": {
                 "psr-4": {
                     "Doctrine\\Common\\Annotations\\": "lib/Doctrine/Common/Annotations"
-=======
-                    "dev-master": "1.3.x-dev"
-                }
-            },
-            "autoload": {
-                "psr-0": {
-                    "Doctrine\\Common\\Annotations\\": "lib/"
->>>>>>> f7c713e376d2d81ea3f4ad1dbc57f77e37428c38
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
@@ -290,11 +260,7 @@
                 "docblock",
                 "parser"
             ],
-<<<<<<< HEAD
             "time": "2016-10-24 11:45:47"
-=======
-            "time": "2015-08-31 12:32:49"
->>>>>>> f7c713e376d2d81ea3f4ad1dbc57f77e37428c38
         },
         {
             "name": "doctrine/cache",
@@ -1211,7 +1177,6 @@
         },
         {
             "name": "league/flysystem",
-<<<<<<< HEAD
             "version": "1.0.32",
             "source": {
                 "type": "git",
@@ -1226,22 +1191,6 @@
             },
             "require": {
                 "php": ">=5.5.9"
-=======
-            "version": "1.0.28",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/thephpleague/flysystem.git",
-                "reference": "a9663643ff2d16d7f66ed1e0d3212c5491bc9044"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/thephpleague/flysystem/zipball/a9663643ff2d16d7f66ed1e0d3212c5491bc9044",
-                "reference": "a9663643ff2d16d7f66ed1e0d3212c5491bc9044",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=5.4.0"
->>>>>>> f7c713e376d2d81ea3f4ad1dbc57f77e37428c38
             },
             "conflict": {
                 "league/flysystem-sftp": "<1.0.6"
@@ -1307,11 +1256,7 @@
                 "sftp",
                 "storage"
             ],
-<<<<<<< HEAD
             "time": "2016-10-19 20:38:46"
-=======
-            "time": "2016-10-07 12:20:37"
->>>>>>> f7c713e376d2d81ea3f4ad1dbc57f77e37428c38
         },
         {
             "name": "league/fractal",
@@ -2180,16 +2125,16 @@
         },
         {
             "name": "symfony/event-dispatcher",
-            "version": "v3.1.5",
+            "version": "v3.1.6",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/event-dispatcher.git",
-                "reference": "c0c00c80b3a69132c4e55c3e7db32b4a387615e5"
+                "reference": "28b0832b2553ffb80cabef6a7a812ff1e670c0bc"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/event-dispatcher/zipball/c0c00c80b3a69132c4e55c3e7db32b4a387615e5",
-                "reference": "c0c00c80b3a69132c4e55c3e7db32b4a387615e5",
+                "url": "https://api.github.com/repos/symfony/event-dispatcher/zipball/28b0832b2553ffb80cabef6a7a812ff1e670c0bc",
+                "reference": "28b0832b2553ffb80cabef6a7a812ff1e670c0bc",
                 "shasum": ""
             },
             "require": {
@@ -2236,7 +2181,7 @@
             ],
             "description": "Symfony EventDispatcher Component",
             "homepage": "https://symfony.com",
-            "time": "2016-07-19 10:45:57"
+            "time": "2016-10-13 06:28:43"
         },
         {
             "name": "symfony/finder",
@@ -2990,7 +2935,6 @@
         },
         {
             "name": "yajra/laravel-datatables-oracle",
-<<<<<<< HEAD
             "version": "v6.21.1",
             "source": {
                 "type": "git",
@@ -3001,18 +2945,6 @@
                 "type": "zip",
                 "url": "https://api.github.com/repos/yajra/laravel-datatables/zipball/baef845c998fd08f5315db17d96604382109bfcd",
                 "reference": "baef845c998fd08f5315db17d96604382109bfcd",
-=======
-            "version": "v6.20.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/yajra/laravel-datatables.git",
-                "reference": "233141e11129ba4729b3e719d5769126bed83834"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/yajra/laravel-datatables/zipball/233141e11129ba4729b3e719d5769126bed83834",
-                "reference": "233141e11129ba4729b3e719d5769126bed83834",
->>>>>>> f7c713e376d2d81ea3f4ad1dbc57f77e37428c38
                 "shasum": ""
             },
             "require": {
@@ -3023,11 +2955,7 @@
                 "illuminate/support": "~5.0",
                 "illuminate/view": "~5.0",
                 "laravelcollective/html": "~5.0",
-<<<<<<< HEAD
                 "league/fractal": "~0.14",
-=======
-                "league/fractal": "~0.12",
->>>>>>> f7c713e376d2d81ea3f4ad1dbc57f77e37428c38
                 "maatwebsite/excel": "^2.0",
                 "php": ">=5.5.9"
             },
@@ -3063,11 +2991,7 @@
                 "laravel4",
                 "laravel5"
             ],
-<<<<<<< HEAD
             "time": "2016-10-25 01:00:07"
-=======
-            "time": "2016-10-13 00:10:14"
->>>>>>> f7c713e376d2d81ea3f4ad1dbc57f77e37428c38
         }
     ],
     "packages-dev": [
@@ -4292,16 +4216,16 @@
         },
         {
             "name": "symfony/yaml",
-            "version": "v3.1.5",
+            "version": "v3.1.6",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/yaml.git",
-                "reference": "368b9738d4033c8b93454cb0dbd45d305135a6d3"
+                "reference": "7ff51b06c6c3d5cc6686df69004a42c69df09e27"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/yaml/zipball/368b9738d4033c8b93454cb0dbd45d305135a6d3",
-                "reference": "368b9738d4033c8b93454cb0dbd45d305135a6d3",
+                "url": "https://api.github.com/repos/symfony/yaml/zipball/7ff51b06c6c3d5cc6686df69004a42c69df09e27",
+                "reference": "7ff51b06c6c3d5cc6686df69004a42c69df09e27",
                 "shasum": ""
             },
             "require": {
@@ -4337,7 +4261,7 @@
             ],
             "description": "Symfony Yaml Component",
             "homepage": "https://symfony.com",
-            "time": "2016-09-25 08:27:07"
+            "time": "2016-10-24 18:41:13"
         },
         {
             "name": "webmozart/assert",
