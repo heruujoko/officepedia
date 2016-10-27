@@ -15,10 +15,12 @@ class CashBankListController extends Controller
 {
     private $iteration;
     private $round;
-    private $dec_point = ".";
+    private $separator;
+
     public function cash(){
       $config = MConfig::find(1);
       $this->round = $config->msysgenrounddec;
+      $this->separator = $config->msysnumseparator;
       $kas = MCOA::where('mcoaparentcode','1101.00')->get();
       return Datatables::of($kas)->addColumn('action', function($kas){
         return '<center><div class="button">
@@ -29,7 +31,15 @@ class CashBankListController extends Controller
           $this->iteration++;
           return "<span>".$this->iteration."</span>";
       })->addColumn('rightsaldo',function($kas){
-            return "<span style=\"float:right\">".number_format($kas->saldo,$this->round,$this->dec_point,",")."</span>";
+            $decimals = $this->round;
+            $dec_point = $this->separator;
+            if($dec_point == ","){
+              $thousands_sep = ".";
+            } else {
+              $thousands_sep = ",";
+            }
+            $formatted_saldo = number_format($kas->saldo,$decimals,$dec_point,$thousands_sep);
+            return "<span style=\"float:right\">".$formatted_saldo."</span>";
         })
       ->make(true);
     }
@@ -37,7 +47,7 @@ class CashBankListController extends Controller
     public function bank(){
       $config = MConfig::find(1);
       $this->round = $config->msysgenrounddec;
-      $dec_point = ".";
+      $this->separator = $config->msysnumseparator;
       $kas = MCOA::where('mcoaparentcode','1102.00')->get();
       return Datatables::of($kas)->addColumn('action', function($kas){
         return '<center><div class="button">
@@ -48,7 +58,15 @@ class CashBankListController extends Controller
           $this->iteration++;
           return "<span>".$this->iteration."</span>";
       })->addColumn('rightsaldo',function($kas){
-            return "<span style=\"float:right\">".number_format($kas->saldo,$this->round,$this->dec_point,",")."</span>";
+        $decimals = $this->round;
+        $dec_point = $this->separator;
+        if($dec_point == ","){
+          $thousands_sep = ".";
+        } else {
+          $thousands_sep = ",";
+        }
+        $formatted_saldo = number_format($kas->saldo,$decimals,$dec_point,$thousands_sep);
+        return "<span style=\"float:right\">".$formatted_saldo."</span>";
         })
       ->make(true);
     }
@@ -112,27 +130,41 @@ class CashBankListController extends Controller
 
     public function total($code){
       $config = MConfig::find(1);
-      $decimals = $config->msysgenrounddec;
-      $dec_point = ".";
+      $this->round = $config->msysgenrounddec;
+      $this->separator = $config->msysnumseparator;
+      $decimals = $this->round;
+      $dec_point = $this->separator;
+      if($dec_point == ","){
+        $thousands_sep = ".";
+      } else {
+        $thousands_sep = ",";
+      }
       $total = 0;
       $akun = MCOA::where('mcoaparentcode',$code)->get();
       foreach($akun as $ak){
         $total += $ak->saldo;
       }
-      $total = number_format($total,$decimals,$dec_point,",");
+      $total = number_format($total,$decimals,$dec_point,$thousands_sep);
       return response()->json($total);
     }
 
     public function grand_total(){
       $config = MConfig::find(1);
-      $decimals = $config->msysgenrounddec;
-      $dec_point = ".";
+      $this->round = $config->msysgenrounddec;
+      $this->separator = $config->msysnumseparator;
+      $decimals = $this->round;
+      $dec_point = $this->separator;
+      if($dec_point == ","){
+        $thousands_sep = ".";
+      } else {
+        $thousands_sep = ",";
+      }
       $total = 0;
       $akun = MCOA::where('mcoaparentcode',"1101.00")->orWhere('mcoaparentcode','1102.00')->get();
       foreach($akun as $ak){
         $total += $ak->saldo;
       }
-      $total = number_format($total,$decimals,$dec_point,",");
+      $total = number_format($total,$decimals,$dec_point,$thousands_sep);
       return response()->json($total);
     }
 }

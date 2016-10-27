@@ -87,8 +87,13 @@ function fetch_params_data(){
       } else {
         $('#edit-msysgenfixedasset').bootstrapSwitch('state',false);
       }
+
       $('#edit-msysgenrounddec').val(response.msysgenrounddec).change();
 
+      $('#edit-msysnumseparator').val(response.msysnumseparator).change();
+      if(response.msysnumseparatorset == 1){
+        $('#edit-msysnumseparator').attr('disabled',true);
+      }
       $('#edit-msysprefixgoods').val(response.msysprefixgoods);
       $('#edit-msysprefixgoodslastcount').val(response.msysprefixgoodslastcount);
       $('#edit-msysprefixsupplier').val(response.msysprefixsupplier);
@@ -191,7 +196,9 @@ function update_params(){
       msyscity: $('#msyscity').val(),
       msyszipcode: $('#msyszipcode').val(),
       msysprovince: $('#msysprovince').val(),
-      msyscountry: $('#msyscountry').val()
+      msyscountry: $('#msyscountry').val(),
+      msysnumseparator: $('#edit-msysnumseparator').val(),
+      msysnumseparatorset: 1
     };
     $.ajax({
       method: 'PUT',

@@ -17,11 +17,13 @@ class MCOAController extends Controller
 
     private $iteration;
     private $round;
+    private $separator;
 
     public function index(){
       $mcoa = collect();
       $config = MConfig::find(1);
       $this->round = $config->msysgenrounddec;
+      $this->separator = $config->msysnumseparator;
       $gp = MCOAGrandParent::all();
       foreach ($gp as $g) {
         $mcoa->push($g);
@@ -89,8 +91,13 @@ class MCOAController extends Controller
       })
       ->addColumn('saldoright',function($mcoa){
           $decimals = $this->round;
-          $dec_point = ".";
-          $formatted_saldo = number_format($mcoa->saldo,$decimals,$dec_point,$thousands_sep = ",");
+          $dec_point = $this->separator;
+          if($dec_point == ","){
+            $thousands_sep = ".";
+          } else {
+            $thousands_sep = ",";
+          }
+          $formatted_saldo = number_format($mcoa->saldo,$decimals,$dec_point,$thousands_sep);
           return "<span style=\"float:right\">".$formatted_saldo."</span>";
       })
       ->make(true);

@@ -244,10 +244,19 @@
                             </div>
                             <div class="form-group">
                               <label class="col-md-3 control-label"><b>Pembulatan Desimal</b> (<font color="red">*</font>) &nbsp  :</label>
-                              <div class="col-md-1">
+                              <div class="col-md-2">
                                 <select id="edit-msysgenrounddec" class="form-control select2">
                                   <option value="0">0</option>
                                   <option value="2">2</option>
+                                </select>
+                              </div>
+                            </div>
+														<div class="form-group">
+                              <label class="col-md-3 control-label"><b>Pemisah Desimal</b> (<font color="red">*</font>) &nbsp  :</label>
+                              <div class="col-md-2">
+                                <select id="edit-msysnumseparator" class="form-control select2">
+                                  <option value=",">, (koma)</option>
+                                  <option value=".">. (titik)</option>
                                 </select>
                               </div>
                             </div>
