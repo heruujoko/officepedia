@@ -14,7 +14,11 @@ class CreateMsupplierTable extends Migration
     {
         Schema::create('msupplier', function (Blueprint $table){
             $table->increments('id');
+<<<<<<< HEAD
             $table->string('msupplierid')->unique();
+=======
+            $table->string('msupplierid');
+>>>>>>> f7c713e376d2d81ea3f4ad1dbc57f77e37428c38
             $table->string('msuppliername')->unique();
             $table->string('msupplieremail');
             $table->string('msupplierphone');

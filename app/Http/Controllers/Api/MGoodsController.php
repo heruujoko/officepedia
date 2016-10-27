@@ -65,10 +65,28 @@ class MGoodsController extends Controller
           $MGoods->autogenproc();
           $MGoods->save();
         }
+<<<<<<< HEAD
 				return response()->json($MGoods);
 			} catch(Exception $e){
 
           return response()->json($e,400);
+=======
+        $isvalid = $MGoods->doublecheckid();
+        if($isvalid){
+          return response()->json($MGoods);
+        } else {
+          $errorInfo = [
+            'err',
+            'err',
+            'Duplicate employee ID'
+          ];
+          $e = array('errorInfo' => $errorInfo);
+          $MGoods->revert_creation();
+          return response()->json($e,400);
+        }
+			} catch(Exception $e){
+        return response()->json($e,400);
+>>>>>>> f7c713e376d2d81ea3f4ad1dbc57f77e37428c38
 			}
 
 	}

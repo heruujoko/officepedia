@@ -53,6 +53,7 @@ class MCustomerController extends Controller
 			}
 			$new_cust->void = 0;
 			$new_cust->save();
+<<<<<<< HEAD
 			return response()->json($new_cust);
 		} catch(Exception $e){
 			if ($request->autogen == 'true') {
@@ -60,6 +61,25 @@ class MCustomerController extends Controller
 				$new_empl->save();
 				return response()->json($new_empl);
 			}
+=======
+
+			// doublecheck
+
+			$isvalid = $new_cust->doublecheckid();
+			if($isvalid){
+				return response()->json($new_cust);
+			} else {
+				$errorInfo = [
+					'err',
+					'err',
+					'Duplicate customer ID'
+				];
+				$e = array('errorInfo' => $errorInfo);
+				$new_cust->revert_creation();
+				return response()->json($e,400);
+			}
+		} catch(Exception $e){
+>>>>>>> f7c713e376d2d81ea3f4ad1dbc57f77e37428c38
 			return response()->json($e,400);
 		}
 

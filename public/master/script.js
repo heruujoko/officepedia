@@ -1209,8 +1209,15 @@ function insertmcustomer(){
           window.location = "#tableapi";
         },
         error: function(response){
+<<<<<<< HEAD
           swal({
             title: "Input Gagal!",
+=======
+          var err_msg = response.responseJSON.errorInfo[2];
+          swal({
+            title: "Input Gagal!",
+            text: err_msg,
+>>>>>>> f7c713e376d2d81ea3f4ad1dbc57f77e37428c38
             type: "error",
             timer: 1000
           });

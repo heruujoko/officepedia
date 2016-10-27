@@ -14,7 +14,11 @@ class CreateEmployeeTable extends Migration
     {
         Schema::create('memployee',function(Blueprint $table){
           $table->increments('id');
+<<<<<<< HEAD
           $table->string('memployeeid')->unique(true);
+=======
+          $table->string('memployeeid');
+>>>>>>> f7c713e376d2d81ea3f4ad1dbc57f77e37428c38
           $table->string('memployeetitle');
           $table->string('memployeename');
           $table->string('memployeeposition');

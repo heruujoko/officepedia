@@ -119,6 +119,7 @@ function fetch_params_data(){
       $('#edit-msysprefixcashoutlastcount').val(response.msysprefixcashoutlastcount);
       $('#edit-msysprefixbankrecon').val(response.msysprefixbankrecon);
       $('#edit-msysprefixbankreconlastcount').val(response.msysprefixbankreconlastcount);
+<<<<<<< HEAD
       // Example Form
       $('#edit-msysprefixgoodsexample').text(response.msysprefixgoods+"00001");
       $('#edit-msysprefixsupplierexample').text(response.msysprefixsupplier+"00001");
@@ -134,6 +135,8 @@ function fetch_params_data(){
       $('#edit-msysprefixcashreceiptexample').text(response.msysprefixcashreceipt+"00001");
       $('#edit-msysprefixcashoutexample').text(response.msysprefixcashout+"00001");
       $('#edit-msysprefixbankreconexample').text(response.msysprefixbankrecon+"00001");
+=======
+>>>>>>> f7c713e376d2d81ea3f4ad1dbc57f77e37428c38
     }
   });
 }
@@ -186,7 +189,11 @@ function update_params(){
       data: data,
       success: function(response){
         console.log(response);
+<<<<<<< HEAD
         window.location.href="sysparam";
+=======
+        window.location.href="#forminput";
+>>>>>>> f7c713e376d2d81ea3f4ad1dbc57f77e37428c38
         swal({
           title: "Input Berhasil!",
           type: "success",

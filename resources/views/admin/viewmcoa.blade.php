@@ -903,6 +903,20 @@
 							</tbody>
 
 						</table>
+<<<<<<< HEAD
+=======
+
+						<div id="loading_modal" class="modal" style="top: 40%;" tabindex="-1" role="dialog" data-keyboard="false" data-backdrop="static">
+							<div class="modal-dialog">
+						  	<div class="modal-content">
+						    	<div class="modal-header" style="text-align: center">
+						      	<h3>Loading Data</h3>
+										<img src="{{ url('master/ajax-loader.gif') }}">
+						      </div>
+						    </div>
+						  </div>
+						</div>
+>>>>>>> f7c713e376d2d81ea3f4ad1dbc57f77e37428c38
 						<!-- <div class="tree smart-form container" id="mcoatree">
 							<ul role="tree">
 								@foreach($gparents as $gp)
@@ -968,7 +982,15 @@
 									});
 			            var table;
 			            $(function(){
+<<<<<<< HEAD
 			                 table = $('.tableapi').DataTable({
+=======
+			                 table = $('.tableapi')
+											 .on('preXhr.dt',function(){
+												 $('#loading_modal').modal('show');
+											 })
+											 .DataTable({
+>>>>>>> f7c713e376d2d81ea3f4ad1dbc57f77e37428c38
                   			      dom: "<'dtpadding' <'row' <'clmn' C> <'srch' f> <'tablerow' l> <'clear'> <'masterbutton' B> r> <'row pb' tip>>",
                                   "autoWidth" : true,
 																	"oLanguage": {
@@ -1044,7 +1066,14 @@
 															{data: 'type', type: 'type'},
           										{data: 'saldoright', saldoright: 'saldoright'}
           										]
+<<<<<<< HEAD
 									       });
+=======
+									       })
+												 .on('xhr.dt',function(){
+													 $('#loading_modal').modal('hide');
+												 });
+>>>>>>> f7c713e376d2d81ea3f4ad1dbc57f77e37428c38
 
   					        $(".table thead th input[type=text]").on( 'keyup change', function () {
   		    		            table

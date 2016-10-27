@@ -14,7 +14,11 @@ class CreateMgoodsTable extends Migration
     {
         Schema::create('mgoods', function (Blueprint $table) {
             $table->increments('id');
+<<<<<<< HEAD
             $table->string('mgoodscode')->unique();
+=======
+            $table->string('mgoodscode');
+>>>>>>> f7c713e376d2d81ea3f4ad1dbc57f77e37428c38
             $table->string('mgoodsbarcode')->unique();
             $table->string('mgoodsname')->unique();
             $table->string('mgoodsalias');
@@ -50,7 +54,11 @@ class CreateMgoodsTable extends Migration
 
          Schema::create('mbranch', function (Blueprint $table) {
             $table->increments('id');
+<<<<<<< HEAD
             $table->string('mbranchcode')->unique();
+=======
+            $table->string('mbranchcode');
+>>>>>>> f7c713e376d2d81ea3f4ad1dbc57f77e37428c38
             $table->string('mbranchname');
             $table->string('address');
             $table->string('phone');
@@ -102,7 +110,11 @@ class CreateMgoodsTable extends Migration
         });
         Schema::create('mcustomer', function (Blueprint $table){
             $table->increments('id');
+<<<<<<< HEAD
             $table->string('mcustomerid')->unique();
+=======
+            $table->string('mcustomerid');
+>>>>>>> f7c713e376d2d81ea3f4ad1dbc57f77e37428c38
             $table->string('mcustomername')->unique();
             $table->string('mcustomeremail');
             $table->string('mcustomerphone');

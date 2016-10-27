@@ -2,7 +2,10 @@
 @section('title')
 @section('content')
 <!-- MAIN PANEL -->
+<<<<<<< HEAD
 
+=======
+>>>>>>> f7c713e376d2d81ea3f4ad1dbc57f77e37428c38
 <div id="main" role="main">
 	<div id="_token" class="hidden" data-token="{{ csrf_token() }}"></div>
 	<!-- RIBBON -->
@@ -343,7 +346,11 @@
 									<label class="col-md-3 control-label"><b>Alamat</b>  &nbsp  :</label>
 									<div class="col-md-7">
 										<div class="icon-addon addon-md">
+<<<<<<< HEAD
 											<input value="" id="address" name="address" class="form-control forminput" placeholder="Alamat" type="text" data-parsley-required-message="Field Ini Tidak Boleh Kosong">
+=======
+											<input value="" id="address" name="address" class="form-control forminput" placeholder="Alamat" type="text" required data-parsley-required-message="Field Ini Tidak Boleh Kosong">
+>>>>>>> f7c713e376d2d81ea3f4ad1dbc57f77e37428c38
 											<label for="mgoodsgroup1" class="glyphicon glyphicon-home" rel="tooltip" title="Alamat"></label>
 										</div>
 									</div>
@@ -352,7 +359,11 @@
 									<label class="col-md-3 control-label"><b>Telepon</b>  &nbsp  :</label>
 									<div  class="col-md-7">
 										<div class="icon-addon addon-md">
+<<<<<<< HEAD
 											<input value="" id="phone" name="phone" class="form-control forminput phoneregex" placeholder="Telepon" type="text" data-parsley-required-message="Field Ini Tidak Boleh Kosong">
+=======
+											<input value="" id="phone" name="phone" class="form-control forminput phoneregex" placeholder="Telepon" type="text" required data-parsley-required-message="Field Ini Tidak Boleh Kosong">
+>>>>>>> f7c713e376d2d81ea3f4ad1dbc57f77e37428c38
 
 											<label for="mgoodsgroup1" class="glyphicon glyphicon-phone-alt" rel="tooltip" title="Telepon"></label>
 
@@ -366,7 +377,11 @@
 									<label class="col-md-3 control-label"><b>Kota</b>  &nbsp  :</label>
 									<div class="col-md-7">
 										<div class="icon-addon addon-md">
+<<<<<<< HEAD
 											<input value="" id="city" name="city" class="form-control forminput" placeholder="Kota" type="text" data-parsley-required-message="Field Ini Tidak Boleh Kosong">
+=======
+											<input value="" id="city" name="city" class="form-control forminput" placeholder="Kota" type="text" required data-parsley-required-message="Field Ini Tidak Boleh Kosong">
+>>>>>>> f7c713e376d2d81ea3f4ad1dbc57f77e37428c38
 											<label for="mgoodsgroup1" class="glyphicon glyphicon-road" rel="tooltip" title="Kota"></label>
 										</div>
 									</div>
@@ -375,7 +390,11 @@
 									<label class="col-md-3 control-label"><b>Orang Yang Bertanggung Jawab</b>  &nbsp  :</label>
 									<div class="col-md-7">
 										<div class="icon-addon addon-md">
+<<<<<<< HEAD
 											<input value="" id="person_in_charge" name="person_in_charge" class="form-control forminput" placeholder="Orang Yang Bertanggung Jawab" type="text" data-parsley-required-message="Field Ini Tidak Boleh Kosong">
+=======
+											<input value="" id="person_in_charge" name="person_in_charge" class="form-control forminput" placeholder="Orang Yang Bertanggung Jawab" type="text" required data-parsley-required-message="Field Ini Tidak Boleh Kosong">
+>>>>>>> f7c713e376d2d81ea3f4ad1dbc57f77e37428c38
 											<label for="mgoodsgroup1" class="glyphicon glyphicon-user" rel="tooltip" title="Orang Yang Bertanggung Jawab"></label>
 										</div>
 									</div>
@@ -839,7 +858,10 @@
 					);
 					}
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> f7c713e376d2d81ea3f4ad1dbc57f77e37428c38
 						</script>
 
 					</div>
@@ -867,7 +889,10 @@
 
 
 @stop
+<<<<<<< HEAD
 
 
 
 
+=======
+>>>>>>> f7c713e376d2d81ea3f4ad1dbc57f77e37428c38

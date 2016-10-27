@@ -42,7 +42,27 @@ class MEmployeeController extends Controller
           $new_empl->autogenproc();
           $new_empl->save();
         }
+<<<<<<< HEAD
         return response()->json($new_empl);
+=======
+
+        // doublecheck
+
+        $isvalid = $new_empl->doublecheckid();
+        if($isvalid){
+          return response()->json($new_empl);
+        } else {
+          $errorInfo = [
+            'err',
+            'err',
+            'Duplicate employee ID'
+          ];
+          $e = array('errorInfo' => $errorInfo);
+          $new_empl->revert_creation();
+          return response()->json($e,400);
+        }
+
+>>>>>>> f7c713e376d2d81ea3f4ad1dbc57f77e37428c38
       } catch(Exception $e){
         if($request->autogen == "true"){
           $new_empl->autogenproc();
