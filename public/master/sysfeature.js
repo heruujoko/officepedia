@@ -122,19 +122,12 @@ function update_feature(){
       dataType: "json",
       data: data,
       success: function(response){
-<<<<<<< HEAD
         window.location.href="sysfeature";
-=======
->>>>>>> f7c713e376d2d81ea3f4ad1dbc57f77e37428c38
         swal({
           title: "Input Berhasil!",
           type: "success",
           timer: 1000
         });
-<<<<<<< HEAD
-=======
-        window.location.href="#forminput";
->>>>>>> f7c713e376d2d81ea3f4ad1dbc57f77e37428c38
       },
       error: function(err){
         console.log(err);
