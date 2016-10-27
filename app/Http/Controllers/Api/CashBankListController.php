@@ -10,7 +10,8 @@ use App\MCOA;
 use App\MCOAParent;
 use Datatables;
 use Exception;
-use App\Mconfig;
+use App\MConfig;
+
 class CashBankListController extends Controller
 {
     private $iteration;
