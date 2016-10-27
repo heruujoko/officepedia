@@ -82,7 +82,7 @@ class MGOODS extends Model
     }
 
     public function supplier(){
-      return $this->belongsTo('App\Msupplier','mgoodssuppliercode','msupplierid');
+      return $this->belongsTo('App\MSupplier','mgoodssuppliercode','msupplierid');
     }
 
 }
