@@ -293,7 +293,7 @@ $(function(){
 								{
 									extend: 'copyHtml5',
 									exportOptions: {
-											columns: [ 2,3]
+											columns: [ 1,2]
 									}
 								},
 								{
@@ -317,7 +317,7 @@ $(function(){
 								{
 										extend: 'print',
 										exportOptions: {
-												columns: [ 1, 2, 3] //setting kolom mana yg mau di export
+												columns: [ 1, 2] //setting kolom mana yg mau di export
 										}
 
 								},
@@ -355,31 +355,31 @@ $(function(){
 								{
 									extend: 'copyHtml5',
 									exportOptions: {
-											columns: [ 2,3]
+											columns: [ 1,2]
 									}
 								},
 								{
 										text: 'CSV',
 										action: function(){
-											window.location.href = "{{ url('admin-nano/cashbank/cash/export/csv') }}";
+											window.location.href = "{{ url('admin-nano/cashbank/bank/export/csv') }}";
 										}
 								},
 								{
 										text: 'Excel',
 										action: function(){
-											window.location.href = "{{ url('admin-nano/cashbank/cash/export/excel') }}";
+											window.location.href = "{{ url('admin-nano/cashbank/bank/export/excel') }}";
 										}
 								},
 								{
 										text: 'PDF',
 										action: function(){
-											window.location.href = "{{ url('admin-nano/cashbank/cash/export/pdf') }}";
+											window.location.href = "{{ url('admin-nano/cashbank/bank/export/pdf') }}";
 										}
 								},
 								{
 										extend: 'print',
 										exportOptions: {
-												columns: [ 1, 2, 3] //setting kolom mana yg mau di export
+												columns: [ 1, 2] //setting kolom mana yg mau di export
 										}
 
 								},
