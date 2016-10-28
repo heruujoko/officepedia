@@ -67,6 +67,7 @@
                           <div class="form-horizontal" style="margin-top:21px;">
                             <div class="col-md-10">
                              <div class="errorBlock1" style="margin-left:23% !important;"></div>
+                             <div class="box-general">
                               <div style="height: 21px;" class="form-group">
                                 <label class="col-md-3 control-label"><b>Kode Barang</b> (<font color="red">*</font>) &nbsp  :</label>
                                 <div class="col-md-9">
@@ -101,7 +102,43 @@
                                   </div>
                                 </div>
                               </div>
-                                 <div style="height: 21px;" class="form-group">
+                              <div style="height: 21px;" class="form-group">
+                                <label class="col-md-3 control-label"><b>Tipe Barang</b>  &nbsp  :</label>
+                                <div class="col-md-9 col-sm-12">
+                                  <div class="icon-addon addon-md">
+                                    <select id="insert-mgoodstype" name="mgoodstype" class="form-control select2">
+                                      @foreach($categories as $cat)
+                                        <option value="{{ $cat->id }}">{{ $cat->category_name }}</option>
+                                      @endforeach
+                                    </select>
+                                  </div>
+                                </div>
+                              </div>
+                              <div style="height: 21px;" class="form-group">
+                                <label class="col-md-3 control-label"><b>Sub Tipe Barang</b>  &nbsp  :</label>
+                                <div class="col-md-9 col-sm-12">
+                                  <div class="icon-addon addon-md">
+                                    <select id="insert-mgoodstype" name="mgoodstype" class="form-control select2">
+                                      @foreach($categories as $cat)
+                                        <option value="{{ $cat->id }}">{{ $cat->category_name }}</option>
+                                      @endforeach
+                                    </select>
+                                  </div>
+                                </div>
+                              </div>
+                              <div style="height: 21px;" class="form-group">
+                                <label class="col-md-3 control-label"><b>Merk</b>  &nbsp  :</label>
+                                <div class="col-md-9 col-sm-12">
+                                  <div class="icon-addon addon-md">
+                                    <select id="insert-mgoodsbrand" name="mgoodsbrand" class="form-control select2">
+                                      @foreach($marks as $cat)
+                                        <option value="{{ $cat->id }}">{{ $cat->category_name }}</option>
+                                      @endforeach
+                                    </select>
+                                  </div>
+                                </div>
+                              </div>
+                              <div style="height: 21px;" class="form-group">
                                 <label class="col-md-3 control-label"><b>Nama Barang Alias</b>  &nbsp  :</label>
                                 <div  class="col-md-9 col-sm-12">
                                   <div class="icon-addon addon-md">
@@ -120,6 +157,8 @@
                                   </div>
                                 </div>
                               </div>
+                              </div>
+                              <div class="box-bottom">
                               <div style="height: 21px;" class="form-group">
                                 <label class="col-md-3 control-label"><b>Satuan-1</b> &nbsp  :</label>
                                 <div class="col-md-9 col-sm-12">
@@ -147,10 +186,10 @@
                                   </div>
                                 </div>
                               </div>
-                              <div style="height: 21px;" class="form-group">
+                              <div style="height: 21px;margin-top:23px;" class="form-group">
                                 <label class="col-md-3 control-label"><b>Status</b>  &nbsp  :</label>
                                   <div class="col-md-9">
-                                    <input id="insert-mgoodsactive" value="" name="mgoodsactive" class="active-toggle" placeholder="mgoodsactive" type="checkbox">
+                                    <input id="insert-mgoodsactive" checked value="" name="mgoodsactive" class="active-toggle" placeholder="mgoodsactive" type="checkbox">
                                 </div>
                               </div>
                                 <div style="height: 21px;" class="form-group">
@@ -162,7 +201,7 @@
                                   </div>
                                 </div>
                               </div>
-                            <div style="height: 21px;" class="form-group">
+                              <div style="height: 21px;" class="form-group">
                                 <label class="col-md-3 control-label"><b>Harga Jual</b> &nbsp  :</label>
                                 <div class="col-md-9 col-sm-12">
                                   <div class="icon-addon addon-md">
@@ -171,36 +210,13 @@
                                   </div>
                                 </div>
                               </div>
+                              </div>
                             </div>
                         </div>
                     </div>
                     <div id="menu2" class="tab-pane fade">
                       <div class="form form-horizontal" style="margin-top:21px;">
                         <div class="col-md-10">
-                          <div style="height: 21px;" class="form-group">
-                            <label class="col-md-3 control-label"><b>Tipe Barang</b>  &nbsp  :</label>
-                            <div class="col-md-4 col-sm-12">
-                              <div class="icon-addon addon-md">
-                                <select id="insert-mgoodstype" name="mgoodstype" class="form-control select2">
-                                  @foreach($categories as $cat)
-                                    <option value="{{ $cat->id }}">{{ $cat->category_name }}</option>
-                                  @endforeach
-                                </select>
-                              </div>
-                            </div>
-                          </div>
-                          <div style="height: 21px;" class="form-group">
-                            <label class="col-md-3 control-label"><b>Merk</b>  &nbsp  :</label>
-                            <div class="col-md-4 col-sm-12">
-                              <div class="icon-addon addon-md">
-                                <select id="insert-mgoodsbrand" name="mgoodsbrand" class="form-control select2">
-                                  @foreach($marks as $cat)
-                                    <option value="{{ $cat->id }}">{{ $cat->category_name }}</option>
-                                  @endforeach
-                                </select>
-                              </div>
-                            </div>
-                          </div>
                           <div style="height: 21px;" class="form-group">
                             <label class="col-md-3 control-label"><b>Group Barang 1</b>  &nbsp  :</label>
                             <div class="col-md-9 col-sm-12">
@@ -399,6 +415,7 @@
                           <div class="form-horizontal" style="margin-top:21px;">
                             <div class="col-md-10">
                              <div class="errorBlock1" style="margin-left:23% !important;"></div>
+                             <div class="box-general">
                               <div style="height: 21px;" class="form-group">
                                 <label class="col-md-3 control-label"><b>Kode Barang</b> (<font color="red">*</font>) &nbsp  :</label>
                                 <div class="col-md-9">
@@ -433,7 +450,43 @@
                                   </div>
                                 </div>
                               </div>
-                                 <div style="height: 21px;" class="form-group">
+                              <div style="height: 21px;" class="form-group">
+                                <label class="col-md-3 control-label"><b>Tipe Barang</b>  &nbsp  :</label>
+                                <div class="col-md-9 col-sm-12">
+                                  <div class="icon-addon addon-md">
+                                    <select id="edit-mgoodstype" name="mgoodstype" class="form-control select2">
+                                      @foreach($categories as $cat)
+                                        <option value="{{ $cat->id }}">{{ $cat->category_name }}</option>
+                                      @endforeach
+                                    </select>
+                                  </div>
+                                </div>
+                              </div>
+                              <div style="height: 21px;" class="form-group">
+                                <label class="col-md-3 control-label"><b>Sub Tipe Barang</b>  &nbsp  :</label>
+                                <div class="col-md-9 col-sm-12">
+                                  <div class="icon-addon addon-md">
+                                    <select id="edit-mgoodstype" name="mgoodstype" class="form-control select2">
+                                      @foreach($categories as $cat)
+                                        <option value="{{ $cat->id }}">{{ $cat->category_name }}</option>
+                                      @endforeach
+                                    </select>
+                                  </div>
+                                </div>
+                              </div>
+                              <div style="height: 21px;" class="form-group">
+                                <label class="col-md-3 control-label"><b>Merk</b>  &nbsp  :</label>
+                                <div class="col-md-9 col-sm-12">
+                                  <div class="icon-addon addon-md">
+                                    <select id="edit-mgoodsbrand" name="mgoodsbrand" class="form-control select2">
+                                      @foreach($marks as $cat)
+                                        <option value="{{ $cat->id }}">{{ $cat->category_name }}</option>
+                                      @endforeach
+                                    </select>
+                                  </div>
+                                </div>
+                              </div>
+                              <div style="height: 21px;" class="form-group">
                                 <label class="col-md-3 control-label"><b>Nama Barang Alias</b>  &nbsp  :</label>
                                 <div  class="col-md-9 col-sm-12">
                                   <div class="icon-addon addon-md">
@@ -452,6 +505,8 @@
                                   </div>
                                 </div>
                               </div>
+                              </div>
+                              <div class="box-bottom">
                               <div style="height: 21px;" class="form-group">
                                 <label class="col-md-3 control-label"><b>Satuan-1</b> &nbsp  :</label>
                                 <div class="col-md-9 col-sm-12">
@@ -479,7 +534,7 @@
                                   </div>
                                 </div>
                               </div>
-                              <div style="height: 21px;" class="form-group">
+                              <div style="height: 27px;margin-top:23px;" class="form-group">
                                 <label class="col-md-3 control-label"><b>Status</b>  &nbsp  :</label>
                                   <div class="col-md-9">
                                     <input id="edit-mgoodsactive" value="" name="mgoodsactive" class="active-toggle" placeholder="mgoodsactive" type="checkbox">
@@ -494,7 +549,7 @@
                                   </div>
                                 </div>
                               </div>
-                            <div style="height: 21px;" class="form-group">
+                              <div style="height: 21px;" class="form-group">
                                 <label class="col-md-3 control-label"><b>Harga Jual</b> &nbsp  :</label>
                                 <div class="col-md-9 col-sm-12">
                                   <div class="icon-addon addon-md">
@@ -503,36 +558,13 @@
                                   </div>
                                 </div>
                               </div>
+                              </div>
                             </div>
                         </div>
                     </div>
                     <div id="menuedit2" class="tab-pane fade">
                       <div class="form form-horizontal" style="margin-top:21px;">
                         <div class="col-md-10">
-                          <div style="height: 21px;" class="form-group">
-                            <label class="col-md-3 control-label"><b>Tipe Barang</b>  &nbsp  :</label>
-                            <div class="col-md-4 col-sm-12">
-                              <div class="icon-addon addon-md">
-                                <select class="form-control select2" id="edit-mgoodstype" name="mgoodstype">
-                                  @foreach($categories as $cat)
-                                    <option value="{{ $cat->id }}">{{ $cat->category_name }}</option>
-                                  @endforeach
-                                </select>
-                              </div>
-                            </div>
-                          </div>
-                          <div style="height: 21px;" class="form-group">
-                            <label class="col-md-3 control-label"><b>Merk</b>  &nbsp  :</label>
-                            <div class="col-md-4 col-sm-12">
-                              <div class="icon-addon addon-md">
-                                <select class="form-control select2" id="edit-mgoodsbrand" name="mgoodsbrand">
-                                  @foreach($marks as $cat)
-                                    <option value="{{ $cat->id }}">{{ $cat->category_name }}</option>
-                                  @endforeach
-                                </select>
-                              </div>
-                            </div>
-                          </div>
                           <div style="height: 21px;" class="form-group">
                             <label class="col-md-3 control-label"><b>Group Barang 1</b>  &nbsp  :</label>
                             <div class="col-md-9 col-sm-12">
@@ -712,7 +744,8 @@
                         <div id="menuview1" class="tab-pane fade in active">
                           <div class="form-horizontal" style="margin-top:21px;">
                             <div class="col-md-10">
-                             <div class="errorBlock1" style="margin-left:23% !important;"></div>
+                              <div class="errorBlock1" style="margin-left:23% !important;"></div>
+                              <div class="box-general">
                               <div style="height: 21px;" class="form-group">
                                 <label class="col-md-3 control-label"><b>Kode Barang</b> (<font color="red">*</font>) &nbsp  :</label>
                                 <div class="col-md-9">
@@ -747,13 +780,48 @@
                                   </div>
                                 </div>
                               </div>
-                                 <div style="height: 21px;" class="form-group">
+                              <div style="height: 21px;" class="form-group">
+                                <label class="col-md-3 control-label"><b>Tipe Barang</b>  &nbsp  :</label>
+                                <div class="col-md-9 col-sm-12">
+                                  <div class="icon-addon addon-md">
+                                    <select disabled id="view-mgoodstype" name="mgoodstype" class="form-control select2">
+                                      @foreach($categories as $cat)
+                                        <option value="{{ $cat->id }}">{{ $cat->category_name }}</option>
+                                      @endforeach
+                                    </select>
+                                  </div>
+                                </div>
+                              </div>
+                              <div style="height: 21px;" class="form-group">
+                                <label class="col-md-3 control-label"><b>Sub Tipe Barang</b>  &nbsp  :</label>
+                                <div class="col-md-9 col-sm-12">
+                                  <div class="icon-addon addon-md">
+                                    <select disabled id="view-mgoodstype" name="mgoodstype" class="form-control select2">
+                                      @foreach($categories as $cat)
+                                        <option value="{{ $cat->id }}">{{ $cat->category_name }}</option>
+                                      @endforeach
+                                    </select>
+                                  </div>
+                                </div>
+                              </div>
+                              <div style="height: 21px;" class="form-group">
+                                <label class="col-md-3 control-label"><b>Merk</b>  &nbsp  :</label>
+                                <div class="col-md-9 col-sm-12">
+                                  <div class="icon-addon addon-md">
+                                    <select disabled id="view-mgoodsbrand" name="mgoodsbrand" class="form-control select2">
+                                      @foreach($marks as $cat)
+                                        <option value="{{ $cat->id }}">{{ $cat->category_name }}</option>
+                                      @endforeach
+                                    </select>
+                                  </div>
+                                </div>
+                              </div>
+                              <div style="height: 21px;" class="form-group">
                                 <label class="col-md-3 control-label"><b>Nama Barang Alias</b>  &nbsp  :</label>
                                 <div  class="col-md-9 col-sm-12">
                                   <div class="icon-addon addon-md">
                                     <input disabled id="view-mgoodsalias" value="{{old('mgoodsalias')}}" name="mgoodsalias" class="form-control forminput" placeholder="Nama Barang Alias" type="text" @if (Session::has('autofocus')) autofocus @endif >
                                     <label for="mgoodsgroup1" class="glyphicon glyphicon-info-sign" rel="tooltip" title="Nama Barang Alias"></label>
-
                                   </div>
                                 </div>
                               </div>
@@ -766,6 +834,8 @@
                                   </div>
                                 </div>
                               </div>
+                              </div>
+                              <div class="box-bottom">
                               <div style="height: 21px;" class="form-group">
                                 <label class="col-md-3 control-label"><b>Satuan-1</b> &nbsp  :</label>
                                 <div class="col-md-9 col-sm-12">
@@ -793,10 +863,10 @@
                                   </div>
                                 </div>
                               </div>
-                              <div style="height: 21px;" class="form-group">
+                              <div style="height: 27px;margin-top:23px;" class="form-group">
                                 <label class="col-md-3 control-label"><b>Status</b>  &nbsp  :</label>
                                   <div class="col-md-9">
-                                    <input id="view-mgoodsactive" value="" name="mgoodsactive" class="active-toggle" placeholder="mgoodsactive" type="checkbox">
+                                    <input id="view-mgoodsactive" name="mgoodsactive" class="active-toggle" placeholder="mgoodsactive" type="checkbox">
                                 </div>
                               </div>
                                 <div style="height: 21px;" class="form-group">
@@ -808,7 +878,7 @@
                                   </div>
                                 </div>
                               </div>
-                            <div style="height: 21px;" class="form-group">
+                              <div style="height: 21px;" class="form-group">
                                 <label class="col-md-3 control-label"><b>Harga Jual</b> &nbsp  :</label>
                                 <div class="col-md-9 col-sm-12">
                                   <div class="icon-addon addon-md">
@@ -817,36 +887,13 @@
                                   </div>
                                 </div>
                               </div>
+                              </div>
                             </div>
                         </div>
                     </div>
                     <div id="menuview2" class="tab-pane fade">
                       <div class="form form-horizontal" style="margin-top:21px;">
                         <div class="col-md-10">
-                          <div style="height: 21px;" class="form-group">
-                            <label class="col-md-3 control-label"><b>Tipe Barang</b>  &nbsp  :</label>
-                            <div class="col-md-4 col-sm-12">
-                              <div class="icon-addon addon-md">
-                                <select disabled id="view-mgoodstype" name="mgoodstype" class="form-control select2">
-                                  @foreach($categories as $cat)
-                                    <option value="{{ $cat->id }}">{{ $cat->category_name }}</option>
-                                  @endforeach
-                                </select>
-                              </div>
-                            </div>
-                          </div>
-                          <div style="height: 21px;" class="form-group">
-                            <label class="col-md-3 control-label"><b>Merk</b>  &nbsp  :</label>
-                            <div class="col-md-4 col-sm-12">
-                              <div class="icon-addon addon-md">
-                                <select disabled id="view-mgoodsbrand" name="mgoodsbrand" class="form-control select2">
-                                  @foreach($marks as $cat)
-                                    <option value="{{ $cat->id }}">{{ $cat->category_name }}</option>
-                                  @endforeach
-                                </select>
-                              </div>
-                            </div>
-                          </div>
                           <div style="height: 21px;" class="form-group">
                             <label class="col-md-3 control-label"><b>Group Barang 1</b>  &nbsp  :</label>
                             <div class="col-md-9 col-sm-12">
@@ -1383,6 +1430,20 @@ $("#dropzone-gambar").dropzone({
     .active-toggle {
       padding-top: 5px;
       margin-bottom: 5px;
+    }
+    .box-general {
+			border: 4px #ddd solid;
+			padding: 2%;
+			margin-left: 50px;
+		}
+    .box-bottom {
+			border: 4px #ddd solid;
+			padding: 2%;
+			margin-left: 50px;
+      margin-top: 10px;
+		}
+    .bootstrap-switch-primary{
+      width: 53px;
     }
     #tableapi {
 			border: 1px solid #ddd !important;

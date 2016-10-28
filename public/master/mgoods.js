@@ -25,13 +25,16 @@ $(document).ready(function(){
   $('.active-toggle').bootstrapSwitch({
     size: 'mini',
     onText: "Aktif",
-    offText: "Nonaktif"
+    offText: "Nonaktif",
+    handleWidth: 54
   });
 
   $('.nice-toggle').bootstrapSwitch({
     size: 'mini',
     onText: "Yes",
-    offText: "No"
+    offText: "No",
+    handleWidth: 50,
+    labelWidth: 40
   });
 
 });
@@ -143,7 +146,9 @@ function editmgoods(id){
       $('#formedit').show();
       setTimeout(function(){
           $("#mgoodsname").focus();
+          $('.bootstrap-switch-label').css('width','62px');
       },100);
+      console.log(response.mgoodsactive);
       if(response.mgoodsactive == 1){
         $('#edit-mgoodsactive').bootstrapSwitch('state',true);
       } else {
@@ -272,27 +277,31 @@ function updatemgoods(){
       $('#forminput').hide();
       $('#formedit').hide();
       $('#formview').show();
+      setTimeout(function(){
+        $('.bootstrap-switch-label').css('width','62px');
+      },100);
+      console.log(response.mgoodsactive);
       if(response.mgoodsactive == 1){
         $('#view-mgoodsactive').bootstrapSwitch('state',true);
-        $('#view-mgoodsactive').bootstrapSwitch('disabled', true);
+        $('#view-mgoodsactive').bootstrapSwitch('readonly', true);
       } else {
         $('#view-mgoodsactive').bootstrapSwitch('state',false);
-        $('#view-mgoodsactive').bootstrapSwitch('disabled', true);
+        $('#view-mgoodsactive').bootstrapSwitch('readonly', true);
       }
 
       if(response.mgoodsbranches == 1){
         $('#view-mgoodsbranches').bootstrapSwitch('state',true);
-        $('#view-mgoodsbranches').bootstrapSwitch('disabled',true);
+        $('#view-mgoodsbranches').bootstrapSwitch('readonly',true);
       }else {
         $('#view-mgoodsbranches').bootstrapSwitch('state',false);
-        $('#view-mgoodsbranches').bootstrapSwitch('disabled',true);
+        $('#view-mgoodsbranches').bootstrapSwitch('readonly',true);
       }
       if(response.mgoodsuniquetransaction == 1){
         $('#view-mgoodsuniquetransaction').bootstrapSwitch('state',true);
-        $('#view-mgoodsuniquetransaction').bootstrapSwitch('disabled',true);
+        $('#view-mgoodsuniquetransaction').bootstrapSwitch('readonly',true);
       } else {
         $('#view-mgoodsuniquetransaction').bootstrapSwitch('state',false);
-        $('#view-mgoodsuniquetransaction').bootstrapSwitch('disabled',true);
+        $('#view-mgoodsuniquetransaction').bootstrapSwitch('readonly',true);
       }
       setTimeout(function(){
           $("#mgoodsname").focus();
