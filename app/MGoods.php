@@ -41,7 +41,7 @@ class MGOODS extends Model
     public function revert_creation(){
       $conf = MConfig::find(1);
       $conf->msysprefixgoodscount = $conf->msysprefixgoodscount-1;
-      $conf->msysprefixgoodslastcount = $conf->get_last_count_format($conf->msysprefixgoodscount);
+      $conf->msysprefixgoodslastcount = $conf->get_last_count_format14($conf->msysprefixgoodscount);
       $conf->save();
       $this->delete();
     }
@@ -49,7 +49,7 @@ class MGOODS extends Model
     public function update_prefix_status(){
       $conf = MConfig::find(1);
       $conf->msysprefixgoodscount = $conf->msysprefixgoodscount+1;
-      $conf->msysprefixgoodslastcount = $conf->get_last_count_format($conf->msysprefixgoodscount);
+      $conf->msysprefixgoodslastcount = $conf->get_last_count_format14($conf->msysprefixgoodscount);
       $conf->save();
     }
 
@@ -58,7 +58,7 @@ class MGOODS extends Model
       $attempt = 0;
       $conf = MConfig::find(1);
       try{
-        DB::select(DB::raw('call autogen("mgoods","'.$conf->msysprefixgoods.'",'.$conf->msysprefixgoodscount.',"mgoodscode",'.$this->id.')'));
+        DB::select(DB::raw('call autogengoods("mgoods","'.$conf->msysprefixgoods.'",'.$conf->msysprefixgoodscount.',"mgoodscode",'.$this->id.')'));
       } catch(Exception $e){
         return $e;
       }

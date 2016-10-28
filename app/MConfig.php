@@ -63,4 +63,30 @@ class MConfig extends Model
         return $count;
       }
     }
+
+    public function get_last_count_format14($count){
+      if($count < 10){
+        return "0000000000".$count;
+      } else if($count < 100){
+        return "000000000".$count;
+      } else if($count < 1000){
+        return "00000000".$count;
+      } else if($count < 10000){
+        return "0000000".$count;
+      } else if($count < 100000){
+        return "000000".$count;
+      } else if($count < 1000000){
+        return "00000".$count;
+      } else if($count < 10000000){
+        return "0000".$count;
+      } else if($count < 100000000){
+        return "000".$count;
+      } else if($count < 1000000000){
+        return "00".$count;
+      } else if($count < 10000000000){
+        return "0".$count;
+      } else {
+        return $count;
+      }
+    }
 }

@@ -166,7 +166,7 @@
                                 <label class="col-md-3 control-label"><b>Harga Jual</b> &nbsp  :</label>
                                 <div class="col-md-9 col-sm-12">
                                   <div class="icon-addon addon-md">
-                                    <input id="insert-mgoodspriceout" value="{{old('mgoodspriceout')}}" name="mgoodspriceout" class="form-control forminput" placeholder="Harga Beli" type="text"  @if (Session::has('autofocus')) autofocus @endif >
+                                    <input id="insert-mgoodspriceout" value="{{old('mgoodspriceout')}}" name="mgoodspriceout" class="form-control forminput" placeholder="Harga Jual" type="text"  @if (Session::has('autofocus')) autofocus @endif >
                                     <label for="mgoodsgroup1" class="glyphicon glyphicon-info-sign" rel="tooltip" title="Harga Jual"></label>
                                   </div>
                                 </div>
@@ -498,7 +498,7 @@
                                 <label class="col-md-3 control-label"><b>Harga Jual</b> &nbsp  :</label>
                                 <div class="col-md-9 col-sm-12">
                                   <div class="icon-addon addon-md">
-                                    <input id="edit-mgoodspriceout" value="{{old('mgoodspriceout')}}" name="mgoodspriceout" class="form-control forminput" placeholder="Harga Beli" type="text"  @if (Session::has('autofocus')) autofocus @endif >
+                                    <input id="edit-mgoodspriceout" value="{{old('mgoodspriceout')}}" name="mgoodspriceout" class="form-control forminput" placeholder="Harga Jual" type="text"  @if (Session::has('autofocus')) autofocus @endif >
                                     <label for="mgoodsgroup1" class="glyphicon glyphicon-info-sign" rel="tooltip" title="Harga Jual"></label>
                                   </div>
                                 </div>
@@ -812,7 +812,7 @@
                                 <label class="col-md-3 control-label"><b>Harga Jual</b> &nbsp  :</label>
                                 <div class="col-md-9 col-sm-12">
                                   <div class="icon-addon addon-md">
-                                    <input disabled id="view-mgoodspriceout" value="{{old('mgoodspriceout')}}" name="mgoodspriceout" class="form-control forminput" placeholder="Harga Beli" type="text"  @if (Session::has('autofocus')) autofocus @endif >
+                                    <input disabled id="view-mgoodspriceout" value="{{old('mgoodspriceout')}}" name="mgoodspriceout" class="form-control forminput" placeholder="Harga Jual" type="text"  @if (Session::has('autofocus')) autofocus @endif >
                                     <label for="mgoodsgroup1" class="glyphicon glyphicon-info-sign" rel="tooltip" title="Harga Jual"></label>
                                   </div>
                                 </div>
@@ -1240,8 +1240,8 @@
                 {data: 'mgoodsunit2', mgoodsunit2: 'mgoodsunit2'},
                 {data: 'mgoodsunit3', mgoodsunit3: 'mgoodsunit3'},
                 {data: 'mgoodsactive', mgoodsactive: 'mgoodsactive'},
-                {data: 'mgoodspricein', mgoodspricein: 'mgoodspricein'},
-                {data: 'mgoodspriceout', mgoodspriceout: 'mgoodspriceout'},
+                {data: 'pricein', pricein: 'pricein'},
+                {data: 'priceout', priceout: 'priceout'},
                 {data: 'category', category: 'category'},
                 {data: 'brand', brand: 'brand'},
                 {data: 'mgoodsgroup1', mgoodsgroup1: 'mgoodsgroup1'},

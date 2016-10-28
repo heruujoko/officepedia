@@ -23,9 +23,9 @@ $(document).ready(function(){
   }
 
   $('.active-toggle').bootstrapSwitch({
-    size: 'normal',
+    size: 'mini',
     onText: "Aktif",
-    offText: "Tidak Aktif"
+    offText: "Nonaktif"
   });
 
   $('.nice-toggle').bootstrapSwitch({
