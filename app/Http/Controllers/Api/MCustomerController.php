@@ -29,6 +29,8 @@ class MCustomerController extends Controller
             return "<span>".$this->iteration."</span>";
         })->addColumn('akun',function($mcustomer){
             return $mcustomer->akun->mcoaname;
+        })->addColumn('category',function($mcustomer){
+            return $mcustomer->categories->category_name;
         })
         ->make(true);
 }

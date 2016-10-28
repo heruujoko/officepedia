@@ -8,7 +8,7 @@ use Exception;
 class MCUSTOMER extends Model
 {
     protected $table = 'mcustomer';
-    protected $fillable = ['mcustomerid','mcustomername','mcustomeremail','mcustomerphone','mcustomerfax','mcustomerwebsite','mcustomeraddress','mcustomercity','mcustomerzipcode','mcustomerprovince','mcustomercountry','mcustomercontactname','mcustomercontactposition','mcustomercontactemail','mcustomercontactemailphone','mcustomerarlimit','mcustomercoa','mcustomertop','mcustomerarmax','mcustomerdefaultar'];
+    protected $fillable = ['mcustomerid','mcustomername','mcustomeremail','mcustomerphone','mcustomerfax','mcustomerwebsite','mcustomeraddress','mcustomercity','mcustomerzipcode','mcustomerprovince','mcustomercountry','mcustomercontactname','mcustomercontactposition','mcustomercontactemail','mcustomercontactemailphone','mcustomerarlimit','mcustomercoa','mcustomertop','mcustomerarmax','mcustomerdefaultar','mcustomercategory'];
 
     protected static function boot(){
 
@@ -18,6 +18,10 @@ class MCUSTOMER extends Model
         $memployee->update_prefix_status();
       });
 
+    }
+
+    public function categories(){
+      return $this->belongsTo('App\Mcategorycustomer','mcustomercategory','id');
     }
 
     public function akun(){

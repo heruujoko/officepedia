@@ -1190,8 +1190,9 @@ function insertmcustomer(){
         mcustomercoa: $('#insert-mcustomercoa').val(),
         mcustomertop: $('#insert-mcustomertop').val(),
         mcustomerarmax: $('#insert-mcustomerarmax').val(),
-        mcustomerdefaultar: $('#insert-mcustomerdefaultar').val()
-      }
+        mcustomerdefaultar: $('#insert-mcustomerdefaultar').val(),
+        mcustomercategory: $('#insert-mcustomercategory').val()
+      };
       console.log(data);
       $.ajax({
         type: "POST",
@@ -1254,11 +1255,10 @@ function viewmcustomer(id){
       $('#view-mcustomertop').val(response.mcustomertop).change();
       $('#view-mcustomerarmax').val(response.mcustomerarmax);
       $('#view-mcustomerdefaultar').val(response.mcustomerdefaultar);
+      $('#view-mcustomercategory').val(response.mcustomercategory).change();
       $('#forminput').hide();
       $('#formedit').hide();
       $('#formview').show();
-
-      console.log(response);
     }
 
 });
@@ -1291,6 +1291,7 @@ function editmcustomer(id){
       $('#edit-mcustomertop').val(response.mcustomertop).change();
       $('#edit-mcustomerarmax').val(response.mcustomerarmax);
       $('#edit-mcustomerdefaultar').val(response.mcustomerdefaultar);
+      $('#edit-mcustomercategory').val(response.mcustomercategory).change();
       $('#forminput').hide();
       $('#formview').hide();
       $('#formedit').show();
@@ -1328,7 +1329,8 @@ function updatemcustomer(){
         mcustomercoa: $('#edit-mcustomercoa').val(),
         mcustomertop: $('#edit-mcustomertop').val(),
         mcustomerarmax: $('#edit-mcustomerarmax').val(),
-        mcustomerdefaultar: $('#edit-mcustomerdefaultar').val()
+        mcustomerdefaultar: $('#edit-mcustomerdefaultar').val(),
+        mcustomercategory: $('#edit-mcustomercategory').val()
   }
 
    $.ajax({

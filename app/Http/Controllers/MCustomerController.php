@@ -9,6 +9,7 @@ use Excel;
 use PDF;
 use App\MCUSTOMER;
 use App\MCOA;
+use App\MCategorycustomer;
 
 class MCustomerController extends Controller
 {
@@ -20,6 +21,7 @@ class MCustomerController extends Controller
 		$data['section'] = 'customer';
     	$data['activetab'] = 1;
 		$data['mcoa'] = MCOA::all();
+		$data['categories'] = MCategorycustomer::all();
 		$data['id'] = null;
 	  return view('admin/viewmcustomer',$data);
 	}
@@ -58,12 +60,12 @@ class MCustomerController extends Controller
 			$excel->sheet('Master Pelanggan',function($sheet){
 				$this->count++;
 				$sheet->row($this->count,array(
-					'ID Pelanggan','Nama Pelanggan','Email','Phone','Fax','Website','Alamat','Kota','Kode Pos','Provinsi','Negara','Nama Kontak','Posisi','Email Kontak','Handphone','Limit','Akun','TOP','Maksimum Nota','Default'
+					'ID Pelanggan','Nama Pelanggan','Kategori Pelanggan','Email','Phone','Fax','Website','Alamat','Kota','Kode Pos','Provinsi','Negara','Nama Kontak','Posisi','Email Kontak','Handphone','Limit','Akun','TOP','Maksimum Nota','Default'
 				));
 				foreach($this->customer as $cust){
 					$this->count++;
 					$sheet->row($this->count,array(
-						$cust->mcustomerid,$cust->mcustomername,$cust->mcustomeremail,$cust->mcustomerphone,$cust->mcustomerfax,$cust->mcustomerwebsite,$cust->mcustomeraddress,$cust->mcustomercity,$cust->mcustomerzipcode,$cust->mcustomerprovince,$cust->mcustomercountry,$cust->mcustomercontactname,$cust->mcustomercontactposition,$cust->mcustomercontactemail,$cust->mcustomercontactemailphone,$cust->mcustomerarlimit,$cust->akun->mcoaname,$cust->mcustomertop,$cust->mcustomermax,$cust->mcustomerdefaultar
+						$cust->mcustomerid,$cust->mcustomername,$cust->categories->category_name,$cust->mcustomeremail,$cust->mcustomerphone,$cust->mcustomerfax,$cust->mcustomerwebsite,$cust->mcustomeraddress,$cust->mcustomercity,$cust->mcustomerzipcode,$cust->mcustomerprovince,$cust->mcustomercountry,$cust->mcustomercontactname,$cust->mcustomercontactposition,$cust->mcustomercontactemail,$cust->mcustomercontactemailphone,$cust->mcustomerarlimit,$cust->akun->mcoaname,$cust->mcustomertop,$cust->mcustomermax,$cust->mcustomerdefaultar
 					));
 				}
 			});
@@ -77,12 +79,12 @@ class MCustomerController extends Controller
 			$excel->sheet('Master Pelanggan',function($sheet){
 				$this->count++;
 				$sheet->row($this->count,array(
-					'ID Pelanggan','Nama Pelanggan','Email','Phone','Fax','Website','Alamat','Kota','Kode Pos','Provinsi','Negara','Nama Kontak','Posisi','Email Kontak','Handphone','Limit','Akun','TOP','Maksimum Nota','Default'
+					'ID Pelanggan','Nama Pelanggan','Kategori Pelanggan','Email','Phone','Fax','Website','Alamat','Kota','Kode Pos','Provinsi','Negara','Nama Kontak','Posisi','Email Kontak','Handphone','Limit','Akun','TOP','Maksimum Nota','Default'
 				));
 				foreach($this->customer as $cust){
 					$this->count++;
 					$sheet->row($this->count,array(
-						$cust->mcustomerid,$cust->mcustomername,$cust->mcustomeremail,$cust->mcustomerphone,$cust->mcustomerfax,$cust->mcustomerwebsite,$cust->mcustomeraddress,$cust->mcustomercity,$cust->mcustomerzipcode,$cust->mcustomerprovince,$cust->mcustomercountry,$cust->mcustomercontactname,$cust->mcustomercontactposition,$cust->mcustomercontactemail,$cust->mcustomercontactemailphone,$cust->mcustomerarlimit,$cust->akun->mcoaname,$cust->mcustomertop,$cust->mcustomermax,$cust->mcustomerdefaultar
+						$cust->mcustomerid,$cust->mcustomername,$cust->categories->category_name,$cust->mcustomeremail,$cust->mcustomerphone,$cust->mcustomerfax,$cust->mcustomerwebsite,$cust->mcustomeraddress,$cust->mcustomercity,$cust->mcustomerzipcode,$cust->mcustomerprovince,$cust->mcustomercountry,$cust->mcustomercontactname,$cust->mcustomercontactposition,$cust->mcustomercontactemail,$cust->mcustomercontactemailphone,$cust->mcustomerarlimit,$cust->akun->mcoaname,$cust->mcustomertop,$cust->mcustomermax,$cust->mcustomerdefaultar
 					));
 				}
 			});
