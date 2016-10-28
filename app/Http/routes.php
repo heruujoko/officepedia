@@ -90,6 +90,11 @@ Route::group(['prefix'=>'admin-nano'],function(){
   Route::get('memployee/export/excel','MEmployeeController@excel');
   Route::get('memployee/export/pdf','MEmployeeController@pdf');
 
+  Route::get('mtax','MTaxController@index');
+  Route::get('mtax/export/csv','MTaxController@csv');
+  Route::get('mtax/export/excel','MTaxController@excel');
+  Route::get('mtax/export/pdf','MTaxController@pdf');
+
   Route::controllers([
     '/'=>'AdminController'
   ]);
@@ -131,6 +136,7 @@ Route::group(['prefix'=>'admin-nano'],function(){
   Route::resource('mcategorygoodsmark','Api\MGoodsMarkController');
   Route::resource('memployeelevel','Api\MEmployeeLevelController');
   Route::resource('memployee','Api\MEmployeeController');
+  Route::resource('mtax','Api\MTaxController');
   Route::controllers([
     '/'=>'ApiController'
   ]);
