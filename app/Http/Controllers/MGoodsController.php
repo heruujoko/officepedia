@@ -12,6 +12,7 @@ use Excel;
 use PDF;
 use App\MGoodsMark;
 use App\MCategorygoods;
+use App\MTax;
 
 class MGoodsController extends Controller
 {
@@ -21,6 +22,7 @@ class MGoodsController extends Controller
     $data['marks'] = MGoodsMark::all();
     $data['categories'] = MCategorygoods::all();
 		$data['msupplier'] = MSupplier::all();
+    $data['taxes'] = MTax::all();
 		return view('admin/viewbarang',$data);
 	}
 	public function csv(){
