@@ -1184,5 +1184,8 @@
     .tableapi_wrapper {
       margin-top: 50px;
     }
+		#tableapi {
+			border: 1px solid #ddd !important;
+		}
   </style>
 @stop

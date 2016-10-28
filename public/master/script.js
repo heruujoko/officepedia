@@ -1387,6 +1387,34 @@ $('#insert-wrapper').parsley().reset();
 $('#edit-wrapper').parsley().reset();
 }
 
+//disabled nota customer if cash
+
+$('#insert-mcustomertop').on('change',function(e){
+  var top = $('#insert-mcustomertop').val();
+  if(top == 'cash'){
+    $('#insert-mcustomerarmax').val('');
+    $('#insert-mcustomerdefaultar').val('');
+    $('#insert-mcustomerarmax').attr('disabled',true);
+    $('#insert-mcustomerdefaultar').attr('disabled',true);
+  } else {
+    $('#insert-mcustomerarmax').removeAttr('disabled');
+    $('#insert-mcustomerdefaultar').removeAttr('disabled');
+  }
+});
+
+$('#edit-mcustomertop').on('change',function(e){
+  var top = $('#edit-mcustomertop').val();
+  if(top == 'cash'){
+    $('#edit-mcustomerarmax').val('');
+    $('#edit-mcustomerdefaultar').val('');
+    $('#edit-mcustomerarmax').attr('disabled',true);
+    $('#edit-mcustomerdefaultar').attr('disabled',true);
+  } else {
+    $('#edit-mcustomerarmax').removeAttr('disabled');
+    $('#edit-mcustomerdefaultar').removeAttr('disabled');
+  }
+});
+
 if(document.getElementById('disableforminput')){
   document.getElementById('disableforminput').onchange = function() {
       document.getElementById('insert-mcustomerid').disabled = this.checked;
