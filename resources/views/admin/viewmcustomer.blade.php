@@ -60,7 +60,6 @@
                        	<li class="active"><a data-toggle="tab" href="#menu1">Profil Pelanggan</a></li>
                        	<li><a data-toggle="tab" href="#menu2">Kontak</a></li>
                     	 	<li><a data-toggle="tab" href="#menu3">Kredit Limit</a></li>
-                        <li><a data-toggle="tab" href="#menu4">Pajak</a></li>
                       </ul>
                       <div id="insert-wrapper" class="tab-content" data-parsley-validate>
                         <div id="menu1" class="tab-pane fade in active">
@@ -90,6 +89,16 @@
               										</div>
               									</div>
               								</div>
+															<div class="form-group" style="margin-top: 21px;">
+																	<label class="col-md-3 control-label"><b>Kategori Pelanggan</b>  &nbsp  :</label>
+																	<div class="col-md-9 col-sm-12">
+																		<select class="select2 form-control" name="mcustomercategory" id="insert-mcustomercategory">
+																			@foreach($categories as $cat)
+																				<option value="{{ $cat->id }}">{{ $cat->category_name }}</option>
+																			@endforeach
+																		</select>
+																	</div>
+															</div>
                               <div class="errorBlock2" style="margin-left:23% !important;"></div>
               								<div style="height: 21px;" class="form-group">
               									<label class="col-md-3 control-label"><b>Email</b> &nbsp  :</label>
@@ -332,7 +341,6 @@
                        	<li class="active"><a data-toggle="tab" href="#editmenu1">Profil Pelanggan</a></li>
                        	<li><a data-toggle="tab" href="#editmenu2">Kontak</a></li>
                     	 	<li><a data-toggle="tab" href="#editmenu3">Kredit Limit</a></li>
-                        <li><a data-toggle="tab" href="#editmenu4">Pajak</a></li>
                       </ul>
                       <div class="tab-content">
                         <div id="editmenu1" class="tab-pane fade in active">
@@ -363,6 +371,16 @@
               										</div>
               									</div>
               								</div>
+															<div class="form-group" style="margin-top: 21px;">
+																	<label class="col-md-3 control-label"><b>Kategori Pelanggan</b>  &nbsp  :</label>
+																	<div class="col-md-9 col-sm-12">
+																		<select class="select2 form-control" name="mcustomercategory" id="edit-mcustomercategory">
+																			@foreach($categories as $cat)
+																				<option value="{{ $cat->id }}">{{ $cat->category_name }}</option>
+																			@endforeach
+																		</select>
+																	</div>
+															</div>
                               <div class="errorBlock4" style="margin-left:23% !important;"></div>
               								<div style="height: 21px;" class="form-group">
               									<label class="col-md-3 control-label"><b>Email</b> &nbsp  :</label>
@@ -605,7 +623,6 @@
                         <li class="active"><a data-toggle="tab" href="#viewmenu1">Profil Pelanggan</a></li>
                         <li><a data-toggle="tab" href="#viewmenu2">Kontak</a></li>
                         <li><a data-toggle="tab" href="#viewmenu3">Kredit Limit</a></li>
-                        <li><a data-toggle="tab" href="#viewmenu4">Pajak</a></li>
                       </ul>
                       <div id="insert-wrapper" class="tab-content" data-parsley-validate>
                         <div id="viewmenu1" class="tab-pane fade in active">
@@ -635,6 +652,16 @@
                                   </div>
                                 </div>
                               </div>
+															<div class="form-group" style="margin-top: 21px;">
+																	<label class="col-md-3 control-label"><b>Kategori Pelanggan</b>  &nbsp  :</label>
+																	<div class="col-md-9 col-sm-12">
+																		<select disabled class="select2 form-control" name="mcustomercategory" id="view-mcustomercategory">
+																			@foreach($categories as $cat)
+																				<option value="{{ $cat->id }}">{{ $cat->category_name }}</option>
+																			@endforeach
+																		</select>
+																	</div>
+															</div>
                               <div class="errorBlock6" style="margin-left:23% !important;"></div>
                               <div style="height: 21px;" class="form-group">
                                 <label class="col-md-3 control-label"><b>Email</b> &nbsp  :</label>
@@ -883,6 +910,9 @@
       										<th class="hasinput" style="width:9%">
       											<input type="text" class="form-control" placeholder="Filter Nama Pelanggan" />
       										</th>
+													<th class="hasinput" style="width:9%">
+      											<input type="text" class="form-control" placeholder="Filter Kategori Pelanggan" />
+      										</th>
       										<th class="hasinput" style="width:10%">
       											<input type="text" class="form-control" placeholder="Filter Email" />
       										</th>
@@ -943,6 +973,7 @@
       										<th data-hide="no"><center>No</center></th>
       										<th data-hide="mcustomerid"><center>ID Pelanggan</center></th>
       										<th data-hide="mcustomername"><center>Nama Pelanggan</center></th>
+													<th data-hide="mcustomercategory"><center>Kategori Pelanggan</center></th>
       										<th data-hide="mcustomeremail"><center>Email</center></th>
       										<th data-hide="mcustomerphone"><center>Telpon Kantor</center></th>
       										<th data-hide="mcustomerfax"><center>Fax</center></th>
@@ -975,8 +1006,6 @@
 <!-- END MAIN CONTENT -->
 </div>
 <!-- END MAIN PANEL -->
-<<<<<<< HEAD
-=======
 <div id="loading_modal" class="modal" style="top: 20%;" tabindex="-1" role="dialog" data-keyboard="false" data-backdrop="static">
 	<div class="modal-dialog">
 		<div class="modal-content">
@@ -987,7 +1016,7 @@
 		</div>
 	</div>
 </div>
->>>>>>> f7c713e376d2d81ea3f4ad1dbc57f77e37428c38
+
 @stop
 
 @section('js')
@@ -998,15 +1027,11 @@
   });
   var table;
   $(function(){
-<<<<<<< HEAD
-    table = $('.tableapi').DataTable({
-=======
     table = $('.tableapi')
 		.on('preXhr.dt',function(){
 			$('#loading_modal').modal('show');
 		})
 		.DataTable({
->>>>>>> f7c713e376d2d81ea3f4ad1dbc57f77e37428c38
     dom: "<'dtpadding' <'row' <'clmn' > <'srch' f> <'tablerow' l> <'clear'> <'masterbutton' B> r> <'row pb' tip>>",
         "autoWidth" : true,
         "oLanguage": {
@@ -1014,11 +1039,11 @@
             "sLengthMenu": "Show _MENU_ Entries",
             "sInfo": "Showing ( _START_ to _END_ ) to _TOTAL_ Entries"
         },
-        "aoColumnDefs": [{ "bVisible": false, "aTargets": [4,5,6,7,9,10,11,12,13,14,15,17,18,19,20,21] }],
+        "aoColumnDefs": [{ "bVisible": false, "aTargets": [4,5,6,7,9,10,11,12,13,14,15,17,18,19,20,21,22] }],
         buttons: [ {
             extend: 'copyHtml5',
             exportOptions: {
-                columns: [ 0, 1, 2, 3, 4, 5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21]
+                columns: [ 0, 1, 2, 3, 4, 5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22]
             }
         },
         {
@@ -1061,6 +1086,7 @@
                 {data: 'no', no: 'no' },
                 {data: 'mcustomerid', mcustomerid: 'mcustomerid'},
                 {data: 'mcustomername', mcustomername: 'mcustomername'},
+								{data: 'category', category: 'category'},
                 {data: 'mcustomeremail', mcustomeremail: 'mcustomeremail'},
                 {data: 'mcustomerphone', mcustomerphone: 'mcustomerphone'},
                 {data: 'mcustomerfax', mcustomerfax: 'mcustomerfax'},
@@ -1080,13 +1106,9 @@
 								{data: 'mcustomerarmax', mcustomerarmax: 'mcustomerarmax'},
 								{data: 'mcustomerdefaultar', mcustomerdefaultar: 'mcustomerdefaultar'},
                 ]
-<<<<<<< HEAD
-              });
-=======
               }).on('xhr.dt',function(){
 								$('#loading_modal').modal('hide');
 							});
->>>>>>> f7c713e376d2d81ea3f4ad1dbc57f77e37428c38
       $(".table thead th input[type=text]").on( 'keyup change', function () {
         table
             .column( $(this).parent().index()+':visible' )
@@ -1162,5 +1184,8 @@
     .tableapi_wrapper {
       margin-top: 50px;
     }
+		#tableapi {
+			border: 1px solid #ddd !important;
+		}
   </style>
 @stop

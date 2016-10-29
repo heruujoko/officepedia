@@ -8,10 +8,8 @@ use Exception;
 class MCUSTOMER extends Model
 {
     protected $table = 'mcustomer';
-    protected $fillable = ['mcustomerid','mcustomername','mcustomeremail','mcustomerphone','mcustomerfax','mcustomerwebsite','mcustomeraddress','mcustomercity','mcustomerzipcode','mcustomerprovince','mcustomercountry','mcustomercontactname','mcustomercontactposition','mcustomercontactemail','mcustomercontactemailphone','mcustomerarlimit','mcustomercoa','mcustomertop','mcustomerarmax','mcustomerdefaultar'];
+    protected $fillable = ['mcustomerid','mcustomername','mcustomeremail','mcustomerphone','mcustomerfax','mcustomerwebsite','mcustomeraddress','mcustomercity','mcustomerzipcode','mcustomerprovince','mcustomercountry','mcustomercontactname','mcustomercontactposition','mcustomercontactemail','mcustomercontactemailphone','mcustomerarlimit','mcustomercoa','mcustomertop','mcustomerarmax','mcustomerdefaultar','mcustomercategory'];
 
-<<<<<<< HEAD
-=======
     protected static function boot(){
 
       parent::boot();
@@ -21,8 +19,11 @@ class MCUSTOMER extends Model
       });
 
     }
-    
->>>>>>> f7c713e376d2d81ea3f4ad1dbc57f77e37428c38
+
+    public function categories(){
+      return $this->belongsTo('App\Mcategorycustomer','mcustomercategory','id');
+    }
+
     public function akun(){
       return $this->belongsTo('App\MCOA','mcustomercoa','id');
     }
@@ -30,22 +31,6 @@ class MCUSTOMER extends Model
     public function autogenproc(){
       $success = false;
       $attempt = 0;
-<<<<<<< HEAD
-      try{
-        DB::select(DB::raw('call autogenmcustomer('.$this->id.')'));
-      } catch(Exception $e){
-        do{
-          try{
-            $attempt++;
-            $this->doublecheck($attempt);
-            $success = true;
-          }catch(Exception $e){
-            $success = false;
-          }
-        } while($success == false);
-      }
-
-=======
       $conf = MConfig::find(1);
       try{
         DB::select(DB::raw('call autogen("mcustomer","'.$conf->msysprefixcustomer.'",'.$conf->msysprefixcustomercount.',"mcustomerid",'.$this->id.')'));
@@ -68,6 +53,7 @@ class MCUSTOMER extends Model
     public function revert_creation(){
       $conf = MConfig::find(1);
       $conf->msysprefixcustomercount = $conf->msysprefixcustomercount-1;
+      $conf->msysprefixcustomerlastcount = $conf->get_last_count_format($conf->msysprefixcustomercount);
       $conf->save();
       $this->delete();
     }
@@ -75,8 +61,8 @@ class MCUSTOMER extends Model
     public function update_prefix_status(){
       $conf = MConfig::find(1);
       $conf->msysprefixcustomercount = $conf->msysprefixcustomercount+1;
+      $conf->msysprefixcustomerlastcount = $conf->get_last_count_format($conf->msysprefixcustomercount);
       $conf->save();
->>>>>>> f7c713e376d2d81ea3f4ad1dbc57f77e37428c38
     }
 
     public function doublecheck($in){

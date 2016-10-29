@@ -75,6 +75,7 @@
         <tr>
           <td><b>ID Pelanggan</b></td>
           <td><b>Nama Pelanggan</b></td>
+          <td><b>Kategori Pelanggan</b></td>
           <td><b>Email</b></td>
           <td><b>Telpon Kantor</b></td>
           <td><b>Fax</b></td>
@@ -98,6 +99,7 @@
           <tr>
             <td>{{ $ct->mcustomerid }}</td>
             <td>{{ $ct->mcustomername }}</td>
+            <td>{{ $ct->categories->category_name }}</td>
             <td>{{ $ct->mcustomeremail }}</td>
             <td>{{ $ct->mcustomerphone }}</td>
             <td>{{ $ct->mcustomerfax }}</td>

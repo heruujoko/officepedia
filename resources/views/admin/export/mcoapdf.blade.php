@@ -89,7 +89,7 @@
             <td></td>
             <td></td>
             <td></td>
-            <td>{{ $gp->saldo }}</td>
+            <td>{{ number_format($gp->saldo,$decimals,$dec_point,$thousands_sep) }}</td>
           </tr>
           @foreach($gp->childs() as $parent)
             <tr>
@@ -99,7 +99,7 @@
               <td>{{ $parent->mcoaparentname }}</td>
               <td></td>
               <td></td>
-              <td>{{ $parent->saldo }}</td>
+              <td>{{ number_format($parent->saldo,$decimals,$dec_point,$thousands_sep) }}</td>
             </tr>
             @foreach($parent->childs() as $mcoa)
               <tr>
@@ -109,7 +109,7 @@
                 <td></td>
                 <td>{{ $mcoa->mcoacode }}</td>
                 <td>{{ $mcoa->mcoaname }}</td>
-                <td>{{ $mcoa->saldo }}</td>
+                <td>{{ number_format($mcoa->saldo,$decimals,$dec_point,$thousands_sep) }}</td>
               </tr>
             @endforeach
           @endforeach
@@ -117,40 +117,5 @@
       </tbody>
     </table>
     <div style="page-break-after: always;"></div>
-    <h3> Master Akun </h3>
-    <div class="tree smart-form container" id="mcoatree" style="font-size: 12px;">
-      <ul role="tree">
-        @foreach($gparents as $gp)
-        <li class="parent_li" role="treeitem">
-          <span title="Collapse this branch"><i class="fa fa-lg fa-folder-open"></i> <b>{{ $gp->mcoagrandparentcode }}</b> {{ $gp->mcoagrandparentname }} / Rp. {{ $gp->saldo }}</span>
-          <ul role="group">
-            <?php $cp =0 ?>
-            @foreach($gp->childs() as $parent)
-            <?php $cp++ ?>
-            <li class="parent_li" role="treeitem">
-              @if($cp == count($gp->childs()))
-              <div class="bfr lc"></div>
-              @else
-              <div class="bfr"></div>
-              @endif
-              <span title="Collapse this branch"><i class="fa fa-lg fa-plus-circle"></i> <b>{{ $parent->mcoaparentcode }}</b> {{ $parent->mcoaparentname }} / Rp. {{ $parent->saldo }}</span>
-              <ul role="group">
-                @foreach($parent->childs() as $coa)
-                <li>
-                  <div class="bfr lc"></div>
-                  <span title="Collapse this branch"><i class="fa fa-lg fa-plus-circle"></i> <b>{{ $coa->mcoacode }}</b> {{ $coa->mcoaname }} / Rp. {{ $coa->saldo }}</span>
-                  <div class="aftr"></div>
-                </li>
-                @endforeach
-              </ul>
-              <div class="aftr"></div>
-            </li>
-            @endforeach
-          </ul>
-        </li>
-        @endforeach
-      </ul>
-    </div>
-    <br>
   </body>
 </html>

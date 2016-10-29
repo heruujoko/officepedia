@@ -11,9 +11,14 @@ use DB;
 use Datatables;
 use Validator;
 use Exception;
+use App\MConfig;
 
 class MGoodsController extends Controller
 {
+
+  private $round;
+  private $separator;
+  private $iteration;
 
   private function convertBoolean($string_bool){
       if($string_bool == "true"){
@@ -25,6 +30,10 @@ class MGoodsController extends Controller
 
 	public function index(){
 		 $this->iteration = 0;
+     $config = MConfig::find(1);
+     $this->round = $config->msysgenrounddec;
+     $this->separator = $config->msysnumseparator;
+
         $MGoods = MGoods::where('void', '0')->orderby('created_at','desc')->get();
         return Datatables::of($MGoods)->addColumn('action', function($MGoods){
 
@@ -42,6 +51,28 @@ class MGoodsController extends Controller
         })
         ->addColumn('brand',function($MGoods){
             return "<span>".$MGoods->mark->category_name."</span>";
+        })
+        ->addColumn('pricein',function($MGoods){
+          $decimals = $this->round;
+          $dec_point = $this->separator;
+          if($dec_point == ","){
+            $thousands_sep = ".";
+          } else {
+            $thousands_sep = ",";
+          }
+          $formatted_saldo = number_format($MGoods->mgoodspricein,$decimals,$dec_point,$thousands_sep);
+          return "<span style=\"float:right\">".$formatted_saldo."</span>";
+        })
+        ->addColumn('priceout',function($MGoods){
+          $decimals = $this->round;
+          $dec_point = $this->separator;
+          if($dec_point == ","){
+            $thousands_sep = ".";
+          } else {
+            $thousands_sep = ",";
+          }
+          $formatted_saldo = number_format($MGoods->mgoodspriceout,$decimals,$dec_point,$thousands_sep);
+          return "<span style=\"float:right\">".$formatted_saldo."</span>";
         })
         ->make(true);
 	}
@@ -65,12 +96,6 @@ class MGoodsController extends Controller
           $MGoods->autogenproc();
           $MGoods->save();
         }
-<<<<<<< HEAD
-				return response()->json($MGoods);
-			} catch(Exception $e){
-
-          return response()->json($e,400);
-=======
         $isvalid = $MGoods->doublecheckid();
         if($isvalid){
           return response()->json($MGoods);
@@ -86,7 +111,6 @@ class MGoodsController extends Controller
         }
 			} catch(Exception $e){
         return response()->json($e,400);
->>>>>>> f7c713e376d2d81ea3f4ad1dbc57f77e37428c38
 			}
 
 	}
@@ -102,7 +126,8 @@ class MGoodsController extends Controller
 
 	public function destroy($id){
 		$MGoods = MGoods::find($id);
-    DB::table('MGoods')->where('id',$id)->update(['void' => '1']);
+    $MGoods->void = 1;
+    $MGoods->save();
     return response()->json();
 	}
 

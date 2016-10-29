@@ -81,7 +81,7 @@
           <tr>
             <td>{{ $k->mcoacode }}</td>
             <td>{{ $k->mcoaname }}</td>
-            <td style="text-align:right">{{ $k->saldo }}</td>
+            <td style="text-align:right">{{ number_format($k->saldo,$decimals,$dec_point,$thousands_sep) }}</td>
           </tr>
         @endforeach
       </tbody>

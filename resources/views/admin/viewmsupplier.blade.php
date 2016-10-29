@@ -60,7 +60,6 @@
                        	<li class="active"><a data-toggle="tab" href="#menu1">Profil Supplier</a></li>
                        	<li><a data-toggle="tab" href="#menu2">Kontak</a></li>
                     	 	<li><a data-toggle="tab" href="#menu3">Kredit Limit</a></li>
-                        <li><a data-toggle="tab" href="#menu4">Pajak</a></li>
                       </ul>
                       <div id="insert-wrapper" class="tab-content" data-parsley-validate>
                         <div id="menu1" class="tab-pane fade in active">
@@ -315,7 +314,6 @@
                        	<li class="active"><a data-toggle="tab" href="#editmenu1">Profil Supplier</a></li>
                        	<li><a data-toggle="tab" href="#editmenu2">Kontak</a></li>
                     	 	<li><a data-toggle="tab" href="#editmenu3">Kredit Limit</a></li>
-                        <li><a data-toggle="tab" href="#editmenu4">Pajak</a></li>
                       </ul>
                       <div class="tab-content">
                         <div id="editmenu1" class="tab-pane fade in active">
@@ -571,7 +569,6 @@
                         <li class="active"><a data-toggle="tab" href="#viewmenu1">Profil Supplier</a></li>
                         <li><a data-toggle="tab" href="#viewmenu2">Kontak</a></li>
                         <li><a data-toggle="tab" href="#viewmenu3">Kredit Limit</a></li>
-                        <li><a data-toggle="tab" href="#viewmenu4">Pajak</a></li>
                       </ul>
                       <div id="insert-wrapper" class="tab-content" data-parsley-validate>
                         <div id="viewmenu1" class="tab-pane fade in active">
@@ -963,15 +960,11 @@
   });
   var table;
   $(function(){
-<<<<<<< HEAD
-    table = $('.tableapi').DataTable({
-=======
     table = $('.tableapi')
 		.on('preXhr.dt',function(){
 			$('#loading_modal').modal('show');
 		})
 		.DataTable({
->>>>>>> f7c713e376d2d81ea3f4ad1dbc57f77e37428c38
     dom: "<'dtpadding' <'row' <'clmn' > <'srch' f> <'tablerow' l> <'clear'> <'masterbutton' B> r> <'row pb' tip>>",
         "autoWidth" : true,
         "oLanguage": {
@@ -1046,13 +1039,9 @@
 								{data: 'msupplierarmax', msupplierarmax: 'msupplierarmax'},
 								{data: 'msupplierdefaultar', msupplierdefaultar: 'msupplierdefaultar'},
                 ]
-<<<<<<< HEAD
-              });
-=======
               }).on('xhr.dt',function(){
 								$('#loading_modal').modal('hide');
 							});
->>>>>>> f7c713e376d2d81ea3f4ad1dbc57f77e37428c38
       $(".table thead th input[type=text]").on( 'keyup change', function () {
         table
             .column( $(this).parent().index()+':visible' )
@@ -1129,5 +1118,8 @@
     .tableapi_wrapper {
       margin-top: 50px;
     }
+		#tableapi {
+			border: 1px solid #ddd !important;
+		}
   </style>
 @stop

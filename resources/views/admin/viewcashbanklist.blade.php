@@ -250,8 +250,6 @@
     </div><!-- /.modal-content -->
   </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
-<<<<<<< HEAD
-=======
 <div id="loading_modal" class="modal" style="top: 20%;" tabindex="-1" role="dialog" data-keyboard="false" data-backdrop="static">
 	<div class="modal-dialog">
 		<div class="modal-content">
@@ -262,7 +260,6 @@
 		</div>
 	</div>
 </div>
->>>>>>> f7c713e376d2d81ea3f4ad1dbc57f77e37428c38
 @stop
 
 @section('js')
@@ -271,15 +268,11 @@
 var tablekas;
 var tablebank;
 $(function(){
-<<<<<<< HEAD
-	tablekas = $('#tableapi').DataTable({
-=======
 	tablekas = $('#tableapi')
 						.on('preXhr.dt',function(){
 							$('#loading_modal').modal('show');
 						})
 						.DataTable({
->>>>>>> f7c713e376d2d81ea3f4ad1dbc57f77e37428c38
 						dom: "<'dtpadding' <'row' <'clmn' > <'srch' f> <'tablerow' l> <'clear'> <'masterbutton' B> r> <'row pb' tip>>",
 								"autoWidth" : true,
 								"oLanguage": {
@@ -297,7 +290,7 @@ $(function(){
 								{
 									extend: 'copyHtml5',
 									exportOptions: {
-											columns: [ 2,3]
+											columns: [ 1,2]
 									}
 								},
 								{
@@ -321,7 +314,7 @@ $(function(){
 								{
 										extend: 'print',
 										exportOptions: {
-												columns: [ 1, 2, 3] //setting kolom mana yg mau di export
+												columns: [ 1, 2] //setting kolom mana yg mau di export
 										}
 
 								},
@@ -359,31 +352,31 @@ $(function(){
 								{
 									extend: 'copyHtml5',
 									exportOptions: {
-											columns: [ 2,3]
+											columns: [ 1,2]
 									}
 								},
 								{
 										text: 'CSV',
 										action: function(){
-											window.location.href = "{{ url('admin-nano/cashbank/cash/export/csv') }}";
+											window.location.href = "{{ url('admin-nano/cashbank/bank/export/csv') }}";
 										}
 								},
 								{
 										text: 'Excel',
 										action: function(){
-											window.location.href = "{{ url('admin-nano/cashbank/cash/export/excel') }}";
+											window.location.href = "{{ url('admin-nano/cashbank/bank/export/excel') }}";
 										}
 								},
 								{
 										text: 'PDF',
 										action: function(){
-											window.location.href = "{{ url('admin-nano/cashbank/cash/export/pdf') }}";
+											window.location.href = "{{ url('admin-nano/cashbank/bank/export/pdf') }}";
 										}
 								},
 								{
 										extend: 'print',
 										exportOptions: {
-												columns: [ 1, 2, 3] //setting kolom mana yg mau di export
+												columns: [ 1, 2] //setting kolom mana yg mau di export
 										}
 
 								},
@@ -401,12 +394,9 @@ $(function(){
 						{data: 'mcoaname', mcoaname: 'mcoaname'},
 						{data: 'rightsaldo', rightsaldo: 'rightsaldo'}
 						]
-<<<<<<< HEAD
-=======
 			 })
 			 .on('xhr.dt',function(){
 				 $('#loading_modal').modal('hide');
->>>>>>> f7c713e376d2d81ea3f4ad1dbc57f77e37428c38
 			 });
 
 	$("#tableapi thead th input[type=text]").on( 'keyup change', function () {

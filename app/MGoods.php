@@ -9,6 +9,7 @@ use Exception;
 class MGOODS extends Model
 {
     protected $table = 'mgoods';
+
     protected $fillable = ['mgoodscode','mgoodsbarcode','mgoodsname','mgoodsalias','mgoodsremark','mgoodsunit','mgoodsunit2','mgoodsunit3','mgoodsactive','mgoodspricein','mgoodspriceout','mgoodstype','mgoodsbrand','mgoodsgroup1','mgoodsgroup2','mgoodsgroup3','mgoodssuppliercode','mgoodssuppliername','mgoodsbranches','mgoodsuniquetransaction','mgoodspicture','mgoodscoapurchasing','mgoodscoapurchasingname','mgoodscoacogs','mgoodscoacogsname','mgoodscoaselling','mgoodscoasellingname','mgoodscoareturnofselling','mgoodscoareturnofsellingname','mgoodscogs'];
 
         protected $casts = [
@@ -17,31 +18,6 @@ class MGOODS extends Model
         'mgoodsuniquetransaction' => 'integer',
         ];
 
-<<<<<<< HEAD
-=======
-
->>>>>>> f7c713e376d2d81ea3f4ad1dbc57f77e37428c38
-    public function autogen(){
-      DB::select(DB::raw('call autogenmgoods('.$this->id.')'));
-    }
-
-<<<<<<< HEAD
-    public function autogenproc(){
-      $success = false;
-      $attempt = 0;
-      try{
-        DB::select(DB::raw('call autogenmgoods('.$this->id.')'));
-      } catch(Exception $e){
-        do{
-          try{
-            $attempt++;
-            $this->doublecheck($attempt);
-            $success = true;
-          }catch(Exception $e){
-            $success = false;
-          }
-        } while($success == false);
-=======
     protected static function boot(){
 
       parent::boot();
@@ -65,6 +41,7 @@ class MGOODS extends Model
     public function revert_creation(){
       $conf = MConfig::find(1);
       $conf->msysprefixgoodscount = $conf->msysprefixgoodscount-1;
+      $conf->msysprefixgoodslastcount = $conf->get_last_count_format14($conf->msysprefixgoodscount);
       $conf->save();
       $this->delete();
     }
@@ -72,6 +49,7 @@ class MGOODS extends Model
     public function update_prefix_status(){
       $conf = MConfig::find(1);
       $conf->msysprefixgoodscount = $conf->msysprefixgoodscount+1;
+      $conf->msysprefixgoodslastcount = $conf->get_last_count_format14($conf->msysprefixgoodscount);
       $conf->save();
     }
 
@@ -80,11 +58,9 @@ class MGOODS extends Model
       $attempt = 0;
       $conf = MConfig::find(1);
       try{
-        // DB::select(DB::raw('call autogenmgoods('.$this->id.')'));
-        DB::select(DB::raw('call autogen("mgoods","'.$conf->msysprefixgoods.'",'.$conf->msysprefixgoodscount.',"mgoodscode",'.$this->id.')'));
+        DB::select(DB::raw('call autogengoods("mgoods","'.$conf->msysprefixgoods.'",'.$conf->msysprefixgoodscount.',"mgoodscode",'.$this->id.')'));
       } catch(Exception $e){
         return $e;
->>>>>>> f7c713e376d2d81ea3f4ad1dbc57f77e37428c38
       }
 
     }
@@ -106,7 +82,7 @@ class MGOODS extends Model
     }
 
     public function supplier(){
-      return $this->belongsTo('App\Msupplier','mgoodssuppliercode','msupplierid');
+      return $this->belongsTo('App\MSupplier','mgoodssuppliercode','msupplierid');
     }
 
 }

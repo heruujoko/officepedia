@@ -634,15 +634,11 @@
   });
   var table;
   $(function(){
-<<<<<<< HEAD
-    table = $('.tableapi').DataTable({
-=======
     table = $('.tableapi')
 		.on('preXhr.dt',function(){
 			$('#loading_modal').modal('show');
 		})
 		.DataTable({
->>>>>>> f7c713e376d2d81ea3f4ad1dbc57f77e37428c38
     dom: "<'dtpadding' <'row' <'clmn' > <'srch' f> <'tablerow' l> <'clear'> <'masterbutton' B> r> <'row pb' tip>>",
         "autoWidth" : true,
         "oLanguage": {
@@ -709,13 +705,9 @@
 								{data: 'memployeecountry', memployeecountry: 'memployeecountry'},
 								{data: 'memployeeinfo', memployeeinfo: 'memployeeinfo'},
                 ]
-<<<<<<< HEAD
-              });
-=======
               }).on('xhr.dt',function(){
 								$('#loading_modal').modal('hide');
 							});
->>>>>>> f7c713e376d2d81ea3f4ad1dbc57f77e37428c38
       $(".table thead th input[type=text]").on( 'keyup change', function () {
         table
             .column( $(this).parent().index()+':visible' )

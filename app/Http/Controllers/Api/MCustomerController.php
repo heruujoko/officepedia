@@ -29,6 +29,8 @@ class MCustomerController extends Controller
             return "<span>".$this->iteration."</span>";
         })->addColumn('akun',function($mcustomer){
             return $mcustomer->akun->mcoaname;
+        })->addColumn('category',function($mcustomer){
+            return $mcustomer->categories->category_name;
         })
         ->make(true);
 }
@@ -53,15 +55,6 @@ class MCustomerController extends Controller
 			}
 			$new_cust->void = 0;
 			$new_cust->save();
-<<<<<<< HEAD
-			return response()->json($new_cust);
-		} catch(Exception $e){
-			if ($request->autogen == 'true') {
-				$new_cust->autogenproc();
-				$new_empl->save();
-				return response()->json($new_empl);
-			}
-=======
 
 			// doublecheck
 
@@ -79,7 +72,6 @@ class MCustomerController extends Controller
 				return response()->json($e,400);
 			}
 		} catch(Exception $e){
->>>>>>> f7c713e376d2d81ea3f4ad1dbc57f77e37428c38
 			return response()->json($e,400);
 		}
 

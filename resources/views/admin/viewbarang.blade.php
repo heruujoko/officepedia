@@ -72,11 +72,7 @@
                                 <div class="col-md-9">
                               	   <div class="icon-addon addon-md">
                               		     <div class="input-group">
-<<<<<<< HEAD
-                                    	  <input id="insert-mgoodscode" name="mgoodscode" class="form-control forminput" placeholder="AUTO GENERATE" type="text" data-parsley-required-message="Field Ini Tidak Boleh Kosong"  data-parsley-errors-container=".errorBlock1" @if (Session::has('autofocus')) autofocus @endif >
-=======
                                     	  <input id="insert-mgoodscode" name="mgoodscode" class="form-control forminput" maxlength="14" placeholder="AUTO GENERATE" type="text" data-parsley-required-message="Field Ini Tidak Boleh Kosong"  data-parsley-errors-container=".errorBlock1" @if (Session::has('autofocus')) autofocus @endif >
->>>>>>> f7c713e376d2d81ea3f4ad1dbc57f77e37428c38
                                     		<label for="" class="glyphicon glyphicon-barcode" rel="tooltip" title="ID Pelanggan"></label>
                                     		<span class="input-group-addon" style="background: none;">
                                       	   <input type="checkbox" id="autogenmgoods" name="autogen" rel="tooltip" title="ON/OFF auto generate ID Barang">
@@ -90,11 +86,7 @@
                                 <label class="col-md-3 control-label"><b>Barcode</b> &nbsp  :</label>
                                 <div class="col-md-9 col-sm-12">
                                   <div class="icon-addon addon-md">
-<<<<<<< HEAD
-                                    <input id="insert-mgoodsbarcode" value="{{old('mgoodsbarcode')}}" name="mgoodsbarcode" class="form-control forminput" placeholder="Barcode" type="text"  @if (Session::has('autofocus')) autofocus @endif >
-=======
                                     <input id="insert-mgoodsbarcode" value="{{old('mgoodsbarcode')}}" name="mgoodsbarcode" class="form-control forminput" maxlength="14" placeholder="Barcode" type="text"  @if (Session::has('autofocus')) autofocus @endif >
->>>>>>> f7c713e376d2d81ea3f4ad1dbc57f77e37428c38
                                     <label for="mgoodsgroup1" class="glyphicon glyphicon-info-sign" rel="tooltip" title="Barcode"></label>
                                   </div>
                                 </div>
@@ -158,7 +150,7 @@
                               <div style="height: 21px;" class="form-group">
                                 <label class="col-md-3 control-label"><b>Status</b>  &nbsp  :</label>
                                   <div class="col-md-9">
-                                    <input id="insert-mgoodsactive" value="" name="mgoodsactive" class="nice-toggle" placeholder="mgoodsactive" type="checkbox">
+                                    <input id="insert-mgoodsactive" value="" name="mgoodsactive" class="active-toggle" placeholder="mgoodsactive" type="checkbox">
                                 </div>
                               </div>
                                 <div style="height: 21px;" class="form-group">
@@ -174,7 +166,7 @@
                                 <label class="col-md-3 control-label"><b>Harga Jual</b> &nbsp  :</label>
                                 <div class="col-md-9 col-sm-12">
                                   <div class="icon-addon addon-md">
-                                    <input id="insert-mgoodspriceout" value="{{old('mgoodspriceout')}}" name="mgoodspriceout" class="form-control forminput" placeholder="Harga Beli" type="text"  @if (Session::has('autofocus')) autofocus @endif >
+                                    <input id="insert-mgoodspriceout" value="{{old('mgoodspriceout')}}" name="mgoodspriceout" class="form-control forminput" placeholder="Harga Jual" type="text"  @if (Session::has('autofocus')) autofocus @endif >
                                     <label for="mgoodsgroup1" class="glyphicon glyphicon-info-sign" rel="tooltip" title="Harga Jual"></label>
                                   </div>
                                 </div>
@@ -412,11 +404,7 @@
                                 <div class="col-md-9">
                               	   <div class="icon-addon addon-md">
                               		     <div class="input-group">
-<<<<<<< HEAD
-                                    	  <input id="edit-mgoodscode" name="mgoodscode" class="form-control forminput" placeholder="AUTO GENERATE" type="text" data-parsley-required-message="Field Ini Tidak Boleh Kosong"  data-parsley-errors-container=".errorBlock1" @if (Session::has('autofocus')) autofocus @endif >
-=======
                                     	  <input id="edit-mgoodscode" name="mgoodscode" class="form-control forminput" placeholder="AUTO GENERATE" maxlength="14" type="text" data-parsley-required-message="Field Ini Tidak Boleh Kosong"  data-parsley-errors-container=".errorBlock1" @if (Session::has('autofocus')) autofocus @endif >
->>>>>>> f7c713e376d2d81ea3f4ad1dbc57f77e37428c38
                                     		<label for="" class="glyphicon glyphicon-barcode" rel="tooltip" title="ID Pelanggan"></label>
                                     		<span class="input-group-addon" style="background: none;">
                                       	   <input type="checkbox" id="edit-autogenmgoods" name="autogen" rel="tooltip" title="ON/OFF auto generate ID Barang">
@@ -430,11 +418,7 @@
                                 <label class="col-md-3 control-label"><b>Barcode</b> &nbsp  :</label>
                                 <div class="col-md-9 col-sm-12">
                                   <div class="icon-addon addon-md">
-<<<<<<< HEAD
-                                    <input id="edit-mgoodsbarcode" value="{{old('mgoodsbarcode')}}" name="mgoodsbarcode" class="form-control forminput" placeholder="Barcode" type="text"  @if (Session::has('autofocus')) autofocus @endif >
-=======
                                     <input id="edit-mgoodsbarcode" value="{{old('mgoodsbarcode')}}" name="mgoodsbarcode" class="form-control forminput" maxlength="14" placeholder="Barcode" type="text"  @if (Session::has('autofocus')) autofocus @endif >
->>>>>>> f7c713e376d2d81ea3f4ad1dbc57f77e37428c38
                                     <label for="mgoodsgroup1" class="glyphicon glyphicon-info-sign" rel="tooltip" title="Barcode"></label>
                                   </div>
                                 </div>
@@ -498,7 +482,7 @@
                               <div style="height: 21px;" class="form-group">
                                 <label class="col-md-3 control-label"><b>Status</b>  &nbsp  :</label>
                                   <div class="col-md-9">
-                                    <input id="edit-mgoodsactive" value="" name="mgoodsactive" class="nice-toggle" placeholder="mgoodsactive" type="checkbox">
+                                    <input id="edit-mgoodsactive" value="" name="mgoodsactive" class="active-toggle" placeholder="mgoodsactive" type="checkbox">
                                 </div>
                               </div>
                                 <div style="height: 21px;" class="form-group">
@@ -514,7 +498,7 @@
                                 <label class="col-md-3 control-label"><b>Harga Jual</b> &nbsp  :</label>
                                 <div class="col-md-9 col-sm-12">
                                   <div class="icon-addon addon-md">
-                                    <input id="edit-mgoodspriceout" value="{{old('mgoodspriceout')}}" name="mgoodspriceout" class="form-control forminput" placeholder="Harga Beli" type="text"  @if (Session::has('autofocus')) autofocus @endif >
+                                    <input id="edit-mgoodspriceout" value="{{old('mgoodspriceout')}}" name="mgoodspriceout" class="form-control forminput" placeholder="Harga Jual" type="text"  @if (Session::has('autofocus')) autofocus @endif >
                                     <label for="mgoodsgroup1" class="glyphicon glyphicon-info-sign" rel="tooltip" title="Harga Jual"></label>
                                   </div>
                                 </div>
@@ -734,11 +718,7 @@
                                 <div class="col-md-9">
                               	   <div class="icon-addon addon-md">
                               		     <div class="input-group">
-<<<<<<< HEAD
-                                    	  <input disabled id="view-mgoodscode" name="mgoodscode" class="form-control forminput" placeholder="AUTO GENERATE" type="text" data-parsley-required-message="Field Ini Tidak Boleh Kosong"  data-parsley-errors-container=".errorBlock1" @if (Session::has('autofocus')) autofocus @endif >
-=======
                                     	  <input disabled id="view-mgoodscode" name="mgoodscode" class="form-control forminput" maxlength="14" placeholder="AUTO GENERATE" type="text" data-parsley-required-message="Field Ini Tidak Boleh Kosong"  data-parsley-errors-container=".errorBlock1" @if (Session::has('autofocus')) autofocus @endif >
->>>>>>> f7c713e376d2d81ea3f4ad1dbc57f77e37428c38
                                     		<label for="" class="glyphicon glyphicon-barcode" rel="tooltip" title="ID Pelanggan"></label>
                                     		<span class="input-group-addon" style="background: none;">
                                       	   <input type="checkbox" id="view-autogenmgoods" name="autogen" rel="tooltip" title="ON/OFF auto generate ID Barang">
@@ -816,7 +796,7 @@
                               <div style="height: 21px;" class="form-group">
                                 <label class="col-md-3 control-label"><b>Status</b>  &nbsp  :</label>
                                   <div class="col-md-9">
-                                    <input id="view-mgoodsactive" value="" name="mgoodsactive" class="nice-toggle" placeholder="mgoodsactive" type="checkbox">
+                                    <input id="view-mgoodsactive" value="" name="mgoodsactive" class="active-toggle" placeholder="mgoodsactive" type="checkbox">
                                 </div>
                               </div>
                                 <div style="height: 21px;" class="form-group">
@@ -832,7 +812,7 @@
                                 <label class="col-md-3 control-label"><b>Harga Jual</b> &nbsp  :</label>
                                 <div class="col-md-9 col-sm-12">
                                   <div class="icon-addon addon-md">
-                                    <input disabled id="view-mgoodspriceout" value="{{old('mgoodspriceout')}}" name="mgoodspriceout" class="form-control forminput" placeholder="Harga Beli" type="text"  @if (Session::has('autofocus')) autofocus @endif >
+                                    <input disabled id="view-mgoodspriceout" value="{{old('mgoodspriceout')}}" name="mgoodspriceout" class="form-control forminput" placeholder="Harga Jual" type="text"  @if (Session::has('autofocus')) autofocus @endif >
                                     <label for="mgoodsgroup1" class="glyphicon glyphicon-info-sign" rel="tooltip" title="Harga Jual"></label>
                                   </div>
                                 </div>
@@ -1194,15 +1174,11 @@
   });
   var table;
   $(function(){
-<<<<<<< HEAD
-    table = $('.tableapi').DataTable({
-=======
     table = $('.tableapi')
     .on('preXhr.dt',function(){
 			$('#loading_modal').modal('show');
 		})
     .DataTable({
->>>>>>> f7c713e376d2d81ea3f4ad1dbc57f77e37428c38
     dom: "<'dtpadding' <'row' <'clmn' > <'srch' f> <'tablerow' l> <'clear'> <'masterbutton' B> r> <'row pb' tip>>",
         "autoWidth" : true,
         "oLanguage": {
@@ -1264,8 +1240,8 @@
                 {data: 'mgoodsunit2', mgoodsunit2: 'mgoodsunit2'},
                 {data: 'mgoodsunit3', mgoodsunit3: 'mgoodsunit3'},
                 {data: 'mgoodsactive', mgoodsactive: 'mgoodsactive'},
-                {data: 'mgoodspricein', mgoodspricein: 'mgoodspricein'},
-                {data: 'mgoodspriceout', mgoodspriceout: 'mgoodspriceout'},
+                {data: 'pricein', pricein: 'pricein'},
+                {data: 'priceout', priceout: 'priceout'},
                 {data: 'category', category: 'category'},
                 {data: 'brand', brand: 'brand'},
                 {data: 'mgoodsgroup1', mgoodsgroup1: 'mgoodsgroup1'},
@@ -1285,13 +1261,9 @@
                 {data: 'mgoodscoareturnofsellingname', mgoodscoareturnofsellingname: 'mgoodscoareturnofsellingname'},
                 {data: 'mgoodscogs', mgoodscogs: 'mgoodscogs'},
                 ]
-<<<<<<< HEAD
-              });
-=======
               }).on('xhr.dt',function(){
 								$('#loading_modal').modal('hide');
 							});
->>>>>>> f7c713e376d2d81ea3f4ad1dbc57f77e37428c38
       $(".table thead th input[type=text]").on( 'keyup change', function () {
         table
             .column( $(this).parent().index()+':visible' )
@@ -1407,6 +1379,10 @@ $("#dropzone-gambar").dropzone({
   <style>
     .tableapi_wrapper {
       margin-top: 50px;
+    }
+    .active-toggle {
+      padding-top: 5px;
+      margin-bottom: 5px;
     }
     #tableapi {
 			border: 1px solid #ddd !important;

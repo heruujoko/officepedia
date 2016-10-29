@@ -12,8 +12,6 @@ class MEmployee extends Model
     protected $table = "memployee";
     protected $fillable = ['memployeeid','memployeetitle','memployeename','memployeeposition','memployeelevel','memployeephone','memployeehomephone','memployeebbmpin','memployeeidcard','memployeecity','memployeezipcode','memployeeprovince','memployeecountry','memployeeinfo'];
 
-<<<<<<< HEAD
-=======
     protected static function boot(){
 
       parent::boot();
@@ -23,8 +21,6 @@ class MEmployee extends Model
       });
 
     }
-
->>>>>>> f7c713e376d2d81ea3f4ad1dbc57f77e37428c38
     public function autogenid(){
       $conf = MConfig::find(1);
       $prefix = $conf->msysprefixemployee;
@@ -41,42 +37,16 @@ class MEmployee extends Model
     public function autogenproc(){
       $success = false;
       $attempt = 0;
-<<<<<<< HEAD
-      try{
-        DB::select(DB::raw('call autogenmemployee('.$this->id.')'));
-      } catch(Exception $e){
-        do{
-          try{
-            $attempt++;
-            $this->doublecheck($attempt);
-            $success = true;
-          }catch(Exception $e){
-            $success = false;
-          }
-        } while($success == false);
-=======
       $conf = MConfig::find(1);
       try{
         // DB::select(DB::raw('call autogenmemployee('.$this->id.')'));
         DB::select(DB::raw('call autogen("memployee","'.$conf->msysprefixemployee.'",'.$conf->msysprefixemployeecount.',"memployeeid",'.$this->id.')'));
       } catch(Exception $e){
         return $e;
-        // do{
-        //   try{
-        //     $attempt++;
-        //     $this->doublecheck($attempt);
-        //     $success = true;
-        //   }catch(Exception $e){
-        //     $success = false;
-        //   }
-        // } while($success == false);
->>>>>>> f7c713e376d2d81ea3f4ad1dbc57f77e37428c38
       }
 
     }
 
-<<<<<<< HEAD
-=======
     public function doublecheckid(){
       $check = MEmployee::where('memployeeid',$this->memployeeid)->where('void',0)->get();
       $cnt = count($check);
@@ -90,6 +60,7 @@ class MEmployee extends Model
     public function revert_creation(){
       $conf = MConfig::find(1);
       $conf->msysprefixemployeecount = $conf->msysprefixemployeecount-1;
+      $conf->msysprefixemployeelastcount = $conf->get_last_count_format($conf->msysprefixemployeecount);
       $conf->save();
       $this->delete();
     }
@@ -97,10 +68,10 @@ class MEmployee extends Model
     public function update_prefix_status(){
       $conf = MConfig::find(1);
       $conf->msysprefixemployeecount = $conf->msysprefixemployeecount+1;
+      $conf->msysprefixemployeelastcount = $conf->get_last_count_format($conf->msysprefixemployeecount);
       $conf->save();
     }
 
->>>>>>> f7c713e376d2d81ea3f4ad1dbc57f77e37428c38
     public function doublecheck($in){
       $conf = MConfig::find(1);
       $current = "";

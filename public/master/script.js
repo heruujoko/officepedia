@@ -1190,8 +1190,9 @@ function insertmcustomer(){
         mcustomercoa: $('#insert-mcustomercoa').val(),
         mcustomertop: $('#insert-mcustomertop').val(),
         mcustomerarmax: $('#insert-mcustomerarmax').val(),
-        mcustomerdefaultar: $('#insert-mcustomerdefaultar').val()
-      }
+        mcustomerdefaultar: $('#insert-mcustomerdefaultar').val(),
+        mcustomercategory: $('#insert-mcustomercategory').val()
+      };
       console.log(data);
       $.ajax({
         type: "POST",
@@ -1209,15 +1210,10 @@ function insertmcustomer(){
           window.location = "#tableapi";
         },
         error: function(response){
-<<<<<<< HEAD
-          swal({
-            title: "Input Gagal!",
-=======
           var err_msg = response.responseJSON.errorInfo[2];
           swal({
             title: "Input Gagal!",
             text: err_msg,
->>>>>>> f7c713e376d2d81ea3f4ad1dbc57f77e37428c38
             type: "error",
             timer: 1000
           });
@@ -1259,11 +1255,10 @@ function viewmcustomer(id){
       $('#view-mcustomertop').val(response.mcustomertop).change();
       $('#view-mcustomerarmax').val(response.mcustomerarmax);
       $('#view-mcustomerdefaultar').val(response.mcustomerdefaultar);
+      $('#view-mcustomercategory').val(response.mcustomercategory).change();
       $('#forminput').hide();
       $('#formedit').hide();
       $('#formview').show();
-
-      console.log(response);
     }
 
 });
@@ -1296,6 +1291,7 @@ function editmcustomer(id){
       $('#edit-mcustomertop').val(response.mcustomertop).change();
       $('#edit-mcustomerarmax').val(response.mcustomerarmax);
       $('#edit-mcustomerdefaultar').val(response.mcustomerdefaultar);
+      $('#edit-mcustomercategory').val(response.mcustomercategory).change();
       $('#forminput').hide();
       $('#formview').hide();
       $('#formedit').show();
@@ -1333,7 +1329,8 @@ function updatemcustomer(){
         mcustomercoa: $('#edit-mcustomercoa').val(),
         mcustomertop: $('#edit-mcustomertop').val(),
         mcustomerarmax: $('#edit-mcustomerarmax').val(),
-        mcustomerdefaultar: $('#edit-mcustomerdefaultar').val()
+        mcustomerdefaultar: $('#edit-mcustomerdefaultar').val(),
+        mcustomercategory: $('#edit-mcustomercategory').val()
   }
 
    $.ajax({
@@ -1389,6 +1386,34 @@ $('#insert-mcustomercontactemailphone').val('');
 $('#insert-wrapper').parsley().reset();
 $('#edit-wrapper').parsley().reset();
 }
+
+//disabled nota customer if cash
+
+$('#insert-mcustomertop').on('change',function(e){
+  var top = $('#insert-mcustomertop').val();
+  if(top == 'cash'){
+    $('#insert-mcustomerarmax').val('');
+    $('#insert-mcustomerdefaultar').val('');
+    $('#insert-mcustomerarmax').attr('disabled',true);
+    $('#insert-mcustomerdefaultar').attr('disabled',true);
+  } else {
+    $('#insert-mcustomerarmax').removeAttr('disabled');
+    $('#insert-mcustomerdefaultar').removeAttr('disabled');
+  }
+});
+
+$('#edit-mcustomertop').on('change',function(e){
+  var top = $('#edit-mcustomertop').val();
+  if(top == 'cash'){
+    $('#edit-mcustomerarmax').val('');
+    $('#edit-mcustomerdefaultar').val('');
+    $('#edit-mcustomerarmax').attr('disabled',true);
+    $('#edit-mcustomerdefaultar').attr('disabled',true);
+  } else {
+    $('#edit-mcustomerarmax').removeAttr('disabled');
+    $('#edit-mcustomerdefaultar').removeAttr('disabled');
+  }
+});
 
 if(document.getElementById('disableforminput')){
   document.getElementById('disableforminput').onchange = function() {

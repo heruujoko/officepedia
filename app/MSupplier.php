@@ -11,8 +11,6 @@ class MSupplier extends Model
     protected $table = 'msupplier';
     protected $fillable = ['msupplierid','msuppliername','msupplieremail','msupplierphone','msupplierfax','msupplierwebsite','msupplieraddress','msuppliercity','msupplierzipcode','msupplierprovince','msuppliercountry','msuppliercontactname','msuppliercontactposition','msuppliercontactemail','msuppliercontactemailphone','msupplierarlimit','msuppliercoa','msuppliertop','msupplierarmax','msupplierdefaultar','msuppliercategory'];
 
-<<<<<<< HEAD
-=======
     protected static function boot(){
 
       parent::boot();
@@ -23,28 +21,10 @@ class MSupplier extends Model
 
     }
 
->>>>>>> f7c713e376d2d81ea3f4ad1dbc57f77e37428c38
     public function akun(){
       return $this->belongsTo('App\MCOA','msuppliercoa','id');
     }
 
-<<<<<<< HEAD
-    public function autogenproc(){
-      $success = false;
-      $attempt = 0;
-      try{
-        DB::select(DB::raw('call autogenmsupplier('.$this->id.')'));
-      } catch(Exception $e){
-        do{
-          try{
-            $attempt++;
-            $this->doublecheck($attempt);
-            $success = true;
-          }catch(Exception $e){
-            $success = false;
-          }
-        } while($success == false);
-=======
     public function doublecheckid(){
       $check = MSupplier::where('msupplierid',$this->msupplierid)->where('void',0)->get();
       $cnt = count($check);
@@ -58,6 +38,7 @@ class MSupplier extends Model
     public function revert_creation(){
       $conf = MConfig::find(1);
       $conf->msysprefixsuppliercount = $conf->msysprefixsuppliercount-1;
+      $conf->msysprefixsupplierlastcount = $conf->get_last_count_format($conf->msysprefixsuppliercount);
       $conf->save();
       $this->delete();
     }
@@ -65,6 +46,7 @@ class MSupplier extends Model
     public function update_prefix_status(){
       $conf = MConfig::find(1);
       $conf->msysprefixsuppliercount = $conf->msysprefixsuppliercount+1;
+      $conf->msysprefixsupplierlastcount = $conf->get_last_count_format($conf->msysprefixsuppliercount);
       $conf->save();
     }
 
@@ -76,7 +58,6 @@ class MSupplier extends Model
         DB::select(DB::raw('call autogen("msupplier","'.$conf->msysprefixsupplier.'",'.$conf->msysprefixsuppliercount.',"msupplierid",'.$this->id.')'));
       } catch(Exception $e){
         return $e;
->>>>>>> f7c713e376d2d81ea3f4ad1dbc57f77e37428c38
       }
 
     }

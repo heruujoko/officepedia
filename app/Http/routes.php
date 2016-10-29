@@ -90,6 +90,20 @@ Route::group(['prefix'=>'admin-nano'],function(){
   Route::get('memployee/export/excel','MEmployeeController@excel');
   Route::get('memployee/export/pdf','MEmployeeController@pdf');
 
+  Route::get('mgoodsbrand','MGoodsbrandController@index');
+  Route::get('mgoodsbrand/export/csv','MGoodsbrandController@csv');
+  Route::get('mgoodsbrand/export/excel','MGoodsbrandController@excel');
+  Route::get('mgoodsbrand/export/pdf','MGoodsbrandController@pdf');
+
+  Route::get('mgoodstype','MGoodstypeController@index');
+  Route::get('mgoodstype/export/csv','MGoodstypeController@csv');
+  Route::get('mgoodstype/export/excel','MGoodstypeController@excel');
+  Route::get('mgoodstype/export/pdf','MGoodstypeController@pdf');
+
+  Route::get('mgoodssubtype','MGoodssubtypeController@index');
+  Route::get('mgoodssubtype/export/csv','MGoodssubtypeController@csv');
+  Route::get('mgoodssubtype/export/excel','MGoodssubtypeController@excel');
+  Route::get('mgoodssubtype/export/pdf','MGoodssubtypeController@pdf');
   Route::controllers([
     '/'=>'AdminController'
   ]);
@@ -131,6 +145,9 @@ Route::group(['prefix'=>'admin-nano'],function(){
   Route::resource('mcategorygoodsmark','Api\MGoodsMarkController');
   Route::resource('memployeelevel','Api\MEmployeeLevelController');
   Route::resource('memployee','Api\MEmployeeController');
+  Route::resource('mgoodsbrand','Api\MGoodsbrandController');
+  Route::resource('mgoodstype','Api\MGoodstypeController');
+  Route::resource('mgoodssubtype','Api\MGoodssubtypeController');
   Route::controllers([
     '/'=>'ApiController'
   ]);
