@@ -25,9 +25,6 @@ $(document).ready(function(){
   $('.active-toggle').bootstrapSwitch({
     size: 'mini',
     onText: "Aktif",
-<<<<<<< HEAD
-    offText: "Nonaktif"
-=======
     offText: "Nonaktif",
     handleWidth: 54
   });
@@ -38,7 +35,6 @@ $(document).ready(function(){
     offText: "No",
     handleWidth: 54,
     labelWidth: 50
->>>>>>> e46a5c3d7cc260a382fd38a62f2fc12940024e3e
   });
 
   $('.nice-toggle').bootstrapSwitch({
