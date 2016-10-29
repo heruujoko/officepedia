@@ -159,7 +159,7 @@ Route::group(['prefix'=>'admin-nano'],function(){
   Route::resource('mgoodsbrand','Api\MGoodsbrandController');
   Route::resource('mgoodstype','Api\MGoodstypeController');
   Route::resource('mgoodssubtype','Api\MGoodssubtypeController');
-  Route::resource('munits','Api\MunitController');
+  Route::resource('munits','Api\MUnitController');
   Route::resource('mtax','Api\MTaxController');
   Route::controllers([
     '/'=>'ApiController'
