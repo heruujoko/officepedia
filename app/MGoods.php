@@ -80,7 +80,7 @@ class MGOODS extends Model
     }
 
     public function types(){
-      return $this->belongsTo('App\Mgoodstype','mgoodstype','id');
+      return $this->belongsTo('App\MGoodstype','mgoodstype','id');
     }
 
     public function subtypes(){
