@@ -15,7 +15,7 @@ use App\MCategorygoods;
 use App\MTax;
 use App\MGoodssubtype;
 use App\MGoodstype;
-use App\Munit;
+use App\MUnit;
 
 class MGoodsController extends Controller
 {
