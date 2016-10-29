@@ -13,7 +13,7 @@ class DatabaseSeeder extends Seeder
     {
         $this->call(MCOAFullSeeder::class);
         $this->call(ConfigSeeder::class);
-        $this->call(create_mtax_seeder::class);
+        $this->call(TaxSeeder::class);
         $this->call(MGoodsCategorySeed::class);
         $this->call(MGoodsMarkSeeder::class);
         $this->call(MGoodsUnitSeeder::class);
