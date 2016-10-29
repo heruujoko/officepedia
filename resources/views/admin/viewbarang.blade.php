@@ -221,6 +221,11 @@
                                     <div class="col-md-9 col-sm-12">
                                       <input id="insert-mgoodsbranches" checked value="" name="mgoodsbranches" class="nice-toggle" placeholder="Nama Perusahaan" type="checkbox">
                                     </div>
+                              </div>
+                              <div style="height: 21px;margin-top:23px;" class="form-group">
+                                <label class="col-md-3 control-label"><b>Status</b>  &nbsp  :</label>
+                                  <div class="col-md-9">
+                                    <input id="insert-mgoodsactive" checked value="" name="mgoodsactive" class="active-toggle" placeholder="mgoodsactive" type="checkbox">
                                 </div>
                                 <div style="height: 21px;" class="form-group">
                                     <label class="col-md-3 control-label"><b>Menggunakan Unique Transaction </b>  &nbsp  :</label>
@@ -936,6 +941,7 @@
                                 <label class="col-md-3 control-label"><b>Status</b>  &nbsp  :</label>
                                   <div class="col-md-9">
                                     <input id="view-mgoodsactive" checked value="" name="mgoodsactive" class="active-toggle" placeholder="mgoodsactive" type="checkbox">
+                                    <input id="view-mgoodsactive" name="mgoodsactive" class="active-toggle" placeholder="mgoodsactive" type="checkbox">
                                 </div>
                               </div>
                                 <div style="height: 21px;" class="form-group">
@@ -1253,8 +1259,6 @@
 <!-- END MAIN CONTENT -->
 </div>
 <!-- END MAIN PANEL -->
-<<<<<<< HEAD
-=======
 <div id="loading_modal" class="modal" style="top: 20%;" tabindex="-1" role="dialog" data-keyboard="false" data-backdrop="static">
 	<div class="modal-dialog">
 		<div class="modal-content">
@@ -1265,7 +1269,6 @@
 		</div>
 	</div>
 </div>
->>>>>>> f7c713e376d2d81ea3f4ad1dbc57f77e37428c38
 @stop
 
 @section('js')
