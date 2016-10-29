@@ -164,7 +164,7 @@ function editmgoods(id){
           $('.bootstrap-switch-id-edit-mgoodsbranches span.bootstrap-switch-label').css('width',50);
           $('.bootstrap-switch-id-edit-mgoodsuniquetransaction span.bootstrap-switch-label').css('width',50);
       },100);
-      console.log(response.mgoodsactive);
+      console.log(response);
       if(response.mgoodsactive == 1){
         $('#edit-mgoodsactive').bootstrapSwitch('state',true);
       } else {
@@ -275,9 +275,9 @@ function updatemgoods(){
       $('#view-mgoodsname').val(response.mgoodsname);
       $('#view-mgoodsalias').val(response.mgoodsalias);
       $('#view-mgoodsremark').val(response.mgoodsremark);
-      $('#view-mgoodsunit').val(response.mgoodsunit).change();
-      $('#view-mgoodsunit2').val(response.mgoodsunit2).change();
-      $('#view-mgoodsunit3').val(response.mgoodsunit3).change();
+      $('#view-mgoodsunit').val(response.mgoodsunit).trigger("chosen:updated");
+      $('#view-mgoodsunit2').val(response.mgoodsunit2).trigger("chosen:updated");
+      $('#view-mgoodsunit3').val(response.mgoodsunit3).trigger("chosen:updated");
       $('#view-mgoodspricein').val(response.mgoodspricein);
       $('#view-mgoodspriceout').val(response.mgoodspriceout);
       $('#view-mgoodstype').val(response.mgoodstype).change();

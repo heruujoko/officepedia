@@ -28,6 +28,14 @@ class MGoodsController extends Controller
       }
   }
 
+  private function convertint($string_bool){
+      if($string_bool){
+        return 1;
+      } else {
+        return 0;
+      }
+  }
+
 	public function index(){
 		 $this->iteration = 0;
      $config = MConfig::find(1);
@@ -103,6 +111,7 @@ class MGoodsController extends Controller
         $MGoods->mgoodssubtype = intval($request->mgoodssubtype);
         $MGoods->mgoodsbranches = $this->convertBoolean($request->mgoodsbranches);
         $MGoods->mgoodsuniquetransaction = $this->convertBoolean($request->mgoodsuniquetransaction);
+        $MGoods->mgoodsmultiunit = $this->convertint($request->mgoodsmultiunit);
 				$MGoods->save();
         $MGoods->mgoodssuppliername = $MGoods->supplier->msuppliername;
         $MGoods->save();
