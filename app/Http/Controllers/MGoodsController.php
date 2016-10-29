@@ -13,6 +13,9 @@ use PDF;
 use App\MGoodsMark;
 use App\MCategorygoods;
 use App\MTax;
+use App\MGoodssubtype;
+use App\MGoodstype;
+use App\Munit;
 
 class MGoodsController extends Controller
 {
@@ -22,7 +25,10 @@ class MGoodsController extends Controller
     $data['marks'] = MGoodsMark::all();
     $data['categories'] = MCategorygoods::all();
 		$data['msupplier'] = MSupplier::all();
+    $data['types'] = MGoodstype::all();
+    $data['subtypes'] = MGoodssubtype::all();
     $data['taxes'] = MTax::all();
+    $data['units'] = MUnit::where('void',0)->get();
 		return view('admin/viewbarang',$data);
 	}
 	public function csv(){

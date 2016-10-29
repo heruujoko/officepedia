@@ -118,6 +118,16 @@
       @else
         <li><a href="{{ url('admin-nano/mcategorygoodsmark')}}">Master Merek Barang</a></li>
       @endif
+      @if($active == 'mgoodstype')
+        <li class="active"><a href="{{ url('admin-nano/mgoodstype')}}">Master Tipe Barang</a></li>
+      @else
+        <li><a href="{{ url('admin-nano/mgoodstype')}}">Master Tipe Barang</a></li>
+      @endif
+      @if($active == 'mgoodssubtype')
+        <li class="active"><a href="{{ url('admin-nano/mgoodssubtype')}}">Master Sub Tipe Barang</a></li>
+      @else
+        <li><a href="{{ url('admin-nano/mgoodssubtype')}}">Master Sub Tipe Barang</a></li>
+      @endif
     </ul>
   </li>
   <li>

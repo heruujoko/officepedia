@@ -105,6 +105,11 @@ Route::group(['prefix'=>'admin-nano'],function(){
   Route::get('mgoodssubtype/export/excel','MGoodssubtypeController@excel');
   Route::get('mgoodssubtype/export/pdf','MGoodssubtypeController@pdf');
 
+  Route::get('munits','MUnitController@index');
+  Route::get('munits/export/csv','MUnitController@csv');
+  Route::get('munits/export/excel','MUnitController@excel');
+  Route::get('munits/export/pdf','MUnitController@pdf');
+
   Route::get('mtax','MTaxController@index');
   Route::get('mtax/export/csv','MTaxController@csv');
   Route::get('mtax/export/excel','MTaxController@excel');
@@ -154,6 +159,7 @@ Route::group(['prefix'=>'admin-nano'],function(){
   Route::resource('mgoodsbrand','Api\MGoodsbrandController');
   Route::resource('mgoodstype','Api\MGoodstypeController');
   Route::resource('mgoodssubtype','Api\MGoodssubtypeController');
+  Route::resource('munits','Api\MunitController');
   Route::resource('mtax','Api\MTaxController');
   Route::controllers([
     '/'=>'ApiController'
