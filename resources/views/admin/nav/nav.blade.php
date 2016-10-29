@@ -134,7 +134,11 @@
         <li><a href="{{ url('admin-nano/memployeelevel')}}">Master Level Karyawan</a></li>
       @endif
       <li><a href="">Master Mata Uang</a></li>
-      <li><a href="">Master Pajak</a></li>
+      @if($active == 'mtax')
+        <li class="active"><a href="{{ url('admin-nano/mtax') }}">Master Pajak</a></li>
+      @else
+        <li><a href="{{ url('admin-nano/mtax') }}">Master Pajak</a></li>
+      @endif
       <li><a href="">Master Penggajian Pegawai</a></li>
       @if($active == 'cabang')
         <li class="active">
