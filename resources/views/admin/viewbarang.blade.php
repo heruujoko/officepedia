@@ -224,27 +224,33 @@
                               </div>
                                 <div style="height: 21px;" class="form-group">
                                 <label class="col-md-3 control-label"><b>Harga Beli</b> &nbsp  :</label>
+                                <div class="row">
                                 <div class="col-md-6 col-sm-12">
                                   <div class="icon-addon addon-md">
-                                    <input id="insert-mgoodspricein" value="{{old('mgoodspricein')}}" name="mgoodspricein" class="form-control forminput" placeholder="Harga Beli" type="text"  @if (Session::has('autofocus')) autofocus @endif >
+                                    <input id="insert-mgoodspricein" value="{{old('mgoodspricein')}}" name="mgoodspricein" data-parsley-type="number" data-parsley-type-message="Field ini hanya dapat di isi oleh angka" parsley-error-container=".erroripricein" class="form-control forminput" placeholder="Harga Beli" type="text"  @if (Session::has('autofocus')) autofocus @endif >
                                     <label for="mgoodsgroup1" class="glyphicon glyphicon-info-sign" rel="tooltip" title="Harga Beli"></label>
                                   </div>
                                 </div>
                                 <div class="col-md-2">
                                   <label class="control-label muted">Harga Beli Diluar PPn</label>
                                 </div>
+                                </div>
+                                <div class="erroripricein"></div>
                               </div>
                               <div style="height: 21px;" class="form-group">
                                 <label class="col-md-3 control-label"><b>Harga Jual</b> &nbsp  :</label>
+                                <div class="row">
                                 <div class="col-md-6 col-sm-12">
                                   <div class="icon-addon addon-md">
-                                    <input id="insert-mgoodspriceout" value="{{old('mgoodspriceout')}}" name="mgoodspriceout" class="form-control forminput" placeholder="Harga Jual" type="text"  @if (Session::has('autofocus')) autofocus @endif >
+                                    <input id="insert-mgoodspriceout" value="{{old('mgoodspriceout')}}" name="mgoodspriceout" data-parsley-type="number" data-parsley-type-message="Field ini hanya dapat di isi oleh angka" parsley-error-container=".erroripriceout" class="form-control forminput" placeholder="Harga Jual" type="text"  @if (Session::has('autofocus')) autofocus @endif >
                                     <label for="mgoodsgroup1" class="glyphicon glyphicon-info-sign" rel="tooltip" title="Harga Jual"></label>
                                   </div>
                                 </div>
                                 <div class="col-md-2">
                                   <label class="control-label muted">Harga Jual Diluar PPn</label>
                                 </div>
+                                </div>
+                                <div class="erroripriceout"></div>
                               </div>
                               </div>
                             </div>
@@ -316,11 +322,13 @@
                               <div class="col-md-4">
                                 <div class="icon-addon addon-md">
                                   <select class="form-control select2" name="mgoodstaxppnbm" id="insert-mgoodstaxppnbm">
-
                                   @foreach($taxes as $tax)
-                                    <option value={{ $tax->id }}>{{ $tax->mtaxtdesc }}</option>
+                                    @if($tax->mtaxtype == 'Kosong')
+                                      <option selected value={{ $tax->id }}>{{ $tax->mtaxtdesc }}</option>
+                                    @else
+                                      <option value={{ $tax->id }}>{{ $tax->mtaxtdesc }}</option>
+                                    @endif
                                   @endforeach
-
                                   </select>
                                 </div>
                               </div>
@@ -624,9 +632,11 @@
                                 <div class="icon-addon addon-md">
                                   <select class="form-control select2" name="mgoodstaxppnbm" id="edit-mgoodstaxppnbm">
 
-                                  @foreach($taxes as $tax)
-                                    <option value={{ $tax->id }}>{{ $tax->mtaxtdesc }}</option>
-                                  @endforeach
+                                    @if($tax->mtaxtype == 'Kosong')
+                                      <option selected value={{ $tax->id }}>{{ $tax->mtaxtdesc }}</option>
+                                    @else
+                                      <option value={{ $tax->id }}>{{ $tax->mtaxtdesc }}</option>
+                                    @endif
 
                                   </select>
                                 </div>
