@@ -165,6 +165,8 @@ function editmgoods(id){
           $("#mgoodsname").focus();
           $('.bootstrap-switch-label').css('width','62px');
           $('.bootstrap-switch-id-edit-mgoodsmultiunit span.bootstrap-switch-label').css('width',50);
+          $('.bootstrap-switch-id-edit-mgoodsbranches span.bootstrap-switch-label').css('width',50);
+          $('.bootstrap-switch-id-edit-mgoodsuniquetransaction span.bootstrap-switch-label').css('width',50);
       },100);
       console.log(response.mgoodsactive);
       if(response.mgoodsactive == 1){
@@ -314,6 +316,8 @@ function updatemgoods(){
       setTimeout(function(){
         $('.bootstrap-switch-label').css('width','62px');
         $('.bootstrap-switch-id-view-mgoodsmultiunit span.bootstrap-switch-label').css('width',53);
+        $('.bootstrap-switch-id-view-mgoodsbranches span.bootstrap-switch-label').css('width',50);
+        $('.bootstrap-switch-id-view-mgoodsuniquetransaction span.bootstrap-switch-label').css('width',50);
       },100);
       console.log(response.mgoodsactive);
       if(response.mgoodsactive == 1){
@@ -363,16 +367,16 @@ function updatemgoods(){
 $('#insert-mgoodsmultiunit').on('switchChange.bootstrapSwitch',function(e){
   var check = $('#insert-mgoodsmultiunit').is(':checked');
   if(check){
-    $('#insert-mgoodsunit2').removeAttr('disabled');
+    $('#insert-mgoodsunit2').removeAttr('disabled').trigger("chosen:updated");
     $('#insert-mgoodsunit2conv').removeAttr('disabled');
-    $('#insert-mgoodsunit3').removeAttr('disabled');
+    $('#insert-mgoodsunit3').removeAttr('disabled').trigger("chosen:updated");
     $('#insert-mgoodsunit3conv').removeAttr('disabled');
     $('#insert-mgoodsunit3conv').val(144);
     $('#insert-mgoodsunit2conv').val(12);
   } else {
-    $('#insert-mgoodsunit2').attr('disabled',true);
+    $('#insert-mgoodsunit2').attr('disabled',true).trigger("chosen:updated");
     $('#insert-mgoodsunit2conv').attr('disabled',true);
-    $('#insert-mgoodsunit3').attr('disabled',true);
+    $('#insert-mgoodsunit3').attr('disabled',true).trigger("chosen:updated");
     $('#insert-mgoodsunit3conv').attr('disabled',true);
     $('#insert-mgoodsunit3conv').val('');
     $('#insert-mgoodsunit2conv').val('');
@@ -382,16 +386,16 @@ $('#insert-mgoodsmultiunit').on('switchChange.bootstrapSwitch',function(e){
 $('#edit-mgoodsmultiunit').on('switchChange.bootstrapSwitch',function(e){
   var check = $('#edit-mgoodsmultiunit').is(':checked');
   if(check){
-    $('#edit-mgoodsunit2').removeAttr('disabled');
+    $('#edit-mgoodsunit2').removeAttr('disabled').trigger("chosen:updated");
     $('#edit-mgoodsunit2conv').removeAttr('disabled');
-    $('#edit-mgoodsunit3').removeAttr('disabled');
+    $('#edit-mgoodsunit3').removeAttr('disabled').trigger("chosen:updated");
     $('#edit-mgoodsunit3conv').removeAttr('disabled');
     $('#edit-mgoodsunit3conv').val(144);
     $('#edit-mgoodsunit2conv').val(12);
   } else {
-    $('#edit-mgoodsunit2').attr('disabled',true);
+    $('#edit-mgoodsunit2').attr('disabled',true).trigger("chosen:updated");
     $('#edit-mgoodsunit2conv').attr('disabled',true);
-    $('#edit-mgoodsunit3').attr('disabled',true);
+    $('#edit-mgoodsunit3').attr('disabled',true).trigger("chosen:updated");
     $('#edit-mgoodsunit3conv').attr('disabled',true);
     $('#edit-mgoodsunit3conv').val('');
     $('#edit-mgoodsunit2conv').val('');

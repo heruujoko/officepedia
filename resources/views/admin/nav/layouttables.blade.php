@@ -27,6 +27,7 @@
 		<link rel="stylesheet" type="text/css" href="{{URL::to('/')}}/master/1/dist/sweetalert.css">
 
 		<link rel="stylesheet" type="text/css" href="{{ url('/css/select2.min.css') }}">
+		<link rel="stylesheet" type="text/css" href="{{ url('/chosen/chosen.css') }}">
 		<link rel="stylesheet" type="text/css" href="{{ url('/css/select2-bootstrap.css') }}">
 
 
@@ -576,6 +577,7 @@
     		<script src="{{URL::to('/')}}/js/plugin/datatable-responsive/datatables.responsive.min.js"></script>
     		<script src="{{ url('/') }}/js/parsley.min.js"></script>
 				<script src="{{ url('/') }}/js/select2.min.js"></script>
+				<script src="{{ url('/') }}/chosen/chosen.jquery.min.js"></script>
 				<script src="{{ url('/') }}/js/jquery.mask.min.js"></script>
     		<script src="{{URL::to('/')}}/master/main.js"></script>
 
@@ -622,8 +624,17 @@
 
 					$('.select2').select2({
 						width: "100%",
-						dropdownParent: 'inside'
 					});
+					$('.select2-flex').select2({
+						width: "100%"
+					}).on("select2-open", function() {
+					    $(this).select2('positionDropdown', true);
+					});
+
+					$('.chosen').chosen({
+						width:"100%"
+					});
+					$('.chosen-single').css('padding-top','5px');
 					$('.select2-bold').select2({
 						width: "100%",
 				    templateResult: formatOutput,
