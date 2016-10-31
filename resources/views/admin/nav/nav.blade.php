@@ -108,11 +108,6 @@
           <a href="{{URL::to('/')}}/admin-nano/barang">Master Barang</a>
         </li>
       @endif
-      @if($active == 'categorygoods')
-        <li class="active"><a href="{{ url('admin-nano/mcategorygoods') }}">Master Kategori Barang</a></li>
-      @else
-        <li><a href="{{ url('admin-nano/mcategorygoods') }}">Master Kategori Barang</a></li>
-      @endif
       @if($active == 'munit')
         <li class="active"><a href="{{ url('admin-nano/munits') }}">Master Satuan Barang</a></li>
       @else
