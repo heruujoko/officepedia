@@ -25,9 +25,6 @@ $(document).ready(function(){
   $('.active-toggle').bootstrapSwitch({
     size: 'mini',
     onText: "Aktif",
-<<<<<<< HEAD
-    offText: "Nonaktif"
-=======
     offText: "Nonaktif",
     handleWidth: 54
   });
@@ -38,7 +35,6 @@ $(document).ready(function(){
     offText: "No",
     handleWidth: 54,
     labelWidth: 50
->>>>>>> e46a5c3d7cc260a382fd38a62f2fc12940024e3e
   });
 
   $('.nice-toggle').bootstrapSwitch({
@@ -60,39 +56,35 @@ function insertmgoods(){
         mgoodscode: $('#insert-mgoodscode').val(),
         mgoodsbarcode: $('#insert-mgoodsbarcode').val(),
         mgoodsname: $('#insert-mgoodsname').val(),
+        mgoodscategory: $('#insert-mgoodscategory').val(),
+        mgoodstype: $('#insert-mgoodstype').val(),
+        mgoodssubtype: $('#insert-mgoodssubtype').val(),
+        mgoodsbrand: $('#insert-mgoodsbrand').val(),
         mgoodsalias: $('#insert-mgoodsalias').val(),
         mgoodsremark: $('#insert-mgoodsremark').val(),
+        mgoodsmultiunit: $('#insert-mgoodsmultiunit').is(":checked"),
         mgoodsunit: $('#insert-mgoodsunit').val(),
         mgoodsunit2: $('#insert-mgoodsunit2').val(),
+        mgoodsunit2conv: $('#insert-mgoodsunit2conv').val(),
         mgoodsunit3: $('#insert-mgoodsunit3').val(),
-        mgoodsactive: $('#insert-mgoodsactive').is(':checked'),
-        mgoodspricein: $('#insert-mgoodspricein').val(),
-        mgoodspriceout: $('#insert-mgoodspriceout').val(),
-        mgoodstype: $('#insert-mgoodstype').val(),
-        mgoodsbrand: $('#insert-mgoodsbrand').val(),
-        mgoodsgroup1: $('#insert-mgoodsgroup1').val(),
-        mgoodsgroup2: $('#insert-mgoodsgroup2').val(),
-        mgoodsgroup3: $('#insert-mgoodsgroup3').val(),
-        mgoodssuppliercode: $('#insert-mgoodssuppliercode').val(),
-        mgoodssuppliername: $('#insert-mgoodssuppliername').val(),
+        mgoodsunit3conv: $('#insert-mgoodsunit3conv').val(),
         mgoodsbranches: $('#insert-mgoodsbranches').is(':checked'),
         mgoodsuniquetransaction: $('#insert-mgoodsuniquetransaction').is(':checked'),
-        mgoodspicture: $('#insert-mgoodspicture').val(),
-        mgoodscoapurchasing: $('#insert-mgoodscoapurchasing').val(),
-        mgoodscoapurchasingname: $('#insert-mgoodscoapurchasingname').val(),
-        mgoodscoacogs: $('#insert-mgoodscoacogs').val(),
-        mgoodscoacogsname: $('#insert-mgoodscoacogsname').val(),
-        mgoodscoaselling: $('#insert-mgoodscoaselling').val(),
-        mgoodscoasellingname: $('#insert-mgoodscoasellingname').val(),
-        mgoodscoareturnofselling: $('#insert-mgoodscoareturnofselling').val(),
-        mgoodscoareturnofsellingname: $('#insert-mgoodscoareturnofsellingname').val(),
+        mgoodsactive: $('#insert-mgoodsactive').is(':checked'),
+        mgoodspricein: $('#insert-mgoodspricein').val(),
+        mgoodsunitsin: $('#insert-mgoodsunitsin').val(),
+        mgoodsminimumin: $('#insert-mgoodsminimunin').val(),
+        mgoodspriceout: $('#insert-mgoodspriceout').val(),
         mgoodscogs: $('#insert-mgoodscogs').val(),
-        mgoodsmultiunit: $('#insert-mgoodsmultiunit').val(),
-        mgoodsunit2conv: $('#insert-mgoodsunit2conv').val(),
-        mgoodsunit3conv: $('#insert-mgoodsunit3conv').val(),
+
+        mgoodssuppliercode: $('#insert-mgoodssuppliercode').val(),
+        mgoodssuppliername: $('#insert-mgoodssuppliername').val(),
+        mgoodspicture: $('#insert-mgoodspicture').val(),
+
         mgoodstaxppn: $('#insert-mgoodstaxppn').val(),
         mgoodstaxppnbm: $('#insert-mgoodstaxppnbm').val(),
         autogen : $('#autogenmgoods').is(':checked')
+
       }
       console.log(data);
       $.ajax({
@@ -169,8 +161,10 @@ function editmgoods(id){
           $("#mgoodsname").focus();
           $('.bootstrap-switch-label').css('width','62px');
           $('.bootstrap-switch-id-edit-mgoodsmultiunit span.bootstrap-switch-label').css('width',50);
+          $('.bootstrap-switch-id-edit-mgoodsbranches span.bootstrap-switch-label').css('width',50);
+          $('.bootstrap-switch-id-edit-mgoodsuniquetransaction span.bootstrap-switch-label').css('width',50);
       },100);
-      console.log(response.mgoodsactive);
+      console.log(response);
       if(response.mgoodsactive == 1){
         $('#edit-mgoodsactive').bootstrapSwitch('state',true);
       } else {
@@ -204,42 +198,39 @@ function updatemgoods(){
     if($('#edit-wrapper').parsley().isValid()){
     var updateid = $('#edit-idmgoodscodeid').val();
     var data = {
-        mgoodscode: $('#edit-mgoodscode').val(),
-        mgoodsbarcode: $('#edit-mgoodsbarcode').val(),
-        mgoodsname: $('#edit-mgoodsname').val(),
-        mgoodsalias: $('#edit-mgoodsalias').val(),
-        mgoodsremark: $('#edit-mgoodsremark').val(),
-        mgoodsunit: $('#edit-mgoodsunit').val(),
-        mgoodsunit2: $('#edit-mgoodsunit2').val(),
-        mgoodsunit3: $('#edit-mgoodsunit3').val(),
-        mgoodsactive: $('#edit-mgoodsactive').is(':checked'),
-        mgoodspricein: $('#edit-mgoodspricein').val(),
-        mgoodspriceout: $('#edit-mgoodspriceout').val(),
-        mgoodstype: $('#edit-mgoodstype').val(),
-        mgoodsbrand: $('#edit-mgoodsbrand').val(),
-        mgoodsgroup1: $('#edit-mgoodsgroup1').val(),
-        mgoodsgroup2: $('#edit-mgoodsgroup2').val(),
-        mgoodsgroup3: $('#edit-mgoodsgroup3').val(),
-        mgoodssuppliercode: $('#edit-mgoodssuppliercode').val(),
-        mgoodssuppliername: $('#edit-mgoodssuppliername').val(),
-        mgoodsbranches: $('#edit-mgoodsbranches').is(':checked'),
-        mgoodsuniquetransaction: $('#edit-mgoodsuniquetransaction').is(':checked'),
-        mgoodspicture: $('#edit-mgoodspicture').val(),
-        mgoodscoapurchasing: $('#edit-mgoodscoapurchasing').val(),
-        mgoodscoapurchasingname: $('#edit-mgoodscoapurchasingname').val(),
-        mgoodscoacogs: $('#edit-mgoodscoacogs').val(),
-        mgoodscoacogsname: $('#edit-mgoodscoacogsname').val(),
-        mgoodscoaselling: $('#edit-mgoodscoaselling').val(),
-        mgoodscoasellingname: $('#edit-mgoodscoasellingname').val(),
-        mgoodscoareturnofselling: $('#edit-mgoodscoareturnofselling').val(),
-        mgoodscoareturnofsellingname: $('#edit-mgoodscoareturnofsellingname').val(),
-        mgoodscogs: $('#edit-mgoodscogs').val(),
-        mgoodsmultiunit: $('#edit-mgoodsmultiunit').val(),
-        mgoodsunit2conv: $('#edit-mgoodsunit2conv').val(),
-        mgoodsunit3conv: $('#edit-mgoodsunit3conv').val(),
-        mgoodstaxppn: $('#edit-mgoodstaxppn').val(),
-        mgoodstaxppnbm: $('#edit-mgoodstaxppnbm').val(),
-  }
+      mgoodscode: $('#edit-mgoodscode').val(),
+      mgoodsbarcode: $('#edit-mgoodsbarcode').val(),
+      mgoodsname: $('#edit-mgoodsname').val(),
+      mgoodscategory: $('#edit-mgoodscategory').val(),
+      mgoodstype: $('#edit-mgoodstype').val(),
+      mgoodssubtype: $('#edit-mgoodssubtype').val(),
+      mgoodsbrand: $('#edit-mgoodsbrand').val(),
+      mgoodsalias: $('#edit-mgoodsalias').val(),
+      mgoodsremark: $('#edit-mgoodsremark').val(),
+      mgoodsmultiunit: $('#edit-mgoodsmultiunit').is(":checked"),
+      mgoodsunit: $('#edit-mgoodsunit').val(),
+      mgoodsunit2: $('#edit-mgoodsunit2').val(),
+      mgoodsunit2conv: $('#edit-mgoodsunit2conv').val(),
+      mgoodsunit3: $('#edit-mgoodsunit3').val(),
+      mgoodsunit3conv: $('#edit-mgoodsunit3conv').val(),
+      mgoodsbranches: $('#edit-mgoodsbranches').is(':checked'),
+      mgoodsuniquetransaction: $('#edit-mgoodsuniquetransaction').is(':checked'),
+      mgoodsactive: $('#edit-mgoodsactive').is(':checked'),
+      mgoodspricein: $('#edit-mgoodspricein').val(),
+      mgoodsunitsin: $('#edit-mgoodsunitsin').val(),
+      mgoodsminimumin: $('#edit-mgoodsminimumin').val(),
+      mgoodspriceout: $('#edit-mgoodspriceout').val(),
+      mgoodscogs: $('#edit-mgoodscogs').val(),
+
+      mgoodssuppliercode: $('#edit-mgoodssuppliercode').val(),
+      mgoodssuppliername: $('#edit-mgoodssuppliername').val(),
+      mgoodspicture: $('#edit-mgoodspicture').val(),
+
+      mgoodstaxppn: $('#edit-mgoodstaxppn').val(),
+      mgoodstaxppnbm: $('#edit-mgoodstaxppnbm').val(),
+      autogen : $('#autogenmgoods').is(':checked')
+
+    }
   console.log(data);
    $.ajax({
         type: "PUT",
@@ -284,9 +275,9 @@ function updatemgoods(){
       $('#view-mgoodsname').val(response.mgoodsname);
       $('#view-mgoodsalias').val(response.mgoodsalias);
       $('#view-mgoodsremark').val(response.mgoodsremark);
-      $('#view-mgoodsunit').val(response.mgoodsunit).change();
-      $('#view-mgoodsunit2').val(response.mgoodsunit2).change();
-      $('#view-mgoodsunit3').val(response.mgoodsunit3).change();
+      $('#view-mgoodsunit').val(response.mgoodsunit).trigger("chosen:updated");
+      $('#view-mgoodsunit2').val(response.mgoodsunit2).trigger("chosen:updated");
+      $('#view-mgoodsunit3').val(response.mgoodsunit3).trigger("chosen:updated");
       $('#view-mgoodspricein').val(response.mgoodspricein);
       $('#view-mgoodspriceout').val(response.mgoodspriceout);
       $('#view-mgoodstype').val(response.mgoodstype).change();
@@ -318,6 +309,8 @@ function updatemgoods(){
       setTimeout(function(){
         $('.bootstrap-switch-label').css('width','62px');
         $('.bootstrap-switch-id-view-mgoodsmultiunit span.bootstrap-switch-label').css('width',53);
+        $('.bootstrap-switch-id-view-mgoodsbranches span.bootstrap-switch-label').css('width',50);
+        $('.bootstrap-switch-id-view-mgoodsuniquetransaction span.bootstrap-switch-label').css('width',50);
       },100);
       console.log(response.mgoodsactive);
       if(response.mgoodsactive == 1){
@@ -367,16 +360,16 @@ function updatemgoods(){
 $('#insert-mgoodsmultiunit').on('switchChange.bootstrapSwitch',function(e){
   var check = $('#insert-mgoodsmultiunit').is(':checked');
   if(check){
-    $('#insert-mgoodsunit2').removeAttr('disabled');
+    $('#insert-mgoodsunit2').removeAttr('disabled').trigger("chosen:updated");
     $('#insert-mgoodsunit2conv').removeAttr('disabled');
-    $('#insert-mgoodsunit3').removeAttr('disabled');
+    $('#insert-mgoodsunit3').removeAttr('disabled').trigger("chosen:updated");
     $('#insert-mgoodsunit3conv').removeAttr('disabled');
     $('#insert-mgoodsunit3conv').val(144);
     $('#insert-mgoodsunit2conv').val(12);
   } else {
-    $('#insert-mgoodsunit2').attr('disabled',true);
+    $('#insert-mgoodsunit2').attr('disabled',true).trigger("chosen:updated");
     $('#insert-mgoodsunit2conv').attr('disabled',true);
-    $('#insert-mgoodsunit3').attr('disabled',true);
+    $('#insert-mgoodsunit3').attr('disabled',true).trigger("chosen:updated");
     $('#insert-mgoodsunit3conv').attr('disabled',true);
     $('#insert-mgoodsunit3conv').val('');
     $('#insert-mgoodsunit2conv').val('');
@@ -386,16 +379,16 @@ $('#insert-mgoodsmultiunit').on('switchChange.bootstrapSwitch',function(e){
 $('#edit-mgoodsmultiunit').on('switchChange.bootstrapSwitch',function(e){
   var check = $('#edit-mgoodsmultiunit').is(':checked');
   if(check){
-    $('#edit-mgoodsunit2').removeAttr('disabled');
+    $('#edit-mgoodsunit2').removeAttr('disabled').trigger("chosen:updated");
     $('#edit-mgoodsunit2conv').removeAttr('disabled');
-    $('#edit-mgoodsunit3').removeAttr('disabled');
+    $('#edit-mgoodsunit3').removeAttr('disabled').trigger("chosen:updated");
     $('#edit-mgoodsunit3conv').removeAttr('disabled');
     $('#edit-mgoodsunit3conv').val(144);
     $('#edit-mgoodsunit2conv').val(12);
   } else {
-    $('#edit-mgoodsunit2').attr('disabled',true);
+    $('#edit-mgoodsunit2').attr('disabled',true).trigger("chosen:updated");
     $('#edit-mgoodsunit2conv').attr('disabled',true);
-    $('#edit-mgoodsunit3').attr('disabled',true);
+    $('#edit-mgoodsunit3').attr('disabled',true).trigger("chosen:updated");
     $('#edit-mgoodsunit3conv').attr('disabled',true);
     $('#edit-mgoodsunit3conv').val('');
     $('#edit-mgoodsunit2conv').val('');

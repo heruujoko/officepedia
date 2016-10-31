@@ -28,6 +28,14 @@ class MGoodsController extends Controller
       }
   }
 
+  private function convertint($string_bool){
+      if($string_bool){
+        return 1;
+      } else {
+        return 0;
+      }
+  }
+
 	public function index(){
 		 $this->iteration = 0;
      $config = MConfig::find(1);
@@ -51,6 +59,15 @@ class MGoodsController extends Controller
         })
         ->addColumn('brand',function($MGoods){
             return "<span>".$MGoods->mark->category_name."</span>";
+        })
+        ->addColumn('type',function($MGoods){
+            return "<span>".$MGoods->types->mgoodstypename."</span>";
+        })
+        ->addColumn('subtype',function($MGoods){
+            return "<span>".$MGoods->subtypes->mgoodssubtypename."</span>";
+        })
+        ->addColumn('supplier',function($MGoods){
+            return "<span>".$MGoods->supplier->msuppliername."</span>";
         })
         ->addColumn('pricein',function($MGoods){
           $decimals = $this->round;
@@ -87,8 +104,14 @@ class MGoodsController extends Controller
 				$MGoods = MGoods::create($request->all());
 				$MGoods->void = 0;
         $MGoods->mgoodsactive = $this->convertBoolean($request->mgoodsactive);
+        $MGoods->mgoodscategory = intval($request->mgoodscategory);
+        $MGoods->mgoodstype = intval($request->mgoodstype);
+        $MGoods->mgoodstaxppn = intval($request->mgoodstaxppn);
+        $MGoods->mgoodstaxppnbm = intval($request->mgoodstaxppnbm);
+        $MGoods->mgoodssubtype = intval($request->mgoodssubtype);
         $MGoods->mgoodsbranches = $this->convertBoolean($request->mgoodsbranches);
         $MGoods->mgoodsuniquetransaction = $this->convertBoolean($request->mgoodsuniquetransaction);
+        $MGoods->mgoodsmultiunit = $this->convertint($request->mgoodsmultiunit);
 				$MGoods->save();
         $MGoods->mgoodssuppliername = $MGoods->supplier->msuppliername;
         $MGoods->save();

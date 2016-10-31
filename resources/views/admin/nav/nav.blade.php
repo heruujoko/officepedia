@@ -108,15 +108,25 @@
           <a href="{{URL::to('/')}}/admin-nano/barang">Master Barang</a>
         </li>
       @endif
-      @if($active == 'categorygoods')
-        <li class="active"><a href="{{ url('admin-nano/mcategorygoods') }}">Master Kategori Barang</a></li>
+      @if($active == 'munit')
+        <li class="active"><a href="{{ url('admin-nano/munits') }}">Master Satuan Barang</a></li>
       @else
-        <li><a href="{{ url('admin-nano/mcategorygoods') }}">Master Kategori Barang</a></li>
+        <li><a href="{{ url('admin-nano/munits') }}">Master Satuan Barang</a></li>
       @endif
       @if($active == 'mgoodsmark')
         <li class="active"><a href="{{ url('admin-nano/mcategorygoodsmark')}}">Master Merek Barang</a></li>
       @else
         <li><a href="{{ url('admin-nano/mcategorygoodsmark')}}">Master Merek Barang</a></li>
+      @endif
+      @if($active == 'mgoodstype')
+        <li class="active"><a href="{{ url('admin-nano/mgoodstype')}}">Master Tipe Barang</a></li>
+      @else
+        <li><a href="{{ url('admin-nano/mgoodstype')}}">Master Tipe Barang</a></li>
+      @endif
+      @if($active == 'mgoodssubtype')
+        <li class="active"><a href="{{ url('admin-nano/mgoodssubtype')}}">Master Sub Tipe Barang</a></li>
+      @else
+        <li><a href="{{ url('admin-nano/mgoodssubtype')}}">Master Sub Tipe Barang</a></li>
       @endif
     </ul>
   </li>

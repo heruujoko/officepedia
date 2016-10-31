@@ -147,7 +147,7 @@
                             </div>
                             <div class="col-md-6">
                               <div style="height: 21px;" class="form-group">
-              									<label class="col-md-3 control-label"><b>Alamat Penagihan</b> &nbsp  :</label>
+              									<label class="col-md-3 control-label"><b>Alamat</b> &nbsp  :</label>
               									<div class="col-md-9 col-sm-12">
               										<div class="icon-addon addon-md">
                                     <div class="icon-addon addon-md">
@@ -402,7 +402,7 @@
                             </div>
                             <div class="col-md-6">
                               <div style="height: 21px;" class="form-group">
-              									<label class="col-md-3 control-label"><b>Alamat Penagihan</b> &nbsp  :</label>
+              									<label class="col-md-3 control-label"><b>Alamat</b> &nbsp  :</label>
               									<div class="col-md-9 col-sm-12">
               										<div class="icon-addon addon-md">
                                     <div class="icon-addon addon-md">
@@ -656,7 +656,7 @@
                             </div>
                             <div class="col-md-6">
                               <div style="height: 21px;" class="form-group">
-                                <label class="col-md-3 control-label"><b>Alamat Penagihan</b> &nbsp  :</label>
+                                <label class="col-md-3 control-label"><b>Alamat</b> &nbsp  :</label>
                                 <div class="col-md-9 col-sm-12">
                                   <div class="icon-addon addon-md">
                                     <div class="icon-addon addon-md">

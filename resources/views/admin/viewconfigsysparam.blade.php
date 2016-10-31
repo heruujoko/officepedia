@@ -165,7 +165,8 @@
 																<div class="box-pajak-wrapper">
 																	<div class="form-group">
 		                                <label class="col-md-3 control-label"><b>NPWP</b> &nbsp  :</label>
-		                          			<div class="col-md-9">
+
+<div class="col-md-9">
 		                                  <input id="edit-msyscomptaxpayeridnumber" name="msyscomptaxpayeridnumber" class="form-control forminput" placeholder="NPWP Perusahaan" type="text" data-parsley-required-message="Field Ini Tidak Boleh Kosong" @if (Session::has('autofocus')) autofocus @endif >
 		                          			</div>
 		                              </div>
@@ -178,13 +179,13 @@
 		                              <div class="form-group">
 		                                <label class="col-md-3 control-label"><b>Tgl PKP</b> &nbsp  :</label>
 		                          			<div class="col-md-9">
-		                                  <input id="edit-msyscomptaxabledate" type="text" class="form-control datepicker" name="msyscomptaxabledate" placeholder="Tgl PKP">
+		                                  <input disabled id="edit-msyscomptaxabledate" type="text" class="form-control datepicker" name="msyscomptaxabledate" placeholder="Tgl PKP">
 		                          			</div>
 		                              </div>
 		                              <div class="form-group">
 		                                <label class="col-md-3 control-label"><b>No PKP</b> &nbsp  :</label>
 		                          			<div class="col-md-9">
-		                                  <input id="edit-msyscomptaxablenumber" type="text" class="form-control" name="msyscomptaxablenumber" placeholder="No PKP">
+		                                  <input disabled id="edit-msyscomptaxablenumber" type="text" class="form-control" name="msyscomptaxablenumber" placeholder="No PKP">
 		                          			</div>
 		                              </div>
 		                              <div class="form-group">
@@ -325,7 +326,7 @@
                          </div>
                          </div>
                          <div class="row">
-								<h4 class="pajak-text">Prefix</h4>
+								<h4 class="pajak-text">Transaksi</h4>
 								<div class="col-md-11 box-general">
 								<h6 class="prefix-tab">Prefix</h6>
 								<h6 class="lastcount-tab">Last Count</h6>

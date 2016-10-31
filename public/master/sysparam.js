@@ -209,7 +209,7 @@ function update_params(){
         console.log(response);
         window.location.href="sysparam";
         swal({
-          title: "Input Berhasil!",
+          title: "Konfigurasi Di Simpan!",
           type: "success",
           timer: 1000
         });

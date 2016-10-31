@@ -4,7 +4,7 @@
 
 namespace Composer\Autoload;
 
-class ComposerStaticInitff3534b13158b81efcbd87514642c9f0
+class ComposerStaticInit0f7f0e514c4dd2a18fddea0f38154eef
 {
     public static $files = array (
         '1d1b89d124cc9cb8219922c9d5569199' => __DIR__ . '/..' . '/hamcrest/hamcrest-php/hamcrest/Hamcrest.php',
@@ -383,8 +383,10 @@ class ComposerStaticInitff3534b13158b81efcbd87514642c9f0
         'AddAddressDetailConfig' => __DIR__ . '/../..' . '/database/migrations/2016_10_27_030713_add_address_detail_config.php',
         'AddCategoriesToCust' => __DIR__ . '/../..' . '/database/migrations/2016_10_28_022649_add_categories_to_cust.php',
         'AddCreditLimitToCustomer' => __DIR__ . '/../..' . '/database/migrations/2016_10_05_045029_add_credit_limit_to_customer.php',
+        'AddMgoodsCategoryInMgoods' => __DIR__ . '/../..' . '/database/migrations/2016_10_29_110046_add_mgoods_category_in_mgoods.php',
         'AddSaldoToGp' => __DIR__ . '/../..' . '/database/migrations/2016_09_22_110235_add_saldo_to_gp.php',
         'AddSaldoToP' => __DIR__ . '/../..' . '/database/migrations/2016_09_22_110238_add_saldo_to_p.php',
+        'AddSubtypeFieldMgoods' => __DIR__ . '/../..' . '/database/migrations/2016_10_28_151151_add_subtype_field_mgoods.php',
         'AddSuppierCategoryToSupplier' => __DIR__ . '/../..' . '/database/migrations/2016_10_25_045341_add_suppier_category_to_supplier.php',
         'AddVoidAndSaldoToMcoa' => __DIR__ . '/../..' . '/database/migrations/2016_09_20_073712_add_void_and_saldo_to_mcoa.php',
         'AddVoidToEmployee' => __DIR__ . '/../..' . '/database/migrations/2016_10_18_054142_add_void_to_employee.php',
@@ -406,8 +408,13 @@ class ComposerStaticInitff3534b13158b81efcbd87514642c9f0
         'CreateMcategorygoods' => __DIR__ . '/../..' . '/database/migrations/2016_10_17_140923_create_mcategorygoods.php',
         'CreateMcategorysupplier' => __DIR__ . '/../..' . '/database/migrations/2016_10_17_140634_create_mcategorysupplier.php',
         'CreateMgoods14digitProc' => __DIR__ . '/../..' . '/database/migrations/2016_10_28_033426_create_mgoods_14digit_proc.php',
+        'CreateMgoodsConvertedUnits' => __DIR__ . '/../..' . '/database/migrations/2016_10_28_151835_create_mgoods_converted_units.php',
+        'CreateMgoodsMinimum' => __DIR__ . '/../..' . '/database/migrations/2016_10_29_034302_create_mgoods_minimum.php',
         'CreateMgoodsTable' => __DIR__ . '/../..' . '/database/migrations/2016_06_09_041441_create_mgoods_table.php',
         'CreateMsupplierTable' => __DIR__ . '/../..' . '/database/migrations/2016_10_15_075505_create_msupplier_table.php',
+        'CreateMtaxTable' => __DIR__ . '/../..' . '/database/migrations/2016_10_28_135629_create_mtax_table.php',
+        'CreateMunitsTable' => __DIR__ . '/../..' . '/database/migrations/2016_10_29_092441_create_munits_table.php',
+        'CreatePajakMgoods' => __DIR__ . '/../..' . '/database/migrations/2016_10_28_174107_create_pajak_mgoods.php',
         'CreatePasswordResetsTable' => __DIR__ . '/../..' . '/database/migrations/2014_10_12_100000_create_password_resets_table.php',
         'CreateUsersTable' => __DIR__ . '/../..' . '/database/migrations/2014_10_12_000000_create_users_table.php',
         'DatabaseSeeder' => __DIR__ . '/../..' . '/database/seeds/DatabaseSeeder.php',
@@ -489,6 +496,10 @@ class ComposerStaticInitff3534b13158b81efcbd87514642c9f0
         'Hamcrest\\Xml\\HasXPath' => __DIR__ . '/..' . '/hamcrest/hamcrest-php/hamcrest/Hamcrest/Xml/HasXPath.php',
         'IlluminateQueueClosure' => __DIR__ . '/..' . '/laravel/framework/src/Illuminate/Queue/IlluminateQueueClosure.php',
         'MCOAFullSeeder' => __DIR__ . '/../..' . '/database/seeds/MCOAFullSeeder.php',
+        'MGoodsCategorySeed' => __DIR__ . '/../..' . '/database/seeds/MGoodsCategorySeed.php',
+        'MGoodsMarkSeeder' => __DIR__ . '/../..' . '/database/seeds/MGoodsMarkSeeder.php',
+        'MGoodsTypeSeeder' => __DIR__ . '/../..' . '/database/seeds/MGoodsTypeSeeder.php',
+        'MGoodsUnitSeeder' => __DIR__ . '/../..' . '/database/seeds/MGoodsUnitSeeder.php',
         'Maatwebsite\\Excel\\Classes\\Cache' => __DIR__ . '/..' . '/maatwebsite/excel/src/Maatwebsite/Excel/Classes/Cache.php',
         'Maatwebsite\\Excel\\Classes\\FormatIdentifier' => __DIR__ . '/..' . '/maatwebsite/excel/src/Maatwebsite/Excel/Classes/FormatIdentifier.php',
         'Maatwebsite\\Excel\\Classes\\LaravelExcelWorksheet' => __DIR__ . '/..' . '/maatwebsite/excel/src/Maatwebsite/Excel/Classes/LaravelExcelWorksheet.php',
@@ -913,6 +924,7 @@ class ComposerStaticInitff3534b13158b81efcbd87514642c9f0
         'PHP_Token_YIELD' => __DIR__ . '/..' . '/phpunit/php-token-stream/src/Token.php',
         'PHP_Token_YIELD_FROM' => __DIR__ . '/..' . '/phpunit/php-token-stream/src/Token.php',
         'RenameMgoods' => __DIR__ . '/../..' . '/database/migrations/2016_10_15_151831_rename_mgoods.php',
+        'RenameMgoodsTax' => __DIR__ . '/../..' . '/database/migrations/2016_10_29_114204_rename_mgoods_tax.php',
         'SebastianBergmann\\Comparator\\ArrayComparator' => __DIR__ . '/..' . '/sebastian/comparator/src/ArrayComparator.php',
         'SebastianBergmann\\Comparator\\Comparator' => __DIR__ . '/..' . '/sebastian/comparator/src/Comparator.php',
         'SebastianBergmann\\Comparator\\ComparisonFailure' => __DIR__ . '/..' . '/sebastian/comparator/src/ComparisonFailure.php',
@@ -949,18 +961,22 @@ class ComposerStaticInitff3534b13158b81efcbd87514642c9f0
         'SebastianBergmann\\RecursionContext\\Exception' => __DIR__ . '/..' . '/sebastian/recursion-context/src/Exception.php',
         'SebastianBergmann\\RecursionContext\\InvalidArgumentException' => __DIR__ . '/..' . '/sebastian/recursion-context/src/InvalidArgumentException.php',
         'SebastianBergmann\\Version' => __DIR__ . '/..' . '/sebastian/version/src/Version.php',
+        'TaxSeeder' => __DIR__ . '/../..' . '/database/seeds/TaxSeeder.php',
         'TestCase' => __DIR__ . '/../..' . '/tests/TestCase.php',
         'Text_Template' => __DIR__ . '/..' . '/phpunit/php-text-template/src/Template.php',
         'UpdateEmployeeStructure' => __DIR__ . '/../..' . '/database/migrations/2016_10_25_080814_update_employee_structure.php',
+        'UpdateMinimumin' => __DIR__ . '/../..' . '/database/migrations/2016_10_29_120214_update_minimumin.php',
+        'UpdatePriceoutMgoods' => __DIR__ . '/../..' . '/database/migrations/2016_10_29_034809_update_priceout_mgoods.php',
+        'mcategorycustomertableseeder' => __DIR__ . '/../..' . '/database/seeds/mcategorycustomertableseeder.php',
     );
 
     public static function getInitializer(ClassLoader $loader)
     {
         return \Closure::bind(function () use ($loader) {
-            $loader->prefixLengthsPsr4 = ComposerStaticInitff3534b13158b81efcbd87514642c9f0::$prefixLengthsPsr4;
-            $loader->prefixDirsPsr4 = ComposerStaticInitff3534b13158b81efcbd87514642c9f0::$prefixDirsPsr4;
-            $loader->prefixesPsr0 = ComposerStaticInitff3534b13158b81efcbd87514642c9f0::$prefixesPsr0;
-            $loader->classMap = ComposerStaticInitff3534b13158b81efcbd87514642c9f0::$classMap;
+            $loader->prefixLengthsPsr4 = ComposerStaticInit0f7f0e514c4dd2a18fddea0f38154eef::$prefixLengthsPsr4;
+            $loader->prefixDirsPsr4 = ComposerStaticInit0f7f0e514c4dd2a18fddea0f38154eef::$prefixDirsPsr4;
+            $loader->prefixesPsr0 = ComposerStaticInit0f7f0e514c4dd2a18fddea0f38154eef::$prefixesPsr0;
+            $loader->classMap = ComposerStaticInit0f7f0e514c4dd2a18fddea0f38154eef::$classMap;
 
         }, null, ClassLoader::class);
     }

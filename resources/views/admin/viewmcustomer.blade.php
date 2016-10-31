@@ -270,7 +270,7 @@
           									</div>
                           </div>
                           <div style="height: 21px;" class="form-group">
-                            <label class="col-md-2 control-label"><b>TOP</b>  &nbsp  :</label>
+                            <label class="col-md-2 control-label"><b>Pembayaran</b>  &nbsp  :</label>
           									<div class="col-md-4">
           										<div class="icon-addon addon-md">
           											<select class="form-control select2" name="mcustomercoatop" id="insert-mcustomertop">
@@ -290,7 +290,7 @@
           									</div>
                           </div>
                           <div style="height: 21px;" class="form-group">
-                            <label class="col-md-2 control-label"><b>Default</b>  &nbsp  :</label>
+                            <label class="col-md-2 control-label"><b>Default TOP</b>  &nbsp  :</label>
           									<div  class="col-md-4">
           										<div class="icon-addon addon-md">
           											<input id="insert-mcustomerdefaultar" value="0" name="mcustomerdefaultar" class="form-control forminput" placeholder="Default" type="text" @if (Session::has('autofocus')) autofocus @endif >
@@ -552,7 +552,7 @@
           									</div>
                           </div>
                           <div style="height: 21px;" class="form-group">
-                            <label class="col-md-2 control-label"><b>TOP</b>  &nbsp  :</label>
+                            <label class="col-md-2 control-label"><b>Pembayaran</b>  &nbsp  :</label>
           									<div class="col-md-4">
           										<div class="icon-addon addon-md">
           											<select class="form-control select2" name="mcustomercoatop" id="edit-mcustomertop">
@@ -572,7 +572,7 @@
           									</div>
                           </div>
                           <div style="height: 21px;" class="form-group">
-                            <label class="col-md-2 control-label"><b>Default</b>  &nbsp  :</label>
+                            <label class="col-md-2 control-label"><b>Default TOP</b>  &nbsp  :</label>
           									<div  class="col-md-4">
           										<div class="icon-addon addon-md">
           											<input id="edit-mcustomerdefaultar" value="0" name="mcustomerdefaultar" class="form-control forminput" placeholder="Default" type="text" @if (Session::has('autofocus')) autofocus @endif >
@@ -833,7 +833,7 @@
                             </div>
                           </div>
                           <div style="height: 21px;" class="form-group">
-                            <label class="col-md-2 control-label"><b>TOP</b>  &nbsp  :</label>
+                            <label class="col-md-2 control-label"><b>Pembayaran</b>  &nbsp  :</label>
                             <div class="col-md-4">
                               <div class="icon-addon addon-md">
                                 <select disabled class="form-control select2" name="mcustomercoatop" id="view-mcustomertop">
@@ -853,7 +853,7 @@
                             </div>
                           </div>
                           <div style="height: 21px;" class="form-group">
-                            <label class="col-md-2 control-label"><b>Default</b>  &nbsp  :</label>
+                            <label class="col-md-2 control-label"><b>Default TOP</b>  &nbsp  :</label>
                             <div  class="col-md-4">
                               <div class="icon-addon addon-md">
                                 <input disabled id="view-mcustomerdefaultar" value="0" name="mcustomerdefaultar" class="form-control forminput" placeholder="Default" type="text" @if (Session::has('autofocus')) autofocus @endif >

@@ -10,15 +10,11 @@ class MGOODS extends Model
 {
     protected $table = 'mgoods';
 
-<<<<<<< HEAD
-    protected $fillable = ['mgoodscode','mgoodsbarcode','mgoodsname','mgoodsalias','mgoodsremark','mgoodsunit','mgoodsunit2','mgoodsunit3','mgoodsactive','mgoodspricein','mgoodspriceout','mgoodstype','mgoodsbrand','mgoodsgroup1','mgoodsgroup2','mgoodsgroup3','mgoodssuppliercode','mgoodssuppliername','mgoodsbranches','mgoodsuniquetransaction','mgoodspicture','mgoodscoapurchasing','mgoodscoapurchasingname','mgoodscoacogs','mgoodscoacogsname','mgoodscoaselling','mgoodscoasellingname','mgoodscoareturnofselling','mgoodscoareturnofsellingname','mgoodscogs'];
-=======
     protected $fillable = ['mgoodscode','mgoodsbarcode','mgoodsname','mgoodsalias','mgoodsremark','mgoodsunit','mgoodsunit2','mgoodsunit3','mgoodsactive','mgoodspricein','mgoodspriceout','mgoodstype','mgoodsbrand','mgoodsgroup1','mgoodsgroup2','mgoodsgroup3','mgoodssuppliercode','mgoodssuppliername','mgoodsbranches','mgoodsuniquetransaction','mgoodspicture','mgoodscoapurchasing','mgoodscoapurchasingname',
-    'mgoodscoacogs','mgoodscoacogsname','mgoodscoaselling','mgoodscoasellingname','mgoodscoareturnofselling','mgoodscoareturnofsellingname','mgoodscogs','mgoodssubtype','mgoodsmultiunit','mgoodsunit2conv','mgoodsunit3conv'];
->>>>>>> e46a5c3d7cc260a382fd38a62f2fc12940024e3e
-
+    'mgoodscoacogs','mgoodscoacogsname','mgoodscoaselling','mgoodscoasellingname','mgoodscoareturnofselling','mgoodscoareturnofsellingname','mgoodscogs','mgoodssubtype','mgoodsmultiunit','mgoodsunit2conv','mgoodsunit3conv','mgoodsunitin','mgoodsminimumin','mgoodstaxppn','mgoodstaxppnbm'];
         protected $casts = [
         'mgoodsactive' => 'integer',
+        'mgoodscategory' => 'integer',
         'mgoodsbranches' => 'integer',
         'mgoodsuniquetransaction' => 'integer',
         'mgoodsmultiunit' => 'integer',
@@ -80,7 +76,15 @@ class MGOODS extends Model
     }
 
     public function category(){
-      return $this->belongsTo('App\MCategorygoods','mgoodstype','id');
+      return $this->belongsTo('App\MCategorygoods','mgoodscategory','id');
+    }
+
+    public function types(){
+      return $this->belongsTo('App\MGoodstype','mgoodstype','id');
+    }
+
+    public function subtypes(){
+      return $this->belongsTo('App\MGoodssubtype','mgoodssubtype','id');
     }
 
     public function mark(){
