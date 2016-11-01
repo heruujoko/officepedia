@@ -27,7 +27,7 @@
 		<link rel="stylesheet" type="text/css" href="{{URL::to('/')}}/master/1/dist/sweetalert.css">
 
 		<link rel="stylesheet" type="text/css" href="{{ url('/css/select2.min.css') }}">
-		<link rel="stylesheet" type="text/css" href="{{ url('/chosen/chosen.css') }}">
+		<!-- <link rel="stylesheet" type="text/css" href="{{ url('/chosen/chosen.css') }}"> -->
 		<link rel="stylesheet" type="text/css" href="{{ url('/css/select2-bootstrap.css') }}">
 
 

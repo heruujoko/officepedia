@@ -9,6 +9,7 @@ return array(
     'AddAddressDetailConfig' => $baseDir . '/database/migrations/2016_10_27_030713_add_address_detail_config.php',
     'AddCategoriesToCust' => $baseDir . '/database/migrations/2016_10_28_022649_add_categories_to_cust.php',
     'AddCreditLimitToCustomer' => $baseDir . '/database/migrations/2016_10_05_045029_add_credit_limit_to_customer.php',
+    'AddDiscountMgoods' => $baseDir . '/database/migrations/2016_11_01_045104_add_discount_mgoods.php',
     'AddMgoodsCategoryInMgoods' => $baseDir . '/database/migrations/2016_10_29_110046_add_mgoods_category_in_mgoods.php',
     'AddSaldoToGp' => $baseDir . '/database/migrations/2016_09_22_110235_add_saldo_to_gp.php',
     'AddSaldoToP' => $baseDir . '/database/migrations/2016_09_22_110238_add_saldo_to_p.php',

@@ -1,0 +1,45 @@
+.yesnoswitch {
+    position: relative; width: 59px;
+    -webkit-user-select:none; -moz-user-select:none; -ms-user-select: none;
+}
+.yesnoswitch-checkbox {
+    display: none;
+}
+.yesnoswitch-label {
+    display: block; overflow: hidden; cursor: pointer;
+    border: 2px solid #999999; border-radius: 20px;
+}
+.yesnoswitch-inner {
+    display: block; width: 200%; margin-left: -100%;
+    transition: margin 0.3s ease-in 0s;
+}
+.yesnoswitch-inner:before, .yesnoswitch-inner:after {
+    display: block; float: left; width: 50%; height: 20px; padding: 0; line-height: 20px;
+    font-size: 12px; color: white; font-family: Trebuchet, Arial, sans-serif; font-weight: bold;
+    box-sizing: border-box;
+}
+.yesnoswitch-inner:before {
+    content: "Yes";
+    padding-left: 10px;
+    background-color: #428BCA; color: #FFFFFF;
+}
+.yesnoswitch-inner:after {
+    content: "No";
+    padding-right: 10px;
+    background-color: #EEEEEE; color: #999999;
+    text-align: right;
+}
+.yesnoswitch-switch {
+    display: block; width: 18px; margin: 1px;
+    background: #FFFFFF;
+    position: absolute; top: 0; bottom: 0;
+    right: 35px;
+    border: 2px solid #999999; border-radius: 20px;
+    transition: all 0.3s ease-in 0s;
+}
+.yesnoswitch-checkbox:checked + .yesnoswitch-label .yesnoswitch-inner {
+    margin-left: 0;
+}
+.yesnoswitch-checkbox:checked + .yesnoswitch-label .yesnoswitch-switch {
+    right: 0px;
+}

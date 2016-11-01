@@ -64,10 +64,9 @@
                       </ul>
                       <div id="insert-wrapper" class="tab-content" data-parsley-validate>
                         <div id="menu1" class="tab-pane fade in active">
-                          <div class="form-horizontal" style="margin-top:21px;">
-                            <div class="col-md-10">
-                             <div class="errorBlock1" style="margin-left:23% !important;"></div>
-                             <div class="box-general">
+                          <div class="container form form-horizontal" style="margin-top:21px;">
+                            <!--  BOX Kiri -->
+                            <div class="col-md-6 group-box">
                               <div style="height: 21px;" class="form-group">
                                 <label class="col-md-3 control-label"><b>Kode Barang</b> (<font color="red">*</font>) &nbsp  :</label>
                                 <div class="col-md-9">
@@ -98,7 +97,6 @@
                                   <div class="icon-addon addon-md">
                                     <input id="insert-mgoodsname" value="{{old('mgoodsname')}}" name="mgoodsname" class="form-control forminput" placeholder="Nama Barang" type="text" @if (Session::has('autofocus')) autofocus @endif >
                                     <label for="mgoodsgroup1" class="glyphicon glyphicon-info-sign" rel="tooltip" title="Nama Barang"></label>
-
                                   </div>
                                 </div>
                               </div>
@@ -165,212 +163,274 @@
                                 <div class="col-md-9 col-sm-12">
                                   <div class="icon-addon addon-md">
                                     <!-- <input id="insert-mgoodsremark" value="{{old('mgoodsremark')}}" name="mgoodsremark" class="form-control forminput" placeholder="Keterangan" type="text"  @if (Session::has('autofocus')) autofocus @endif > -->
-                                    <textarea id="insert-mgoodsremark" name="mgoodsremark" class="form-control forminput" placeholder="Keterangan" rows="3"></textarea>
+                                    <textarea id="insert-mgoodsremark" name="mgoodsremark" class="form-control forminput" placeholder="Keterangan" rows="5"></textarea>
                                     <label for="mgoodsgroup1" class="glyphicon glyphicon-info-sign" rel="tooltip" title="Keterangan"></label>
                                   </div>
                                 </div>
                               </div>
-                              </div>
-                              <div class="box-bottom">
-                                <div style="height: 21px;margin-top:17px;" class="form-group">
-                                  <label class="col-md-3 control-label"><b>Multi Satuan</b>  &nbsp  :</label>
-                                  <div class="col-md-9">
-                                    <input id="insert-mgoodsmultiunit" value="" name="mgoodsmultiunit" class="nice-toggle" placeholder="mgoodsactive" type="checkbox">
+                            </div>
+                            <!--  BOX Kanan -->
+                            <div class="col-md-6 group-box">
+
+                              <div style="height: 21px;" class="form-group">
+                                <label class="col-md-3 control-label"><b>Multi Satuan</b>  &nbsp  :</label>
+                                <div class="col-md-9">
+                                  <!-- <input id="insert-mgoodsmultiunit" value="" name="mgoodsmultiunit" class="nice-toggle" placeholder="mgoodsactive" type="checkbox" data-toggle="toggle"> -->
+                                  <div class="yesnoswitch">
+                                      <input type="checkbox" name="mgoodsbranches" class="yesnoswitch-checkbox" id="insert-mgoodsmultiunit">
+                                      <label class="yesnoswitch-label" for="insert-mgoodsmultiunit">
+                                          <span class="yesnoswitch-inner"></span>
+                                          <span class="yesnoswitch-switch"></span>
+                                      </label>
                                   </div>
                                 </div>
-                                <div class="form-group" style="height: 21px;">
-                                  <label class="col-md-3 control-label"><b>Satuan-1</b> (<font color="red">*</font>) &nbsp  :</label>
+                              </div>
+                              <div class="form-group" style="height: 21px;">
+                                <label class="col-md-3 control-label"><b>Satuan-1</b> (<font color="red">*</font>) &nbsp  :</label>
+                                <div class="col-md-4 col-sm-12">
+                                  <div class="icon-addon addon-md">
+                                    <select class="form-group select2" id="insert-mgoodsunit" name="mgoodsunit">
+                                      @foreach($units as $unit)
+                                        <option id="{{ $unit->id }}">{{ $unit->mgoodsunitname }}</option>
+                                      @endforeach
+                                    </select>
+                                  </div>
+                                </div>
+                              </div>
+                              <div class="form-group" style="height: 21px;">
+                                <label class="col-md-3 control-label"><b>Satuan-2</b> &nbsp  :</label>
+                                <div class="col-md-4 col-sm-12">
+                                  <select class="form-group select2" disabled id="insert-mgoodsunit2" name="mgoodsunit2">
+                                    @foreach($units as $unit)
+                                      @if($unit->mgoodsunitname == 'Lusin')
+                                        <option selected id="{{ $unit->id }}">{{ $unit->mgoodsunitname }}</option>
+                                      @else
+                                        <option id="{{ $unit->id }}">{{ $unit->mgoodsunitname }}</option>
+                                      @endif
+                                    @endforeach
+                                  </select>
+                                </div>
+                                <div class="col-md-4 col-sm-12">
+                                  <input id="insert-mgoodsunit2conv" disabled name="mgoodunit2conv" class="form-control forminput" placeholder="Unit" type="text"  @if (Session::has('autofocus')) autofocus @endif >
+                                </div>
+                                <div class="col-md-1">
+                                  <label class="control-label">Unit</label>
+                                </div>
+                              </div>
+                              <div class="form-group" style="height: 21px;">
+                                <label class="col-md-3 control-label"><b>Satuan-3</b> &nbsp  :</label>
+                                <div class="col-md-4 col-sm-12">
+                                  <select class="form-group select2" disabled id="insert-mgoodsunit3" name="mgoodsunit2">
+                                    @foreach($units as $unit)
+                                      @if($unit->mgoodsunitname == 'Karton')
+                                        <option selected id="{{ $unit->id }}">{{ $unit->mgoodsunitname }}</option>
+                                      @else
+                                        <option id="{{ $unit->id }}">{{ $unit->mgoodsunitname }}</option>
+                                      @endif
+                                    @endforeach
+                                  </select>
+                                </div>
+                                <div class="col-md-4 col-sm-12">
+                                  <input id="insert-mgoodsunit3conv" disabled name="mgoodunit3conv" class="form-control forminput" placeholder="Unit" type="text"  @if (Session::has('autofocus')) autofocus @endif >
+                                </div>
+                                <div class="col-md-1">
+                                  <label class="control-label">Unit</label>
+                                </div>
+                              </div>
+                              <div style="height: 21px;" class="form-group">
+                                  <label class="col-md-3 control-label"><b>Semua cabang </b>  &nbsp  :</label>
+                                  <div class="col-md-9 col-sm-12">
+                                    <div class="yesnoswitch">
+                                        <input type="checkbox" name="mgoodsbranches" class="yesnoswitch-checkbox" id="insert-mgoodsbranches">
+                                        <label class="yesnoswitch-label" for="insert-mgoodsbranches">
+                                            <span class="yesnoswitch-inner"></span>
+                                            <span class="yesnoswitch-switch"></span>
+                                        </label>
+                                    </div>
+                                  </div>
+                              </div>
+                              <div style="height: 21px;" class="form-group">
+                                  <label class="col-md-3 control-label"><b>Unique Transaction </b>  &nbsp  :</label>
+                                  <div class="col-md-9 col-sm-12">
+                                    <div class="yesnoswitch">
+                                        <input type="checkbox" name="mgoodsbranches" class="yesnoswitch-checkbox" id="insert-mgoodsuniquetransaction">
+                                        <label class="yesnoswitch-label" for="insert-mgoodsuniquetransaction">
+                                            <span class="yesnoswitch-inner"></span>
+                                            <span class="yesnoswitch-switch"></span>
+                                        </label>
+                                    </div>
+                                  </div>
+                              </div>
+                              <div style="height: 21px;" class="form-group">
+                                <label class="col-md-3 control-label"><b>Status</b>  &nbsp  :</label>
+                                  <div class="col-md-9">
+                                    <div class="onoffswitch">
+                                        <input type="checkbox" name="mgoodsactive" class="onoffswitch-checkbox" id="insert-mgoodsactive" checked>
+                                        <label class="onoffswitch-label" for="insert-mgoodsactive">
+                                            <span class="onoffswitch-inner"></span>
+                                            <span class="onoffswitch-switch"></span>
+                                        </label>
+                                    </div>
+                                </div>
+                              </div>
+                              <div style="height: 21px;" class="form-group">
+                                <label class="col-md-3 control-label"><b>Harga Beli</b> &nbsp  :</label>
+                                <div class="row">
+                                <div class="col-md-5 col-sm-12">
+                                  <div class="icon-addon addon-md">
+                                    <input disabled id="insert-mgoodspricein" value="{{old('mgoodspricein')}}" name="mgoodspricein" data-parsley-type="number" data-parsley-type-message="Field ini hanya dapat di isi oleh angka" parsley-error-container=".erroripricein" class="form-control forminput" placeholder="Harga Beli" type="text"  @if (Session::has('autofocus')) autofocus @endif >
+                                    <label for="mgoodsgroup1" class="glyphicon glyphicon-info-sign" rel="tooltip" title="Harga Beli"></label>
+                                  </div>
+                                </div>
+                                <div class="col-md-2">
+                                  <label class="control-label muted">Harga Beli Diluar PPn</label>
+                                </div>
+                                </div>
+                                <div class="erroripricein"></div>
+                              </div>
+                              <div class="form-group" style="height: 21px;">
+                                <label class="col-md-3 control-label"><b>Satuan Beli</b> (<font color="red">*</font>) &nbsp  :</label>
                                   <div class="col-md-4 col-sm-12">
-                                    <div class="icon-addon addon-md">
-                                      <select class="form-group chosen" id="insert-mgoodsunit" name="mgoodsunit">
+                                      <select class="form-group select2" id="insert-mgoodsunitin" name="mgoodsunitin">
                                         @foreach($units as $unit)
                                           <option id="{{ $unit->id }}">{{ $unit->mgoodsunitname }}</option>
                                         @endforeach
                                       </select>
-                                    </div>
+                                  </div>
+                              </div>
+                              <div style="height: 21px;" class="form-group">
+                                <label class="col-md-3 control-label"><b>Minimal Pembelian</b> &nbsp  :</label>
+                                <div class="col-md-4 col-sm-12">
+                                  <div class="icon-addon addon-md">
+                                    <input id="insert-mgoodsminimunin" value="{{old('mgoodsminimunin')}}" name="mgoodsminimunin" class="form-control forminput" placeholder="Minimal Pembelian" type="text" @if (Session::has('autofocus')) autofocus @endif >
+                                    <label for="mgoodsgroup1" class="glyphicon glyphicon-info-sign" rel="tooltip" title="Nama Barang"></label>
                                   </div>
                                 </div>
-                                <div class="form-group" style="height: 21px;">
-                                  <label class="col-md-3 control-label"><b>Satuan-2</b> &nbsp  :</label>
-                                  <div class="col-md-4 col-sm-12">
-                                    <select class="form-group chosen" disabled id="insert-mgoodsunit2" name="mgoodsunit2">
-                                      @foreach($units as $unit)
-                                        <option id="{{ $unit->id }}">{{ $unit->mgoodsunitname }}</option>
+                              </div>
+                              <div style="height: 21px;" class="form-group">
+                                <label class="col-md-3 control-label"><b>Harga Jual</b> &nbsp  :</label>
+                                <div class="row">
+                                <div class="col-md-5 col-sm-12">
+                                  <div class="icon-addon addon-md">
+                                    <input id="insert-mgoodspriceout" value="{{old('mgoodspriceout')}}" name="mgoodspriceout" data-parsley-type="number" data-parsley-type-message="Field ini hanya dapat di isi oleh angka" parsley-error-container=".erroripriceout" class="form-control forminput" placeholder="Harga Jual" type="text"  @if (Session::has('autofocus')) autofocus @endif >
+                                    <label for="mgoodsgroup1" class="glyphicon glyphicon-info-sign" rel="tooltip" title="Harga Jual"></label>
+                                  </div>
+                                </div>
+                                <div class="col-md-2">
+                                  <label class="control-label muted">Harga Jual Diluar PPn</label>
+                                </div>
+                                </div>
+                                <div class="erroripriceout"></div>
+                              </div>
+                              <div style="height: 21px;" class="form-group">
+                                <label class="col-md-3 control-label"><b>Maksimal Diskon</b> &nbsp  :</label>
+                                <div class="col-md-4 col-sm-12">
+                                  <div class="yesnoswitch">
+                                      <input type="checkbox" name="mgoodsactive" class="yesnoswitch-checkbox" id="insert-mgoodssetmaxdisc">
+                                      <label class="yesnoswitch-label" for="insert-mgoodssetmaxdisc">
+                                          <span class="yesnoswitch-inner"></span>
+                                          <span class="yesnoswitch-switch"></span>
+                                      </label>
+                                  </div>
+                                </div>
+                              </div>
+                              <div style="height: 21px;" class="form-group">
+                                <label class="col-md-3 control-label"><b>Maksimal Diskon</b> &nbsp  :</label>
+                                <div class="col-md-4 col-sm-12">
+                                  <div class="icon-addon addon-md">
+                                    <input id="insert-mgoodsmaxdisc" disabled name="mgoodsmaxdisc" data-parsley-type="number" data-parsley-type-message="Field ini hanya dapat di isi oleh angka" class="form-control forminput" placeholder="Persentase" type="text">
+                                    <label for="mgoodsgroup1" class="glyphicon glyphicon-info-sign"></label>
+                                  </div>
+                                </div>
+                                <div class="col-md-4 col-sm-12">
+                                  <div class="icon-addon addon-md">
+                                    <input id="insert-mgoodsmaxdiscrp" disabled name="mgoodsmaxdiscrp" data-parsley-type="number" data-parsley-type-message="Field ini hanya dapat di isi oleh angka" class="form-control forminput" placeholder="Rupiah" type="text">
+                                    <label for="mgoodsgroup1" class="glyphicon glyphicon-info-sign"></label>
+                                  </div>
+                                </div>
+                              </div>
+                              <div style="height: 21px;" class="form-group">
+                                <label class="col-md-3 control-label"><b>HPP </b> &nbsp  :</label>
+                                <div class="col-md-4 col-sm-12">
+                                  <div class="icon-addon addon-md">
+                                    <input disabled id="insert-mgoodscogs" value="{{old('mgoodscogs')}}" name="mgoodscogs" class="form-control forminput" placeholder="HPP" type="text"  @if (Session::has('autofocus')) autofocus @endif >
+                                    <label for="mgoodsgroup1" class="glyphicon glyphicon-info-sign" rel="tooltip" title="Harga Jual"></label>
+                                  </div>
+                                </div>
+                              </div>
+
+                            </div>
+                          </div>
+                        </div>
+                        <div id="menu2" class="tab-pane fade">
+                          <div class="form form-horizontal" style="margin-top:21px;">
+                            <div class="col-md-10">
+                              <div style="height: 21px;" class="form-group">
+                                <label class="col-md-3 control-label"><b>Kode / Nama Supplier</b>  &nbsp  :</label>
+                               <div class="col-md-4">
+                                  <div class="icon-addon addon-md">
+                                    <select class="form-control select2-bold" name="mgoodssuppliercode" id="insert-mgoodssuppliercode">
+                                      @foreach($msupplier as $mg)
+                                       <option value="{{$mg->msupplierid}}">{{$mg->msupplierid}} {{$mg->msuppliername}}</option>
                                       @endforeach
                                     </select>
                                   </div>
-                                  <div class="col-md-4 col-sm-12">
-                                    <input id="insert-mgoodsunit2conv" disabled name="mgoodunit2conv" class="form-control forminput" placeholder="Unit" type="text"  @if (Session::has('autofocus')) autofocus @endif >
-                                  </div>
-                                  <div class="col-md-1">
-                                    <label class="control-label">Unit</label>
+                                </div>
+                              </div>
+                              <div style="height: 21px;" class="form-group">
+                                <label class="col-md-3 control-label"><b>Gambar</b>  &nbsp  :</label>
+                                <div class="col-md-9 col-sm-12">
+                                  <div class="icon-addon addon-md">
+                                   <form action="upload.php">
+                                          <input type="hidden">
+                                          <div id="dropzone-gambar" class="dropzone"></div>
+                                      </form>
+                                      <br>
+                                      <input id="insert-mgoodspicture" value="" name="mgoodspicture" class="form-control forminput" placeholder="Gambar" type="text" data-parsley-required-message="Field Ini Tidak Boleh Kosong" @if (Session::has('autofocus')) autofocus @endif >
+                                    <label for="mgoodsgroup1" class="" rel="tooltip" title="Gambar"></label>
                                   </div>
                                 </div>
-                                <div class="form-group" style="height: 21px;">
-                                  <label class="col-md-3 control-label"><b>Satuan-3</b> &nbsp  :</label>
-                                  <div class="col-md-4 col-sm-12">
-                                    <select class="form-group chosen" disabled id="insert-mgoodsunit3" name="mgoodsunit2">
-                                      @foreach($units as $unit)
-                                        <option id="{{ $unit->id }}">{{ $unit->mgoodsunitname }}</option>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        <div id="menu3" class="tab-pane fade">
+                          <div class="form form-horizontal" style="margin-top:21px;">
+                            <div class="col-md-12">
+                              <div style="height: 21px;" class="form-group">
+                                  <label class="col-md-2 control-label"><b>Pajak</b>  (<font color="red">*</font>) &nbsp  :</label>
+                                  <div class="col-md-4">
+                                    <div class="icon-addon addon-md">
+                                      <select class="form-control select2" name="mgoodstaxppn" id="insert-mgoodstaxppn">
+
+                                      @foreach($taxes as $tax)
+                                        <option value={{ $tax->id }}>{{ $tax->mtaxtdesc }}</option>
                                       @endforeach
-                                    </select>
-                                  </div>
-                                  <div class="col-md-4 col-sm-12">
-                                    <input id="insert-mgoodsunit3conv" disabled name="mgoodunit3conv" class="form-control forminput" placeholder="Unit" type="text"  @if (Session::has('autofocus')) autofocus @endif >
-                                  </div>
-                                  <div class="col-md-1">
-                                    <label class="control-label">Unit</label>
-                                  </div>
-                                </div>
-                                <div style="height: 21px;" class="form-group">
-                                    <label class="col-md-3 control-label"><b>Digunakan oleh semua cabang: </b>  &nbsp  :</label>
-                                    <div class="col-md-9 col-sm-12">
-                                      <input id="insert-mgoodsbranches" checked value="" name="mgoodsbranches" class="nice-toggle" placeholder="Nama Perusahaan" type="checkbox">
-                                    </div>
-                                </div>
-                                <div style="height: 21px;" class="form-group">
-                                    <label class="col-md-3 control-label"><b>Menggunakan Unique Transaction </b>  &nbsp  :</label>
-                                    <div class="col-md-9 col-sm-12">
-                                      <input id="insert-mgoodsuniquetransaction" value="" name="mgoodsbranches" class="nice-toggle" placeholder="Nama Perusahaan" type="checkbox">
-                                    </div>
-                                </div>
-                                <div style="height: 21px;margin-top:23px;" class="form-group">
-                                  <label class="col-md-3 control-label"><b>Status</b>  &nbsp  :</label>
-                                    <div class="col-md-9">
-                                      <input id="insert-mgoodsactive" checked value="" name="mgoodsactive" class="active-toggle" placeholder="mgoodsactive" type="checkbox">
-                                  </div>
-                                </div>
-                                <div style="height: 21px;" class="form-group">
-                                  <label class="col-md-3 control-label"><b>Harga Beli</b> &nbsp  :</label>
-                                  <div class="row">
-                                  <div class="col-md-2 col-sm-12">
-                                    <div class="icon-addon addon-md">
-                                      <input id="insert-mgoodspricein" value="{{old('mgoodspricein')}}" name="mgoodspricein" data-parsley-type="number" data-parsley-type-message="Field ini hanya dapat di isi oleh angka" parsley-error-container=".erroripricein" class="form-control forminput" placeholder="Harga Beli" type="text"  @if (Session::has('autofocus')) autofocus @endif >
-                                      <label for="mgoodsgroup1" class="glyphicon glyphicon-info-sign" rel="tooltip" title="Harga Beli"></label>
-                                    </div>
-                                  </div>
-                                  <div class="col-md-2">
-                                    <label class="control-label muted">Harga Beli Diluar PPn</label>
-                                  </div>
-                                  </div>
-                                  <div class="erroripricein"></div>
-                                </div>
-                                <div class="form-group" style="height: 21px;">
-                                  <label class="col-md-3 control-label"><b>Satuan Beli</b> (<font color="red">*</font>) &nbsp  :</label>
-                                    <div class="col-md-4 col-sm-12">
-                                        <select class="form-group chosen" id="insert-mgoodsunitin" name="mgoodsunitin">
-                                          @foreach($units as $unit)
-                                            <option id="{{ $unit->id }}">{{ $unit->mgoodsunitname }}</option>
-                                          @endforeach
-                                        </select>
-                                    </div>
-                                </div>
-                                <div style="height: 21px;" class="form-group">
-                                  <label class="col-md-3 control-label"><b>Jumlah Minimal Pembelian</b> &nbsp  :</label>
-                                  <div class="col-md-4 col-sm-12">
-                                    <div class="icon-addon addon-md">
-                                      <input id="insert-mgoodsminimunin" value="{{old('mgoodsminimunin')}}" name="mgoodsminimunin" class="form-control forminput" placeholder="Nama Barang" type="text" @if (Session::has('autofocus')) autofocus @endif >
-                                      <label for="mgoodsgroup1" class="glyphicon glyphicon-info-sign" rel="tooltip" title="Nama Barang"></label>
-                                    </div>
-                                  </div>
-                                </div>
-                                <div style="height: 21px;" class="form-group">
-                                  <label class="col-md-3 control-label"><b>Harga Jual</b> &nbsp  :</label>
-                                  <div class="row">
-                                  <div class="col-md-2 col-sm-12">
-                                    <div class="icon-addon addon-md">
-                                      <input id="insert-mgoodspriceout" value="{{old('mgoodspriceout')}}" name="mgoodspriceout" data-parsley-type="number" data-parsley-type-message="Field ini hanya dapat di isi oleh angka" parsley-error-container=".erroripriceout" class="form-control forminput" placeholder="Harga Jual" type="text"  @if (Session::has('autofocus')) autofocus @endif >
-                                      <label for="mgoodsgroup1" class="glyphicon glyphicon-info-sign" rel="tooltip" title="Harga Jual"></label>
-                                    </div>
-                                  </div>
-                                  <div class="col-md-2">
-                                    <label class="control-label muted">Harga Jual Diluar PPn</label>
-                                  </div>
-                                  </div>
-                                  <div class="erroripriceout"></div>
-                                </div>
-                                <div style="height: 21px;" class="form-group">
-                                  <label class="col-md-3 control-label"><b>HPP </b> &nbsp  :</label>
-                                  <div class="col-md-4 col-sm-12">
-                                    <div class="icon-addon addon-md">
-                                      <input id="insert-mgoodscogs" value="{{old('mgoodscogs')}}" name="mgoodscogs" class="form-control forminput" placeholder="HPP" type="text"  @if (Session::has('autofocus')) autofocus @endif >
-                                      <label for="mgoodsgroup1" class="glyphicon glyphicon-info-sign" rel="tooltip" title="Harga Jual"></label>
-                                    </div>
-                                  </div>
-                                </div>
-                              </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div id="menu2" class="tab-pane fade">
-                      <div class="form form-horizontal" style="margin-top:21px;">
-                        <div class="col-md-10">
-                          <div style="height: 21px;" class="form-group">
-                            <label class="col-md-3 control-label"><b>Kode / Nama Supplier</b>  &nbsp  :</label>
-                           <div class="col-md-4">
-                              <div class="icon-addon addon-md">
-                                <select class="form-control select2-bold" name="mgoodssuppliercode" id="insert-mgoodssuppliercode">
-                                  @foreach($msupplier as $mg)
-                                   <option value="{{$mg->msupplierid}}">{{$mg->msupplierid}} {{$mg->msuppliername}}</option>
-                                  @endforeach
-                                </select>
-                              </div>
-                            </div>
-                          </div>
-                          <div style="height: 21px;" class="form-group">
-                            <label class="col-md-3 control-label"><b>Gambar</b>  &nbsp  :</label>
-                            <div class="col-md-9 col-sm-12">
-                              <div class="icon-addon addon-md">
-                               <form action="upload.php">
-                                      <input type="hidden">
-                                      <div id="dropzone-gambar" class="dropzone"></div>
-                                  </form>
-                                  <br>
-                                  <input id="insert-mgoodspicture" value="" name="mgoodspicture" class="form-control forminput" placeholder="Gambar" type="text" data-parsley-required-message="Field Ini Tidak Boleh Kosong" @if (Session::has('autofocus')) autofocus @endif >
-                                <label for="mgoodsgroup1" class="" rel="tooltip" title="Gambar"></label>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                    <div id="menu3" class="tab-pane fade">
-                      <div class="form form-horizontal" style="margin-top:21px;">
-                        <div class="col-md-12">
-                          <div style="height: 21px;" class="form-group">
-                              <label class="col-md-2 control-label"><b>PPN</b>  (<font color="red">*</font>) &nbsp  :</label>
-                              <div class="col-md-4">
-                                <div class="icon-addon addon-md">
-                                  <select class="form-control select2" name="mgoodstaxppn" id="insert-mgoodstaxppn">
 
-                                  @foreach($taxes as $tax)
-                                    <option value={{ $tax->id }}>{{ $tax->mtaxtdesc }}</option>
-                                  @endforeach
-
-                                  </select>
-                                </div>
+                                      </select>
+                                    </div>
+                                  </div>
                               </div>
-                          </div>
-                          <div style="height: 21px;" class="form-group">
-                              <label class="col-md-2 control-label"><b>Pajak Barang Mewah</b>  (<font color="red">*</font>) &nbsp  :</label>
-                              <div class="col-md-4">
-                                <div class="icon-addon addon-md">
-                                  <select class="form-control select2" name="mgoodstaxppnbm" id="insert-mgoodstaxppnbm">
-                                  @foreach($taxes as $tax)
-                                    @if($tax->mtaxtype == 'Kosong')
-                                      <option selected value={{ $tax->id }}>{{ $tax->mtaxtdesc }}</option>
-                                    @else
-                                      <option value={{ $tax->id }}>{{ $tax->mtaxtdesc }}</option>
-                                    @endif
-                                  @endforeach
-                                  </select>
-                                </div>
+                              <div style="height: 21px;" class="form-group">
+                                  <label class="col-md-2 control-label"><b>Pajak Barang Mewah</b>  (<font color="red">*</font>) &nbsp  :</label>
+                                  <div class="col-md-4">
+                                    <div class="icon-addon addon-md">
+                                      <select class="form-control select2" name="mgoodstaxppnbm" id="insert-mgoodstaxppnbm">
+                                      @foreach($taxes as $tax)
+                                        @if($tax->mtaxtype == 'Kosong')
+                                          <option selected value={{ $tax->id }}>{{ $tax->mtaxtdesc }}</option>
+                                        @else
+                                          <option value={{ $tax->id }}>{{ $tax->mtaxtdesc }}</option>
+                                        @endif
+                                      @endforeach
+                                      </select>
+                                    </div>
+                                  </div>
                               </div>
+                            </div>
                           </div>
                         </div>
-                      </div>
                     </div>
-                    <div id="menu4"></div>
                     <div class="row">
                       <div class="col-md-offset-5 col-md-5" style="margin-top:20px;margin-bottom:20px;">
                         <button onclick="insertmgoods()" type="submit" name="button" class="btn btn-primary">Simpan</button>
@@ -384,11 +444,12 @@
         </article>
       </div>
 
+      <!-- row -->
       <div class="row">
         <!-- NEW WIDGET START -->
         <article class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
           <!-- Widget ID (each widget will need unique ID)-->
-          <div id="formedit" style="display:none;margin-bottom:50px;" class="forminput jarviswidget jarviswidget-color-darken" id="wid-id-0" data-widget-editbutton="false" data-widget-colorbutton="false" data-widget-deletebutton="false">
+          <div id="formedit" class="forminput jarviswidget jarviswidget-color-darken" id="wid-id-0" data-widget-editbutton="false" data-widget-colorbutton="false" data-widget-deletebutton="false">
             <header>
               <span class="widget-icon"> <i class="fa fa-table"></i> </span>
               <h2>Master Barang </h2>
@@ -411,26 +472,25 @@
                         <li class="active"><a data-toggle="tab" href="#menuedit1">Spesifikasi</a></li>
                         <li><a data-toggle="tab" href="#menuedit2">Spesifikasi 2</a></li>
                         <li><a data-toggle="tab" href="#menuedit3">Pajak</a></li>
-                       </ul>
+                      </ul>
                       <div id="edit-wrapper" class="tab-content" data-parsley-validate>
                         <div id="menuedit1" class="tab-pane fade in active">
-                          <div class="form-horizontal" style="margin-top:21px;">
-                            <div class="col-md-10">
-                             <div class="errorBlock1" style="margin-left:23% !important;"></div>
-                             <div class="box-general">
+                          <div class="container form form-horizontal" style="margin-top:21px;">
+                            <!--  BOX Kiri -->
+                            <div class="col-md-6 group-box">
                               <div style="height: 21px;" class="form-group">
                                 <label class="col-md-3 control-label"><b>Kode Barang</b> (<font color="red">*</font>) &nbsp  :</label>
                                 <div class="col-md-9">
                               	   <div class="icon-addon addon-md">
                               		     <div class="input-group">
-                                    	  <input id="edit-mgoodscode" name="mgoodscode" class="form-control forminput" placeholder="AUTO GENERATE" maxlength="14" type="text" data-parsley-required-message="Field Ini Tidak Boleh Kosong"  data-parsley-errors-container=".errorBlock1" @if (Session::has('autofocus')) autofocus @endif >
+                                    	  <input id="edit-mgoodscode" name="mgoodscode" class="form-control forminput" maxlength="14" placeholder="AUTO GENERATE" type="text" data-parsley-required-message="Field Ini Tidak Boleh Kosong"  data-parsley-errors-container=".errorBlock1" @if (Session::has('autofocus')) autofocus @endif >
                                     		<label for="" class="glyphicon glyphicon-barcode" rel="tooltip" title="ID Pelanggan"></label>
                                     		<span class="input-group-addon" style="background: none;">
-                                      	   <input type="checkbox" id="edit-autogenmgoods" name="autogen" rel="tooltip" title="ON/OFF auto generate ID Barang">
+                                      	   <input type="checkbox" id="autogenmgoods" name="autogen" rel="tooltip" title="ON/OFF auto generate ID Barang">
                                     		</span>
                                   		</div>
                                   	</div>
-                              	</div>
+                              		</div>
                               </div>
                               <div class="errorBlock2" style="margin-left:23% !important;"></div>
                               <div style="height: 21px;" class="form-group">
@@ -443,17 +503,16 @@
                                 </div>
                               </div>
                               <div style="height: 21px;" class="form-group">
-                                <label class="col-md-3 control-label"><b>Nama Barang</b>  &nbsp  :</label>
+                                <label class="col-md-3 control-label"><b>Nama Barang</b>  (<font color="red">*</font>) &nbsp  :</label>
                                 <div  class="col-md-9 col-sm-12">
                                   <div class="icon-addon addon-md">
                                     <input id="edit-mgoodsname" value="{{old('mgoodsname')}}" name="mgoodsname" class="form-control forminput" placeholder="Nama Barang" type="text" @if (Session::has('autofocus')) autofocus @endif >
                                     <label for="mgoodsgroup1" class="glyphicon glyphicon-info-sign" rel="tooltip" title="Nama Barang"></label>
-
                                   </div>
                                 </div>
                               </div>
                               <div style="height: 21px;" class="form-group">
-                                <label class="col-md-3 control-label"><b>Kategori Barang</b>  &nbsp  :</label>
+                                <label class="col-md-3 control-label"><b>Kategori Barang</b>  (<font color="red">*</font>) &nbsp  :</label>
                                 <div class="col-md-9 col-sm-12">
                                   <div class="icon-addon addon-md">
                                     <select id="edit-mgoodscategory" name="mgoodscategory" class="form-control select2">
@@ -514,24 +573,34 @@
                                 <label class="col-md-3 control-label"><b>Keterangan</b> &nbsp  :</label>
                                 <div class="col-md-9 col-sm-12">
                                   <div class="icon-addon addon-md">
-                                    <textarea id="edit-mgoodsremark" name="mgoodsremark" class="form-control forminput" placeholder="Keterangan" rows="3"></textarea>
+                                    <!-- <input id="edit-mgoodsremark" value="{{old('mgoodsremark')}}" name="mgoodsremark" class="form-control forminput" placeholder="Keterangan" type="text"  @if (Session::has('autofocus')) autofocus @endif > -->
+                                    <textarea id="edit-mgoodsremark" name="mgoodsremark" class="form-control forminput" placeholder="Keterangan" rows="5"></textarea>
                                     <label for="mgoodsgroup1" class="glyphicon glyphicon-info-sign" rel="tooltip" title="Keterangan"></label>
                                   </div>
                                 </div>
                               </div>
-                              </div>
-                              <div class="box-bottom">
-                              <div style="height: 21px;margin-top:17px;" class="form-group">
-                                  <label class="col-md-3 control-label"><b>Multi Satuan</b>  &nbsp  :</label>
-                                  <div class="col-md-9">
-                                    <input id="edit-mgoodsmultiunit" value="" name="mgoodsmultiunit" class="nice-toggle" placeholder="mgoodsactive" type="checkbox">
+                            </div>
+                            <!--  BOX Kanan -->
+                            <div class="col-md-6 group-box">
+
+                              <div style="height: 21px;" class="form-group">
+                                <label class="col-md-3 control-label"><b>Multi Satuan</b>  &nbsp  :</label>
+                                <div class="col-md-9">
+                                  <!-- <input id="edit-mgoodsmultiunit" value="" name="mgoodsmultiunit" class="nice-toggle" placeholder="mgoodsactive" type="checkbox" data-toggle="toggle"> -->
+                                  <div class="yesnoswitch">
+                                      <input type="checkbox" name="mgoodsbranches" class="yesnoswitch-checkbox" id="edit-mgoodsmultiunit">
+                                      <label class="yesnoswitch-label" for="edit-mgoodsmultiunit">
+                                          <span class="yesnoswitch-inner"></span>
+                                          <span class="yesnoswitch-switch"></span>
+                                      </label>
                                   </div>
+                                </div>
                               </div>
                               <div class="form-group" style="height: 21px;">
-                                <label class="col-md-3 control-label"><b>Satuan-1</b> &nbsp  :</label>
+                                <label class="col-md-3 control-label"><b>Satuan-1</b> (<font color="red">*</font>) &nbsp  :</label>
                                 <div class="col-md-4 col-sm-12">
                                   <div class="icon-addon addon-md">
-                                    <select class="form-group chosen" id="edit-mgoodsunit" name="mgoodsunit">
+                                    <select class="form-group select2" id="edit-mgoodsunit" name="mgoodsunit">
                                       @foreach($units as $unit)
                                         <option id="{{ $unit->id }}">{{ $unit->mgoodsunitname }}</option>
                                       @endforeach
@@ -542,9 +611,13 @@
                               <div class="form-group" style="height: 21px;">
                                 <label class="col-md-3 control-label"><b>Satuan-2</b> &nbsp  :</label>
                                 <div class="col-md-4 col-sm-12">
-                                  <select class="form-group chosen" disabled id="edit-mgoodsunit2" name="mgoodsunit2">
+                                  <select class="form-group select2" disabled id="edit-mgoodsunit2" name="mgoodsunit2">
                                     @foreach($units as $unit)
-                                      <option id="{{ $unit->id }}">{{ $unit->mgoodsunitname }}</option>
+                                      @if($unit->mgoodsunitname == 'Lusin')
+                                        <option selected id="{{ $unit->id }}">{{ $unit->mgoodsunitname }}</option>
+                                      @else
+                                        <option id="{{ $unit->id }}">{{ $unit->mgoodsunitname }}</option>
+                                      @endif
                                     @endforeach
                                   </select>
                                 </div>
@@ -555,12 +628,16 @@
                                   <label class="control-label">Unit</label>
                                 </div>
                               </div>
-                              <div class="form-group">
+                              <div class="form-group" style="height: 21px;">
                                 <label class="col-md-3 control-label"><b>Satuan-3</b> &nbsp  :</label>
                                 <div class="col-md-4 col-sm-12">
-                                  <select class="form-group chosen" disabled id="edit-mgoodsunit3" name="mgoodsunit2">
+                                  <select class="form-group select2" disabled id="edit-mgoodsunit3" name="mgoodsunit2">
                                     @foreach($units as $unit)
-                                      <option id="{{ $unit->id }}">{{ $unit->mgoodsunitname }}</option>
+                                      @if($unit->mgoodsunitname == 'Karton')
+                                        <option selected id="{{ $unit->id }}">{{ $unit->mgoodsunitname }}</option>
+                                      @else
+                                        <option id="{{ $unit->id }}">{{ $unit->mgoodsunitname }}</option>
+                                      @endif
                                     @endforeach
                                   </select>
                                 </div>
@@ -572,29 +649,47 @@
                                 </div>
                               </div>
                               <div style="height: 21px;" class="form-group">
-                                  <label class="col-md-3 control-label"><b>Digunakan oleh semua cabang: </b>  &nbsp  :</label>
+                                  <label class="col-md-3 control-label"><b>Semua cabang </b>  &nbsp  :</label>
                                   <div class="col-md-9 col-sm-12">
-                                    <input id="edit-mgoodsbranches" checked value="" name="mgoodsbranches" class="nice-toggle" placeholder="Nama Perusahaan" type="checkbox">
+                                    <div class="yesnoswitch">
+                                        <input type="checkbox" name="mgoodsbranches" class="yesnoswitch-checkbox" id="edit-mgoodsbranches">
+                                        <label class="yesnoswitch-label" for="edit-mgoodsbranches">
+                                            <span class="yesnoswitch-inner"></span>
+                                            <span class="yesnoswitch-switch"></span>
+                                        </label>
+                                    </div>
                                   </div>
                               </div>
                               <div style="height: 21px;" class="form-group">
-                                  <label class="col-md-3 control-label"><b>Menggunakan Unique Transaction </b>  &nbsp  :</label>
+                                  <label class="col-md-3 control-label"><b>Unique Transaction </b>  &nbsp  :</label>
                                   <div class="col-md-9 col-sm-12">
-                                    <input id="edit-mgoodsuniquetransaction" value="" name="mgoodsbranches" class="nice-toggle" placeholder="Nama Perusahaan" type="checkbox">
+                                    <div class="yesnoswitch">
+                                        <input type="checkbox" name="mgoodsbranches" class="yesnoswitch-checkbox" id="edit-mgoodsuniquetransaction">
+                                        <label class="yesnoswitch-label" for="edit-mgoodsuniquetransaction">
+                                            <span class="yesnoswitch-inner"></span>
+                                            <span class="yesnoswitch-switch"></span>
+                                        </label>
+                                    </div>
                                   </div>
                               </div>
-                              <div style="height: 21px;margin-top:23px;" class="form-group">
+                              <div style="height: 21px;" class="form-group">
                                 <label class="col-md-3 control-label"><b>Status</b>  &nbsp  :</label>
                                   <div class="col-md-9">
-                                    <input id="edit-mgoodsactive" checked value="" name="mgoodsactive" class="active-toggle" placeholder="mgoodsactive" type="checkbox">
+                                    <div class="onoffswitch">
+                                        <input type="checkbox" name="mgoodsactive" class="onoffswitch-checkbox" id="edit-mgoodsactive">
+                                        <label class="onoffswitch-label" for="edit-mgoodsactive">
+                                            <span class="onoffswitch-inner"></span>
+                                            <span class="onoffswitch-switch"></span>
+                                        </label>
+                                    </div>
                                 </div>
                               </div>
-                                <div style="height: 21px;" class="form-group">
+                              <div style="height: 21px;" class="form-group">
                                 <label class="col-md-3 control-label"><b>Harga Beli</b> &nbsp  :</label>
                                 <div class="row">
-                                <div class="col-md-2 col-sm-12">
+                                <div class="col-md-5 col-sm-12">
                                   <div class="icon-addon addon-md">
-                                    <input id="edit-mgoodspricein" value="{{old('mgoodspricein')}}" name="mgoodspricein" data-parsley-type="number" data-parsley-type-message="Field ini hanya dapat di isi oleh angka" parsley-error-container=".erroripricein" class="form-control forminput" placeholder="Harga Beli" type="text"  @if (Session::has('autofocus')) autofocus @endif >
+                                    <input disabled id="edit-mgoodspricein" value="{{old('mgoodspricein')}}" name="mgoodspricein" data-parsley-type="number" data-parsley-type-message="Field ini hanya dapat di isi oleh angka" parsley-error-container=".erroripricein" class="form-control forminput" placeholder="Harga Beli" type="text"  @if (Session::has('autofocus')) autofocus @endif >
                                     <label for="mgoodsgroup1" class="glyphicon glyphicon-info-sign" rel="tooltip" title="Harga Beli"></label>
                                   </div>
                                 </div>
@@ -607,7 +702,7 @@
                               <div class="form-group" style="height: 21px;">
                                 <label class="col-md-3 control-label"><b>Satuan Beli</b> (<font color="red">*</font>) &nbsp  :</label>
                                   <div class="col-md-4 col-sm-12">
-                                      <select class="form-group chosen" id="edit-mgoodsunitin" name="mgoodsunitin">
+                                      <select class="form-group select2" id="edit-mgoodsunitin" name="mgoodsunitin">
                                         @foreach($units as $unit)
                                           <option id="{{ $unit->id }}">{{ $unit->mgoodsunitname }}</option>
                                         @endforeach
@@ -615,10 +710,10 @@
                                   </div>
                               </div>
                               <div style="height: 21px;" class="form-group">
-                                <label class="col-md-3 control-label"><b>Jumlah Minimal Pembelian</b> &nbsp  :</label>
+                                <label class="col-md-3 control-label"><b>Minimal Pembelian</b> &nbsp  :</label>
                                 <div class="col-md-4 col-sm-12">
                                   <div class="icon-addon addon-md">
-                                    <input id="edit-mgoodsminimunin" value="{{old('mgoodsminimunin')}}" name="mgoodsminimunin" class="form-control forminput" placeholder="Nama Barang" type="text" @if (Session::has('autofocus')) autofocus @endif >
+                                    <input id="edit-mgoodsminimunin" value="{{old('mgoodsminimunin')}}" name="mgoodsminimunin" class="form-control forminput" placeholder="Minimal Pembelian" type="text" @if (Session::has('autofocus')) autofocus @endif >
                                     <label for="mgoodsgroup1" class="glyphicon glyphicon-info-sign" rel="tooltip" title="Nama Barang"></label>
                                   </div>
                                 </div>
@@ -626,7 +721,7 @@
                               <div style="height: 21px;" class="form-group">
                                 <label class="col-md-3 control-label"><b>Harga Jual</b> &nbsp  :</label>
                                 <div class="row">
-                                <div class="col-md-2 col-sm-12">
+                                <div class="col-md-5 col-sm-12">
                                   <div class="icon-addon addon-md">
                                     <input id="edit-mgoodspriceout" value="{{old('mgoodspriceout')}}" name="mgoodspriceout" data-parsley-type="number" data-parsley-type-message="Field ini hanya dapat di isi oleh angka" parsley-error-container=".erroripriceout" class="form-control forminput" placeholder="Harga Jual" type="text"  @if (Session::has('autofocus')) autofocus @endif >
                                     <label for="mgoodsgroup1" class="glyphicon glyphicon-info-sign" rel="tooltip" title="Harga Jual"></label>
@@ -639,103 +734,118 @@
                                 <div class="erroripriceout"></div>
                               </div>
                               <div style="height: 21px;" class="form-group">
+                                <label class="col-md-3 control-label"><b>Maksimal Diskon</b> &nbsp  :</label>
+                                <div class="col-md-4 col-sm-12">
+                                  <div class="yesnoswitch">
+                                      <input type="checkbox" name="mgoodsactive" class="yesnoswitch-checkbox" id="edit-mgoodssetmaxdisc">
+                                      <label class="yesnoswitch-label" for="edit-mgoodssetmaxdisc">
+                                          <span class="yesnoswitch-inner"></span>
+                                          <span class="yesnoswitch-switch"></span>
+                                      </label>
+                                  </div>
+                                </div>
+                              </div>
+                              <div style="height: 21px;" class="form-group">
+                                <label class="col-md-3 control-label"><b>Maksimal Diskon</b> &nbsp  :</label>
+                                <div class="col-md-4 col-sm-12">
+                                  <div class="icon-addon addon-md">
+                                    <input id="edit-mgoodsmaxdisc" name="mgoodsmaxdisc" data-parsley-type="number" data-parsley-type-message="Field ini hanya dapat di isi oleh angka" class="form-control forminput" placeholder="Persentase" type="text">
+                                    <label for="mgoodsgroup1" class="glyphicon glyphicon-info-sign"></label>
+                                  </div>
+                                </div>
+                                <div class="col-md-4 col-sm-12">
+                                  <div class="icon-addon addon-md">
+                                    <input id="edit-mgoodsmaxdiscrp" name="mgoodsmaxdiscrp" data-parsley-type="number" data-parsley-type-message="Field ini hanya dapat di isi oleh angka" class="form-control forminput" placeholder="Rupiah" type="text">
+                                    <label for="mgoodsgroup1" class="glyphicon glyphicon-info-sign"></label>
+                                  </div>
+                                </div>
+                              </div>
+                              <div style="height: 21px;" class="form-group">
                                 <label class="col-md-3 control-label"><b>HPP </b> &nbsp  :</label>
                                 <div class="col-md-4 col-sm-12">
                                   <div class="icon-addon addon-md">
-                                    <input id="edit-mgoodscogs" value="{{old('mgoodscogs')}}" name="mgoodscogs" class="form-control forminput" placeholder="HPP" type="text"  @if (Session::has('autofocus')) autofocus @endif >
+                                    <input disabled id="edit-mgoodscogs" value="{{old('mgoodscogs')}}" name="mgoodscogs" class="form-control forminput" placeholder="HPP" type="text"  @if (Session::has('autofocus')) autofocus @endif >
                                     <label for="mgoodsgroup1" class="glyphicon glyphicon-info-sign" rel="tooltip" title="Harga Jual"></label>
                                   </div>
                                 </div>
                               </div>
-                              </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div id="menuedit2" class="tab-pane fade">
-                      <div class="form form-horizontal" style="margin-top:21px;">
-                        <div class="col-md-10">
-                          <div style="height: 21px;" class="form-group">
-                            <label class="col-md-3 control-label"><b>Kode / Nama Supplier</b>  &nbsp  :</label>
-                           <div class="col-md-4">
-                              <div class="icon-addon addon-md">
-                                <select class="form-control select2-bold" name="mgoodssuppliercode" id="edit-mgoodssuppliercode">
-                                  @foreach($msupplier as $mg)
-                                 <option selected value="{{$mg->msupplierid}}">{{$mg->msupplierid}} {{ $mg->msuppliername}}</option>
-                                @endforeach
-                                </select>
-                              </div>
-                            </div>
-                          </div>
-                          <div style="height: 21px;" class="form-group">
-                              <label class="col-md-3 control-label"><b>Digunakan oleh semua cabang: </b>  &nbsp  :</label>
-                              <div class="col-md-9 col-sm-12">
-                                <input id="edit-mgoodsbranches" checked value="" name="mgoodsbranches" class="nice-toggle" placeholder="Nama Perusahaan" type="checkbox">
-                              </div>
-                          </div>
-                          <div style="height: 21px;" class="form-group">
-                              <label class="col-md-3 control-label"><b>Menggunakan Unique Transaction </b>  &nbsp  :</label>
-                              <div class="col-md-9 col-sm-12">
-                                <input id="edit-mgoodsuniquetransaction" value="" name="mgoodsbranches" class="nice-toggle" placeholder="Nama Perusahaan" type="checkbox">
-                              </div>
-                          </div>
-                          <div style="height: 21px;" class="form-group">
-                            <label class="col-md-3 control-label"><b>Gambar</b>  &nbsp  :</label>
-                            <div class="col-md-9 col-sm-12">
-                              <div class="icon-addon addon-md">
-                               <form action="upload.php">
-                                      <input type="hidden">
-                                      <div id="dropzone-gambar" class="dropzone"></div>
-                                  </form>
-                                  <br>
-                                  <input id="edit-mgoodspicture" value="" name="mgoodspicture" class="form-control forminput" placeholder="Gambar" type="text" data-parsley-required-message="Field Ini Tidak Boleh Kosong" @if (Session::has('autofocus')) autofocus @endif >
-                                <label for="mgoodsgroup1" class="" rel="tooltip" title="Gambar"></label>
-                              </div>
+
                             </div>
                           </div>
                         </div>
-                      </div>
-                    </div>
-                    <div id="menuedit3" class="tab-pane fade">
-                      <div class="form form-horizontal" style="margin-top:21px;">
-                        <div class="col-md-12">
-                          <div style="height: 21px;" class="form-group">
-                              <label class="col-md-2 control-label"><b>PPN</b>  (<font color="red">*</font>) &nbsp  :</label>
-                              <div class="col-md-4">
-                                <div class="icon-addon addon-md">
-                                  <select class="form-control select2" name="mgoodstaxppn" id="edit-mgoodstaxppn">
-
-                                  @foreach($taxes as $tax)
-                                    <option value={{ $tax->id }}>{{ $tax->mtaxtdesc }}</option>
-                                  @endforeach
-
-                                  </select>
+                        <div id="menuedit2" class="tab-pane fade">
+                          <div class="form form-horizontal" style="margin-top:21px;">
+                            <div class="col-md-10">
+                              <div style="height: 21px;" class="form-group">
+                                <label class="col-md-3 control-label"><b>Kode / Nama Supplier</b>  &nbsp  :</label>
+                               <div class="col-md-4">
+                                  <div class="icon-addon addon-md">
+                                    <select class="form-control select2-bold" name="mgoodssuppliercode" id="edit-mgoodssuppliercode">
+                                      @foreach($msupplier as $mg)
+                                       <option value="{{$mg->msupplierid}}">{{$mg->msupplierid}} {{$mg->msuppliername}}</option>
+                                      @endforeach
+                                    </select>
+                                  </div>
                                 </div>
                               </div>
-                          </div>
-                          <div style="height: 21px;" class="form-group">
-                              <label class="col-md-2 control-label"><b>Pajak Barang Mewah</b>  (<font color="red">*</font>) &nbsp  :</label>
-                              <div class="col-md-4">
-                                <div class="icon-addon addon-md">
-                                  <select class="form-control select2" name="mgoodstaxppnbm" id="edit-mgoodstaxppnbm">
-
-                                    @if($tax->mtaxtype == 'Kosong')
-                                      <option selected value={{ $tax->id }}>{{ $tax->mtaxtdesc }}</option>
-                                    @else
-                                      <option value={{ $tax->id }}>{{ $tax->mtaxtdesc }}</option>
-                                    @endif
-
-                                  </select>
+                              <div style="height: 21px;" class="form-group">
+                                <label class="col-md-3 control-label"><b>Gambar</b>  &nbsp  :</label>
+                                <div class="col-md-9 col-sm-12">
+                                  <div class="icon-addon addon-md">
+                                   <form action="upload.php">
+                                          <input type="hidden">
+                                          <div id="dropzone-gambar" class="dropzone"></div>
+                                      </form>
+                                      <br>
+                                      <input id="edit-mgoodspicture" value="" name="mgoodspicture" class="form-control forminput" placeholder="Gambar" type="text" data-parsley-required-message="Field Ini Tidak Boleh Kosong" @if (Session::has('autofocus')) autofocus @endif >
+                                    <label for="mgoodsgroup1" class="" rel="tooltip" title="Gambar"></label>
+                                  </div>
                                 </div>
                               </div>
+                            </div>
                           </div>
                         </div>
-                      </div>
+                        <div id="menuedit3" class="tab-pane fade">
+                          <div class="form form-horizontal" style="margin-top:21px;">
+                            <div class="col-md-12">
+                              <div style="height: 21px;" class="form-group">
+                                  <label class="col-md-2 control-label"><b>Pajak</b>  (<font color="red">*</font>) &nbsp  :</label>
+                                  <div class="col-md-4">
+                                    <div class="icon-addon addon-md">
+                                      <select class="form-control select2" name="mgoodstaxppn" id="edit-mgoodstaxppn">
+
+                                      @foreach($taxes as $tax)
+                                        <option value={{ $tax->id }}>{{ $tax->mtaxtdesc }}</option>
+                                      @endforeach
+
+                                      </select>
+                                    </div>
+                                  </div>
+                              </div>
+                              <div style="height: 21px;" class="form-group">
+                                  <label class="col-md-2 control-label"><b>Pajak Barang Mewah</b>  (<font color="red">*</font>) &nbsp  :</label>
+                                  <div class="col-md-4">
+                                    <div class="icon-addon addon-md">
+                                      <select class="form-control select2" name="mgoodstaxppnbm" id="edit-mgoodstaxppnbm">
+                                      @foreach($taxes as $tax)
+                                        @if($tax->mtaxtype == 'Kosong')
+                                          <option selected value={{ $tax->id }}>{{ $tax->mtaxtdesc }}</option>
+                                        @else
+                                          <option value={{ $tax->id }}>{{ $tax->mtaxtdesc }}</option>
+                                        @endif
+                                      @endforeach
+                                      </select>
+                                    </div>
+                                  </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
                     </div>
-                    <div id="menu4"></div>
                     <div class="row">
                       <div class="col-md-offset-5 col-md-5" style="margin-top:20px;margin-bottom:20px;">
-                        <button onclick="updatemgoods()" type="submit" name="button" class="btn btn-primary">Simpan</button>
-                        <a id="btn-edit-reset" onclick="reseteditmgoods()" class="btn btn-default" ><i class=""></i> Reset</a>
+                        <button onclick="insertmgoods()" type="submit" name="button" class="btn btn-primary">Simpan</button>
+                        <a id="btn-insert-reset" onclick="resetmgoods()" class="btn btn-default" ><i class=""></i> Reset</a>
                       </div>
                     </div>
                   </div>
@@ -745,11 +855,12 @@
         </article>
       </div>
 
+      <!-- row -->
       <div class="row">
         <!-- NEW WIDGET START -->
         <article class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
           <!-- Widget ID (each widget will need unique ID)-->
-          <div id="formview" style="display:none;margin-bottom:90px;" class="forminput jarviswidget jarviswidget-color-darken" id="wid-id-0" data-widget-editbutton="false" data-widget-colorbutton="false" data-widget-deletebutton="false">
+          <div id="formview" class="forminput jarviswidget jarviswidget-color-darken" id="wid-id-0" data-widget-editbutton="false" data-widget-colorbutton="false" data-widget-deletebutton="false">
             <header>
               <span class="widget-icon"> <i class="fa fa-table"></i> </span>
               <h2>Master Barang </h2>
@@ -771,13 +882,13 @@
                         <li class="active"><a data-toggle="tab" href="#menuview1">Spesifikasi</a></li>
                         <li><a data-toggle="tab" href="#menuview2">Spesifikasi 2</a></li>
                         <li><a data-toggle="tab" href="#menuview3">Pajak</a></li>
-                       </ul>
-                      <div id="view-wrapper" class="tab-content" data-parsley-validate>
+
+                      </ul>
+                      <div id="edit-wrapper" class="tab-content" data-parsley-validate>
                         <div id="menuview1" class="tab-pane fade in active">
-                          <div class="form-horizontal" style="margin-top:21px;">
-                            <div class="col-md-10">
-                              <div class="errorBlock1" style="margin-left:23% !important;"></div>
-                              <div class="box-general">
+                          <div class="container form form-horizontal" style="margin-top:21px;">
+                            <!--  BOX Kiri -->
+                            <div class="col-md-6 group-box">
                               <div style="height: 21px;" class="form-group">
                                 <label class="col-md-3 control-label"><b>Kode Barang</b> (<font color="red">*</font>) &nbsp  :</label>
                                 <div class="col-md-9">
@@ -786,34 +897,33 @@
                                     	  <input disabled id="view-mgoodscode" name="mgoodscode" class="form-control forminput" maxlength="14" placeholder="AUTO GENERATE" type="text" data-parsley-required-message="Field Ini Tidak Boleh Kosong"  data-parsley-errors-container=".errorBlock1" @if (Session::has('autofocus')) autofocus @endif >
                                     		<label for="" class="glyphicon glyphicon-barcode" rel="tooltip" title="ID Pelanggan"></label>
                                     		<span class="input-group-addon" style="background: none;">
-                                      	   <input type="checkbox" id="view-autogenmgoods" name="autogen" rel="tooltip" title="ON/OFF auto generate ID Barang">
+                                      	   <input type="checkbox" id="autogenmgoods" name="autogen" rel="tooltip" title="ON/OFF auto generate ID Barang">
                                     		</span>
                                   		</div>
                                   	</div>
-                              	</div>
+                              		</div>
                               </div>
                               <div class="errorBlock2" style="margin-left:23% !important;"></div>
                               <div style="height: 21px;" class="form-group">
                                 <label class="col-md-3 control-label"><b>Barcode</b> &nbsp  :</label>
                                 <div class="col-md-9 col-sm-12">
                                   <div class="icon-addon addon-md">
-                                    <input disabled id="view-mgoodsbarcode" value="{{old('mgoodsbarcode')}}" name="mgoodsbarcode" class="form-control forminput" placeholder="Barcode" type="text"  @if (Session::has('autofocus')) autofocus @endif >
+                                    <input disabled id="view-mgoodsbarcode" value="{{old('mgoodsbarcode')}}" name="mgoodsbarcode" class="form-control forminput" maxlength="14" placeholder="Barcode" type="text"  @if (Session::has('autofocus')) autofocus @endif >
                                     <label for="mgoodsgroup1" class="glyphicon glyphicon-info-sign" rel="tooltip" title="Barcode"></label>
                                   </div>
                                 </div>
                               </div>
                               <div style="height: 21px;" class="form-group">
-                                <label class="col-md-3 control-label"><b>Nama Barang</b>  &nbsp  :</label>
+                                <label class="col-md-3 control-label"><b>Nama Barang</b>  (<font color="red">*</font>) &nbsp  :</label>
                                 <div  class="col-md-9 col-sm-12">
                                   <div class="icon-addon addon-md">
                                     <input disabled id="view-mgoodsname" value="{{old('mgoodsname')}}" name="mgoodsname" class="form-control forminput" placeholder="Nama Barang" type="text" @if (Session::has('autofocus')) autofocus @endif >
                                     <label for="mgoodsgroup1" class="glyphicon glyphicon-info-sign" rel="tooltip" title="Nama Barang"></label>
-
                                   </div>
                                 </div>
                               </div>
                               <div style="height: 21px;" class="form-group">
-                                <label class="col-md-3 control-label"><b>Kategori Barang</b>  &nbsp  :</label>
+                                <label class="col-md-3 control-label"><b>Kategori Barang</b>  (<font color="red">*</font>) &nbsp  :</label>
                                 <div class="col-md-9 col-sm-12">
                                   <div class="icon-addon addon-md">
                                     <select disabled id="view-mgoodscategory" name="mgoodscategory" class="form-control select2">
@@ -866,6 +976,7 @@
                                   <div class="icon-addon addon-md">
                                     <input disabled id="view-mgoodsalias" value="{{old('mgoodsalias')}}" name="mgoodsalias" class="form-control forminput" placeholder="Nama Barang Alias" type="text" @if (Session::has('autofocus')) autofocus @endif >
                                     <label for="mgoodsgroup1" class="glyphicon glyphicon-info-sign" rel="tooltip" title="Nama Barang Alias"></label>
+
                                   </div>
                                 </div>
                               </div>
@@ -873,24 +984,34 @@
                                 <label class="col-md-3 control-label"><b>Keterangan</b> &nbsp  :</label>
                                 <div class="col-md-9 col-sm-12">
                                   <div class="icon-addon addon-md">
-                                    <textarea disabled id="view-mgoodsremark" name="mgoodsremark" class="form-control forminput" placeholder="Keterangan" rows="3"></textarea>
+                                    <!-- <input id="view-mgoodsremark" value="{{old('mgoodsremark')}}" name="mgoodsremark" class="form-control forminput" placeholder="Keterangan" type="text"  @if (Session::has('autofocus')) autofocus @endif > -->
+                                    <textarea disabled id="view-mgoodsremark" name="mgoodsremark" class="form-control forminput" placeholder="Keterangan" rows="5"></textarea>
                                     <label for="mgoodsgroup1" class="glyphicon glyphicon-info-sign" rel="tooltip" title="Keterangan"></label>
                                   </div>
                                 </div>
                               </div>
-                              </div>
-                              <div class="box-bottom">
+                            </div>
+                            <!--  BOX Kanan -->
+                            <div class="col-md-6 group-box">
+
                               <div style="height: 21px;" class="form-group">
-                                  <label class="col-md-3 control-label"><b>Multi Satuan</b>  &nbsp  :</label>
-                                  <div class="col-md-9">
-                                    <input id="view-mgoodsmultiunit" value="" name="mgoodsmultiunit" class="tab1-toggle" placeholder="mgoodsactive" type="checkbox">
+                                <label class="col-md-3 control-label"><b>Multi Satuan</b>  &nbsp  :</label>
+                                <div class="col-md-9">
+                                  <!-- <input id="view-mgoodsmultiunit" value="" name="mgoodsmultiunit" class="nice-toggle" placeholder="mgoodsactive" type="checkbox" data-toggle="toggle"> -->
+                                  <div class="yesnoswitch">
+                                      <input disabled type="checkbox" name="mgoodsbranches" class="yesnoswitch-checkbox" id="view-mgoodsmultiunit">
+                                      <label class="yesnoswitch-label" for="view-mgoodsmultiunit">
+                                          <span class="yesnoswitch-inner"></span>
+                                          <span class="yesnoswitch-switch"></span>
+                                      </label>
                                   </div>
+                                </div>
                               </div>
                               <div class="form-group" style="height: 21px;">
-                                <label class="col-md-3 control-label"><b>Satuan-1</b> &nbsp  :</label>
+                                <label class="col-md-3 control-label"><b>Satuan-1</b> (<font color="red">*</font>) &nbsp  :</label>
                                 <div class="col-md-4 col-sm-12">
                                   <div class="icon-addon addon-md">
-                                    <select class="form-group chosen" disabled id="view-mgoodsunit" name="mgoodsunit">
+                                    <select disabled class="form-group select2" id="view-mgoodsunit" name="mgoodsunit">
                                       @foreach($units as $unit)
                                         <option id="{{ $unit->id }}">{{ $unit->mgoodsunitname }}</option>
                                       @endforeach
@@ -901,9 +1022,13 @@
                               <div class="form-group" style="height: 21px;">
                                 <label class="col-md-3 control-label"><b>Satuan-2</b> &nbsp  :</label>
                                 <div class="col-md-4 col-sm-12">
-                                  <select class="form-group chosen" disabled id="view-mgoodsunit2" name="mgoodsunit2">
+                                  <select class="form-group select2" disabled id="view-mgoodsunit2" name="mgoodsunit2">
                                     @foreach($units as $unit)
-                                      <option id="{{ $unit->id }}">{{ $unit->mgoodsunitname }}</option>
+                                      @if($unit->mgoodsunitname == 'Lusin')
+                                        <option selected id="{{ $unit->id }}">{{ $unit->mgoodsunitname }}</option>
+                                      @else
+                                        <option id="{{ $unit->id }}">{{ $unit->mgoodsunitname }}</option>
+                                      @endif
                                     @endforeach
                                   </select>
                                 </div>
@@ -914,12 +1039,16 @@
                                   <label class="control-label">Unit</label>
                                 </div>
                               </div>
-                              <div class="form-group">
+                              <div class="form-group" style="height: 21px;">
                                 <label class="col-md-3 control-label"><b>Satuan-3</b> &nbsp  :</label>
                                 <div class="col-md-4 col-sm-12">
-                                  <select class="form-group chosen" disabled id="view-mgoodsunit3" name="mgoodsunit2">
+                                  <select class="form-group select2" disabled id="view-mgoodsunit3" name="mgoodsunit2">
                                     @foreach($units as $unit)
-                                      <option id="{{ $unit->id }}">{{ $unit->mgoodsunitname }}</option>
+                                      @if($unit->mgoodsunitname == 'Karton')
+                                        <option selected id="{{ $unit->id }}">{{ $unit->mgoodsunitname }}</option>
+                                      @else
+                                        <option id="{{ $unit->id }}">{{ $unit->mgoodsunitname }}</option>
+                                      @endif
                                     @endforeach
                                   </select>
                                 </div>
@@ -931,29 +1060,47 @@
                                 </div>
                               </div>
                               <div style="height: 21px;" class="form-group">
-                                  <label class="col-md-3 control-label"><b>Digunakan oleh semua cabang: </b>  &nbsp  :</label>
+                                  <label class="col-md-3 control-label"><b>Semua cabang </b>  &nbsp  :</label>
                                   <div class="col-md-9 col-sm-12">
-                                    <input id="view-mgoodsbranches" checked value="" name="mgoodsbranches" class="nice-toggle" placeholder="Nama Perusahaan" type="checkbox">
+                                    <div class="yesnoswitch">
+                                        <input disabled type="checkbox" name="mgoodsbranches" class="yesnoswitch-checkbox" id="view-mgoodsbranches">
+                                        <label class="yesnoswitch-label" for="view-mgoodsbranches">
+                                            <span class="yesnoswitch-inner"></span>
+                                            <span class="yesnoswitch-switch"></span>
+                                        </label>
+                                    </div>
                                   </div>
                               </div>
                               <div style="height: 21px;" class="form-group">
-                                  <label class="col-md-3 control-label"><b>Menggunakan Unique Transaction </b>  &nbsp  :</label>
+                                  <label class="col-md-3 control-label"><b>Unique Transaction </b>  &nbsp  :</label>
                                   <div class="col-md-9 col-sm-12">
-                                    <input id="view-mgoodsuniquetransaction" disabled value="" name="mgoodsbranches" class="nice-toggle" placeholder="Nama Perusahaan" type="checkbox">
+                                    <div class="yesnoswitch">
+                                        <input disabled type="checkbox" name="mgoodsbranches" class="yesnoswitch-checkbox" id="view-mgoodsuniquetransaction">
+                                        <label class="yesnoswitch-label" for="view-mgoodsuniquetransaction">
+                                            <span class="yesnoswitch-inner"></span>
+                                            <span class="yesnoswitch-switch"></span>
+                                        </label>
+                                    </div>
                                   </div>
                               </div>
-                              <div style="height: 21px;margin-top:23px;" class="form-group">
+                              <div style="height: 21px;" class="form-group">
                                 <label class="col-md-3 control-label"><b>Status</b>  &nbsp  :</label>
                                   <div class="col-md-9">
-                                    <input id="view-mgoodsactive" checked value="" name="mgoodsactive" class="active-toggle" placeholder="mgoodsactive" type="checkbox">
+                                    <div class="onoffswitch">
+                                        <input disabled type="checkbox" name="mgoodsactive" class="onoffswitch-checkbox" id="view-mgoodsactive">
+                                        <label class="onoffswitch-label" for="view-mgoodsactive">
+                                            <span class="onoffswitch-inner"></span>
+                                            <span class="onoffswitch-switch"></span>
+                                        </label>
+                                    </div>
                                 </div>
                               </div>
-                                <div style="height: 21px;" class="form-group">
+                              <div style="height: 21px;" class="form-group">
                                 <label class="col-md-3 control-label"><b>Harga Beli</b> &nbsp  :</label>
                                 <div class="row">
-                                <div class="col-md-2 col-sm-12">
+                                <div class="col-md-5 col-sm-12">
                                   <div class="icon-addon addon-md">
-                                    <input id="view-mgoodspricein" disabled value="{{old('mgoodspricein')}}" name="mgoodspricein" data-parsley-type="number" data-parsley-type-message="Field ini hanya dapat di isi oleh angka" parsley-error-container=".erroripricein" class="form-control forminput" placeholder="Harga Beli" type="text"  @if (Session::has('autofocus')) autofocus @endif >
+                                    <input disabled id="view-mgoodspricein" value="{{old('mgoodspricein')}}" name="mgoodspricein" data-parsley-type="number" data-parsley-type-message="Field ini hanya dapat di isi oleh angka" parsley-error-container=".erroripricein" class="form-control forminput" placeholder="Harga Beli" type="text"  @if (Session::has('autofocus')) autofocus @endif >
                                     <label for="mgoodsgroup1" class="glyphicon glyphicon-info-sign" rel="tooltip" title="Harga Beli"></label>
                                   </div>
                                 </div>
@@ -966,7 +1113,7 @@
                               <div class="form-group" style="height: 21px;">
                                 <label class="col-md-3 control-label"><b>Satuan Beli</b> (<font color="red">*</font>) &nbsp  :</label>
                                   <div class="col-md-4 col-sm-12">
-                                      <select class="form-group chosen" disabled id="view-mgoodsunitin" name="mgoodsunitin">
+                                      <select disabled class="form-group select2" id="view-mgoodsunitin" name="mgoodsunitin">
                                         @foreach($units as $unit)
                                           <option id="{{ $unit->id }}">{{ $unit->mgoodsunitname }}</option>
                                         @endforeach
@@ -974,10 +1121,10 @@
                                   </div>
                               </div>
                               <div style="height: 21px;" class="form-group">
-                                <label class="col-md-3 control-label"><b>Jumlah Minimal Pembelian</b> &nbsp  :</label>
+                                <label class="col-md-3 control-label"><b>Minimal Pembelian</b> &nbsp  :</label>
                                 <div class="col-md-4 col-sm-12">
                                   <div class="icon-addon addon-md">
-                                    <input id="view-mgoodsminimunin" disabled value="{{old('mgoodsminimunin')}}" name="mgoodsminimunin" class="form-control forminput" placeholder="Nama Barang" type="text" @if (Session::has('autofocus')) autofocus @endif >
+                                    <input disabled id="view-mgoodsminimunin" value="{{old('mgoodsminimunin')}}" name="mgoodsminimunin" class="form-control forminput" placeholder="Minimal Pembelian" type="text" @if (Session::has('autofocus')) autofocus @endif >
                                     <label for="mgoodsgroup1" class="glyphicon glyphicon-info-sign" rel="tooltip" title="Nama Barang"></label>
                                   </div>
                                 </div>
@@ -985,9 +1132,9 @@
                               <div style="height: 21px;" class="form-group">
                                 <label class="col-md-3 control-label"><b>Harga Jual</b> &nbsp  :</label>
                                 <div class="row">
-                                <div class="col-md-2 col-sm-12">
+                                <div class="col-md-5 col-sm-12">
                                   <div class="icon-addon addon-md">
-                                    <input id="view-mgoodspriceout" disabled value="{{old('mgoodspriceout')}}" name="mgoodspriceout" data-parsley-type="number" data-parsley-type-message="Field ini hanya dapat di isi oleh angka" parsley-error-container=".erroripriceout" class="form-control forminput" placeholder="Harga Jual" type="text"  @if (Session::has('autofocus')) autofocus @endif >
+                                    <input disabled id="view-mgoodspriceout" value="{{old('mgoodspriceout')}}" name="mgoodspriceout" data-parsley-type="number" data-parsley-type-message="Field ini hanya dapat di isi oleh angka" parsley-error-container=".erroripriceout" class="form-control forminput" placeholder="Harga Jual" type="text"  @if (Session::has('autofocus')) autofocus @endif >
                                     <label for="mgoodsgroup1" class="glyphicon glyphicon-info-sign" rel="tooltip" title="Harga Jual"></label>
                                   </div>
                                 </div>
@@ -998,98 +1145,117 @@
                                 <div class="erroripriceout"></div>
                               </div>
                               <div style="height: 21px;" class="form-group">
+                                <label class="col-md-3 control-label"><b>Maksimal Diskon</b> &nbsp  :</label>
+                                <div class="col-md-4 col-sm-12">
+                                  <div class="yesnoswitch">
+                                      <input disabled type="checkbox" name="mgoodsactive" class="yesnoswitch-checkbox" id="view-mgoodssetmaxdisc">
+                                      <label class="yesnoswitch-label" for="view-mgoodssetmaxdisc">
+                                          <span class="yesnoswitch-inner"></span>
+                                          <span class="yesnoswitch-switch"></span>
+                                      </label>
+                                  </div>
+                                </div>
+                              </div>
+                              <div style="height: 21px;" class="form-group">
+                                <label class="col-md-3 control-label"><b>Maksimal Diskon</b> &nbsp  :</label>
+                                <div class="col-md-4 col-sm-12">
+                                  <div class="icon-addon addon-md">
+                                    <input disabled id="view-mgoodsmaxdisc" name="mgoodsmaxdisc" data-parsley-type="number" data-parsley-type-message="Field ini hanya dapat di isi oleh angka" class="form-control forminput" placeholder="Persentase" type="text">
+                                    <label for="mgoodsgroup1" class="glyphicon glyphicon-info-sign"></label>
+                                  </div>
+                                </div>
+                                <div class="col-md-4 col-sm-12">
+                                  <div class="icon-addon addon-md">
+                                    <input disabled id="view-mgoodsmaxdiscrp" name="mgoodsmaxdiscrp" data-parsley-type="number" data-parsley-type-message="Field ini hanya dapat di isi oleh angka" class="form-control forminput" placeholder="Rupiah" type="text">
+                                    <label for="mgoodsgroup1" class="glyphicon glyphicon-info-sign"></label>
+                                  </div>
+                                </div>
+                              </div>
+                              <div style="height: 21px;" class="form-group">
                                 <label class="col-md-3 control-label"><b>HPP </b> &nbsp  :</label>
                                 <div class="col-md-4 col-sm-12">
                                   <div class="icon-addon addon-md">
-                                    <input id="view-mgoodscogs" disabled value="{{old('mgoodscogs')}}" name="mgoodscogs" class="form-control forminput" placeholder="HPP" type="text"  @if (Session::has('autofocus')) autofocus @endif >
+                                    <input disabled id="view-mgoodscogs" value="{{old('mgoodscogs')}}" name="mgoodscogs" class="form-control forminput" placeholder="HPP" type="text"  @if (Session::has('autofocus')) autofocus @endif >
                                     <label for="mgoodsgroup1" class="glyphicon glyphicon-info-sign" rel="tooltip" title="Harga Jual"></label>
                                   </div>
                                 </div>
                               </div>
-                              </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div id="menuview2" class="tab-pane fade">
-                      <div class="form form-horizontal" style="margin-top:21px;">
-                        <div class="col-md-10">
-                          <div style="height: 21px;" class="form-group">
-                            <label class="col-md-3 control-label"><b>Kode Supplier</b>  &nbsp  :</label>
-                           <div class="col-md-4">
-                              <div class="icon-addon addon-md">
-                                <select disabled class="form-control select2" name="mgoodssuppliercode" id="view-mgoodssuppliercode">
-                                  @foreach($msupplier as $mg)
-                                  <option disabled value="{{$mg->msupplierid}}">{{$mg->msupplierid}} {{ $mg->msuppliername}}</option>
-                                 @endforeach
-                                </select>
-                              </div>
-                            </div>
-                          </div>
-                          <div style="height: 21px;" class="form-group">
-                              <label class="col-md-3 control-label"><b>Digunakan oleh semua cabang: </b>  &nbsp  :</label>
-                              <div class="col-md-9 col-sm-12">
-                                <input disabled id="view-mgoodsbranches" checked value="" name="mgoodsbranches" class="nice-toggle" placeholder="Nama Perusahaan" type="checkbox">
-                              </div>
-                          </div>
-                          <div style="height: 21px;" class="form-group">
-                              <label class="col-md-3 control-label"><b>Menggunakan Unique Transaction </b>  &nbsp  :</label>
-                              <div class="col-md-9 col-sm-12">
-                                <input disabled id="view-mgoodsuniquetransaction" value="" name="mgoodsbranches" class="nice-toggle" placeholder="Nama Perusahaan" type="checkbox">
-                              </div>
-                          </div>
-                          <div style="height: 21px;" class="form-group">
-                            <label class="col-md-3 control-label"><b>Gambar</b>  &nbsp  :</label>
-                            <div class="col-md-9 col-sm-12">
-                              <div class="icon-addon addon-md">
 
-                                  <br>
-                                  <input disabled id="view-mgoodspicture" value="" name="mgoodspicture" class="form-control forminput" placeholder="Gambar" type="text" data-parsley-required-message="Field Ini Tidak Boleh Kosong" @if (Session::has('autofocus')) autofocus @endif >
-                                <label for="mgoodsgroup1" class="" rel="tooltip" title="Gambar"></label>
-                              </div>
                             </div>
                           </div>
                         </div>
-                      </div>
-                    </div>
-                    <div id="menuview3" class="tab-pane fade">
-                      <div class="form form-horizontal" style="margin-top:21px;">
-                        <div class="col-md-12">
-                          <div style="height: 21px;" class="form-group">
-                              <label class="col-md-2 control-label"><b>PPN</b>  (<font color="red">*</font>) &nbsp  :</label>
-                              <div class="col-md-4">
-                                <div class="icon-addon addon-md">
-                                  <select disabled class="form-control select2" name="mgoodstaxppn" id="view-mgoodstaxppn">
-
-                                  @foreach($taxes as $tax)
-                                    <option value={{ $tax->id }}>{{ $tax->mtaxtdesc }}</option>
-                                  @endforeach
-
-                                  </select>
+                        <div id="menuview2" class="tab-pane fade">
+                          <div class="form form-horizontal" style="margin-top:21px;">
+                            <div class="col-md-10">
+                              <div style="height: 21px;" class="form-group">
+                                <label class="col-md-3 control-label"><b>Kode / Nama Supplier</b>  &nbsp  :</label>
+                               <div class="col-md-4">
+                                  <div class="icon-addon addon-md">
+                                    <select disabled class="form-control select2-bold" name="mgoodssuppliercode" id="view-mgoodssuppliercode">
+                                      @foreach($msupplier as $mg)
+                                       <option value="{{$mg->msupplierid}}">{{$mg->msupplierid}} {{$mg->msuppliername}}</option>
+                                      @endforeach
+                                    </select>
+                                  </div>
                                 </div>
                               </div>
-                          </div>
-                          <div style="height: 21px;" class="form-group">
-                              <label class="col-md-2 control-label"><b>Pajak Barang Mewah</b>  (<font color="red">*</font>) &nbsp  :</label>
-                              <div class="col-md-4">
-                                <div class="icon-addon addon-md">
-                                  <select disabled class="form-control select2" name="mgoodstaxppnbm" id="view-mgoodstaxppnbm">
-
-                                  @foreach($taxes as $tax)
-                                    <option value={{ $tax->id }}>{{ $tax->mtaxtdesc }}</option>
-                                  @endforeach
-
-                                  </select>
+                              <div style="height: 21px;" class="form-group">
+                                <label class="col-md-3 control-label"><b>Gambar</b>  &nbsp  :</label>
+                                <div class="col-md-9 col-sm-12">
+                                  <div class="icon-addon addon-md">
+                                   <form action="upload.php">
+                                          <input type="hidden">
+                                          <div id="dropzone-gambar" class="dropzone"></div>
+                                      </form>
+                                      <br>
+                                      <input id="view-mgoodspicture" value="" name="mgoodspicture" class="form-control forminput" placeholder="Gambar" type="text" data-parsley-required-message="Field Ini Tidak Boleh Kosong" @if (Session::has('autofocus')) autofocus @endif >
+                                    <label for="mgoodsgroup1" class="" rel="tooltip" title="Gambar"></label>
+                                  </div>
                                 </div>
                               </div>
+                            </div>
                           </div>
                         </div>
-                      </div>
+                        <div id="menuview3" class="tab-pane fade">
+                          <div class="form form-horizontal" style="margin-top:21px;">
+                            <div class="col-md-12">
+                              <div style="height: 21px;" class="form-group">
+                                  <label class="col-md-2 control-label"><b>Pajak</b>  (<font color="red">*</font>) &nbsp  :</label>
+                                  <div class="col-md-4">
+                                    <div class="icon-addon addon-md">
+                                      <select disabled class="form-control select2" name="mgoodstaxppn" id="view-mgoodstaxppn">
+
+                                      @foreach($taxes as $tax)
+                                        <option value={{ $tax->id }}>{{ $tax->mtaxtdesc }}</option>
+                                      @endforeach
+
+                                      </select>
+                                    </div>
+                                  </div>
+                              </div>
+                              <div style="height: 21px;" class="form-group">
+                                  <label class="col-md-2 control-label"><b>Pajak Barang Mewah</b>  (<font color="red">*</font>) &nbsp  :</label>
+                                  <div class="col-md-4">
+                                    <div class="icon-addon addon-md">
+                                      <select disabled class="form-control select2" name="mgoodstaxppnbm" id="view-mgoodstaxppnbm">
+                                      @foreach($taxes as $tax)
+                                        @if($tax->mtaxtype == 'Kosong')
+                                          <option selected value={{ $tax->id }}>{{ $tax->mtaxtdesc }}</option>
+                                        @else
+                                          <option value={{ $tax->id }}>{{ $tax->mtaxtdesc }}</option>
+                                        @endif
+                                      @endforeach
+                                      </select>
+                                    </div>
+                                  </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
                     </div>
-                    <div id="menuview4"></div>
                     <div class="row">
                       <div class="col-md-offset-5 col-md-5" style="margin-top:20px;margin-bottom:20px;">
-                        <button onclick="back()" type="submit" name="button" class="btn btn-default">Kembali</button>
-
+                        <a id="btn-insert-reset" onclick="backmgoods()" class="btn btn-default" ><i class=""></i> Kembali</a>
                       </div>
                     </div>
                   </div>
@@ -1099,7 +1265,7 @@
         </article>
       </div>
 
-      <div class="row">
+      <div class="row" id="tablewrapper">
         <!-- NEW WIDGET START -->
         <article class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
           <!-- Widget ID (each widget will need unique ID)-->
@@ -1417,7 +1583,9 @@
      );
    }
 </script>
-<script src="{{ url('/js/bootstrap-switch.min.js') }}"></script>
+<!-- <script src="{{ url('/js/bootstrap-switch.min.js') }}"></script> -->
+<!-- <script src="{{ url('/js/bootstrap-toggle.js') }}"></script> -->
+<script src="https://gitcdn.github.io/bootstrap-toggle/2.2.2/js/bootstrap-toggle.min.js"></script>
 <script src="{{ url('/js/bootstrap-datepicker.min.js') }}"></script>
 <script src="{{ url('/js/dropzone.js') }}"></script>
 <script src="{{ url('/master/mgoods.js') }}"></script>
@@ -1450,7 +1618,9 @@ $("#dropzone-gambar").dropzone({
 @stop
 
 @section('css')
-  <link rel="stylesheet" href="{{ url('/css/bootstrap-switch.min.css') }}">
+  <!-- <link rel="stylesheet" href="{{ url('/css/bootstrap-switch.min.css') }}"> -->
+  <link rel="stylesheet" href="{{ url('/css/onoff.css') }}">
+  <link rel="stylesheet" href="{{ url('/css/yesno.css') }}">
   <link rel="stylesheet" href="{{ url('/css/bootstrap-datepicker3.min.css') }}">
   <style>
     .example-label {
@@ -1471,10 +1641,9 @@ $("#dropzone-gambar").dropzone({
       padding-top: 5px;
       margin-bottom: 5px;
     }
-    .box-general {
+    .group-box {
 			border: 4px #ddd solid;
 			padding: 2%;
-			margin-left: 50px;
 		}
     .box-bottom {
 			border: 4px #ddd solid;

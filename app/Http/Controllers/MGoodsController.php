@@ -29,7 +29,7 @@ class MGoodsController extends Controller
     $data['subtypes'] = MGoodssubtype::all();
     $data['taxes'] = MTax::all();
     $data['units'] = MUnit::where('void',0)->get();
-		return view('admin/viewbarang',$data);
+		return view('admin/viewmgoods',$data);
 	}
 	public function csv(){
 		$this->mgoods = MGoods::where('void',0)->get();
