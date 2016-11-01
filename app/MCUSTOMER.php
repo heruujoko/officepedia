@@ -21,7 +21,7 @@ class MCUSTOMER extends Model
     }
 
     public function categories(){
-      return $this->belongsTo('App\Mcategorycustomer','mcustomercategory','id');
+      return $this->belongsTo('App\MCategorycustomer','mcustomercategory','id');
     }
 
     public function akun(){
