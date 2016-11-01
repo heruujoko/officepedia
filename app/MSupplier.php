@@ -5,6 +5,7 @@ namespace App;
 use Illuminate\Database\Eloquent\Model;
 use DB;
 use Exception;
+use Illuminate\Database\Eloquent\Builder;
 
 class MSupplier extends Model
 {
@@ -14,6 +15,10 @@ class MSupplier extends Model
     protected static function boot(){
 
       parent::boot();
+
+      static::addGlobalScope('actives', function(Builder $builder) {
+            $builder->where('void', '=', 0);
+      });
 
       static::created(function($msupplier){
         $msupplier->update_prefix_status();

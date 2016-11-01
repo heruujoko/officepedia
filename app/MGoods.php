@@ -5,6 +5,7 @@ namespace App;
 use Illuminate\Database\Eloquent\Model;
 use DB;
 use Exception;
+use Illuminate\Database\Eloquent\Builder;
 
 class MGOODS extends Model
 {
@@ -24,6 +25,10 @@ class MGOODS extends Model
     protected static function boot(){
 
       parent::boot();
+
+      static::addGlobalScope('actives', function(Builder $builder) {
+  					$builder->where('void', '=', 0);
+  		});
 
       static::created(function($mgoods){
         $mgoods->update_prefix_status();

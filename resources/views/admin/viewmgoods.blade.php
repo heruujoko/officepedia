@@ -404,7 +404,11 @@
                                       <select class="form-control select2" name="mgoodstaxppn" id="insert-mgoodstaxppn">
 
                                       @foreach($taxes as $tax)
-                                        <option value={{ $tax->id }}>{{ $tax->mtaxtdesc }}</option>
+                                        @if($tax->mtaxtype == 'Kosong')
+                                          <option value="{{ $tax->id }}">&nbsp;</option>
+                                        @else
+                                          <option value="{{ $tax->id }}">{{ $tax->mtaxtdesc }}</option>
+                                        @endif
                                       @endforeach
 
                                       </select>
@@ -418,9 +422,9 @@
                                       <select class="form-control select2" name="mgoodstaxppnbm" id="insert-mgoodstaxppnbm">
                                       @foreach($taxes as $tax)
                                         @if($tax->mtaxtype == 'Kosong')
-                                          <option selected value={{ $tax->id }}>{{ $tax->mtaxtdesc }}</option>
+                                          <option selected value="{{ $tax->id }}">&nbsp;</option>
                                         @else
-                                          <option value={{ $tax->id }}>{{ $tax->mtaxtdesc }}</option>
+                                          <option value="{{ $tax->id }}">{{ $tax->mtaxtdesc }}</option>
                                         @endif
                                       @endforeach
                                       </select>
@@ -815,7 +819,11 @@
                                       <select class="form-control select2" name="mgoodstaxppn" id="edit-mgoodstaxppn">
 
                                       @foreach($taxes as $tax)
-                                        <option value={{ $tax->id }}>{{ $tax->mtaxtdesc }}</option>
+                                        @if($tax->mtaxtype == 'Kosong')
+                                          <option value="{{ $tax->id }}">&nbsp;</option>
+                                        @else
+                                          <option value="{{ $tax->id }}">{{ $tax->mtaxtdesc }}</option>
+                                        @endif
                                       @endforeach
 
                                       </select>
@@ -829,9 +837,9 @@
                                       <select class="form-control select2" name="mgoodstaxppnbm" id="edit-mgoodstaxppnbm">
                                       @foreach($taxes as $tax)
                                         @if($tax->mtaxtype == 'Kosong')
-                                          <option selected value={{ $tax->id }}>{{ $tax->mtaxtdesc }}</option>
+                                          <option selected value="{{ $tax->id }}">&nbsp;</option>
                                         @else
-                                          <option value={{ $tax->id }}>{{ $tax->mtaxtdesc }}</option>
+                                          <option value="{{ $tax->id }}">{{ $tax->mtaxtdesc }}</option>
                                         @endif
                                       @endforeach
                                       </select>
@@ -1226,7 +1234,11 @@
                                       <select disabled class="form-control select2" name="mgoodstaxppn" id="view-mgoodstaxppn">
 
                                       @foreach($taxes as $tax)
-                                        <option value={{ $tax->id }}>{{ $tax->mtaxtdesc }}</option>
+                                        @if($tax->mtaxtype == 'Kosong')
+                                          <option selected value="{{ $tax->id }}">&nbsp;</option>
+                                        @else
+                                          <option value="{{ $tax->id }}">{{ $tax->mtaxtdesc }}</option>
+                                        @endif
                                       @endforeach
 
                                       </select>
@@ -1240,9 +1252,9 @@
                                       <select disabled class="form-control select2" name="mgoodstaxppnbm" id="view-mgoodstaxppnbm">
                                       @foreach($taxes as $tax)
                                         @if($tax->mtaxtype == 'Kosong')
-                                          <option selected value={{ $tax->id }}>{{ $tax->mtaxtdesc }}</option>
+                                          <option selected value="{{ $tax->id }}">&nbsp;</option>
                                         @else
-                                          <option value={{ $tax->id }}>{{ $tax->mtaxtdesc }}</option>
+                                          <option value="{{ $tax->id }}">{{ $tax->mtaxtdesc }}</option>
                                         @endif
                                       @endforeach
                                       </select>

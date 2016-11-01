@@ -5,6 +5,8 @@ namespace App;
 use Illuminate\Database\Eloquent\Model;
 use DB;
 use Exception;
+use Illuminate\Database\Eloquent\Builder;
+
 class MCUSTOMER extends Model
 {
     protected $table = 'mcustomer';
@@ -14,6 +16,10 @@ class MCUSTOMER extends Model
 
       parent::boot();
 
+      static::addGlobalScope('actives', function(Builder $builder) {
+            $builder->where('void', '=', 0);
+      });
+      
       static::created(function($memployee){
         $memployee->update_prefix_status();
       });
