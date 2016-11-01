@@ -332,6 +332,8 @@ $(function(){
 						{data: 'mcoaname', mcoaname: 'mcoaname'},
 						{data: 'rightsaldo', rightsaldo: 'rightsaldo'}
 						]
+			 }).on('xhr.dt',function(){
+				 $('#loading_modal').modal('hide');
 			 });
 
 			 tablebank = $('#tablebank').DataTable({
