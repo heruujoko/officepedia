@@ -34,7 +34,7 @@ class MCOA extends \LaravelArdent\Ardent\Ardent
     }
 
     public function afterSave(){
-      $this->parent()->validateValue();
+      // $this->parent()->validateValue();
     }
 
     public function afterCreate(){
