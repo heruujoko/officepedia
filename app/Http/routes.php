@@ -10,6 +10,7 @@ Route::get('register','AuthController@register');
 Route::post('signup','AuthController@signup');
 Route::get('login','AuthController@login');
 Route::post('login','AuthController@auth');
+Route::get('logout','AuthController@logout');
 
 Route::group(['prefix'=>'admin-nano','middleware' => ['auth','tenantdb']],function(){
   // Route::get('/','AdminController@dashboard');
