@@ -26,6 +26,7 @@ class MCOAController extends Controller
       $config = MConfig::find(1);
       $this->round = $config->msysgenrounddec;
       $this->separator = $config->msysnumseparator;
+      DBHelper::configureConnection(Auth::user()->db_alias);
       $gp = MCOAGrandParent::on(Auth::user()->db_name)->get();
       foreach ($gp as $g) {
         $mcoa->push($g);
