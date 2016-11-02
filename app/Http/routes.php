@@ -8,8 +8,10 @@ Route::get('/', function () {
 
 Route::get('register','AuthController@register');
 Route::post('signup','AuthController@signup');
+Route::get('login','AuthController@login');
+Route::post('login','AuthController@auth');
 
-Route::group(['prefix'=>'admin-nano'],function(){
+Route::group(['prefix'=>'admin-nano','middleware' => ['auth','tenantdb']],function(){
   // Route::get('/','AdminController@dashboard');
   Route::get('mcoagrandparent','MCOAGrandParentController@index');
   Route::get('mcoa/export/print','MCOAController@xprint');

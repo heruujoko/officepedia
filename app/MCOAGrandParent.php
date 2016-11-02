@@ -3,6 +3,8 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Auth;
+use App\Helper\DBHelper;
 
 class MCOAGrandParent extends \LaravelArdent\Ardent\Ardent
 {
@@ -10,6 +12,8 @@ class MCOAGrandParent extends \LaravelArdent\Ardent\Ardent
     protected $fillable = ['mcoagrandparentcode','mcoagrandparentname','mcoagrandparenttype'];
 
     public static function boot(){
+        DBHelper::configureConnection(Auth::user()->db_alias);
+        static::on(Auth::user()->db_name);
         static::addGlobalScope(function(\LaravelArdent\Ardent\Builder $builder){
           $builder->where('void',0);
         });
@@ -21,7 +25,7 @@ class MCOAGrandParent extends \LaravelArdent\Ardent\Ardent
     }
 
     public function childs(){
-      return MCOAParent::where("mcoagrandparentcode",$this->mcoagrandparentcode)->get();
+      return MCOAParent::on(Auth::user()->db_name)->where("mcoagrandparentcode",$this->mcoagrandparentcode)->get();
     }
 
     public function afterCreate(){

@@ -5,12 +5,16 @@ namespace App;
 use Illuminate\Database\Eloquent\Model;
 use App\MCOAParent;
 use DB;
+use App\Helper\DBHelper;
+use Auth;
 
 class MCOA extends \LaravelArdent\Ardent\Ardent
 {
     protected $table = "mcoa";
 
     public static function boot(){
+        DBHelper::configureConnection(Auth::user()->db_alias);
+        static::on(Auth::user()->db_name);
         static::addGlobalScope(function(\LaravelArdent\Ardent\Builder $builder){
           $builder->where('void',0);
         });
@@ -18,11 +22,12 @@ class MCOA extends \LaravelArdent\Ardent\Ardent
     }
 
     public function parent(){
-      return MCOAParent::findCode($this->mcoaparentcode);
+      // return MCOAParent::findCode($this->mcoaparentcode);
+      return MCOAParent::on(Auth::user()->db_name)->where('mcoaparentcode',$this->mcoaparentcode)->first();
     }
 
     public function set_parent($code){
-      $p = MCOAParent::findCode($code);
+      $p = MCOAParent::on(Auth::user()->db_name)->where('mcoaparentcode',$code)->first();
       $this->mcoaparentcode = $p->mcoaparentcode;
       $this->mcoaparentname = $p->mcoaparentname;
       $gp = $p->parent();

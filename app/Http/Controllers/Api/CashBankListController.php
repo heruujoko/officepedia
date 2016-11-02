@@ -11,6 +11,7 @@ use App\MCOAParent;
 use Datatables;
 use Exception;
 use App\MConfig;
+use Auth;
 
 class CashBankListController extends Controller
 {
@@ -22,7 +23,7 @@ class CashBankListController extends Controller
       $config = MConfig::find(1);
       $this->round = $config->msysgenrounddec;
       $this->separator = $config->msysnumseparator;
-      $kas = MCOA::where('mcoaparentcode','1101.00')->get();
+      $kas = MCOA::on(Auth::user()->db_name)->where('mcoaparentcode','1101.00')->get();
       return Datatables::of($kas)->addColumn('action', function($kas){
         return '<center><div class="button">
         <a class="btn btn-primary btn-xs dropdown-toggle fa fa-pencil" onclick="edit_kas('.$kas->id.')"> <font style="font-family: arial;">Ubah &nbsp</font></a>
@@ -49,7 +50,7 @@ class CashBankListController extends Controller
       $config = MConfig::find(1);
       $this->round = $config->msysgenrounddec;
       $this->separator = $config->msysnumseparator;
-      $kas = MCOA::where('mcoaparentcode','1102.00')->get();
+      $kas = MCOA::on(Auth::user()->db_name)->where('mcoaparentcode','1102.00')->get();
       return Datatables::of($kas)->addColumn('action', function($kas){
         return '<center><div class="button">
         <a class="btn btn-primary btn-xs dropdown-toggle fa fa-pencil" onclick="edit_bank('.$kas->id.')"> <font style="font-family: arial;">Ubah &nbsp</font></a>
@@ -105,6 +106,7 @@ class CashBankListController extends Controller
       $parent = MCOAParent::where('mcoaparentcode','1102.00')->first();
       try{
           $mcoa = new MCOA;
+          $mcoa->setConnection(Auth::user()->db_name);
           $mcoa->mcoacode = "";
           $mcoa->mcoaname = $request->mcoaname;
           $mcoa->mcoatype = $parent->mcoaparenttype;
@@ -120,7 +122,7 @@ class CashBankListController extends Controller
 
     public function update_bank(Request $request,$id){
       try{
-        $mcoa = MCOA::find($id);
+        $mcoa = MCOA::on(Auth::user()->db_name)->find($id);
         $mcoa->mcoaname = $request->mcoaname;
         $mcoa->save();
         return response()->json($mcoa);
@@ -141,7 +143,7 @@ class CashBankListController extends Controller
         $thousands_sep = ",";
       }
       $total = 0;
-      $akun = MCOA::where('mcoaparentcode',$code)->get();
+      $akun = MCOA::on(Auth::user()->db_name)->where('mcoaparentcode',$code)->get();
       foreach($akun as $ak){
         $total += $ak->saldo;
       }
@@ -161,7 +163,7 @@ class CashBankListController extends Controller
         $thousands_sep = ",";
       }
       $total = 0;
-      $akun = MCOA::where('mcoaparentcode',"1101.00")->orWhere('mcoaparentcode','1102.00')->get();
+      $akun = MCOA::on(Auth::user()->db_name)->where('mcoaparentcode',"1101.00")->orWhere('mcoaparentcode','1102.00')->get();
       foreach($akun as $ak){
         $total += $ak->saldo;
       }

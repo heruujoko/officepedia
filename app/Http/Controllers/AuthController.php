@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\User;
 use App\Helper\DBHelper;
+use Auth;
 
 class AuthController extends Controller
 {
@@ -28,6 +29,21 @@ class AuthController extends Controller
       $newuser->save();
       DBHelper::createNewDb($db_name);
       DBHelper::configureConnectionAndMigrate($db_name);
-      redirect('/');
+      \Session::flash('register_message','Registrasi berhasil');
+      redirect('login');
+    }
+
+    public function login(){
+      return view('login');
+    }
+
+    public function auth(Request $request){
+      $isVerified = Auth::attempt(['email' => $request->email,'password' => $request->password]);
+      if($isVerified){
+        return redirect('admin-nano/index');
+      } else {
+        flash('Username dan password tidak cocok','danger');
+        return redirect('login');
+      }
     }
 }

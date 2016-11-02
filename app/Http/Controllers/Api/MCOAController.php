@@ -11,6 +11,8 @@ use App\MCOAGrandParent;
 use Datatables;
 use Exception;
 use App\MConfig;
+use Auth;
+use App\Helper\DBHelper;
 
 class MCOAController extends Controller
 {
@@ -24,7 +26,7 @@ class MCOAController extends Controller
       $config = MConfig::find(1);
       $this->round = $config->msysgenrounddec;
       $this->separator = $config->msysnumseparator;
-      $gp = MCOAGrandParent::all();
+      $gp = MCOAGrandParent::on(Auth::user()->db_name)->get();
       foreach ($gp as $g) {
         $mcoa->push($g);
         foreach($g->childs() as $p ){
