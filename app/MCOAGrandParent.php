@@ -12,8 +12,6 @@ class MCOAGrandParent extends \LaravelArdent\Ardent\Ardent
     protected $fillable = ['mcoagrandparentcode','mcoagrandparentname','mcoagrandparenttype'];
 
     public static function boot(){
-        DBHelper::configureConnection(Auth::user()->db_alias);
-        static::on(Auth::user()->db_name);
         static::addGlobalScope(function(\LaravelArdent\Ardent\Builder $builder){
           $builder->where('void',0);
         });
