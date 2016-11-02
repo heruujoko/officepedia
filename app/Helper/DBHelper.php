@@ -3,10 +3,11 @@ namespace App\Helper;
 use DB;
 use App;
 use Artisan;
+use Auth;
 
 class DBHelper {
 
-  public static function createNewDb($schemaName){
+  public static function createNewDb($schemaName,$user){
     DB::statement('CREATE DATABASE db_'.$schemaName);
   }
 
@@ -19,7 +20,9 @@ class DBHelper {
     $newConnection['database'] = 'db_'.$tenantDB;
     // This will add our new connection to the run-time configuration for the duration of the request.
     App::make('config')->set('database.connections.db_'.$tenantDB, $newConnection);
-    // DBHelper::performMigration($tenantDB);
+    Auth::attempt(['email' => $user->email,'password' => $user->password]);
+    DBHelper::performMigration($tenantDB);
+    Auth::logout();
   }
 
   public static function configureConnection($tenantDB){

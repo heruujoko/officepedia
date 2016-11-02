@@ -24,11 +24,11 @@ class AuthController extends Controller
         'db_name' => ''
       ]);
       $db_name = uniqid();
-      $newuser->db_alias = 'db_'.$db_name;
+      $newuser->db_alias = $db_name;
       $newuser->db_name = 'db_'.$db_name;
       $newuser->save();
       DBHelper::createNewDb($db_name);
-      DBHelper::configureConnectionAndMigrate($db_name);
+      DBHelper::configureConnectionAndMigrate($db_name,$newuser);
       \Session::flash('register_message','Registrasi berhasil');
       redirect('login');
     }
