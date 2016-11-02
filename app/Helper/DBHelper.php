@@ -20,9 +20,7 @@ class DBHelper {
     $newConnection['database'] = 'db_'.$tenantDB;
     // This will add our new connection to the run-time configuration for the duration of the request.
     App::make('config')->set('database.connections.db_'.$tenantDB, $newConnection);
-    Auth::attempt(['email' => $user->email,'password' => $user->password]);
     DBHelper::performMigration($tenantDB);
-    Auth::logout();
   }
 
   public static function configureConnection($tenantDB){
@@ -41,7 +39,9 @@ class DBHelper {
     $connections = $config->get('database.connections');
     // dd($connections);
     Artisan::call('migrate',['--database' => $connections['db_'.$tenantDB]['database'],'--force' => true]);
+    Auth::attempt(['email' => $user->email,'password' => $user->password]);
     Artisan::call('db:seed');
+    Auth::logout();
   }
 
 }
