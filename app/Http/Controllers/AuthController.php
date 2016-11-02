@@ -29,8 +29,8 @@ class AuthController extends Controller
       $newuser->save();
       DBHelper::createNewDb($db_name);
       DBHelper::configureConnectionAndMigrate($db_name,$newuser);
-      \Session::flash('register_message','Registrasi berhasil');
-      redirect('login');
+      flash('Register sukses','info');
+      return redirect('login');
     }
 
     public function login(){
