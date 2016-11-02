@@ -19,7 +19,7 @@ class DBHelper {
     $newConnection['database'] = 'db_'.$tenantDB;
     // This will add our new connection to the run-time configuration for the duration of the request.
     App::make('config')->set('database.connections.db_'.$tenantDB, $newConnection);
-    DBHelper::performMigration($tenantDB);
+    // DBHelper::performMigration($tenantDB);
   }
 
   public static function configureConnection($tenantDB){
