@@ -6,6 +6,9 @@ Route::get('/', function () {
 });
 
 
+Route::get('register','AuthController@register');
+Route::post('signup','AuthController@signup');
+
 Route::group(['prefix'=>'admin-nano'],function(){
   // Route::get('/','AdminController@dashboard');
   Route::get('mcoagrandparent','MCOAGrandParentController@index');
