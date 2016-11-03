@@ -10,13 +10,15 @@ use App\MCategorycustomer;
 use Datatables;
 use Exception;
 use DB;
+use Auth;
+use App\Helper\DBHelper;
 
 class MCategorycustomerController extends Controller
 {
 
 	public function index(){
 		$this->iteration = 0;
-        $mcategory = MCategorycustomer::where('void', '0')->orderby('created_at','desc')->get();
+        $mcategory = MCategorycustomer::on(Auth::user()->db_name)->where('void', '0')->orderby('created_at','desc')->get();
         return Datatables::of($mcategory)->addColumn('action', function($mcategory){
 
           return '<center><div class="button">
@@ -31,13 +33,14 @@ class MCategorycustomerController extends Controller
         ->make(true);
 	}
 	public function show($id){
-    $mcategory = MCategorycustomer::find($id);
+    $mcategory = $mcategory = MCategorycustomer::on(Auth::user()->db_name)->where('id',$id)->first();
     return response()->json($mcategory);
 
 	}
 	public function store(Request $request){
     try{
-        $mcategory = MCategorycustomer::create($request->all());
+        $mcategory = new MCategorycustomer($request->all());
+				$mcategory->setConnection(Auth::user()->db_name);
         $mcategory->void = 0;
         $mcategory->save();
         return response()->json($mcategory);
@@ -47,7 +50,7 @@ class MCategorycustomerController extends Controller
 	}
 	public function update(Request $request,$id){
     try{
-      $mcategory = MCategorycustomer::find($id);
+      $mcategory = MCategorycustomer::on(Auth::user()->db_name)->where('id',$id)->first();
       $mcategory->update($request->all());
       return response()->json($mcategory);
     }catch(Exception $e){
@@ -56,8 +59,9 @@ class MCategorycustomerController extends Controller
 
 	}
 	public function destroy($id){
-    $mcategory = MCategorycustomer::find($id);
-    DB::table('mcategorycustomer')->where('id',$id)->update(['void' => '1']);
+    $mcategory = MCategorycustomer::on(Auth::user()->db_name)->where('id',$id)->first();
+    $mcategory->void = 1;
+		$mcategory->save();
     return response()->json();
 	}
 

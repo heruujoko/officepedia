@@ -11,12 +11,14 @@ use App\MPrefix;
 use Datatables;
 use DB;
 use App\MConfig;
+use Auth;
+use App\Helper\DBHelper;
 
 class MCustomerController extends Controller
 {
 	public function index(){
 		 $this->iteration = 0;
-        $mcustomer = MCUSTOMER::where('void', '0')->orderby('created_at','desc')->get();
+        $mcustomer = MCUSTOMER::on(Auth::user()->db_name)->where('void', '0')->orderby('created_at','desc')->get();
         return Datatables::of($mcustomer)->addColumn('action', function($mcustomer){
 
           return '<center><div class="button">
@@ -28,27 +30,28 @@ class MCustomerController extends Controller
             $this->iteration++;
             return "<span>".$this->iteration."</span>";
         })->addColumn('akun',function($mcustomer){
-            return $mcustomer->akun->mcoaname;
+            return $mcustomer->akun()->mcoaname;
         })->addColumn('category',function($mcustomer){
-            return $mcustomer->categories->category_name;
+            return $mcustomer->categories()->category_name;
         })
         ->make(true);
 }
 
   public function show($id){
-    $mcustomer = MCUSTOMER::find($id);
+    $mcustomer = MCUSTOMER::on(Auth::user()->db_name)->where('id',$id)->first();
     return response()->json($mcustomer);
   }
 
   public function update(Request $request,$id){
-      $new_cust = MCUSTOMER::find($id);
+      $new_cust = MCUSTOMER::on(Auth::user()->db_name)->where('id',$id)->first();
 			$new_cust->update($request->all());
     return response()->json($new_cust);
   }
 
 	public function store(Request $request){
 		try{
-			$new_cust = MCUSTOMER::create($request->all());
+			$new_cust = new MCUSTOMER($request->all());
+			$new_cust->setConnection(Auth::user()->db_name);
 			$new_cust->save();
 			if ($request->autogen == 'true') {
 				$new_cust->autogenproc();
@@ -80,8 +83,9 @@ class MCustomerController extends Controller
 
 
    public function destroy($id){
-    $mbranch = MCUSTOMER::find($id);
-    DB::table('mcustomer')->where('id',$id)->update(['void' => '1']);
+    $mbranch = MCUSTOMER::on(Auth::user()->db_name)->where('id',$id)->first();
+    $mbranch->void = 1;
+		$mbranch->save();
     return response()->json();
     }
 

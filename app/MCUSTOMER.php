@@ -6,6 +6,9 @@ use Illuminate\Database\Eloquent\Model;
 use DB;
 use Exception;
 use Illuminate\Database\Eloquent\Builder;
+use Auth;
+use App\Helper\DBHelper;
+use App\MCOA;
 
 class MCUSTOMER extends Model
 {
@@ -19,7 +22,7 @@ class MCUSTOMER extends Model
       static::addGlobalScope('actives', function(Builder $builder) {
             $builder->where('void', '=', 0);
       });
-      
+
       static::created(function($memployee){
         $memployee->update_prefix_status();
       });
@@ -27,11 +30,13 @@ class MCUSTOMER extends Model
     }
 
     public function categories(){
-      return $this->belongsTo('App\MCategorycustomer','mcustomercategory','id');
+      // return $this->belongsTo('App\MCategorycustomer','mcustomercategory','id');
+      return MCategorycustomer::on(Auth::user()->db_name)->where('id',$this->mcustomercategory)->first();
     }
 
     public function akun(){
-      return $this->belongsTo('App\MCOA','mcustomercoa','id');
+      // return $this->belongsTo('App\MCOA','mcustomercoa','id');
+      return MCOA::on(Auth::user()->db_name)->where('id',$this->mcustomercoa)->first();
     }
 
     public function autogenproc(){
@@ -39,7 +44,8 @@ class MCUSTOMER extends Model
       $attempt = 0;
       $conf = MConfig::find(1);
       try{
-        DB::select(DB::raw('call autogen("mcustomer","'.$conf->msysprefixcustomer.'",'.$conf->msysprefixcustomercount.',"mcustomerid",'.$this->id.')'));
+        DBHelper::configureConnection(Auth::user()->db_alias);
+        DB::connection(Auth::user()->db_name)->select(DB::raw('call autogen("mcustomer","'.$conf->msysprefixcustomer.'",'.$conf->msysprefixcustomercount.',"mcustomerid",'.$this->id.')'));
       } catch(Exception $e){
         return $e;
       }

@@ -9,6 +9,8 @@ use App\Http\Requests;
 use App\MCategorycustomer;
 use Excel;
 use PDF;
+use Auth;
+use App\Helper\DBHelper;
 
 class MCategorycustomerController extends Controller
 {
@@ -16,13 +18,13 @@ class MCategorycustomerController extends Controller
     	$data['active'] = 'categorycustomer';
 		$data['section'] = 'Kategori Pelanggan';
     	$data['activetab'] = 1;
-		$data['MCategorycustomer'] = MCategorycustomer::all();
+		$data['MCategorycustomer'] = MCategorycustomer::on(Auth::user()->db_name)->get();
 		$data['id'] = null;
 	  return view('admin/viewmcategorycustomer',$data);
 	}
 
 	public function csv(){
-		$this->mcategory = MCategorycustomer::where('void',0)->get();
+		$this->mcategory = MCategorycustomer::on(Auth::user()->db_name)->where('void',0)->get();
 		$this->count = 0;
 		return Excel::create('Master Kategori Pelanggan',function($excel){
 			$excel->sheet('Master Kategori Pelanggan',function($sheet){
@@ -40,7 +42,7 @@ class MCategorycustomerController extends Controller
 		})->export('csv');
 	}
 	public function excel(){
-		$this->mcategory = MCategorycustomer::where('void',0)->get();
+		$this->mcategory = MCategorycustomer::on(Auth::user()->db_name)->where('void',0)->get();
 		$this->count = 0;
 		return Excel::create('Master Kategori Pelanggan',function($excel){
 			$excel->sheet('Master Kateori Pelanggan',function($sheet){
@@ -58,7 +60,7 @@ class MCategorycustomerController extends Controller
 		})->export('xlsx');
 	}
 	public function pdf(){
-		$data['mcategory'] = MCategorycustomer::where('void',0)->get();
+		$data['mcategory'] = MCategorycustomer::on(Auth::user()->db_name)->where('void',0)->get();
 		$pdf = PDF::loadview('admin/export/mcategory',$data);
 		return $pdf->setPaper('a3', 'landscape')->download('Master Kategori Pelanggan.pdf');
 	}

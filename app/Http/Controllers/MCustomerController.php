@@ -10,6 +10,8 @@ use PDF;
 use App\MCUSTOMER;
 use App\MCOA;
 use App\MCategorycustomer;
+use Auth;
+use App\Helper\DBHelper;
 
 class MCustomerController extends Controller
 {
@@ -21,13 +23,14 @@ class MCustomerController extends Controller
 		$data['section'] = 'customer';
     	$data['activetab'] = 1;
 		$data['mcoa'] = MCOA::all();
-		$data['categories'] = MCategorycustomer::all();
+		$data['categories'] = MCategorycustomer::on(Auth::user()->db_name)->get();
 		$data['id'] = null;
 	  return view('admin/viewmcustomer',$data);
 	}
 
 	public function store(){
 		$new_cust = new MCust;
+		$new_cust->setConnection(Auth::user()->db_name);
 		$new_cust->name = $request->name;
 		$new_cust->save();
 		if($request->chk){
@@ -54,7 +57,7 @@ class MCustomerController extends Controller
 	}
 
 	public function csv(){
-		$this->customer = MCUSTOMER::where('void',0)->get();
+		$this->customer = MCUSTOMER::on(Auth::user()->db_name)->where('void',0)->get();
 		$this->count = 0;
 		return Excel::create('Master Pelanggan',function($excel){
 			$excel->sheet('Master Pelanggan',function($sheet){
@@ -65,7 +68,7 @@ class MCustomerController extends Controller
 				foreach($this->customer as $cust){
 					$this->count++;
 					$sheet->row($this->count,array(
-						$cust->mcustomerid,$cust->mcustomername,$cust->categories->category_name,$cust->mcustomeremail,$cust->mcustomerphone,$cust->mcustomerfax,$cust->mcustomerwebsite,$cust->mcustomeraddress,$cust->mcustomercity,$cust->mcustomerzipcode,$cust->mcustomerprovince,$cust->mcustomercountry,$cust->mcustomercontactname,$cust->mcustomercontactposition,$cust->mcustomercontactemail,$cust->mcustomercontactemailphone,$cust->mcustomerarlimit,$cust->akun->mcoaname,$cust->mcustomertop,$cust->mcustomermax,$cust->mcustomerdefaultar
+						$cust->mcustomerid,$cust->mcustomername,$cust->categories()->category_name,$cust->mcustomeremail,$cust->mcustomerphone,$cust->mcustomerfax,$cust->mcustomerwebsite,$cust->mcustomeraddress,$cust->mcustomercity,$cust->mcustomerzipcode,$cust->mcustomerprovince,$cust->mcustomercountry,$cust->mcustomercontactname,$cust->mcustomercontactposition,$cust->mcustomercontactemail,$cust->mcustomercontactemailphone,$cust->mcustomerarlimit,$cust->akun()->mcoaname,$cust->mcustomertop,$cust->mcustomermax,$cust->mcustomerdefaultar
 					));
 				}
 			});
@@ -73,7 +76,7 @@ class MCustomerController extends Controller
 	}
 
 	public function excel(){
-		$this->customer = MCUSTOMER::where('void',0)->get();
+		$this->customer = MCUSTOMER::on(Auth::user()->db_name)->where('void',0)->get();
 		$this->count = 0;
 		return Excel::create('Master Pelanggan',function($excel){
 			$excel->sheet('Master Pelanggan',function($sheet){
@@ -84,7 +87,7 @@ class MCustomerController extends Controller
 				foreach($this->customer as $cust){
 					$this->count++;
 					$sheet->row($this->count,array(
-						$cust->mcustomerid,$cust->mcustomername,$cust->categories->category_name,$cust->mcustomeremail,$cust->mcustomerphone,$cust->mcustomerfax,$cust->mcustomerwebsite,$cust->mcustomeraddress,$cust->mcustomercity,$cust->mcustomerzipcode,$cust->mcustomerprovince,$cust->mcustomercountry,$cust->mcustomercontactname,$cust->mcustomercontactposition,$cust->mcustomercontactemail,$cust->mcustomercontactemailphone,$cust->mcustomerarlimit,$cust->akun->mcoaname,$cust->mcustomertop,$cust->mcustomermax,$cust->mcustomerdefaultar
+						$cust->mcustomerid,$cust->mcustomername,$cust->categories()->category_name,$cust->mcustomeremail,$cust->mcustomerphone,$cust->mcustomerfax,$cust->mcustomerwebsite,$cust->mcustomeraddress,$cust->mcustomercity,$cust->mcustomerzipcode,$cust->mcustomerprovince,$cust->mcustomercountry,$cust->mcustomercontactname,$cust->mcustomercontactposition,$cust->mcustomercontactemail,$cust->mcustomercontactemailphone,$cust->mcustomerarlimit,$cust->akun()->mcoaname,$cust->mcustomertop,$cust->mcustomermax,$cust->mcustomerdefaultar
 					));
 				}
 			});
@@ -92,7 +95,7 @@ class MCustomerController extends Controller
 	}
 
 	public function pdf(){
-		$data['customer'] = MCUSTOMER::where('void',0)->get();
+		$data['customer'] = MCUSTOMER::on(Auth::user()->db_name)->where('void',0)->get();
 		$pdf = PDF::loadview('admin/export/mcustomerpdf',$data);
 		return $pdf->setPaper('a4', 'landscape')->download('Master Pelanggan.pdf');
 	}

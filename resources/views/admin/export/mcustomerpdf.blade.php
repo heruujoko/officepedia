@@ -99,7 +99,7 @@
           <tr>
             <td>{{ $ct->mcustomerid }}</td>
             <td>{{ $ct->mcustomername }}</td>
-            <td>{{ $ct->categories->category_name }}</td>
+            <td>{{ $ct->categories()->category_name }}</td>
             <td>{{ $ct->mcustomeremail }}</td>
             <td>{{ $ct->mcustomerphone }}</td>
             <td>{{ $ct->mcustomerfax }}</td>
@@ -114,7 +114,7 @@
             <td>{{ $ct->mcustomercontactemail }}</td>
             <td>{{ $ct->mcustomercontactemailphone }}</td>
             <td>{{ $ct->mcustomerarlimit }}</td>
-            <td>{{ $ct->akun->mcoaname }}</td>
+            <td>{{ $ct->akun()->mcoaname }}</td>
             <td>{{ $ct->mcustomertop }}</td>
             <td>{{ $ct->mcustomerarmax }}</td>
             <td>{{ $ct->mcustomerdefaultar }}</td>
