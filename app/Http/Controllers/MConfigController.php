@@ -7,20 +7,25 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\MConfig;
 use App\MCOA;
+use Auth;
+use App\Helper\DBHelper;
+
 class MConfigController extends Controller
 {
     public function sysparam(){
-      $data['config'] = MConfig::find(1);
+      DBHelper::configureConnection(Auth::user()->db_alias);
+      $data['config'] = MConfig::on(Auth::user()->db_name)->where('id',1)->first();
       $data['active'] = 'sysparam';
       $data['section'] = 'Parameter Sistem';
       return view('admin.viewconfigsysparam',$data);
     }
 
     public function sysfeature(){
-      $data['config'] = MConfig::find(1);
+      DBHelper::configureConnection(Auth::user()->db_alias);
+      $data['config'] = MConfig::on(Auth::user()->db_name)->where('id',1)->first();
       $data['active'] = 'sysfeature';
       $data['section'] = 'Setting Fitur';
-      $data['mcoa'] = MCOA::all();
+      $data['mcoa'] = MCOA::on(Auth::user()->db_name)->get();
       return view('admin.viewconfigsysfeature',$data);
     }
 }

@@ -10,6 +10,8 @@ use App\MConfig;
 use Exception;
 use Carbon\Carbon;
 use Validator;
+use Auth;
+use App\Helper\DBHelper;
 
 class MConfigController extends Controller
 {
@@ -23,13 +25,15 @@ class MConfigController extends Controller
     }
 
     public function index(){
-      $mconfig = MConfig::find(1);
+      DBHelper::configureConnection(Auth::user()->db_alias);
+      $mconfig = MConfig::on(Auth::user()->db_name)->where('id',1)->first();
       return response()->json($mconfig);
     }
 
     public function update(Request $request){
+      DBHelper::configureConnection(Auth::user()->db_alias);
       try{
-        $mconfig = MConfig::find(1);
+        $mconfig = MConfig::on(Auth::user()->db_name)->where('id',1)->first();
         $mconfig->update($request->all());
         if($request->msyscompstartdate != null){
           $mconfig->msyscompstartdate = Carbon::createFromFormat('Y-m-d',$request->msyscompstartdate);
@@ -53,7 +57,8 @@ class MConfigController extends Controller
     }
 
     public function update_feature(Request $request){
-      $mconfig = MConfig::find(1);
+      DBHelper::configureConnection(Auth::user()->db_alias);
+      $mconfig = MConfig::on(Auth::user()->db_name)->where('id',1)->first();
       $mconfig->msysinvquotation = $this->convertBoolean($request->msysinvquotation);
       $mconfig->msysinvproformainvoice = $this->convertBoolean($request->msysinvproformainvoice);
       $mconfig->msysinvsellinginvoice = $this->convertBoolean($request->msysinvsellinginvoice);
@@ -100,7 +105,7 @@ class MConfigController extends Controller
     }
 
     public function logo(Request $request){
-
+      DBHelper::configureConnection(Auth::user()->db_alias);
       $validator = Validator::make($request->all(),[
         'logo' => 'required|max:2000|mimes:png,jpg,jpeg'
       ]);
@@ -112,7 +117,7 @@ class MConfigController extends Controller
         $filename = uniqid().'.'.$logo->extension();
         $logo->move('logo',$filename); //ke public logo
         $url = url('logo/'.$filename);
-        $mconfig = MConfig::find(1);
+        $mconfig = MConfig::on(Auth::user()->db_name)->where('id',1)->first();
         $mconfig->msyscomplogo = $url;
         $mconfig->save();
         return response()->json(array('url' => $url));
