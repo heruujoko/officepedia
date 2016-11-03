@@ -8,6 +8,8 @@ use App\Http\Requests;
 use App\User;
 use App\Helper\DBHelper;
 use Auth;
+use App\Helper\JWTHelper;
+use Cookie;
 
 class AuthController extends Controller
 {
@@ -40,7 +42,9 @@ class AuthController extends Controller
     public function auth(Request $request){
       $isVerified = Auth::attempt(['email' => $request->email,'password' => $request->password]);
       if($isVerified){
-        return redirect('admin-nano/index');
+        $user = User::where('email',$request->email)->firstOrFail();
+        $token = JWTHelper::encodeUser($user);
+        return redirect('admin-nano/index')->withCookie('token_id',$token,null,null,null,false,false);
       } else {
         flash('Username dan password tidak cocok','danger');
         return redirect('login');
@@ -50,6 +54,6 @@ class AuthController extends Controller
     public function logout(){
       Auth::logout();
       flash('Logout sukses','info');
-      return redirect('login');
+      return redirect('login')->withCookie(Cookie::forget('token_id'));
     }
 }

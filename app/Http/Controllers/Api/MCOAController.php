@@ -107,13 +107,16 @@ class MCOAController extends Controller
     }
 
     public function show($id){
-      $mcoa = MCOA::find($id);
+      DBHelper::configureConnection(Auth::user()->db_alias);
+      $mcoa = MCOA::on(Auth::user()->db_name)->where('id',$id)->first();
       return response()->json($mcoa);
     }
 
     public function store(Request $request){
+      DBHelper::configureConnection(Auth::user()->db_alias);
       try{
           $mcoa = new MCOA;
+          $mcoa->setConnection(Auth::user()->db_name);
           $mcoa->mcoacode = $request->mcoacode;
           $mcoa->mcoaname = $request->mcoaname;
           $mcoa->mcoatype = $request->mcoatype;
@@ -130,8 +133,10 @@ class MCOAController extends Controller
     }
 
     public function update(Request $request,$id){
+      DBHelper::configureConnection(Auth::user()->db_alias);
       try{
           $mcoa = MCOA::find($id);
+          $mcoa->setConnection(Auth::user()->db_name);
           $mcoa->mcoacode = $request->mcoacode;
           $mcoa->mcoaname = $request->mcoaname;
           $mcoa->mcoatype = $request->mcoatype;
@@ -144,7 +149,8 @@ class MCOAController extends Controller
     }
 
     public function destroy($id){
-      $mcoa = MCOA::find($id);
+      DBHelper::configureConnection(Auth::user()->db_alias);
+      $mcoa = MCOA::on(Auth::user()->db_name)->where('id',$id)->first();
       $mcoa->void = 1;
       $mcoa->save();
       return response()->json();
