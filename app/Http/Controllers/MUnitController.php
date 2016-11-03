@@ -8,6 +8,7 @@ use App\Http\Requests;
 use App\Munit;
 use Excel;
 use PDF;
+use Auth;
 
 class MUnitController extends Controller
 {
@@ -20,7 +21,7 @@ class MUnitController extends Controller
     return view('admin/viewmunits',$data);
   }
   public function csv(){
-    $this->brand = MUnit::all();
+    $this->brand = MUnit::on(Auth::user()->db_name)->where('void',0)->get();
     return Excel::create('Master Satuan Barang',function($excel){
       $excel->sheet('Master Satuan Barang',function($sheet){
         $this->count++;
@@ -37,7 +38,7 @@ class MUnitController extends Controller
     })->export('csv');
   }
   public function excel(){
-    $this->brand = MUnit::all();
+    $this->brand = MUnit::on(Auth::user()->db_name)->where('void',0)->get();
     return Excel::create('Master Satuan Barang',function($excel){
       $excel->sheet('Master Satuan Barang',function($sheet){
         $this->count++;
@@ -55,7 +56,7 @@ class MUnitController extends Controller
   }
 
   public function pdf(){
-    $data['satuans'] = MUnit::all();
+    $data['satuans'] = MUnit::on(Auth::user()->db_name)->where('void',0)->get();
     $pdf = PDF::loadview('admin/export/munits',$data);
     return $pdf->download('Master Satuan Barang.pdf');
   }

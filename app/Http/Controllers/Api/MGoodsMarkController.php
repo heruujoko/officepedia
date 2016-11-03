@@ -10,12 +10,13 @@ use App\MGoodsMark;
 use Datatables;
 use Exception;
 use DB;
+use Auth;
 
 class MGoodsMarkController extends Controller
 {
   public function index(){
     $this->iteration = 0;
-        $mcategory = MGoodsMark::where('void', '0')->orderby('created_at','desc')->get();
+        $mcategory = MGoodsMark::on(Auth::user()->db_name)->where('void', '0')->orderby('created_at','desc')->get();
         return Datatables::of($mcategory)->addColumn('action', function($mcategory){
 
           return '<center><div class="button">
@@ -31,13 +32,14 @@ class MGoodsMarkController extends Controller
   }
 
   public function show($id){
-    $mcategory = MGoodsMark::find($id);
+    $mcategory = MGoodsMark::on(Auth::user()->db_name)->where('id',$id)->first();
     return response()->json($mcategory);
 
 	}
 	public function store(Request $request){
     try{
-        $mcategory = MGoodsMark::create($request->all());
+        $mcategory = new MGoodsMark($request->all());
+        $mcategory->setConnection(Auth::user()->db_name);
         $mcategory->void = 0;
         $mcategory->save();
         return response()->json($mcategory);
@@ -47,7 +49,7 @@ class MGoodsMarkController extends Controller
 	}
 	public function update(Request $request,$id){
     try{
-      $mcategory = MGoodsMark::find($id);
+      $mcategory = MGoodsMark::on(Auth::user()->db_name)->where('id',$id)->first();
       $mcategory->update($request->all());
       return response()->json($mcategory);
     }catch(Exception $e){
@@ -56,7 +58,7 @@ class MGoodsMarkController extends Controller
 
 	}
 	public function destroy($id){
-    $mcategory = MGoodsMark::find($id);
+    $mcategory = MGoodsMark::on(Auth::user()->db_name)->where('id',$id)->first();
     // DB::table('mcategorygoodsmark')->where('id',$id)->update(['void' => '1']);
     $mcategory->void = 1;
     $mcategory->save();

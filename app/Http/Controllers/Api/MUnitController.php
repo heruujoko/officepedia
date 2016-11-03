@@ -10,12 +10,13 @@ use Exception;
 use DB;
 use Datatables;
 use App\MUnit;
+use Auth;
 
 class MUnitController extends Controller
 {
   public function index(){
         $this->iteration = 0;
-        $munit = MUnit::where('void', '0')->orderby('created_at','desc')->get();
+        $munit = MUnit::on(Auth::user()->db_name)->where('void', '0')->orderby('created_at','desc')->get();
         return Datatables::of($munit)->addColumn('action', function($munit){
 
           return '<center><div class="button">
@@ -30,13 +31,14 @@ class MUnitController extends Controller
         ->make(true);
   }
   public function show($id){
-        $munit = MUnit::find($id);
+        $munit = MUnit::on(Auth::user()->db_name)->where('id',$id)->first();
         return response()->json($munit);
   }
 
     public function store(Request $request){
       try{
-        $munit = MUnit::create($request->all());
+        $munit = new MUnit($request->all());
+        $munit->setConnection(Auth::user()->db_name);
         $munit->void = 0;
         $munit->save();
         return response()->json($munit);
@@ -48,7 +50,7 @@ class MUnitController extends Controller
 
   public function update(Request $request,$id){
     try{
-      $munit = MUnit::find($id);
+      $munit = MUnit::on(Auth::user()->db_name)->where('id',$id)->first();
       $munit->update($request->all());
       return response()->json($munit);
     }catch(Exception $e){
@@ -58,7 +60,7 @@ class MUnitController extends Controller
   }
 
   public function destroy($id){
-    $munit = MUnit::find($id);
+    $munit = MUnit::on(Auth::user()->db_name)->where('id',$id)->first();
     $munit->void = 1;
     $munit->save();
     return response()->json();

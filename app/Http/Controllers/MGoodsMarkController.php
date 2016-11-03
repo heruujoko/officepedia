@@ -7,6 +7,9 @@ use App\MGoodsMark;
 use App\Http\Requests;
 use Excel;
 use PDF;
+use Auth;
+use App\Helper\DBHelper;
+
 class MGoodsMarkController extends Controller
 {
     public function index(){
@@ -16,7 +19,7 @@ class MGoodsMarkController extends Controller
     }
 
     public function csv(){
-  		$this->mcategory = MGoodsMark::where('void',0)->get();
+  		$this->mcategory = MGoodsMark::on(Auth::user()->db_name)->where('void',0)->get();
   		$this->count = 0;
   		return Excel::create('Master Kategori Merek Barang',function($excel){
   			$excel->sheet('Master Kategori Merek Barang',function($sheet){
@@ -34,7 +37,7 @@ class MGoodsMarkController extends Controller
   		})->export('csv');
   	}
   	public function excel(){
-  		$this->mcategory = MGoodsMark::where('void',0)->get();
+  		$this->mcategory = MGoodsMark::on(Auth::user()->db_name)->where('void',0)->get();
   		$this->count = 0;
   		return Excel::create('Master Kategori Merek Barang',function($excel){
   			$excel->sheet('Master Kateori Merek Barang',function($sheet){
@@ -52,7 +55,7 @@ class MGoodsMarkController extends Controller
   		})->export('xlsx');
   	}
   	public function pdf(){
-  		$data['mcategory'] = MGoodsMark::where('void',0)->get();
+  		$data['mcategory'] = MGoodsMark::on(Auth::user()->db_name)->where('void',0)->get();
   		$pdf = PDF::loadview('admin/export/mcategory',$data);
   		return $pdf->setPaper('a4', 'potrait')->download('Master Kategori Merek Barang.pdf');
   	}

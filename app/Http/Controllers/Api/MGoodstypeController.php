@@ -10,6 +10,8 @@ use App\MGoodstype;
 use Datatables;
 use Exception;
 use DB;
+use Auth;
+use App\Helper\DBHelper;
 
 class MGoodstypeController extends Controller
 {
@@ -17,7 +19,7 @@ class MGoodstypeController extends Controller
 
   public function index(){
     $this->iteration = 0;
-        $mbrand = MGoodstype::where('void', '0')->orderby('created_at','desc')->get();
+        $mbrand = MGoodstype::on(Auth::user()->db_name)->where('void', '0')->orderby('created_at','desc')->get();
         return Datatables::of($mbrand)->addColumn('action', function($mbrand){
 
           return '<center><div class="button">
@@ -32,13 +34,14 @@ class MGoodstypeController extends Controller
         ->make(true);
   }
   public function show($id){
-    $mbrand = MGoodstype::find($id);
+    $mbrand = MGoodstype::on(Auth::user()->db_name)->where('id',$id)->first();
         return response()->json($mbrand);
   }
 
     public function store(Request $request){
       try{
-        $mbrand = MGoodstype::create($request->all());
+        $mbrand = new MGoodstype($request->all());
+        $mbrand->setConnection(Auth::user()->db_name);
         $mbrand->void = 0;
         $mbrand->save();
         return response()->json($mbrand);
@@ -50,7 +53,7 @@ class MGoodstypeController extends Controller
 
   public function update(Request $request,$id){
     try{
-      $mbrand = MGoodstype::find($id);
+      $mbrand = MGoodstype::on(Auth::user()->db_name)->where('id',$id)->first();
       $mbrand->update($request->all());
       return response()->json($mbrand);
     }catch(Exception $e){
@@ -60,8 +63,9 @@ class MGoodstypeController extends Controller
   }
 
   public function destroy($id){
-  $mbrand = MGoodstype::find($id);
-    DB::table('mgoodstype')->where('id',$id)->update(['void' => '1']);
+    $mbrand = MGoodstype::on(Auth::user()->db_name)->where('id',$id)->first();
+    $mbrand->void = 1;
+    $mbrand->save();
     return response()->json();
   }
 

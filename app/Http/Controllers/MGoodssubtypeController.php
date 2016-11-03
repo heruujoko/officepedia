@@ -9,20 +9,22 @@ use App\MGoodssubtype;
 use App\MGoodstype;
 use Excel;
 use PDF;
+use Auth;
+use App\Helper\DBHelper;
 
 class MGoodssubtypeController extends Controller
 {
     public function index(){
     $data['section'] = 'Master Sub Tipe Barang';
     $data['active'] = 'mgoodssubtype';
-    $data['mgoodstype'] = MGoodstype::all();
-    $data['mgoodssubtype'] = MGoodssubtype::all();
+    $data['mgoodstype'] = MGoodstype::on(Auth::user()->db_name)->get();
+    $data['mgoodssubtype'] = MGoodssubtype::on(Auth::user()->db_name)->get();
     return view('admin/viewmgoodssubtype',$data);
   }
    private $count =0;
 
   public function csv(){
-    $this->brand = MGoodssubtype::all();
+    $this->brand = MGoodssubtype::on(Auth::user()->db_name)->get();
     return Excel::create('Master Sub Tipe Barang',function($excel){
       $excel->sheet('Master Sub Tipe Barang',function($sheet){
         $this->count++;
@@ -39,7 +41,7 @@ class MGoodssubtypeController extends Controller
     })->export('csv');
 }
 public function excel(){
-    $this->brand = MGoodssubtype::all();
+    $this->brand = MGoodssubtype::on(Auth::user()->db_name)->get();
     return Excel::create('Master Sub Tipe Barang',function($excel){
       $excel->sheet('Master Sub Tipe Barang',function($sheet){
         $this->count++;
@@ -57,7 +59,7 @@ public function excel(){
   }
 
   public function pdf(){
-    $data['brand'] = MGoodssubtype::all();
+    $data['brand'] = MGoodssubtype::on(Auth::user()->db_name)->get();
     $pdf = PDF::loadview('admin/export/mgoodssubtypepdf',$data);
     return $pdf->download('Master Sub Tipe Barang.pdf');
   }
