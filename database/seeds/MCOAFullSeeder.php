@@ -19,49 +19,57 @@ class MCOAFullSeeder extends Seeder
       MCOAGrandParent::create([
         'mcoagrandparentcode' => '1000.00',
         'mcoagrandparentname' => 'Harta',
-        'mcoagrandparenttype' => 'D'
+        'mcoagrandparenttype' => 'D',
+        'void' => 0
       ]);
 
       MCOAGrandParent::create([
         'mcoagrandparentcode' => '2000.00',
         'mcoagrandparentname' => 'Kewajiban',
-        'mcoagrandparenttype' => 'K'
+        'mcoagrandparenttype' => 'K',
+        'void' => 0
       ]);
 
       MCOAGrandParent::create([
         'mcoagrandparentcode' => '3000.00',
         'mcoagrandparentname' => 'Modal',
-        'mcoagrandparenttype' => 'K'
+        'mcoagrandparenttype' => 'K',
+        'void' => 0
       ]);
 
       MCOAGrandParent::create([
         'mcoagrandparentcode' => '4000.00',
         'mcoagrandparentname' => 'Pendapatan',
-        'mcoagrandparenttype' => 'K'
+        'mcoagrandparenttype' => 'K',
+        'void' => 0
       ]);
 
       MCOAGrandParent::create([
         'mcoagrandparentcode' => '5000.00',
         'mcoagrandparentname' => 'Biaya Atas Pendapatan',
-        'mcoagrandparenttype' => 'D'
+        'mcoagrandparenttype' => 'D',
+        'void' => 0
       ]);
 
       MCOAGrandParent::create([
         'mcoagrandparentcode' => '6000.00',
         'mcoagrandparentname' => 'Pengeluaran Operasional',
-        'mcoagrandparenttype' => 'D'
+        'mcoagrandparenttype' => 'D',
+        'void' => 0
       ]);
 
       MCOAGrandParent::create([
         'mcoagrandparentcode' => '7000.00',
         'mcoagrandparentname' => 'Pendapatan Luar Usaha',
-        'mcoagrandparenttype' => 'K'
+        'mcoagrandparenttype' => 'K',
+        'void' => 0
       ]);
 
       MCOAGrandParent::create([
         'mcoagrandparentcode' => '8000.00',
         'mcoagrandparentname' => 'Pengeluaran Luar Usaha',
-        'mcoagrandparenttype' => 'D'
+        'mcoagrandparenttype' => 'D',
+        'void' => 0
       ]);
 
       // setup parent and child data
@@ -73,7 +81,8 @@ class MCOAFullSeeder extends Seeder
         'mcoaparentname' => 'Kas',
         'mcoaparenttype' => $harta->mcoagrandparenttype,
         'mcoagrandparentcode' => $harta->mcoagrandparentcode,
-        'mcoagrandparentname' => $harta->mcoagrandparentname
+        'mcoagrandparentname' => $harta->mcoagrandparentname,
+        'void' => 0
       ]);
 
       $kas = MCOAParent::where('mcoaparentcode','1101.00')->first();
@@ -85,7 +94,8 @@ class MCOAFullSeeder extends Seeder
           'mcoaparentname' => $kas->mcoaparentname,
           'mcoatype' => $kas->mcoaparenttype,
           'mcoagrandparentcode' => $harta->mcoagrandparentcode,
-          'mcoagrandparentname' => $harta->mcoagrandparentname
+          'mcoagrandparentname' => $harta->mcoagrandparentname,
+          'void' => 0
         ]);
 
         MCOA::create([
@@ -95,7 +105,8 @@ class MCOAFullSeeder extends Seeder
           'mcoaparentname' => $kas->mcoaparentname,
           'mcoatype' => $kas->mcoaparenttype,
           'mcoagrandparentcode' => $harta->mcoagrandparentcode,
-          'mcoagrandparentname' => $harta->mcoagrandparentname
+          'mcoagrandparentname' => $harta->mcoagrandparentname,
+          'void' => 0
         ]);
 
         MCOA::create([
@@ -105,7 +116,8 @@ class MCOAFullSeeder extends Seeder
           'mcoaparentname' => $kas->mcoaparentname,
           'mcoatype' => $kas->mcoaparenttype,
           'mcoagrandparentcode' => $harta->mcoagrandparentcode,
-          'mcoagrandparentname' => $harta->mcoagrandparentname
+          'mcoagrandparentname' => $harta->mcoagrandparentname,
+          'void' => 0
         ]);
 
       MCOAParent::create([
@@ -113,7 +125,8 @@ class MCOAFullSeeder extends Seeder
         'mcoaparentname' => 'Bank',
         'mcoaparenttype' => $harta->mcoagrandparenttype,
         'mcoagrandparentcode' => $harta->mcoagrandparentcode,
-        'mcoagrandparentname' => $harta->mcoagrandparentname
+        'mcoagrandparentname' => $harta->mcoagrandparentname,
+        'void' => 0
       ]);
 
       $bank = MCOAParent::where('mcoaparentcode','1102.00')->first();
@@ -125,7 +138,8 @@ class MCOAFullSeeder extends Seeder
           'mcoaparentname' => $bank->mcoaparentname,
           'mcoatype' => $bank->mcoaparenttype,
           'mcoagrandparentcode' => $harta->mcoagrandparentcode,
-          'mcoagrandparentname' => $harta->mcoagrandparentname
+          'mcoagrandparentname' => $harta->mcoagrandparentname,
+          'void' => 0
         ]);
 
         MCOA::create([
@@ -135,7 +149,8 @@ class MCOAFullSeeder extends Seeder
           'mcoaparentname' => $bank->mcoaparentname,
           'mcoatype' => $bank->mcoaparenttype,
           'mcoagrandparentcode' => $harta->mcoagrandparentcode,
-          'mcoagrandparentname' => $harta->mcoagrandparentname
+          'mcoagrandparentname' => $harta->mcoagrandparentname,
+          'void' => 0
         ]);
 
         MCOA::create([
@@ -145,7 +160,8 @@ class MCOAFullSeeder extends Seeder
           'mcoaparentname' => $bank->mcoaparentname,
           'mcoatype' => $bank->mcoaparenttype,
           'mcoagrandparentcode' => $harta->mcoagrandparentcode,
-          'mcoagrandparentname' => $harta->mcoagrandparentname
+          'mcoagrandparentname' => $harta->mcoagrandparentname,
+          'void' => 0
         ]);
 
       MCOAParent::create([
@@ -153,7 +169,8 @@ class MCOAFullSeeder extends Seeder
         'mcoaparentname' => 'Piutang Usaha',
         'mcoaparenttype' => $harta->mcoagrandparenttype,
         'mcoagrandparentcode' => $harta->mcoagrandparentcode,
-        'mcoagrandparentname' => $harta->mcoagrandparentname
+        'mcoagrandparentname' => $harta->mcoagrandparentname,
+        'void' => 0
       ]);
 
       $piutang_usaha = MCOAParent::where('mcoaparentcode','1103.00')->first();
@@ -165,7 +182,8 @@ class MCOAFullSeeder extends Seeder
           'mcoaparentname' => $piutang_usaha->mcoaparentname,
           'mcoatype' => $piutang_usaha->mcoaparenttype,
           'mcoagrandparentcode' => $harta->mcoagrandparentcode,
-          'mcoagrandparentname' => $harta->mcoagrandparentname
+          'mcoagrandparentname' => $harta->mcoagrandparentname,
+          'void' => 0
         ]);
 
         MCOA::create([
@@ -175,7 +193,8 @@ class MCOAFullSeeder extends Seeder
           'mcoaparentname' => $piutang_usaha->mcoaparentname,
           'mcoatype' => $piutang_usaha->mcoaparenttype,
           'mcoagrandparentcode' => $harta->mcoagrandparentcode,
-          'mcoagrandparentname' => $harta->mcoagrandparentname
+          'mcoagrandparentname' => $harta->mcoagrandparentname,
+          'void' => 0
         ]);
 
         MCOA::create([
@@ -185,7 +204,8 @@ class MCOAFullSeeder extends Seeder
           'mcoaparentname' => $piutang_usaha->mcoaparentname,
           'mcoatype' => $piutang_usaha->mcoaparenttype,
           'mcoagrandparentcode' => $harta->mcoagrandparentcode,
-          'mcoagrandparentname' => $harta->mcoagrandparentname
+          'mcoagrandparentname' => $harta->mcoagrandparentname,
+          'void' => 0
         ]);
 
         MCOA::create([
@@ -195,7 +215,8 @@ class MCOAFullSeeder extends Seeder
           'mcoaparentname' => $piutang_usaha->mcoaparentname,
           'mcoatype' => $piutang_usaha->mcoaparenttype,
           'mcoagrandparentcode' => $harta->mcoagrandparentcode,
-          'mcoagrandparentname' => $harta->mcoagrandparentname
+          'mcoagrandparentname' => $harta->mcoagrandparentname,
+          'void' => 0
         ]);
 
       MCOAParent::create([
@@ -203,7 +224,8 @@ class MCOAFullSeeder extends Seeder
         'mcoaparentname' => 'Piutang Non Usaha',
         'mcoaparenttype' => $harta->mcoagrandparenttype,
         'mcoagrandparentcode' => $harta->mcoagrandparentcode,
-        'mcoagrandparentname' => $harta->mcoagrandparentname
+        'mcoagrandparentname' => $harta->mcoagrandparentname,
+        'void' => 0
       ]);
 
       $piutang_non_usaha = MCOAParent::where('mcoaparentcode','1104.00')->first();
@@ -215,7 +237,8 @@ class MCOAFullSeeder extends Seeder
           'mcoaparentname' => $piutang_non_usaha->mcoaparentname,
           'mcoatype' => $piutang_non_usaha->mcoaparenttype,
           'mcoagrandparentcode' => $harta->mcoagrandparentcode,
-          'mcoagrandparentname' => $harta->mcoagrandparentname
+          'mcoagrandparentname' => $harta->mcoagrandparentname,
+          'void' => 0
         ]);
 
         MCOA::create([
@@ -225,7 +248,8 @@ class MCOAFullSeeder extends Seeder
           'mcoaparentname' => $piutang_non_usaha->mcoaparentname,
           'mcoatype' => $piutang_non_usaha->mcoaparenttype,
           'mcoagrandparentcode' => $harta->mcoagrandparentcode,
-          'mcoagrandparentname' => $harta->mcoagrandparentname
+          'mcoagrandparentname' => $harta->mcoagrandparentname,
+          'void' => 0
         ]);
 
         MCOA::create([
@@ -235,7 +259,8 @@ class MCOAFullSeeder extends Seeder
           'mcoaparentname' => $piutang_non_usaha->mcoaparentname,
           'mcoatype' => $piutang_non_usaha->mcoaparenttype,
           'mcoagrandparentcode' => $harta->mcoagrandparentcode,
-          'mcoagrandparentname' => $harta->mcoagrandparentname
+          'mcoagrandparentname' => $harta->mcoagrandparentname,
+          'void' => 0
         ]);
 
         MCOA::create([
@@ -245,7 +270,8 @@ class MCOAFullSeeder extends Seeder
           'mcoaparentname' => $piutang_non_usaha->mcoaparentname,
           'mcoatype' => $piutang_non_usaha->mcoaparenttype,
           'mcoagrandparentcode' => $harta->mcoagrandparentcode,
-          'mcoagrandparentname' => $harta->mcoagrandparentname
+          'mcoagrandparentname' => $harta->mcoagrandparentname,
+          'void' => 0
         ]);
 
         MCOA::create([
@@ -255,7 +281,8 @@ class MCOAFullSeeder extends Seeder
           'mcoaparentname' => $piutang_non_usaha->mcoaparentname,
           'mcoatype' => $piutang_non_usaha->mcoaparenttype,
           'mcoagrandparentcode' => $harta->mcoagrandparentcode,
-          'mcoagrandparentname' => $harta->mcoagrandparentname
+          'mcoagrandparentname' => $harta->mcoagrandparentname,
+          'void' => 0
         ]);
 
         MCOA::create([
@@ -265,7 +292,8 @@ class MCOAFullSeeder extends Seeder
           'mcoaparentname' => $piutang_non_usaha->mcoaparentname,
           'mcoatype' => $piutang_non_usaha->mcoaparenttype,
           'mcoagrandparentcode' => $harta->mcoagrandparentcode,
-          'mcoagrandparentname' => $harta->mcoagrandparentname
+          'mcoagrandparentname' => $harta->mcoagrandparentname,
+          'void' => 0
         ]);
 
       MCOAParent::create([
@@ -273,7 +301,8 @@ class MCOAFullSeeder extends Seeder
         'mcoaparentname' => 'Persediaan',
         'mcoaparenttype' => $harta->mcoagrandparenttype,
         'mcoagrandparentcode' => $harta->mcoagrandparentcode,
-        'mcoagrandparentname' => $harta->mcoagrandparentname
+        'mcoagrandparentname' => $harta->mcoagrandparentname,
+        'void' => 0
       ]);
 
       $persediaan = MCOAParent::where('mcoaparentcode','1105.00')->first();
@@ -285,7 +314,8 @@ class MCOAFullSeeder extends Seeder
           'mcoaparentname' => $persediaan->mcoaparentname,
           'mcoatype' => $persediaan->mcoaparenttype,
           'mcoagrandparentcode' => $harta->mcoagrandparentcode,
-          'mcoagrandparentname' => $harta->mcoagrandparentname
+          'mcoagrandparentname' => $harta->mcoagrandparentname,
+          'void' => 0
         ]);
 
         MCOA::create([
@@ -295,7 +325,8 @@ class MCOAFullSeeder extends Seeder
           'mcoaparentname' => $persediaan->mcoaparentname,
           'mcoatype' => $persediaan->mcoaparenttype,
           'mcoagrandparentcode' => $harta->mcoagrandparentcode,
-          'mcoagrandparentname' => $harta->mcoagrandparentname
+          'mcoagrandparentname' => $harta->mcoagrandparentname,
+          'void' => 0
         ]);
 
         MCOA::create([
@@ -305,7 +336,8 @@ class MCOAFullSeeder extends Seeder
           'mcoaparentname' => $persediaan->mcoaparentname,
           'mcoatype' => $persediaan->mcoaparenttype,
           'mcoagrandparentcode' => $harta->mcoagrandparentcode,
-          'mcoagrandparentname' => $harta->mcoagrandparentname
+          'mcoagrandparentname' => $harta->mcoagrandparentname,
+          'void' => 0
         ]);
 
         MCOA::create([
@@ -315,7 +347,8 @@ class MCOAFullSeeder extends Seeder
           'mcoaparentname' => $persediaan->mcoaparentname,
           'mcoatype' => $persediaan->mcoaparenttype,
           'mcoagrandparentcode' => $harta->mcoagrandparentcode,
-          'mcoagrandparentname' => $harta->mcoagrandparentname
+          'mcoagrandparentname' => $harta->mcoagrandparentname,
+          'void' => 0
         ]);
 
         MCOA::create([
@@ -325,7 +358,8 @@ class MCOAFullSeeder extends Seeder
           'mcoaparentname' => $persediaan->mcoaparentname,
           'mcoatype' => $persediaan->mcoaparenttype,
           'mcoagrandparentcode' => $harta->mcoagrandparentcode,
-          'mcoagrandparentname' => $harta->mcoagrandparentname
+          'mcoagrandparentname' => $harta->mcoagrandparentname,
+          'void' => 0
         ]);
 
         MCOA::create([
@@ -335,7 +369,8 @@ class MCOAFullSeeder extends Seeder
           'mcoaparentname' => $persediaan->mcoaparentname,
           'mcoatype' => $persediaan->mcoaparenttype,
           'mcoagrandparentcode' => $harta->mcoagrandparentcode,
-          'mcoagrandparentname' => $harta->mcoagrandparentname
+          'mcoagrandparentname' => $harta->mcoagrandparentname,
+          'void' => 0
         ]);
 
       MCOAParent::create([
@@ -343,7 +378,8 @@ class MCOAFullSeeder extends Seeder
         'mcoaparentname' => 'Uang Muka',
         'mcoaparenttype' => $harta->mcoagrandparenttype,
         'mcoagrandparentcode' => $harta->mcoagrandparentcode,
-        'mcoagrandparentname' => $harta->mcoagrandparentname
+        'mcoagrandparentname' => $harta->mcoagrandparentname,
+        'void' => 0
       ]);
 
       $uang_muka = MCOAParent::where('mcoaparentcode','1106.00')->first();
@@ -355,7 +391,8 @@ class MCOAFullSeeder extends Seeder
           'mcoaparentname' => $uang_muka->mcoaparentname,
           'mcoatype' => $uang_muka->mcoaparenttype,
           'mcoagrandparentcode' => $harta->mcoagrandparentcode,
-          'mcoagrandparentname' => $harta->mcoagrandparentname
+          'mcoagrandparentname' => $harta->mcoagrandparentname,
+          'void' => 0
         ]);
 
         MCOA::create([
@@ -365,7 +402,8 @@ class MCOAFullSeeder extends Seeder
           'mcoaparentname' => $uang_muka->mcoaparentname,
           'mcoatype' => $persediaan->mcoaparenttype,
           'mcoagrandparentcode' => $harta->mcoagrandparentcode,
-          'mcoagrandparentname' => $harta->mcoagrandparentname
+          'mcoagrandparentname' => $harta->mcoagrandparentname,
+          'void' => 0
         ]);
 
       MCOAParent::create([
@@ -373,7 +411,8 @@ class MCOAFullSeeder extends Seeder
         'mcoaparentname' => 'Pajak Dibayar Dimuka',
         'mcoaparenttype' => $harta->mcoagrandparenttype,
         'mcoagrandparentcode' => $harta->mcoagrandparentcode,
-        'mcoagrandparentname' => $harta->mcoagrandparentname
+        'mcoagrandparentname' => $harta->mcoagrandparentname,
+        'void' => 0
       ]);
 
       $pajak_dibayar_dimuka = MCOAParent::where('mcoaparentcode','1107.00')->first();
@@ -385,7 +424,8 @@ class MCOAFullSeeder extends Seeder
           'mcoaparentname' => $pajak_dibayar_dimuka->mcoaparentname,
           'mcoatype' => $pajak_dibayar_dimuka->mcoaparenttype,
           'mcoagrandparentcode' => $harta->mcoagrandparentcode,
-          'mcoagrandparentname' => $harta->mcoagrandparentname
+          'mcoagrandparentname' => $harta->mcoagrandparentname,
+          'void' => 0
         ]);
 
         MCOA::create([
@@ -395,7 +435,8 @@ class MCOAFullSeeder extends Seeder
           'mcoaparentname' => $pajak_dibayar_dimuka->mcoaparentname,
           'mcoatype' => $pajak_dibayar_dimuka->mcoaparenttype,
           'mcoagrandparentcode' => $harta->mcoagrandparentcode,
-          'mcoagrandparentname' => $harta->mcoagrandparentname
+          'mcoagrandparentname' => $harta->mcoagrandparentname,
+          'void' => 0
         ]);
 
         MCOA::create([
@@ -405,7 +446,8 @@ class MCOAFullSeeder extends Seeder
           'mcoaparentname' => $pajak_dibayar_dimuka->mcoaparentname,
           'mcoatype' => $pajak_dibayar_dimuka->mcoaparenttype,
           'mcoagrandparentcode' => $harta->mcoagrandparentcode,
-          'mcoagrandparentname' => $harta->mcoagrandparentname
+          'mcoagrandparentname' => $harta->mcoagrandparentname,
+          'void' => 0
         ]);
 
       MCOAParent::create([
@@ -413,7 +455,8 @@ class MCOAFullSeeder extends Seeder
         'mcoaparentname' => 'Biaya Dibayar Dimuka',
         'mcoaparenttype' => $harta->mcoagrandparenttype,
         'mcoagrandparentcode' => $harta->mcoagrandparentcode,
-        'mcoagrandparentname' => $harta->mcoagrandparentname
+        'mcoagrandparentname' => $harta->mcoagrandparentname,
+        'void' => 0
       ]);
 
       $biaya_dibayar_dimuka = MCOAParent::where('mcoaparentcode','1108.00')->first();
@@ -425,7 +468,8 @@ class MCOAFullSeeder extends Seeder
           'mcoaparentname' => $biaya_dibayar_dimuka->mcoaparentname,
           'mcoatype' => $biaya_dibayar_dimuka->mcoaparenttype,
           'mcoagrandparentcode' => $harta->mcoagrandparentcode,
-          'mcoagrandparentname' => $harta->mcoagrandparentname
+          'mcoagrandparentname' => $harta->mcoagrandparentname,
+          'void' => 0
         ]);
 
         MCOA::create([
@@ -435,7 +479,8 @@ class MCOAFullSeeder extends Seeder
           'mcoaparentname' => $biaya_dibayar_dimuka->mcoaparentname,
           'mcoatype' => $biaya_dibayar_dimuka->mcoaparenttype,
           'mcoagrandparentcode' => $harta->mcoagrandparentcode,
-          'mcoagrandparentname' => $harta->mcoagrandparentname
+          'mcoagrandparentname' => $harta->mcoagrandparentname,
+          'void' => 0
         ]);
 
         MCOA::create([
@@ -445,7 +490,8 @@ class MCOAFullSeeder extends Seeder
           'mcoaparentname' => $biaya_dibayar_dimuka->mcoaparentname,
           'mcoatype' => $biaya_dibayar_dimuka->mcoaparenttype,
           'mcoagrandparentcode' => $harta->mcoagrandparentcode,
-          'mcoagrandparentname' => $harta->mcoagrandparentname
+          'mcoagrandparentname' => $harta->mcoagrandparentname,
+          'void' => 0
         ]);
 
       MCOAParent::create([
@@ -453,7 +499,8 @@ class MCOAFullSeeder extends Seeder
         'mcoaparentname' => 'Investasi Jangka Panjang',
         'mcoaparenttype' => $harta->mcoagrandparenttype,
         'mcoagrandparentcode' => $harta->mcoagrandparentcode,
-        'mcoagrandparentname' => $harta->mcoagrandparentname
+        'mcoagrandparentname' => $harta->mcoagrandparentname,
+        'void' => 0
       ]);
 
       $investasi_jangka_panjang = MCOAParent::where('mcoaparentcode','1109.00')->first();
@@ -465,7 +512,8 @@ class MCOAFullSeeder extends Seeder
           'mcoaparentcode' => $investasi_jangka_panjang->mcoaparentcode,
           'mcoaparentname' => $investasi_jangka_panjang->mcoaparentname,
           'mcoagrandparentcode' => $harta->mcoagrandparentcode,
-          'mcoagrandparentname' => $harta->mcoagrandparentname
+          'mcoagrandparentname' => $harta->mcoagrandparentname,
+          'void' => 0
         ]);
 
         MCOA::create([
@@ -475,7 +523,8 @@ class MCOAFullSeeder extends Seeder
           'mcoaparentcode' => $investasi_jangka_panjang->mcoaparentcode,
           'mcoaparentname' => $investasi_jangka_panjang->mcoaparentname,
           'mcoagrandparentcode' => $harta->mcoagrandparentcode,
-          'mcoagrandparentname' => $harta->mcoagrandparentname
+          'mcoagrandparentname' => $harta->mcoagrandparentname,
+          'void' => 0
         ]);
 
       MCOAParent::create([
@@ -483,7 +532,8 @@ class MCOAFullSeeder extends Seeder
         'mcoaparentname' => 'Harta Lainya',
         'mcoaparenttype' => $harta->mcoagrandparenttype,
         'mcoagrandparentcode' => $harta->mcoagrandparentcode,
-        'mcoagrandparentname' => $harta->mcoagrandparentname
+        'mcoagrandparentname' => $harta->mcoagrandparentname,
+        'void' => 0
       ]);
 
       $harta_lainya = MCOAParent::where('mcoaparentcode','1110.00')->first();
@@ -495,7 +545,8 @@ class MCOAFullSeeder extends Seeder
           'mcoaparentcode' => $harta_lainya->mcoaparentcode,
           'mcoaparentname' => $harta_lainya->mcoaparentname,
           'mcoagrandparentcode' => $harta->mcoagrandparentcode,
-          'mcoagrandparentname' => $harta->mcoagrandparentname
+          'mcoagrandparentname' => $harta->mcoagrandparentname,
+          'void' => 0
         ]);
 
         MCOA::create([
@@ -505,7 +556,8 @@ class MCOAFullSeeder extends Seeder
           'mcoaparentcode' => $harta_lainya->mcoaparentcode,
           'mcoaparentname' => $harta_lainya->mcoaparentname,
           'mcoagrandparentcode' => $harta->mcoagrandparentcode,
-          'mcoagrandparentname' => $harta->mcoagrandparentname
+          'mcoagrandparentname' => $harta->mcoagrandparentname,
+          'void' => 0
         ]);
 
       MCOAParent::create([
@@ -513,7 +565,8 @@ class MCOAFullSeeder extends Seeder
         'mcoaparentname' => 'Harta Tetap Berwujud',
         'mcoaparenttype' => $harta->mcoagrandparenttype,
         'mcoagrandparentcode' => $harta->mcoagrandparentcode,
-        'mcoagrandparentname' => $harta->mcoagrandparentname
+        'mcoagrandparentname' => $harta->mcoagrandparentname,
+        'void' => 0
       ]);
 
       $harta_tetap_berwujud = MCOAParent::where('mcoaparentcode','1201.00')->first();
@@ -525,7 +578,8 @@ class MCOAFullSeeder extends Seeder
           'mcoaparentcode' => $harta_tetap_berwujud->mcoaparentcode,
           'mcoaparentname' => $harta_tetap_berwujud->mcoaparentname,
           'mcoagrandparentcode' => $harta->mcoagrandparentcode,
-          'mcoagrandparentname' => $harta->mcoagrandparentname
+          'mcoagrandparentname' => $harta->mcoagrandparentname,
+          'void' => 0
         ]);
 
         MCOA::create([
@@ -535,7 +589,8 @@ class MCOAFullSeeder extends Seeder
           'mcoaparentcode' => $harta_tetap_berwujud->mcoaparentcode,
           'mcoaparentname' => $harta_tetap_berwujud->mcoaparentname,
           'mcoagrandparentcode' => $harta->mcoagrandparentcode,
-          'mcoagrandparentname' => $harta->mcoagrandparentname
+          'mcoagrandparentname' => $harta->mcoagrandparentname,
+          'void' => 0
         ]);
 
         MCOA::create([
@@ -545,7 +600,8 @@ class MCOAFullSeeder extends Seeder
           'mcoaparentcode' => $harta_tetap_berwujud->mcoaparentcode,
           'mcoaparentname' => $harta_tetap_berwujud->mcoaparentname,
           'mcoagrandparentcode' => $harta->mcoagrandparentcode,
-          'mcoagrandparentname' => $harta->mcoagrandparentname
+          'mcoagrandparentname' => $harta->mcoagrandparentname,
+          'void' => 0
         ]);
 
         MCOA::create([
@@ -555,7 +611,8 @@ class MCOAFullSeeder extends Seeder
           'mcoaparentcode' => $harta_tetap_berwujud->mcoaparentcode,
           'mcoaparentname' => $harta_tetap_berwujud->mcoaparentname,
           'mcoagrandparentcode' => $harta->mcoagrandparentcode,
-          'mcoagrandparentname' => $harta->mcoagrandparentname
+          'mcoagrandparentname' => $harta->mcoagrandparentname,
+          'void' => 0
         ]);
 
         MCOA::create([
@@ -565,7 +622,8 @@ class MCOAFullSeeder extends Seeder
           'mcoaparentcode' => $harta_tetap_berwujud->mcoaparentcode,
           'mcoaparentname' => $harta_tetap_berwujud->mcoaparentname,
           'mcoagrandparentcode' => $harta->mcoagrandparentcode,
-          'mcoagrandparentname' => $harta->mcoagrandparentname
+          'mcoagrandparentname' => $harta->mcoagrandparentname,
+          'void' => 0
         ]);
 
         MCOA::create([
@@ -575,7 +633,8 @@ class MCOAFullSeeder extends Seeder
           'mcoaparentcode' => $harta_tetap_berwujud->mcoaparentcode,
           'mcoaparentname' => $harta_tetap_berwujud->mcoaparentname,
           'mcoagrandparentcode' => $harta->mcoagrandparentcode,
-          'mcoagrandparentname' => $harta->mcoagrandparentname
+          'mcoagrandparentname' => $harta->mcoagrandparentname,
+          'void' => 0
         ]);
 
         MCOA::create([
@@ -585,7 +644,8 @@ class MCOAFullSeeder extends Seeder
           'mcoaparentcode' => $harta_tetap_berwujud->mcoaparentcode,
           'mcoaparentname' => $harta_tetap_berwujud->mcoaparentname,
           'mcoagrandparentcode' => $harta->mcoagrandparentcode,
-          'mcoagrandparentname' => $harta->mcoagrandparentname
+          'mcoagrandparentname' => $harta->mcoagrandparentname,
+          'void' => 0
         ]);
 
         MCOA::create([
@@ -595,7 +655,8 @@ class MCOAFullSeeder extends Seeder
           'mcoaparentcode' => $harta_tetap_berwujud->mcoaparentcode,
           'mcoaparentname' => $harta_tetap_berwujud->mcoaparentname,
           'mcoagrandparentcode' => $harta->mcoagrandparentcode,
-          'mcoagrandparentname' => $harta->mcoagrandparentname
+          'mcoagrandparentname' => $harta->mcoagrandparentname,
+          'void' => 0
         ]);
 
         MCOA::create([
@@ -605,7 +666,8 @@ class MCOAFullSeeder extends Seeder
           'mcoaparentcode' => $harta_tetap_berwujud->mcoaparentcode,
           'mcoaparentname' => $harta_tetap_berwujud->mcoaparentname,
           'mcoagrandparentcode' => $harta->mcoagrandparentcode,
-          'mcoagrandparentname' => $harta->mcoagrandparentname
+          'mcoagrandparentname' => $harta->mcoagrandparentname,
+          'void' => 0
         ]);
 
         MCOA::create([
@@ -615,7 +677,8 @@ class MCOAFullSeeder extends Seeder
           'mcoaparentcode' => $harta_tetap_berwujud->mcoaparentcode,
           'mcoaparentname' => $harta_tetap_berwujud->mcoaparentname,
           'mcoagrandparentcode' => $harta->mcoagrandparentcode,
-          'mcoagrandparentname' => $harta->mcoagrandparentname
+          'mcoagrandparentname' => $harta->mcoagrandparentname,
+          'void' => 0
         ]);
 
         MCOA::create([
@@ -625,7 +688,8 @@ class MCOAFullSeeder extends Seeder
           'mcoaparentcode' => $harta_tetap_berwujud->mcoaparentcode,
           'mcoaparentname' => $harta_tetap_berwujud->mcoaparentname,
           'mcoagrandparentcode' => $harta->mcoagrandparentcode,
-          'mcoagrandparentname' => $harta->mcoagrandparentname
+          'mcoagrandparentname' => $harta->mcoagrandparentname,
+          'void' => 0
         ]);
 
       MCOAParent::create([
@@ -633,7 +697,8 @@ class MCOAFullSeeder extends Seeder
         'mcoaparentname' => 'Harta Tetap Tidak Berwujud',
         'mcoaparenttype' => $harta->mcoagrandparenttype,
         'mcoagrandparentcode' => $harta->mcoagrandparentcode,
-        'mcoagrandparentname' => $harta->mcoagrandparentname
+        'mcoagrandparentname' => $harta->mcoagrandparentname,
+        'void' => 0
       ]);
 
       $harta_tetap_tidak_berwujud = MCOAParent::where('mcoaparentcode','1202.00')->first();
@@ -645,7 +710,8 @@ class MCOAFullSeeder extends Seeder
           'mcoaparentcode' => $harta_tetap_tidak_berwujud->mcoaparentcode,
           'mcoaparentname' => $harta_tetap_tidak_berwujud->mcoaparentname,
           'mcoagrandparentcode' => $harta->mcoagrandparentcode,
-          'mcoagrandparentname' => $harta->mcoagrandparentname
+          'mcoagrandparentname' => $harta->mcoagrandparentname,
+          'void' => 0
         ]);
 
         MCOA::create([
@@ -655,7 +721,8 @@ class MCOAFullSeeder extends Seeder
           'mcoaparentcode' => $harta_tetap_tidak_berwujud->mcoaparentcode,
           'mcoaparentname' => $harta_tetap_tidak_berwujud->mcoaparentname,
           'mcoagrandparentcode' => $harta->mcoagrandparentcode,
-          'mcoagrandparentname' => $harta->mcoagrandparentname
+          'mcoagrandparentname' => $harta->mcoagrandparentname,
+          'void' => 0
         ]);
 
         MCOA::create([
@@ -665,7 +732,8 @@ class MCOAFullSeeder extends Seeder
           'mcoaparentcode' => $harta_tetap_tidak_berwujud->mcoaparentcode,
           'mcoaparentname' => $harta_tetap_tidak_berwujud->mcoaparentname,
           'mcoagrandparentcode' => $harta->mcoagrandparentcode,
-          'mcoagrandparentname' => $harta->mcoagrandparentname
+          'mcoagrandparentname' => $harta->mcoagrandparentname,
+          'void' => 0
         ]);
 
       $kewajiban = MCOAGrandParent::where('mcoagrandparentcode','2000.00')->first();
@@ -675,7 +743,8 @@ class MCOAFullSeeder extends Seeder
         'mcoaparentname' => 'Hutang Lancar',
         'mcoaparenttype' => $kewajiban->mcoagrandparenttype,
         'mcoagrandparentcode' => $kewajiban->mcoagrandparentcode,
-        'mcoagrandparentname' => $kewajiban->mcoagrandparentname
+        'mcoagrandparentname' => $kewajiban->mcoagrandparentname,
+        'void' => 0
       ]);
 
       $hutang_lancar = MCOAParent::where('mcoaparentcode','2101.00')->first();
@@ -687,7 +756,8 @@ class MCOAFullSeeder extends Seeder
           'mcoaparentcode' => $hutang_lancar->mcoaparentcode,
           'mcoaparentname' => $hutang_lancar->mcoaparentname,
           'mcoagrandparentcode' => $kewajiban->mcoagrandparentcode,
-          'mcoagrandparentname' => $kewajiban->mcoagrandparentname
+          'mcoagrandparentname' => $kewajiban->mcoagrandparentname,
+          'void' => 0
         ]);
 
         MCOA::create([
@@ -697,7 +767,8 @@ class MCOAFullSeeder extends Seeder
           'mcoaparentcode' => $hutang_lancar->mcoaparentcode,
           'mcoaparentname' => $hutang_lancar->mcoaparentname,
           'mcoagrandparentcode' => $kewajiban->mcoagrandparentcode,
-          'mcoagrandparentname' => $kewajiban->mcoagrandparentname
+          'mcoagrandparentname' => $kewajiban->mcoagrandparentname,
+          'void' => 0
         ]);
 
         MCOA::create([
@@ -707,7 +778,8 @@ class MCOAFullSeeder extends Seeder
           'mcoaparentcode' => $hutang_lancar->mcoaparentcode,
           'mcoaparentname' => $hutang_lancar->mcoaparentname,
           'mcoagrandparentcode' => $kewajiban->mcoagrandparentcode,
-          'mcoagrandparentname' => $kewajiban->mcoagrandparentname
+          'mcoagrandparentname' => $kewajiban->mcoagrandparentname,
+          'void' => 0
         ]);
 
         MCOA::create([
@@ -717,7 +789,8 @@ class MCOAFullSeeder extends Seeder
           'mcoaparentcode' => $hutang_lancar->mcoaparentcode,
           'mcoaparentname' => $hutang_lancar->mcoaparentname,
           'mcoagrandparentcode' => $kewajiban->mcoagrandparentcode,
-          'mcoagrandparentname' => $kewajiban->mcoagrandparentname
+          'mcoagrandparentname' => $kewajiban->mcoagrandparentname,
+          'void' => 0
         ]);
 
         MCOA::create([
@@ -727,7 +800,8 @@ class MCOAFullSeeder extends Seeder
           'mcoaparentcode' => $hutang_lancar->mcoaparentcode,
           'mcoaparentname' => $hutang_lancar->mcoaparentname,
           'mcoagrandparentcode' => $kewajiban->mcoagrandparentcode,
-          'mcoagrandparentname' => $kewajiban->mcoagrandparentname
+          'mcoagrandparentname' => $kewajiban->mcoagrandparentname,
+          'void' => 0
         ]);
 
         MCOA::create([
@@ -737,7 +811,8 @@ class MCOAFullSeeder extends Seeder
           'mcoaparentcode' => $hutang_lancar->mcoaparentcode,
           'mcoaparentname' => $hutang_lancar->mcoaparentname,
           'mcoagrandparentcode' => $kewajiban->mcoagrandparentcode,
-          'mcoagrandparentname' => $kewajiban->mcoagrandparentname
+          'mcoagrandparentname' => $kewajiban->mcoagrandparentname,
+          'void' => 0
         ]);
 
         MCOA::create([
@@ -747,7 +822,8 @@ class MCOAFullSeeder extends Seeder
           'mcoaparentcode' => $hutang_lancar->mcoaparentcode,
           'mcoaparentname' => $hutang_lancar->mcoaparentname,
           'mcoagrandparentcode' => $kewajiban->mcoagrandparentcode,
-          'mcoagrandparentname' => $kewajiban->mcoagrandparentname
+          'mcoagrandparentname' => $kewajiban->mcoagrandparentname,
+          'void' => 0
         ]);
 
         MCOA::create([
@@ -757,7 +833,8 @@ class MCOAFullSeeder extends Seeder
           'mcoaparentcode' => $hutang_lancar->mcoaparentcode,
           'mcoaparentname' => $hutang_lancar->mcoaparentname,
           'mcoagrandparentcode' => $kewajiban->mcoagrandparentcode,
-          'mcoagrandparentname' => $kewajiban->mcoagrandparentname
+          'mcoagrandparentname' => $kewajiban->mcoagrandparentname,
+          'void' => 0
         ]);
 
         MCOA::create([
@@ -767,7 +844,8 @@ class MCOAFullSeeder extends Seeder
           'mcoaparentcode' => $hutang_lancar->mcoaparentcode,
           'mcoaparentname' => $hutang_lancar->mcoaparentname,
           'mcoagrandparentcode' => $kewajiban->mcoagrandparentcode,
-          'mcoagrandparentname' => $kewajiban->mcoagrandparentname
+          'mcoagrandparentname' => $kewajiban->mcoagrandparentname,
+          'void' => 0
         ]);
 
         MCOA::create([
@@ -777,7 +855,8 @@ class MCOAFullSeeder extends Seeder
           'mcoaparentcode' => $hutang_lancar->mcoaparentcode,
           'mcoaparentname' => $hutang_lancar->mcoaparentname,
           'mcoagrandparentcode' => $kewajiban->mcoagrandparentcode,
-          'mcoagrandparentname' => $kewajiban->mcoagrandparentname
+          'mcoagrandparentname' => $kewajiban->mcoagrandparentname,
+          'void' => 0
         ]);
 
         MCOA::create([
@@ -787,7 +866,8 @@ class MCOAFullSeeder extends Seeder
           'mcoaparentcode' => $hutang_lancar->mcoaparentcode,
           'mcoaparentname' => $hutang_lancar->mcoaparentname,
           'mcoagrandparentcode' => $kewajiban->mcoagrandparentcode,
-          'mcoagrandparentname' => $kewajiban->mcoagrandparentname
+          'mcoagrandparentname' => $kewajiban->mcoagrandparentname,
+          'void' => 0
         ]);
 
         MCOA::create([
@@ -797,7 +877,8 @@ class MCOAFullSeeder extends Seeder
           'mcoaparentcode' => $hutang_lancar->mcoaparentcode,
           'mcoaparentname' => $hutang_lancar->mcoaparentname,
           'mcoagrandparentcode' => $kewajiban->mcoagrandparentcode,
-          'mcoagrandparentname' => $kewajiban->mcoagrandparentname
+          'mcoagrandparentname' => $kewajiban->mcoagrandparentname,
+          'void' => 0
         ]);
 
         MCOA::create([
@@ -807,7 +888,8 @@ class MCOAFullSeeder extends Seeder
           'mcoaparentcode' => $hutang_lancar->mcoaparentcode,
           'mcoaparentname' => $hutang_lancar->mcoaparentname,
           'mcoagrandparentcode' => $kewajiban->mcoagrandparentcode,
-          'mcoagrandparentname' => $kewajiban->mcoagrandparentname
+          'mcoagrandparentname' => $kewajiban->mcoagrandparentname,
+          'void' => 0
         ]);
 
         MCOA::create([
@@ -817,7 +899,8 @@ class MCOAFullSeeder extends Seeder
           'mcoaparentcode' => $hutang_lancar->mcoaparentcode,
           'mcoaparentname' => $hutang_lancar->mcoaparentname,
           'mcoagrandparentcode' => $kewajiban->mcoagrandparentcode,
-          'mcoagrandparentname' => $kewajiban->mcoagrandparentname
+          'mcoagrandparentname' => $kewajiban->mcoagrandparentname,
+          'void' => 0
         ]);
 
         MCOA::create([
@@ -827,7 +910,8 @@ class MCOAFullSeeder extends Seeder
           'mcoaparentcode' => $hutang_lancar->mcoaparentcode,
           'mcoaparentname' => $hutang_lancar->mcoaparentname,
           'mcoagrandparentcode' => $kewajiban->mcoagrandparentcode,
-          'mcoagrandparentname' => $kewajiban->mcoagrandparentname
+          'mcoagrandparentname' => $kewajiban->mcoagrandparentname,
+          'void' => 0
         ]);
 
         MCOA::create([
@@ -837,7 +921,8 @@ class MCOAFullSeeder extends Seeder
           'mcoaparentcode' => $hutang_lancar->mcoaparentcode,
           'mcoaparentname' => $hutang_lancar->mcoaparentname,
           'mcoagrandparentcode' => $kewajiban->mcoagrandparentcode,
-          'mcoagrandparentname' => $kewajiban->mcoagrandparentname
+          'mcoagrandparentname' => $kewajiban->mcoagrandparentname,
+          'void' => 0
         ]);
 
       MCOAParent::create([
@@ -845,7 +930,8 @@ class MCOAFullSeeder extends Seeder
         'mcoaparentname' => 'Hutang Pajak',
         'mcoaparenttype' => $kewajiban->mcoagrandparenttype,
         'mcoagrandparentcode' => $kewajiban->mcoagrandparentcode,
-        'mcoagrandparentname' => $kewajiban->mcoagrandparentname
+        'mcoagrandparentname' => $kewajiban->mcoagrandparentname,
+        'void' => 0
       ]);
 
       $hutang_pajak = MCOAParent::where('mcoaparentcode','2102.00')->first();
@@ -857,7 +943,8 @@ class MCOAFullSeeder extends Seeder
           'mcoaparentcode' => $hutang_pajak->mcoaparentcode,
           'mcoaparentname' => $hutang_pajak->mcoaparentname,
           'mcoagrandparentcode' => $kewajiban->mcoagrandparentcode,
-          'mcoagrandparentname' => $kewajiban->mcoagrandparentname
+          'mcoagrandparentname' => $kewajiban->mcoagrandparentname,
+          'void' => 0
         ]);
 
         MCOA::create([
@@ -867,7 +954,8 @@ class MCOAFullSeeder extends Seeder
           'mcoaparentcode' => $hutang_pajak->mcoaparentcode,
           'mcoaparentname' => $hutang_pajak->mcoaparentname,
           'mcoagrandparentcode' => $kewajiban->mcoagrandparentcode,
-          'mcoagrandparentname' => $kewajiban->mcoagrandparentname
+          'mcoagrandparentname' => $kewajiban->mcoagrandparentname,
+          'void' => 0
         ]);
 
       MCOAParent::create([
@@ -875,7 +963,8 @@ class MCOAFullSeeder extends Seeder
         'mcoaparentname' => 'Pendapatan Di Terima Di Muka',
         'mcoaparenttype' => $kewajiban->mcoagrandparenttype,
         'mcoagrandparentcode' => $kewajiban->mcoagrandparentcode,
-        'mcoagrandparentname' => $kewajiban->mcoagrandparentname
+        'mcoagrandparentname' => $kewajiban->mcoagrandparentname,
+        'void' => 0
       ]);
 
       $pendapatan_diterima_dimuka = MCOAParent::where('mcoaparentcode','2103.00')->first();
@@ -887,7 +976,8 @@ class MCOAFullSeeder extends Seeder
           'mcoaparentcode' => $pendapatan_diterima_dimuka->mcoaparentcode,
           'mcoaparentname' => $pendapatan_diterima_dimuka->mcoaparentname,
           'mcoagrandparentcode' => $kewajiban->mcoagrandparentcode,
-          'mcoagrandparentname' => $kewajiban->mcoagrandparentname
+          'mcoagrandparentname' => $kewajiban->mcoagrandparentname,
+          'void' => 0
         ]);
 
       MCOAParent::create([
@@ -895,7 +985,8 @@ class MCOAFullSeeder extends Seeder
         'mcoaparentname' => 'Hutang Jangka Panjang',
         'mcoaparenttype' => $kewajiban->mcoagrandparenttype,
         'mcoagrandparentcode' => $kewajiban->mcoagrandparentcode,
-        'mcoagrandparentname' => $kewajiban->mcoagrandparentname
+        'mcoagrandparentname' => $kewajiban->mcoagrandparentname,
+        'void' => 0
       ]);
 
       $hutang_jangka_panjang = MCOAParent::where('mcoaparentcode','2201.00')->first();
@@ -907,7 +998,8 @@ class MCOAFullSeeder extends Seeder
           'mcoaparentcode' => $hutang_jangka_panjang->mcoaparentcode,
           'mcoaparentname' => $hutang_jangka_panjang->mcoaparentname,
           'mcoagrandparentcode' => $kewajiban->mcoagrandparentcode,
-          'mcoagrandparentname' => $kewajiban->mcoagrandparentname
+          'mcoagrandparentname' => $kewajiban->mcoagrandparentname,
+          'void' => 0
         ]);
 
         MCOA::create([
@@ -917,7 +1009,8 @@ class MCOAFullSeeder extends Seeder
           'mcoaparentcode' => $hutang_jangka_panjang->mcoaparentcode,
           'mcoaparentname' => $hutang_jangka_panjang->mcoaparentname,
           'mcoagrandparentcode' => $kewajiban->mcoagrandparentcode,
-          'mcoagrandparentname' => $kewajiban->mcoagrandparentname
+          'mcoagrandparentname' => $kewajiban->mcoagrandparentname,
+          'void' => 0
         ]);
 
     $modal = MCOAGrandParent::where('mcoagrandparentcode','3000.00')->first();
@@ -927,7 +1020,8 @@ class MCOAFullSeeder extends Seeder
       'mcoaparentname' => 'Modal',
       'mcoaparenttype' => $modal->mcoagrandparenttype,
       'mcoagrandparentcode' => $modal->mcoagrandparentcode,
-      'mcoagrandparentname' => $modal->mcoagrandparentname
+      'mcoagrandparentname' => $modal->mcoagrandparentname,
+      'void' => 0
     ]);
 
     $modalP = MCOAParent::where('mcoaparentcode','3100.00')->first();
@@ -939,7 +1033,8 @@ class MCOAFullSeeder extends Seeder
           'mcoaparentcode' => $modalP->mcoaparentcode,
           'mcoaparentname' => $modalP->mcoaparentname,
           'mcoagrandparentcode' => $modal->mcoagrandparentcode,
-          'mcoagrandparentname' => $modal->mcoagrandparentname
+          'mcoagrandparentname' => $modal->mcoagrandparentname,
+          'void' => 0
         ]);
 
         MCOA::create([
@@ -949,7 +1044,8 @@ class MCOAFullSeeder extends Seeder
           'mcoaparentcode' => $modalP->mcoaparentcode,
           'mcoaparentname' => $modalP->mcoaparentname,
           'mcoagrandparentcode' => $modal->mcoagrandparentcode,
-          'mcoagrandparentname' => $modal->mcoagrandparentname
+          'mcoagrandparentname' => $modal->mcoagrandparentname,
+          'void' => 0
         ]);
 
         MCOA::create([
@@ -959,7 +1055,8 @@ class MCOAFullSeeder extends Seeder
           'mcoaparentcode' => $modalP->mcoaparentcode,
           'mcoaparentname' => $modalP->mcoaparentname,
           'mcoagrandparentcode' => $modal->mcoagrandparentcode,
-          'mcoagrandparentname' => $modal->mcoagrandparentname
+          'mcoagrandparentname' => $modal->mcoagrandparentname,
+          'void' => 0
         ]);
 
         MCOA::create([
@@ -969,7 +1066,8 @@ class MCOAFullSeeder extends Seeder
           'mcoaparentcode' => $modalP->mcoaparentcode,
           'mcoaparentname' => $modalP->mcoaparentname,
           'mcoagrandparentcode' => $modal->mcoagrandparentcode,
-          'mcoagrandparentname' => $modal->mcoagrandparentname
+          'mcoagrandparentname' => $modal->mcoagrandparentname,
+          'void' => 0
         ]);
 
       MCOAParent::create([
@@ -977,7 +1075,8 @@ class MCOAFullSeeder extends Seeder
         'mcoaparentname' => 'Laba',
         'mcoaparenttype' => $modal->mcoagrandparenttype,
         'mcoagrandparentcode' => $modal->mcoagrandparentcode,
-        'mcoagrandparentname' => $modal->mcoagrandparentname
+        'mcoagrandparentname' => $modal->mcoagrandparentname,
+        'void' => 0
       ]);
 
       $laba = MCOAParent::where('mcoaparentcode','3200.00')->first();
@@ -989,7 +1088,8 @@ class MCOAFullSeeder extends Seeder
           'mcoaparentcode' => $laba->mcoaparentcode,
           'mcoaparentname' => $laba->mcoaparentname,
           'mcoagrandparentcode' => $modal->mcoagrandparentcode,
-          'mcoagrandparentname' => $modal->mcoagrandparentname
+          'mcoagrandparentname' => $modal->mcoagrandparentname,
+          'void' => 0
         ]);
 
         MCOA::create([
@@ -999,7 +1099,8 @@ class MCOAFullSeeder extends Seeder
           'mcoaparentcode' => $laba->mcoaparentcode,
           'mcoaparentname' => $laba->mcoaparentname,
           'mcoagrandparentcode' => $modal->mcoagrandparentcode,
-          'mcoagrandparentname' => $modal->mcoagrandparentname
+          'mcoagrandparentname' => $modal->mcoagrandparentname,
+          'void' => 0
         ]);
 
       MCOAParent::create([
@@ -1007,7 +1108,8 @@ class MCOAFullSeeder extends Seeder
         'mcoaparentname' => 'Dividen',
         'mcoaparenttype' => $modal->mcoagrandparenttype,
         'mcoagrandparentcode' => $modal->mcoagrandparentcode,
-        'mcoagrandparentname' => $modal->mcoagrandparentname
+        'mcoagrandparentname' => $modal->mcoagrandparentname,
+        'void' => 0
       ]);
 
       $dividen = MCOAParent::where('mcoaparentcode','3300.00')->first();
@@ -1019,7 +1121,8 @@ class MCOAFullSeeder extends Seeder
           'mcoaparentcode' => $dividen->mcoaparentcode,
           'mcoaparentname' => $dividen->mcoaparentname,
           'mcoagrandparentcode' => $modal->mcoagrandparentcode,
-          'mcoagrandparentname' => $modal->mcoagrandparentname
+          'mcoagrandparentname' => $modal->mcoagrandparentname,
+          'void' => 0
         ]);
 
     $pendapatan = MCOAGrandParent::where('mcoagrandparentcode','4000.00')->first();
@@ -1029,7 +1132,8 @@ class MCOAFullSeeder extends Seeder
       'mcoaparentname' => 'Pendapatan Usaha',
       'mcoaparenttype' => $pendapatan->mcoagrandparenttype,
       'mcoagrandparentcode' => $pendapatan->mcoagrandparentcode,
-      'mcoagrandparentname' => $pendapatan->mcoagrandparentname
+      'mcoagrandparentname' => $pendapatan->mcoagrandparentname,
+      'void' => 0
     ]);
 
     $pendapatan_usaha = MCOAParent::where('mcoaparentcode','4100.00')->first();
@@ -1041,7 +1145,8 @@ class MCOAFullSeeder extends Seeder
         'mcoaparentcode' => $pendapatan_usaha->mcoaparentcode,
         'mcoaparentname' => $pendapatan_usaha->mcoaparentname,
         'mcoagrandparentcode' => $pendapatan->mcoagrandparentcode,
-        'mcoagrandparentname' => $pendapatan->mcoagrandparentname
+        'mcoagrandparentname' => $pendapatan->mcoagrandparentname,
+        'void' => 0
       ]);
 
       MCOA::create([
@@ -1051,7 +1156,8 @@ class MCOAFullSeeder extends Seeder
         'mcoaparentcode' => $pendapatan_usaha->mcoaparentcode,
         'mcoaparentname' => $pendapatan_usaha->mcoaparentname,
         'mcoagrandparentcode' => $pendapatan->mcoagrandparentcode,
-        'mcoagrandparentname' => $pendapatan->mcoagrandparentname
+        'mcoagrandparentname' => $pendapatan->mcoagrandparentname,
+        'void' => 0
       ]);
 
       MCOA::create([
@@ -1061,7 +1167,8 @@ class MCOAFullSeeder extends Seeder
         'mcoaparentcode' => $pendapatan_usaha->mcoaparentcode,
         'mcoaparentname' => $pendapatan_usaha->mcoaparentname,
         'mcoagrandparentcode' => $pendapatan->mcoagrandparentcode,
-        'mcoagrandparentname' => $pendapatan->mcoagrandparentname
+        'mcoagrandparentname' => $pendapatan->mcoagrandparentname,
+        'void' => 0
       ]);
 
       MCOA::create([
@@ -1071,7 +1178,8 @@ class MCOAFullSeeder extends Seeder
         'mcoaparentcode' => $pendapatan_usaha->mcoaparentcode,
         'mcoaparentname' => $pendapatan_usaha->mcoaparentname,
         'mcoagrandparentcode' => $pendapatan->mcoagrandparentcode,
-        'mcoagrandparentname' => $pendapatan->mcoagrandparentname
+        'mcoagrandparentname' => $pendapatan->mcoagrandparentname,
+        'void' => 0
       ]);
 
       MCOA::create([
@@ -1081,7 +1189,8 @@ class MCOAFullSeeder extends Seeder
         'mcoaparentcode' => $pendapatan_usaha->mcoaparentcode,
         'mcoaparentname' => $pendapatan_usaha->mcoaparentname,
         'mcoagrandparentcode' => $pendapatan->mcoagrandparentcode,
-        'mcoagrandparentname' => $pendapatan->mcoagrandparentname
+        'mcoagrandparentname' => $pendapatan->mcoagrandparentname,
+        'void' => 0
       ]);
 
       MCOA::create([
@@ -1091,7 +1200,8 @@ class MCOAFullSeeder extends Seeder
         'mcoaparentcode' => $pendapatan_usaha->mcoaparentcode,
         'mcoaparentname' => $pendapatan_usaha->mcoaparentname,
         'mcoagrandparentcode' => $pendapatan->mcoagrandparentcode,
-        'mcoagrandparentname' => $pendapatan->mcoagrandparentname
+        'mcoagrandparentname' => $pendapatan->mcoagrandparentname,
+        'void' => 0
       ]);
 
       MCOA::create([
@@ -1101,7 +1211,8 @@ class MCOAFullSeeder extends Seeder
         'mcoaparentcode' => $pendapatan_usaha->mcoaparentcode,
         'mcoaparentname' => $pendapatan_usaha->mcoaparentname,
         'mcoagrandparentcode' => $pendapatan->mcoagrandparentcode,
-        'mcoagrandparentname' => $pendapatan->mcoagrandparentname
+        'mcoagrandparentname' => $pendapatan->mcoagrandparentname,
+        'void' => 0
       ]);
 
     $biaya_atas_pendapatan = MCOAGrandParent::where('mcoagrandparentcode','5000.00')->first();
@@ -1111,7 +1222,8 @@ class MCOAFullSeeder extends Seeder
       'mcoaparentname' => 'Beban Pokok Penjualan',
       'mcoaparenttype' => $biaya_atas_pendapatan->mcoagrandparenttype,
       'mcoagrandparentcode' => $biaya_atas_pendapatan->mcoagrandparentcode,
-      'mcoagrandparentname' => $biaya_atas_pendapatan->mcoagrandparentname
+      'mcoagrandparentname' => $biaya_atas_pendapatan->mcoagrandparentname,
+      'void' => 0
     ]);
 
     $beban_pokok_penjualan = MCOAParent::where('mcoaparentcode','5100.00')->first();
@@ -1123,7 +1235,8 @@ class MCOAFullSeeder extends Seeder
         'mcoaparentcode' => $beban_pokok_penjualan->mcoaparentcode,
         'mcoaparentname' => $beban_pokok_penjualan->mcoaparentname,
         'mcoagrandparentcode' => $biaya_atas_pendapatan->mcoagrandparentcode,
-        'mcoagrandparentname' => $biaya_atas_pendapatan->mcoagrandparentname
+        'mcoagrandparentname' => $biaya_atas_pendapatan->mcoagrandparentname,
+        'void' => 0
       ]);
 
       MCOA::create([
@@ -1133,7 +1246,8 @@ class MCOAFullSeeder extends Seeder
         'mcoaparentcode' => $beban_pokok_penjualan->mcoaparentcode,
         'mcoaparentname' => $beban_pokok_penjualan->mcoaparentname,
         'mcoagrandparentcode' => $biaya_atas_pendapatan->mcoagrandparentcode,
-        'mcoagrandparentname' => $biaya_atas_pendapatan->mcoagrandparentname
+        'mcoagrandparentname' => $biaya_atas_pendapatan->mcoagrandparentname,
+        'void' => 0
       ]);
 
       MCOA::create([
@@ -1143,7 +1257,8 @@ class MCOAFullSeeder extends Seeder
         'mcoaparentcode' => $beban_pokok_penjualan->mcoaparentcode,
         'mcoaparentname' => $beban_pokok_penjualan->mcoaparentname,
         'mcoagrandparentcode' => $biaya_atas_pendapatan->mcoagrandparentcode,
-        'mcoagrandparentname' => $biaya_atas_pendapatan->mcoagrandparentname
+        'mcoagrandparentname' => $biaya_atas_pendapatan->mcoagrandparentname,
+        'void' => 0
       ]);
 
       MCOA::create([
@@ -1153,7 +1268,8 @@ class MCOAFullSeeder extends Seeder
         'mcoaparentcode' => $beban_pokok_penjualan->mcoaparentcode,
         'mcoaparentname' => $beban_pokok_penjualan->mcoaparentname,
         'mcoagrandparentcode' => $biaya_atas_pendapatan->mcoagrandparentcode,
-        'mcoagrandparentname' => $biaya_atas_pendapatan->mcoagrandparentname
+        'mcoagrandparentname' => $biaya_atas_pendapatan->mcoagrandparentname,
+        'void' => 0
       ]);
 
       MCOA::create([
@@ -1163,7 +1279,8 @@ class MCOAFullSeeder extends Seeder
         'mcoaparentcode' => $beban_pokok_penjualan->mcoaparentcode,
         'mcoaparentname' => $beban_pokok_penjualan->mcoaparentname,
         'mcoagrandparentcode' => $biaya_atas_pendapatan->mcoagrandparentcode,
-        'mcoagrandparentname' => $biaya_atas_pendapatan->mcoagrandparentname
+        'mcoagrandparentname' => $biaya_atas_pendapatan->mcoagrandparentname,
+        'void' => 0
       ]);
 
       MCOA::create([
@@ -1173,7 +1290,8 @@ class MCOAFullSeeder extends Seeder
         'mcoaparentcode' => $beban_pokok_penjualan->mcoaparentcode,
         'mcoaparentname' => $beban_pokok_penjualan->mcoaparentname,
         'mcoagrandparentcode' => $biaya_atas_pendapatan->mcoagrandparentcode,
-        'mcoagrandparentname' => $biaya_atas_pendapatan->mcoagrandparentname
+        'mcoagrandparentname' => $biaya_atas_pendapatan->mcoagrandparentname,
+        'void' => 0
       ]);
 
       MCOA::create([
@@ -1183,7 +1301,8 @@ class MCOAFullSeeder extends Seeder
         'mcoaparentcode' => $beban_pokok_penjualan->mcoaparentcode,
         'mcoaparentname' => $beban_pokok_penjualan->mcoaparentname,
         'mcoagrandparentcode' => $biaya_atas_pendapatan->mcoagrandparentcode,
-        'mcoagrandparentname' => $biaya_atas_pendapatan->mcoagrandparentname
+        'mcoagrandparentname' => $biaya_atas_pendapatan->mcoagrandparentname,
+        'void' => 0
       ]);
 
       MCOA::create([
@@ -1193,7 +1312,8 @@ class MCOAFullSeeder extends Seeder
         'mcoaparentcode' => $beban_pokok_penjualan->mcoaparentcode,
         'mcoaparentname' => $beban_pokok_penjualan->mcoaparentname,
         'mcoagrandparentcode' => $biaya_atas_pendapatan->mcoagrandparentcode,
-        'mcoagrandparentname' => $biaya_atas_pendapatan->mcoagrandparentname
+        'mcoagrandparentname' => $biaya_atas_pendapatan->mcoagrandparentname,
+        'void' => 0
       ]);
 
     MCOAParent::create([
@@ -1201,7 +1321,8 @@ class MCOAFullSeeder extends Seeder
       'mcoaparentname' => 'Biaya Lain',
       'mcoaparenttype' => $biaya_atas_pendapatan->mcoagrandparenttype,
       'mcoagrandparentcode' => $biaya_atas_pendapatan->mcoagrandparentcode,
-      'mcoagrandparentname' => $biaya_atas_pendapatan->mcoagrandparentname
+      'mcoagrandparentname' => $biaya_atas_pendapatan->mcoagrandparentname,
+      'void' => 0
     ]);
 
     $biaya_lain = MCOAParent::where('mcoaparentcode','5200.00')->first();
@@ -1213,7 +1334,8 @@ class MCOAFullSeeder extends Seeder
         'mcoaparentcode' => $biaya_lain->mcoaparentcode,
         'mcoaparentname' => $biaya_lain->mcoaparentname,
         'mcoagrandparentcode' => $biaya_atas_pendapatan->mcoagrandparentcode,
-        'mcoagrandparentname' => $biaya_atas_pendapatan->mcoagrandparentname
+        'mcoagrandparentname' => $biaya_atas_pendapatan->mcoagrandparentname,
+        'void' => 0
       ]);
 
       MCOA::create([
@@ -1223,7 +1345,8 @@ class MCOAFullSeeder extends Seeder
         'mcoaparentcode' => $biaya_lain->mcoaparentcode,
         'mcoaparentname' => $biaya_lain->mcoaparentname,
         'mcoagrandparentcode' => $biaya_atas_pendapatan->mcoagrandparentcode,
-        'mcoagrandparentname' => $biaya_atas_pendapatan->mcoagrandparentname
+        'mcoagrandparentname' => $biaya_atas_pendapatan->mcoagrandparentname,
+        'void' => 0
       ]);
 
       MCOA::create([
@@ -1233,7 +1356,8 @@ class MCOAFullSeeder extends Seeder
         'mcoaparentcode' => $biaya_lain->mcoaparentcode,
         'mcoaparentname' => $biaya_lain->mcoaparentname,
         'mcoagrandparentcode' => $biaya_atas_pendapatan->mcoagrandparentcode,
-        'mcoagrandparentname' => $biaya_atas_pendapatan->mcoagrandparentname
+        'mcoagrandparentname' => $biaya_atas_pendapatan->mcoagrandparentname,
+        'void' => 0
       ]);
 
       MCOA::create([
@@ -1243,7 +1367,8 @@ class MCOAFullSeeder extends Seeder
         'mcoaparentcode' => $biaya_lain->mcoaparentcode,
         'mcoaparentname' => $biaya_lain->mcoaparentname,
         'mcoagrandparentcode' => $biaya_atas_pendapatan->mcoagrandparentcode,
-        'mcoagrandparentname' => $biaya_atas_pendapatan->mcoagrandparentname
+        'mcoagrandparentname' => $biaya_atas_pendapatan->mcoagrandparentname,
+        'void' => 0
       ]);
 
     $pengeluaran_operasional = MCOAGrandParent::where('mcoagrandparentcode','6000.00')->first();
@@ -1253,7 +1378,8 @@ class MCOAFullSeeder extends Seeder
       'mcoaparentname' => 'Biaya Operasional',
       'mcoaparenttype' => $pengeluaran_operasional->mcoagrandparenttype,
       'mcoagrandparentcode' => $pengeluaran_operasional->mcoagrandparentcode,
-      'mcoagrandparentname' => $pengeluaran_operasional->mcoagrandparentname
+      'mcoagrandparentname' => $pengeluaran_operasional->mcoagrandparentname,
+      'void' => 0
     ]);
 
     $biaya_operasional = MCOAParent::where('mcoaparentcode','6100.00')->first();
@@ -1265,7 +1391,8 @@ class MCOAFullSeeder extends Seeder
         'mcoaparentcode' => $biaya_operasional->mcoaparentcode,
         'mcoaparentname' => $biaya_operasional->mcoaparentname,
         'mcoagrandparentcode' => $pengeluaran_operasional->mcoagrandparentcode,
-        'mcoagrandparentname' => $pengeluaran_operasional->mcoagrandparentname
+        'mcoagrandparentname' => $pengeluaran_operasional->mcoagrandparentname,
+        'void' => 0
       ]);
 
       MCOA::create([
@@ -1275,7 +1402,8 @@ class MCOAFullSeeder extends Seeder
         'mcoaparentcode' => $biaya_operasional->mcoaparentcode,
         'mcoaparentname' => $biaya_operasional->mcoaparentname,
         'mcoagrandparentcode' => $pengeluaran_operasional->mcoagrandparentcode,
-        'mcoagrandparentname' => $pengeluaran_operasional->mcoagrandparentname
+        'mcoagrandparentname' => $pengeluaran_operasional->mcoagrandparentname,
+        'void' => 0
       ]);
 
       MCOA::create([
@@ -1285,7 +1413,8 @@ class MCOAFullSeeder extends Seeder
         'mcoaparentcode' => $biaya_operasional->mcoaparentcode,
         'mcoaparentname' => $biaya_operasional->mcoaparentname,
         'mcoagrandparentcode' => $pengeluaran_operasional->mcoagrandparentcode,
-        'mcoagrandparentname' => $pengeluaran_operasional->mcoagrandparentname
+        'mcoagrandparentname' => $pengeluaran_operasional->mcoagrandparentname,
+        'void' => 0
       ]);
 
       MCOA::create([
@@ -1295,7 +1424,8 @@ class MCOAFullSeeder extends Seeder
         'mcoaparentcode' => $biaya_operasional->mcoaparentcode,
         'mcoaparentname' => $biaya_operasional->mcoaparentname,
         'mcoagrandparentcode' => $pengeluaran_operasional->mcoagrandparentcode,
-        'mcoagrandparentname' => $pengeluaran_operasional->mcoagrandparentname
+        'mcoagrandparentname' => $pengeluaran_operasional->mcoagrandparentname,
+        'void' => 0
       ]);
 
       MCOA::create([
@@ -1305,7 +1435,8 @@ class MCOAFullSeeder extends Seeder
         'mcoaparentcode' => $biaya_operasional->mcoaparentcode,
         'mcoaparentname' => $biaya_operasional->mcoaparentname,
         'mcoagrandparentcode' => $pengeluaran_operasional->mcoagrandparentcode,
-        'mcoagrandparentname' => $pengeluaran_operasional->mcoagrandparentname
+        'mcoagrandparentname' => $pengeluaran_operasional->mcoagrandparentname,
+        'void' => 0
       ]);
 
       MCOA::create([
@@ -1315,7 +1446,8 @@ class MCOAFullSeeder extends Seeder
         'mcoaparentcode' => $biaya_operasional->mcoaparentcode,
         'mcoaparentname' => $biaya_operasional->mcoaparentname,
         'mcoagrandparentcode' => $pengeluaran_operasional->mcoagrandparentcode,
-        'mcoagrandparentname' => $pengeluaran_operasional->mcoagrandparentname
+        'mcoagrandparentname' => $pengeluaran_operasional->mcoagrandparentname,
+        'void' => 0
       ]);
 
       MCOA::create([
@@ -1325,7 +1457,8 @@ class MCOAFullSeeder extends Seeder
         'mcoaparentcode' => $biaya_operasional->mcoaparentcode,
         'mcoaparentname' => $biaya_operasional->mcoaparentname,
         'mcoagrandparentcode' => $pengeluaran_operasional->mcoagrandparentcode,
-        'mcoagrandparentname' => $pengeluaran_operasional->mcoagrandparentname
+        'mcoagrandparentname' => $pengeluaran_operasional->mcoagrandparentname,
+        'void' => 0
       ]);
 
       MCOA::create([
@@ -1335,7 +1468,8 @@ class MCOAFullSeeder extends Seeder
         'mcoaparentcode' => $biaya_operasional->mcoaparentcode,
         'mcoaparentname' => $biaya_operasional->mcoaparentname,
         'mcoagrandparentcode' => $pengeluaran_operasional->mcoagrandparentcode,
-        'mcoagrandparentname' => $pengeluaran_operasional->mcoagrandparentname
+        'mcoagrandparentname' => $pengeluaran_operasional->mcoagrandparentname,
+        'void' => 0
       ]);
 
       MCOA::create([
@@ -1345,7 +1479,8 @@ class MCOAFullSeeder extends Seeder
         'mcoaparentcode' => $biaya_operasional->mcoaparentcode,
         'mcoaparentname' => $biaya_operasional->mcoaparentname,
         'mcoagrandparentcode' => $pengeluaran_operasional->mcoagrandparentcode,
-        'mcoagrandparentname' => $pengeluaran_operasional->mcoagrandparentname
+        'mcoagrandparentname' => $pengeluaran_operasional->mcoagrandparentname,
+        'void' => 0
       ]);
 
       MCOA::create([
@@ -1355,7 +1490,8 @@ class MCOAFullSeeder extends Seeder
         'mcoaparentcode' => $biaya_operasional->mcoaparentcode,
         'mcoaparentname' => $biaya_operasional->mcoaparentname,
         'mcoagrandparentcode' => $pengeluaran_operasional->mcoagrandparentcode,
-        'mcoagrandparentname' => $pengeluaran_operasional->mcoagrandparentname
+        'mcoagrandparentname' => $pengeluaran_operasional->mcoagrandparentname,
+        'void' => 0
       ]);
 
       MCOA::create([
@@ -1365,7 +1501,8 @@ class MCOAFullSeeder extends Seeder
         'mcoaparentcode' => $biaya_operasional->mcoaparentcode,
         'mcoaparentname' => $biaya_operasional->mcoaparentname,
         'mcoagrandparentcode' => $pengeluaran_operasional->mcoagrandparentcode,
-        'mcoagrandparentname' => $pengeluaran_operasional->mcoagrandparentname
+        'mcoagrandparentname' => $pengeluaran_operasional->mcoagrandparentname,
+        'void' => 0
       ]);
 
       MCOA::create([
@@ -1375,7 +1512,8 @@ class MCOAFullSeeder extends Seeder
         'mcoaparentcode' => $biaya_operasional->mcoaparentcode,
         'mcoaparentname' => $biaya_operasional->mcoaparentname,
         'mcoagrandparentcode' => $pengeluaran_operasional->mcoagrandparentcode,
-        'mcoagrandparentname' => $pengeluaran_operasional->mcoagrandparentname
+        'mcoagrandparentname' => $pengeluaran_operasional->mcoagrandparentname,
+        'void' => 0
       ]);
 
     MCOAParent::create([
@@ -1383,7 +1521,8 @@ class MCOAFullSeeder extends Seeder
       'mcoaparentname' => 'Biaya Non Operasional',
       'mcoaparenttype' => $pengeluaran_operasional->mcoagrandparenttype,
       'mcoagrandparentcode' => $pengeluaran_operasional->mcoagrandparentcode,
-      'mcoagrandparentname' => $pengeluaran_operasional->mcoagrandparentname
+      'mcoagrandparentname' => $pengeluaran_operasional->mcoagrandparentname,
+      'void' => 0
     ]);
 
     $biaya_non_operasional = MCOAParent::where('mcoaparentcode','6200.00')->first();
@@ -1395,7 +1534,8 @@ class MCOAFullSeeder extends Seeder
         'mcoaparentcode' => $biaya_non_operasional->mcoaparentcode,
         'mcoaparentname' => $biaya_non_operasional->mcoaparentname,
         'mcoagrandparentcode' => $pengeluaran_operasional->mcoagrandparentcode,
-        'mcoagrandparentname' => $pengeluaran_operasional->mcoagrandparentname
+        'mcoagrandparentname' => $pengeluaran_operasional->mcoagrandparentname,
+        'void' => 0
       ]);
 
       MCOA::create([
@@ -1405,7 +1545,8 @@ class MCOAFullSeeder extends Seeder
         'mcoaparentcode' => $biaya_non_operasional->mcoaparentcode,
         'mcoaparentname' => $biaya_non_operasional->mcoaparentname,
         'mcoagrandparentcode' => $pengeluaran_operasional->mcoagrandparentcode,
-        'mcoagrandparentname' => $pengeluaran_operasional->mcoagrandparentname
+        'mcoagrandparentname' => $pengeluaran_operasional->mcoagrandparentname,
+        'void' => 0
       ]);
 
       MCOA::create([
@@ -1415,7 +1556,8 @@ class MCOAFullSeeder extends Seeder
         'mcoaparentcode' => $biaya_non_operasional->mcoaparentcode,
         'mcoaparentname' => $biaya_non_operasional->mcoaparentname,
         'mcoagrandparentcode' => $pengeluaran_operasional->mcoagrandparentcode,
-        'mcoagrandparentname' => $pengeluaran_operasional->mcoagrandparentname
+        'mcoagrandparentname' => $pengeluaran_operasional->mcoagrandparentname,
+        'void' => 0
       ]);
 
       MCOA::create([
@@ -1425,7 +1567,8 @@ class MCOAFullSeeder extends Seeder
         'mcoaparentcode' => $biaya_non_operasional->mcoaparentcode,
         'mcoaparentname' => $biaya_non_operasional->mcoaparentname,
         'mcoagrandparentcode' => $pengeluaran_operasional->mcoagrandparentcode,
-        'mcoagrandparentname' => $pengeluaran_operasional->mcoagrandparentname
+        'mcoagrandparentname' => $pengeluaran_operasional->mcoagrandparentname,
+        'void' => 0
       ]);
 
       MCOA::create([
@@ -1435,7 +1578,8 @@ class MCOAFullSeeder extends Seeder
         'mcoaparentcode' => $biaya_non_operasional->mcoaparentcode,
         'mcoaparentname' => $biaya_non_operasional->mcoaparentname,
         'mcoagrandparentcode' => $pengeluaran_operasional->mcoagrandparentcode,
-        'mcoagrandparentname' => $pengeluaran_operasional->mcoagrandparentname
+        'mcoagrandparentname' => $pengeluaran_operasional->mcoagrandparentname,
+        'void' => 0
       ]);
 
       MCOA::create([
@@ -1445,7 +1589,8 @@ class MCOAFullSeeder extends Seeder
         'mcoaparentcode' => $biaya_non_operasional->mcoaparentcode,
         'mcoaparentname' => $biaya_non_operasional->mcoaparentname,
         'mcoagrandparentcode' => $pengeluaran_operasional->mcoagrandparentcode,
-        'mcoagrandparentname' => $pengeluaran_operasional->mcoagrandparentname
+        'mcoagrandparentname' => $pengeluaran_operasional->mcoagrandparentname,
+        'void' => 0
       ]);
 
     $pendapatan_luar_usaha = MCOAGrandParent::where('mcoagrandparentcode','7000.00')->first();
@@ -1455,7 +1600,8 @@ class MCOAFullSeeder extends Seeder
       'mcoaparentname' => 'Pendapatan Luar Usaha',
       'mcoaparenttype' => $pendapatan_luar_usaha->mcoagrandparenttype,
       'mcoagrandparentcode' => $pendapatan_luar_usaha->mcoagrandparentcode,
-      'mcoagrandparentname' => $pendapatan_luar_usaha->mcoagrandparentname
+      'mcoagrandparentname' => $pendapatan_luar_usaha->mcoagrandparentname,
+      'void' => 0
     ]);
 
     $plu = MCOAParent::where('mcoaparentcode','7100.00')->first();
@@ -1467,7 +1613,8 @@ class MCOAFullSeeder extends Seeder
         'mcoaparentcode' => $plu->mcoaparentcode,
         'mcoaparentname' => $plu->mcoaparentname,
         'mcoagrandparentcode' => $pendapatan_luar_usaha->mcoagrandparentcode,
-        'mcoagrandparentname' => $pendapatan_luar_usaha->mcoagrandparentname
+        'mcoagrandparentname' => $pendapatan_luar_usaha->mcoagrandparentname,
+        'void' => 0
       ]);
 
       MCOA::create([
@@ -1477,7 +1624,8 @@ class MCOAFullSeeder extends Seeder
         'mcoaparentcode' => $plu->mcoaparentcode,
         'mcoaparentname' => $plu->mcoaparentname,
         'mcoagrandparentcode' => $pendapatan_luar_usaha->mcoagrandparentcode,
-        'mcoagrandparentname' => $pendapatan_luar_usaha->mcoagrandparentname
+        'mcoagrandparentname' => $pendapatan_luar_usaha->mcoagrandparentname,
+        'void' => 0
       ]);
 
       MCOA::create([
@@ -1487,7 +1635,8 @@ class MCOAFullSeeder extends Seeder
         'mcoaparentcode' => $plu->mcoaparentcode,
         'mcoaparentname' => $plu->mcoaparentname,
         'mcoagrandparentcode' => $pendapatan_luar_usaha->mcoagrandparentcode,
-        'mcoagrandparentname' => $pendapatan_luar_usaha->mcoagrandparentname
+        'mcoagrandparentname' => $pendapatan_luar_usaha->mcoagrandparentname,
+        'void' => 0
       ]);
 
       MCOA::create([
@@ -1497,7 +1646,8 @@ class MCOAFullSeeder extends Seeder
         'mcoaparentcode' => $plu->mcoaparentcode,
         'mcoaparentname' => $plu->mcoaparentname,
         'mcoagrandparentcode' => $pendapatan_luar_usaha->mcoagrandparentcode,
-        'mcoagrandparentname' => $pendapatan_luar_usaha->mcoagrandparentname
+        'mcoagrandparentname' => $pendapatan_luar_usaha->mcoagrandparentname,
+        'void' => 0
       ]);
 
       MCOA::create([
@@ -1507,7 +1657,8 @@ class MCOAFullSeeder extends Seeder
         'mcoaparentcode' => $plu->mcoaparentcode,
         'mcoaparentname' => $plu->mcoaparentname,
         'mcoagrandparentcode' => $pendapatan_luar_usaha->mcoagrandparentcode,
-        'mcoagrandparentname' => $pendapatan_luar_usaha->mcoagrandparentname
+        'mcoagrandparentname' => $pendapatan_luar_usaha->mcoagrandparentname,
+        'void' => 0
       ]);
 
       MCOA::create([
@@ -1517,7 +1668,8 @@ class MCOAFullSeeder extends Seeder
         'mcoaparentcode' => $plu->mcoaparentcode,
         'mcoaparentname' => $plu->mcoaparentname,
         'mcoagrandparentcode' => $pendapatan_luar_usaha->mcoagrandparentcode,
-        'mcoagrandparentname' => $pendapatan_luar_usaha->mcoagrandparentname
+        'mcoagrandparentname' => $pendapatan_luar_usaha->mcoagrandparentname,
+        'void' => 0
       ]);
 
       MCOA::create([
@@ -1527,7 +1679,8 @@ class MCOAFullSeeder extends Seeder
         'mcoaparentcode' => $plu->mcoaparentcode,
         'mcoaparentname' => $plu->mcoaparentname,
         'mcoagrandparentcode' => $pendapatan_luar_usaha->mcoagrandparentcode,
-        'mcoagrandparentname' => $pendapatan_luar_usaha->mcoagrandparentname
+        'mcoagrandparentname' => $pendapatan_luar_usaha->mcoagrandparentname,
+        'void' => 0
       ]);
 
       MCOA::create([
@@ -1537,7 +1690,8 @@ class MCOAFullSeeder extends Seeder
         'mcoaparentcode' => $plu->mcoaparentcode,
         'mcoaparentname' => $plu->mcoaparentname,
         'mcoagrandparentcode' => $pendapatan_luar_usaha->mcoagrandparentcode,
-        'mcoagrandparentname' => $pendapatan_luar_usaha->mcoagrandparentname
+        'mcoagrandparentname' => $pendapatan_luar_usaha->mcoagrandparentname,
+        'void' => 0
       ]);
 
     $pengeluaran_luar_usaha = MCOAGrandParent::where('mcoagrandparentcode','8000.00')->first();
@@ -1547,7 +1701,8 @@ class MCOAFullSeeder extends Seeder
       'mcoaparentname' => 'Pengeluaran Luar Usaha',
       'mcoaparenttype' => $pengeluaran_luar_usaha->mcoagrandparenttype,
       'mcoagrandparentcode' => $pengeluaran_luar_usaha->mcoagrandparentcode,
-      'mcoagrandparentname' => $pengeluaran_luar_usaha->mcoagrandparentname
+      'mcoagrandparentname' => $pengeluaran_luar_usaha->mcoagrandparentname,
+      'void' => 0
     ]);
 
     $pluu = MCOAParent::where('mcoaparentcode','8100.00')->first();
@@ -1559,7 +1714,8 @@ class MCOAFullSeeder extends Seeder
         'mcoaparentcode' => $pluu->mcoaparentcode,
         'mcoaparentname' => $pluu->mcoaparentname,
         'mcoagrandparentcode' => $pengeluaran_luar_usaha->mcoagrandparentcode,
-        'mcoagrandparentname' => $pengeluaran_luar_usaha->mcoagrandparentname
+        'mcoagrandparentname' => $pengeluaran_luar_usaha->mcoagrandparentname,
+        'void' => 0
       ]);
 
       MCOA::create([
@@ -1569,7 +1725,8 @@ class MCOAFullSeeder extends Seeder
         'mcoaparentcode' => $pluu->mcoaparentcode,
         'mcoaparentname' => $pluu->mcoaparentname,
         'mcoagrandparentcode' => $pengeluaran_luar_usaha->mcoagrandparentcode,
-        'mcoagrandparentname' => $pengeluaran_luar_usaha->mcoagrandparentname
+        'mcoagrandparentname' => $pengeluaran_luar_usaha->mcoagrandparentname,
+        'void' => 0
       ]);
 
       MCOA::create([
@@ -1579,7 +1736,8 @@ class MCOAFullSeeder extends Seeder
         'mcoaparentcode' => $pluu->mcoaparentcode,
         'mcoaparentname' => $pluu->mcoaparentname,
         'mcoagrandparentcode' => $pengeluaran_luar_usaha->mcoagrandparentcode,
-        'mcoagrandparentname' => $pengeluaran_luar_usaha->mcoagrandparentname
+        'mcoagrandparentname' => $pengeluaran_luar_usaha->mcoagrandparentname,
+        'void' => 0
       ]);
 
       MCOA::create([
@@ -1589,7 +1747,8 @@ class MCOAFullSeeder extends Seeder
         'mcoaparentcode' => $pluu->mcoaparentcode,
         'mcoaparentname' => $pluu->mcoaparentname,
         'mcoagrandparentcode' => $pengeluaran_luar_usaha->mcoagrandparentcode,
-        'mcoagrandparentname' => $pengeluaran_luar_usaha->mcoagrandparentname
+        'mcoagrandparentname' => $pengeluaran_luar_usaha->mcoagrandparentname,
+        'void' => 0
       ]);
 
       MCOA::create([
@@ -1599,7 +1758,8 @@ class MCOAFullSeeder extends Seeder
         'mcoaparentcode' => $pluu->mcoaparentcode,
         'mcoaparentname' => $pluu->mcoaparentname,
         'mcoagrandparentcode' => $pengeluaran_luar_usaha->mcoagrandparentcode,
-        'mcoagrandparentname' => $pengeluaran_luar_usaha->mcoagrandparentname
+        'mcoagrandparentname' => $pengeluaran_luar_usaha->mcoagrandparentname,
+        'void' => 0
       ]);
 
       MCOA::create([
@@ -1609,7 +1769,8 @@ class MCOAFullSeeder extends Seeder
         'mcoaparentcode' => $pluu->mcoaparentcode,
         'mcoaparentname' => $pluu->mcoaparentname,
         'mcoagrandparentcode' => $pengeluaran_luar_usaha->mcoagrandparentcode,
-        'mcoagrandparentname' => $pengeluaran_luar_usaha->mcoagrandparentname
+        'mcoagrandparentname' => $pengeluaran_luar_usaha->mcoagrandparentname,
+        'void' => 0
       ]);
 
       MCOA::create([
@@ -1619,7 +1780,8 @@ class MCOAFullSeeder extends Seeder
         'mcoaparentcode' => $pluu->mcoaparentcode,
         'mcoaparentname' => $pluu->mcoaparentname,
         'mcoagrandparentcode' => $pengeluaran_luar_usaha->mcoagrandparentcode,
-        'mcoagrandparentname' => $pengeluaran_luar_usaha->mcoagrandparentname
+        'mcoagrandparentname' => $pengeluaran_luar_usaha->mcoagrandparentname,
+        'void' => 0
       ]);
 
       MCOA::create([
@@ -1629,7 +1791,8 @@ class MCOAFullSeeder extends Seeder
         'mcoaparentcode' => $pluu->mcoaparentcode,
         'mcoaparentname' => $pluu->mcoaparentname,
         'mcoagrandparentcode' => $pengeluaran_luar_usaha->mcoagrandparentcode,
-        'mcoagrandparentname' => $pengeluaran_luar_usaha->mcoagrandparentname
+        'mcoagrandparentname' => $pengeluaran_luar_usaha->mcoagrandparentname,
+        'void' => 0
       ]);
 
     }

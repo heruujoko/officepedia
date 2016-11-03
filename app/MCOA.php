@@ -34,13 +34,14 @@ class MCOA extends \LaravelArdent\Ardent\Ardent
     }
 
     public function afterSave(){
+      //sync only after update
       // $this->parent()->validateValue();
     }
 
-    public function afterCreate(){
-      $this->void = false;
-      $this->save();
-    }
+    // public function afterCreate(){
+    //   $this->void = false;
+    //   $this->save();
+    // }
 
     public function afterUpdate(){
       $this->parent()->validateValue();
