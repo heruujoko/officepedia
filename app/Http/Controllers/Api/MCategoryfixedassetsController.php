@@ -10,13 +10,16 @@ use App\MCategoryfixedassets;
 use Datatables;
 use Exception;
 use DB;
+use Auth;
+use App\Helper\DBHelper;
 
 class MCategoryfixedassetsController extends Controller
 {
 
 	public function index(){
+		DBHelper::configureConnection(Auth::user()->db_alias);
 		$this->iteration = 0;
-        $mcategory = MCategoryfixedassets::where('void', '0')->orderby('created_at','desc')->get();
+        $mcategory = MCategoryfixedassets::on(Auth::user()->db_name)->where('void', '0')->orderby('created_at','desc')->get();
         return Datatables::of($mcategory)->addColumn('action', function($mcategory){
 
           return '<center><div class="button">
@@ -31,13 +34,16 @@ class MCategoryfixedassetsController extends Controller
         ->make(true);
 	}
 	public function show($id){
-    $mcategory = MCategoryfixedassets::find($id);
+		DBHelper::configureConnection(Auth::user()->db_alias);
+    $mcategory = MCategoryfixedassets::on(Auth::user()->db_name)->where('id',$id)->first();
     return response()->json($mcategory);
 
 	}
 	public function store(Request $request){
+		DBHelper::configureConnection(Auth::user()->db_alias);
     try{
-        $mcategory = MCategoryfixedassets::create($request->all());
+				$mcategory = new MCategoryfixedassets($request->all());
+				$mcategory->setConnection(Auth::user()->db_name);
         $mcategory->void = 0;
         $mcategory->save();
         return response()->json($mcategory);
@@ -46,8 +52,9 @@ class MCategoryfixedassetsController extends Controller
       }
 	}
 	public function update(Request $request,$id){
+		DBHelper::configureConnection(Auth::user()->db_alias);
     try{
-      $mcategory = MCategoryfixedassets::find($id);
+      $mcategory = MCategoryfixedassets::on(Auth::user()->db_name)->where('id',$id)->first();
       $mcategory->update($request->all());
       return response()->json($mcategory);
     }catch(Exception $e){
@@ -56,8 +63,10 @@ class MCategoryfixedassetsController extends Controller
 
 	}
 	public function destroy($id){
-    $mcategory = MCategoryfixedassets::find($id);
-    DB::table('mategoryfixedassets')->where('id',$id)->update(['void' => '1']);
+		DBHelper::configureConnection(Auth::user()->db_alias);
+    $mcategory = MCategoryfixedassets::on(Auth::user()->db_name)->where('id',$id)->first();
+    $mcategory->void = 1;
+		$mcategory->save();
     return response()->json();
 	}
 

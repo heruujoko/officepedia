@@ -8,20 +8,24 @@ use App\Http\Requests;
 use App\MCategoryfixedassets;
 use Excel;
 use PDF;
+use Auth;
+use App\Helper\DBHelper;
 
 class MCategoryfixedassetsController extends Controller
 {
     public function index(){
+      DBHelper::configureConnection(Auth::user()->db_alias);
     	$data['active'] = 'categoryfixedassets';
-		$data['section'] = 'Kategori Asset Tetap';
+		  $data['section'] = 'Kategori Asset Tetap';
     	$data['activetab'] = 1;
-		$data['MCategorygoods'] = MCategoryfixedassets::all();
-		$data['id'] = null;
-	  return view('admin/viewmcategoryfixedassets',$data);
-	}
+		  $data['MCategorygoods'] = MCategoryfixedassets::on(Auth::user()->db_name)->get();
+		  $data['id'] = null;
+	    return view('admin/viewmcategoryfixedassets',$data);
+	  }
 
 	public function csv(){
-		$this->mcategory = MCategoryfixedassets::where('void',0)->get();
+    DBHelper::configureConnection(Auth::user()->db_alias);
+		$this->mcategory = MCategoryfixedassets::on(Auth::user()->db_name)->where('void',0)->get();
 		$this->count = 0;
 		return Excel::create('Master Kategori Aset Tetap',function($excel){
 			$excel->sheet('Master Kategori Aset Tetap',function($sheet){
@@ -39,7 +43,8 @@ class MCategoryfixedassetsController extends Controller
 		})->export('csv');
 	}
 	public function excel(){
-		$this->mcategory = MCategoryfixedassets::where('void',0)->get();
+    DBHelper::configureConnection(Auth::user()->db_alias);
+		$this->mcategory = MCategoryfixedassets::on(Auth::user()->db_name)->where('void',0)->get();
 		$this->count = 0;
 		return Excel::create('Master Kategori Aset Tetap',function($excel){
 			$excel->sheet('Master Kategori Aset Tetap',function($sheet){
@@ -57,7 +62,8 @@ class MCategoryfixedassetsController extends Controller
 		})->export('xlsx');
 	}
 	public function pdf(){
-		$data['mcategory'] = MCategoryfixedassets::where('void',0)->get();
+    DBHelper::configureConnection(Auth::user()->db_alias);
+		$data['mcategory'] = MCategoryfixedassets::on(Auth::user()->db_name)->where('void',0)->get();
 		$pdf = PDF::loadview('admin/export/mcategory',$data);
 		return $pdf->setPaper('a3', 'landscape')->download('Master Kategori Aset Tetap.pdf');
 	}
