@@ -10,6 +10,8 @@ use App\MCOAGrandParent;
 use PDF;
 use Excel;
 use App\MConfig;
+use Auth;
+use App\Helper\DBHelper;
 
 class MCOAController extends Controller
 {
@@ -21,19 +23,22 @@ class MCOAController extends Controller
     public function index(){
       $data['active'] = 'mcoa';
       $data['section'] = 'MCOA';
-      $data['parents'] = MCOAParent::all();
-      $data['gparents'] = MCOAGrandParent::all();
+      DBHelper::configureConnection(Auth::user()->db_alias);
+      $data['parents'] = MCOAParent::on(Auth::user()->db_name)->get();
+      $data['gparents'] = MCOAGrandParent::on(Auth::user()->db_name)->get();
 
       return view('admin/viewmcoa',$data);
     }
 
     public function xprint(){
-      $data['gparents'] = MCOAGrandParent::all();
+      DBHelper::configureConnection(Auth::user()->db_alias);
+      $data['gparents'] = MCOAGrandParent::on(Auth::user()->db_name)->get();
       return view('admin/export/mcoaprint',$data);
     }
 
     public function pdf(){
-      $data['gparents'] = MCOAGrandParent::all();
+      DBHelper::configureConnection(Auth::user()->db_alias);
+      $data['gparents'] = MCOAGrandParent::on(Auth::user()->db_name)->get();
       $config = MConfig::find(1);
       $data['decimals'] = $config->msysgenrounddec;
       $data['dec_point'] = $config->msysnumseparator;
@@ -48,7 +53,8 @@ class MCOAController extends Controller
     }
 
     public function excel(){
-      $this->gparents = MCOAGrandParent::all();
+      DBHelper::configureConnection(Auth::user()->db_alias);
+      $this->gparents = MCOAGrandParent::on(Auth::user()->db_name)->get();
       $this->count = 0;
       $config = MConfig::find(1);
       $this->data['decimals'] = $config->msysgenrounddec;
@@ -88,9 +94,10 @@ class MCOAController extends Controller
     }
 
     public function csv(){
-      $this->gparents = MCOAGrandParent::all();
+      DBHelper::configureConnection(Auth::user()->db_alias);
+      $this->gparents = MCOAGrandParent::on(Auth::user()->db_name)->get();
       $this->count = 0;
-      $config = MConfig::find(1);
+      $config = MConfig::on(Auth::user()->db_name)->where('id',1)->first();
       $this->data['decimals'] = $config->msysgenrounddec;
       $this->data['dec_point'] = $config->msysnumseparator;
       if($this->data['dec_point'] == ","){
@@ -111,7 +118,7 @@ class MCOAController extends Controller
               foreach($parent->childs() as $mcoa){
                 $this->count++;
                 $sheet->row($this->count,array(
-                  $gp->mcoagrandparentcode,$gp->mcoagrandparentname,$parent->mcoaparentcode,$parent->mcoaparentname,$mcoa->mcoacode,$mcoa->mcoaname,number_format($gp->mcoa,$this->data['decimals'],$this->data['dec_point'],$this->data['thousands_sep'])
+                  $gp->mcoagrandparentcode,$gp->mcoagrandparentname,$parent->mcoaparentcode,$parent->mcoaparentname,$mcoa->mcoacode,$mcoa->mcoaname,number_format($mcoa->saldo,$this->data['decimals'],$this->data['dec_point'],$this->data['thousands_sep'])
                 ));
               }
             }

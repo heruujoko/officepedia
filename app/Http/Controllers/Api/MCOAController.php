@@ -22,11 +22,11 @@ class MCOAController extends Controller
     private $separator;
 
     public function index(){
+      DBHelper::configureConnection(Auth::user()->db_alias);
       $mcoa = collect();
-      $config = MConfig::find(1);
+      $config = MConfig::on(Auth::user()->db_name)->where('id',1)->first();
       $this->round = $config->msysgenrounddec;
       $this->separator = $config->msysnumseparator;
-      DBHelper::configureConnection(Auth::user()->db_alias);
       $gp = MCOAGrandParent::on(Auth::user()->db_name)->get();
       foreach ($gp as $g) {
         $mcoa->push($g);
@@ -135,7 +135,7 @@ class MCOAController extends Controller
     public function update(Request $request,$id){
       DBHelper::configureConnection(Auth::user()->db_alias);
       try{
-          $mcoa = MCOA::find($id);
+          $mcoa = MCOA::on(Auth::user()->db_name)->where('id',$id)->first();
           $mcoa->setConnection(Auth::user()->db_name);
           $mcoa->mcoacode = $request->mcoacode;
           $mcoa->mcoaname = $request->mcoaname;

@@ -43,7 +43,7 @@ class MCOA extends \LaravelArdent\Ardent\Ardent
     }
 
     public function afterUpdate(){
-      // $this->parent()->validateValue();
+      $this->parent()->validateValue();
     }
 
     public function auto_code(){

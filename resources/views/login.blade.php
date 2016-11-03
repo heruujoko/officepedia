@@ -72,7 +72,7 @@
 				<!-- END AJAX-DROPDOWN -->
 			</div>
 
-			<span id="extr-page-header-space"> <span class="hidden-mobile hiddex-xs">Sudah punya akun?</span> <a href="{{ url('login') }}" class="btn btn-danger">Sign In</a> </span>
+			<span id="extr-page-header-space"> <span class="hidden-mobile hiddex-xs">Belum punya akun?</span> <a href="{{ url('register') }}" class="btn btn-danger">Register</a> </span>
 
 		</header>
 
