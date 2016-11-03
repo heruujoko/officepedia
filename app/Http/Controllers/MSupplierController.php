@@ -9,6 +9,8 @@ use PDF;
 use App\MSupplier;
 use App\MCOA;
 use App\MCategorysupplier;
+use Auth;
+use App\Helper\DBHelper;
 
 class MSupplierController extends Controller
 {
@@ -20,7 +22,7 @@ class MSupplierController extends Controller
 		$data['section'] = 'supplier';
     $data['activetab'] = 1;
 		$data['mcoa'] = MCOA::all();
-    $data['categories'] = MCategorysupplier::all();
+    $data['categories'] = MCategorysupplier::on(Auth::user()->db_name)->get();
 		$data['id'] = null;
 	  return view('admin/viewmsupplier',$data);
 }
@@ -50,7 +52,7 @@ class MSupplierController extends Controller
 	  return view('admin/viewmsupplier',$data);
 	}
 	public function csv(){
-		$this->supplier = MSupplier::where('void',0)->get();
+		$this->supplier = MSupplier::on(Auth::user()->db_name)->where('void',0)->get();
 		$this->count = 0;
 		return Excel::create('Master Supplier',function($excel){
 			$excel->sheet('Master Supplier',function($sheet){
@@ -61,14 +63,14 @@ class MSupplierController extends Controller
 				foreach($this->supplier as $cust){
 					$this->count++;
 					$sheet->row($this->count,array(
-						$cust->mcsupplierid,$cust->msuppliername,$cust->msupplieremail,$cust->msupplierphone,$cust->msupplierfax,$cust->msupplierwebsite,$cust->msupplieraddress,$cust->msuppliercity,$cust->msupplierzipcode,$cust->msupplierprovince,$cust->msuppliercountry,$cust->msuppliercontactname,$cust->msuppliercontactposition,$cust->msuppliercontactemail,$cust->msuppliercontactemailphone,$cust->msupplierarlimit,$cust->akun->mcoaname,$cust->msuppliertop,$cust->msuppliermax,$cust->msupplierdefaultar
+						$cust->mcsupplierid,$cust->msuppliername,$cust->msupplieremail,$cust->msupplierphone,$cust->msupplierfax,$cust->msupplierwebsite,$cust->msupplieraddress,$cust->msuppliercity,$cust->msupplierzipcode,$cust->msupplierprovince,$cust->msuppliercountry,$cust->msuppliercontactname,$cust->msuppliercontactposition,$cust->msuppliercontactemail,$cust->msuppliercontactemailphone,$cust->msupplierarlimit,$cust->akun()->mcoaname,$cust->msuppliertop,$cust->msuppliermax,$cust->msupplierdefaultar
 					));
 				}
 			});
 		})->export('csv');
 		}
 	public function excel(){
-		$this->supplier = MSupplier::where('void',0)->get();
+		$this->supplier = MSupplier::on(Auth::user()->db_name)->where('void',0)->get();
 		$this->count = 0;
 		return Excel::create('Master Supplier',function($excel){
 			$excel->sheet('Master Supplier',function($sheet){
@@ -79,14 +81,14 @@ class MSupplierController extends Controller
 				foreach($this->supplier as $cust){
 					$this->count++;
 					$sheet->row($this->count,array(
-						$cust->mcsupplierid,$cust->msuppliername,$cust->msupplieremail,$cust->msupplierphone,$cust->msupplierfax,$cust->msupplierwebsite,$cust->msupplieraddress,$cust->msuppliercity,$cust->msupplierzipcode,$cust->msupplierprovince,$cust->msuppliercountry,$cust->msuppliercontactname,$cust->msuppliercontactposition,$cust->msuppliercontactemail,$cust->msuppliercontactemailphone,$cust->msupplierarlimit,$cust->akun->mcoaname,$cust->msuppliertop,$cust->msuppliermax,$cust->msupplierdefaultar
+						$cust->mcsupplierid,$cust->msuppliername,$cust->msupplieremail,$cust->msupplierphone,$cust->msupplierfax,$cust->msupplierwebsite,$cust->msupplieraddress,$cust->msuppliercity,$cust->msupplierzipcode,$cust->msupplierprovince,$cust->msuppliercountry,$cust->msuppliercontactname,$cust->msuppliercontactposition,$cust->msuppliercontactemail,$cust->msuppliercontactemailphone,$cust->msupplierarlimit,$cust->akun()->mcoaname,$cust->msuppliertop,$cust->msuppliermax,$cust->msupplierdefaultar
 					));
 				}
 			});
 		})->export('xlsx');
 		}
 	public function pdf(){
-		$data['supplier'] = MSupplier::where('void',0)->get();
+		$data['supplier'] = MSupplier::on(Auth::user()->db_name)->where('void',0)->get();
 		$pdf = PDF::loadview('admin/export/msupplierpdf',$data);
 		return $pdf->setPaper('a4', 'landscape')->download('Master Pelanggan.pdf');
 	}

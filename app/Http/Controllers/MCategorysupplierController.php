@@ -8,19 +8,24 @@ use App\Http\Requests;
 use App\MCategorysupplier;
 use Excel;
 use PDF;
+use Auth;
+use App\Helper\DBHelper;
+
 class MCategorysupplierController extends Controller
 {
     public function index(){
+      DBHelper::configureConnection(Auth::user()->db_alias);
     	$data['active'] = 'categorysupllier';
 		$data['section'] = 'Kategori Supplier';
     	$data['activetab'] = 1;
-		$data['MCategorysupplier'] = MCategorysupplier::all();
+		$data['MCategorysupplier'] = MCategorysupplier::on(Auth::user()->db_name)->get();
 		$data['id'] = null;
 	  return view('admin/viewmcategorysupplier',$data);
 	}
 
 	public function csv(){
-		$this->mcategory = MCategorysupplier::where('void',0)->get();
+    DBHelper::configureConnection(Auth::user()->db_alias);
+		$this->mcategory = MCategorysupplier::on(Auth::user()->db_name)->where('void',0)->get();
 		$this->count = 0;
 		return Excel::create('Master Kategori Supplier',function($excel){
 			$excel->sheet('Master Kategori Supplier',function($sheet){
@@ -38,7 +43,8 @@ class MCategorysupplierController extends Controller
 		})->export('csv');
 	}
 	public function excel(){
-		$this->mcategory = MCategorysupplier::where('void',0)->get();
+    DBHelper::configureConnection(Auth::user()->db_alias);
+		$this->mcategory = MCategorysupplier::on(Auth::user()->db_name)->where('void',0)->get();
 		$this->count = 0;
 		return Excel::create('Master Kategori Supplier',function($excel){
 			$excel->sheet('Master Kateori Supplier',function($sheet){
@@ -56,7 +62,8 @@ class MCategorysupplierController extends Controller
 		})->export('xlsx');
 	}
 	public function pdf(){
-		$data['mcategory'] = MCategorysupplier::where('void',0)->get();
+    DBHelper::configureConnection(Auth::user()->db_alias);
+		$data['mcategory'] = MCategorysupplier::on(Auth::user()->db_name)->where('void',0)->get();
 		$pdf = PDF::loadview('admin/export/mcategory',$data);
 		return $pdf->setPaper('a3', 'landscape')->download('Master Kategori Supplier.pdf');
 	}

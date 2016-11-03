@@ -4,6 +4,8 @@ namespace App\Http\Middleware;
 
 use Closure;
 use Tymon\JWTAuth\Facades\JWTAuth;
+use App\Helper\DBHelper;
+use Auth;
 
 class JWTCookies
 {
@@ -21,7 +23,8 @@ class JWTCookies
           return response()->json('token required.',403);
         }
         try {
-            JWTAuth::authenticate($token);
+            $user = JWTAuth::authenticate($token);
+            DBHelper::configureConnection($user->db_alias);
             return $next($request);
         } catch (Tymon\JWTAuth\Exceptions\TokenExpiredException $e) {
 

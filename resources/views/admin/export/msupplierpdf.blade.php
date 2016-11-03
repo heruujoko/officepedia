@@ -112,7 +112,7 @@
             <td>{{ $sp->msuppliercontactemail }}</td>
             <td>{{ $sp->msuppliercontactemailphone }}</td>
             <td>{{ $sp->msupplierarlimit }}</td>
-            <td>{{ $sp->akun->mcoaname }}</td>
+            <td>{{ $sp->akun()->mcoaname }}</td>
             <td>{{ $sp->msuppliertop }}</td>
             <td>{{ $sp->msupplierarmax }}</td>
             <td>{{ $sp->msupplierdefaultar }}</td>

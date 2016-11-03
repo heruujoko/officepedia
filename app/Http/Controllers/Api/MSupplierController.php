@@ -11,11 +11,14 @@ use App\MPrefix;
 use Datatables;
 use DB;
 use App\MConfig;
+use Auth;
+use App\Helper\DBHelper;
+
 class MSupplierController extends Controller
 {
 	public function index(){
 		 $this->iteration = 0;
-        $msupplier = MSupplier::where('void', '0')->orderby('created_at','desc')->get();
+        $msupplier = MSupplier::on(Auth::user()->db_name)->where('void', '0')->orderby('created_at','desc')->get();
         return Datatables::of($msupplier)->addColumn('action', function($msupplier){
 
           return '<center><div class="button">
@@ -27,27 +30,28 @@ class MSupplierController extends Controller
             $this->iteration++;
             return "<span>".$this->iteration."</span>";
         })->addColumn('akun',function($msupplier){
-            return $msupplier->akun->mcoaname;
+            return $msupplier->akun()->mcoaname;
         })->addColumn('category',function($msupplier){
-						return $msupplier->category->category_name;
+						return $msupplier->category()->category_name;
 				})
         ->make(true);
 }
 
   public function show($id){
-    $msupplier = MSupplier::find($id);
+    $msupplier = MSupplier::on(Auth::user()->db_name)->where('id',$id)->first();
     return response()->json($msupplier);
   }
 
   public function update(Request $request,$id){
-      $new_cust = MSupplier::find($id);
+      $new_cust = MSupplier::on(Auth::user()->db_name)->where('id',$id)->first();
 			$new_cust->update($request->all());
     return response()->json($new_cust);
   }
 
 	public function store(Request $request){
 		try{
-			$new_cust = MSupplier::create($request->all());
+			$new_cust = new MSupplier($request->all());
+			$new_cust->setConnection(Auth::user()->db_name);
 			$new_cust->void = 0;
 			$new_cust->save();
 			if ($request->autogen == 'true') {
@@ -56,7 +60,7 @@ class MSupplierController extends Controller
 			$new_cust->save();
 			$isvalid = $new_cust->doublecheckid();
 			if($isvalid){
-				return response()->json($new_cust);
+				return response()->json($request->autogen);
 			} else {
 				$errorInfo = [
 					'err',
@@ -74,8 +78,9 @@ class MSupplierController extends Controller
 
 
    public function destroy($id){
-    $mbranch = MSupplier::find($id);
-    DB::table('msupplier')->where('id',$id)->update(['void' => '1']);
+    $mbranch = MSupplier::on(Auth::user()->db_name)->where('id',$id)->first();
+    $mbranch->void = 1;
+		$mbranch->save();
     return response()->json();
     }
 

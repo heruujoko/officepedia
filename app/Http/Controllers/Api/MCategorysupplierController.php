@@ -10,13 +10,16 @@ use App\MCategorysupplier;
 use Datatables;
 use Exception;
 use DB;
+use Auth;
+use App\Helper\DBHelper;
 
 class MCategorysupplierController extends Controller
 {
 
 	public function index(){
+		DBHelper::configureConnection(Auth::user()->db_alias);
 		$this->iteration = 0;
-        $mcategory = MCategorysupplier::where('void', '0')->orderby('created_at','desc')->get();
+        $mcategory = MCategorysupplier::on(Auth::user()->db_name)->where('void', '0')->orderby('created_at','desc')->get();
         return Datatables::of($mcategory)->addColumn('action', function($mcategory){
 
           return '<center><div class="button">
@@ -31,13 +34,16 @@ class MCategorysupplierController extends Controller
         ->make(true);
 	}
 	public function show($id){
-    $mcategory = MCategorysupplier::find($id);
+		DBHelper::configureConnection(Auth::user()->db_alias);
+    $mcategory = MCategorysupplier::on(Auth::user()->db_name)->get();
     return response()->json($mcategory);
 
 	}
 	public function store(Request $request){
+		DBHelper::configureConnection(Auth::user()->db_alias);
     try{
-        $mcategory = MCategorysupplier::create($request->all());
+        $mcategory = new MCategorysupplier($request->all());
+				$mcategory->setConnection(Auth::user()->db_name);
         $mcategory->void = 0;
         $mcategory->save();
         return response()->json($mcategory);
@@ -46,8 +52,9 @@ class MCategorysupplierController extends Controller
       }
 	}
 	public function update(Request $request,$id){
+		DBHelper::configureConnection(Auth::user()->db_alias);
     try{
-      $mcategory = MCategorysupplier::find($id);
+	    $mcategory = MCategorysupplier::on(Auth::user()->db_name)->get();
       $mcategory->update($request->all());
       return response()->json($mcategory);
     }catch(Exception $e){
@@ -56,8 +63,10 @@ class MCategorysupplierController extends Controller
 
 	}
 	public function destroy($id){
-    $mcategory = MCategorysupplier::find($id);
-    DB::table('mcategorysupplier')->where('id',$id)->update(['void' => '1']);
+		DBHelper::configureConnection(Auth::user()->db_alias);
+    $mcategory = MCategorysupplier::on(Auth::user()->db_name)->get();
+    $mcategory->void = 1;
+		$mcategory-save();
     return response()->json();
 	}
 

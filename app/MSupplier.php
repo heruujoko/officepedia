@@ -6,6 +6,10 @@ use Illuminate\Database\Eloquent\Model;
 use DB;
 use Exception;
 use Illuminate\Database\Eloquent\Builder;
+use App\MCOA;
+use App\MCactegorysupplier;
+use Auth;
+use App\Helper\DBHelper;
 
 class MSupplier extends Model
 {
@@ -27,11 +31,12 @@ class MSupplier extends Model
     }
 
     public function akun(){
-      return $this->belongsTo('App\MCOA','msuppliercoa','id');
+      // return $this->belongsTo('App\MCOA','msuppliercoa','id');
+      return MCOA::on(Auth::user()->db_name)->where('id',$this->msuppliercoa)->first();
     }
 
     public function doublecheckid(){
-      $check = MSupplier::where('msupplierid',$this->msupplierid)->where('void',0)->get();
+      $check = MSupplier::on(Auth::user()->db_name)->where('msupplierid',$this->msupplierid)->where('void',0)->get();
       $cnt = count($check);
       if($cnt > 1){
         return false;
@@ -60,8 +65,10 @@ class MSupplier extends Model
       $attempt = 0;
       $conf = MConfig::find(1);
       try{
-        DB::select(DB::raw('call autogen("msupplier","'.$conf->msysprefixsupplier.'",'.$conf->msysprefixsuppliercount.',"msupplierid",'.$this->id.')'));
+        DBHelper::configureConnection(Auth::user()->db_alias);
+        DB::connection(Auth::user()->db_name)->select(DB::raw('call autogen("msupplier","'.$conf->msysprefixsupplier.'",'.$conf->msysprefixsuppliercount.',"msupplierid",'.$this->id.')'));
       } catch(Exception $e){
+        var_dump($e);
         return $e;
       }
 
@@ -76,6 +83,7 @@ class MSupplier extends Model
     }
 
     public function category(){
-      return $this->belongsTo('App\MCategorysupplier','msuppliercategory','id');
+      // return $this->belongsTo('App\MCategorysupplier','msuppliercategory','id');
+      return MCategorysupplier::on(Auth::user()->db_name)->where('id',$this->msuppliercategory)->first();
     }
 }
