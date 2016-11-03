@@ -9,6 +9,7 @@ use App\Http\Controllers\Controller;
 use Datatables;
 use Exception;
 use App\MTax;
+use Auth;
 
 class MTaxController extends Controller
 {
@@ -17,7 +18,7 @@ class MTaxController extends Controller
     public function index(){
       $this->iteration = 0;
 
-      $mtax = MTax::where('void',0)->orderby('created_at','desc')->get();
+      $mtax = MTax::on(Auth::user()->db_name)->where('void',0)->orderby('created_at','desc')->get();
       return Datatables::of($mtax)->addColumn('action', function($mtax){
 
         return '<center><div class="button">
@@ -35,14 +36,15 @@ class MTaxController extends Controller
     }
 
     public function show($id){
-      $mtax = MTax::find($id);
+      $mtax = MTax::on(Auth::user()->db_name)->where('id',$id)->first();
       return response()->json($mtax);
 
   	}
 
     public function store(Request $request){
       try{
-          $mtax = Mtax::create($request->all());
+          $mtax = new Mtax($request->all());
+          $mtax->setConnection(Auth::user()->db_name);
           $mtax->void = 0;
           $mtax->save();
           return response()->json($mtax);
@@ -52,7 +54,7 @@ class MTaxController extends Controller
   	}
   	public function update(Request $request,$id){
       try{
-        $mtax = Mtax::find($id);
+        $mtax = Mtax::on(Auth::user()->db_name)->where('id',$id)->first();
         $mtax->update($request->all());
         return response()->json($mtax);
       }catch(Exception $e){
@@ -62,7 +64,7 @@ class MTaxController extends Controller
   	}
 
     public function destroy($id){
-      $mtax = MTax::find($id);
+      $mtax = MTax::on(Auth::user()->db_name)->where('id',$id)->first();
       $mtax->void = 1;
       $mtax->save();
       return response()->json();

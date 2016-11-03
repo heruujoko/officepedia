@@ -8,7 +8,7 @@ use App\Http\Requests;
 use Excel;
 use PDF;
 use App\MTax;
-
+use Auth;
 class MTaxController extends Controller
 {
 
@@ -22,7 +22,7 @@ class MTaxController extends Controller
   }
 
   public function csv(){
-		$this->mtax = MTax::where('void',0)->get();
+		$this->mtax = MTax::on(Auth::user()->db_name)->get();
 		$this->count = 0;
 		return Excel::create('Master Pajak',function($excel){
 			$excel->sheet('Master Pajak',function($sheet){
@@ -41,7 +41,7 @@ class MTaxController extends Controller
 	}
 
   public function excel(){
-		$this->mtax = MTax::where('void',0)->get();
+		$this->mtax = MTax::on(Auth::user()->db_name)->get();
 		$this->count = 0;
 		return Excel::create('Master Pajak',function($excel){
 			$excel->sheet('Master Pajak',function($sheet){
@@ -60,7 +60,7 @@ class MTaxController extends Controller
 	}
 
   public function pdf(){
-		$data['mtax'] = MTax::where('void',0)->get();
+		$data['mtax'] = MTax::on(Auth::user()->db_name)->get();
 		$pdf = PDF::loadview('admin/export/mtax',$data);
 		return $pdf->setPaper('a4', 'potrait')->download('Master Pajak.pdf');
 	}
