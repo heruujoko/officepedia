@@ -94,7 +94,7 @@
             <td>{{ $ct->memployeetitle }}</td>
             <td>{{ $ct->memployeename }}</td>
             <td>{{ $ct->memployeeposition }}</td>
-            <td>{{ $ct->level->level }}</td>
+            <td>{{ $ct->level()->level }}</td>
             <td>{{ $ct->memployeephone }}</td>
             <td>{{ $ct->memployeehomephone }}</td>
             <td>{{ $ct->memployeebbmpin }}</td>

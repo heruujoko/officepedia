@@ -10,12 +10,13 @@ use Datatables;
 use Exception;
 use DB;
 use App\MEmployeeLevel;
+use Auth;
 
 class MEmployeeLevelController extends Controller
 {
   public function index(){
     $this->iteration = 0;
-        $mcategory = MEmployeeLevel::where('void', '0')->orderby('created_at','desc')->get();
+        $mcategory = MEmployeeLevel::on(Auth::user()->db_name)->where('void', '0')->orderby('created_at','desc')->get();
         return Datatables::of($mcategory)->addColumn('action', function($mcategory){
 
           return '<center><div class="button">
@@ -30,13 +31,14 @@ class MEmployeeLevelController extends Controller
         ->make(true);
   }
   public function show($id){
-    $mcategory = MEmployeeLevel::find($id);
+    $mcategory = MEmployeeLevel::on(Auth::user()->db_name)->where('id',$id)->first();
     return response()->json($mcategory);
 
   }
   public function store(Request $request){
     try{
-        $mcategory = MEmployeeLevel::create($request->all());
+        $mcategory = new MEmployeeLevel($request->all());
+        $mcategory->setConnection(Auth::user()->db_name);
         $mcategory->void = 0;
         $mcategory->save();
         return response()->json($mcategory);
@@ -46,7 +48,7 @@ class MEmployeeLevelController extends Controller
   }
   public function update(Request $request,$id){
     try{
-      $mcategory = MEmployeeLevel::find($id);
+      $mcategory = MEmployeeLevel::on(Auth::user()->db_name)->where('id',$id)->first();
       $mcategory->update($request->all());
       return response()->json($mcategory);
     }catch(Exception $e){
@@ -55,7 +57,7 @@ class MEmployeeLevelController extends Controller
 
   }
   public function destroy($id){
-    $level = MEmployeeLevel::find($id);
+    $level = MEmployeeLevel::on(Auth::user()->db_name)->where('id',$id)->first();
     // DB::table('memployeelevel')->where('id',$id)->update(['void' => '1']);
     $level->void = 1;
     $level->save();

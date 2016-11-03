@@ -10,12 +10,13 @@ use Datatables;
 use App\MEmployee;
 use Exception;
 use DB;
+use Auth;
 
 class MEmployeeController extends Controller
 {
     public function index(){
       $this->iteration = 0;
-          $mcategory = MEmployee::where('void', '0')->orderby('created_at','desc')->get();
+          $mcategory = MEmployee::on(Auth::user()->db_name)->where('void', '0')->orderby('created_at','desc')->get();
           return Datatables::of($mcategory)->addColumn('action', function($memployee){
 
             return '<center><div class="button">
@@ -28,7 +29,7 @@ class MEmployeeController extends Controller
           return "<span>".$this->iteration."</span>";
         })
         ->addColumn('level',function($memployee){
-          return "<span>".$memployee->level->level."</span>";
+          return "<span>".$memployee->level()->level."</span>";
         })
           ->make(true);
     }
@@ -36,7 +37,8 @@ class MEmployeeController extends Controller
     public function store(Request $request){
       $new_empl = "";
       try{
-        $new_empl = MEmployee::create($request->all());
+        $new_empl = new MEmployee($request->all());
+        $new_empl->setConnection(Auth::user()->db_name);
         $new_empl->save();
         if($request->autogen == "true"){
           $new_empl->autogenproc();
@@ -58,7 +60,7 @@ class MEmployeeController extends Controller
           $new_empl->revert_creation();
           return response()->json($e,400);
         }
-        
+
       } catch(Exception $e){
         if($request->autogen == "true"){
           $new_empl->autogenproc();
@@ -73,7 +75,7 @@ class MEmployeeController extends Controller
 
     public function update(Request $request, $id){
       try{
-        $empl = MEmployee::find($id);
+        $empl = MEmployee::on(Auth::user()->db_name)->where('id',$id)->first();
         $empl->update($request->all());
         return response()->json($empl);
       } catch(Exception $e){
@@ -82,12 +84,12 @@ class MEmployeeController extends Controller
     }
 
     public function show($id){
-      $empl = MEmployee::find($id);
+      $empl = MEmployee::on(Auth::user()->db_name)->where('id',$id)->first();
       return response()->json($empl);
     }
 
     public function destroy($id){
-      $empl = MEmployee::find($id);
+      $empl = MEmployee::on(Auth::user()->db_name)->where('id',$id)->first();
       $empl->void =1;
       $empl->save();
       return response()->json();

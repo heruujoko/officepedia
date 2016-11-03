@@ -8,6 +8,7 @@ use App\Http\Requests;
 use App\MEmployeeLevel;
 use Excel;
 use PDF;
+use Auth;
 
 class MEmployeeLevelController extends Controller
 {
@@ -18,7 +19,7 @@ class MEmployeeLevelController extends Controller
     }
 
     public function csv(){
-  		$this->mcategory = MEmployeeLevel::where('void',0)->get();
+  		$this->mcategory = MEmployeeLevel::on(Auth::user()->db_name)->get();
   		$this->count = 0;
   		return Excel::create('Master Level Karyawan',function($excel){
   			$excel->sheet('Master Level Karyawan',function($sheet){
@@ -36,7 +37,7 @@ class MEmployeeLevelController extends Controller
   		})->export('csv');
   	}
   	public function excel(){
-  		$this->mcategory = MEmployeeLevel::where('void',0)->get();
+  		$this->mcategory = MEmployeeLevel::on(Auth::user()->db_name)->get();
   		$this->count = 0;
   		return Excel::create('Master Level Karyawan',function($excel){
   			$excel->sheet('Master Level Karyawan',function($sheet){
@@ -55,7 +56,7 @@ class MEmployeeLevelController extends Controller
   	}
 
   	public function pdf(){
-  		$data['mcategory'] = MEmployeeLevel::where('void',0)->get();
+  		$data['mcategory'] = MEmployeeLevel::on(Auth::user()->db_name)->get();
   		$pdf = PDF::loadview('admin/export/memployeelevelpdf',$data);
   		return $pdf->setPaper('a4', 'potrait')->download('Master Level Karyawan.pdf');
   	}

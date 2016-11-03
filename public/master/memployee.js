@@ -92,6 +92,7 @@ function editmemployee(id){
       $('#edit-memployeeprovince').val(response.memployeeprovince);
       $('#edit-memployeecountry').val(response.memployeecountry);
       $('#edit-memployeeinfo').val(response.memployeeinfo);
+      window.location.href = '#main';
     },
     error : function(repsonse){
 
@@ -177,6 +178,7 @@ function viewmemployee(id){
       $('#view-memployeearmax').val(response.memployeearmax);
       $('#view-memployeedefaultar').val(response.memployeedefaultar);
       $('#view-memployeeinfo').val(response.memployeeinfo);
+      window.location.href = '#main';
     },
     error: function(response){
 

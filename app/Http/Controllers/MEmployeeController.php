@@ -10,19 +10,20 @@ use App\MCOA;
 use Excel;
 use PDF;
 use App\MEmployee;
+use Auth;
 
 class MEmployeeController extends Controller
 {
     public function index(){
       $data['active'] = 'memployee';
       $data['section'] = 'Master Karyawan';
-      $data['level'] = MEmployeeLevel::all();
-      $data['mcoa'] = MCOA::all();
+      $data['level'] = MEmployeeLevel::on(Auth::user()->db_name)->get();
+      $data['mcoa'] = MCOA::on(Auth::user()->db_name)->get();
       return view('admin.viewmemployee',$data);
     }
 
     public function csv(){
-  		$this->memployee = MEmployee::where('void',0)->get();
+  		$this->memployee = MEmployee::on(Auth::user()->db_name)->where('void',0)->get();
   		$this->count = 0;
   		return Excel::create('Master Karyawan',function($excel){
   			$excel->sheet('Master Karyawan',function($sheet){
@@ -37,7 +38,7 @@ class MEmployeeController extends Controller
               $empl->memployeetitle,
               $empl->memployeename,
               $empl->memployeeposition,
-              $empl->level->level,
+              $empl->level()->level,
               $empl->memployeephone,
               $empl->memployeehomephone,
               $empl->memployeebbmpin,
@@ -54,7 +55,7 @@ class MEmployeeController extends Controller
   	}
 
     public function excel(){
-  		$this->memployee = MEmployee::where('void',0)->get();
+  		$this->memployee = MEmployee::on(Auth::user()->db_name)->where('void',0)->get();
   		$this->count = 0;
   		return Excel::create('Master Karyawan',function($excel){
   			$excel->sheet('Master Karyawan',function($sheet){
@@ -69,7 +70,7 @@ class MEmployeeController extends Controller
               $empl->memployeetitle,
               $empl->memployeename,
               $empl->memployeeposition,
-              $empl->level->level,
+              $empl->level()->level,
               $empl->memployeephone,
               $empl->memployeehomephone,
               $empl->memployeebbmpin,
@@ -86,7 +87,7 @@ class MEmployeeController extends Controller
   	}
 
     public function pdf(){
-  		$data['memployee'] = MEmployee::where('void',0)->get();
+  		$data['memployee'] = MEmployee::on(Auth::user()->db_name)->where('void',0)->get();
   		$pdf = PDF::loadview('admin/export/memployeepdf',$data);
   		return $pdf->setPaper('a4', 'potrait')->download('Master Karyawan.pdf');
   	}
