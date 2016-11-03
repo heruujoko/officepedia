@@ -12,6 +12,7 @@ use Datatables;
 use Validator;
 use Exception;
 use App\MConfig;
+use Auth;
 
 class MGoodsController extends Controller
 {
@@ -38,11 +39,11 @@ class MGoodsController extends Controller
 
 	public function index(){
 		 $this->iteration = 0;
-     $config = MConfig::find(1);
+     $config = MConfig::on(Auth::user()->db_name)->where('id',1)->first();
      $this->round = $config->msysgenrounddec;
      $this->separator = $config->msysnumseparator;
 
-        $MGoods = MGoods::where('void', '0')->orderby('created_at','desc')->get();
+        $MGoods = MGoods::on(Auth::user()->db_name)->where('void', '0')->orderby('created_at','desc')->get();
         return Datatables::of($MGoods)->addColumn('action', function($MGoods){
 
           return '<center><div class="button">
@@ -55,19 +56,19 @@ class MGoodsController extends Controller
             return "<span>".$this->iteration."</span>";
         })
         ->addColumn('category',function($MGoods){
-            return "<span>".$MGoods->category->category_name."</span>";
+            return "<span>".$MGoods->category()->category_name."</span>";
         })
         ->addColumn('brand',function($MGoods){
-            return "<span>".$MGoods->mark->category_name."</span>";
+            return "<span>".$MGoods->mark()->category_name."</span>";
         })
         ->addColumn('type',function($MGoods){
-            return "<span>".$MGoods->types->mgoodstypename."</span>";
+            return "<span>".$MGoods->types()->mgoodstypename."</span>";
         })
         ->addColumn('subtype',function($MGoods){
-            return "<span>".$MGoods->subtypes->mgoodssubtypename."</span>";
+            return "<span>".$MGoods->subtypes()->mgoodssubtypename."</span>";
         })
         ->addColumn('supplier',function($MGoods){
-            return "<span>".$MGoods->supplier->msuppliername."</span>";
+            return "<span>".$MGoods->supplier()->msuppliername."</span>";
         })
         ->addColumn('pricein',function($MGoods){
           $decimals = $this->round;
@@ -94,14 +95,15 @@ class MGoodsController extends Controller
         ->make(true);
 	}
 	public function show($id){
-		$MGoods = MGoods::find($id);
+		$MGoods = MGoods::on(Auth::user()->db_name)->where('id',$id)->first();
       	return response()->json($MGoods);
 	}
 
     public function store(Request $request){
       $MGoods = "";
 			try{
-				$MGoods = MGoods::create($request->all());
+				$MGoods = new MGoods($request->all());
+        $MGoods->setConnection(Auth::user()->db_name);
 				$MGoods->void = 0;
         $MGoods->mgoodsactive = $this->convertBoolean($request->mgoodsactive);
         $MGoods->mgoodscategory = intval($request->mgoodscategory);
@@ -113,7 +115,7 @@ class MGoodsController extends Controller
         $MGoods->mgoodsuniquetransaction = $this->convertBoolean($request->mgoodsuniquetransaction);
         $MGoods->mgoodsmultiunit = $this->convertint($request->mgoodsmultiunit);
 				$MGoods->save();
-        $MGoods->mgoodssuppliername = $MGoods->supplier->msuppliername;
+        $MGoods->mgoodssuppliername = $MGoods->supplier()->msuppliername;
         $MGoods->save();
         if($request->autogen == "true"){
           $MGoods->autogenproc();
@@ -138,7 +140,7 @@ class MGoodsController extends Controller
 
 	}
  public function update(Request $request,$id){
-      $mgoods = MGoods::find($id);
+      $mgoods = MGoods::on(Auth::user()->db_name)->where('id',$id)->first();
       $mgoods->update($request->all());
       $mgoods->mgoodsactive = $this->convertBoolean($request->mgoodsactive);
       $mgoods->mgoodsbranches = $this->convertBoolean($request->mgoodsbranches);
@@ -148,7 +150,7 @@ class MGoodsController extends Controller
   }
 
 	public function destroy($id){
-		$MGoods = MGoods::find($id);
+		$MGoods = MGoods::on(Auth::user()->db_name)->where('id',$id)->first();
     $MGoods->void = 1;
     $MGoods->save();
     return response()->json();

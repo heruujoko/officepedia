@@ -42,7 +42,7 @@ class MCUSTOMER extends Model
     public function autogenproc(){
       $success = false;
       $attempt = 0;
-      $conf = MConfig::find(1);
+      $conf = MConfig::on(Auth::user()->db_name)->where('id',1)->first();
       try{
         DBHelper::configureConnection(Auth::user()->db_alias);
         DB::connection(Auth::user()->db_name)->select(DB::raw('call autogen("mcustomer","'.$conf->msysprefixcustomer.'",'.$conf->msysprefixcustomercount.',"mcustomerid",'.$this->id.')'));
@@ -63,7 +63,7 @@ class MCUSTOMER extends Model
     }
 
     public function revert_creation(){
-      $conf = MConfig::find(1);
+      $conf = MConfig::on(Auth::user()->db_name)->where('id',1)->first();
       $conf->msysprefixcustomercount = $conf->msysprefixcustomercount-1;
       $conf->msysprefixcustomerlastcount = $conf->get_last_count_format($conf->msysprefixcustomercount);
       $conf->save();
@@ -71,14 +71,14 @@ class MCUSTOMER extends Model
     }
 
     public function update_prefix_status(){
-      $conf = MConfig::find(1);
+      $conf = MConfig::on(Auth::user()->db_name)->where('id',1)->first();
       $conf->msysprefixcustomercount = $conf->msysprefixcustomercount+1;
       $conf->msysprefixcustomerlastcount = $conf->get_last_count_format($conf->msysprefixcustomercount);
       $conf->save();
     }
 
     public function doublecheck($in){
-      $conf = MConfig::find(1);
+      $conf = MConfig::on(Auth::user()->db_name)->where('id',1)->first();
       $current = "";
       $incr = $conf->msysprefixcustomercount+$in;
 

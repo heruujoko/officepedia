@@ -14,8 +14,7 @@ class MTax extends Model
     protected static function boot(){
       parent::boot();
       static::addGlobalScope('actives', function(Builder $builder) {
-            $builder->where('mtaxtype', '!=', 'Kosong')
-            ->where('void', '=', 0);
+            $builder->where('void', '=', 0);
       });
     }
 }

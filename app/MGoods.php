@@ -6,7 +6,12 @@ use Illuminate\Database\Eloquent\Model;
 use DB;
 use Exception;
 use Illuminate\Database\Eloquent\Builder;
-
+use Auth;
+use App\MGoodstype;
+use App\MGoodssubtype;
+use App\MGoodsMark;
+use App\Supplier;
+use App\Helper\DBHelper;
 class MGOODS extends Model
 {
     protected $table = 'mgoods';
@@ -37,7 +42,7 @@ class MGOODS extends Model
     }
 
     public function doublecheckid(){
-      $check = MGoods::where('mgoodscode',$this->mgoodscode)->where('void',0)->get();
+      $check = MGoods::on(Auth::user()->db_name)->where('mgoodscode',$this->mgoodscode)->where('void',0)->get();
       $cnt = count($check);
       if($cnt > 1){
         return false;
@@ -47,7 +52,7 @@ class MGOODS extends Model
     }
 
     public function revert_creation(){
-      $conf = MConfig::find(1);
+      $conf = MConfig::on(Auth::user()->db_name)->where('id',1)->first();
       $conf->msysprefixgoodscount = $conf->msysprefixgoodscount-1;
       $conf->msysprefixgoodslastcount = $conf->get_last_count_format14($conf->msysprefixgoodscount);
       $conf->save();
@@ -55,7 +60,7 @@ class MGOODS extends Model
     }
 
     public function update_prefix_status(){
-      $conf = MConfig::find(1);
+      $conf = MConfig::on(Auth::user()->db_name)->where('id',1)->first();
       $conf->msysprefixgoodscount = $conf->msysprefixgoodscount+1;
       $conf->msysprefixgoodslastcount = $conf->get_last_count_format14($conf->msysprefixgoodscount);
       $conf->save();
@@ -64,9 +69,10 @@ class MGOODS extends Model
     public function autogenproc(){
       $success = false;
       $attempt = 0;
-      $conf = MConfig::find(1);
+      $conf = MConfig::on(Auth::user()->db_name)->where('id',1)->first();
       try{
-        DB::select(DB::raw('call autogengoods("mgoods","'.$conf->msysprefixgoods.'",'.$conf->msysprefixgoodscount.',"mgoodscode",'.$this->id.')'));
+        DBHelper::configureConnection(Auth::user()->db_alias);
+        DB::connection(Auth::user()->db_name)->select(DB::raw('call autogengoods("mgoods","'.$conf->msysprefixgoods.'",'.$conf->msysprefixgoodscount.',"mgoodscode",'.$this->id.')'));
       } catch(Exception $e){
         return $e;
       }
@@ -74,7 +80,7 @@ class MGOODS extends Model
     }
 
     public function doublecheck($in){
-      $conf = MConfig::find(1);
+      $conf = MConfig::on(Auth::user()->db_name)->where('id',1)->first();
       $current = "";
       $incr = $conf->msysprefixgoodscount+$in;
 
@@ -82,23 +88,28 @@ class MGOODS extends Model
     }
 
     public function category(){
-      return $this->belongsTo('App\MCategorygoods','mgoodscategory','id');
+      // return $this->belongsTo('App\MCategorygoods','mgoodscategory','id');
+      return MCategorygoods::on(Auth::user()->db_name)->where('id',$this->mgoodscategory)->first();
     }
 
     public function types(){
-      return $this->belongsTo('App\MGoodstype','mgoodstype','id');
+      // return $this->belongsTo('App\MGoodstype','mgoodstype','id');
+      return MGoodstype::on(Auth::user()->db_name)->where('id',$this->mgoodstype)->first();
     }
 
     public function subtypes(){
-      return $this->belongsTo('App\MGoodssubtype','mgoodssubtype','id');
+      // return $this->belongsTo('App\MGoodssubtype','mgoodssubtype','id');
+      return MGoodssubtype::on(Auth::user()->db_name)->where('id',$this->mgoodssubtype)->first();
     }
 
     public function mark(){
-      return $this->belongsTo('App\MGoodsMark','mgoodsbrand','id');
+      // return $this->belongsTo('App\MGoodsMark','mgoodsbrand','id');
+      return MGoodsMark::on(Auth::user()->db_name)->where('id',$this->mgoodsbrand)->first();
     }
 
     public function supplier(){
-      return $this->belongsTo('App\MSupplier','mgoodssuppliercode','msupplierid');
+      // return $this->belongsTo('App\MSupplier','mgoodssuppliercode','msupplierid');
+      return MSupplier::on(Auth::user()->db_name)->where('msupplierid',$this->mgoodssuppliercode)->first();
     }
 
 }

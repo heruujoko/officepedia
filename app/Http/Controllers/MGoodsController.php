@@ -16,23 +16,24 @@ use App\MTax;
 use App\MGoodssubtype;
 use App\MGoodstype;
 use App\MUnit;
+use Auth;
 
 class MGoodsController extends Controller
 {
     public function index(){
 		$data['active'] = 'barang';
-		$data['mcoa'] = MCOA::all();
-    $data['marks'] = MGoodsMark::all();
-    $data['categories'] = MCategorygoods::all();
-		$data['msupplier'] = MSupplier::all();
-    $data['types'] = MGoodstype::all();
-    $data['subtypes'] = MGoodssubtype::all();
-    $data['taxes'] = MTax::all();
-    $data['units'] = MUnit::where('void',0)->get();
+		$data['mcoa'] = MCOA::on(Auth::user()->db_name)->get();
+    $data['marks'] = MGoodsMark::on(Auth::user()->db_name)->get();
+    $data['categories'] = MCategorygoods::on(Auth::user()->db_name)->get();
+		$data['msupplier'] = MSupplier::on(Auth::user()->db_name)->get();
+    $data['types'] = MGoodstype::on(Auth::user()->db_name)->get();
+    $data['subtypes'] = MGoodssubtype::on(Auth::user()->db_name)->get();
+    $data['taxes'] = MTax::on(Auth::user()->db_name)->get();
+    $data['units'] = MUnit::on(Auth::user()->db_name)->where('void',0)->get();
 		return view('admin/viewmgoods',$data);
 	}
 	public function csv(){
-		$this->mgoods = MGoods::where('void',0)->get();
+		$this->mgoods = MGoods::on(Auth::user()->db_name)->where('void',0)->get();
 		$this->count = 0;
 		return Excel::create('Master Barang',function($excel){
 			$excel->sheet('Master Barang',function($sheet){
@@ -51,7 +52,7 @@ class MGoodsController extends Controller
 	}
 
 	public function excel(){
-		$this->customer = MGoods::where('void',0)->get();
+		$this->customer = MGoods::on(Auth::user()->db_name)->where('void',0)->get();
 		$this->count = 0;
 		return Excel::create('Master Barang',function($excel){
 			$excel->sheet('Master Barang',function($sheet){
@@ -71,7 +72,7 @@ class MGoodsController extends Controller
 	}
 
 	public function pdf(){
-		$data['mgoods'] = MGoods::where('void',0)->get();
+		$data['mgoods'] = MGoods::on(Auth::user()->db_name)->where('void',0)->get();
 		$pdf = PDF::loadview('admin/export/mgoodspdf',$data);
 		return $pdf->setPaper('a3', 'landscape')->download('Master Barang.pdf');
 	}

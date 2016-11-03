@@ -46,7 +46,7 @@ class MSupplier extends Model
     }
 
     public function revert_creation(){
-      $conf = MConfig::find(1);
+      $conf = MConfig::on(Auth::user()->db_name)->where('id',1)->first();
       $conf->msysprefixsuppliercount = $conf->msysprefixsuppliercount-1;
       $conf->msysprefixsupplierlastcount = $conf->get_last_count_format($conf->msysprefixsuppliercount);
       $conf->save();
@@ -54,7 +54,7 @@ class MSupplier extends Model
     }
 
     public function update_prefix_status(){
-      $conf = MConfig::find(1);
+      $conf = MConfig::on(Auth::user()->db_name)->where('id',1)->first();
       $conf->msysprefixsuppliercount = $conf->msysprefixsuppliercount+1;
       $conf->msysprefixsupplierlastcount = $conf->get_last_count_format($conf->msysprefixsuppliercount);
       $conf->save();
@@ -63,7 +63,7 @@ class MSupplier extends Model
     public function autogenproc(){
       $success = false;
       $attempt = 0;
-      $conf = MConfig::find(1);
+      $conf = MConfig::on(Auth::user()->db_name)->where('id',1)->first();
       try{
         DBHelper::configureConnection(Auth::user()->db_alias);
         DB::connection(Auth::user()->db_name)->select(DB::raw('call autogen("msupplier","'.$conf->msysprefixsupplier.'",'.$conf->msysprefixsuppliercount.',"msupplierid",'.$this->id.')'));
@@ -75,7 +75,7 @@ class MSupplier extends Model
     }
 
     public function doublecheck($in){
-      $conf = MConfig::find(1);
+      $conf = MConfig::on(Auth::user()->db_name)->where('id',1)->first();
       $current = "";
       $incr = $conf->msysprefixsuppliercount+$in;
 
