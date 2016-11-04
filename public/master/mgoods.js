@@ -141,6 +141,7 @@ function editmgoods(id){
       $('#edit-mgoodspriceout').val(response.mgoodspriceout);
       $('#edit-mgoodsmaxdisc').val(response.mgoodsmaxdisc);
       $('#edit-mgoodstype').val(response.mgoodstype).change();
+      $('#edit-mgoodssubtype').val(response.mgoodssubtype).change();
       $('#edit-mgoodsbrand').val(response.mgoodsbrand).change();
       $('#edit-mgoodsgroup1').val(response.mgoodsgroup1);
       $('#edit-mgoodsgroup2').val(response.mgoodsgroup2);
@@ -311,6 +312,7 @@ function updatemgoods(){
       $('#view-mgoodspriceout').val(response.mgoodspriceout);
       $('#view-mgoodsmaxdisc').val(response.mgoodsmaxdisc);
       $('#view-mgoodstype').val(response.mgoodstype).change();
+      $('#view-mgoodssubtype').val(response.mgoodssubtype).change();
       $('#view-mgoodsbrand').val(response.mgoodsbrand).change();
       $('#view-mgoodsgroup1').val(response.mgoodsgroup1);
       $('#view-mgoodsgroup2').val(response.mgoodsgroup2);
