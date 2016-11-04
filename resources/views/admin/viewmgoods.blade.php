@@ -852,7 +852,7 @@
                     </div>
                     <div class="row">
                       <div class="col-md-offset-5 col-md-5" style="margin-top:20px;margin-bottom:20px;">
-                        <button onclick="insertmgoods()" type="submit" name="button" class="btn btn-primary">Simpan</button>
+                        <button onclick="updatemgoods()" type="submit" name="button" class="btn btn-primary">Simpan</button>
                         <a id="btn-insert-reset" onclick="resetmgoods()" class="btn btn-default" ><i class=""></i> Reset</a>
                       </div>
                     </div>
