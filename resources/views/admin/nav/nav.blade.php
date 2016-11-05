@@ -159,6 +159,15 @@
           <a href="{{URL::to('/')}}/admin-nano/cabang">Cabang</a>
         </li>
       @endif
+      @if($active == 'mwarehouse')
+        <li class="active">
+          <a href="{{URL::to('/')}}/admin-nano/mwarehouse">Gudang</a>
+        </li>
+      @else
+        <li>
+          <a href="{{URL::to('/')}}/admin-nano/mwarehouse">Gudang</a>
+        </li>
+      @endif
     </ul>
   </li>
 </ul>
