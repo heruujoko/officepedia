@@ -5,10 +5,10 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\MWarehouse;
+use App\Helper\DBHelper;
 use Excel;
 use PDF;
 use Auth;
-use App\Helper\DBHelper;
 
 class MWarehouseController extends Controller
 {
