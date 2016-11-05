@@ -1,0 +1,636 @@
+@extends('admin/nav/layouttables')
+@section('title')
+@section('content')
+<!-- MAIN PANEL -->
+<div id="main" role="main">
+	<div id="_token" class="hidden" data-token="{{ csrf_token() }}"></div>
+	<!-- RIBBON -->
+	<div id="ribbon">
+
+		<span class="ribbon-button-alignment">
+			<span id="refresh" class="btn btn-ribbon" data-action="resetWidgets" data-title="refresh"  rel="tooltip" data-placement="bottom" data-original-title="<i class='text-warning fa fa-warning'></i> Warning! This will reset all your widget settings." data-html="true">
+				<i class="fa fa-refresh"></i>
+			</span>
+		</span>
+
+		<!-- breadcrumb -->
+		<ol class="breadcrumb">
+			<li>Home</li><li>Master</li><li>{{ $section }}</li>
+		</ol>
+		<!-- end breadcrumb -->
+</div>
+<!-- END RIBBON -->
+<div class="col-xs-12 col-sm-7 col-md-7 col-lg-4">
+	<h1 class="page-title txt-color-blueDark">
+		<i class="fa fa-table fa-fw "></i>
+		{{ $section }}
+		<span>
+			{{ $section }}
+		</span>
+	</h1>
+</div>
+<!-- MAIN CONTENT -->
+<div id="content">
+
+	<div class="row">
+	</div>
+
+	<section id="widget-grid" class="">
+		<!-- row -->
+		<!-- row -->
+		<div class="row">
+			<!-- NEW WIDGET START -->
+			<article class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+				<!-- Widget ID (each widget will need unique ID)-->
+				<div id="forminput" class="forminput jarviswidget jarviswidget-color-darken" id="wid-id-0" data-widget-editbutton="false" data-widget-colorbutton="false" data-widget-deletebutton="false">
+					<header>
+						<span class="widget-icon"> <i class="fa fa-table"></i> </span>
+						<h2>Tambah {{ $section }}</h2>
+					</header>
+					<!-- widget div-->
+					<div>
+						<!-- widget edit box -->
+						<div class="jarviswidget-editbox">
+							<!-- This area used as dropdown edit box -->
+						</div>
+						<!-- end widget edit box -->
+						<h3 style="font-weight: bold; color: #1883B8;font-size: 19px;">Mode : INSERT</h3>
+						<!-- widget content -->
+						<style>
+							.alert-info {
+								color: #D9ECF5;
+								background-color: #48AFE3;
+								border-color: #2F9ACF;
+							}
+						</style>
+  						@if(count($errors) > 0)
+    						<div class="alert alert-info alerthide" role="alert">
+    							@foreach($errors->all() as $error)
+      							<span class="sr-only">Error:</span>
+      							<span class="sr-only"></span>
+      							<li><b>{{ $error }}</b></li>
+    							@endforeach
+    						</div>
+  						@endif
+						<div class="widget-body no-padding">
+							<div id="insert-wrapper" class="form-horizontal" data-parsley-validate>
+								{{ csrf_field() }}
+								<div class="container">
+								</br>
+								<div style="height: 21px;" class="form-group">
+									<label class="col-md-3 control-label"><b>Nama Gudang</b> (<font color="red">*</font>) &nbsp  :</label>
+									<div class="col-md-7">
+										<div class="icon-addon addon-md">
+											<input id="insert-mwarehousename" value="{{old('mwarehousename')}}" name="mwarehousename" class="form-control forminput" placeholder="Nama Gudang" type="text" required data-parsley-required-message="Field Ini Tidak Boleh Kosong" @if (Session::has('autofocus')) autofocus @endif >
+											<label for="mgoodsgroup1" class="glyphicon glyphicon-info-sign" rel="tooltip" title="Nama Gudang"></label>
+										</div>
+									</div>
+								</div>
+								<div style="height: 21px;" class="form-group">
+              									<label class="col-md-3 control-label"><b>Alamat</b> &nbsp  :</label>
+              						<div class="col-md-7 col-sm-12">
+              							<div class="icon-addon addon-md">
+                                    		<div class="icon-addon addon-md">
+                								<textarea id="insert-mwarehouseaddress" value="{{old('mwarehouseaddress')}}" name="mwarehouseaddress" class="form-control forminput" rows="5" placeholder="Jalan" type="text"  @if (Session::has('autofocus')) autofocus @endif ></textarea>
+                											<label for="mgoodsgroup1" class="glyphicon glyphicon-road" rel="tooltip" title="Jalan"></label>
+                							</div>
+                						</div>
+              						</div>
+              					</div>
+              								
+                              <div style="height: 21px;" class="form-group">
+              									<div class="col-md-offset-3 col-md-5 col-sm-12" style="margin-top:5px; margin-right: -151px; padding-left: 0px;">
+              									<div class="icon-addon addon-md">
+                                    				<div class="icon-addon addon-md col-md-9">
+                										<input id="insert-mwarehousecity" value="{{old('mwarehousecity')}}" name="mwarehousecity" class="form-control forminput" placeholder="Kota" type="text"  @if (Session::has('autofocus')) autofocus @endif >
+                										</div>
+              										</div>
+              									</div>
+                                <div class="col-md-4 col-sm-12" style="margin-top:5px;">
+              										<div class="icon-addon addon-md">
+                                    <div class="icon-addon addon-md col-md-11">
+                											<input id="insert-mwarehousezipcode" value="{{old('mwarehousezipcode')}}" name="mwarehousezipcode" class="form-control forminput" placeholder="K.Pos" type="text"  @if (Session::has('autofocus')) autofocus @endif >
+                										</div>
+              										</div>
+              									</div>
+              								</div>
+                              <div style="height: 21px;" class="form-group">
+              									<div class="col-md-offset-3 col-md-7 col-sm-12" style="margin-top:5px;">
+              										<div class="icon-addon addon-md">
+                                    <div class="icon-addon addon-md">
+                                      <input id="insert-mwarehouseprovince" value="{{old('mwarehouseprovince')}}" name="mwarehouseprovince" class="form-control forminput" placeholder="Provinsi " type="text"  @if (Session::has('autofocus')) autofocus @endif >
+                											<label for="mgoodsgroup1" class="glyphicon glyphicon-star" rel="tooltip" title="Propinsi"></label>
+                										</div>
+              										</div>
+              									</div>
+              								</div>
+                              <div style="height: 21px;" class="form-group">
+              									<div class="col-md-offset-3 col-md-7 col-sm-12" style="margin-top:5px;">
+              										<div class="icon-addon addon-md">
+                                    <div class="icon-addon addon-md">
+                                      <input id="insert-mwarehousecountry" value="{{old('mwarehousecountry')}}" name="mwarehousecountry" class="form-control forminput" placeholder="Negara" type="text"  @if (Session::has('autofocus')) autofocus @endif >
+                											<label for="mgoodsgroup1" class="glyphicon glyphicon-star" rel="tooltip" title="Negara"></label>
+                										</div>
+              										</div>
+              									</div>
+              								</div>
+
+              					<div style="height: 65px;" class="form-group">
+									<label class="col-md-3 control-label"><b>Remark</b>  :</label>
+									<div class="col-md-7" style="margin-top:5px;">
+										<div class="icon-addon addon-md">
+											<input id="insert-mwarehouseremark" value="{{old('mwarehouseremark')}}" name="mwarehouseremark" class="form-control forminput" placeholder="Remark" type="text" data-parsley-required-message="Field Ini Tidak Boleh Kosong" @if (Session::has('autofocus')) autofocus @endif >
+											<label for="mgoodsgroup1" class="glyphicon glyphicon-info-sign" rel="tooltip" title="Remark"></label>
+										</div>
+									</div>
+								</div>
+
+								<input type="hidden" name="void" value="0">
+								<center>
+									<div class="row">
+										<div class="col-md-12">
+											<a id="btn-insert-reset" onclick="resetmwarehouse()" class="btn btn-default" ><i class=""></i> Reset</a>
+											<button class="btn btn-primary" onclick="insertmwarehouse()"><i class="fa fa-save"></i> Simpan</button>
+										</div>
+									</div>
+								</center>
+							</br>
+						</div>
+					</div>
+				</div>
+				<!-- end widget content -->
+			</div>
+			<!-- end widget div -->
+		</div>
+		<!-- end widget -->
+		<div class="row">
+			<!-- NEW WIDGET START -->
+			<article class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+				<!-- Widget ID (each widget will need unique ID)-->
+				<div id="formedit" style="display: none;" class="jarviswidget jarviswidget-color-darken" id="wid-id-0" data-widget-editbutton="false" data-widget-colorbutton="false" data-widget-deletebutton="false">
+					<header>
+						<span class="widget-icon"> <i class="fa fa-table"></i> </span>
+						<h2>Pengubahan {{ $section }}</h2>
+					</header>
+					<!-- widget div-->
+					<div>
+						<!-- widget edit box -->
+						<div class="jarviswidget-editbox">
+							<!-- This area used as dropdown edit box -->
+						</div>
+						<!-- end widget edit box -->
+						<h3 style="font-weight: bold; color: #C91503;font-size: 19px;">Mode : EDIT</h3>
+
+						<input type="hidden" id="mbranchid" value=""></input>
+						<div id="edit-wrapper" class="form-horizontal" data-parsley-validate>
+							<div class="container">
+								<style>
+									.alert-info {
+										color: #D9ECF5;
+										background-color: #48AFE3;
+										border-color: #2F9ACF;
+									}
+								</style>
+               				 <input type="hidden" id="mwarehouseid">
+								<div style="height: 21px;" class="form-group">
+									<label class="col-md-3 control-label"><b>Nama Gudang</b>  (<font color="red">*</font>) &nbsp:</label>
+									<div class="col-md-7">
+										<div class="icon-addon addon-md">
+											<input id="edit-mwarehousename" value="{{old('mwarehousename')}}" name="mwarehousename" class="form-control forminput" placeholder="Nama Gudang" type="text" required data-parsley-required-message="Field Ini Tidak Boleh Kosong" @if (Session::has('autofocus')) autofocus @endif >
+											<label for="mgoodsgroup1" class="glyphicon glyphicon-info-sign" rel="tooltip" title="Nama Gudang"></label>
+										</div>
+									</div>
+								</div>
+								<div style="height: 21px;" class="form-group">
+              									<label class="col-md-3 control-label"><b>Alamat</b> &nbsp  :</label>
+              						<div class="col-md-7 col-sm-12">
+              							<div class="icon-addon addon-md">
+                                    		<div class="icon-addon addon-md">
+                								<textarea id="edit-mwarehouseaddress" value="{{old('mwarehouseaddress')}}" name="mwarehouseaddress" class="form-control forminput" rows="5" placeholder="Jalan" type="text"  @if (Session::has('autofocus')) autofocus @endif ></textarea>
+                											<label for="mgoodsgroup1" class="glyphicon glyphicon-road" rel="tooltip" title="Jalan"></label>
+                							</div>
+                						</div>
+              						</div>
+              					</div>
+              								
+                              <div style="height: 21px;" class="form-group">
+              									<div class="col-md-offset-3 col-md-5 col-sm-12" style="margin-top:5px; margin-right: -151px; padding-left: 0px;">
+              									<div class="icon-addon addon-md">
+                                    				<div class="icon-addon addon-md col-md-9">
+                										<input id="edit-mwarehousecity" value="{{old('mwarehousecity')}}" name="mwarehousecity" class="form-control forminput" placeholder="Kota" type="text"  @if (Session::has('autofocus')) autofocus @endif >
+                										</div>
+              										</div>
+              									</div>
+                                <div class="col-md-4 col-sm-12" style="margin-top:5px;">
+              										<div class="icon-addon addon-md">
+                                    <div class="icon-addon addon-md col-md-11">
+                											<input id="edit-mwarehousezipcode" value="{{old('mwarehousezipcode')}}" name="mwarehousezipcode" class="form-control forminput" placeholder="K.Pos" type="text"  @if (Session::has('autofocus')) autofocus @endif >
+                										</div>
+              										</div>
+              									</div>
+              								</div>
+                              <div style="height: 21px;" class="form-group">
+              									<div class="col-md-offset-3 col-md-7 col-sm-12" style="margin-top:5px;">
+              										<div class="icon-addon addon-md">
+                                    <div class="icon-addon addon-md">
+                                      <input id="edit-mwarehouseprovince" value="{{old('mwarehouseprovince')}}" name="mwarehouseprovince" class="form-control forminput" placeholder="Provinsi " type="text"  @if (Session::has('autofocus')) autofocus @endif >
+                											<label for="mgoodsgroup1" class="glyphicon glyphicon-star" rel="tooltip" title="Propinsi"></label>
+                										</div>
+              										</div>
+              									</div>
+              								</div>
+                              <div style="height: 21px;" class="form-group">
+              									<div class="col-md-offset-3 col-md-7 col-sm-12" style="margin-top:5px;">
+              										<div class="icon-addon addon-md">
+                                    <div class="icon-addon addon-md">
+                                      <input id="edit-mwarehousecountry" value="{{old('mwarehousecountry')}}" name="mwarehousecountry" class="form-control forminput" placeholder="Negara" type="text"  @if (Session::has('autofocus')) autofocus @endif >
+                											<label for="mgoodsgroup1" class="glyphicon glyphicon-star" rel="tooltip" title="Negara"></label>
+                										</div>
+              										</div>
+              									</div>
+              								</div>
+
+              					<div style="height: 65px;" class="form-group">
+									<label class="col-md-3 control-label"><b>Remark</b>  :</label>
+									<div class="col-md-7" style="margin-top:5px;">
+										<div class="icon-addon addon-md">
+											<input id="edit-mwarehouseremark" value="{{old('mwarehouseremark')}}" name="mwarehouseremark" class="form-control forminput" placeholder="Remark" type="text" data-parsley-required-message="Field Ini Tidak Boleh Kosong" @if (Session::has('autofocus')) autofocus @endif >
+											<label for="mgoodsgroup1" class="glyphicon glyphicon-info-sign" rel="tooltip" title="Remark"></label>
+										</div>
+									</div>
+								</div>
+								<input type="hidden" name="void" value="0">
+								<center>
+									<div class="row">
+										<div class="col-md-12">
+											<a onclick="backmwarehouse()" title="" class="btn btn-default">Batal</a>
+											<button onclick="updatemwarehouse()" class="btn btn-primary" type="submit">
+												<i class="fa fa-save"></i> Simpan</button>
+											</div>
+										</center>
+									</br>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="row">
+						<!-- NEW WIDGET START -->
+						<article class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+							<!-- Widget ID (each widget will need unique ID)-->
+							<div id="formview" style="display: none;" class="jarviswidget jarviswidget-color-darken" id="wid-id-0" data-widget-editbutton="false" data-widget-colorbutton="false" data-widget-deletebutton="false">
+					      <header>
+						      <span class="widget-icon"> <i class="fa fa-table"></i> </span>
+                  <h2>View {{ $section }} </h2>
+						    </header>
+  						<!-- widget div-->
+  					  <div>
+						  <!-- widget edit box -->
+						    <div class="jarviswidget-editbox">
+							  <!-- This area used as dropdown edit box -->
+						    </div>
+						    <!-- end widget edit box -->
+						    <h3 style="font-weight: bold; color: #291817;font-size: 19px;">Mode : VIEW</h3>
+
+						    <input type="hidden" id="mbranchid" value=""></input>
+						    <div class="form-horizontal">
+
+							  <div class="container">
+								<style>
+									.alert-info {
+										color: #D9ECF5;
+										background-color: #48AFE3;
+										border-color: #2F9ACF;
+									}
+								</style>
+								<div style="height: 21px;" class="form-group">
+									<label class="col-md-3 control-label"><b>Nama Gudang</b>  :</label>
+									<div class="col-md-7">
+										<div class="icon-addon addon-md">
+											<input disabled id="view-mwarehousename" value="{{old('mwarehousename')}}" name="mwarehousename" class="form-control forminput" placeholder="Nama Gudang" type="text" required data-parsley-required-message="Field Ini Tidak Boleh Kosong" @if (Session::has('autofocus')) autofocus @endif >
+											<label for="mgoodsgroup1" class="glyphicon glyphicon-info-sign" rel="tooltip" title="Nama Gudang"></label>
+										</div>
+									</div>
+								</div>
+								<div style="height: 21px;" class="form-group">
+              									<label class="col-md-3 control-label"><b>Alamat</b> &nbsp  :</label>
+              						<div class="col-md-7 col-sm-12">
+              							<div class="icon-addon addon-md">
+                                    		<div class="icon-addon addon-md">
+                								<textarea disabled id="view-mwarehouseaddress" value="{{old('mwarehouseaddress')}}" name="mwarehouseaddress" class="form-control forminput" rows="5" placeholder="Jalan" type="text"  @if (Session::has('autofocus')) autofocus @endif ></textarea>
+                											<label for="mgoodsgroup1" class="glyphicon glyphicon-road" rel="tooltip" title="Jalan"></label>
+                							</div>
+                						</div>
+              						</div>
+              					</div>
+              								
+                              <div style="height: 21px;" class="form-group">
+              									<div class="col-md-offset-3 col-md-5 col-sm-12" style="margin-top:5px; margin-right: -151px; padding-left: 0px;">
+              									<div class="icon-addon addon-md">
+                                    				<div class="icon-addon addon-md col-md-9">
+                										<input disabled id="view-mwarehousecity" value="{{old('mwarehousecity')}}" name="mwarehousecity" class="form-control forminput" placeholder="Kota" type="text"  @if (Session::has('autofocus')) autofocus @endif >
+                										</div>
+              										</div>
+              									</div>
+                                <div class="col-md-4 col-sm-12" style="margin-top:5px;">
+              										<div class="icon-addon addon-md">
+                                    <div class="icon-addon addon-md col-md-11">
+                											<input disabled id="view-mwarehousezipcode" value="{{old('mwarehousezipcode')}}" name="mwarehousezipcode" class="form-control forminput" placeholder="K.Pos" type="text"  @if (Session::has('autofocus')) autofocus @endif >
+                										</div>
+              										</div>
+              									</div>
+              								</div>
+                              <div style="height: 21px;" class="form-group">
+              									<div class="col-md-offset-3 col-md-7 col-sm-12" style="margin-top:5px;">
+              										<div class="icon-addon addon-md">
+                                    <div class="icon-addon addon-md">
+                                      <input disabled id="view-mwarehouseprovince" value="{{old('mwarehouseprovince')}}" name="mwarehouseprovince" class="form-control forminput" placeholder="Provinsi " type="text"  @if (Session::has('autofocus')) autofocus @endif >
+                											<label for="mgoodsgroup1" class="glyphicon glyphicon-star" rel="tooltip" title="Propinsi"></label>
+                										</div>
+              										</div>
+              									</div>
+              								</div>
+                              <div style="height: 21px;" class="form-group">
+              									<div class="col-md-offset-3 col-md-7 col-sm-12" style="margin-top:5px;">
+              										<div class="icon-addon addon-md">
+                                    <div class="icon-addon addon-md">
+                                      <input disabled id="view-mwarehousecountry" value="{{old('mwarehousecountry')}}" name="mwarehousecountry" class="form-control forminput" placeholder="Negara" type="text"  @if (Session::has('autofocus')) autofocus @endif >
+                											<label for="mgoodsgroup1" class="glyphicon glyphicon-star" rel="tooltip" title="Negara"></label>
+                										</div>
+              										</div>
+              									</div>
+              								</div>
+
+              					<div style="height: 65px;" class="form-group">
+									<label class="col-md-3 control-label"><b>Remark</b>  :</label>
+									<div class="col-md-7" style="margin-top:5px;">
+										<div class="icon-addon addon-md">
+											<input disabled id="view-mwarehouseremark" value="{{old('mwarehouseremark')}}" name="mwarehouseremark" class="form-control forminput" placeholder="Remark" type="text" required data-parsley-required-message="Field Ini Tidak Boleh Kosong" @if (Session::has('autofocus')) autofocus @endif >
+											<label for="mgoodsgroup1" class="glyphicon glyphicon-info-sign" rel="tooltip" title="Remark"></label>
+										</div>
+									</div>
+								</div>
+
+								<center>
+									<div class="row">
+										<div class="col-md-12">
+											</br>
+											<button onclick="backmwarehouse()" class="btn btn-default" type="submit">
+												<i class="fa fa-save"></i> Kembali
+                      </button>
+										</div>
+									</center>
+									</br>
+								</div>
+							</div>
+						</div>
+					</div>
+					<article class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+						<section id="widget-grid" class="">
+							<!-- row -->
+							<div class="row">
+								<!-- NEW WIDGET START -->
+								<!-- Widget ID (each widget will need unique ID)-->
+								<div class="jarviswidget jarviswidget-color-darken" id="wid-id-1" data-widget-editbutton="false" data-widget-colorbutton="false" data-widget-deletebutton="false">
+					<header>
+						<span class="widget-icon"> <i class="fa fa-table"></i> </span>
+						<h2>Master {{ $section }} </h2>
+					</header>
+					<!-- widget div-->
+					<div>
+					</br>
+					<!-- widget edit box -->
+					<div class="jarviswidget-editbox">
+						<!-- This area used as dropdown edit box -->
+					</div>
+					<!-- end widget edit box -->
+
+					<!-- widget content -->
+					<div class="widget-body">
+
+							<table  id="tableapi" class="tableapi table table-bordered" width="100%">
+
+								<thead>
+									<tr>
+                    <th class="hasinput" style="width:10%">
+
+										</th>
+										<th class="hasinput" style="width:5%">
+											<input type="text" class="form-control" placeholder="Filter No" />
+										</th>
+										<th class="hasinput" style="width:9%">
+											<input type="text" class="form-control" placeholder="Filter Nama Gudang" />
+										</th>
+										<th class="hasinput" style="width:9%">
+											<input type="text" class="form-control" placeholder="Filter Alamat" />
+										</th>
+										<th class="hasinput" style="width:9%">
+											<input type="text" class="form-control" placeholder="Filter Kota" />
+										</th>
+										<th class="hasinput" style="width:9%">
+											<input type="text" class="form-control" placeholder="Filter K.Pos" />
+										</th>
+										<th class="hasinput" style="width:9%">
+											<input type="text" class="form-control" placeholder="Filter Provinsi" />
+										</th>
+										<th class="hasinput" style="width:9%">
+											<input type="text" class="form-control" placeholder="Filter Negara" />
+										</th>
+
+                    <th class="hasinput" style="width:9%">
+											<input type="text" class="form-control" placeholder="Filter Keterangan" />
+										</th>
+									</tr>
+									<tr>
+										<th data-hide="action"><center>Aksi</center></th>
+                    <th data-hide="no"><center>No</center></th>
+                    <th data-hide="mwarehousename"><center>Nama Gudang</center></th>
+                    <th data-hide="mwarehouseaddress"><center>Alamat</center></th>
+                    <th data-hide="mwarehousecity"><center>Kota</center></th>
+                    <th data-hide="mwarehousezipcode"><center>K.Pos</center></th>
+                    <th data-hide="mwarehouseprovince"><center>Provinsi</center></th>
+                    <th data-hide="mwarehousecountry"><center>Negara</center></th>
+										<th data-hide="mwarehouseremark"><center>Keterangan</center></th>
+									</tr>
+								</thead>
+								<tbody>
+							</tbody>
+
+							</table>
+							@push('scripts')
+							<tfoot>
+							<script>
+			            var table;
+			            $(function(){
+			                table = $('.tableapi').on('preXhr.dt',function(){
+							$('#loading_modal').modal('show');
+							}).DataTable({
+                  			      dom: "<'dtpadding' <'row' <'clmn' > <'srch' f> <'tablerow' l> <'clear'> <'masterbutton' B> r> <'row pb' tip>>",
+                                  "autoWidth" : true,
+                                  "oLanguage": {
+                                    "sSearch": '<span class="input-group-addon"><i class="glyphicon glyphicon-search"></i></span>',
+																		"sLengthMenu": "Show _MENU_ Entries",
+																		"sInfo": "Showing ( _START_ to _END_ ) to _TOTAL_ Entries"
+                                  },
+                              "aoColumnDefs": [{ "bVisible": false, "aTargets": [3,4,5,6,7] }],
+                              buttons: [ {
+                                    extend: 'copyHtml5',
+                                    exportOptions: {
+                                        columns: [ 1, 2, 3, 4, 5, 6, 7, 8]
+                                    }
+                                  },
+                                  {
+                                      text: 'CSV',
+                                      action: function(){
+																				window.location.href = "{{ url('admin-nano/mwarehouse/export/csv') }}";
+																			}
+                                  },
+                                  {
+																			text: 'Excel',
+																			action: function(){
+																				window.location.href = "{{ url('admin-nano/mwarehouse/export/excel') }}";
+																			}
+                                  },
+                                  {
+																			text: 'PDF',
+																			action: function(){
+																				window.location.href = "{{ url('admin-nano/mwarehouse/export/pdf') }}";
+																			}
+                                  },
+                                  {
+                                      extend: 'print',
+                                      exportOptions: {
+                                          columns: [ 1, 2, 3, 4, 5, 6, 7, 8] //setting kolom mana yg mau di export
+                                      }
+
+                                  },
+																  {
+																	  extend: 'colvis',
+																	  text: 'Show / Hide Columns',
+																	  columns: ':gt(1)'
+																  }
+                              ],
+					       				      processing: false,
+										          serverSide: false,
+										          ajax: '{{URL::to('/')}}/admin-api/mwarehouse',
+          										columns: [
+                              {data: 'action', name:'action', searchable: false, orderable: false},
+                              {data: 'no', no: 'no' },
+                              {data: 'mwarehousename', mwarehousename: 'mwarehousename'},
+                              {data: 'mwarehouseaddress', mwarehouseaddress: 'mwarehouseaddress'},
+                              {data: 'mwarehousecity', mwarehouseaddress: 'mwarehouseaddress'},
+                              {data: 'mwarehousezipcode', mwarehouseaddress: 'mwarehouseaddress'},
+                              {data: 'mwarehouseprovince', mwarehouseaddress: 'mwarehouseaddress'},
+                              {data: 'mwarehousecountry', mwarehouseaddress: 'mwarehouseaddress'},
+							  {data: 'mwarehouseremark', mwarehouseremark: 'mwarehouseremark'}
+          										]
+							}).on('xhr.dt',function(){
+								$('#loading_modal').modal('hide');
+							});
+
+  					        $(".table thead th input[type=text]").on( 'keyup change', function () {
+  		    		            table
+  		                      .column( $(this).parent().index()+':visible' )
+  		                      .search( this.value )
+  		                      .draw();
+  		    		      	});
+				          });
+
+            			function refreshtbl(){
+            			  table.ajax.reload();
+            			}
+
+            			$(document).ready(function(){
+            				var columnBtn = "<span>Show / Hide columns</span>";
+            				$('.ColVis_MasterButton').html(columnBtn);
+            			});
+							</script>
+							</tfoot>
+							@endpush
+						  <script>
+					      function popupdelete(id){
+        					swal({
+          					title: "Anda Yakin Akan Mengapus ?",
+          					text: "Anda Tidak Dapat Mengembalikan Data Ini!",
+          					type: "warning",   showCancelButton: true,
+          					confirmButtonColor: "#DD6B55",
+          					confirmButtonText: "Iya, Hapus!",
+          					cancelButtonText: "Tidak, Batal!",
+          					closeOnConfirm: false,
+          					closeOnCancel: false
+        					},
+        					function(isconfirm){
+        					  if (isconfirm) {
+                      $.ajax({
+                        type: "DELETE",
+                        url: API_URL+"/mwarehouse/"+id,
+                        success: function(response){
+                          table.ajax.reload();
+                          window.location = "#tableapi";
+                          swal({
+              						  title: "Terhapus!",
+              						  text: "Data Anda Berhasil Terhapus.",
+              						  type: "success",
+            						  });
+                          $('#forminput').show();
+                    			$('#formview').hide();
+                    			$('#formedit').hide();
+                        },
+                        error: function(response){
+                          swal({
+                    				title: "Pengubahan Gagal!",
+                    				type: "error",
+                    				timer: 1000
+                    			});
+                          window.location = "#tableapi";
+                        }
+                      });
+        				  } else {
+    						      swal({
+            						title: "Batal Terhapus!",
+            						text: "Data Anda Batal Terhapus.",
+            						type: "error",
+            						timer: 1000,
+            						confirmButtonText: "Ok"
+    						      });
+    						      window.location = '#main';
+					        }
+					      });
+                $(".sa-button-container").parent().find(".cancel").hover(
+      						function(){
+      							$(".sa-button-container").parent().find(".cancel").addClass("bg-red");
+      							$(".sa-confirm-button-container").parent().find(".confirm").addClass("bg-gray");
+      						},
+      						function(){
+      							$(".sa-confirm-button-container").parent().find(".confirm").removeClass("bg-gray");
+      							$(".sa-button-container").parent().find(".cancel").removeClass("bg-red");
+      						}
+      					);
+					     }
+						</script>
+					</div>
+				</div>
+				<!-- end widget -->
+			</article>
+		</div>
+		<!-- end row -->
+	</section>
+	<!-- end widget grid -->
+</div>
+<!-- END MAIN CONTENT -->
+</div>
+<!-- END MAIN PANEL -->
+<div id="loading_modal" class="modal" style="top: 20%;" tabindex="-1" role="dialog" data-keyboard="false" data-backdrop="static">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header" style="text-align: center">
+				<h3>Loading Data</h3>
+				<img src="{{ url('master/ajax-loader.gif') }}">
+			</div>
+		</div>
+	</div>
+</div>
+
+@stop
+@section('js')
+<script src="{{ url('/master/mwarehouse.js') }}"></script>
+@stop

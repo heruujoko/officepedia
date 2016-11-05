@@ -13,12 +13,12 @@ class CreateMtaxTable extends Migration
     public function up()
     {
         Schema::create('mtax',function(Blueprint $table){
-          $table->increments('id');
-          $table->string('mtaxtype');
-          $table->string('mtaxtdesc');
-          $table->integer('mtaxtpercentage');
-          $table->boolean('void');
-          $table->timestamps();
+            $table->increments('id');
+            $table->string('mtaxtype');
+            $table->string('mtaxtdesc');
+            $table->integer('mtaxtpercentage');
+            $table->boolean('void');
+            $table->timestamps();
         });
     }
 

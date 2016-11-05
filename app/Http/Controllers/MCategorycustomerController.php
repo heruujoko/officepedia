@@ -20,7 +20,7 @@ class MCategorycustomerController extends Controller
     	$data['activetab'] = 1;
 		$data['MCategorycustomer'] = MCategorycustomer::on(Auth::user()->db_name)->get();
 		$data['id'] = null;
-	  return view('admin/viewmcategorycustomer',$data);
+	  	return view('admin/viewmcategorycustomer',$data);
 	}
 
 	public function csv(){
@@ -45,7 +45,7 @@ class MCategorycustomerController extends Controller
 		$this->mcategory = MCategorycustomer::on(Auth::user()->db_name)->where('void',0)->get();
 		$this->count = 0;
 		return Excel::create('Master Kategori Pelanggan',function($excel){
-			$excel->sheet('Master Kateori Pelanggan',function($sheet){
+			$excel->sheet('Master Kategori Pelanggan',function($sheet){
 				$this->count++;
 				$sheet->row($this->count,array(
 				'Nama Kategori','Barcode'
