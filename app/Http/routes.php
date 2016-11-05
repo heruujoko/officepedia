@@ -121,6 +121,11 @@ Route::group(['prefix'=>'admin-nano','middleware' => ['auth','tenantdb']],functi
   Route::get('mtax/export/excel','MTaxController@excel');
   Route::get('mtax/export/pdf','MTaxController@pdf');
 
+  Route::get('mwarehouse','MWarehouseController@index');
+  Route::get('mwarehouse/export/csv','MWarehouseController@csv');
+  Route::get('mwarehouse/export/excel','MWarehouseController@excel');
+  Route::get('mwarehouse/export/pdf','MWarehouseController@pdf');
+
   Route::controllers([
     '/'=>'AdminController'
   ]);
@@ -167,6 +172,7 @@ Route::group(['prefix'=>'admin-nano','middleware' => ['auth','tenantdb']],functi
   Route::resource('mgoodssubtype','Api\MGoodssubtypeController');
   Route::resource('munits','Api\MUnitController');
   Route::resource('mtax','Api\MTaxController');
+  Route::resource('mwarehouse','Api\MWarehouseController');
   Route::controllers([
     '/'=>'ApiController'
   ]);

@@ -348,15 +348,15 @@
                               <div style="height: 21px;" class="form-group">
                                 <label class="col-md-3 control-label"><b>Maksimal Diskon</b> &nbsp  :</label>
                                 <div class="col-md-4 col-sm-12">
-                                  <div class="icon-addon addon-md">
+                                  <div class="input-group">
                                     <input id="insert-mgoodsmaxdisc" disabled name="mgoodsmaxdisc" data-parsley-type="number" data-parsley-type-message="Field ini hanya dapat di isi oleh angka" class="form-control forminput" placeholder="Persentase" type="text">
-                                    <label for="mgoodsgroup1" class="glyphicon glyphicon-info-sign"></label>
+                                    <span class="input-group-addon" id="sizing-addon2">%</span>
                                   </div>
                                 </div>
                                 <div class="col-md-4 col-sm-12">
-                                  <div class="icon-addon addon-md">
+                                  <div class="input-group">
+                                    <span class="input-group-addon" id="sizing-addon2">Rp</span>
                                     <input id="insert-mgoodsmaxdiscrp" disabled name="mgoodsmaxdiscrp" data-parsley-type="number" data-parsley-type-message="Field ini hanya dapat di isi oleh angka" class="form-control forminput" placeholder="Rupiah" type="text">
-                                    <label for="mgoodsgroup1" class="glyphicon glyphicon-info-sign"></label>
                                   </div>
                                 </div>
                               </div>
@@ -787,15 +787,15 @@
                               <div style="height: 21px;" class="form-group">
                                 <label class="col-md-3 control-label"><b>Maksimal Diskon</b> &nbsp  :</label>
                                 <div class="col-md-4 col-sm-12">
-                                  <div class="icon-addon addon-md">
+                                  <div class="input-group">
                                     <input id="edit-mgoodsmaxdisc" name="mgoodsmaxdisc" data-parsley-type="number" data-parsley-type-message="Field ini hanya dapat di isi oleh angka" class="form-control forminput" placeholder="Persentase" type="text">
-                                    <label for="mgoodsgroup1" class="glyphicon glyphicon-info-sign"></label>
+                                    <span class="input-group-addon" id="sizing-addon2">%</span>
                                   </div>
                                 </div>
                                 <div class="col-md-4 col-sm-12">
-                                  <div class="icon-addon addon-md">
+                                  <div class="input-group">
+                                    <span class="input-group-addon" id="sizing-addon2">Rp</span>
                                     <input id="edit-mgoodsmaxdiscrp" name="mgoodsmaxdiscrp" data-parsley-type="number" data-parsley-type-message="Field ini hanya dapat di isi oleh angka" class="form-control forminput" placeholder="Rupiah" type="text">
-                                    <label for="mgoodsgroup1" class="glyphicon glyphicon-info-sign"></label>
                                   </div>
                                 </div>
                               </div>
@@ -1154,7 +1154,7 @@
                                 <label class="col-md-3 control-label"><b>Status</b>  &nbsp  :</label>
                                   <div class="col-md-9">
                                     <div class="onoffswitch">
-                                        <input disabled type="checkbox" name="mgoodsactive" class="onoffswitch-checkbox" id="view-mgoodsactive">
+                                        <input type="checkbox" name="mgoodsactive" class="onoffswitch-checkbox" id="view-mgoodsactive">
                                         <label class="onoffswitch-label" for="view-mgoodsactive">
                                             <span class="onoffswitch-inner"></span>
                                             <span class="onoffswitch-switch"></span>
@@ -1226,15 +1226,15 @@
                               <div style="height: 21px;" class="form-group">
                                 <label class="col-md-3 control-label"><b>Maksimal Diskon</b> &nbsp  :</label>
                                 <div class="col-md-4 col-sm-12">
-                                  <div class="icon-addon addon-md">
+                                  <div class="input-group">
+                                    <span class="input-group-addon" id="sizing-addon2">%</span>
                                     <input disabled id="view-mgoodsmaxdisc" name="mgoodsmaxdisc" data-parsley-type="number" data-parsley-type-message="Field ini hanya dapat di isi oleh angka" class="form-control forminput" placeholder="Persentase" type="text">
-                                    <label for="mgoodsgroup1" class="glyphicon glyphicon-info-sign"></label>
                                   </div>
                                 </div>
                                 <div class="col-md-4 col-sm-12">
-                                  <div class="icon-addon addon-md">
+                                  <div class="input-group">
                                     <input disabled id="view-mgoodsmaxdiscrp" name="mgoodsmaxdiscrp" data-parsley-type="number" data-parsley-type-message="Field ini hanya dapat di isi oleh angka" class="form-control forminput" placeholder="Rupiah" type="text">
-                                    <label for="mgoodsgroup1" class="glyphicon glyphicon-info-sign"></label>
+                                    <span class="input-group-addon" id="sizing-addon2">Rp</span>
                                   </div>
                                 </div>
                               </div>
