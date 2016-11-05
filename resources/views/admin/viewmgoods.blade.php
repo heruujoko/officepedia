@@ -173,12 +173,23 @@
                             <div class="col-md-6 group-box">
 
                               <div style="height: 21px;" class="form-group">
-                                <label class="col-md-3 control-label"><b>Multi Satuan</b>  &nbsp  :</label>
-                                <div class="col-md-9">
+                                <label class="col-md-3 control-label"><b>2 Satuan</b>  &nbsp  :</label>
+                                <div class="col-md-1">
                                   <!-- <input id="insert-mgoodsmultiunit" value="" name="mgoodsmultiunit" class="nice-toggle" placeholder="mgoodsactive" type="checkbox" data-toggle="toggle"> -->
                                   <div class="yesnoswitch">
                                       <input type="checkbox" name="mgoodsbranches" class="yesnoswitch-checkbox" id="insert-mgoodsmultiunit">
                                       <label class="yesnoswitch-label" for="insert-mgoodsmultiunit">
+                                          <span class="yesnoswitch-inner"></span>
+                                          <span class="yesnoswitch-switch"></span>
+                                      </label>
+                                  </div>
+                                </div>
+                                <label class="col-md-3 control-label"><b>3 Satuan</b>  &nbsp  :</label>
+                                <div class="col-md-3">
+                                  <!-- <input id="insert-mgoodsmultiunit" value="" name="mgoodsmultiunit" class="nice-toggle" placeholder="mgoodsactive" type="checkbox" data-toggle="toggle"> -->
+                                  <div class="yesnoswitch">
+                                      <input type="checkbox" name="mgoodsbranches" class="yesnoswitch-checkbox" id="insert-mgoodsmultiunit3">
+                                      <label class="yesnoswitch-label" for="insert-mgoodsmultiunit3">
                                           <span class="yesnoswitch-inner"></span>
                                           <span class="yesnoswitch-switch"></span>
                                       </label>
@@ -588,12 +599,23 @@
                             <div class="col-md-6 group-box">
 
                               <div style="height: 21px;" class="form-group">
-                                <label class="col-md-3 control-label"><b>Multi Satuan</b>  &nbsp  :</label>
-                                <div class="col-md-9">
+                                <label class="col-md-3 control-label"><b>2 Satuan</b>  &nbsp  :</label>
+                                <div class="col-md-1">
                                   <!-- <input id="edit-mgoodsmultiunit" value="" name="mgoodsmultiunit" class="nice-toggle" placeholder="mgoodsactive" type="checkbox" data-toggle="toggle"> -->
                                   <div class="yesnoswitch">
                                       <input type="checkbox" name="mgoodsbranches" class="yesnoswitch-checkbox" id="edit-mgoodsmultiunit">
                                       <label class="yesnoswitch-label" for="edit-mgoodsmultiunit">
+                                          <span class="yesnoswitch-inner"></span>
+                                          <span class="yesnoswitch-switch"></span>
+                                      </label>
+                                  </div>
+                                </div>
+                                <label class="col-md-3 control-label"><b>3 Satuan</b>  &nbsp  :</label>
+                                <div class="col-md-3">
+                                  <!-- <input id="insert-mgoodsmultiunit" value="" name="mgoodsmultiunit" class="nice-toggle" placeholder="mgoodsactive" type="checkbox" data-toggle="toggle"> -->
+                                  <div class="yesnoswitch">
+                                      <input type="checkbox" name="mgoodsbranches" class="yesnoswitch-checkbox" id="edit-mgoodsmultiunit3">
+                                      <label class="yesnoswitch-label" for="edit-mgoodsmultiunit3">
                                           <span class="yesnoswitch-inner"></span>
                                           <span class="yesnoswitch-switch"></span>
                                       </label>
@@ -1003,12 +1025,23 @@
                             <div class="col-md-6 group-box">
 
                               <div style="height: 21px;" class="form-group">
-                                <label class="col-md-3 control-label"><b>Multi Satuan</b>  &nbsp  :</label>
-                                <div class="col-md-9">
+                                <label class="col-md-3 control-label"><b>2 Satuan</b>  &nbsp  :</label>
+                                <div class="col-md-1">
                                   <!-- <input id="view-mgoodsmultiunit" value="" name="mgoodsmultiunit" class="nice-toggle" placeholder="mgoodsactive" type="checkbox" data-toggle="toggle"> -->
                                   <div class="yesnoswitch">
                                       <input disabled type="checkbox" name="mgoodsbranches" class="yesnoswitch-checkbox" id="view-mgoodsmultiunit">
                                       <label class="yesnoswitch-label" for="view-mgoodsmultiunit">
+                                          <span class="yesnoswitch-inner"></span>
+                                          <span class="yesnoswitch-switch"></span>
+                                      </label>
+                                  </div>
+                                </div>
+                                <label class="col-md-3 control-label"><b>3 Satuan</b>  &nbsp  :</label>
+                                <div class="col-md-3">
+                                  <!-- <input id="insert-mgoodsmultiunit" value="" name="mgoodsmultiunit" class="nice-toggle" placeholder="mgoodsactive" type="checkbox" data-toggle="toggle"> -->
+                                  <div class="yesnoswitch">
+                                      <input type="checkbox" name="mgoodsbranches" class="yesnoswitch-checkbox" id="view-mgoodsmultiunit3">
+                                      <label class="yesnoswitch-label" for="view-mgoodsmultiunit3l">
                                           <span class="yesnoswitch-inner"></span>
                                           <span class="yesnoswitch-switch"></span>
                                       </label>

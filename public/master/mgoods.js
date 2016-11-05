@@ -93,6 +93,9 @@ function insertmgoods(){
         autogen : $('#autogenmgoods').is(':checked')
 
       }
+      if($('#insert-mgoodsmultiunit3').is(':checked')){
+        data.mgoodsmultiunit = true;
+      }
       console.log(data);
       $.ajax({
         type: "POST",
@@ -181,11 +184,16 @@ function editmgoods(id){
       }
 
       if(response.mgoodsmultiunit == 1){
-        $('#edit-mgoodsmultiunit').attr('checked',true);
+        console.log(response.mgoodsunit3conv);
+        if(response.mgoodsunit3conv != 0){
+          $('#edit-mgoodsmultiunit3').attr('checked',true);
+          $('#edit-mgoodsunit3').removeAttr('disabled');
+          $('#edit-mgoodsunit3conv').removeAttr('disabled');
+        } else {
+          $('#edit-mgoodsmultiunit').attr('checked',true);
+        }
         $('#edit-mgoodsunit2').removeAttr('disabled');
-        $('#edit-mgoodsunit3').removeAttr('disabled');
         $('#edit-mgoodsunit2conv').removeAttr('disabled');
-        $('#edit-mgoodsunit3conv').removeAttr('disabled');
       } else {
         $('#edit-mgoodsmultiunit').removeAttr('checked');
       }
@@ -259,6 +267,9 @@ function updatemgoods(){
       mgoodstaxppnbm: $('#edit-mgoodstaxppnbm').val(),
       autogen : $('#autogenmgoods').is(':checked')
 
+    }
+    if($('#edit-mgoodsmultiunit3').is(':checked')){
+      data.mgoodsmultiunit = true;
     }
   console.log(data);
    $.ajax({
@@ -352,7 +363,12 @@ function updatemgoods(){
       }
 
       if(response.mgoodsmultiunit == 1){
-        $('#view-mgoodsmultiunit').attr('checked',true);
+        console.log(response.mgoodsunit3conv);
+        if(response.mgoodsunit3conv != 0){
+          $('#view-mgoodsmultiunit3').attr('checked',true);
+        } else {
+          $('#view-mgoodsmultiunit').attr('checked',true);
+        }
       } else {
         $('#view-mgoodsmultiunit').removeAttr('checked');
       }
@@ -391,6 +407,30 @@ function updatemgoods(){
 
 $('#insert-mgoodsmultiunit').on('change',function(e){
   var check = $('#insert-mgoodsmultiunit').is(':checked');
+  var satuan3 = $('#insert-mgoodsmultiunit3').is(':checked');
+  if(satuan3){
+    $('#insert-mgoodsmultiunit3').removeAttr('checked');
+    $('#insert-mgoodsunit3').attr('disabled',true).trigger("chosen:updated");
+    $('#insert-mgoodsunit3conv').attr('disabled',true);
+    $('#insert-mgoodsunit3conv').val('');
+  }
+  if(check){
+    $('#insert-mgoodsunit2').removeAttr('disabled').trigger("chosen:updated");
+    $('#insert-mgoodsunit2conv').removeAttr('disabled');
+    $('#insert-mgoodsunit2conv').val(12);
+  } else {
+    $('#insert-mgoodsunit2').attr('disabled',true).trigger("chosen:updated");
+    $('#insert-mgoodsunit2conv').attr('disabled',true);
+    $('#insert-mgoodsunit2conv').val('');
+  }
+});
+
+$('#insert-mgoodsmultiunit3').on('change',function(e){
+  var check = $('#insert-mgoodsmultiunit3').is(':checked');
+  var satuan2 = $('#insert-mgoodsmultiunit').is(':checked');
+  if(satuan2){
+    $('#insert-mgoodsmultiunit').removeAttr('checked');
+  }
   if(check){
     $('#insert-mgoodsunit2').removeAttr('disabled').trigger("chosen:updated");
     $('#insert-mgoodsunit2conv').removeAttr('disabled');
@@ -408,8 +448,32 @@ $('#insert-mgoodsmultiunit').on('change',function(e){
   }
 });
 
-$('#edit-mgoodsmultiunit').on('switchChange.bootstrapSwitch',function(e){
+$('#edit-mgoodsmultiunit').on('change',function(e){
   var check = $('#edit-mgoodsmultiunit').is(':checked');
+  var satuan3 = $('#edit-mgoodsmultiunit3').is(':checked');
+  if(satuan3){
+    $('#edit-mgoodsmultiunit3').removeAttr('checked');
+    $('#edit-mgoodsunit3').attr('disabled',true).trigger("chosen:updated");
+    $('#edit-mgoodsunit3conv').attr('disabled',true);
+    $('#edit-mgoodsunit3conv').val('');
+  }
+  if(check){
+    $('#edit-mgoodsunit2').removeAttr('disabled').trigger("chosen:updated");
+    $('#edit-mgoodsunit2conv').removeAttr('disabled');
+    $('#edit-mgoodsunit2conv').val(12);
+  } else {
+    $('#edit-mgoodsunit2').attr('disabled',true).trigger("chosen:updated");
+    $('#edit-mgoodsunit2conv').attr('disabled',true);
+    $('#edit-mgoodsunit2conv').val('');
+  }
+});
+
+$('#edit-mgoodsmultiunit3').on('change',function(e){
+  var check = $('#edit-mgoodsmultiunit').is(':checked');
+  var satuan2 = $('#edit-mgoodsmultiunit').is(':checked');
+  if(satuan2){
+    $('#edit-mgoodsmultiunit').removeAttr('checked');
+  }
   if(check){
     $('#edit-mgoodsunit2').removeAttr('disabled').trigger("chosen:updated");
     $('#edit-mgoodsunit2conv').removeAttr('disabled');
