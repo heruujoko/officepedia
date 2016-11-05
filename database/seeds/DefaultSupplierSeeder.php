@@ -2,7 +2,6 @@
 
 use Illuminate\Database\Seeder;
 use App\MCategorysupplier;
-use DB;
 
 class DefaultSupplierSeeder extends Seeder
 {
