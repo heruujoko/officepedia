@@ -4,11 +4,12 @@ namespace App\Http\Controllers\Api;
 
 use Illuminate\Http\Request;
 
+
+use Exception;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use App\MWarehouse;
 use Datatables;
-use Exception;
 use DB;
 use Auth;
 use App\Helper\DBHelper;
