@@ -88,6 +88,7 @@ function insertmgoods(){
         mgoodssuppliername: $('#insert-mgoodssuppliername').val(),
         mgoodspicture: $('#insert-mgoodspicture').val(),
 
+        mgoodstaxable: $('#insert-mgoodstaxable').is(':checked'),
         mgoodstaxppn: $('#insert-mgoodstaxppn').val(),
         mgoodstaxppnbm: $('#insert-mgoodstaxppnbm').val(),
         autogen : $('#autogenmgoods').is(':checked')
@@ -222,6 +223,18 @@ function editmgoods(id){
         $('#edit-mgoodsmaxdisc').attr('disabled',true);
       }
 
+      if(response.mgoodstaxable == 1){
+        $('#edit-mgoodstaxable').attr('checked',true);
+        $('#edit-mgoodstaxppn').removeAttr('disabled');
+        $('#edit-mgoodstaxppnbm').removeAttr('disabled');
+      } else {
+        $('#edit-mgoodstaxable').removeAttr('checked');
+        $('#edit-mgoodstaxppn').attr('disabled',true);
+        $('#edit-mgoodstaxppnbm').attr('disabled',true);
+        $('#edit-mgoodstaxppn').val(2).change();
+        $('#edit-mgoodstaxppnbm').val(2).change();
+      }
+
     }
 
 });
@@ -263,6 +276,7 @@ function updatemgoods(){
       mgoodssuppliername: $('#edit-mgoodssuppliername').val(),
       mgoodspicture: $('#edit-mgoodspicture').val(),
 
+      mgoodstaxable: $('#edit-mgoodstaxable').is(':checked'),
       mgoodstaxppn: $('#edit-mgoodstaxppn').val(),
       mgoodstaxppnbm: $('#edit-mgoodstaxppnbm').val(),
       autogen : $('#autogenmgoods').is(':checked')
@@ -578,6 +592,35 @@ $('#edit-mgoodssetmaxdisc').on('change',function(){
   } else {
     $('#edit-mgoodsmaxdiscrp').attr('disabled',true);
     $('#edit-mgoodsmaxdisc').attr('disabled',true);
+  }
+});
+
+
+// observe taxable
+
+$('#insert-mgoodstaxable').on('change',function(){
+  if($('#insert-mgoodstaxable').is(':checked')){
+    $('#insert-mgoodstaxppn').removeAttr('disabled');
+    $('#insert-mgoodstaxppnbm').removeAttr('disabled');
+    $('#insert-mgoodstaxppn').val(1).change();
+  } else {
+    $('#insert-mgoodstaxppn').attr('disabled',true);
+    $('#insert-mgoodstaxppnbm').attr('disabled',true);
+    $('#insert-mgoodstaxppn').val(2).change();
+    $('#insert-mgoodstaxppnbm').val(2).change();
+  }
+});
+
+$('#edit-mgoodstaxable').on('change',function(){
+  if($('#edit-mgoodstaxable').is(':checked')){
+    $('#edit-mgoodstaxppn').removeAttr('disabled');
+    $('#edit-mgoodstaxppnbm').removeAttr('disabled');
+    $('#insert-mgoodstaxppn').val(1).change();
+  } else {
+    $('#edit-mgoodstaxppn').attr('disabled',true);
+    $('#edit-mgoodstaxppnbm').attr('disabled',true);
+    $('#edit-mgoodstaxppn').val(2).change();
+    $('#edit-mgoodstaxppnbm').val(2).change();
   }
 });
 

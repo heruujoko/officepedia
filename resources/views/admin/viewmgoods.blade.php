@@ -409,14 +409,27 @@
                           <div class="form form-horizontal" style="margin-top:21px;">
                             <div class="col-md-12">
                               <div style="height: 21px;" class="form-group">
+                                <label class="col-md-2 control-label"><b>Menggunakan Pajak</b>  &nbsp  :</label>
+                                <div class="col-md-1">
+                                  <!-- <input id="insert-mgoodsmultiunit" value="" name="mgoodsmultiunit" class="nice-toggle" placeholder="mgoodsactive" type="checkbox" data-toggle="toggle"> -->
+                                  <div class="yesnoswitch">
+                                      <input type="checkbox" name="mgoodsbranches" class="yesnoswitch-checkbox" id="insert-mgoodstaxable">
+                                      <label class="yesnoswitch-label" for="insert-mgoodstaxable">
+                                          <span class="yesnoswitch-inner"></span>
+                                          <span class="yesnoswitch-switch"></span>
+                                      </label>
+                                  </div>
+                                </div>
+                              </div>
+                              <div style="height: 21px;" class="form-group">
                                   <label class="col-md-2 control-label"><b>Pajak</b>  (<font color="red">*</font>) &nbsp  :</label>
                                   <div class="col-md-4">
                                     <div class="icon-addon addon-md">
-                                      <select class="form-control select2" name="mgoodstaxppn" id="insert-mgoodstaxppn">
+                                      <select disabled class="form-control select2" name="mgoodstaxppn" id="insert-mgoodstaxppn">
 
                                       @foreach($taxes as $tax)
                                         @if($tax->mtaxtype == 'Kosong')
-                                          <option value="{{ $tax->id }}">&nbsp;</option>
+                                          <option selected value="{{ $tax->id }}">&nbsp;</option>
                                         @else
                                           <option value="{{ $tax->id }}">{{ $tax->mtaxtdesc }}</option>
                                         @endif
@@ -430,7 +443,7 @@
                                   <label class="col-md-2 control-label"><b>Pajak Barang Mewah</b>  (<font color="red">*</font>) &nbsp  :</label>
                                   <div class="col-md-4">
                                     <div class="icon-addon addon-md">
-                                      <select class="form-control select2" name="mgoodstaxppnbm" id="insert-mgoodstaxppnbm">
+                                      <select disabled class="form-control select2" name="mgoodstaxppnbm" id="insert-mgoodstaxppnbm">
                                       @foreach($taxes as $tax)
                                         @if($tax->mtaxtype == 'Kosong')
                                           <option selected value="{{ $tax->id }}">&nbsp;</option>
@@ -835,6 +848,19 @@
                           <div class="form form-horizontal" style="margin-top:21px;">
                             <div class="col-md-12">
                               <div style="height: 21px;" class="form-group">
+                                <label class="col-md-2 control-label"><b>Menggunakan Pajak</b>  &nbsp  :</label>
+                                <div class="col-md-1">
+                                  <!-- <input id="insert-mgoodsmultiunit" value="" name="mgoodsmultiunit" class="nice-toggle" placeholder="mgoodsactive" type="checkbox" data-toggle="toggle"> -->
+                                  <div class="yesnoswitch">
+                                      <input type="checkbox" name="mgoodsbranches" class="yesnoswitch-checkbox" id="edit-mgoodstaxable">
+                                      <label class="yesnoswitch-label" for="edit-mgoodstaxable">
+                                          <span class="yesnoswitch-inner"></span>
+                                          <span class="yesnoswitch-switch"></span>
+                                      </label>
+                                  </div>
+                                </div>
+                              </div>
+                              <div style="height: 21px;" class="form-group">
                                   <label class="col-md-2 control-label"><b>Pajak</b>  (<font color="red">*</font>) &nbsp  :</label>
                                   <div class="col-md-4">
                                     <div class="icon-addon addon-md">
@@ -842,7 +868,7 @@
 
                                       @foreach($taxes as $tax)
                                         @if($tax->mtaxtype == 'Kosong')
-                                          <option value="{{ $tax->id }}">&nbsp;</option>
+                                          <option selected value="{{ $tax->id }}">&nbsp;</option>
                                         @else
                                           <option value="{{ $tax->id }}">{{ $tax->mtaxtdesc }}</option>
                                         @endif
@@ -1260,6 +1286,19 @@
                         <div id="menuview3" class="tab-pane fade">
                           <div class="form form-horizontal" style="margin-top:21px;">
                             <div class="col-md-12">
+                              <div style="height: 21px;" class="form-group">
+                                <label class="col-md-2 control-label"><b>Menggunakan Pajak</b>  &nbsp  :</label>
+                                <div class="col-md-1">
+                                  <!-- <input id="insert-mgoodsmultiunit" value="" name="mgoodsmultiunit" class="nice-toggle" placeholder="mgoodsactive" type="checkbox" data-toggle="toggle"> -->
+                                  <div class="yesnoswitch">
+                                      <input type="checkbox" name="mgoodsbranches" class="yesnoswitch-checkbox" id="view-mgoodstaxable">
+                                      <label class="yesnoswitch-label" for="edit-mgoodstaxable1">
+                                          <span class="yesnoswitch-inner"></span>
+                                          <span class="yesnoswitch-switch"></span>
+                                      </label>
+                                  </div>
+                                </div>
+                              </div>
                               <div style="height: 21px;" class="form-group">
                                   <label class="col-md-2 control-label"><b>Pajak</b>  (<font color="red">*</font>) &nbsp  :</label>
                                   <div class="col-md-4">
