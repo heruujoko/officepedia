@@ -625,6 +625,10 @@
 					$('.select2').select2({
 						width: "100%",
 					});
+					$('#insert-selectgoods').select2({
+						width: "100%",
+						placeholder: "Pilih Barang"
+					});
 					$('.select2-flex').select2({
 						width: "100%"
 					}).on("select2-open", function() {

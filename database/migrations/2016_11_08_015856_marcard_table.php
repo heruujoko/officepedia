@@ -28,6 +28,7 @@ class MarcardTable extends Migration
           $table->string('marcardusername');
           $table->date('marcardusereventdate');
           $table->datetime('marcardusereventtime');
+          $table->boolean('void')->default(0);
           $table->timestamps();
         });
     }

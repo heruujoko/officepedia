@@ -27,6 +27,7 @@ class MdinvoiceTable extends Migration
           $table->boolean('mdinvoicegoodstax');
           $table->integer('mdinvoicegoodsidwhouse');
           $table->text('mdinvoiceremarks')->nullable();
+          $table->boolean('void')->default(0);
           $table->timestamps();
         });
     }

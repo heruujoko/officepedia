@@ -79,6 +79,15 @@
   <li>
     <a href="#"><i class="fa fa-lg fa-fw fa-tag"></i> <span class="menu-item-parent">Penjualan</span></a>
     <ul>
+      @if($active == 'salesinvoice')
+        <li class="active">
+          <a href="{{URL::to('/')}}/admin-nano/salesinvoice">Transaksi Penjualan</a>
+        </li>
+      @else
+        <li>
+          <a href="{{URL::to('/')}}/admin-nano/salesinvoice">Transaksi Penjualan</a>
+        </li>
+      @endif
       @if($active == 'customer')
         <li class="active">
           <a href="{{URL::to('/')}}/admin-nano/pelanggan">Master Customer</a>

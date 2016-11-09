@@ -115,6 +115,7 @@ class MGoodsController extends Controller
         $MGoods->mgoodsuniquetransaction = $this->convertBoolean($request->mgoodsuniquetransaction);
         $MGoods->mgoodsmultiunit = $this->convertBoolean($request->mgoodsmultiunit);
         $MGoods->mgoodssetmaxdisc = $this->convertBoolean($request->mgoodssetmaxdisc);
+        $MGoods->mgoodstaxable = $this->convertBoolean($request->mgoodstaxable);
 				$MGoods->save();
         $MGoods->mgoodssuppliername = $MGoods->supplier()->msuppliername;
         $MGoods->save();
@@ -149,6 +150,7 @@ class MGoodsController extends Controller
       $mgoods->mgoodsmultiunit = $this->convertint($request->mgoodsmultiunit);
       $mgoods->mgoodssuppliername = $mgoods->supplier()->msuppliername;
       $mgoods->mgoodssetmaxdisc = $this->convertBoolean($request->mgoodssetmaxdisc);
+      $mgoods->mgoodstaxable = $this->convertBoolean($request->mgoodstaxable);
       $mgoods->save();
     return response()->json($mgoods);
   }
