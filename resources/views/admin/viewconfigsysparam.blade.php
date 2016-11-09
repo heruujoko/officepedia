@@ -170,12 +170,21 @@
 		                                  <input id="edit-msyscomptaxpayeridnumber" name="msyscomptaxpayeridnumber" class="form-control forminput" placeholder="NPWP Perusahaan" type="text" data-parsley-required-message="Field Ini Tidak Boleh Kosong" @if (Session::has('autofocus')) autofocus @endif >
 		                          			</div>
 		                              </div>
-		                              <div class="form-group">
-		                                <label class="col-md-3 control-label"><b>PKP</b> &nbsp  :</label>
-		                          			<div class="col-md-9">
-		                                  <input id="edit-msyscomptaxable" type="checkbox" class="nice-toggle" name="msyscomptaxable">
-		                          			</div>
-		                              </div>
+		                            
+		                        <div style="height: 21px;" class="form-group">
+                                  <label class="col-md-3 control-label"><b>PKP </b>  &nbsp  :</label>
+                                  <div class="col-md-9 col-sm-12">
+                                    <div class="yesnoswitch">
+                                        <input type="checkbox" name="msyscomptaxable" class="yesnoswitch-checkbox" id="edit-msyscomptaxable">
+                                        <label class="yesnoswitch-label" for="edit-msyscomptaxable">
+                                            <span class="yesnoswitch-inner"></span>
+                                            <span class="yesnoswitch-switch"></span>
+                                        </label>
+                                    </div>
+                                  </div>
+                             	</div>
+
+
 		                              <div class="form-group">
 		                                <label class="col-md-3 control-label"><b>Tgl PKP</b> &nbsp  :</label>
 		                          			<div class="col-md-9">
@@ -207,42 +216,86 @@
                         </div>
                         <div id="menu2" class="tab-pane">
                           <div class="form form-horizontal">
-                            <div class="form-group" style="margin-top:21px;">
-                              <label class="col-md-3 control-label"><b>Akuntansi Manufaktur</b> (<font color="red">*</font>) &nbsp  :</label>
-                              <div class="col-md-9">
-                                <input id="edit-msysgenmanufacturingacc" type="checkbox" class="nice-toggle" name="msysgenmanufacturingacc" placeholder="Akuntansi Manufaktur">
-                              </div>
-                            </div>
-                            <div class="form-group">
-                              <label class="col-md-3 control-label"><b>Multi Cabang</b> (<font color="red">*</font>) &nbsp  :</label>
-                              <div class="col-md-9">
-                                <input id="edit-msysgenmultibranch" type="checkbox" class="nice-toggle" name="msysgenmultibranch" placeholder="Multi Cabang">
-                              </div>
-                            </div>
-                            <div class="form-group">
-                              <label class="col-md-3 control-label"><b>Multi Mata Uang</b> (<font color="red">*</font>) &nbsp  :</label>
-                              <div class="col-md-9">
-                                <input id="edit-msysgenmulticurrency" type="checkbox" class="nice-toggle" name="msysgenmulticurrency" placeholder="Multi Mata Uang">
-                              </div>
-                            </div>
-                            <div class="form-group">
-                              <label class="col-md-3 control-label"><b>Default PPN</b> (<font color="red">*</font>) &nbsp  :</label>
-                              <div class="col-md-9">
-                                <input id="edit-msysgendefaulttax" type="checkbox" class="nice-toggle" name="msysgendefaulttax" placeholder="Default PPN">
-                              </div>
-                            </div>
-                            <div class="form-group">
-                              <label class="col-md-3 control-label"><b>Persetujuan</b> (<font color="red">*</font>) &nbsp  :</label>
-                              <div class="col-md-9">
-                                <input id="edit-msysgenapproval" type="checkbox" class="nice-toggle" name="msysgenapproval" placeholder="Default Persetujuan">
-                              </div>
-                            </div>
-                            <div class="form-group">
-                              <label class="col-md-3 control-label"><b>Persetujuan</b> (<font color="red">*</font>) &nbsp  :</label>
-                              <div class="col-md-9">
-                                <input id="edit-msysgenfixedasset" type="checkbox" class="nice-toggle" name="msysgenfixedasset" placeholder="Persetujuan">
-                              </div>
-                            </div>
+                            
+                            
+                            <div style="height: 21px;" class="form-group">
+                                  <label class="col-md-3 control-label"><b>Akuntansi Manufaktur </b>  &nbsp  :</label>
+                                  <div class="col-md-9 col-sm-12">
+                                    <div class="yesnoswitch">
+                                        <input type="checkbox" name="msysgenmanufacturingacc" class="yesnoswitch-checkbox" id="edit-msysgenmanufacturingacc">
+                                        <label class="yesnoswitch-label" for="edit-msysgenmanufacturingacc">
+                                            <span class="yesnoswitch-inner"></span>
+                                            <span class="yesnoswitch-switch"></span>
+                                        </label>
+                                    </div>
+                                  </div>
+                             	</div>
+
+                           
+                            <div style="height: 21px;" class="form-group">
+                                  <label class="col-md-3 control-label"><b>Multi Cabang </b>  &nbsp  :</label>
+                                  <div class="col-md-9 col-sm-12">
+                                    <div class="yesnoswitch">
+                                        <input type="checkbox" name="msysgenmultibranch" class="yesnoswitch-checkbox" id="edit-msysgenmultibranch">
+                                        <label class="yesnoswitch-label" for="edit-msysgenmultibranch">
+                                            <span class="yesnoswitch-inner"></span>
+                                            <span class="yesnoswitch-switch"></span>
+                                        </label>
+                                    </div>
+                                  </div>
+                             	</div>
+                           
+                             <div style="height: 21px;" class="form-group">
+                                  <label class="col-md-3 control-label"><b>Multi Mata Uang </b>  &nbsp  :</label>
+                                  <div class="col-md-9 col-sm-12">
+                                    <div class="yesnoswitch">
+                                        <input type="checkbox" name="msysgenmulticurrency" class="yesnoswitch-checkbox" id="edit-msysgenmulticurrency">
+                                        <label class="yesnoswitch-label" for="edit-msysgenmulticurrency">
+                                            <span class="yesnoswitch-inner"></span>
+                                            <span class="yesnoswitch-switch"></span>
+                                        </label>
+                                    </div>
+                                  </div>
+                             	</div>
+                     
+                             <div style="height: 21px;" class="form-group">
+                                  <label class="col-md-3 control-label"><b>Default PPN </b>  &nbsp  :</label>
+                                  <div class="col-md-9 col-sm-12">
+                                    <div class="yesnoswitch">
+                                        <input type="checkbox" name="msysgendefaulttax" class="yesnoswitch-checkbox" id="edit-msysgendefaulttax">
+                                        <label class="yesnoswitch-label" for="edit-msysgendefaulttax">
+                                            <span class="yesnoswitch-inner"></span>
+                                            <span class="yesnoswitch-switch"></span>
+                                        </label>
+                                    </div>
+                                  </div>
+                             	</div>
+                         
+                            <div style="height: 21px;" class="form-group">
+                                  <label class="col-md-3 control-label"><b>Persetujuan </b>  &nbsp  :</label>
+                                  <div class="col-md-9 col-sm-12">
+                                    <div class="yesnoswitch">
+                                        <input type="checkbox" name="msysgenapproval" class="yesnoswitch-checkbox" id="edit-msysgenapproval">
+                                        <label class="yesnoswitch-label" for="edit-msysgenapproval">
+                                            <span class="yesnoswitch-inner"></span>
+                                            <span class="yesnoswitch-switch"></span>
+                                        </label>
+                                    </div>
+                                  </div>
+                             	</div>
+                        
+                            <div style="height: 21px;" class="form-group">
+                                  <label class="col-md-3 control-label"><b>Persetujuan </b>  &nbsp  :</label>
+                                  <div class="col-md-9 col-sm-12">
+                                    <div class="yesnoswitch">
+                                        <input type="checkbox" name="msysgenfixedasset" class="yesnoswitch-checkbox" id="edit-msysgenfixedasset">
+                                        <label class="yesnoswitch-label" for="edit-msysgenfixedasset">
+                                            <span class="yesnoswitch-inner"></span>
+                                            <span class="yesnoswitch-switch"></span>
+                                        </label>
+                                    </div>
+                                  </div>
+                             	</div>
                             <div class="form-group">
                               <label class="col-md-3 control-label"><b>Pembulatan Desimal</b> (<font color="red">*</font>) &nbsp  :</label>
                               <div class="col-md-2">
@@ -515,8 +568,9 @@
 
 @section('css')
 	<link rel="stylesheet" href="{{ url('/css/dropzone.css') }}">
-  <link rel="stylesheet" href="{{ url('/css/bootstrap-switch.min.css') }}">
-  <link rel="stylesheet" href="{{ url('/css/bootstrap-datepicker3.min.css') }}">
+  	<link rel="stylesheet" href="{{ url('/css/onoff.css') }}">
+  	<link rel="stylesheet" href="{{ url('/css/yesno.css') }}">
+  	<link rel="stylesheet" href="{{ url('/css/bootstrap-datepicker3.min.css') }}">
   <style>
     .example-label {
       padding-top: 7px;
