@@ -5,8 +5,34 @@
     "dev": "gulp watch"
   },
   "devDependencies": {
+    "babel-preset-stage-2": "^6.18.0",
+    "bootstrap-sass": "^3.0.0",
+    "gulp": "^3.9.1",
+    "laravel-elixir": "^5.0.0"
+  },
+  "name": "nano",
+  "version": "1.0.0",
+  "main": "gulpfile.js",
+  "directories": {
+    "test": "tests"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/heruujoko/officepedia.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/heruujoko/officepedia/issues"
+  },
+  "homepage": "https://github.com/heruujoko/officepedia#readme",
+  "description": "",
+  "dependencies": {
+    "axios": "^0.15.2",
     "gulp": "^3.9.1",
     "laravel-elixir": "^5.0.0",
-    "bootstrap-sass": "^3.0.0"
+    "laravel-elixir-vueify": "^1.0.6",
+    "vue": "^1.0.26",
+    "vue-select": "^1.3.3"
   }
 }

@@ -28,6 +28,7 @@ class MstockcardTable extends Migration
           $table->string('mstockcardusername');
           $table->date('mstockcardeventdate');
           $table->datetime('mstockcardeventtime');
+          $table->boolean('void')->default(0);
           $table->timestamps();
         });
     }

@@ -25,6 +25,7 @@ class MhinvoiceTable extends Migration
           $table->double('mhinvoicegrandtotal');
           $table->boolean('mhinvoicewithppn');
           $table->text('mhinvoiceremark')->nullable();
+          $table->boolean('void')->default(0);
           $table->timestamps();
         });
     }

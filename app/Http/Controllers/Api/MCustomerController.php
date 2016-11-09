@@ -81,12 +81,16 @@ class MCustomerController extends Controller
 
 	}
 
-
-   public function destroy($id){
+  public function destroy($id){
     $mbranch = MCUSTOMER::on(Auth::user()->db_name)->where('id',$id)->first();
     $mbranch->void = 1;
 		$mbranch->save();
     return response()->json();
-    }
+  }
+
+	public function datalist(){
+		$mcustomers = MCUSTOMER::on(Auth::user()->db_name)->get();
+		return response()->json($mcustomers);
+	}
 
 }
