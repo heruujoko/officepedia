@@ -60,7 +60,7 @@
 													<div class="form-group">
 														<label class="col-md-2 control-label">Pelanggan</label>
 														<div class="col-md-8">
-															<select class="select2">
+															<select class="select2" id="insertinvoicecustomer">
 																@foreach($customers as $c)
 																	<option value="{{ $c->mcustomerid }}">{{ $c->mcustomername }}</option>
 																@endforeach
@@ -70,7 +70,7 @@
 													<div class="form-group">
 														<label class="col-md-2 control-label">Tanggal</label>
 														<div class="col-md-8">
-															<input type="text" class="form-control datepicker" />
+															<input type="text" class="form-control datepicker" id="insertinvoicedate" />
 														</div>
 													</div>
 												</div>
@@ -78,7 +78,7 @@
 													<div class="form-group">
 														<label class="col-md-2 control-label">Type</label>
 														<div class="col-md-8">
-															<select class="select2 form-control">
+															<select class="select2 form-control" id="insertinvoicetype">
 																<option>Penjualan</option>
 																<option>Retur Penjualan</option>
 																<option>Pembelian</option>
@@ -104,7 +104,7 @@
                               </select>
                             </div>
                             <div class="col-md-6">
-                              <button class="pull-right btn btn-primary">Proses</button>
+                              <button class="pull-right btn btn-primary" onclick="insert_invoice()">Proses</button>
                             </div>
                           </div>
 													<div class="row">
@@ -112,9 +112,9 @@
 														<table id="insertdetailtable" class="table table-bordered">
 															<thead>
 																<tr>
-																	<th>Nama Biaya</th>
-																	<th>Kode</th>
-																	<th>Jumlah</th>
+																	<th style="width:55%;">Nama Biaya</th>
+																	<th style="width:15%;">Kode</th>
+																	<th style="width:30%;">Jumlah</th>
 																</tr>
 															</thead>
 															<tbody>
@@ -123,10 +123,14 @@
 														</table>
 													</div>
 													<div class="row">
-														<br><br>
-														<div class="col-md-2 col-md-offset-6">
+														<br>
+														<div class="col-md-2 col-md-offset-4">
 															<h5>Sub Total</h5>
 															<p id="insertsubtotal">0</p>
+														</div>
+														<div class="col-md-2">
+															<h5>Discount</h5>
+															<p id="insertdisc">0</p>
 														</div>
 														<div class="col-md-2">
 															<h5>PPN 10%</h5>
