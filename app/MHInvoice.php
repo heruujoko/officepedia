@@ -89,7 +89,7 @@ class MHInvoice extends Model
           $stock_card->mstockcardstockin = 0;
           $stock_card->mstockcardstockout = $g['usage'];
           $stock_card->mstockcardwhouse = 1;
-          $stock_card->mstockcarduserid = Auth::user()->idx;
+          $stock_card->mstockcarduserid = Auth::user()->id;
           $stock_card->mstockcardusername = Auth::user()->name;
           $stock_card->mstockcardeventdate = Carbon::now();
           $stock_card->mstockcardeventtime = Carbon::now();
