@@ -1,15 +1,15 @@
 var API_URL = '/admin-api';
 var WEB_URL = '/admin-nano';
 
-$('#edit-msyscomptaxable').on('switchChange.bootstrapSwitch',function(event,state){
-  if(state){
-    $('#edit-msyscomptaxabledate').prop('disabled',false);
-    $('#edit-msyscomptaxablenumber').prop('disabled',false);
-  } else {
-    $('#edit-msyscomptaxabledate').prop('disabled',true);
-    $('#edit-msyscomptaxablenumber').prop('disabled',true);
-  }
-});
+// $('#edit-msyscomptaxable').on('switchChange.bootstrapSwitch',function(event,state){
+//   if(state){
+//     $('#edit-msyscomptaxabledate').prop('disabled',false);
+//     $('#edit-msyscomptaxablenumber').prop('disabled',false);
+//   } else {
+//     $('#edit-msyscomptaxabledate').prop('disabled',true);
+//     $('#edit-msyscomptaxablenumber').prop('disabled',true);
+//   }
+// });
 
 $(document).ready(function(){
 
@@ -18,11 +18,11 @@ $(document).ready(function(){
     defaultViewDate: { year: 2016, month: 01, day: 01 }
   });
 
-  $('.nice-toggle').bootstrapSwitch({
-    size: 'mini',
-    onText: "Yes",
-    offText: "No"
-  });
+  // $('.nice-toggle').bootstrapSwitch({
+  //   size: 'mini',
+  //   onText: "Yes",
+  //   offText: "No"
+  // });
   $('.nice-toggle').change(function(){
   });
   fetch_params_data();
@@ -47,10 +47,15 @@ function fetch_params_data(){
       $('#edit-msyscomplogo').val(response.msyscomplogo);
       $("#logoimageid").attr('src', response.msyscomplogo);
       $('#edit-msyscomptaxpayeridnumber').val(response.msyscomptaxpayeridnumber);
+
+
       if(response.msyscomptaxable == true){
-        $('#edit-msyscomptaxable').bootstrapSwitch('state',true);
+        $('#edit-msyscomptaxable').attr('checked',true);
+        
       } else {
-        $('#edit-msyscomptaxable').bootstrapSwitch('state',false);
+        
+         $('#edit-msyscomptaxable').removeAttr('checked');
+
       }
       $('#edit-msyscomptaxabledate').val(response.msyscomptaxabledate);
       $('#edit-msyscomptaxablenumber').val(response.msyscomptaxablenumber);
@@ -58,34 +63,35 @@ function fetch_params_data(){
       $('#edit-msyscomptaxpayeridaddress').val(response.msyscomptaxpayeridaddress);
 
       if(response.msysgenmanufacturingacc == true){
-        $('#edit-msysgenmanufacturingacc').bootstrapSwitch('state',true);
+         $('#edit-msysgenmanufacturingacc').attr('checked',true);
       } else {
-        $('#edit-msysgenmanufacturingacc').bootstrapSwitch('state',false);
+        $('#edit-msysgenmanufacturingacc').removeAttr('checked');
       }
       if(response.msysgenmultibranch == true){
-        $('#edit-msysgenmultibranch').bootstrapSwitch('state',true);
+        $('#edit-msysgenmultibranch').attr('checked',true);
       } else {
-        $('#edit-msysgenmultibranch').bootstrapSwitch('state',false);
+         $('#edit-msysgenmultibranch').removeAttr('checked');
       }
       if(response.msysgenmulticurrency == true){
-        $('#edit-msysgenmulticurrency').bootstrapSwitch('state',true);
+        
+         $('#edit-msysgenmulticurrency').attr('checked',true);
       } else {
-        $('#edit-msysgenmulticurrency').bootstrapSwitch('state',false);
+        $('#edit-msysgenmulticurrency').removeAttr('checked');
       }
       if(response.msysgenapproval == true){
-        $('#edit-msysgenapproval').bootstrapSwitch('state',true);
+        $('#edit-msysgenapproval').attr('checked',true);
       } else {
-        $('#edit-msysgenapproval').bootstrapSwitch('state',false);
+         $('#edit-msysgenapproval').removeAttr('checked');
       }
       if(response.msysgendefaulttax == true){
-        $('#edit-msysgendefaulttax').bootstrapSwitch('state',true);
+        $('#edit-msysgendefaulttax').attr('checked',true);
       } else {
-        $('#edit-msysgendefaulttax').bootstrapSwitch('state',false);
+        $('#edit-msysgendefaulttax').removeAttr('checked');
       }
       if(response.msysgenfixedasset == true){
-        $('#edit-msysgenfixedasset').bootstrapSwitch('state',true);
+        $('#edit-msysgenfixedasset').attr('checked',true);
       } else {
-        $('#edit-msysgenfixedasset').bootstrapSwitch('state',false);
+         $('#edit-msysgenfixedasset').removeAttr('checked');
       }
 
       $('#edit-msysgenrounddec').val(response.msysgenrounddec).change();

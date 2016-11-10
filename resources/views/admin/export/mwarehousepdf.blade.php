@@ -75,21 +75,11 @@
       <tbody>
         <tr>
           <td><b>Nama Gudang</b></td>
-          <td><b>Alamat</b></td>
-          <td><b>Kota</b></td>
-          <td><b>Kode Pos</b></td>
-          <td><b>Provinsi</b></td>
-          <td><b>Negara</b></td>
           <td><b>Keterangan</b></td>
         </tr>
         @foreach($brand as $c)
           <tr>
             <td>{{ $c->mwarehousename }}</td>
-            <td>{{ $c->mwarehouseaddress }}</td>
-            <td>{{ $c->mwarehousecity }}</td>
-            <td>{{ $c->mwarehousezipcode }}</td>
-            <td>{{ $c->mwarehouseprovince }}</td>
-            <td>{{ $c->mwarehousecountry }}</td>
             <td>{{ $c->mwarehouseremark }}</td>
           </tr>
         @endforeach

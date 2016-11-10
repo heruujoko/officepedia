@@ -86,55 +86,6 @@
 										</div>
 									</div>
 								</div>
-								<div style="height: 21px;" class="form-group">
-              									<label class="col-md-3 control-label"><b>Alamat</b> &nbsp  :</label>
-              						<div class="col-md-7 col-sm-12">
-              							<div class="icon-addon addon-md">
-                                    		<div class="icon-addon addon-md">
-                								<textarea id="insert-mwarehouseaddress" value="{{old('mwarehouseaddress')}}" name="mwarehouseaddress" class="form-control forminput" rows="5" placeholder="Jalan" type="text"  @if (Session::has('autofocus')) autofocus @endif ></textarea>
-                											<label for="mgoodsgroup1" class="glyphicon glyphicon-road" rel="tooltip" title="Jalan"></label>
-                							</div>
-                						</div>
-              						</div>
-              					</div>
-              								
-                              <div style="height: 21px;" class="form-group">
-              									<div class="col-md-offset-3 col-md-5 col-sm-12" style="margin-top:5px; margin-right: -151px; padding-left: 0px;">
-              									<div class="icon-addon addon-md">
-                                    				<div class="icon-addon addon-md col-md-9">
-                										<input id="insert-mwarehousecity" value="{{old('mwarehousecity')}}" name="mwarehousecity" class="form-control forminput" placeholder="Kota" type="text"  @if (Session::has('autofocus')) autofocus @endif >
-                										</div>
-              										</div>
-              									</div>
-                                <div class="col-md-4 col-sm-12" style="margin-top:5px;">
-              										<div class="icon-addon addon-md">
-                                    <div class="icon-addon addon-md col-md-11">
-                											<input id="insert-mwarehousezipcode" value="{{old('mwarehousezipcode')}}" name="mwarehousezipcode" class="form-control forminput" placeholder="K.Pos" type="text"  @if (Session::has('autofocus')) autofocus @endif >
-                										</div>
-              										</div>
-              									</div>
-              								</div>
-                              <div style="height: 21px;" class="form-group">
-              									<div class="col-md-offset-3 col-md-7 col-sm-12" style="margin-top:5px;">
-              										<div class="icon-addon addon-md">
-                                    <div class="icon-addon addon-md">
-                                      <input id="insert-mwarehouseprovince" value="{{old('mwarehouseprovince')}}" name="mwarehouseprovince" class="form-control forminput" placeholder="Provinsi " type="text"  @if (Session::has('autofocus')) autofocus @endif >
-                											<label for="mgoodsgroup1" class="glyphicon glyphicon-star" rel="tooltip" title="Propinsi"></label>
-                										</div>
-              										</div>
-              									</div>
-              								</div>
-                              <div style="height: 21px;" class="form-group">
-              									<div class="col-md-offset-3 col-md-7 col-sm-12" style="margin-top:5px;">
-              										<div class="icon-addon addon-md">
-                                    <div class="icon-addon addon-md">
-                                      <input id="insert-mwarehousecountry" value="{{old('mwarehousecountry')}}" name="mwarehousecountry" class="form-control forminput" placeholder="Negara" type="text"  @if (Session::has('autofocus')) autofocus @endif >
-                											<label for="mgoodsgroup1" class="glyphicon glyphicon-star" rel="tooltip" title="Negara"></label>
-                										</div>
-              										</div>
-              									</div>
-              								</div>
-
               					<div style="height: 65px;" class="form-group">
 									<label class="col-md-3 control-label"><b>Remark</b>  :</label>
 									<div class="col-md-7" style="margin-top:5px;">
@@ -201,54 +152,7 @@
 										</div>
 									</div>
 								</div>
-								<div style="height: 21px;" class="form-group">
-              									<label class="col-md-3 control-label"><b>Alamat</b> &nbsp  :</label>
-              						<div class="col-md-7 col-sm-12">
-              							<div class="icon-addon addon-md">
-                                    		<div class="icon-addon addon-md">
-                								<textarea id="edit-mwarehouseaddress" value="{{old('mwarehouseaddress')}}" name="mwarehouseaddress" class="form-control forminput" rows="5" placeholder="Jalan" type="text"  @if (Session::has('autofocus')) autofocus @endif ></textarea>
-                											<label for="mgoodsgroup1" class="glyphicon glyphicon-road" rel="tooltip" title="Jalan"></label>
-                							</div>
-                						</div>
-              						</div>
-              					</div>
-              								
-                              <div style="height: 21px;" class="form-group">
-              									<div class="col-md-offset-3 col-md-5 col-sm-12" style="margin-top:5px; margin-right: -151px; padding-left: 0px;">
-              									<div class="icon-addon addon-md">
-                                    				<div class="icon-addon addon-md col-md-9">
-                										<input id="edit-mwarehousecity" value="{{old('mwarehousecity')}}" name="mwarehousecity" class="form-control forminput" placeholder="Kota" type="text"  @if (Session::has('autofocus')) autofocus @endif >
-                										</div>
-              										</div>
-              									</div>
-                                <div class="col-md-4 col-sm-12" style="margin-top:5px;">
-              										<div class="icon-addon addon-md">
-                                    <div class="icon-addon addon-md col-md-11">
-                											<input id="edit-mwarehousezipcode" value="{{old('mwarehousezipcode')}}" name="mwarehousezipcode" class="form-control forminput" placeholder="K.Pos" type="text"  @if (Session::has('autofocus')) autofocus @endif >
-                										</div>
-              										</div>
-              									</div>
-              								</div>
-                              <div style="height: 21px;" class="form-group">
-              									<div class="col-md-offset-3 col-md-7 col-sm-12" style="margin-top:5px;">
-              										<div class="icon-addon addon-md">
-                                    <div class="icon-addon addon-md">
-                                      <input id="edit-mwarehouseprovince" value="{{old('mwarehouseprovince')}}" name="mwarehouseprovince" class="form-control forminput" placeholder="Provinsi " type="text"  @if (Session::has('autofocus')) autofocus @endif >
-                											<label for="mgoodsgroup1" class="glyphicon glyphicon-star" rel="tooltip" title="Propinsi"></label>
-                										</div>
-              										</div>
-              									</div>
-              								</div>
-                              <div style="height: 21px;" class="form-group">
-              									<div class="col-md-offset-3 col-md-7 col-sm-12" style="margin-top:5px;">
-              										<div class="icon-addon addon-md">
-                                    <div class="icon-addon addon-md">
-                                      <input id="edit-mwarehousecountry" value="{{old('mwarehousecountry')}}" name="mwarehousecountry" class="form-control forminput" placeholder="Negara" type="text"  @if (Session::has('autofocus')) autofocus @endif >
-                											<label for="mgoodsgroup1" class="glyphicon glyphicon-star" rel="tooltip" title="Negara"></label>
-                										</div>
-              										</div>
-              									</div>
-              								</div>
+								
 
               					<div style="height: 65px;" class="form-group">
 									<label class="col-md-3 control-label"><b>Remark</b>  :</label>
@@ -311,54 +215,7 @@
 										</div>
 									</div>
 								</div>
-								<div style="height: 21px;" class="form-group">
-              									<label class="col-md-3 control-label"><b>Alamat</b> &nbsp  :</label>
-              						<div class="col-md-7 col-sm-12">
-              							<div class="icon-addon addon-md">
-                                    		<div class="icon-addon addon-md">
-                								<textarea disabled id="view-mwarehouseaddress" value="{{old('mwarehouseaddress')}}" name="mwarehouseaddress" class="form-control forminput" rows="5" placeholder="Jalan" type="text"  @if (Session::has('autofocus')) autofocus @endif ></textarea>
-                											<label for="mgoodsgroup1" class="glyphicon glyphicon-road" rel="tooltip" title="Jalan"></label>
-                							</div>
-                						</div>
-              						</div>
-              					</div>
-              								
-                              <div style="height: 21px;" class="form-group">
-              									<div class="col-md-offset-3 col-md-5 col-sm-12" style="margin-top:5px; margin-right: -151px; padding-left: 0px;">
-              									<div class="icon-addon addon-md">
-                                    				<div class="icon-addon addon-md col-md-9">
-                										<input disabled id="view-mwarehousecity" value="{{old('mwarehousecity')}}" name="mwarehousecity" class="form-control forminput" placeholder="Kota" type="text"  @if (Session::has('autofocus')) autofocus @endif >
-                										</div>
-              										</div>
-              									</div>
-                                <div class="col-md-4 col-sm-12" style="margin-top:5px;">
-              										<div class="icon-addon addon-md">
-                                    <div class="icon-addon addon-md col-md-11">
-                											<input disabled id="view-mwarehousezipcode" value="{{old('mwarehousezipcode')}}" name="mwarehousezipcode" class="form-control forminput" placeholder="K.Pos" type="text"  @if (Session::has('autofocus')) autofocus @endif >
-                										</div>
-              										</div>
-              									</div>
-              								</div>
-                              <div style="height: 21px;" class="form-group">
-              									<div class="col-md-offset-3 col-md-7 col-sm-12" style="margin-top:5px;">
-              										<div class="icon-addon addon-md">
-                                    <div class="icon-addon addon-md">
-                                      <input disabled id="view-mwarehouseprovince" value="{{old('mwarehouseprovince')}}" name="mwarehouseprovince" class="form-control forminput" placeholder="Provinsi " type="text"  @if (Session::has('autofocus')) autofocus @endif >
-                											<label for="mgoodsgroup1" class="glyphicon glyphicon-star" rel="tooltip" title="Propinsi"></label>
-                										</div>
-              										</div>
-              									</div>
-              								</div>
-                              <div style="height: 21px;" class="form-group">
-              									<div class="col-md-offset-3 col-md-7 col-sm-12" style="margin-top:5px;">
-              										<div class="icon-addon addon-md">
-                                    <div class="icon-addon addon-md">
-                                      <input disabled id="view-mwarehousecountry" value="{{old('mwarehousecountry')}}" name="mwarehousecountry" class="form-control forminput" placeholder="Negara" type="text"  @if (Session::has('autofocus')) autofocus @endif >
-                											<label for="mgoodsgroup1" class="glyphicon glyphicon-star" rel="tooltip" title="Negara"></label>
-                										</div>
-              										</div>
-              									</div>
-              								</div>
+							
 
               					<div style="height: 65px;" class="form-group">
 									<label class="col-md-3 control-label"><b>Remark</b>  :</label>
@@ -411,7 +268,7 @@
 
 								<thead>
 									<tr>
-                    <th class="hasinput" style="width:10%">
+                   					 <th class="hasinput" style="width:10%">
 
 										</th>
 										<th class="hasinput" style="width:5%">
@@ -420,35 +277,15 @@
 										<th class="hasinput" style="width:9%">
 											<input type="text" class="form-control" placeholder="Filter Nama Gudang" />
 										</th>
-										<th class="hasinput" style="width:9%">
-											<input type="text" class="form-control" placeholder="Filter Alamat" />
-										</th>
-										<th class="hasinput" style="width:9%">
-											<input type="text" class="form-control" placeholder="Filter Kota" />
-										</th>
-										<th class="hasinput" style="width:9%">
-											<input type="text" class="form-control" placeholder="Filter K.Pos" />
-										</th>
-										<th class="hasinput" style="width:9%">
-											<input type="text" class="form-control" placeholder="Filter Provinsi" />
-										</th>
-										<th class="hasinput" style="width:9%">
-											<input type="text" class="form-control" placeholder="Filter Negara" />
-										</th>
 
-                    <th class="hasinput" style="width:9%">
+                    					<th class="hasinput" style="width:9%">
 											<input type="text" class="form-control" placeholder="Filter Keterangan" />
 										</th>
 									</tr>
 									<tr>
 										<th data-hide="action"><center>Aksi</center></th>
-                    <th data-hide="no"><center>No</center></th>
-                    <th data-hide="mwarehousename"><center>Nama Gudang</center></th>
-                    <th data-hide="mwarehouseaddress"><center>Alamat</center></th>
-                    <th data-hide="mwarehousecity"><center>Kota</center></th>
-                    <th data-hide="mwarehousezipcode"><center>K.Pos</center></th>
-                    <th data-hide="mwarehouseprovince"><center>Provinsi</center></th>
-                    <th data-hide="mwarehousecountry"><center>Negara</center></th>
+                    					<th data-hide="no"><center>No</center></th>
+                    					<th data-hide="mwarehousename">Nama Gudang</center></th>
 										<th data-hide="mwarehouseremark"><center>Keterangan</center></th>
 									</tr>
 								</thead>
@@ -471,11 +308,11 @@
 																		"sLengthMenu": "Show _MENU_ Entries",
 																		"sInfo": "Showing ( _START_ to _END_ ) to _TOTAL_ Entries"
                                   },
-                              "aoColumnDefs": [{ "bVisible": false, "aTargets": [3,4,5,6,7] }],
+                              "aoColumnDefs": [{ "bVisible": false, "aTargets": [] }],
                               buttons: [ {
                                     extend: 'copyHtml5',
                                     exportOptions: {
-                                        columns: [ 1, 2, 3, 4, 5, 6, 7, 8]
+                                        columns: [ 1, 2, 3]
                                     }
                                   },
                                   {
@@ -499,7 +336,7 @@
                                   {
                                       extend: 'print',
                                       exportOptions: {
-                                          columns: [ 1, 2, 3, 4, 5, 6, 7, 8] //setting kolom mana yg mau di export
+                                          columns: [ 1, 2, 3] //setting kolom mana yg mau di export
                                       }
 
                                   },
@@ -516,13 +353,8 @@
                               {data: 'action', name:'action', searchable: false, orderable: false},
                               {data: 'no', no: 'no' },
                               {data: 'mwarehousename', mwarehousename: 'mwarehousename'},
-                              {data: 'mwarehouseaddress', mwarehouseaddress: 'mwarehouseaddress'},
-                              {data: 'mwarehousecity', mwarehouseaddress: 'mwarehouseaddress'},
-                              {data: 'mwarehousezipcode', mwarehouseaddress: 'mwarehouseaddress'},
-                              {data: 'mwarehouseprovince', mwarehouseaddress: 'mwarehouseaddress'},
-                              {data: 'mwarehousecountry', mwarehouseaddress: 'mwarehouseaddress'},
-							  {data: 'mwarehouseremark', mwarehouseremark: 'mwarehouseremark'}
-          										]
+							  {data: 'mwarehouseremark', mwarehouseremark: 'mwarehouseremark'},
+          					  ]
 							}).on('xhr.dt',function(){
 								$('#loading_modal').modal('hide');
 							});

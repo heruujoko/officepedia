@@ -24,24 +24,140 @@ function fetch_feature(){
     url: API_URL+"/mconfig",
     success: function(response){
       console.log(response);
-      $('#edit-msysinvquotation').bootstrapSwitch('state',response.msysinvquotation);
-      $('#edit-msysinvproformainvoice').bootstrapSwitch('state',response.msysinvproformainvoice);
-      $('#edit-msysinvsellinginvoice').bootstrapSwitch('state',response.msysinvsellinginvoice);
-      $('#edit-msysinvlocksellingprice').bootstrapSwitch('state',response.msysinvlocksellingprice);
-      $('#edit-msysinvcreditlimit').bootstrapSwitch('state',response.msysinvcreditlimit);
+     
+      if(response.msysinvquotation == true){
+        $('#edit-msysinvquotation').attr('checked',true);
+      } else {
+        
+         $('#edit-msysinvquotation').removeAttr('checked');
+      }
+      if(response.msysinvproformainvoice == true){
+        $('#edit-msysinvproformainvoice').attr('checked',true);
+      } else {
+        
+         $('#edit-msysinvproformainvoice').removeAttr('checked');
+      }
+      if(response.msysinvsellinginvoice == true){
+        $('#edit-msysinvsellinginvoice').attr('checked',true);
+      } else {
+        
+         $('#edit-msysinvsellinginvoice').removeAttr('checked');
+      }
+      if(response.msysinvlocksellingprice == true){
+        $('#edit-msysinvlocksellingprice').attr('checked',true);
+      } else {
+        
+         $('#edit-msysinvlocksellingprice').removeAttr('checked');
+      }
+      if(response.msysinvcreditlimit == true){
+        $('#edit-msysinvcreditlimit').attr('checked',true);
+      } else {
+        
+         $('#edit-msysinvcreditlimit').removeAttr('checked');
+      }
+      if(response.msysinvspbelowcog == true){
+        $('#edit-msysinvspbelowcog').attr('checked',true);
+      } else {
+        
+         $('#edit-msysinvspbelowcog').removeAttr('checked');
+      }
+      if(response.msysinvprintinvmorethanonce == true){
+        $('#edit-msysinvprintinvmorethanonce').attr('checked',true);
+      } else {
+        
+         $('#edit-msysinvprintinvmorethanonce').removeAttr('checked');
+      }
+      if(response.msysinvprintdomorethanonce == true){
+        $('#edit-msysinvprintdomorethanonce').attr('checked',true);
+      } else {
+        
+         $('#edit-msysinvprintdomorethanonce').removeAttr('checked');
+      }
+      if(response.msysinvprintordmorethanonce == true){
+        $('#edit-msysinvprintordmorethanonce').attr('checked',true);
+      } else {
+        
+         $('#edit-msysinvprintordmorethanonce').removeAttr('checked');
+      }
+      
+       if(response.msysinvlptdirectprinting == true){
+        $('#edit-msysinvlptdirectprinting').attr('checked',true);
+      } else {
+        
+         $('#edit-msysinvlptdirectprinting').removeAttr('checked');
+      }
+      
+      if(response.msyspurchorder == true){
+        $('#edit-msyspurchorder').attr('checked',true);
+      } else {
+        
+         $('#edit-msyspurchorder').removeAttr('checked');
+      }
+      if(response.msyspurchinvoice == true){
+        $('#edit-msyspurchinvoice').attr('checked',true);
+      } else {
+        
+         $('#edit-msyspurchinvoice').removeAttr('checked');
+      }
+      if(response.msyspurchcreditlimit == true){
+        $('#edit-msyspurchcreditlimit').attr('checked',true);
+      } else {
+        
+         $('#edit-msyspurchcreditlimit').removeAttr('checked');
+      }
+      if(response.msysinventmultiwarehouse == true){
+        $('#edit-msysinventmultiwarehouse').attr('checked',true);
+      } else {
+        
+         $('#edit-msysinventmultiwarehouse').removeAttr('checked');
+      }
+      if(response.msysinventmultiuom == true){
+        $('#edit-msysinventmultiuom').attr('checked',true);
+      } else {
+        
+         $('#edit-msysinventmultiuom').removeAttr('checked');
+      }
+      if(response.msysinventuseserial == true){
+        $('#edit-msysinventuseserial').attr('checked',true);
+      } else {
+        
+         $('#edit-msysinventuseserial').removeAttr('checked');
+      }
+      if(response.msysbankminus == true){
+        $('#edit-msysbankminus').attr('checked',true);
+      } else {
+        
+         $('#edit-msysbankminus').removeAttr('checked');
+      }
+
+      if(response.msysinventallowminus == true){
+        $('#edit-msysinventallowminus').attr('checked',true);
+      } else {
+        
+         $('#edit-msysinventallowminus').removeAttr('checked');
+      }
+      if(response.msysinventslabprice == true){
+        $('#edit-msysinventslabprice').attr('checked',true);
+      } else {
+        
+         $('#edit-msysinventslabprice').removeAttr('checked');
+      }
+      
+    
+      
+       if(response.msyspurchrequest == true){
+        $('#edit-msyspurchrequest').attr('checked',true);
+      } else {
+        
+         $('#edit-msyspurchrequest').removeAttr('checked');
+      }
+      
+      
+   
       $('#edit-msysinvinvfootnote').val(response.msysinvinvfootnote);
       $('#edit-msysinvsellingfootnote').val(response.msysinvsellingfootnote);
-      $('#edit-msysinvspbelowcog').bootstrapSwitch('state',response.msysinvspbelowcog);
-      $('#edit-msysinvprintinvmorethanonce').bootstrapSwitch('state',response.msysinvprintinvmorethanonce);
-      $('#edit-msysinvprintdomorethanonce').bootstrapSwitch('state',response.msysinvprintdomorethanonce);
-      $('#edit-msysinvprintordmorethanonce').bootstrapSwitch('state',response.msysinvprintordmorethanonce);
       $('#edit-msysinvdefaultcreditlimit').val(response.msysinvdefaultcreditlimit);
-      $('#edit-msysinvlptdirectprinting').bootstrapSwitch('state',response.msysinvlptdirectprinting);
-
-      $('#edit-msyspurchrequest').bootstrapSwitch('state',response.msyspurchrequest);
-      $('#edit-msyspurchorder').bootstrapSwitch('state',response.msyspurchorder);
-      $('#edit-msyspurchinvoice').bootstrapSwitch('state',response.msyspurchinvoice);
-      $('#edit-msyspurchcreditlimit').bootstrapSwitch('state',response.msyspurchcreditlimit);
+      
       $('#edit-msyspurchinvfootnote').val(response.msyspurchinvfootnote);
       $('#edit-msyspurchorderfootnote').val(response.msyspurchorderfootnote);
 
@@ -57,13 +173,8 @@ function fetch_feature(){
       $('#edit-msysaccpaidcapital').val(response.msysaccpaidcapital).change();
       $('#edit-msysaccretainedearning').val(response.msysaccretainedearning).change();
 
-      $('#edit-msysbankminus').bootstrapSwitch('state',response.msysbankminus);
 
-      $('#edit-msysinventmultiwarehouse').bootstrapSwitch('state',response.msysinventmultiwarehouse);
-      $('#edit-msysinventmultiuom').bootstrapSwitch('state',response.msysinventmultiuom);
-      $('#edit-msysinventuseserial').bootstrapSwitch('state',response.msysinventuseserial);
-      $('#edit-msysinventallowminus').bootstrapSwitch('state',response.msysinventallowminus);
-      $('#edit-msysinventslabprice').bootstrapSwitch('state',response.msysinventslabprice);
+      
 
     }
   });

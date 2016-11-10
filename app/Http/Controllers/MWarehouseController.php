@@ -29,12 +29,12 @@ class MWarehouseController extends Controller
       $excel->sheet('Master Master Warehouse',function($sheet){
         $this->count++;
         $sheet->row($this->count,array(
-          'Nama Gudang','Alamat','Kota','Kode Pos','Provinsi','Negara','Keterangan'
+          'Nama Gudang','Keterangan'
         ));
         foreach($this->mwarehouse as $brand){
           $this->count++;
           $sheet->row($this->count,array(
-             $brand->mwarehousename,$brand->mwarehouseaddress,$brand->mwarehousecity,$brand->mwarehousezipcode,$brand->mwarehouseprovince,$brand->mwarehousecountry,$brand->mwarehouseremark
+             $brand->mwarehousename,$brand->mwarehouseremark
           ));
         }
       });
@@ -48,12 +48,12 @@ class MWarehouseController extends Controller
       $excel->sheet('Master Master Warehouse',function($sheet){
         $this->count++;
         $sheet->row($this->count,array(
-        'Nama Gudang','Alamat','Kota','Kode Pos','Provinsi','Negara','Keterangan'
+          'Nama Gudang','Keterangan'
         ));
         foreach($this->mwarehouse as $brand){
           $this->count++;
           $sheet->row($this->count,array(
-             $brand->mwarehousename,$brand->mwarehouseaddress,$brand->mwarehousecity,$brand->mwarehousezipcode,$brand->mwarehouseprovince,$brand->mwarehousecountry,$brand->mwarehouseremark
+             $brand->mwarehousename,$brand->mwarehouseremark
           ));
         }
       });

@@ -15,11 +15,6 @@ class CreateMwarehouseTable extends Migration
         Schema::create('mwarehouse', function (Blueprint $table) {
             $table->increments('id');
             $table->string('mwarehousename');
-            $table->string('mwarehouseaddress');
-            $table->string('mwarehousecity');
-            $table->string('mwarehousezipcode');
-            $table->string('mwarehouseprovince');
-            $table->string('mwarehousecountry');
             $table->string('mwarehouseremark');
             $table->boolean('void');
             $table->timestamps();

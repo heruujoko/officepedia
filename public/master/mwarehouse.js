@@ -9,11 +9,6 @@ function backmwarehouse(){
 
 function resetmwarehouse(){
   $('#insert-mwarehousename').val('');
-  $('#insert-mwarehouseaddress').val('');
-  $('#insert-mwarehousecity').val('');
-  $('#insert-mwarehousezipcode').val('');
-  $('#insert-mwarehouseprovince').val('');
-  $('#insert-mwarehousecountry').val('');
   $('#insert-mwarehouseremark').val('');
   $('#insert-wrapper').parsley().reset();
   $('#edit-wrapper').parsley().reset();
@@ -25,11 +20,6 @@ function insertmwarehouse(){
     if($('#insert-wrapper').parsley().isValid()){
       var data = {
         mwarehousename: $('#insert-mwarehousename').val(),
-        mwarehouseaddress: $('#insert-mwarehouseaddress').val(),
-        mwarehousecity: $('#insert-mwarehousecity').val(),
-        mwarehousezipcode: $('#insert-mwarehousezipcode').val(),
-        mwarehouseprovince: $('#insert-mwarehouseprovince').val(),
-        mwarehousecountry: $('#insert-mwarehousecountry').val(),
         mwarehouseremark: $('#insert-mwarehouseremark').val(),
       }
       console.log(data);
@@ -67,11 +57,6 @@ function viewmwarehouse(id){
     type : 'GET',
     success : function(response){
       $('#view-mwarehousename').val(response.mwarehousename);
-      $('#view-mwarehouseaddress').val(response.mwarehouseaddress);
-      $('#view-mwarehousecity').val(response.mwarehousecity);
-      $('#view-mwarehousezipcode').val(response.mwarehousezipcode);
-      $('#view-mwarehouseprovince').val(response.mwarehouseprovince);
-      $('#view-mwarehousecountry').val(response.mwarehousecountry);
       $('#view-mwarehouseremark').val(response.mwarehouseremark);
       $('#forminput').hide();
       $('#formedit').hide();
@@ -90,11 +75,6 @@ function editmwarehouse(id){
     success : function(response){
       $('#mwarehouseid').val(response.id);
       $('#edit-mwarehousename').val(response.mwarehousename);
-      $('#edit-mwarehouseaddress').val(response.mwarehouseaddress);
-      $('#edit-mwarehousecity').val(response.mwarehousecity);
-      $('#edit-mwarehousezipcode').val(response.mwarehousezipcode);
-      $('#edit-mwarehouseprovince').val(response.mwarehouseprovince);
-      $('#edit-mwarehousecountry').val(response.mwarehousecountry);
       $('#edit-mwarehouseremark').val(response.mwarehouseremark);
       $('#forminput').hide();
       $('#formview').hide();
@@ -111,11 +91,6 @@ function updatemwarehouse(){
     var updateid = $('#mwarehouseid').val();
     var data = {
         mwarehousename: $('#edit-mwarehousename').val(),
-        mwarehouseaddress: $('#edit-mwarehouseaddress').val(),
-        mwarehousecity: $('#edit-mwarehousecity').val(),
-        mwarehousezipcode: $('#edit-mwarehousezipcode').val(),
-        mwarehouseprovince: $('#edit-mwarehouseprovince').val(),
-        mwarehousecountry: $('#edit-mwarehousecountry').val(),
         mwarehouseremark: $('#edit-mwarehouseremark').val(),
   }
 
