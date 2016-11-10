@@ -46,7 +46,7 @@
               </select>
             </div>
             <div class="col-md-6">
-              <button class="pull-right btn btn-primary" onclick="insert_invoice()">Proses</button>
+              <button class="pull-right btn btn-primary" v-on:click="saveInvoice">Proses</button>
             </div>
           </div>
           <div class="row">
@@ -210,6 +210,7 @@
   import Axios from 'axios'
   import numeral from 'numeral'
   import _ from 'lodash'
+  import swal from 'sweetalert'
 
   export default {
     data(){
@@ -227,6 +228,7 @@
         detail_tax:0,
         num_format: "0,0.00",
         invoice_customer:{},
+        selected_customer: {},
         invoice_goods:[],
         invoice_type:"",
         invoice_date:"",
@@ -324,13 +326,44 @@
         $('#insert_detail_modal').modal('toggle');
         this.invoice_subtotal += this.detail_total;
         this.invoice_disc += this.rp;
-        this.invoice_tax = (this.detail_tax.mtaxtpercentage /100) * this.detail_total;
+        if(this.detail_goods.mgoodstaxable == 1){
+            this.invoice_tax = (this.detail_tax.mtaxtpercentage /100) * this.detail_total;
+        } else {
+          this.invoice_tax = 0;
+        }
+
       },
       predictTax(){
         console.log('predicting tax');
         if(this.detail_goods.mgoodstaxable == 1){
           this.detail_tax = _.find(this.taxes, {id: this.detail_goods.mgoodstaxppn});
+        } else {
+          this.detail_tax = 0;
         }
+      },
+      saveInvoice(){
+        let invoice_data = {
+          date: this.invoice_date,
+          subtotal: this.invoice_subtotal,
+          discount: this.invoice_disc,
+          tax: this.invoice_tax,
+          goods: this.invoice_goods,
+          mcustomerid: this.selected_customer.mcustomerid,
+          mcustomername: this.selected_customer.mcustomername
+        }
+        console.log(invoice_data);
+        Axios.post('/admin-api/salesinvoice',invoice_data)
+        .then((res) => {
+          console.log('input');
+          swal({
+            title: "Input Berhasil!",
+            type: "success",
+            timer: 1000
+          });
+        })
+        .catch((err) => {
+          console.log(err);
+        })
       }
     },
     watch: {
@@ -342,6 +375,9 @@
       },
       unit(){
         this.countDetailTotal();
+      },
+      invoice_customer(){
+        this.selected_customer = _.find(this.customers,  {id: parseInt(this.invoice_customer)});
       }
     },
     created(){
