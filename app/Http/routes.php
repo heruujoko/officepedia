@@ -152,6 +152,7 @@ Route::group(['prefix'=>'admin-nano','middleware' => ['auth','tenantdb']],functi
   Route::get('mconfig','Api\MConfigController@index');
   Route::put('mconfig','Api\MConfigController@update');
   Route::put('mconfig/feature','Api\MConfigController@update_feature');
+  Route::get('barang/datalist','Api\MGoodsController@datalist');
   Route::resource('barang','Api\MGoodsController');
   Route::post('mconfig/logo','Api\MConfigController@logo');
   Route::post('barang/gambar','Api\MGoodsController@gambar');
@@ -174,6 +175,7 @@ Route::group(['prefix'=>'admin-nano','middleware' => ['auth','tenantdb']],functi
   Route::resource('mgoodstype','Api\MGoodstypeController');
   Route::resource('mgoodssubtype','Api\MGoodssubtypeController');
   Route::resource('munits','Api\MUnitController');
+  Route::resource('mtax/datalist','Api\MTaxController@datalist');
   Route::resource('mtax','Api\MTaxController');
   Route::resource('mwarehouse','Api\MWarehouseController');
   Route::resource('salesinvoice','Api\SalesInvoiceController');

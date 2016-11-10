@@ -35,6 +35,11 @@ class MTaxController extends Controller
       ->make(true);
     }
 
+    public function datalist(){
+      $mtax = MTax::on(Auth::user()->db_name)->where('void',0)->orderby('created_at','desc')->get();
+      return response()->json($mtax);
+    }
+
     public function show($id){
       $mtax = MTax::on(Auth::user()->db_name)->where('id',$id)->first();
       return response()->json($mtax);

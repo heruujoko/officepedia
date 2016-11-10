@@ -21,6 +21,6 @@ class SalesInvoiceController extends Controller
       $data['units'] = MUnit::on(Auth::user()->db_name)->get();
       $data['taxes'] = MTax::on(Auth::user()->db_name)->get();
       $data['whouses'] = MWarehouse::on(Auth::user()->db_name)->get();
-      return view('admin.salesinvoice',$data);
+      return view('admin.salesinvoicevue',$data);
     }
 }

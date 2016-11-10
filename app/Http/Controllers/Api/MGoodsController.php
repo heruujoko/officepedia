@@ -94,6 +94,12 @@ class MGoodsController extends Controller
         })
         ->make(true);
 	}
+
+  public function datalist(){
+    $goods = MGoods::on(Auth::user()->db_name)->where('void', '0')->orderby('created_at','desc')->get();
+    return response()->json($goods);
+  }
+
 	public function show($id){
 		$MGoods = MGoods::on(Auth::user()->db_name)->where('id',$id)->first();
       	return response()->json($MGoods);
