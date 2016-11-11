@@ -42,7 +42,8 @@ class SalesInvoiceController extends Controller
       // }
 
       $transcation = MHInvoice::start_transaction($request);
-      if($transcation != true){
+      // dd($transcation == true);
+      if($transcation){
           return response()->json($transcation);
       } else {
           return response()->json($transcation,400);

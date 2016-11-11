@@ -17,8 +17,8 @@ class MarcardTable extends Migration
           $table->string('marcardcustomerid');
           $table->string('marcardcustomername');
           $table->date('marcarddate');
-          $table->string('marcardtrastype');
-          $table->string('marcardtrasno');
+          $table->string('marcardtranstype');
+          $table->string('marcardtransno');
           $table->text('marcardremark');
           $table->date('marcardduedate');
           $table->double('marcardtotalinv');

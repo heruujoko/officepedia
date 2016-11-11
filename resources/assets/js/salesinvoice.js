@@ -11,7 +11,8 @@ Vue.directive('selecttwo',{
   update(el,binding,vnode){
 
     $(el).select2({
-        width: "100%"
+        width: "100%",
+        placeholder: binding.value
     }).on('change',(evt) => {
         let modelName = vnode.data.directives.find(function(o) {
             return o.name === 'model';

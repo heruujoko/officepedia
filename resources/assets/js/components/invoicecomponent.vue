@@ -7,7 +7,7 @@
           <div class="form-group">
             <label class="col-md-2 control-label">Pelanggan</label>
             <div class="col-md-8">
-              <select v-selecttwo v-model="invoice_customer">
+              <select v-selecttwo="pelanggan_label" v-model="invoice_customer">
                 <option v-for="c in customers" :value="c.id">{{ c.mcustomername }}</option>
               </select>
             </div>
@@ -23,7 +23,7 @@
           <div class="form-group">
             <label class="col-md-2 control-label">Type</label>
             <div class="col-md-8">
-              <select v-selecttwo class="form-control" v-model="invoice_type">
+              <select v-selecttwo="transaksi_label" class="form-control" v-model="invoice_type">
                 <option>Penjualan</option>
                 <option>Retur Penjualan</option>
                 <option>Pembelian</option>
@@ -41,7 +41,7 @@
         <div class="well" style="margin-bottom:20px;">
           <div class="row">
             <div class="col-md-6">
-              <select class="form-control" id="insert-selectgoods" v-selecttwo v-model="selected_goods">
+              <select class="form-control" id="insert-selectgoods" v-selecttwo="barang_label" v-model="selected_goods">
                 <option v-for="g in goods" :value="g.id">{{ g.mgoodsname }}</option>
               </select>
             </div>
@@ -56,7 +56,8 @@
                 <tr>
                   <th style="width:55%;">Nama Biaya</th>
                   <th style="width:15%;">Kode</th>
-                  <th style="width:30%;">Jumlah</th>
+                  <th style="width:25%;">Jumlah</th>
+                  <th style="width:5%;">Aksi</th>
                 </tr>
               </thead>
               <tbody>
@@ -64,6 +65,7 @@
                   <td>{{ item.goods.mgoodsname }}</td>
                   <td>{{ item.goods.mgoodscode }}</td>
                   <td>{{ item.usage }}</td>
+                  <td><a v-on:click="removeGoods(item.goods.id)"><span style="color:red">Hapus</span></a></td>
                 </tr>
               </tbody>
             </table>
@@ -72,19 +74,19 @@
             <br>
             <div class="col-md-2 col-md-offset-4">
               <h5>Sub Total</h5>
-              <p id="insertsubtotal"  >{{ invoice_subtotal }}</p>
+              <p id="insertsubtotal"  >{{ format_subtotal }}</p>
             </div>
             <div class="col-md-2">
               <h5>Discount</h5>
-              <p id="insertdisc"  >{{ invoice_disc }}</p>
+              <p id="insertdisc"  >{{ format_disc }}</p>
             </div>
             <div class="col-md-2">
               <h5>PPN 10%</h5>
-              <p id="insertppn" >{{ invoice_tax }}</p>
+              <p id="insertppn" >{{ format_tax }}</p>
             </div>
             <div class="col-md-2">
               <h5>Total</h5>
-              <p  >{{ invoice_grandtotal }}</p>
+              <p>{{ invoice_grandtotal }}</p>
             </div>
           </div>
         </div>
@@ -227,6 +229,9 @@
         detail_total: 0,
         detail_tax:0,
         num_format: "0,0.00",
+        barang_label: "Pilih Barang",
+        transaksi_label: "Pilih Tipe Transaksi",
+        pelanggan_label: "Pilih Pelanggan",
         invoice_customer:{},
         selected_customer: {},
         invoice_goods:[],
@@ -239,7 +244,16 @@
     },
     computed:{
       invoice_grandtotal(){
-        return this.invoice_subtotal - this.invoice_disc + this.invoice_tax;
+        return numeral(this.invoice_subtotal - this.invoice_disc + this.invoice_tax).format(this.num_format);
+      },
+      format_subtotal(){
+        return numeral(this.invoice_subtotal).format(this.num_format);
+      },
+      format_tax(){
+        return numeral(this.invoice_tax).format(this.num_format);
+      },
+      format_disc(){
+        return numeral(this.invoice_disc).format(this.num_format);
       }
     },
     methods: {
@@ -316,22 +330,25 @@
         this.percentage = (this.rp/this.detail_total) * 100;
       },
       addToGoods(){
-        let newGoods = {
-          usage: parseInt(this.detail_qty) * parseInt(this.unit),
-          disc: this.rp,
-          subtotal: this.detail_total,
-          goods: this.detail_goods
-        };
-        this.invoice_goods.push(newGoods);
         $('#insert_detail_modal').modal('toggle');
         this.invoice_subtotal += this.detail_total;
         this.invoice_disc += this.rp;
+        let just_tax =0;
         if(this.detail_goods.mgoodstaxable == 1){
-            this.invoice_tax = (this.detail_tax.mtaxtpercentage /100) * this.detail_total;
+            this.invoice_tax += (this.detail_tax.mtaxtpercentage /100) * this.detail_total;
+            just_tax = (this.detail_tax.mtaxtpercentage /100) * this.detail_total;
         } else {
-          this.invoice_tax = 0;
+          this.invoice_tax += 0;
         }
-
+        let newGoods = {
+          id: this.detail_goods.id,
+          usage: parseInt(this.detail_qty) * parseInt(this.unit),
+          disc: this.rp,
+          subtotal: this.detail_total,
+          goods: this.detail_goods,
+          tax: just_tax
+        };
+        this.invoice_goods.push(newGoods);
       },
       predictTax(){
         console.log('predicting tax');
@@ -349,7 +366,8 @@
           tax: this.invoice_tax,
           goods: this.invoice_goods,
           mcustomerid: this.selected_customer.mcustomerid,
-          mcustomername: this.selected_customer.mcustomername
+          mcustomername: this.selected_customer.mcustomername,
+          type: this.invoice_type
         }
         console.log(invoice_data);
         Axios.post('/admin-api/salesinvoice',invoice_data)
@@ -360,10 +378,34 @@
             type: "success",
             timer: 1000
           });
+          this.resetInvoice();
         })
         .catch((err) => {
           console.log(err);
+          swal({
+            title: "Oops!",
+            message: "Transaksi di batalkan, periksa kemblai input",
+            type: "error",
+            timer: 1000
+          });
         })
+      },
+      removeGoods(idx){
+        let good = _.find(this.invoice_goods,  {id: idx});
+        this.invoice_subtotal = this.invoice_subtotal - good.subtotal;
+        this.invoice_tax = this.invoice_tax - good.tax;
+        this.invoice_disc = this.invoice_disc - good.disc;
+
+        this.invoice_goods = this.invoice_goods.filter((g) => {
+          return g.id !== idx
+        });
+      },
+      resetInvoice(){
+        this.invoice_goods = [];
+        this.invoice_disc =0;
+        this.invoice_subtotal =0;
+        this.invoice_tax =0;
+        this.detail_goods = {};
       }
     },
     watch: {

@@ -10,6 +10,7 @@ use App\Helper\DBHelper;
 use Carbon\Carbon;
 use App\MCUSTOMER;
 use App\MStockCard;
+use App\MARCard;
 use DB;
 use Exception;
 
@@ -83,7 +84,7 @@ class MHInvoice extends Model
           $stock_card->mstockcardgoodsid = $g['goods']['mgoodscode'];
           $stock_card->mstockcardgoodsname = $g['goods']['mgoodsname'];
           $stock_card->mstockcarddate = Carbon::parse($request->date);
-          $stock_card->mstockcardtranstype = "PEMBELIAN masih manual";
+          $stock_card->mstockcardtranstype = $request->type;
           $stock_card->mstockcardtransno = $header->mhinvoiceno;
           $stock_card->mstockcardremark = "Keterangan otomatis";
           $stock_card->mstockcardstockin = 0;
@@ -96,13 +97,32 @@ class MHInvoice extends Model
           $stock_card->save();
         }
 
-        // kurang AR table
+        // update AR table
+
+        $ar = new MARCard;
+        $ar->setConnection(Auth::user()->db_name);
+        $ar->marcardcustomerid = $customer->mcustomerid;
+        $ar->marcardcustomername = $customer->mcustomername;
+        $ar->marcarddate = Carbon::now();
+        $ar->marcardtranstype = $request->type;
+        $ar->marcardtransno = $header->mhinvoiceno;
+        $ar->marcardremark = '';
+        $ar->marcardduedate = Carbon::now()->addDays($customer->mcustomerdefaultar);
+        $ar->marcardtotalinv = $request->subtotal + $request->tax - $request->disc;
+        $ar->marcardpayamount = 0;
+        $ar->marcardoutstanding = 0;
+        $ar->marcarduserid = Auth::user()->id;
+        $ar->marcardusername = Auth::user()->name;
+        $ar->marcardusereventdate = Carbon::now();
+        $ar->marcardusereventtime = Carbon::now();
+        $ar->save();
 
         DB::connection(Auth::user()->db_name)->commit();
         return true;
       } catch(Exception $e){
         DB::connection(Auth::user()->db_name)->rollBack();
-        return $e;
+        var_dump($e);
+        return false;
       }
 
     }
