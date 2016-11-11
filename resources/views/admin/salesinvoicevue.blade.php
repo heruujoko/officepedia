@@ -62,6 +62,82 @@
         </article>
       </div>
 
+			<div class="row">
+				<!-- NEW WIDGET START -->
+				<article class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+					<!-- Widget ID (each widget will need unique ID)-->
+					<div id="formtable" class="forminput jarviswidget jarviswidget-color-darken" id="wid-id-0" data-widget-editbutton="false" data-widget-colorbutton="false" data-widget-deletebutton="false">
+						<header>
+							<span class="widget-icon"> <i class="fa fa-table"></i> </span>
+							<h2>Master {{ $section }}</h2>
+						</header>
+						<!-- widget div-->
+						<div>
+					 		<!-- widget edit box -->
+							<div class="jarviswidget-editbox">
+								<!-- This area used as dropdown edit box -->
+							</div>
+							<!-- end widget edit box -->
+							<!-- <h3 style="font-weight: bold; color: #1883B8;font-size: 19px;">Mode : INSERT</h3> -->
+							<!-- widget content -->
+							<div class="widget-body no-padding">
+							    <div class="container" style="padding-top:40px;">
+										<table id="tableapi" class="tableapi table table-bordered" width="100%">
+											<thead>
+												<tr>
+			                    <th class="hasinput" style="width:10%">
+													</th>
+													<th class="hasinput" style="width:5%">
+														<input type="text" class="form-control" placeholder="Filter No" />
+													</th>
+													<th class="hasinput" style="width:9%">
+														<input type="text" class="form-control" placeholder="Filter Nomor Invoice" />
+													</th>
+			                    <th class="hasinput" style="width:9%">
+														<input type="text" class="form-control" placeholder="Filter Customer" />
+													</th>
+													<th class="hasinput" style="width:9%">
+														<input type="text" class="form-control" placeholder="Filter Tanggal" />
+													</th>
+													<th class="hasinput" style="width:9%">
+														<input type="text" class="form-control" placeholder="Filter Jatuh Tempo" />
+													</th>
+													<th class="hasinput" style="width:9%">
+														<input type="text" class="form-control" placeholder="Filter Subtotal" />
+													</th>
+													<th class="hasinput" style="width:9%">
+														<input type="text" class="form-control" placeholder="Filter Pajak" />
+													</th>
+													<th class="hasinput" style="width:9%">
+														<input type="text" class="form-control" placeholder="Filter Diskon" />
+													</th>
+													<th class="hasinput" style="width:9%">
+														<input type="text" class="form-control" placeholder="Filter Total" />
+													</th>
+												</tr>
+												<tr>
+													<th data-hide="action"><center>Aksi</center></th>
+			                    <th data-hide="no"><center>No</center></th>
+			                    <th data-hide="mhinvoiceno"><center>Nomor Invoice</center></th>
+													<th data-hide="mhinvoicecustomername"><center>Customer</center></th>
+													<th data-hide="mhinvoicedate"><center>Tanggal</center></th>
+													<th data-hide="mhinvoiceduedate"><center>Jatuh Tempo</center></th>
+													<th data-hide="mhinvoicesubtotal"><center>Sub Total</center></th>
+													<th data-hide="mhinvoicetaxtotal"><center>Pajak</center></th>
+													<th data-hide="mhinvoicediscounttotal"><center>Diskon</center></th>
+													<th data-hide="mhinvoicegrandtotal"><center>Total</center></th>
+												</tr>
+											</thead>
+											<tbody>
+											</tbody>
+										</table>
+							    </div>
+	 					  </div>
+	 				  </div>
+          </div>
+        </article>
+      </div>
+
 	  </section>
   </div>
 <!-- END MAIN CONTENT -->
@@ -77,115 +153,8 @@
 		</div>
 	</div>
 </div>
-<div id="insert_detail_modal" class="modal" style="top: 15%;" tabindex="-1" role="dialog" data-keyboard="false" data-backdrop="static">
-	<div class="modal-dialog">
-		<div class="modal-content">
-			<div class="modal-header" style="text-align: center">
-        <h4>Detail Barang</h4>
-			</div>
-      <div class="modal-body">
-        <ul class="nav nav-tabs">
-          <li class="active"><a data-toggle="tab" href="#insertdetailmenu1">Detail Barang</a></li>
-          <li><a data-toggle="tab" href="#insertdetailmenu2">Keterangan</a></li>
-        </ul>
-        <div class="tab-content">
-          <div id="insertdetailmenu1" class="tab-pane fade in active">
-            <div class="form form-horizontal" style="margin-top:10px;">
-              <div class="form-group">
-                <label class="control-label col-md-2">Nama barang</label>
-                <div class="col-md-8">
-                  <input class="form-control forminput" disabled type="text" id="insertdetailgoodsname"/>
-                </div>
-              </div>
-              <div class="form-group">
-                <label class="control-label col-md-2">Kuantitas</label>
-                <div class="col-md-4">
-                  <input placeholder="Kuantitas" class="form-control forminput" value="1" type="text" id="insertdetailgoodsqty"/>
-                </div>
-                <div class="col-md-4">
-                  <select class="select2" id="insertdetailgoodsunit">
-                    <option>Unit</option>
-                  </select>
-                </div>
-              </div>
-              <div class="form-group">
-                <label class="control-label col-md-2">Harga Satuan</label>
-                <div class="col-md-8">
-                  <input class="form-control pricelabel" disabled type="text" id="insertdetailgoodsprice"/>
-                </div>
-              </div>
-              <div class="form-group">
-                <label class="control-label col-md-2">Diskon</label>
-                <div class="col-md-4">
-                  <div class="input-group">
-                    <input id="insert-detailgoodsdisc" class="form-control forminput" placeholder="Persentase" type="text">
-                    <span class="input-group-addon" id="sizing-addon2" style="font-size:8px;">%</span>
-                  </div>
-                </div>
-                <div class="col-md-4">
-                  <div class="input-group">
-                    <span class="input-group-addon" id="sizing-addon2" style="font-size:8px;">Rp</span>
-                    <input id="insert-detailgoodsdiscrp" class="form-control forminput pricelabel" placeholder="Rupiah" type="text">
-                  </div>
-                </div>
-              </div>
-              <div class="form-group">
-                <label class="control-label col-md-2">Total Harga</label>
-                <div class="col-md-8">
-                  <input class="form-control pricelabel" disabled type="text" id="insertdetailgoodstotal"/>
-                </div>
-              </div>
-              <div class="form-group">
-                <label class="control-label col-md-2">Pajak</label>
-                <div class="col-md-8">
-                  <select class="form-control select2" id="insertdetailgoodstax">
-                    @foreach($taxes as $t)
-                      @if($t->mtaxtdesc == 'Kosong')
-                        <option value="{{ $t->id }}">&nbsp;</option>
-                      @else
-                        <option value="{{ $t->id }}">{{ $t->mtaxtdesc }}</option>
-                      @endif
-                    @endforeach
-                  </select>
-                </div>
-              </div>
-              <div class="form-group">
-                <label class="control-label col-md-2">Gudang</label>
-                <div class="col-md-8">
-                  <select class="form-control select2" id="insertdetailgoodswhouse">
-                    @foreach($whouses as $t)
-                      <option value="{{ $t->id }}">{{ $t->mwarehousename }}</option>
-                    @endforeach
-                  </select>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div id="insertdetailmenu2" class="tab-pane">
-            <div class="form form-horizontal" style="margin-top:10px;">
-              <div class="form-group">
-                <label class="control-label col-md-2">Keterangan</label>
-                <div class="col-md-8">
-                  <textarea class="form-control" placeholder="Keterangan"></textarea>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-			</div>
-      <div class="modal-footer">
-				<button type="button" class="btn btn-default" data-dismiss="modal">
-				      Cancel
-				</button>
-				<button type="button" class="btn btn-primary" onclick="insert_add_item()">
-				      Lanjut
-				</button>
-			</div>
-		</div>
-	</div>
-</div>
 @stop
-
+<!-- @push('scripts')	 -->
 @section('js')
 <script src="{{ url('/js/numeral.min.js') }}"></script>
 <script src="{{ url('/js/salesinvoice.js') }}"></script>
@@ -209,11 +178,11 @@
             "sLengthMenu": "Show _MENU_ Entries",
             "sInfo": "Showing ( _START_ to _END_ ) to _TOTAL_ Entries"
         },
-        "aoColumnDefs": [{ "bVisible": false, "aTargets": [6,7,8,9,10,11,12,13] }],
+        "aoColumnDefs": [{ "bVisible": false, "aTargets": [5,6,7,8] }],
         buttons: [ {
             extend: 'copyHtml5',
             exportOptions: {
-                columns: [1,2,3,4,5,6,7,8,9,10,11,12,13]
+                columns: [1,2,3,4,5,6,7,8,9]
             }
         },
         {
@@ -237,7 +206,7 @@
         {
             extend: 'print',
             exportOptions: {
-                columns: [1,2,3,4,5,6,7,8,9,10,11,12,13] //setting kolom mana yg mau di print
+                columns: [1,2,3,4,5,6,7,8,9] //setting kolom mana yg mau di print
             }
 
         },
@@ -250,23 +219,18 @@
 
                     processing: false,
                 serverSide: false,
-                ajax: '{{URL::to('/')}}/admin-api/memployee',
+                ajax: '{{URL::to('/')}}/admin-api/salesinvoice',
                 columns: [
                 {data: 'action', name:'action', searchable: false, orderable: false},
                 {data: 'no', no: 'no' },
-                {data: 'memployeeid', memployeeid: 'memployeeid'},
-                {data: 'memployeename', memployeename: 'memployeename'},
-								{data: 'memployeeposition', memployeeposition: 'memployeeposition'},
-								{data: 'level', level: 'level'},
-								{data: 'memployeephone', memployeephone: 'memployeephone'},
-								{data: 'memployeehomephone', memployeehomephone: 'memployeehomephone'},
-								{data: 'memployeebbmpin', memployeebbmpin: 'memployeebbmpin'},
-								{data: 'memployeeidcard', memployeeidcard: 'memployeeidcard'},
-								{data: 'memployeecity', memployeecity: 'memployeecity'},
-								{data: 'memployeezipcode', memployeezipcode: 'memployeezipcode'},
-								{data: 'memployeeprovince', memployeeprovince: 'memployeeprovince'},
-								{data: 'memployeecountry', memployeecountry: 'memployeecountry'},
-								{data: 'memployeeinfo', memployeeinfo: 'memployeeinfo'},
+								{data: 'mhinvoiceno', mhinvoiceno: 'mhinvoiceno' },
+								{data: 'mhinvoicecustomername', mhinvoicecustomername: 'mhinvoicecustomername' },
+								{data: 'mhinvoicedate', mhinvoicedate: 'mhinvoicedate' },
+								{data: 'mhinvoiceduedate', mhinvoiceduedate: 'mhinvoiceduedate' },
+								{data: 'mhinvoicesubtotal', mhinvoicesubtotal: 'mhinvoicesubtotal' },
+								{data: 'mhinvoicetaxtotal', mhinvoicetaxtotal: 'mhinvoicetaxtotal' },
+								{data: 'mhinvoicediscounttotal', mhinvoicediscounttotal: 'mhinvoicediscounttotal' },
+								{data: 'mhinvoicegrandtotal', mhinvoicegrandtotal: 'mhinvoicegrandtotal' }
                 ]
               }).on('xhr.dt',function(){
 								$('#loading_modal').modal('hide');
@@ -293,7 +257,7 @@
         if (isconfirm) {
           $.ajax({
             type: "DELETE",
-            url: API_URL+"/memployee/"+id,
+            url: API_URL+"/salesinvoice/"+id,
             success: function(response){
               console.log(response);
               table.ajax.reload();

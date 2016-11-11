@@ -8,47 +8,44 @@ use App\Http\Controllers\Controller;
 use App\MHInvoice;
 use App\MDInvoice;
 use App\MCUSTOMER;
+use App\MConfig;
 use Auth;
 use Carbon\Carbon;
+use Datatables;
 
 class SalesInvoiceController extends Controller
 {
+
+    public function index(){
+      $this->iteration = 0;
+      $minvoice = MHInvoice::on(Auth::user()->db_name)->where('void', '0')->orderby('created_at','desc')->get();
+      return Datatables::of($minvoice)->addColumn('action', function($invoice){
+      return '<center><div class="button">
+            <a class="btn btn-info btn-xs dropdown-toggle fa fa-eye" onclick="viewinvoice('.$invoice->id.')"> <font style="">Lihat</font></a>
+            <a class="btn btn-primary btn-xs dropdown-toggle fa fa-pencil" onclick="editinvoice('.$invoice->id.')"> <font style="font-family: arial;">Ubah &nbsp</font></a>
+            <a class="btn btn-danger btn-xs dropdown-toggle fa fa-trash" onclick="popupdelete('.$invoice->id.')">
+          <input type="hidden" name="id" value="@{{ task.id }}"> <font style="font-family: arial;">Hapus </font></a>     </div></center>';
+      })->addColumn('no',function($invoice){
+        $this->iteration++;
+        return "<span>".$this->iteration."</span>";
+      })
+      ->make(true);
+    }
+
     public function store(Request $request){
 
-      // $invoice_header = new MHInvoice;
-      // $invoice_header->setConnection(Auth::user()->db_name);
-      // $invoice_header->mhinvoicedate = Carbon::parse($request->date);
-      // $invoice_header->mhinvoicesubtotal = $request->subtotal;
-      // $invoice_header->mhinvoicetaxtotal = $request->tax;
-      // $invoice_header->mhinvoicediscounttotal = $request->discount;
-      // //set customer data
-      // $customer = MCUSTOMER::on(Auth::user()->db_name)->where('mcustomerid',$request->mcustomerid)->first();
-      // $invoice_header->mhinvoicecustomerid = $customer->mcustomerid;
-      // $invoice_header->mhinvoicecustomername = $customer->mcustomername;
-      // $invoice_header->save();
-      // // dd($request->goods[0]['goods']['mgoodscode']);
-      // $header = MHInvoice::on(Auth::user()->db_name)->where('id',$invoice_header->id)->first();
-      // foreach($request->goods as $g){
-      //   $invoice_detail = new MDInvoice;
-      //   $invoice_detail->setConnection(Auth::user()->db_name);
-      //   $invoice_detail->mhinvoiceno = $header->mhinvoiceno;
-      //   $invoice_detail->mdcustomerid = $customer->mcustomerid;
-      //   $invoice_detail->mdcustomername = $customer->mcustomername;
-      //   $invoice_detail->mdinvoicedate = $header->mhinvoicedate;
-      //   $invoice_detail->mdinvoicegoodsid = $g['goods']['mgoodscode'];
-      //   $invoice_detail->mdinvoicegoodsname = $g['goods']['mgoodsname'];
-      //   $invoice_detail->mdinvoicegoodsqty = $g['usage'];
-      //   $invoice_detail->save();
-      // }
-
       $transcation = MHInvoice::start_transaction($request);
-      // dd($transcation == true);
       if($transcation){
           return response()->json($transcation);
       } else {
           return response()->json($transcation,400);
       }
 
+    }
 
+    public function destroy($id){
+      $invoice = MHInvoice::on(Auth::user()->db_name)->where('id',$id)->first();
+      $invoice->void_transaction();
+      return response()->json();
     }
 }

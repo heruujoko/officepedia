@@ -34,6 +34,12 @@ class MWarehouseController extends Controller
         })
         ->make(true);
   }
+
+  public function datalist(){
+      $warehouses = MWarehouse::on(Auth::user()->db_name)->where('void', '0')->orderby('created_at','desc')->get();
+      return response()->json($warehouses);
+  }
+
   public function show($id){
     $mbrand = MWarehouse::on(Auth::user()->db_name)->where('id',$id)->first();
         return response()->json($mbrand);

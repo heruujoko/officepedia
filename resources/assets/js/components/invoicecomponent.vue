@@ -175,8 +175,8 @@
                   <div class="form-group">
                     <label class="control-label col-md-2">Gudang</label>
                     <div class="col-md-8">
-                      <select class="form-control select2" id="insertdetailgoodswhouse">
-
+                      <select class="form-control" id="insert-detailwarehouses" v-selecttwo v-model="detail_warehouse">
+                        <option v-for="g in warehouses" :value="g.id">{{ g.mwarehousename }}</option>
                       </select>
                     </div>
                   </div>
@@ -217,6 +217,7 @@
   export default {
     data(){
       return {
+        warehouses: [],
         customers: [],
         goods: [],
         taxes: [],
@@ -228,6 +229,7 @@
         rp:0,
         detail_total: 0,
         detail_tax:0,
+        detail_warehouse: 0,
         num_format: "0,0.00",
         barang_label: "Pilih Barang",
         transaksi_label: "Pilih Tipe Transaksi",
@@ -276,6 +278,12 @@
           } else {
             this.num_format = "0.0";
           }
+        });
+      },
+      fetchWareHouses(){
+        Axios.get('/admin-api/mwarehouse/datalist')
+        .then((res) => {
+          this.warehouses = res.data;
         });
       },
       fetchCustomers(){
@@ -346,7 +354,8 @@
           disc: this.rp,
           subtotal: this.detail_total,
           goods: this.detail_goods,
-          tax: just_tax
+          tax: just_tax,
+          warehouse: parseInt(this.detail_warehouse)
         };
         this.invoice_goods.push(newGoods);
       },
@@ -372,19 +381,21 @@
         console.log(invoice_data);
         Axios.post('/admin-api/salesinvoice',invoice_data)
         .then((res) => {
-          console.log('input');
+          console.log(res);
           swal({
             title: "Input Berhasil!",
             type: "success",
             timer: 1000
           });
           this.resetInvoice();
+          $('.tableapi').DataTable().ajax.reload();
+          window.location.href="#formtable";
         })
         .catch((err) => {
           console.log(err);
           swal({
             title: "Oops!",
-            message: "Transaksi di batalkan, periksa kemblai input",
+            text: "Transaksi gagal, periksa kembali input",
             type: "error",
             timer: 1000
           });
@@ -427,6 +438,7 @@
       this.fetchTax();
       this.fetchCustomers();
       this.fetchGoods();
+      this.fetchWareHouses();
     }
   }
 </script>
