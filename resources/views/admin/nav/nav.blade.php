@@ -137,6 +137,15 @@
       @else
         <li><a href="{{ url('admin-nano/mgoodssubtype')}}">Master Sub Tipe Barang</a></li>
       @endif
+      @if($active == 'mwarehouse')
+        <li class="active">
+          <a href="{{URL::to('/')}}/admin-nano/mwarehouse">Master Gudang</a>
+        </li>
+      @else
+        <li>
+          <a href="{{URL::to('/')}}/admin-nano/mwarehouse">Master Gudang</a>
+        </li>
+      @endif
     </ul>
   </li>
   <li>
@@ -168,13 +177,13 @@
           <a href="{{URL::to('/')}}/admin-nano/cabang">Cabang</a>
         </li>
       @endif
-      @if($active == 'mwarehouse')
+      @if($active == 'muser')
         <li class="active">
-          <a href="{{URL::to('/')}}/admin-nano/mwarehouse">Gudang</a>
+          <a href="{{URL::to('/')}}/admin-nano/muser">Master User</a>
         </li>
       @else
         <li>
-          <a href="{{URL::to('/')}}/admin-nano/mwarehouse">Gudang</a>
+          <a href="{{URL::to('/')}}/admin-nano/muser">Master User</a>
         </li>
       @endif
     </ul>
