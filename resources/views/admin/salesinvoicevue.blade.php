@@ -227,10 +227,10 @@
 								{data: 'mhinvoicecustomername', mhinvoicecustomername: 'mhinvoicecustomername' },
 								{data: 'mhinvoicedate', mhinvoicedate: 'mhinvoicedate' },
 								{data: 'mhinvoiceduedate', mhinvoiceduedate: 'mhinvoiceduedate' },
-								{data: 'mhinvoicesubtotal', mhinvoicesubtotal: 'mhinvoicesubtotal' },
-								{data: 'mhinvoicetaxtotal', mhinvoicetaxtotal: 'mhinvoicetaxtotal' },
-								{data: 'mhinvoicediscounttotal', mhinvoicediscounttotal: 'mhinvoicediscounttotal' },
-								{data: 'mhinvoicegrandtotal', mhinvoicegrandtotal: 'mhinvoicegrandtotal' }
+								{data: 'subtotal', subtotal: 'subtotal' },
+								{data: 'tax', tax: 'tax' },
+								{data: 'disc', disc: 'disc' },
+								{data: 'gtotal', gtotal: 'gtotal' }
                 ]
               }).on('xhr.dt',function(){
 								$('#loading_modal').modal('hide');

@@ -18,6 +18,9 @@ class SalesInvoiceController extends Controller
 
     public function index(){
       $this->iteration = 0;
+      $config = MConfig::on(Auth::user()->db_name)->where('id',1)->first();
+      $this->round = $config->msysgenrounddec;
+      $this->separator = $config->msysnumseparator;
       $minvoice = MHInvoice::on(Auth::user()->db_name)->where('void', '0')->orderby('created_at','desc')->get();
       return Datatables::of($minvoice)->addColumn('action', function($invoice){
       return '<center><div class="button">
@@ -28,6 +31,49 @@ class SalesInvoiceController extends Controller
       })->addColumn('no',function($invoice){
         $this->iteration++;
         return "<span>".$this->iteration."</span>";
+      })
+      ->addColumn('subtotal',function($invoice){
+        $decimals = $this->round;
+        $dec_point = $this->separator;
+        if($dec_point == ","){
+          $thousands_sep = ".";
+        } else {
+          $thousands_sep = ",";
+        }
+        $formatted_saldo = number_format($invoice->mhinvoicesubtotal,$decimals,$dec_point,$thousands_sep);
+        return "<span style=\"float:right\">".$formatted_saldo."</span>";
+      })
+      ->addColumn('tax',function($invoice){
+        $decimals = $this->round;
+        $dec_point = $this->separator;
+        if($dec_point == ","){
+          $thousands_sep = ".";
+        } else {
+          $thousands_sep = ",";
+        }
+        $formatted_saldo = number_format($invoice->mhinvoicetaxtotal,$decimals,$dec_point,$thousands_sep);
+        return "<span style=\"float:right\">".$formatted_saldo."</span>";
+      })->addColumn('disc',function($invoice){
+        $decimals = $this->round;
+        $dec_point = $this->separator;
+        if($dec_point == ","){
+          $thousands_sep = ".";
+        } else {
+          $thousands_sep = ",";
+        }
+        $formatted_saldo = number_format($invoice->mhinvoicediscounttotal,$decimals,$dec_point,$thousands_sep);
+        return "<span style=\"float:right\">".$formatted_saldo."</span>";
+      })
+      ->addColumn('gtotal',function($invoice){
+        $decimals = $this->round;
+        $dec_point = $this->separator;
+        if($dec_point == ","){
+          $thousands_sep = ".";
+        } else {
+          $thousands_sep = ",";
+        }
+        $formatted_saldo = number_format($invoice->mhinvoicegrandtotal,$decimals,$dec_point,$thousands_sep);
+        return "<span style=\"float:right\">".$formatted_saldo."</span>";
       })
       ->make(true);
     }
