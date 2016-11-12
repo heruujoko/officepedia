@@ -188,19 +188,19 @@
         {
             text: 'CSV',
             action: function(){
-              window.location.href = "{{ url('/admin-nano/memployee/export/csv') }}"
+              window.location.href = "{{ url('/admin-nano/salesinvoice/export/csv') }}"
             }
         },
         {
             text: 'Excel',
             action: function(){
-              window.location.href = "{{ url('/admin-nano/memployee/export/excel') }}"
+              window.location.href = "{{ url('/admin-nano/salesinvoice/export/excel') }}"
             }
         },
         {
             text: 'PDF',
             action: function(){
-              window.location.href = "{{ url('/admin-nano/memployee/export/pdf') }}"
+              window.location.href = "{{ url('/admin-nano/salesinvoice/export/pdf') }}"
             }
         },
         {

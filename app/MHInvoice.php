@@ -174,4 +174,10 @@ class MHInvoice extends Model
       $this->void = 1;
       $this->save();
     }
+
+    //relation
+
+    public function customers(){
+      return MCUSTOMER::on(Auth::user()->db_name)->where('mcustomerid',$this->mhinvoicecustomerid)->first();
+    }
 }
