@@ -1,15 +1,17 @@
 var API_URL = '/admin-api';
 var WEB_URL = '/admin-nano';
 
-// $('#edit-msyscomptaxable').on('switchChange.bootstrapSwitch',function(event,state){
-//   if(state){
-//     $('#edit-msyscomptaxabledate').prop('disabled',false);
-//     $('#edit-msyscomptaxablenumber').prop('disabled',false);
-//   } else {
-//     $('#edit-msyscomptaxabledate').prop('disabled',true);
-//     $('#edit-msyscomptaxablenumber').prop('disabled',true);
-//   }
-// });
+$('#edit-msyscomptaxable').on('change',function(event){
+  console.log(event);
+  if($('#edit-msyscomptaxable').is(':checked')){
+    $('#edit-msyscomptaxabledate').prop('disabled',false);
+    $('#edit-msyscomptaxablenumber').prop('disabled',false);
+
+  } else {
+    $('#edit-msyscomptaxabledate').prop('disabled',true);
+    $('#edit-msyscomptaxablenumber').prop('disabled',true);
+  }
+});
 
 $(document).ready(function(){
 
@@ -51,10 +53,14 @@ function fetch_params_data(){
 
       if(response.msyscomptaxable == true){
         $('#edit-msyscomptaxable').attr('checked',true);
+        $('#edit-msyscomptaxabledate').prop('disabled',false);
+        $('#edit-msyscomptaxablenumber').prop('disabled',false);
         
       } else {
         
          $('#edit-msyscomptaxable').removeAttr('checked');
+         $('#edit-msyscomptaxabledate').prop('disabled',true);
+        $('#edit-msyscomptaxablenumber').prop('disabled',true);
 
       }
       $('#edit-msyscomptaxabledate').val(response.msyscomptaxabledate);

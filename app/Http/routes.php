@@ -131,6 +131,11 @@ Route::group(['prefix'=>'admin-nano','middleware' => ['auth','tenantdb']],functi
   Route::get('salesinvoice/export/excel','SalesInvoiceController@excel');
   Route::get('salesinvoice/export/pdf','SalesInvoiceController@pdf');
 
+  Route::get('muser','MUserController@index');
+  Route::get('muser/export/csv','MUserController@csv');
+  Route::get('muser/export/excel','MUserController@excel');
+  Route::get('muser/export/pdf','MUserController@pdf');
+
   Route::controllers([
     '/'=>'AdminController'
   ]);
@@ -183,6 +188,7 @@ Route::group(['prefix'=>'admin-nano','middleware' => ['auth','tenantdb']],functi
   Route::get('mwarehouse/datalist','Api\MWarehouseController@datalist');
   Route::resource('mwarehouse','Api\MWarehouseController');
   Route::resource('salesinvoice','Api\SalesInvoiceController');
+  Route::resource('muser','Api\MUserController');
   Route::controllers([
     '/'=>'ApiController'
   ]);
