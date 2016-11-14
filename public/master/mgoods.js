@@ -1,4 +1,4 @@
-$$('#formedit').hide();
+$('#formedit').hide();
 $('#formview').hide();
 var API_URL = '/admin-api';
 var WEB_URL = '/admin-nano';
