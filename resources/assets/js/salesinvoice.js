@@ -56,11 +56,11 @@ Vue.directive('priceformatlabel',{
     $(el).html(numeral(num).format(binding.value))
   },
   update(el,binding){
-    // let num = $(el).context.textContent;
-    // $(el).html(numeral(num).format(binding.value))
   },
   componentUpdated(el,binding){
-    let num = $(el).context.textContent;
+    console.log('updated form');
+    let num = numeral().unformat($(el).context.textContent);
+    console.log(num);
     $(el).html(numeral(num).format(binding.value))
   }
 });

@@ -54,22 +54,22 @@
             <table id="insertdetailtable" class="table table-bordered">
               <thead>
                 <tr>
-                  <th style="width:15%;">Kode</th>
-                  <th style="width:55%;">Nama</th>
-                  <th style="width:15%;">Harga Jual</th>
-                  <th style="width:15%;">Diskon</th>
-                  <th style="width:15%;">Jumlah</th>
-                  <th style="width:5%;">Aksi</th>
+                  <th style="width:10%;">Kode</th>
+                  <th style="width:45%;">Nama</th>
+                  <th style="width:10%;">Harga Jual</th>
+                  <th style="width:10%;">Diskon</th>
+                  <th style="width:10%;">Jumlah</th>
+                  <th style="width:10%;">Aksi</th>
                 </tr>
               </thead>
               <tbody>
                 <tr v-for="item in invoice_goods">
                   <td>{{ item.goods.mgoodscode }}</td>
                   <td>{{ item.goods.mgoodsname }}</td>
-                  <td>{{ item.goods.mgoodspriceout }}</td>
-                  <td>{{ item.disc }}</td>
-                  <td>{{ item.subtotal }}</td>
-                  <td><a v-on:click="removeGoods(item.goods.id)"><span style="color:red">Hapus</span></a></td>
+                  <td v-priceformatlabel="num_format">{{ item.goods.mgoodspriceout }}</td>
+                  <td v-priceformatlabel="num_format">{{ item.disc }}</td>
+                  <td v-priceformatlabel="num_format">{{ item.subtotal }}</td>
+                  <td><a v-on:click="editGoods(item.goods.id)"><span style="color:lightblue">Edit</span></a> <a v-on:click="removeGoods(item.goods.id)"><span style="color:red">Hapus</span></a></td>
                 </tr>
               </tbody>
             </table>
@@ -202,8 +202,11 @@
     				<button type="button" class="btn btn-default" data-dismiss="modal">
     				      Cancel
     				</button>
-    				<button type="button" class="btn btn-primary" v-on:click="addToGoods">
+    				<button v-if="detail_state == 'insert'" type="button" class="btn btn-primary" v-on:click="addToGoods">
     				      Lanjut
+    				</button>
+            <button v-if="detail_state == 'edit'" type="button" class="btn btn-primary" v-on:click="updateDetail">
+    				      Simpan
     				</button>
     			</div>
     		</div>
@@ -218,6 +221,7 @@
   import _ from 'lodash'
   import swal from 'sweetalert'
   import moment from 'moment'
+  import Vue from 'vue'
 
   export default {
     props: ['mode'],
@@ -233,6 +237,8 @@
         detail_qty:1,
         percentage: 0,
         rp:0,
+        edit_index: 0,
+        detail_state: "insert",
         detail_total: 0,
         detail_tax:0,
         detail_warehouse: 0,
@@ -331,13 +337,13 @@
             }
             self.countRp();
             self.countDetailTotal();
-
           });
           this.countDetailTotal();
           this.predictTax();
         });
       },
       detailGoods(){
+        this.detail_state = "insert";
         if(this.selected_goods != ""){
           $('#loading_modal').modal('toggle');
           this.fetchGoodsSingle(this.selected_goods);
@@ -373,7 +379,8 @@
           subtotal: this.detail_total,
           goods: this.detail_goods,
           tax: just_tax,
-          warehouse: parseInt(this.detail_warehouse)
+          warehouse: parseInt(this.detail_warehouse),
+          saved_unit: this.unit //for editing purpose only
         };
         this.invoice_goods.push(newGoods);
         this.selected_goods = "";
@@ -426,12 +433,56 @@
           return g.id !== idx
         });
       },
+      editGoods(idx){
+        this.detail_state = "edit";
+        let current = _.find(this.invoice_goods,{id: idx});
+        this.edit_index = _.indexOf(this.invoice_goods,current);
+        this.resetDetail();
+        this.detail_goods = current.goods;
+        $('#insert_detail_modal').modal('toggle');
+        this.rp = current.disc;
+        console.log(current);
+        this.unit = current.saved_unit+"";
+        console.log(current.usage+"/"+this.unit);
+        this.detail_qty = parseInt(current.usage) / parseInt(current.saved_unit);
+        this.countPercent();
+        this.countDetailTotal();
+      },
+      updateDetail(){
+        let just_tax =0;
+        if(this.detail_goods.mgoodstaxable == 1){
+            this.invoice_tax += (this.detail_tax.mtaxtpercentage /100) * this.detail_total;
+            just_tax = (this.detail_tax.mtaxtpercentage /100) * this.detail_total;
+        } else {
+          this.invoice_tax += 0;
+        }
+        let editedGoods = {
+          id: this.detail_goods.id,
+          usage: parseInt(this.detail_qty) * parseInt(this.unit),
+          disc: this.rp,
+          subtotal: this.detail_total,
+          goods: this.detail_goods,
+          tax: just_tax,
+          warehouse: parseInt(this.detail_warehouse),
+          saved_unit: this.unit //for editing purpose only
+        };
+        // this.invoice_goods[this.edit_index] = editedGoods;
+        Vue.set(this.invoice_goods,this.edit_index,editedGoods);
+        $('#insert_detail_modal').modal('toggle');
+      },
       resetInvoice(){
         this.invoice_goods = [];
         this.invoice_disc =0;
         this.invoice_subtotal =0;
         this.invoice_tax =0;
         this.detail_goods = {};
+      },
+      resetDetail(){
+          this.detail_goods = {};
+          this.rp = 0;
+          this.percentage =0;
+          this.detail_qty = 0;
+          this.unit = "";
       }
     },
     watch: {
