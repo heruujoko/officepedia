@@ -12,10 +12,10 @@ class mcategorycustomertableseeder extends Seeder
     public function run()
     {
         DB::table('mcategorycustomer')->insert([
-            'category_name' => 'umum',
+            'category_name' => 'Umum',
             'information' => 'umum',
             'void' => 0
-            
+
         ]);
     }
 }

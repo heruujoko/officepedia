@@ -19,5 +19,7 @@ class DatabaseSeeder extends Seeder
         $this->call(MGoodsUnitSeeder::class);
         $this->call(MGoodsTypeSeeder::class);
         $this->call(DefaultSupplierSeeder::class);
+        $this->call(mcategorycustomertableseeder::class);
+        $this->call(MWarehouseSeeder::class);
     }
 }

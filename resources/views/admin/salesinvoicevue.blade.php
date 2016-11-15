@@ -54,7 +54,7 @@
 							<!-- widget content -->
 							<div class="widget-body no-padding">
 							    <div class="container">
-										<invoice></invoice>
+										<invoice mode="insert"></invoice>
 							    </div>
 	 					  </div>
 	 				  </div>

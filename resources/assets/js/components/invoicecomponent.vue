@@ -54,17 +54,21 @@
             <table id="insertdetailtable" class="table table-bordered">
               <thead>
                 <tr>
-                  <th style="width:55%;">Nama Biaya</th>
                   <th style="width:15%;">Kode</th>
-                  <th style="width:25%;">Jumlah</th>
+                  <th style="width:55%;">Nama</th>
+                  <th style="width:15%;">Harga Jual</th>
+                  <th style="width:15%;">Diskon</th>
+                  <th style="width:15%;">Jumlah</th>
                   <th style="width:5%;">Aksi</th>
                 </tr>
               </thead>
               <tbody>
                 <tr v-for="item in invoice_goods">
-                  <td>{{ item.goods.mgoodsname }}</td>
                   <td>{{ item.goods.mgoodscode }}</td>
-                  <td>{{ item.usage }}</td>
+                  <td>{{ item.goods.mgoodsname }}</td>
+                  <td>{{ item.goods.mgoodspriceout }}</td>
+                  <td>{{ item.disc }}</td>
+                  <td>{{ item.subtotal }}</td>
                   <td><a v-on:click="removeGoods(item.goods.id)"><span style="color:red">Hapus</span></a></td>
                 </tr>
               </tbody>
@@ -213,8 +217,10 @@
   import numeral from 'numeral'
   import _ from 'lodash'
   import swal from 'sweetalert'
+  import moment from 'moment'
 
   export default {
+    props: ['mode'],
     data(){
       return {
         warehouses: [],
@@ -237,8 +243,8 @@
         invoice_customer:{},
         selected_customer: {},
         invoice_goods:[],
-        invoice_type:"",
-        invoice_date:"",
+        invoice_type:"Penjualan",
+        invoice_date:moment().format('L'),
         invoice_subtotal:0,
         invoice_disc:0,
         invoice_tax:0
@@ -284,46 +290,58 @@
         Axios.get('/admin-api/mwarehouse/datalist')
         .then((res) => {
           this.warehouses = res.data;
+          this.detail_warehouse = res.data[0].id;
         });
       },
       fetchCustomers(){
         Axios.get('/admin-api/pelanggan/datalist')
         .then((res) => {
-          console.log('ajax done');
           this.customers = res.data;
         });
       },
       fetchGoods(){
         Axios.get('/admin-api/barang/datalist')
         .then((res) => {
-          console.log('ajax done');
           this.goods = res.data;
         });
       },
       fetchGoodsSingle(id){
         Axios.get('/admin-api/barang/'+id)
         .then((res) => {
-          console.log('ajax done');
           this.detail_goods = res.data;
           let self = this;
-          console.log(res.data);
           $('#loading_modal').modal('toggle');
           $('#insert_detail_modal').modal('toggle');
           $('#detail_rp').on('keyup',function(){
             self.countPercent();
             self.countDetailTotal();
           });
-          $('#detail_percent').on('keyup',function(){
+          $('#detail_percent').on('keyup',function(evt){
+            // diskon yg di input lebih besar
+            if(res.data.mgoodssetmaxdisc == 1){
+              if(evt.target.value > res.data.mgoodsmaxdisc){
+                self.percentage = res.data.mgoodsmaxdisc;
+                swal({
+                  title: "Oops!",
+                  text: "Maksimal diskon item ini tidak bisa melebihi "+res.data.mgoodsmaxdisc+"%",
+                  type: "error",
+                  timer: 1000
+                });
+              }
+            }
             self.countRp();
             self.countDetailTotal();
+
           });
           this.countDetailTotal();
           this.predictTax();
         });
       },
       detailGoods(){
-        $('#loading_modal').modal('toggle');
-        this.fetchGoodsSingle(this.selected_goods);
+        if(this.selected_goods != ""){
+          $('#loading_modal').modal('toggle');
+          this.fetchGoodsSingle(this.selected_goods);
+        }
       },
       countDetailTotal(){
         if(isNaN(this.rp)){
@@ -358,9 +376,9 @@
           warehouse: parseInt(this.detail_warehouse)
         };
         this.invoice_goods.push(newGoods);
+        this.selected_goods = "";
       },
       predictTax(){
-        console.log('predicting tax');
         if(this.detail_goods.mgoodstaxable == 1){
           this.detail_tax = _.find(this.taxes, {id: this.detail_goods.mgoodstaxppn});
         } else {
@@ -378,10 +396,8 @@
           mcustomername: this.selected_customer.mcustomername,
           type: this.invoice_type
         }
-        console.log(invoice_data);
         Axios.post('/admin-api/salesinvoice',invoice_data)
         .then((res) => {
-          console.log(res);
           swal({
             title: "Input Berhasil!",
             type: "success",
@@ -392,7 +408,6 @@
           window.location.href="#formtable";
         })
         .catch((err) => {
-          console.log(err);
           swal({
             title: "Oops!",
             text: "Transaksi gagal, periksa kembali input",

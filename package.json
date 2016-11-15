@@ -33,6 +33,7 @@
   "homepage": "https://github.com/heruujoko/officepedia#readme",
   "description": "",
   "dependencies": {
+    "moment": "^2.16.0",
     "numeral": "^1.5.3",
     "sweetalert": "^1.1.3",
     "vue-datetime-picker": "^0.2.1"
