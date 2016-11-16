@@ -49,6 +49,29 @@ Vue.directive('priceformat',{
   },
 });
 
+Vue.directive('priceformattype',{
+  inserted(el,binding){
+    let formatted = numeral($(el).val()).format(binding.value);
+    $(el).val(formatted);
+  },
+  update(el,binding){
+
+    // clearTimeout(window.timer);
+    // window.typing = true;
+    // window.formatValue = binding.value
+    // window.timer = setTimeout(function () {
+    //   window.typing = false;
+    //   if(window.typing == false){
+    //     console.log('done typing');
+    //     let formatted = numeral($(el).val()).format(window.formatValue);
+    //     $(el).val(formatted);
+    //   }
+    // }, 1500);
+        let formatted = numeral($(el).val()).format(binding.value);
+        $(el).val(formatted);
+  },
+});
+
 Vue.directive('priceformatlabel',{
   inserted(el,binding){
     let num = $(el).context.textContent;
@@ -57,9 +80,7 @@ Vue.directive('priceformatlabel',{
   update(el,binding){
   },
   componentUpdated(el,binding){
-    console.log('updated form');
     let num = numeral().unformat($(el).context.textContent);
-    console.log(num);
     $(el).html(numeral(num).format(binding.value))
   }
 });

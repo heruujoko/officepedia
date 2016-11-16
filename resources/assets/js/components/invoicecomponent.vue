@@ -108,7 +108,7 @@
     	</div>
     </div>
 
-    <div id="insert_detail_modal" class="modal" style="top: 15%;" tabindex="-1" role="dialog" data-keyboard="false" data-backdrop="static">
+    <div v-bind:id="modal_id" class="modal" style="top: 15%;" tabindex="-1" role="dialog" data-keyboard="false" data-backdrop="static">
     	<div class="modal-dialog">
     		<div class="modal-content">
     			<div class="modal-header" style="text-align: center">
@@ -151,14 +151,14 @@
                     <label class="control-label col-md-2">Diskon</label>
                     <div class="col-md-4">
                       <div class="input-group">
-                        <input id="detail_percent" v-model="percentage" class="form-control forminput" placeholder="Persentase" type="text">
+                        <input v-bind:id="percent_id" v-model="percentage" class="form-control forminput" placeholder="Persentase" type="text">
                         <span class="input-group-addon" id="sizing-addon2" style="font-size:8px;">%</span>
                       </div>
                     </div>
                     <div class="col-md-4">
                       <div class="input-group">
                         <span class="input-group-addon" id="sizing-addon2" style="font-size:8px;">Rp</span>
-                        <input id="detail_rp" v-model="rp" class="form-control forminput pricelabel" placeholder="Rupiah" type="text">
+                        <input v-priceformattype="num_format" v-bind:id="rp_id" v-model="rp" class="form-control forminput pricelabel" placeholder="Rupiah" type="text">
                       </div>
                     </div>
                   </div>
@@ -212,7 +212,6 @@
     		</div>
     	</div>
     </div>
-
   </div>
 </template>
 <script>
@@ -236,7 +235,7 @@
         unit: 1,
         detail_qty:1,
         percentage: 0,
-        rp:0,
+        rp:"",
         edit_index: 0,
         detail_state: "insert",
         detail_total: 0,
@@ -268,6 +267,15 @@
       },
       format_disc(){
         return numeral(this.invoice_disc).format(this.num_format);
+      },
+      modal_id(){
+        return this.mode+"_detail_modal";
+      },
+      rp_id(){
+        return this.mode+"_detail_rp";
+      },
+      percent_id(){
+        return this.mode+"_detail_percentage";
       }
     },
     methods: {
@@ -312,6 +320,8 @@
         });
       },
       fetchInvoiceData(id){
+        this.resetDetail();
+        this.resetInvoice();
         Axios.get('/admin-api/salesinvoice/'+id)
         .then((res) => {
           console.log(res.data);
@@ -330,16 +340,23 @@
           console.log(res.data);
           for(var i=0;i<res.data.length;i++){
             var item = {
+              id: _.find(this.goods,{ mgoodscode: res.data[i].mdinvoicegoodsid}).id,
               subtotal: 0,
-              disc: 0,
-              goods: res.data[i]
+              disc: res.data[i].mdinvoicegoodsdiscount,
+              goods: _.find(this.goods,{ mgoodscode: res.data[i].mdinvoicegoodsid}),
+              tax: res.data[i].mdinvoicegoodstax,
+              warehouse: 0,
+              saved_unit: res.data[i].saved_unit+""
             };
-            item.goods.usage = res.data[i].mdinvoicegoodsqty;
+            item.usage = res.data[i].mdinvoicegoodsqty;
             item.goods.mgoodsname = res.data[i].mdinvoicegoodsname;
             item.goods.mgoodscode = res.data[i].mdinvoicegoodsid;
             item.goods.mgoodspriceout = this.goodsPrice(res.data[i].mdinvoicegoodsid);
-            item.subtotal = parseInt(item.goods.mgoodspriceout) * parseInt(item.goods.usage);
+            item.subtotal = parseInt(item.goods.mgoodspriceout) * parseInt(item.usage);
             this.invoice_goods.push(item);
+            this.invoice_subtotal += item.subtotal;
+            this.invoice_disc += item.disc;
+            this.invoice_tax += item.tax;
           }
         });
       },
@@ -347,33 +364,79 @@
         let g = _.find(this.goods,{ mgoodscode: code});
         return parseInt(g.mgoodspriceout);
       },
+      canAddSingle(idx){
+        var already = _.find(this.invoice_goods,{id: parseInt(idx)});
+        if(already == undefined){
+            $('#loading_modal').modal('toggle');
+            this.fetchGoodsSingle(idx);
+        } else {
+          swal({
+            title: "Oops!",
+            text: "Item sudah di tambahkan. Klik edit untuk merubah",
+            type: "error",
+            timer: 1000
+          });
+        }
+
+      },
       fetchGoodsSingle(id){
+        this.resetDetail();
         Axios.get('/admin-api/barang/'+id)
         .then((res) => {
           this.detail_goods = res.data;
           let self = this;
           $('#loading_modal').modal('toggle');
-          $('#insert_detail_modal').modal('toggle');
-          $('#detail_rp').on('keyup',function(){
-            self.countPercent();
-            self.countDetailTotal();
-          });
-          $('#detail_percent').on('keyup',function(evt){
-            // diskon yg di input lebih besar
-            if(res.data.mgoodssetmaxdisc == 1){
-              if(evt.target.value > res.data.mgoodsmaxdisc){
-                self.percentage = res.data.mgoodsmaxdisc;
-                swal({
-                  title: "Oops!",
-                  text: "Maksimal diskon item ini tidak bisa melebihi "+res.data.mgoodsmaxdisc+"%",
-                  type: "error",
-                  timer: 1000
-                });
+          if(this.mode == 'edit'){
+              $('#edit_detail_modal').modal('show');
+          } else {
+              $('#insert_detail_modal').modal('toggle');
+          }
+          if(this.mode == 'edit'){
+            $('#edit_detail_rp').on('keyup',function(){
+                self.countPercent();
+                self.countDetailTotal();
+            });
+            $('#edit_detail_percentage').on('keyup',function(evt){
+              // diskon yg di input lebih besar
+              if(res.data.mgoodssetmaxdisc == 1){
+                if(evt.target.value > res.data.mgoodsmaxdisc){
+                  self.percentage = res.data.mgoodsmaxdisc;
+                  swal({
+                    title: "Oops!",
+                    text: "Maksimal diskon item ini tidak bisa melebihi "+res.data.mgoodsmaxdisc+"%",
+                    type: "error",
+                    timer: 1000
+                  });
+                }
               }
-            }
+              self.countRp();
+              self.countDetailTotal();
+            });
+          } else {
             self.countRp();
             self.countDetailTotal();
-          });
+            $('#insert_detail_rp').on('keyup',function(){
+              self.countPercent();
+              self.countDetailTotal();
+            });
+            $('#insert_detail_percentage').on('keyup',function(evt){
+              // diskon yg di input lebih besar
+              if(res.data.mgoodssetmaxdisc == 1){
+                if(evt.target.value > res.data.mgoodsmaxdisc){
+                  self.percentage = res.data.mgoodsmaxdisc;
+                  swal({
+                    title: "Oops!",
+                    text: "Maksimal diskon item ini tidak bisa melebihi "+res.data.mgoodsmaxdisc+"%",
+                    type: "error",
+                    timer: 1000
+                  });
+                }
+              }
+              self.countRp();
+              self.countDetailTotal();
+            });
+          }
+
           this.countDetailTotal();
           this.predictTax();
         });
@@ -381,8 +444,7 @@
       detailGoods(){
         this.detail_state = "insert";
         if(this.selected_goods != ""){
-          $('#loading_modal').modal('toggle');
-          this.fetchGoodsSingle(this.selected_goods);
+          this.canAddSingle(this.selected_goods);
         }
       },
       countDetailTotal(){
@@ -395,10 +457,20 @@
         this.rp = (parseInt(this.percentage) / 100) * this.detail_total;
       },
       countPercent(){
-        this.percentage = (this.rp/this.detail_total) * 100;
+        console.log(numeral().unformat(this.rp));
+        this.percentage = (numeral().unformat(this.rp)/this.detail_total) * 100;
+        console.log(this.detail_total);
+        console.log(this.percentage);
+        if(isNaN(this.percentage)){
+          this.percentage = 0;
+        }
       },
       addToGoods(){
-        $('#insert_detail_modal').modal('toggle');
+        if(this.mode == 'edit'){
+            $('#edit_detail_modal').modal('toggle');
+        } else {
+            $('#insert_detail_modal').modal('toggle');
+        }
         this.invoice_subtotal += this.detail_total;
         this.invoice_disc += this.rp;
         let just_tax =0;
@@ -464,7 +536,6 @@
         this.invoice_subtotal = this.invoice_subtotal - good.subtotal;
         this.invoice_tax = this.invoice_tax - good.tax;
         this.invoice_disc = this.invoice_disc - good.disc;
-
         this.invoice_goods = this.invoice_goods.filter((g) => {
           return g.id !== idx
         });
@@ -475,14 +546,40 @@
         this.edit_index = _.indexOf(this.invoice_goods,current);
         this.resetDetail();
         this.detail_goods = current.goods;
-        $('#insert_detail_modal').modal('toggle');
+        if(this.mode == 'edit'){
+            $('#edit_detail_modal').modal('toggle');
+        } else {
+            $('#insert_detail_modal').modal('toggle');
+        }
         this.rp = current.disc;
-        console.log(current);
         this.unit = current.saved_unit+"";
-        console.log(current.usage+"/"+this.unit);
         this.detail_qty = parseInt(current.usage) / parseInt(current.saved_unit);
+        this.countDetailTotal();
         this.countPercent();
         this.countDetailTotal();
+        let self = this;
+        if(this.mode == "edit"){
+          $('#edit_detail_rp').on('keyup',function(){
+            self.countPercent();
+            self.countDetailTotal();
+          });
+          $('#edit_detail_percentage').on('keyup',function(evt){
+            // diskon yg di input lebih besar
+            if(current.goods.mgoodssetmaxdisc == 1){
+              if(evt.target.value > current.goods.mgoodsmaxdisc){
+                self.percentage = current.goods.mgoodsmaxdisc;
+                swal({
+                  title: "Oops!",
+                  text: "Maksimal diskon item ini tidak bisa melebihi "+current.goods.mgoodsmaxdisc+"%",
+                  type: "error",
+                  timer: 1000
+                });
+              }
+            }
+            self.countRp();
+            self.countDetailTotal();
+          });
+        }
       },
       updateDetail(){
         let just_tax =0;
@@ -504,7 +601,26 @@
         };
         // this.invoice_goods[this.edit_index] = editedGoods;
         Vue.set(this.invoice_goods,this.edit_index,editedGoods);
-        $('#insert_detail_modal').modal('toggle');
+        this.reEvaluateInvoice();
+        if(this.mode == 'edit'){
+            $('#edit_detail_modal').modal('toggle');
+        } else {
+            $('#insert_detail_modal').modal('toggle');
+        }
+      },
+      reEvaluateInvoice(){
+        let subs = 0;
+        let discs = 0;
+        let taxs = 0;
+
+        for(var i=0;i<this.invoice_goods.length;i++){
+          subs += this.invoice_goods[i].subtotal;
+          discs += this.invoice_goods[i].disc;
+          taxs += this.invoice_goods[i].tax;
+        }
+        this.invoice_subtotal = subs;
+        this.invoice_disc = discs;
+        this.invoice_tax = taxs;
       },
       resetInvoice(){
         this.invoice_goods = [];

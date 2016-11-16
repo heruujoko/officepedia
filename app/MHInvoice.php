@@ -86,6 +86,11 @@ class MHInvoice extends Model
           $invoice_detail->mdinvoicegoodsid = $g['goods']['mgoodscode'];
           $invoice_detail->mdinvoicegoodsname = $g['goods']['mgoodsname'];
           $invoice_detail->mdinvoicegoodsqty = $g['usage'];
+          $invoice_detail->mdinvoicegoodsprice = $g['goods']['mgoodspriceout'];
+          $invoice_detail->mdinvoicegoodsgrossamount = $g['subtotal'];
+          $invoice_detail->mdinvoicegoodsdiscount = $g['disc'];
+          $invoice_detail->mdinvoicegoodstax = $g['tax'];
+          $invoice_detail->saved_unit = $g['saved_unit'];
           $invoice_detail->save();
 
           //update stock card
