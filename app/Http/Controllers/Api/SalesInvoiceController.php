@@ -89,6 +89,16 @@ class SalesInvoiceController extends Controller
 
     }
 
+    public function show($id){
+      $invoice = MHInvoice::on(Auth::user()->db_name)->where('id',$id)->first();
+      return response()->json($invoice);
+    }
+
+    public function details($inv){
+      $details = MDInvoice::on(Auth::user()->db_name)->where('mhinvoiceno',$inv)->get();
+      return response()->json($details);
+    }
+
     public function destroy($id){
       $invoice = MHInvoice::on(Auth::user()->db_name)->where('id',$id)->first();
       $invoice->void_transaction();

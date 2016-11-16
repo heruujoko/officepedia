@@ -187,6 +187,7 @@ Route::group(['prefix'=>'admin-nano','middleware' => ['auth','tenantdb']],functi
   Route::resource('mtax','Api\MTaxController');
   Route::get('mwarehouse/datalist','Api\MWarehouseController@datalist');
   Route::resource('mwarehouse','Api\MWarehouseController');
+  Route::get('salesinvoice/details/{inv}','Api\SalesInvoiceController@details');
   Route::resource('salesinvoice','Api\SalesInvoiceController');
   Route::resource('muser','Api\MUserController');
   Route::controllers([

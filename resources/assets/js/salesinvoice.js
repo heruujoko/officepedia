@@ -9,7 +9,6 @@ Vue.directive('selecttwo',{
       let self = this;
   },
   update(el,binding,vnode){
-
     $(el).select2({
         width: "100%",
         placeholder: binding.value
@@ -74,3 +73,6 @@ const invoiceapp = new Vue({
     console.log('invoice app ready');
   }
 });
+
+//add vue to globals
+window.invoiceapp = invoiceapp;

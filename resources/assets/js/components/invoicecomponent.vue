@@ -15,7 +15,7 @@
           <div class="form-group">
             <label class="col-md-2 control-label">Tanggal</label>
             <div class="col-md-8">
-              <input v-dpicker v-model="invoice_date" type="text" class="form-control" id="insertinvoicedate" />
+              <input v-dpicker v-model="invoice_date" type="text" class="form-control" />
             </div>
           </div>
         </div>
@@ -311,6 +311,42 @@
           this.goods = res.data;
         });
       },
+      fetchInvoiceData(id){
+        Axios.get('/admin-api/salesinvoice/'+id)
+        .then((res) => {
+          console.log(res.data);
+          let data = res.data;
+          this.invoice_date = moment(data.mhinvoicedate).format('L');
+          //find customers
+          let cust = _.find(this.customers, { mcustomerid: data.mhinvoicecustomerid});
+          this.invoice_customer = cust.id+"";
+
+          this.fetchDetailData(data.mhinvoiceno);
+        });
+      },
+      fetchDetailData(inv){
+        Axios.get('/admin-api/salesinvoice/details/'+inv)
+        .then((res) => {
+          console.log(res.data);
+          for(var i=0;i<res.data.length;i++){
+            var item = {
+              subtotal: 0,
+              disc: 0,
+              goods: res.data[i]
+            };
+            item.goods.usage = res.data[i].mdinvoicegoodsqty;
+            item.goods.mgoodsname = res.data[i].mdinvoicegoodsname;
+            item.goods.mgoodscode = res.data[i].mdinvoicegoodsid;
+            item.goods.mgoodspriceout = this.goodsPrice(res.data[i].mdinvoicegoodsid);
+            item.subtotal = parseInt(item.goods.mgoodspriceout) * parseInt(item.goods.usage);
+            this.invoice_goods.push(item);
+          }
+        });
+      },
+      goodsPrice(code){
+        let g = _.find(this.goods,{ mgoodscode: code});
+        return parseInt(g.mgoodspriceout);
+      },
       fetchGoodsSingle(id){
         Axios.get('/admin-api/barang/'+id)
         .then((res) => {
@@ -505,6 +541,12 @@
       this.fetchCustomers();
       this.fetchGoods();
       this.fetchWareHouses();
+      if(this.mode == "edit"){
+        this.$parent.$on('edit-selected',(id) => {
+          this.fetchInvoiceData(id);
+        });
+      }
+
     }
   }
 </script>
