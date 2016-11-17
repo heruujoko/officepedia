@@ -77,7 +77,11 @@
           </div>
           <div class="row">
             <br>
-            <div class="col-md-2 col-md-offset-4">
+            <div class="col-md-4">
+              <h5>Total Item</h5>
+              <p>{{ invoice_goods.length }}</p>
+            </div>
+            <div class="col-md-2">
               <h5>Sub Total</h5>
               <p id="insertsubtotal"  >{{ format_subtotal }}</p>
             </div>
@@ -98,7 +102,7 @@
       </div>
     </div>
 
-    <div vbind:id="loading_id" class="modal" style="top: 20%;" tabindex="-1" role="dialog" data-keyboard="false" data-backdrop="static">
+    <div v-bind:id="loading_id" class="modal" style="top: 20%;" tabindex="-1" role="dialog" data-keyboard="false" data-backdrop="static">
     	<div class="modal-dialog">
     		<div class="modal-content">
     			<div class="modal-header" style="text-align: center">
@@ -374,8 +378,10 @@
         var already = _.find(this.invoice_goods,{id: parseInt(idx)});
         if(already == undefined){
             if(this.mode == 'edit'){
+                console.log('disini');
                 $('#edit_loading_modal').modal('toggle');
             } else {
+                console.log('disini');
                 $('#insert_loading_modal').modal('toggle');
             }
             this.fetchGoodsSingle(idx);
@@ -397,11 +403,12 @@
           let self = this;
           if(this.mode == 'edit'){
               $('#edit_loading_modal').modal('toggle');
-              $('#edit_detail_modal').modal('show');
+              $('#edit_detail_modal').modal('toggle');
           } else {
               $('#insert_loading_modal').modal('toggle');
               $('#insert_detail_modal').modal('toggle');
           }
+          this.detail_qty = 1;
           if(this.mode == 'edit'){
             $('#edit_detail_rp').on('keyup',function(){
                 self.countPercent();
@@ -512,6 +519,11 @@
         }
       },
       updateInvoice(){
+        if(this.mode == 'edit'){
+            $('#edit_loading_modal').modal('toggle');
+        } else {
+            $('#insert_loading_modal').modal('toggle');
+        }
         let invoice_data = {
           date: this.invoice_date,
           subtotal: this.invoice_subtotal,
@@ -524,22 +536,11 @@
         }
         Axios.put('/admin-api/salesinvoice/'+this.editinvoiceid,invoice_data)
         .then((res) => {
-          console.log(res);
-        });
-      },
-      saveInvoice(){
-        let invoice_data = {
-          date: this.invoice_date,
-          subtotal: this.invoice_subtotal,
-          discount: this.invoice_disc,
-          tax: this.invoice_tax,
-          goods: this.invoice_goods,
-          mcustomerid: this.selected_customer.mcustomerid,
-          mcustomername: this.selected_customer.mcustomername,
-          type: this.invoice_type
-        }
-        Axios.post('/admin-api/salesinvoice',invoice_data)
-        .then((res) => {
+          if(this.mode == 'edit'){
+              $('#edit_loading_modal').modal('toggle');
+          } else {
+              $('#insert_loading_modal').modal('toggle');
+          }
           swal({
             title: "Input Berhasil!",
             type: "success",
@@ -556,7 +557,48 @@
             type: "error",
             timer: 1000
           });
+        });
+      },
+      saveInvoice(){
+        if(this.mode == 'edit'){
+            $('#insert_loading_modal').modal('toggle');
+        } else {
+            $('#insert_loading_modal').modal('toggle');
+        }
+        let invoice_data = {
+          date: this.invoice_date,
+          subtotal: this.invoice_subtotal,
+          discount: this.invoice_disc,
+          tax: this.invoice_tax,
+          goods: this.invoice_goods,
+          mcustomerid: this.selected_customer.mcustomerid,
+          mcustomername: this.selected_customer.mcustomername,
+          type: this.invoice_type
+        }
+        Axios.post('/admin-api/salesinvoice',invoice_data)
+        .then((res) => {
+          if(this.mode == 'edit'){
+              $('#edit_loading_modal').modal('toggle');
+          } else {
+              $('#insert_loading_modal').modal('toggle');
+          }
+          swal({
+            title: "Input Berhasil!",
+            type: "success",
+            timer: 1000
+          });
+          this.resetInvoice();
+          $('.tableapi').DataTable().ajax.reload();
+          window.location.href="#formtable";
         })
+        .catch((err) => {
+          swal({
+            title: "Oops!",
+            text: "Transaksi gagal, periksa kembali input",
+            type: "error",
+            timer: 1000
+          });
+        });
       },
       removeGoods(idx){
         let good = _.find(this.invoice_goods,  {id: idx});
