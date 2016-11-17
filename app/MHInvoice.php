@@ -110,6 +110,7 @@ class MHInvoice extends Model
           $stock_card->mstockcardusername = Auth::user()->name;
           $stock_card->mstockcardeventdate = Carbon::now();
           $stock_card->mstockcardeventtime = Carbon::now();
+          $stock_card->edited = 0;
           $stock_card->save();
 
           // update master barang
@@ -181,7 +182,10 @@ class MHInvoice extends Model
           $invoice_detail = MDInvoice::on(Auth::user()->db_name)->where('mdinvoicegoodsid',$g['goods']['mgoodscode'])->first();
           $mgoods = MGoods::on(Auth::user()->db_name)->where('mgoodscode',$g['goods']['mgoodscode'])->first();
 
+          $last_stock = MStockCard::on(Auth::user()->db_name)->where('mstockcardtransno',$invoice_detail->mhinvoiceno)->where('mstockcardgoodsid',$mgoods->mgoodscode)->get()->last();
           $old_qty = $invoice_detail->mdinvoicegoodsqty;
+          $mgoods->mgoodsstock += $last_stock->mstockcardstockout;
+          $mgoods->save();
 
           $invoice_detail->mhinvoiceno = $header->mhinvoiceno;
           $invoice_detail->mdcustomerid = $customer->mcustomerid;
@@ -211,12 +215,13 @@ class MHInvoice extends Model
             $stock_card->mstockcardremark = "Editing Transaksi ".$request->type." untuk ".$customer->mcustomername;
             $stock_card->mstockcardstockin = $old_qty;
             $stock_card->mstockcardstockout = 0;
-            $stock_card->mstockcardstocktotal = $mgoods->mgoodsstock - $g['usage'];
+            $stock_card->mstockcardstocktotal = $mgoods->mgoodsstock;
             $stock_card->mstockcardwhouse = $g['warehouse'];
             $stock_card->mstockcarduserid = Auth::user()->id;
             $stock_card->mstockcardusername = Auth::user()->name;
             $stock_card->mstockcardeventdate = Carbon::now();
             $stock_card->mstockcardeventtime = Carbon::now();
+            $stock_card->edited = 1;
             $stock_card->save();
 
             //out dengan qty baru
@@ -236,12 +241,37 @@ class MHInvoice extends Model
             $stock_card->mstockcardusername = Auth::user()->name;
             $stock_card->mstockcardeventdate = Carbon::now();
             $stock_card->mstockcardeventtime = Carbon::now();
+            $stock_card->edited = 1;
             $stock_card->save();
+
+            $mgoods->mgoodsstock = $stock_card->mstockcardstocktotal;
+            $mgoods->save();
+
+            // update AR
+            $ar = new MARCard;
+            $ar->setConnection(Auth::user()->db_name);
+            $ar->marcardcustomerid = $customer->mcustomerid;
+            $ar->marcardcustomername = $customer->mcustomername;
+            $ar->marcarddate = Carbon::now();
+            $ar->marcardtranstype = $request->type;
+            $ar->marcardtransno = $header->mhinvoiceno;
+            $ar->marcardremark = "Edit Transaksi ".$request->type." untuk ".$customer->mcustomername;
+            $ar->marcardduedate = Carbon::now()->addDays($customer->mcustomerdefaultar);
+            $ar->marcardtotalinv = $request->subtotal + $request->tax - $request->disc;
+            $ar->marcardpayamount = 0;
+            $ar->marcardoutstanding = 0;
+            $ar->marcarduserid = Auth::user()->id;
+            $ar->marcardusername = Auth::user()->name;
+            $ar->marcardusereventdate = Carbon::now();
+            $ar->marcardusereventtime = Carbon::now();
+            $ar->save();
+
           }
 
           //voided details
           $voided_details = MDInvoice::on(Auth::user()->db_name)->where('mhinvoiceno',$invoice_header->mhinvoiceno)->where('void',1)->get();
           foreach ($voided_details as $v) {
+            $mgoods = MGoods::on(Auth::user()->db_name)->where('mgoodscode',$v->mdinvoicegoodsid)->first();
             //in dengan qty lama
             $stock_card = new MStockCard;
             $stock_card->setConnection(Auth::user()->db_name);
@@ -260,9 +290,9 @@ class MHInvoice extends Model
             $stock_card->mstockcardeventdate = Carbon::now();
             $stock_card->mstockcardeventtime = Carbon::now();
             $stock_card->save();
+            // $mgoods->mgoodsstock = $stock_card->mstockcardstocktotal;
+            // $mgoods->save();
           }
-
-
 
         }
 
