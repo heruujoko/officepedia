@@ -22,6 +22,26 @@ $(document).ready(function(){
     };
   }
 
+  $( document ).ready(function() {
+  $.ajax({
+    url : API_URL+'/barang/pkp',
+    type : 'GET',
+    success : function(response){
+      if (response.msyscomptaxable==true) {
+        $('#insert-mgoodstaxable').attr('checked',true);
+        $('#insert-mgoodstaxppn').removeAttr('disabled');
+        $('#insert-mgoodstaxppnbm').removeAttr('disabled');
+        }
+      else{
+        $('#insert-mgoodstaxable').attr('checked',false);
+      }
+      
+    }
+
+});
+
+  });
+
   // $('.active-toggle').bootstrapSwitch({
   //   size: 'mini',
   //   onText: "Aktif",

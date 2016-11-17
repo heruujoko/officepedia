@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Database\Seeder;
-
+use App\MWarehouse;
 class MWarehouseSeeder extends Seeder
 {
     /**
@@ -11,10 +11,12 @@ class MWarehouseSeeder extends Seeder
      */
     public function run()
     {
-      DB::table('mwarehouse')->insert([
-          'mwarehousename' => 'Umum',
-          'mwarehouseremark' => '',
-          'void' => 0
+     
+      MWarehouse::create([
+         'mwarehousename' => 'Umum',
+         'mwarehouseremark' => '',
+         'void' => 0
       ]);
+
     }
 }
