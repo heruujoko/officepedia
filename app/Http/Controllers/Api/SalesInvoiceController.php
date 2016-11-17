@@ -89,6 +89,16 @@ class SalesInvoiceController extends Controller
 
     }
 
+    public function update($id, Request $request){
+      $header = MHInvoice::on(Auth::user()->db_name)->where('id',$id)->first();
+      $trans = $header->update_transaction($request);
+      if($trans){
+        return response()->json($trans);
+      } else {
+        return response()->json($trans,400);
+      }
+    }
+
     public function show($id){
       $invoice = MHInvoice::on(Auth::user()->db_name)->where('id',$id)->first();
       return response()->json($invoice);

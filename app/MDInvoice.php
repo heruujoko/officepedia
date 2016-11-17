@@ -10,8 +10,8 @@ class MDInvoice extends Model
   protected $table = 'mdinvoice';
   protected static function boot(){
     parent::boot();
-    static::addGlobalScope('actives', function(Builder $builder) {
-          $builder->where('void', '=', 0);
-    });
+    // static::addGlobalScope('actives', function(Builder $builder) {
+    //       $builder->where('void', '=', 0);
+    // });
   }
 }

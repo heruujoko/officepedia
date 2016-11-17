@@ -46,7 +46,8 @@
               </select>
             </div>
             <div class="col-md-6">
-              <button class="pull-right btn btn-primary" v-on:click="saveInvoice">Proses</button>
+              <button v-if="this.mode == 'insert'" class="pull-right btn btn-primary" v-on:click="saveInvoice">Proses</button>
+              <button v-if="this.mode == 'edit'" class="pull-right btn btn-primary" v-on:click="updateInvoice">Proses Update</button>
             </div>
           </div>
           <div class="row">
@@ -97,7 +98,7 @@
       </div>
     </div>
 
-    <div id="loading_modal" class="modal" style="top: 20%;" tabindex="-1" role="dialog" data-keyboard="false" data-backdrop="static">
+    <div vbind:id="loading_id" class="modal" style="top: 20%;" tabindex="-1" role="dialog" data-keyboard="false" data-backdrop="static">
     	<div class="modal-dialog">
     		<div class="modal-content">
     			<div class="modal-header" style="text-align: center">
@@ -134,7 +135,7 @@
                       <input placeholder="Kuantitas" class="form-control forminput" value="1" type="text" id="insertdetailgoodsqty" v-model="detail_qty"/>
                     </div>
                     <div class="col-md-4">
-                      <select v-selecttwo v-model="unit">
+                      <select class="form-control" v-model="unit">
                         <option selected :value="1">Unit</option>
                         <option v-if="detail_goods.mgoodsmultiunit" :value="detail_goods.mgoodsunit2conv">{{ detail_goods.mgoodsunit2 }}</option>
                         <option v-if="detail_goods.mgoodsunit3conv != 0" :value="detail_goods.mgoodsunit3conv">{{ detail_goods.mgoodsunit3 }}</option>
@@ -226,6 +227,7 @@
     props: ['mode'],
     data(){
       return {
+        editinvoiceid:0,
         warehouses: [],
         customers: [],
         goods: [],
@@ -242,6 +244,7 @@
         detail_tax:0,
         detail_warehouse: 0,
         num_format: "0,0.00",
+        unit_label: "Pilih Unit",
         barang_label: "Pilih Barang",
         transaksi_label: "Pilih Tipe Transaksi",
         pelanggan_label: "Pilih Pelanggan",
@@ -276,6 +279,9 @@
       },
       percent_id(){
         return this.mode+"_detail_percentage";
+      },
+      loading_id(){
+        return this.mode+"_loading_modal";
       }
     },
     methods: {
@@ -367,7 +373,11 @@
       canAddSingle(idx){
         var already = _.find(this.invoice_goods,{id: parseInt(idx)});
         if(already == undefined){
-            $('#loading_modal').modal('toggle');
+            if(this.mode == 'edit'){
+                $('#edit_loading_modal').modal('toggle');
+            } else {
+                $('#insert_loading_modal').modal('toggle');
+            }
             this.fetchGoodsSingle(idx);
         } else {
           swal({
@@ -385,10 +395,11 @@
         .then((res) => {
           this.detail_goods = res.data;
           let self = this;
-          $('#loading_modal').modal('toggle');
           if(this.mode == 'edit'){
+              $('#edit_loading_modal').modal('toggle');
               $('#edit_detail_modal').modal('show');
           } else {
+              $('#insert_loading_modal').modal('toggle');
               $('#insert_detail_modal').modal('toggle');
           }
           if(this.mode == 'edit'){
@@ -500,6 +511,22 @@
           this.detail_tax = 0;
         }
       },
+      updateInvoice(){
+        let invoice_data = {
+          date: this.invoice_date,
+          subtotal: this.invoice_subtotal,
+          discount: this.invoice_disc,
+          tax: this.invoice_tax,
+          goods: this.invoice_goods,
+          mcustomerid: this.selected_customer.mcustomerid,
+          mcustomername: this.selected_customer.mcustomername,
+          type: this.invoice_type
+        }
+        Axios.put('/admin-api/salesinvoice/'+this.editinvoiceid,invoice_data)
+        .then((res) => {
+          console.log(res);
+        });
+      },
       saveInvoice(){
         let invoice_data = {
           date: this.invoice_date,
@@ -541,22 +568,25 @@
         });
       },
       editGoods(idx){
+        this.resetDetail();
         this.detail_state = "edit";
         let current = _.find(this.invoice_goods,{id: idx});
         this.edit_index = _.indexOf(this.invoice_goods,current);
-        this.resetDetail();
         this.detail_goods = current.goods;
-        if(this.mode == 'edit'){
-            $('#edit_detail_modal').modal('toggle');
-        } else {
-            $('#insert_detail_modal').modal('toggle');
-        }
         this.rp = current.disc;
         this.unit = current.saved_unit+"";
         this.detail_qty = parseInt(current.usage) / parseInt(current.saved_unit);
         this.countDetailTotal();
         this.countPercent();
         this.countDetailTotal();
+        this.$nextTick(function(){
+          if(this.mode == 'edit'){
+              $('#edit_detail_modal').modal('toggle');
+          } else {
+              $('#insert_detail_modal').modal('toggle');
+          }
+        });
+
         let self = this;
         if(this.mode == "edit"){
           $('#edit_detail_rp').on('keyup',function(){
@@ -634,7 +664,7 @@
           this.rp = 0;
           this.percentage =0;
           this.detail_qty = 0;
-          this.unit = "";
+          this.unit = "1";
       }
     },
     watch: {
@@ -659,6 +689,7 @@
       this.fetchWareHouses();
       if(this.mode == "edit"){
         this.$parent.$on('edit-selected',(id) => {
+          this.editinvoiceid = id;
           this.fetchInvoiceData(id);
         });
       }

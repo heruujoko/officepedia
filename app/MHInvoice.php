@@ -147,6 +147,135 @@ class MHInvoice extends Model
 
     }
 
+    public function update_transaction($request){
+      DB::connection(Auth::user()->db_name)->beginTransaction();
+      try{
+        //insert header
+        $invoice_header = $this;
+        $invoice_header->setConnection(Auth::user()->db_name);
+        $invoice_header->mhinvoicedate = Carbon::parse($request->date);
+        $invoice_header->mhinvoicesubtotal = $request->subtotal;
+        $invoice_header->mhinvoicetaxtotal = $request->tax;
+        $invoice_header->mhinvoicediscounttotal = $request->discount;
+        $invoice_header->mhinvoicegrandtotal = $request->subtotal + $request->tax - $request->disc;
+        if($request->tax > 0){
+          $invoice_header->mhinvoicewithppn = 1;
+        } else {
+          $invoice_header->mhinvoicewithppn = 0;
+        }
+        $customer = MCUSTOMER::on(Auth::user()->db_name)->where('mcustomerid',$request->mcustomerid)->first();
+        $invoice_header->mhinvoicecustomerid = $customer->mcustomerid;
+        $invoice_header->mhinvoicecustomername = $customer->mcustomername;
+        $invoice_header->mhinvoiceduedate = Carbon::now()->addDays($customer->mcustomerdefaultar);
+        $invoice_header->save();
+        $header = MHInvoice::on(Auth::user()->db_name)->where('id',$invoice_header->id)->first();
+
+        // void all detail dlu biar tau mana yg di hapus
+        $details = MDInvoice::on(Auth::user()->db_name)->where('mhinvoiceno',$invoice_header->mhinvoiceno)->get();
+        foreach ($details as $dt) {
+          $dt->void = 1;
+          $dt->save();
+        }
+
+        foreach ($request->goods as $g) {
+          $invoice_detail = MDInvoice::on(Auth::user()->db_name)->where('mdinvoicegoodsid',$g['goods']['mgoodscode'])->first();
+          $mgoods = MGoods::on(Auth::user()->db_name)->where('mgoodscode',$g['goods']['mgoodscode'])->first();
+
+          $old_qty = $invoice_detail->mdinvoicegoodsqty;
+
+          $invoice_detail->mhinvoiceno = $header->mhinvoiceno;
+          $invoice_detail->mdcustomerid = $customer->mcustomerid;
+          $invoice_detail->mdcustomername = $customer->mcustomername;
+          $invoice_detail->mdinvoicedate = $header->mhinvoicedate;
+          $invoice_detail->mdinvoicegoodsid = $g['goods']['mgoodscode'];
+          $invoice_detail->mdinvoicegoodsname = $g['goods']['mgoodsname'];
+          $invoice_detail->mdinvoicegoodsqty = $g['usage'];
+          $invoice_detail->mdinvoicegoodsprice = $g['goods']['mgoodspriceout'];
+          $invoice_detail->mdinvoicegoodsgrossamount = $g['subtotal'];
+          $invoice_detail->mdinvoicegoodsdiscount = $g['disc'];
+          $invoice_detail->mdinvoicegoodstax = $g['tax'];
+          $invoice_detail->saved_unit = $g['saved_unit'];
+          $invoice_detail->void = 0;
+          $invoice_detail->save();
+
+          //stock card
+          if($old_qty != $g['usage']){
+            //in dengan qty lama
+            $stock_card = new MStockCard;
+            $stock_card->setConnection(Auth::user()->db_name);
+            $stock_card->mstockcardgoodsid = $g['goods']['mgoodscode'];
+            $stock_card->mstockcardgoodsname = $g['goods']['mgoodsname'];
+            $stock_card->mstockcarddate = Carbon::parse($request->date);
+            $stock_card->mstockcardtranstype = $request->type;
+            $stock_card->mstockcardtransno = $header->mhinvoiceno;
+            $stock_card->mstockcardremark = "Editing Transaksi ".$request->type." untuk ".$customer->mcustomername;
+            $stock_card->mstockcardstockin = $old_qty;
+            $stock_card->mstockcardstockout = 0;
+            $stock_card->mstockcardstocktotal = $mgoods->mgoodsstock - $g['usage'];
+            $stock_card->mstockcardwhouse = $g['warehouse'];
+            $stock_card->mstockcarduserid = Auth::user()->id;
+            $stock_card->mstockcardusername = Auth::user()->name;
+            $stock_card->mstockcardeventdate = Carbon::now();
+            $stock_card->mstockcardeventtime = Carbon::now();
+            $stock_card->save();
+
+            //out dengan qty baru
+            $stock_card = new MStockCard;
+            $stock_card->setConnection(Auth::user()->db_name);
+            $stock_card->mstockcardgoodsid = $g['goods']['mgoodscode'];
+            $stock_card->mstockcardgoodsname = $g['goods']['mgoodsname'];
+            $stock_card->mstockcarddate = Carbon::parse($request->date);
+            $stock_card->mstockcardtranstype = $request->type;
+            $stock_card->mstockcardtransno = $header->mhinvoiceno;
+            $stock_card->mstockcardremark = "Editing Transaksi ".$request->type." untuk ".$customer->mcustomername;
+            $stock_card->mstockcardstockin = 0;
+            $stock_card->mstockcardstockout = $g['usage'];
+            $stock_card->mstockcardstocktotal = $mgoods->mgoodsstock - $g['usage'];
+            $stock_card->mstockcardwhouse = $g['warehouse'];
+            $stock_card->mstockcarduserid = Auth::user()->id;
+            $stock_card->mstockcardusername = Auth::user()->name;
+            $stock_card->mstockcardeventdate = Carbon::now();
+            $stock_card->mstockcardeventtime = Carbon::now();
+            $stock_card->save();
+          }
+
+          //voided details
+          $voided_details = MDInvoice::on(Auth::user()->db_name)->where('mhinvoiceno',$invoice_header->mhinvoiceno)->where('void',1)->get();
+          foreach ($voided_details as $v) {
+            //in dengan qty lama
+            $stock_card = new MStockCard;
+            $stock_card->setConnection(Auth::user()->db_name);
+            $stock_card->mstockcardgoodsid = $g['goods']['mgoodscode'];
+            $stock_card->mstockcardgoodsname = $g['goods']['mgoodsname'];
+            $stock_card->mstockcarddate = Carbon::parse($request->date);
+            $stock_card->mstockcardtranstype = $request->type;
+            $stock_card->mstockcardtransno = $header->mhinvoiceno;
+            $stock_card->mstockcardremark = "Editing Transaksi Hapus item".$request->type." untuk ".$customer->mcustomername;
+            $stock_card->mstockcardstockin = $v->mdinvoicegoodsqty;
+            $stock_card->mstockcardstockout = 0;
+            $stock_card->mstockcardstocktotal = $mgoods->mgoodsstock - $g['usage'];
+            $stock_card->mstockcardwhouse = $g['warehouse'];
+            $stock_card->mstockcarduserid = Auth::user()->id;
+            $stock_card->mstockcardusername = Auth::user()->name;
+            $stock_card->mstockcardeventdate = Carbon::now();
+            $stock_card->mstockcardeventtime = Carbon::now();
+            $stock_card->save();
+          }
+
+
+
+        }
+
+        DB::connection(Auth::user()->db_name)->commit();
+        return true;
+      } catch(Exception $e){
+        dd($e);
+        DB::connection(Auth::user()->db_name)->rollBack();
+        return false;
+      }
+
+    }
+
     public function void_transaction(){
       $details = MDInvoice::on(Auth::user()->db_name)->where('mhinvoiceno',$this->mhinvoiceno)->get();
       foreach($details as $d){
