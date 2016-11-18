@@ -42,7 +42,7 @@
           <div class="row">
             <div class="col-md-6">
               <select v-bind:disabled="!notview" class="form-control" id="insert-selectgoods" v-selecttwo="barang_label" v-model="selected_goods">
-                <option v-for="g in goods" :value="g.id">{{ g.mgoodsname }}</option>
+                <option v-for="g in goods" :value="g.id">{{ g.mgoodscode }} {{ g.mgoodsname }}</option>
               </select>
             </div>
             <div class="col-md-6">
@@ -554,9 +554,20 @@
           window.location.href="#formtable";
         })
         .catch((err) => {
+          if(this.mode == 'edit'){
+              $('#edit_loading_modal').modal('toggle');
+          } else {
+              $('#insert_loading_modal').modal('toggle');
+          }
+          var status_message ="";
+          if(err.response.status == 500){
+            status_message = "Transaksi gagal, periksa kembali input";
+          } else {
+            status_message = "Stok tidak bisa minus";
+          }
           swal({
             title: "Oops!",
-            text: "Transaksi gagal, periksa kembali input",
+            text: status_message,
             type: "error",
             timer: 1000
           });
@@ -595,9 +606,20 @@
           window.location.href="#formtable";
         })
         .catch((err) => {
+          if(this.mode == 'edit'){
+              $('#edit_loading_modal').modal('toggle');
+          } else {
+              $('#insert_loading_modal').modal('toggle');
+          }
+          var status_message ="";
+          if(err.response.status == 500){
+            status_message = "Transaksi gagal, periksa kembali input";
+          } else {
+            status_message = "Stok tidak bisa minus";
+          }
           swal({
             title: "Oops!",
-            text: "Transaksi gagal, periksa kembali input",
+            text: status_message,
             type: "error",
             timer: 1000
           });

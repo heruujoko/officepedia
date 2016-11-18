@@ -80,22 +80,26 @@ class SalesInvoiceController extends Controller
 
     public function store(Request $request){
 
-      $transcation = MHInvoice::start_transaction($request);
-      if($transcation){
-          return response()->json($transcation);
+      $transaction = MHInvoice::start_transaction($request);
+      if($transaction == "ok"){
+          return response()->json($transaction);
+      } else if($transaction == "empty") {
+          return response()->json($transaction,400);
       } else {
-          return response()->json($transcation,400);
+          return response()->json($transaction,500);
       }
 
     }
 
     public function update($id, Request $request){
       $header = MHInvoice::on(Auth::user()->db_name)->where('id',$id)->first();
-      $trans = $header->update_transaction($request);
-      if($trans){
-        return response()->json($trans);
+      $transaction = $header->update_transaction($request);
+      if($transaction == "ok"){
+          return response()->json($transaction);
+      } else if($transaction == "empty") {
+          return response()->json($transaction,400);
       } else {
-        return response()->json($trans,400);
+          return response()->json($transaction,500);
       }
     }
 

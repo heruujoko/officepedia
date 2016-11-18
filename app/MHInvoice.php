@@ -50,6 +50,7 @@ class MHInvoice extends Model
     }
 
     public static function start_transaction($request){
+      $allow_minus = MConfig::on(Auth::user()->db_name)->where('id',1)->first()->msysinventallowminus;
       DB::connection(Auth::user()->db_name)->beginTransaction();
       try{
         //insert header
@@ -114,9 +115,15 @@ class MHInvoice extends Model
           $stock_card->save();
 
           // update master barang
-
           $mgoods->mgoodsstock = $stock_card->mstockcardstocktotal;
           $mgoods->save();
+
+          //check allow minus
+          if($allow_minus == 0 && ($mgoods->mgoodsstock < 0)){
+            DB::connection(Auth::user()->db_name)->rollBack();
+            return 'empty';
+          }
+
         }
 
         // update AR table
@@ -140,15 +147,16 @@ class MHInvoice extends Model
         $ar->save();
 
         DB::connection(Auth::user()->db_name)->commit();
-        return true;
+        return 'ok';
       } catch(Exception $e){
         DB::connection(Auth::user()->db_name)->rollBack();
-        return false;
+        return 'err';
       }
 
     }
 
     public function update_transaction($request){
+      $allow_minus = MConfig::on(Auth::user()->db_name)->where('id',1)->first()->msysinventallowminus;
       DB::connection(Auth::user()->db_name)->beginTransaction();
       try{
         //insert header
@@ -266,6 +274,12 @@ class MHInvoice extends Model
             $ar->marcardusereventtime = Carbon::now();
             $ar->save();
 
+            //check allow minus
+            if($allow_minus == 0 && ($mgoods->mgoodsstock < 0)){
+              DB::connection(Auth::user()->db_name)->rollBack();
+              return 'empty';
+            }
+
           }
 
           //voided details
@@ -297,11 +311,10 @@ class MHInvoice extends Model
         }
 
         DB::connection(Auth::user()->db_name)->commit();
-        return true;
+        return 'ok';
       } catch(Exception $e){
-        dd($e);
         DB::connection(Auth::user()->db_name)->rollBack();
-        return false;
+        return 'err';
       }
 
     }
