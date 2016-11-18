@@ -94,6 +94,34 @@
 				<!-- NEW WIDGET START -->
 				<article class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
 					<!-- Widget ID (each widget will need unique ID)-->
+					<div id="formview" class="forminput jarviswidget jarviswidget-color-darken" id="wid-id-0" data-widget-editbutton="false" data-widget-colorbutton="false" data-widget-deletebutton="false">
+						<header>
+							<span class="widget-icon"> <i class="fa fa-table"></i> </span>
+							<h2>{{ $section }}</h2>
+						</header>
+						<!-- widget div-->
+						<div>
+					 		<!-- widget edit box -->
+							<div class="jarviswidget-editbox">
+								<!-- This area used as dropdown edit box -->
+							</div>
+							<!-- end widget edit box -->
+							<h3 style="font-weight: bold; color: #1883B8;font-size: 19px;">Mode : VIEW</h3>
+							<!-- widget content -->
+							<div class="widget-body no-padding">
+							    <div class="container">
+										<invoice mode="view"></invoice>
+							    </div>
+	 					  </div>
+	 				  </div>
+          </div>
+        </article>
+      </div>
+
+			<div class="row">
+				<!-- NEW WIDGET START -->
+				<article class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+					<!-- Widget ID (each widget will need unique ID)-->
 					<div id="formtable" class="forminput jarviswidget jarviswidget-color-darken" id="wid-id-0" data-widget-editbutton="false" data-widget-colorbutton="false" data-widget-deletebutton="false">
 						<header>
 							<span class="widget-icon"> <i class="fa fa-table"></i> </span>
@@ -190,8 +218,16 @@
 <script>
 	function editinvoice(id){
 		$('#forminput').hide();
+		$('#formview').hide();
 		$('#formedit').show();
 		window.location.href="#formedit";
+		invoiceapp.$emit('edit-selected',id);
+	}
+	function viewinvoice(id){
+		$('#forminput').hide();
+		$('#formedit').hide();
+		$('#formview').show();
+		window.location.href="#formview";
 		invoiceapp.$emit('edit-selected',id);
 	}
   $(document).ready(function(){

@@ -7,7 +7,7 @@
           <div class="form-group">
             <label class="col-md-2 control-label">Pelanggan</label>
             <div class="col-md-8">
-              <select v-selecttwo="pelanggan_label" v-model="invoice_customer">
+              <select v-bind:disabled="!notview" v-selecttwo="pelanggan_label" v-model="invoice_customer">
                 <option v-for="c in customers" :value="c.id">{{ c.mcustomername }}</option>
               </select>
             </div>
@@ -15,7 +15,7 @@
           <div class="form-group">
             <label class="col-md-2 control-label">Tanggal</label>
             <div class="col-md-8">
-              <input v-dpicker v-model="invoice_date" type="text" class="form-control" />
+              <input v-bind:disabled="!notview" v-dpicker v-model="invoice_date" type="text" class="form-control" />
             </div>
           </div>
         </div>
@@ -23,7 +23,7 @@
           <div class="form-group">
             <label class="col-md-2 control-label">Type</label>
             <div class="col-md-8">
-              <select v-selecttwo="transaksi_label" class="form-control" v-model="invoice_type">
+              <select v-bind:disabled="!notview" v-selecttwo="transaksi_label" class="form-control" v-model="invoice_type">
                 <option>Penjualan</option>
                 <option>Retur Penjualan</option>
                 <option>Pembelian</option>
@@ -41,7 +41,7 @@
         <div class="well" style="margin-bottom:20px;">
           <div class="row">
             <div class="col-md-6">
-              <select class="form-control" id="insert-selectgoods" v-selecttwo="barang_label" v-model="selected_goods">
+              <select v-bind:disabled="!notview" class="form-control" id="insert-selectgoods" v-selecttwo="barang_label" v-model="selected_goods">
                 <option v-for="g in goods" :value="g.id">{{ g.mgoodsname }}</option>
               </select>
             </div>
@@ -60,7 +60,7 @@
                   <th style="width:10%;">Harga Jual</th>
                   <th style="width:10%;">Diskon</th>
                   <th style="width:10%;">Jumlah</th>
-                  <th style="width:10%;">Aksi</th>
+                  <th v-if="notview" style="width:10%;">Aksi</th>
                 </tr>
               </thead>
               <tbody>
@@ -70,7 +70,7 @@
                   <td v-priceformatlabel="num_format">{{ item.goods.mgoodspriceout }}</td>
                   <td v-priceformatlabel="num_format">{{ item.disc }}</td>
                   <td v-priceformatlabel="num_format">{{ item.subtotal }}</td>
-                  <td><a v-on:click="editGoods(item.goods.id)"><span style="color:lightblue">Edit</span></a> <a v-on:click="removeGoods(item.goods.id)"><span style="color:red">Hapus</span></a></td>
+                  <td v-if="notview"><a v-on:click="editGoods(item.goods.id)"><span style="color:lightblue">Edit</span></a> <a v-on:click="removeGoods(item.goods.id)"><span style="color:red">Hapus</span></a></td>
                 </tr>
               </tbody>
             </table>
@@ -286,6 +286,9 @@
       },
       loading_id(){
         return this.mode+"_loading_modal";
+      },
+      notview(){
+        return this.mode != "view";
       }
     },
     methods: {
@@ -730,6 +733,12 @@
       this.fetchGoods();
       this.fetchWareHouses();
       if(this.mode == "edit"){
+        this.$parent.$on('edit-selected',(id) => {
+          this.editinvoiceid = id;
+          this.fetchInvoiceData(id);
+        });
+      }
+      if(this.mode == "view"){
         this.$parent.$on('edit-selected',(id) => {
           this.editinvoiceid = id;
           this.fetchInvoiceData(id);
