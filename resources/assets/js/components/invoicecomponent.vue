@@ -23,12 +23,8 @@
           <div class="form-group">
             <label class="col-md-2 control-label">Type</label>
             <div class="col-md-8">
-              <select v-bind:disabled="!notview" v-selecttwo="transaksi_label" class="form-control" v-model="invoice_type">
+              <select disabled v-selecttwo="transaksi_label" class="form-control" v-model="invoice_type">
                 <option>Penjualan</option>
-                <option>Retur Penjualan</option>
-                <option>Pembelian</option>
-                <option>Retur Pembelian</option>
-                <option>Pembatalan</option>
               </select>
             </div>
           </div>
