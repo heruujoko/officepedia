@@ -16,4 +16,5 @@ require('laravel-elixir-vue');
 elixir(mix => {
     mix.webpack('salesinvoice.js');
     mix.webpack('stockcardreport.js');
+    mix.webpack('salesreport.js');
 });
