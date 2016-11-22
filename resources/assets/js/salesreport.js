@@ -96,6 +96,15 @@ const stockreport = new Vue({
         },
         printTable(){
             window.open('export/print?wh='+this.selected_warehouse+'&goods='+this.selected_goods,'_blank');
+        },
+        pdfTable(){
+            window.open('export/pdf?wh='+this.selected_warehouse+'&goods='+this.selected_goods,'_blank');
+        },
+        excelTable(){
+            window.open('export/excel?wh='+this.selected_warehouse+'&goods='+this.selected_goods,'_blank');
+        },
+        csvTable(){
+            window.open('export/csv?wh='+this.selected_warehouse+'&goods='+this.selected_goods,'_blank');
         }
     },
     watch:{

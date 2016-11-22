@@ -138,6 +138,9 @@ Route::group(['prefix'=>'admin-nano','middleware' => ['auth','tenantdb']],functi
 
   Route::get('reports/salesreport','ReportController@salesreport');
   Route::get('reports/salesreport/export/print','ReportController@salesreport_print');
+  Route::get('reports/salesreport/export/pdf','ReportController@salesreport_pdf');
+  Route::get('reports/salesreport/export/excel','ReportController@salesreport_excel');
+  Route::get('reports/salesreport/export/csv','ReportController@salesreport_csv');
 
   Route::controllers([
     '/'=>'AdminController'

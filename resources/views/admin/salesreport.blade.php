@@ -88,9 +88,9 @@
                                             <div class="row">
                                                 <div class="col-md-3 col-md-offset-9">
                                                     <button class="dt-button pull-right" v-on:click="printTable">Print</button>
-                                                    <button class="dt-button pull-right">CSV</button>
-                                                    <button class="dt-button pull-right">Excel</button>
-                                                    <button class="dt-button pull-right">PDF</button>
+                                                    <button class="dt-button pull-right" v-on:click="pdfTable">PDF</button>
+                                                    <button class="dt-button pull-right" v-on:click="excelTable">Excel</button>
+                                                    <button class="dt-button pull-right" v-on:click="csvTable">CSV</button>
                                                 </div>
                                             </div>
                                             <br>
