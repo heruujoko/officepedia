@@ -70,16 +70,16 @@
                               <div style="height: 21px;" class="form-group">
                                 <label class="col-md-3 control-label"><b>Kode Barang</b> (<font color="red">*</font>) &nbsp  :</label>
                                 <div class="col-md-9">
-                              	   <div class="icon-addon addon-md">
-                              		     <div class="input-group">
-                                    	  <input id="insert-mgoodscode" name="mgoodscode" class="form-control forminput" maxlength="14" placeholder="AUTO GENERATE" type="text" data-parsley-required-message="Field Ini Tidak Boleh Kosong"  data-parsley-errors-container=".errorBlock1" @if (Session::has('autofocus')) autofocus @endif >
-                                    		<label for="" class="glyphicon glyphicon-barcode" rel="tooltip" title="ID Pelanggan"></label>
-                                    		<span class="input-group-addon" style="background: none;">
-                                      	   <input type="checkbox" id="autogenmgoods" name="autogen" rel="tooltip" title="ON/OFF auto generate ID Barang">
-                                    		</span>
-                                  		</div>
-                                  	</div>
-                              		</div>
+                                   <div class="icon-addon addon-md">
+                                       <div class="input-group">
+                                        <input id="insert-mgoodscode" name="mgoodscode" class="form-control forminput" maxlength="14" placeholder="AUTO GENERATE" type="text" data-parsley-required-message="Field Ini Tidak Boleh Kosong"  data-parsley-errors-container=".errorBlock1" @if (Session::has('autofocus')) autofocus @endif >
+                                        <label for="" class="glyphicon glyphicon-barcode" rel="tooltip" title="ID Pelanggan"></label>
+                                        <span class="input-group-addon" style="background: none;">
+                                           <input type="checkbox" id="autogenmgoods" name="autogen" rel="tooltip" title="ON/OFF auto generate ID Barang">
+                                        </span>
+                                      </div>
+                                    </div>
+                                  </div>
                               </div>
                               <div class="errorBlock2" style="margin-left:23% !important;"></div>
                               <div style="height: 21px;" class="form-group">
@@ -509,16 +509,16 @@
                               <div style="height: 21px;" class="form-group">
                                 <label class="col-md-3 control-label"><b>Kode Barang</b> (<font color="red">*</font>) &nbsp  :</label>
                                 <div class="col-md-9">
-                              	   <div class="icon-addon addon-md">
-                              		     <div class="input-group">
-                                    	  <input id="edit-mgoodscode" name="mgoodscode" class="form-control forminput" maxlength="14" placeholder="AUTO GENERATE" type="text" data-parsley-required-message="Field Ini Tidak Boleh Kosong"  data-parsley-errors-container=".errorBlock1" @if (Session::has('autofocus')) autofocus @endif >
-                                    		<label for="" class="glyphicon glyphicon-barcode" rel="tooltip" title="ID Pelanggan"></label>
-                                    		<span class="input-group-addon" style="background: none;">
-                                      	   <input type="checkbox" id="autogenmgoods" name="autogen" rel="tooltip" title="ON/OFF auto generate ID Barang">
-                                    		</span>
-                                  		</div>
-                                  	</div>
-                              		</div>
+                                   <div class="icon-addon addon-md">
+                                       <div class="input-group">
+                                        <input id="edit-mgoodscode" name="mgoodscode" class="form-control forminput" maxlength="14" placeholder="AUTO GENERATE" type="text" data-parsley-required-message="Field Ini Tidak Boleh Kosong"  data-parsley-errors-container=".errorBlock1" @if (Session::has('autofocus')) autofocus @endif >
+                                        <label for="" class="glyphicon glyphicon-barcode" rel="tooltip" title="ID Pelanggan"></label>
+                                        <span class="input-group-addon" style="background: none;">
+                                           <input type="checkbox" id="autogenmgoods" name="autogen" rel="tooltip" title="ON/OFF auto generate ID Barang">
+                                        </span>
+                                      </div>
+                                    </div>
+                                  </div>
                               </div>
                               <div class="errorBlock2" style="margin-left:23% !important;"></div>
                               <div style="height: 21px;" class="form-group">
@@ -948,16 +948,16 @@
                               <div style="height: 21px;" class="form-group">
                                 <label class="col-md-3 control-label"><b>Kode Barang</b> (<font color="red">*</font>) &nbsp  :</label>
                                 <div class="col-md-9">
-                              	   <div class="icon-addon addon-md">
-                              		     <div class="input-group">
-                                    	  <input disabled id="view-mgoodscode" name="mgoodscode" class="form-control forminput" maxlength="14" placeholder="AUTO GENERATE" type="text" data-parsley-required-message="Field Ini Tidak Boleh Kosong"  data-parsley-errors-container=".errorBlock1" @if (Session::has('autofocus')) autofocus @endif >
-                                    		<label for="" class="glyphicon glyphicon-barcode" rel="tooltip" title="ID Pelanggan"></label>
-                                    		<span class="input-group-addon" style="background: none;">
-                                      	   <input type="checkbox" id="autogenmgoods" name="autogen" rel="tooltip" title="ON/OFF auto generate ID Barang">
-                                    		</span>
-                                  		</div>
-                                  	</div>
-                              		</div>
+                                   <div class="icon-addon addon-md">
+                                       <div class="input-group">
+                                        <input disabled id="view-mgoodscode" name="mgoodscode" class="form-control forminput" maxlength="14" placeholder="AUTO GENERATE" type="text" data-parsley-required-message="Field Ini Tidak Boleh Kosong"  data-parsley-errors-container=".errorBlock1" @if (Session::has('autofocus')) autofocus @endif >
+                                        <label for="" class="glyphicon glyphicon-barcode" rel="tooltip" title="ID Pelanggan"></label>
+                                        <span class="input-group-addon" style="background: none;">
+                                           <input type="checkbox" id="autogenmgoods" name="autogen" rel="tooltip" title="ON/OFF auto generate ID Barang">
+                                        </span>
+                                      </div>
+                                    </div>
+                                  </div>
                               </div>
                               <div class="errorBlock2" style="margin-left:23% !important;"></div>
                               <div style="height: 21px;" class="form-group">
@@ -1493,14 +1493,14 @@
 <!-- END MAIN PANEL -->
 
 <div id="loading_modal" class="modal" style="top: 20%;" tabindex="-1" role="dialog" data-keyboard="false" data-backdrop="static">
-	<div class="modal-dialog">
-		<div class="modal-content">
-			<div class="modal-header" style="text-align: center">
-				<h3>Loading Data</h3>
-				<img src="{{ url('master/ajax-loader.gif') }}">
-			</div>
-		</div>
-	</div>
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header" style="text-align: center">
+        <h3>Loading Data</h3>
+        <img src="{{ url('master/ajax-loader.gif') }}">
+      </div>
+    </div>
+  </div>
 </div>
 
 @stop
@@ -1515,8 +1515,8 @@
   $(function(){
     table = $('.tableapi')
     .on('preXhr.dt',function(){
-			$('#loading_modal').modal('show');
-		})
+      $('#loading_modal').modal('show');
+    })
     .DataTable({
     dom: "<'dtpadding' <'row' <'clmn' > <'srch' f> <'tablerow' l> <'clear'> <'masterbutton' B> r> <'row pb' tip>>",
         "autoWidth" : true,
@@ -1555,7 +1555,6 @@
             exportOptions: {
                 columns: [ 0, 1, 2, 3, 4, 5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25] //setting kolom mana yg mau di print
             }
-
         },
         {
           extend: 'colvis',
@@ -1563,7 +1562,6 @@
           columns: ':gt(1)'
         }
         ],
-
                     processing: false,
                 serverSide: false,
                 ajax: '{{URL::to('/')}}/admin-api/barang',
@@ -1596,8 +1594,8 @@
                 {data: 'mgoodstaxppnbm', mgoodstaxppnbm: 'mgoodstaxppnbm'},
                 ]
               }).on('xhr.dt',function(){
-								$('#loading_modal').modal('hide');
-							});
+                $('#loading_modal').modal('hide');
+              });
       $(".table thead th input[type=text]").on( 'keyup change', function () {
         table
             .column( $(this).parent().index()+':visible' )
@@ -1712,7 +1710,6 @@ $("#dropzone-gambar").dropzone({
       font-size: 15px;
       color: #aaa;
     }
-
   </style>
   <style>
     .tableapi_wrapper {
@@ -1726,20 +1723,20 @@ $("#dropzone-gambar").dropzone({
       margin-bottom: 5px;
     }
     .group-box {
-			border: 4px #ddd solid;
-			padding: 2%;
-		}
+      border: 4px #ddd solid;
+      padding: 2%;
+    }
     .box-bottom {
-			border: 4px #ddd solid;
-			padding: 2%;
-			margin-left: 50px;
+      border: 4px #ddd solid;
+      padding: 2%;
+      margin-left: 50px;
       margin-top: 10px;
-		}
+    }
     .bootstrap-switch-primary{
       width: 53px;
     }
     #tableapi {
-			border: 1px solid #ddd !important;
-		}
+      border: 1px solid #ddd !important;
+    }
   </style>
 @stop

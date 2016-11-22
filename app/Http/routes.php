@@ -136,6 +136,12 @@ Route::group(['prefix'=>'admin-nano','middleware' => ['auth','tenantdb']],functi
   Route::get('muser/export/excel','MUserController@excel');
   Route::get('muser/export/pdf','MUserController@pdf');
 
+  Route::get('mstockcardreport','MStockcardreportController@index');
+  // Route::get('mstockcardreport','MStockcardreportController@csv');
+  // Route::get('mstockcardreport','MStockcardreportController@excel');
+  // Route::get('mstockcardreport','MStockcardreportController@pdf');
+
+
   Route::controllers([
     '/'=>'AdminController'
   ]);
@@ -191,6 +197,10 @@ Route::group(['prefix'=>'admin-nano','middleware' => ['auth','tenantdb']],functi
   Route::get('salesinvoice/details/{inv}','Api\SalesInvoiceController@details');
   Route::resource('salesinvoice','Api\SalesInvoiceController');
   Route::resource('muser','Api\MUserController');
+  Route::get('mstockcardreport/mgoods','Api\MStockcardreportController@mgoods');
+  Route::get('mstockcardreport/mwarehouse','Api\MStockcardreportController@mwarehouse');
+  Route::resource('mstockcardreport','Api\MStockcardreportController');
+  
   Route::controllers([
     '/'=>'ApiController'
   ]);
