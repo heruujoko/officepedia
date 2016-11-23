@@ -142,6 +142,12 @@ Route::group(['prefix'=>'admin-nano','middleware' => ['auth','tenantdb']],functi
   Route::get('reports/salesreport/export/excel','ReportController@salesreport_excel');
   Route::get('reports/salesreport/export/csv','ReportController@salesreport_csv');
 
+  Route::get('reports/invoicereport','ReportController@invoicereport');
+  Route::get('reports/invoicereport/export/print','ReportController@invoicereport_print');
+  Route::get('reports/invoicereport/export/pdf','ReportController@invoicereport_pdf');
+  Route::get('reports/invoicereport/export/excel','ReportController@invoicereport_excel');
+  Route::get('reports/invoicereport/export/csv','ReportController@invoicereport_csv');
+
   Route::controllers([
     '/'=>'AdminController'
   ]);
@@ -198,6 +204,7 @@ Route::group(['prefix'=>'admin-nano','middleware' => ['auth','tenantdb']],functi
   Route::resource('salesinvoice','Api\SalesInvoiceController');
   Route::resource('muser','Api\MUserController');
   Route::get('salesreport','Api\SalesController@index');
+  Route::get('invoicereport','Api\SalesController@invoices');
   Route::controllers([
     '/'=>'ApiController'
   ]);

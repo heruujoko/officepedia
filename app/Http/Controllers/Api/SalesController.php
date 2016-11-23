@@ -9,6 +9,7 @@ use App\Http\Controllers\Controller;
 use Auth;
 use App\MHInvoice;
 use App\MDInvoice;
+use App\MConfig;
 
 class SalesController extends Controller
 {
@@ -67,5 +68,63 @@ class SalesController extends Controller
         }
 
         return response()->json($sales);
+    }
+
+    public function invoices(Request $request){
+        /*
+         * price config
+         */
+        $config = MConfig::on(Auth::user()->db_name)->where('id',1)->first();
+        $data['decimals'] = $config->msysgenrounddec;
+        $data['dec_point'] = $config->msysnumseparator;
+        if($data['dec_point'] == ","){
+          $data['thousands_sep'] = ".";
+        } else {
+          $data['thousands_sep'] = ",";
+        }
+
+        /*
+         * filterings
+         */
+        if($request->has('goods') && $request->has('wh') != ""){
+            $invs = MDInvoice::on(Auth::user()->db_name)->where('mdinvoicegoodsid',$request->goods)->where('mdinvoicegoodsidwhouse',$request->wh)->get();
+        } else if($request->has('goods') && $request->goods != ""){
+            $invs = MDInvoice::on(Auth::user()->db_name)->where('mdinvoicegoodsid',$request->goods)->get();
+        } else if($request->has('wh') && $request->wh != "" ){
+            $invs = MDInvoice::on(Auth::user()->db_name)->where('mdinvoicegoodsidwhouse',$request->wh)->get();
+        } else {
+            $invs = MDInvoice::on(Auth::user()->db_name)->get();
+        }
+        $dates = [];
+        foreach($invs as $i){
+            array_push($dates,$i->mdinvoicedate);
+        }
+        $dates = array_unique($dates);
+        $date_group_invoices = [];
+        foreach ($dates as $dt) {
+            array_push($date_group_invoices,['date' => $dt,'mdinvoicegoodsprice' => ""]);
+            /*
+             * filterings
+             */
+
+            if($request->has('goods') && $request->has('wh') != ""){
+                $inv = MDInvoice::on(Auth::user()->db_name)->where('mdinvoicedate',$dt)->where('mdinvoicegoodsid',$request->goods)->where('mdinvoicegoodsidwhouse',$request->wh)->get();
+            } else if($request->has('goods') && $request->goods != ""){
+                $inv = MDInvoice::on(Auth::user()->db_name)->where('mdinvoicedate',$dt)->where('mdinvoicegoodsid',$request->goods)->get();
+            } else if($request->has('wh') && $request->wh != "" ){
+                $inv = MDInvoice::on(Auth::user()->db_name)->where('mdinvoicedate',$dt)->where('mdinvoicegoodsidwhouse',$request->wh)->get();
+            } else {
+                $inv = MDInvoice::on(Auth::user()->db_name)->where('mdinvoicedate',$dt)->get();
+            }
+            foreach ($inv as $iv) {
+                $iv['price'] = number_format($iv->mdinvoicegoodsprice,$data['decimals'],$data['dec_point'],$data['thousands_sep']);
+                $iv['disc'] = number_format($iv->mdinvoicegoodsdiscount,$data['decimals'],$data['dec_point'],$data['thousands_sep']);
+                $iv['tax'] = number_format($iv->mdinvoicegoodstax,$data['decimals'],$data['dec_point'],$data['thousands_sep']);
+                $iv['sub'] = number_format($iv->mdinvoicegoodsgrossamount ,$data['decimals'],$data['dec_point'],$data['thousands_sep']);
+                $iv['total'] = number_format(($iv->mdinvoicegoodsgrossamount + $iv->mdinvoicegoodstax - $iv->mdinvoicegoodsdiscount) ,$data['decimals'],$data['dec_point'],$data['thousands_sep']);
+                array_push($date_group_invoices,$iv);
+            }
+        }
+        return response()->json($date_group_invoices);
     }
 }
