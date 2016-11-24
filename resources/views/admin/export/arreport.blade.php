@@ -64,44 +64,44 @@
     </head>
     <body>
         <h5 class="text-center">{{ $company }}</h5>
-        <h5 class="text-center">Laporan Buku Penjualan</h5>
+        <h5 class="text-center">Laporan Buku Piutang</h5>
         <h5 class="text-center">Periode {{ $start }} - {{ $end }}</h5>
         <br>
         <p class="header-status">User {{ Auth::user()->name }}</p>
         <p class="header-status">Tanggal Cetak {{ Carbon\Carbon::now() }}</p>
         </div>
         <br>
-        <table class="table" id="tableapi">
+        <table class="table" id="tableapi" style="width:100%">
             <thead>
                 <tr>
-                    <th>Customer</th>
-                    <th>Tgl Invoice</th>
-                    <th>Jumlah Invoice</th>
-                    <th>Penjualan</th>
-                    <th>Bonus Barang</th>
-                    <th>Discount</th>
-                    <th>Subtotal</th>
-                    <th>PPN</th>
-                    <th>Total</th>
-                    <th>Retur</th>
-                    <th>Total - Retur</th>
+                    <th colspan="4">&nbsp;</th>
+                    <th colspan="5" class="text-center">Outstanding</th>
+                </tr>
+                <tr>
+                    <th>Kode Customer</th>
+                    <th>Nama Customer</th>
+                    <th>Total Nota</th>
+                    <th>Outstanding</th>
+                    <th>1-7 Hari</th>
+                    <th>7-14 Hari</th>
+                    <th>14-21 Hari</th>
+                    <th>21-30 Hari</th>
+                    <th>> 1 Bulan</th>
                 </tr>
             </thead>
             <tbody>
-                @foreach($sales as $sale)
-                    <tr>
-                        <td>{{ $sale->mhinvoicecustomername }}</td>
-                        <td>{{ $sale->mhinvoicedate }}</td>
-                        <td>{{ $sale->detail_count }}</td>
-                        <td style="text-align:right" v-priceformatlabel="num_format" >{{ number_format($sale->mhinvoicesubtotal + $sale->mhinvoicediscounttotal,$decimals,$dec_point,$thousands_sep) }}</td>
-                        <td style="text-align:right" v-priceformatlabel="num_format">0</td>
-                        <td style="text-align:right" v-priceformatlabel="num_format" >{{ number_format($sale->mhinvoicediscounttotal,$decimals,$dec_point,$thousands_sep) }}</td>
-                        <td style="text-align:right" v-priceformatlabel="num_format" >{{ number_format($sale->mhinvoicesubtotal,$decimals,$dec_point,$thousands_sep) }}</td>
-                        <td style="text-align:right" v-priceformatlabel="num_format" >{{ number_format($sale->mhinvoicetaxtotal,$decimals,$dec_point,$thousands_sep) }}</td>
-                        <td style="text-align:right" v-priceformatlabel="num_format" >{{ number_format($sale->mhinvoicegrandtotal,$decimals,$dec_point,$thousands_sep) }}</td>
-                        <td style="text-align:right">0</td>
-                        <td style="text-align:right" v-priceformatlabel="num_format" >{{ number_format($sale->mhinvoicegrandtotal,$decimals,$dec_point,$thousands_sep) }}</td>
-                    </tr>
+                @foreach($ars as $ar)
+                <tr >
+                    <td>{{ $ar->marcardcustomerid }}</td>
+                    <td>{{ $ar->marcardcustomername }}</td>
+                    <td style="text-align:right">{{ number_format($ar->marcardtotalinv,$decimals,$dec_point,$thousands_sep) }}</td>
+                    <td style="text-align:right">{{ number_format($ar->marcardtotalinv,$decimals,$dec_point,$thousands_sep) }}</td>
+                    <td style="text-align:right">{{ number_format($ar->seven,$decimals,$dec_point,$thousands_sep) }}</td>
+                    <td style="text-align:right">{{ number_format($ar->fourteen,$decimals,$dec_point,$thousands_sep) }}</td>
+                    <td style="text-align:right">{{ number_format($ar->twentyone,$decimals,$dec_point,$thousands_sep) }}</td>
+                    <td style="text-align:right">{{ number_format($ar->thirty,$decimals,$dec_point,$thousands_sep) }}</td>
+                    <td style="text-align:right">{{ number_format($ar->month,$decimals,$dec_point,$thousands_sep) }}</td>
+                </tr>
                 @endforeach
             </tbody>
         </table>

@@ -59,11 +59,17 @@
                                                 <div class="col-md-12">
                                                     <br>
                                                     <h4 class="text-center">{{ $config->msyscompname }}</h4>
-                                                    <h4 class="text-center">Laporan Buku Penjualan</h4>
+                                                    <h4 class="text-center">Laporan Buku Penjualan Invoice</h4>
                                                     <h4 class="text-center">Periode <input v-dpicker v-model="invoice_date_start" type="text" class="small-date" /> - <input v-dpicker v-model="invoice_date_end" type="text" class="small-date" /></h4>
                                                 </div>
                                             </div>
                                             <br>
+                                            <div class="row">
+                                                <p class="col-md-1 report-label">Cabang</p>
+                                                <select v-selecttwo class="col-md-2" v-model="selected_branch">
+                                                    <option value="">Semua</option>
+                                                </select>
+                                            </div>
                                             <div class="row">
                                                 <p class="col-md-1 report-label">Gudang</p>
                                                 <select v-selecttwo class="col-md-2" v-model="selected_warehouse">
@@ -76,12 +82,6 @@
                                                 <select v-selecttwo v-model="selected_goods" class="col-md-2">
                                                     <option value="">Semua</option>
                                                     <option v-for="good in goods" :value="good.mgoodscode">@{{ good.mgoodsname }}</option>
-                                                </select>
-                                            </div>
-                                            <div class="row">
-                                                <p class="col-md-1 report-label">Sort By</p>
-                                                <select v-selecttwo v-model="selected_sorts" class="col-md-2">
-                                                    <option v-for="sort in sorts" :value="sort.id">@{{ sort.label }}</option>
                                                 </select>
                                             </div>
                                             <br>
@@ -99,32 +99,34 @@
                                                     <table class="table table-bordered" id="tableapi">
                                                         <thead>
                                                             <tr>
-                                                                <th>Customer</th>
-                                                                <th>Tgl Invoice</th>
-                                                                <th>Jumlah Invoice</th>
-                                                                <th>Penjualan</th>
-                                                                <th>Bonus Barang</th>
+                                                                <th>Tgl Transaksi</th>
+                                                                <th>No Invoice</th>
+                                                                <th>Kode Barang</th>
+                                                                <th>Nama Barang</th>
+                                                                <th>Quantity</th>
+                                                                <th>Harga Satuan</th>
+                                                                <th>Free Goods</th>
                                                                 <th>Discount</th>
                                                                 <th>Subtotal</th>
                                                                 <th>PPN</th>
                                                                 <th>Total</th>
-                                                                <th>Retur</th>
-                                                                <th>Total - Retur</th>
+                                                                <th>Keterangan</th>
                                                             </tr>
                                                         </thead>
                                                         <tbody>
-                                                            <tr v-for="sale in sales">
-                                                                <td>@{{ sale.mhinvoicecustomername }}</td>
-                                                                <td>@{{ sale.mhinvoicedate }}</td>
-                                                                <td>@{{ sale.detail_count }}</td>
-                                                                <td style="text-align:right" v-priceformatlabel="num_format" >@{{ sale.mhinvoicesubtotal + sale.mhinvoicediscounttotal }}</td>
-                                                                <td style="text-align:right" v-priceformatlabel="num_format">0</td>
-                                                                <td style="text-align:right" v-priceformatlabel="num_format" >@{{ sale.mhinvoicediscounttotal }}</td>
-                                                                <td style="text-align:right" v-priceformatlabel="num_format" >@{{ sale.mhinvoicesubtotal }}</td>
-                                                                <td style="text-align:right" v-priceformatlabel="num_format" >@{{ sale.mhinvoicetaxtotal }}</td>
-                                                                <td style="text-align:right" v-priceformatlabel="num_format" >@{{ sale.mhinvoicegrandtotal }}</td>
-                                                                <td style="text-align:right">0</td>
-                                                                <td style="text-align:right" v-priceformatlabel="num_format" >@{{ sale.mhinvoicegrandtotal }}</td>
+                                                            <tr v-for="inv in invoices">
+                                                                <td>@{{ inv.date }}</td>
+                                                                <td>@{{ inv.mhinvoiceno }}</td>
+                                                                <td>@{{ inv.mdinvoicegoodsid }}</td>
+                                                                <td>@{{ inv.mdinvoicegoodsname }}</td>
+                                                                <td>@{{ inv.mdinvoicegoodsqty }}</td>
+                                                                <td style="text-align:right">@{{ inv.price }}</td>
+                                                                <td></td>
+                                                                <td style="text-align:right">@{{ inv.disc }}</td>
+                                                                <td style="text-align:right">@{{ inv.sub }}</td>
+                                                                <td style="text-align:right">@{{ inv.tax }}</td>
+                                                                <td style="text-align:right">@{{ inv.total }}</td>
+                                                                <td></td>
                                                             </tr>
                                                         </tbody>
                                                     </table>
@@ -157,7 +159,7 @@
 @stop
 
 @section('js')
-    <script src="{{ url('/js/salesreport.js') }}"></script>
+    <script src="{{ url('/js/invoicereport.js') }}"></script>
 @stop
 
 @section('css')

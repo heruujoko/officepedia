@@ -64,7 +64,7 @@
     </head>
     <body>
         <h5 class="text-center">{{ $company }}</h5>
-        <h5 class="text-center">Laporan Buku Penjualan</h5>
+        <h5 class="text-center">Laporan Buku Penjualan Invoice</h5>
         <h5 class="text-center">Periode {{ $start }} - {{ $end }}</h5>
         <br>
         <p class="header-status">User {{ Auth::user()->name }}</p>
@@ -74,34 +74,53 @@
         <table class="table" id="tableapi">
             <thead>
                 <tr>
-                    <th>Customer</th>
-                    <th>Tgl Invoice</th>
-                    <th>Jumlah Invoice</th>
-                    <th>Penjualan</th>
-                    <th>Bonus Barang</th>
+                    <th>Tgl Transaksi</th>
+                    <th>No Invoice</th>
+                    <th>Kode Barang</th>
+                    <th>Nama Barang</th>
+                    <th>Quantity</th>
+                    <th>Harga Satuan</th>
+                    <th>Free Goods</th>
                     <th>Discount</th>
                     <th>Subtotal</th>
                     <th>PPN</th>
                     <th>Total</th>
-                    <th>Retur</th>
-                    <th>Total - Retur</th>
+                    <th>Keterangan</th>
                 </tr>
             </thead>
             <tbody>
-                @foreach($sales as $sale)
+                @foreach($invoices as $inv)
+                    @if($inv['data'] == false)
                     <tr>
-                        <td>{{ $sale->mhinvoicecustomername }}</td>
-                        <td>{{ $sale->mhinvoicedate }}</td>
-                        <td>{{ $sale->detail_count }}</td>
-                        <td style="text-align:right" v-priceformatlabel="num_format" >{{ number_format($sale->mhinvoicesubtotal + $sale->mhinvoicediscounttotal,$decimals,$dec_point,$thousands_sep) }}</td>
-                        <td style="text-align:right" v-priceformatlabel="num_format">0</td>
-                        <td style="text-align:right" v-priceformatlabel="num_format" >{{ number_format($sale->mhinvoicediscounttotal,$decimals,$dec_point,$thousands_sep) }}</td>
-                        <td style="text-align:right" v-priceformatlabel="num_format" >{{ number_format($sale->mhinvoicesubtotal,$decimals,$dec_point,$thousands_sep) }}</td>
-                        <td style="text-align:right" v-priceformatlabel="num_format" >{{ number_format($sale->mhinvoicetaxtotal,$decimals,$dec_point,$thousands_sep) }}</td>
-                        <td style="text-align:right" v-priceformatlabel="num_format" >{{ number_format($sale->mhinvoicegrandtotal,$decimals,$dec_point,$thousands_sep) }}</td>
-                        <td style="text-align:right">0</td>
-                        <td style="text-align:right" v-priceformatlabel="num_format" >{{ number_format($sale->mhinvoicegrandtotal,$decimals,$dec_point,$thousands_sep) }}</td>
+                        <td>{{ $inv['date'] }}</td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
                     </tr>
+                    @else
+                    <tr>
+                        <td></td>
+                        <td>{{ $inv->mhinvoiceno }}</td>
+                        <td>{{ $inv->mdinvoicegoodsid }}</td>
+                        <td>{{ $inv->mdinvoicegoodsname }}</td>
+                        <td>{{ $inv->mdinvoicegoodsqty }}</td>
+                        <td style="text-align:right">{{ $inv['price']}}</td>
+                        <td></td>
+                        <td style="text-align:right">{{ $inv['disc']}}</td>
+                        <td style="text-align:right">{{ $inv['sub']}}</td>
+                        <td style="text-align:right">{{ $inv['tax']}}</td>
+                        <td style="text-align:right">{{ $inv['total']}}</td>
+                        <td></td>
+                    </tr>
+                    @endif
                 @endforeach
             </tbody>
         </table>
