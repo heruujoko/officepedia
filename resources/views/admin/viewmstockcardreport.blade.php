@@ -62,27 +62,26 @@
                                             <div class="row">
                                                 <div class="col-md-12">
                                                     <br>
-                                                    <h4 class="text-center">PT Officepedia Solusi Indonesia</h4>
+                                                    <h4 class="text-center">{{ $config->msyscompname }}</h4>
                                                     <h4 class="text-center">Laporan Stock Card Report</h4>
-                                                    <h4 class="text-center">Periode 1 November - 30 November</h4>
+                                                     <h4 class="text-center">Periode <input v-model="invoice_date_start" type="text" class="small-date" /> - <input  v-model="invoice_date_end" type="text" class="small-date" /></h4>
+                                                    
                                                 </div>
                                             </div>
                                             <br>
                                                 <div class="row">
                                                 <p class="col-md-1 report-label">Gudang</p>
-                                                <select class="col-md-2">
+                                                <select class="col-md-2" v-model="mstockcardwhouse">
                           					                <option value="">Semua</option>
-                                                    <option v-for="warehouse in warehouses" :value="warehouse.mwarehousename">@{{warehouse.mwarehousename}}</option>
-                                                   
-                                                </select>
+                                                    <option v-for="warehouse in warehouses" :value="warehouse.id">@{{warehouse.mwarehousename}}</option>
+                                                   </select>
                                             </div>
                                               <div class="row">
                                                 <p class="col-md-1 report-label">Kode Barang</p>
-                                                <select class="col-md-2">
-                                                    <option>Semua</option>
-                          						               <option v-for="good in goods" value="good.mgoodscode">@{{good.mgoodscode}}</option>
-                                                    
-                                                </select>
+                                                <select class="col-md-2" v-model="mstockcardgoodsid">
+                                                    <option value="">Semua</option>
+                          						               <option v-for="good in goods" :value="good.mgoodscode">@{{good.mgoodscode}}</option>
+                                                    </select>
                                             </div>
                                             <br>
                                            {{--  <div class="row">
@@ -96,7 +95,7 @@
                                             <br>
 							<div class="row">
 							 <div class="col-md-12">
-							<table class="table table-bordered">
+							<table class="table table-bordered" id="tableapi">  
 							<thead>
 								<tr>
 									<th>Kode Barang</th>
@@ -214,9 +213,36 @@
 <!-- END MAIN CONTENT -->
 </div>
 <!-- END MAIN PANEL -->
-
+ <div id="loading_modal" class="modal" style="top: 20%;" tabindex="-1" role="dialog" data-keyboard="false" data-backdrop="static">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header" style="text-align: center">
+                    <h3>Loading Data</h3>
+                    <img src="{{ url('master/ajax-loader.gif') }}">
+                </div>
+            </div>
+        </div>
+    </div>
 
 @stop
 @section('js')
 <script src="{{ url('/js/stockcardreport.js') }}"></script>
+@stop
+@section('css')
+    <style>
+        .text-center {
+            text-align: center;
+        }
+        .report-label {
+            font-size: 14px;
+            margin-top: 5px;
+        }
+        #tableapi {
+          border: 1px solid #ddd !important;
+      }
+        .small-date{
+            width: 95px;
+            font-size: 11px;
+        }
+    </style>
 @stop

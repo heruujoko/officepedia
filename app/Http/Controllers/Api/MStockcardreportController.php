@@ -14,6 +14,7 @@ use App\MWarehouse;
 use Datatables;
 use DB;
 use Auth;
+use Carbon\Carbon;
 use App\Helper\DBHelper;
 
 class MStockcardreportController extends Controller
@@ -26,40 +27,23 @@ class MStockcardreportController extends Controller
         return response()->json($mbrand);
   }
 
-  public function show($id){
-    $mbrand = MStockCard::on(Auth::user()->db_name)->where('id',$id)->first();
-        return response()->json($mbrand);
-  }
-
-    public function store(Request $request){
-      try{
-        $mbrand = new MStockCard($request->all());
-        $mbrand->setConnection(Auth::user()->db_name);
-        $mbrand->void = 0;
-        $mbrand->save();
-        return response()->json($mbrand);
-      } catch(Exception $e){
-        return response()->json($e,400);
-      }
-
-  }
-
-  public function update(Request $request,$id){
-    try{
-      $mbrand = MStockCard::on(Auth::user()->db_name)->where('id',$id)->first();
-      $mbrand->update($request->all());
-      return response()->json($mbrand);
-    }catch(Exception $e){
-      return response()->json($e,400);
+  public function filter(Request $request){
+    $query = MStockCard::on(Auth::user()->db_name);
+    if ($request->has('start')) {
+         $query->whereDate('mstockcarddate','>=',Carbon::parse($request->start));
     }
+    if($request->has('end')){
+            $query->whereDate('mstockcarddate','<=',Carbon::parse($request->end));
+        }
+    if($request->has('mstockcardgoodsid')){
+            $query->where('mstockcardgoodsid',$request->mstockcardgoodsid);
+    }
+    if ($request->has('mstockcardwhouse')) {
+        $query->where('mstockcardwhouse',$request->mstockcardwhouse);
+    }
+    $data = $query->get();
 
-  }
-
-  public function destroy($id){
-    $mbrand = MStockCard::on(Auth::user()->db_name)->where('id',$id)->first();
-    $mbrand->void = 1;
-    $mbrand->save();
-    return response()->json();
+    return response()->json($data);
   }
 
 }
