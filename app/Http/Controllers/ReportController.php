@@ -15,6 +15,7 @@ use Carbon\Carbon;
 class ReportController extends Controller
 {
     public function salesreport(){
+        $data['config'] = MConfig::on(Auth::user()->db_name)->first();
         $data['active'] = 'reports';
         $data['section'] = 'Sales Report';
         return view('admin.salesreport',$data);
@@ -24,13 +25,25 @@ class ReportController extends Controller
 
         $sales = [];
         $headers=[];
+
+        /*
+         * filter date header
+         */
+        $header_query = MHInvoice::on(Auth::user()->db_name);
+        if($request->has('start')){
+            $header_query->whereDate('mhinvoicedate','>=',Carbon::parse($request->start));
+        }
+        if($request->has('end')){
+            $header_query->whereDate('mhinvoicedate','<=',Carbon::parse($request->end));
+        }
+
         if($request->has('goods') && $request->has('wh')){
             $details = MDInvoice::on(Auth::user()->db_name)->where('mdinvoicegoodsid',$request->goods)->where('mdinvoicegoodsidwhouse',$request->wh)->get();
             foreach ($details as $d) {
                 array_push($headers,$d->mhinvoiceno);
             }
             $headers = array_unique($headers);
-            $sales = MHInvoice::on(Auth::user()->db_name)->whereIn('mhinvoiceno',$headers)->get();
+            $sales = $header_query->whereIn('mhinvoiceno',$headers)->get();
             foreach($sales as $s){
 
                 $details = MDInvoice::on(Auth::user()->db_name)->where('mhinvoiceno',$s->mhinvoiceno)->get();
@@ -44,7 +57,7 @@ class ReportController extends Controller
                 array_push($headers,$d->mhinvoiceno);
             }
             $headers = array_unique($headers);
-            $sales = MHInvoice::on(Auth::user()->db_name)->whereIn('mhinvoiceno',$headers)->get();
+            $sales = $header_query->whereIn('mhinvoiceno',$headers)->get();
             foreach($sales as $s){
 
                 $details = MDInvoice::on(Auth::user()->db_name)->where('mhinvoiceno',$s->mhinvoiceno)->get();
@@ -57,7 +70,7 @@ class ReportController extends Controller
                 array_push($headers,$d->mhinvoiceno);
             }
             $headers = array_unique($headers);
-            $sales = MHInvoice::on(Auth::user()->db_name)->whereIn('mhinvoiceno',$headers)->get();
+            $sales = $header_query->whereIn('mhinvoiceno',$headers)->get();
             foreach($sales as $s){
 
                 $details = MDInvoice::on(Auth::user()->db_name)->where('mhinvoiceno',$s->mhinvoiceno)->get();
@@ -65,7 +78,7 @@ class ReportController extends Controller
 
             }
         } else {
-            $sales = MHInvoice::on(Auth::user()->db_name)->get();
+            $sales = $header_query->get();
 
             foreach($sales as $s){
 
@@ -85,19 +98,34 @@ class ReportController extends Controller
         }
 
         $data['sales'] = $sales;
+        $data['company'] = $config->msyscompname;
+        $data['start'] = Carbon::parse($request->start)->formatLocalized('%d %B %Y');
+        $data['end'] = Carbon::parse($request->end)->formatLocalized('%d %B %Y');
         return view('admin/export/salesreport',$data);
     }
 
     public function salesreport_pdf(Request $request){
         $sales = [];
         $headers=[];
+
+        /*
+         * filter date header
+         */
+        $header_query = MHInvoice::on(Auth::user()->db_name);
+        if($request->has('start')){
+            $header_query->whereDate('mhinvoicedate','>=',Carbon::parse($request->start));
+        }
+        if($request->has('end')){
+            $header_query->whereDate('mhinvoicedate','<=',Carbon::parse($request->end));
+        }
+
         if($request->has('goods') && $request->has('wh')){
             $details = MDInvoice::on(Auth::user()->db_name)->where('mdinvoicegoodsid',$request->goods)->where('mdinvoicegoodsidwhouse',$request->wh)->get();
             foreach ($details as $d) {
                 array_push($headers,$d->mhinvoiceno);
             }
             $headers = array_unique($headers);
-            $sales = MHInvoice::on(Auth::user()->db_name)->whereIn('mhinvoiceno',$headers)->get();
+            $sales = $header_query->whereIn('mhinvoiceno',$headers)->get();
             foreach($sales as $s){
 
                 $details = MDInvoice::on(Auth::user()->db_name)->where('mhinvoiceno',$s->mhinvoiceno)->get();
@@ -111,7 +139,7 @@ class ReportController extends Controller
                 array_push($headers,$d->mhinvoiceno);
             }
             $headers = array_unique($headers);
-            $sales = MHInvoice::on(Auth::user()->db_name)->whereIn('mhinvoiceno',$headers)->get();
+            $sales = $header_query->whereIn('mhinvoiceno',$headers)->get();
             foreach($sales as $s){
 
                 $details = MDInvoice::on(Auth::user()->db_name)->where('mhinvoiceno',$s->mhinvoiceno)->get();
@@ -124,7 +152,7 @@ class ReportController extends Controller
                 array_push($headers,$d->mhinvoiceno);
             }
             $headers = array_unique($headers);
-            $sales = MHInvoice::on(Auth::user()->db_name)->whereIn('mhinvoiceno',$headers)->get();
+            $sales = $header_query->whereIn('mhinvoiceno',$headers)->get();
             foreach($sales as $s){
 
                 $details = MDInvoice::on(Auth::user()->db_name)->where('mhinvoiceno',$s->mhinvoiceno)->get();
@@ -132,7 +160,7 @@ class ReportController extends Controller
 
             }
         } else {
-            $sales = MHInvoice::on(Auth::user()->db_name)->get();
+            $sales = $header_query->get();
 
             foreach($sales as $s){
 
@@ -152,6 +180,10 @@ class ReportController extends Controller
         }
 
         $data['sales'] = $sales;
+        $data['company'] = $config->msyscompname;
+        $data['start'] = Carbon::parse($request->start)->formatLocalized('%d %B %Y');
+        $data['end'] = Carbon::parse($request->end)->formatLocalized('%d %B %Y');
+
         $pdf = PDF::loadview('admin/export/salesreport',$data);
 		return $pdf->setPaper('a4', 'potrait')->download('Sales Report.pdf');
     }
@@ -160,13 +192,25 @@ class ReportController extends Controller
 
         $sales = [];
         $headers=[];
+
+        /*
+         * filter date header
+         */
+        $header_query = MHInvoice::on(Auth::user()->db_name);
+        if($request->has('start')){
+            $header_query->whereDate('mhinvoicedate','>=',Carbon::parse($request->start));
+        }
+        if($request->has('end')){
+            $header_query->whereDate('mhinvoicedate','<=',Carbon::parse($request->end));
+        }
+
         if($request->has('goods') && $request->has('wh')){
             $details = MDInvoice::on(Auth::user()->db_name)->where('mdinvoicegoodsid',$request->goods)->where('mdinvoicegoodsidwhouse',$request->wh)->get();
             foreach ($details as $d) {
                 array_push($headers,$d->mhinvoiceno);
             }
             $headers = array_unique($headers);
-            $sales = MHInvoice::on(Auth::user()->db_name)->whereIn('mhinvoiceno',$headers)->get();
+            $sales = $header_query->whereIn('mhinvoiceno',$headers)->get();
             foreach($sales as $s){
 
                 $details = MDInvoice::on(Auth::user()->db_name)->where('mhinvoiceno',$s->mhinvoiceno)->get();
@@ -180,7 +224,7 @@ class ReportController extends Controller
                 array_push($headers,$d->mhinvoiceno);
             }
             $headers = array_unique($headers);
-            $sales = MHInvoice::on(Auth::user()->db_name)->whereIn('mhinvoiceno',$headers)->get();
+            $sales = $header_query->whereIn('mhinvoiceno',$headers)->get();
             foreach($sales as $s){
 
                 $details = MDInvoice::on(Auth::user()->db_name)->where('mhinvoiceno',$s->mhinvoiceno)->get();
@@ -193,7 +237,7 @@ class ReportController extends Controller
                 array_push($headers,$d->mhinvoiceno);
             }
             $headers = array_unique($headers);
-            $sales = MHInvoice::on(Auth::user()->db_name)->whereIn('mhinvoiceno',$headers)->get();
+            $sales = $header_query->whereIn('mhinvoiceno',$headers)->get();
             foreach($sales as $s){
 
                 $details = MDInvoice::on(Auth::user()->db_name)->where('mhinvoiceno',$s->mhinvoiceno)->get();
@@ -201,7 +245,7 @@ class ReportController extends Controller
 
             }
         } else {
-            $sales = MHInvoice::on(Auth::user()->db_name)->get();
+            $sales = $header_query->get();
 
             foreach($sales as $s){
 
@@ -220,11 +264,15 @@ class ReportController extends Controller
         } else {
           $this->data['thousands_sep'] = ",";
         }
+        $this->data['company'] = $config->msyscompname;
+        $this->data['start'] = Carbon::parse($request->start)->formatLocalized('%d %B %Y');
+        $this->data['end'] = Carbon::parse($request->end)->formatLocalized('%d %B %Y');
+
 		return Excel::create('Sales Report',function($excel){
 			$excel->sheet('Sales Report',function($sheet){
 				$this->count++;
                 $sheet->mergeCells('A1:K1');
-                $sheet->row($this->count,array('PT Officepedia Solusindo'));
+                $sheet->row($this->count,array($this->data['company']));
                 $sheet->cell('A1',function($cell){
                     $cell->setAlignment('center');
                 });
@@ -236,7 +284,7 @@ class ReportController extends Controller
                 });
                 $this->count++;
                 $sheet->mergeCells('A3:K3');
-                $sheet->row($this->count,array('Periode 1 November - 30 November'));
+                $sheet->row($this->count,array('Periode '.$this->data['start'].' - '.$this->data['end']));
                 $sheet->cell('A3',function($cell){
                     $cell->setAlignment('center');
                 });
@@ -287,13 +335,25 @@ class ReportController extends Controller
 
         $sales = [];
         $headers=[];
+
+        /*
+         * filter date header
+         */
+        $header_query = MHInvoice::on(Auth::user()->db_name);
+        if($request->has('start')){
+            $header_query->whereDate('mhinvoicedate','>=',Carbon::parse($request->start));
+        }
+        if($request->has('end')){
+            $header_query->whereDate('mhinvoicedate','<=',Carbon::parse($request->end));
+        }
+
         if($request->has('goods') && $request->has('wh')){
             $details = MDInvoice::on(Auth::user()->db_name)->where('mdinvoicegoodsid',$request->goods)->where('mdinvoicegoodsidwhouse',$request->wh)->get();
             foreach ($details as $d) {
                 array_push($headers,$d->mhinvoiceno);
             }
             $headers = array_unique($headers);
-            $sales = MHInvoice::on(Auth::user()->db_name)->whereIn('mhinvoiceno',$headers)->get();
+            $sales = $header_query->whereIn('mhinvoiceno',$headers)->get();
             foreach($sales as $s){
 
                 $details = MDInvoice::on(Auth::user()->db_name)->where('mhinvoiceno',$s->mhinvoiceno)->get();
@@ -307,7 +367,7 @@ class ReportController extends Controller
                 array_push($headers,$d->mhinvoiceno);
             }
             $headers = array_unique($headers);
-            $sales = MHInvoice::on(Auth::user()->db_name)->whereIn('mhinvoiceno',$headers)->get();
+            $sales = $header_query->whereIn('mhinvoiceno',$headers)->get();
             foreach($sales as $s){
 
                 $details = MDInvoice::on(Auth::user()->db_name)->where('mhinvoiceno',$s->mhinvoiceno)->get();
@@ -320,7 +380,7 @@ class ReportController extends Controller
                 array_push($headers,$d->mhinvoiceno);
             }
             $headers = array_unique($headers);
-            $sales = MHInvoice::on(Auth::user()->db_name)->whereIn('mhinvoiceno',$headers)->get();
+            $sales = $header_query->whereIn('mhinvoiceno',$headers)->get();
             foreach($sales as $s){
 
                 $details = MDInvoice::on(Auth::user()->db_name)->where('mhinvoiceno',$s->mhinvoiceno)->get();
@@ -328,7 +388,7 @@ class ReportController extends Controller
 
             }
         } else {
-            $sales = MHInvoice::on(Auth::user()->db_name)->get();
+            $sales = $header_query->get();
 
             foreach($sales as $s){
 
@@ -338,7 +398,7 @@ class ReportController extends Controller
             }
         }
         $this->sales = $sales;
-        $this->count = 0;
+		$this->count = 0;
         $config = MConfig::on(Auth::user()->db_name)->where('id',1)->first();
         $this->data['decimals'] = $config->msysgenrounddec;
         $this->data['dec_point'] = $config->msysnumseparator;
@@ -347,11 +407,15 @@ class ReportController extends Controller
         } else {
           $this->data['thousands_sep'] = ",";
         }
-        return Excel::create('Sales Report',function($excel){
-            $excel->sheet('Sales Report',function($sheet){
-                $this->count++;
+        $this->data['company'] = $config->msyscompname;
+        $this->data['start'] = Carbon::parse($request->start)->formatLocalized('%d %B %Y');
+        $this->data['end'] = Carbon::parse($request->end)->formatLocalized('%d %B %Y');
+
+		return Excel::create('Sales Report',function($excel){
+			$excel->sheet('Sales Report',function($sheet){
+				$this->count++;
                 $sheet->mergeCells('A1:K1');
-                $sheet->row($this->count,array('PT Officepedia Solusindo'));
+                $sheet->row($this->count,array($this->data['company']));
                 $sheet->cell('A1',function($cell){
                     $cell->setAlignment('center');
                 });
@@ -363,7 +427,7 @@ class ReportController extends Controller
                 });
                 $this->count++;
                 $sheet->mergeCells('A3:K3');
-                $sheet->row($this->count,array('Periode 1 November - 30 November'));
+                $sheet->row($this->count,array('Periode '.$this->data['start'].' - '.$this->data['end']));
                 $sheet->cell('A3',function($cell){
                     $cell->setAlignment('center');
                 });
@@ -406,9 +470,9 @@ class ReportController extends Controller
                 }
 
 
-            });
-        })->export('csv');
-    }
+			});
+		})->export('csv');
+	}
 
     public function invoicereport(){
         $data['active'] = 'reports';

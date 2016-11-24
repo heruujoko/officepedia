@@ -63,9 +63,9 @@
         </style>
     </head>
     <body>
-        <h5 class="text-center">PT Officepedia Solusi Indonesia</h5>
+        <h5 class="text-center">{{ $company }}</h5>
         <h5 class="text-center">Laporan Buku Penjualan</h5>
-        <h5 class="text-center">Periode 1 November - 30 November</h5>
+        <h5 class="text-center">Periode {{ $start }} - {{ $end }}</h5>
         <br>
         <p class="header-status">User {{ Auth::user()->name }}</p>
         <p class="header-status">Tanggal Cetak {{ Carbon\Carbon::now() }}</p>

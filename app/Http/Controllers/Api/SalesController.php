@@ -10,19 +10,34 @@ use Auth;
 use App\MHInvoice;
 use App\MDInvoice;
 use App\MConfig;
+use Carbon\Carbon;
 
 class SalesController extends Controller
 {
     public function index(Request $request){
         $sales = [];
         $headers=[];
+
+
+
+        /*
+         * filter date header
+         */
+        $header_query = MHInvoice::on(Auth::user()->db_name);
+        if($request->has('start')){
+            $header_query->whereDate('mhinvoicedate','>=',Carbon::parse($request->start));
+        }
+        if($request->has('end')){
+            $header_query->whereDate('mhinvoicedate','<=',Carbon::parse($request->end));
+        }
+
         if($request->has('goods') && $request->has('wh')){
             $details = MDInvoice::on(Auth::user()->db_name)->where('mdinvoicegoodsid',$request->goods)->where('mdinvoicegoodsidwhouse',$request->wh)->get();
             foreach ($details as $d) {
                 array_push($headers,$d->mhinvoiceno);
             }
             $headers = array_unique($headers);
-            $sales = MHInvoice::on(Auth::user()->db_name)->whereIn('mhinvoiceno',$headers)->get();
+            $sales = $header_query->whereIn('mhinvoiceno',$headers)->get();
             foreach($sales as $s){
 
                 $details = MDInvoice::on(Auth::user()->db_name)->where('mhinvoiceno',$s->mhinvoiceno)->get();
@@ -36,7 +51,7 @@ class SalesController extends Controller
                 array_push($headers,$d->mhinvoiceno);
             }
             $headers = array_unique($headers);
-            $sales = MHInvoice::on(Auth::user()->db_name)->whereIn('mhinvoiceno',$headers)->get();
+            $sales = $header_query->whereIn('mhinvoiceno',$headers)->get();
             foreach($sales as $s){
 
                 $details = MDInvoice::on(Auth::user()->db_name)->where('mhinvoiceno',$s->mhinvoiceno)->get();
@@ -49,7 +64,7 @@ class SalesController extends Controller
                 array_push($headers,$d->mhinvoiceno);
             }
             $headers = array_unique($headers);
-            $sales = MHInvoice::on(Auth::user()->db_name)->whereIn('mhinvoiceno',$headers)->get();
+            $sales = $header_query->whereIn('mhinvoiceno',$headers)->get();
             foreach($sales as $s){
 
                 $details = MDInvoice::on(Auth::user()->db_name)->where('mhinvoiceno',$s->mhinvoiceno)->get();
@@ -57,7 +72,7 @@ class SalesController extends Controller
 
             }
         } else {
-            $sales = MHInvoice::on(Auth::user()->db_name)->get();
+            $sales = $header_query->get();
 
             foreach($sales as $s){
 
