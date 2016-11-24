@@ -10,6 +10,8 @@ use Auth;
 use App\MHInvoice;
 use App\MDInvoice;
 use App\MConfig;
+use App\MARCard;
+
 use Carbon\Carbon;
 
 class SalesController extends Controller
@@ -150,5 +152,63 @@ class SalesController extends Controller
             }
         }
         return response()->json($date_group_invoices);
+    }
+
+    public function ar(Request $request){
+        $queries = MARCard::on(Auth::user()->db_name);
+        if($request->has('start')){
+            $queries->whereDate('marcarddate','>=',Carbon::parse($request->start));
+        }
+        if($request->has('end')){
+            $queries->whereDate('marcarddate','<=',Carbon::parse($request->end));
+        }
+        if($request->has('cust')){
+            $queries->where('marcardcustomerid',$request->cust);
+        }
+
+        $ars = $queries->get();
+
+        /*
+         * groupping ars
+         */
+
+        foreach($ars as $ar){
+            $now = Carbon::now();
+            $due = Carbon::parse($ar->marcardduedate);
+            $diff = $now->diffInDays($due,false);
+            if($diff <= 7){
+                $ar['seven'] = $ar->marcardtotalinv;
+                $ar['fourteen'] =0;
+                $ar['twentyone'] =0;
+                $ar['thirty'] =0;
+                $ar['month'] =0;
+            } else if($diff <= 14){
+                $ar['seven'] = 0;
+                $ar['fourteen'] = $ar->marcardtotalinv;
+                $ar['twentyone'] =0;
+                $ar['thirty'] =0;
+                $ar['month'] =0;
+            } else if($diff <= 21){
+                $ar['seven'] = 0;
+                $ar['fourteen'] =0;
+                $ar['twentyone'] = $ar->marcardtotalinv;
+                $ar['thirty'] =0;
+                $ar['month'] =0;
+            } else if($diff <= 30){
+                $ar['seven'] = 0;
+                $ar['fourteen'] =0;
+                $ar['twentyone'] =0;
+                $ar['thirty'] = $ar->marcardtotalinv;
+                $ar['month'] =0;
+            } else {
+                $ar['seven'] = 0;
+                $ar['fourteen'] =0;
+                $ar['twentyone'] =0;
+                $ar['thirty'] =0;
+                $ar['month'] = $ar->marcardtotalinv;
+            }
+        }
+
+        return response()->json($ars);
     }
 }

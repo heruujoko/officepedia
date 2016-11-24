@@ -6,23 +6,6 @@ import moment from 'moment'
 
 Vue.config.devtools = true
 
-Vue.directive('dpicker',{
-  inserted(el,binding,vnode){
-      let self = this;
-      $(el).datepicker({
-
-      }).on('change',(evt) => {
-        let modelName = vnode.data.directives.find(function(o) {
-            return o.name === 'model';
-        }).expression;
-        vnode.context[modelName] = evt.target.value;
-      });
-  },
-  update(el,binding,vnode){
-
-  }
-});
-
 Vue.directive('selecttwo',{
   inserted(el,binding,vnode){
       let self = this;

@@ -188,4 +188,24 @@
       @endif
     </ul>
   </li>
+  <li>
+    <a href="#"><i class="fa fa-lg fa-fw fa-briefcase"></i> <span class="menu-item-parent">Laporan</span></a>
+    <ul>
+      @if($active == 'salesreports')
+        <li class="active"><a href="{{ url('admin-nano/reports/salesreport') }}">Laporan Penjualan</a></li>
+      @else
+        <li><a href="{{ url('admin-nano/reports/salesreport') }}">Laporan Penjualan</a></li>
+      @endif
+      @if($active == 'invoicereports')
+        <li class="active"><a href="{{ url('admin-nano/reports/invoicereport') }}">Laporan Penjualan Invoice</a></li>
+      @else
+        <li><a href="{{ url('admin-nano/reports/invoicereport') }}">Laporan Penjualan Invoice</a></li>
+      @endif
+      @if($active == 'arreports')
+        <li class="active"><a href="{{ url('admin-nano/reports/arreport') }}">Laporan Piutang</a></li>
+      @else
+        <li><a href="{{ url('admin-nano/reports/arreport') }}">Laporan Piutang</a></li>
+      @endif
+    </ul>
+  </li>
 </ul>
