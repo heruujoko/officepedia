@@ -18,8 +18,6 @@ class SalesController extends Controller
         $sales = [];
         $headers=[];
 
-
-
         /*
          * filter date header
          */
@@ -86,6 +84,7 @@ class SalesController extends Controller
     }
 
     public function invoices(Request $request){
+
         /*
          * price config
          */
@@ -101,14 +100,24 @@ class SalesController extends Controller
         /*
          * filterings
          */
+
+        $queries = MDInvoice::on(Auth::user()->db_name);
+        if($request->has('start')){
+            $queries->whereDate('mdinvoicedate','>=',Carbon::parse($request->start));
+        }
+
+        if($request->has('end')){
+            $queries->whereDate('mdinvoicedate','<=',Carbon::parse($request->end));
+        }
+
         if($request->has('goods') && $request->has('wh') != ""){
-            $invs = MDInvoice::on(Auth::user()->db_name)->where('mdinvoicegoodsid',$request->goods)->where('mdinvoicegoodsidwhouse',$request->wh)->get();
+            $invs = $queries->where('mdinvoicegoodsid',$request->goods)->where('mdinvoicegoodsidwhouse',$request->wh)->get();
         } else if($request->has('goods') && $request->goods != ""){
-            $invs = MDInvoice::on(Auth::user()->db_name)->where('mdinvoicegoodsid',$request->goods)->get();
+            $invs = $queries->where('mdinvoicegoodsid',$request->goods)->get();
         } else if($request->has('wh') && $request->wh != "" ){
-            $invs = MDInvoice::on(Auth::user()->db_name)->where('mdinvoicegoodsidwhouse',$request->wh)->get();
+            $invs = $queries->where('mdinvoicegoodsidwhouse',$request->wh)->get();
         } else {
-            $invs = MDInvoice::on(Auth::user()->db_name)->get();
+            $invs = $queries->get();
         }
         $dates = [];
         foreach($invs as $i){

@@ -2,8 +2,26 @@ import Vue from 'vue/dist/vue.js'
 import Axios from 'axios'
 import numeral from 'numeral'
 import _ from 'lodash'
+import moment from 'moment'
 
 Vue.config.devtools = true
+
+Vue.directive('dpicker',{
+  inserted(el,binding,vnode){
+      let self = this;
+      $(el).datepicker({
+
+      }).on('change',(evt) => {
+        let modelName = vnode.data.directives.find(function(o) {
+            return o.name === 'model';
+        }).expression;
+        vnode.context[modelName] = evt.target.value;
+      });
+  },
+  update(el,binding,vnode){
+
+  }
+});
 
 Vue.directive('selecttwo',{
   inserted(el,binding,vnode){
@@ -51,6 +69,8 @@ const invoicereport = new Vue({
         selected_branch:"",
         selected_goods:"",
         selected_warehouse:"",
+        invoice_date_start: moment().format('L'),
+        invoice_date_end: moment().format('L'),
         goods:[],
         returs:[
             "Tanpa Retur",
@@ -62,7 +82,7 @@ const invoicereport = new Vue({
     methods:{
         fetchInvoices(){
             var self = this;
-            Axios.get('/admin-api/invoicereport?br='+this.selected_branch+"&wh="+this.selected_warehouse+"&goods="+this.selected_goods)
+            Axios.get('/admin-api/invoicereport?br='+this.selected_branch+"&wh="+this.selected_warehouse+"&goods="+this.selected_goods+'&start='+this.invoice_date_start+'&end='+this.invoice_date_end)
             .then(function(res){
                 console.log(res.data);
                 self.invoices = res.data;
@@ -96,16 +116,16 @@ const invoicereport = new Vue({
             });
         },
         printTable(){
-            window.open('export/print?wh='+this.selected_warehouse+'&goods='+this.selected_goods,'_blank');
+            window.open('/admin-nano/reports/invoicereport/export/print?wh='+this.selected_warehouse+'&goods='+this.selected_goods+'&start='+this.invoice_date_start+'&end='+this.invoice_date_end,'_blank');
         },
         pdfTable(){
-            window.open('export/pdf?wh='+this.selected_warehouse+'&goods='+this.selected_goods,'_blank');
+            window.open('/admin-nano/reports/invoicereport/export/pdf?wh='+this.selected_warehouse+'&goods='+this.selected_goods+'&start='+this.invoice_date_start+'&end='+this.invoice_date_end,'_blank');
         },
         excelTable(){
-            window.open('export/excel?wh='+this.selected_warehouse+'&goods='+this.selected_goods,'_blank');
+            window.open('/admin-nano/reports/invoicereport/export/excel?wh='+this.selected_warehouse+'&goods='+this.selected_goods+'&start='+this.invoice_date_start+'&end='+this.invoice_date_end,'_blank');
         },
         csvTable(){
-            window.open('export/csv?wh='+this.selected_warehouse+'&goods='+this.selected_goods,'_blank');
+            window.open('/admin-nano/reports/invoicereport/export/csv?wh='+this.selected_warehouse+'&goods='+this.selected_goods+'&start='+this.invoice_date_start+'&end='+this.invoice_date_end,'_blank');
         }
     },
     watch:{
@@ -114,6 +134,14 @@ const invoicereport = new Vue({
             this.fetchInvoices();
         },
         selected_warehouse(){
+            $('#loading_modal').modal('toggle');
+            this.fetchInvoices();
+        },
+        invoice_date_start(){
+            $('#loading_modal').modal('toggle');
+            this.fetchInvoices();
+        },
+        invoice_date_end(){
             $('#loading_modal').modal('toggle');
             this.fetchInvoices();
         }

@@ -58,9 +58,9 @@
                                             <div class="row">
                                                 <div class="col-md-12">
                                                     <br>
-                                                    <h4 class="text-center">PT Officepedia Solusi Indonesia</h4>
+                                                    <h4 class="text-center">{{ $config->msyscompname }}</h4>
                                                     <h4 class="text-center">Laporan Buku Penjualan Invoice</h4>
-                                                    <h4 class="text-center">Periode 1 November - 30 November</h4>
+                                                    <h4 class="text-center">Periode <input v-dpicker v-model="invoice_date_start" type="text" class="small-date" /> - <input v-dpicker v-model="invoice_date_end" type="text" class="small-date" /></h4>
                                                 </div>
                                             </div>
                                             <br>
@@ -174,5 +174,9 @@
         #tableapi {
     	    border: 1px solid #ddd !important;
     	}
+        .small-date{
+            width: 95px;
+            font-size: 11px;
+        }
     </style>
 @stop

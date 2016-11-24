@@ -475,6 +475,7 @@ class ReportController extends Controller
 	}
 
     public function invoicereport(){
+        $data['config'] = MConfig::on(Auth::user()->db_name)->first();
         $data['active'] = 'reports';
         $data['section'] = 'Invoice Report';
         return view('admin.invoicereport',$data);
@@ -496,14 +497,22 @@ class ReportController extends Controller
         /*
          * filterings
          */
+        $queries = MDInvoice::on(Auth::user()->db_name);
+        if($request->has('start')){
+             $queries->whereDate('mdinvoicedate','>=',Carbon::parse($request->start));
+        }
+
+        if($request->has('end')){
+             $queries->whereDate('mdinvoicedate','<=',Carbon::parse($request->end));
+        }
         if($request->has('goods') && $request->has('wh') != ""){
-            $invs = MDInvoice::on(Auth::user()->db_name)->where('mdinvoicegoodsid',$request->goods)->where('mdinvoicegoodsidwhouse',$request->wh)->get();
+            $invs = $queries->where('mdinvoicegoodsid',$request->goods)->where('mdinvoicegoodsidwhouse',$request->wh)->get();
         } else if($request->has('goods') && $request->goods != ""){
-            $invs = MDInvoice::on(Auth::user()->db_name)->where('mdinvoicegoodsid',$request->goods)->get();
+            $invs = $queries->where('mdinvoicegoodsid',$request->goods)->get();
         } else if($request->has('wh') && $request->wh != "" ){
-            $invs = MDInvoice::on(Auth::user()->db_name)->where('mdinvoicegoodsidwhouse',$request->wh)->get();
+            $invs = $queries->where('mdinvoicegoodsidwhouse',$request->wh)->get();
         } else {
-            $invs = MDInvoice::on(Auth::user()->db_name)->get();
+            $invs = $queries->get();
         }
         $dates = [];
         foreach($invs as $i){
@@ -538,6 +547,9 @@ class ReportController extends Controller
         }
 
         $data['invoices'] = $date_group_invoices;
+        $data['company'] = $config->msyscompname;
+        $data['start'] = Carbon::parse($request->start)->formatLocalized('%d %B %Y');
+        $data['end'] = Carbon::parse($request->end)->formatLocalized('%d %B %Y');
         return view('admin.export.invoicereport',$data);
 
     }
@@ -558,14 +570,22 @@ class ReportController extends Controller
         /*
          * filterings
          */
+        $queries = MDInvoice::on(Auth::user()->db_name);
+        if($request->has('start')){
+              $queries->whereDate('mdinvoicedate','>=',Carbon::parse($request->start));
+        }
+
+        if($request->has('end')){
+              $queries->whereDate('mdinvoicedate','<=',Carbon::parse($request->end));
+        }
         if($request->has('goods') && $request->has('wh') != ""){
-            $invs = MDInvoice::on(Auth::user()->db_name)->where('mdinvoicegoodsid',$request->goods)->where('mdinvoicegoodsidwhouse',$request->wh)->get();
+            $invs = $queries->where('mdinvoicegoodsid',$request->goods)->where('mdinvoicegoodsidwhouse',$request->wh)->get();
         } else if($request->has('goods') && $request->goods != ""){
-            $invs = MDInvoice::on(Auth::user()->db_name)->where('mdinvoicegoodsid',$request->goods)->get();
+            $invs = $queries->where('mdinvoicegoodsid',$request->goods)->get();
         } else if($request->has('wh') && $request->wh != "" ){
-            $invs = MDInvoice::on(Auth::user()->db_name)->where('mdinvoicegoodsidwhouse',$request->wh)->get();
+            $invs = $queries->where('mdinvoicegoodsidwhouse',$request->wh)->get();
         } else {
-            $invs = MDInvoice::on(Auth::user()->db_name)->get();
+            $invs = $queries->get();
         }
         $dates = [];
         foreach($invs as $i){
@@ -600,6 +620,9 @@ class ReportController extends Controller
         }
 
         $data['invoices'] = $date_group_invoices;
+        $data['company'] = $config->msyscompname;
+        $data['start'] = Carbon::parse($request->start)->formatLocalized('%d %B %Y');
+        $data['end'] = Carbon::parse($request->end)->formatLocalized('%d %B %Y');
         $pdf = PDF::loadview('admin/export/invoicereport',$data);
 		return $pdf->setPaper('a4', 'potrait')->download('Invoice Report.pdf');
     }
@@ -620,14 +643,22 @@ class ReportController extends Controller
         /*
          * filterings
          */
+        $queries = MDInvoice::on(Auth::user()->db_name);
+        if($request->has('start')){
+               $queries->whereDate('mdinvoicedate','>=',Carbon::parse($request->start));
+        }
+
+        if($request->has('end')){
+               $queries->whereDate('mdinvoicedate','<=',Carbon::parse($request->end));
+        }
         if($request->has('goods') && $request->has('wh') != ""){
-            $invs = MDInvoice::on(Auth::user()->db_name)->where('mdinvoicegoodsid',$request->goods)->where('mdinvoicegoodsidwhouse',$request->wh)->get();
+            $invs = $queries->where('mdinvoicegoodsid',$request->goods)->where('mdinvoicegoodsidwhouse',$request->wh)->get();
         } else if($request->has('goods') && $request->goods != ""){
-            $invs = MDInvoice::on(Auth::user()->db_name)->where('mdinvoicegoodsid',$request->goods)->get();
+            $invs = $queries->where('mdinvoicegoodsid',$request->goods)->get();
         } else if($request->has('wh') && $request->wh != "" ){
-            $invs = MDInvoice::on(Auth::user()->db_name)->where('mdinvoicegoodsidwhouse',$request->wh)->get();
+            $invs = $queries->where('mdinvoicegoodsidwhouse',$request->wh)->get();
         } else {
-            $invs = MDInvoice::on(Auth::user()->db_name)->get();
+            $invs = $queries->get();
         }
         $dates = [];
         foreach($invs as $i){
@@ -663,11 +694,14 @@ class ReportController extends Controller
 
         $this->invoices = $date_group_invoices;
         $this->count = 0;
+        $this->data['company'] = $config->msyscompname;
+        $this->data['start'] = Carbon::parse($request->start)->formatLocalized('%d %B %Y');
+        $this->data['end'] = Carbon::parse($request->end)->formatLocalized('%d %B %Y');
         return Excel::create('Invoice Report',function($excel){
             $excel->sheet('Invoice Report',function($sheet){
                 $this->count++;
                 $sheet->mergeCells('A1:L1');
-                $sheet->row($this->count,array('PT Officepedia Solusindo'));
+                $sheet->row($this->count,array($this->data['company']));
                 $sheet->cell('A1',function($cell){
                     $cell->setAlignment('center');
                 });
@@ -679,7 +713,7 @@ class ReportController extends Controller
                 });
                 $this->count++;
                 $sheet->mergeCells('A3:L3');
-                $sheet->row($this->count,array('Periode 1 November - 30 November'));
+                $sheet->row($this->count,array('Periode '.$this->data['start'].' - '.$this->data['end']));
                 $sheet->cell('A3',function($cell){
                     $cell->setAlignment('center');
                 });
@@ -750,14 +784,22 @@ class ReportController extends Controller
         /*
          * filterings
          */
+        $queries = MDInvoice::on(Auth::user()->db_name);
+        if($request->has('start')){
+               $queries->whereDate('mdinvoicedate','>=',Carbon::parse($request->start));
+        }
+
+        if($request->has('end')){
+               $queries->whereDate('mdinvoicedate','<=',Carbon::parse($request->end));
+        }
         if($request->has('goods') && $request->has('wh') != ""){
-            $invs = MDInvoice::on(Auth::user()->db_name)->where('mdinvoicegoodsid',$request->goods)->where('mdinvoicegoodsidwhouse',$request->wh)->get();
+            $invs = $queries->where('mdinvoicegoodsid',$request->goods)->where('mdinvoicegoodsidwhouse',$request->wh)->get();
         } else if($request->has('goods') && $request->goods != ""){
-            $invs = MDInvoice::on(Auth::user()->db_name)->where('mdinvoicegoodsid',$request->goods)->get();
+            $invs = $queries->where('mdinvoicegoodsid',$request->goods)->get();
         } else if($request->has('wh') && $request->wh != "" ){
-            $invs = MDInvoice::on(Auth::user()->db_name)->where('mdinvoicegoodsidwhouse',$request->wh)->get();
+            $invs = $queries->where('mdinvoicegoodsidwhouse',$request->wh)->get();
         } else {
-            $invs = MDInvoice::on(Auth::user()->db_name)->get();
+            $invs = $queries->get();
         }
         $dates = [];
         foreach($invs as $i){
@@ -793,11 +835,14 @@ class ReportController extends Controller
 
         $this->invoices = $date_group_invoices;
         $this->count = 0;
+        $this->data['company'] = $config->msyscompname;
+        $this->data['start'] = Carbon::parse($request->start)->formatLocalized('%d %B %Y');
+        $this->data['end'] = Carbon::parse($request->end)->formatLocalized('%d %B %Y');
         return Excel::create('Invoice Report',function($excel){
             $excel->sheet('Invoice Report',function($sheet){
                 $this->count++;
                 $sheet->mergeCells('A1:L1');
-                $sheet->row($this->count,array('PT Officepedia Solusindo'));
+                $sheet->row($this->count,array($this->data['company']));
                 $sheet->cell('A1',function($cell){
                     $cell->setAlignment('center');
                 });
@@ -809,7 +854,7 @@ class ReportController extends Controller
                 });
                 $this->count++;
                 $sheet->mergeCells('A3:L3');
-                $sheet->row($this->count,array('Periode 1 November - 30 November'));
+                $sheet->row($this->count,array('Periode '.$this->data['start'].' - '.$this->data['end']));
                 $sheet->cell('A3',function($cell){
                     $cell->setAlignment('center');
                 });
