@@ -38,258 +38,67 @@
 	<section id="widget-grid" class="">
 		<!-- row -->
 		<!-- row -->
-		<div class="row">
-			<!-- NEW WIDGET START -->
-			<article class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-				<!-- Widget ID (each widget will need unique ID)-->
-				<div id="forminput" class="forminput jarviswidget jarviswidget-color-darken" id="wid-id-0" data-widget-editbutton="false" data-widget-colorbutton="false" data-widget-deletebutton="false">
-					<header>
-						<span class="widget-icon"> <i class="fa fa-table"></i> </span>
-						<h2>Tambah {{ $section }}</h2>
-					</header>
-					<!-- widget div-->
-					<div>
-						<!-- widget edit box -->
-						<div class="jarviswidget-editbox">
-							<!-- This area used as dropdown edit box -->
-						</div>
-						<!-- end widget edit box -->
-						<h3 style="font-weight: bold; color: #1883B8;font-size: 19px;">Mode : INSERT</h3>
-						<!-- widget content -->
-						<style>
-							.alert-info {
-								color: #D9ECF5;
-								background-color: #48AFE3;
-								border-color: #2F9ACF;
-							}
-						</style>
-  						@if(count($errors) > 0)
-    						<div class="alert alert-info alerthide" role="alert">
-    							@foreach($errors->all() as $error)
-      							<span class="sr-only">Error:</span>
-      							<span class="sr-only"></span>
-      							<li><b>{{ $error }}</b></li>
-    							@endforeach
-    						</div>
-  						@endif
-						<div class="widget-body no-padding">
-							<div id="insert-wrapper" class="form-horizontal" data-parsley-validate>
-								{{ csrf_field() }}
-								<div class="container">
-								</br>
-								<div style="height: 21px;" class="form-group">
-									<label class="col-md-3 control-label"><b>Nama Kategori</b> (<font color="red">*</font>) &nbsp  :</label>
-									<div class="col-md-7">
-										<div class="icon-addon addon-md">
-											<input id="insert-category_name" value="{{old('category_name')}}" name="category_name" class="form-control forminput" placeholder="Nama Kategori" type="text" required data-parsley-required-message="Field Ini Tidak Boleh Kosong" @if (Session::has('autofocus')) autofocus @endif >
-											<label for="mgoodsgroup1" class="glyphicon glyphicon-info-sign" rel="tooltip" title="Nama Kategori"></label>
-										</div>
-									</div>
-								</div>
-								<div class="form-group">
-									<label class="col-md-3 control-label"><b>Keterangan</b> &nbsp  :</label>
-									<div class="col-md-7">
-										<div class="icon-addon addon-md">
-											<input id="insert-information" value="{{old('information')}}" name="information" class="form-control forminput" placeholder="Keterangan" type="text" @if (Session::has('autofocus')) autofocus @endif >
-											<label for="mgoodsgroup1" class="glyphicon glyphicon-search" rel="tooltip" title="Keterangan"></label>
-										</div>
-									</div>
-								</div>
-								<input type="hidden" name="void" value="0">
-								<center>
-									<div class="row">
-										<div class="col-md-12">
-											<a id="btn-insert-reset" onclick="resetmcategory()" class="btn btn-default" ><i class=""></i> Reset</a>
-											<button class="btn btn-primary" onclick="insertmcategory()"><i class="fa fa-save"></i> Simpan</button>
-										</div>
-									</div>
-								</center>
-							</br>
-						</div>
-					</div>
-				</div>
-				<!-- end widget content -->
-			</div>
-			<!-- end widget div -->
-		</div>
-		<!-- end widget -->
-		<div class="row">
-			<!-- NEW WIDGET START -->
-			<article class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-				<!-- Widget ID (each widget will need unique ID)-->
-				<div id="formedit" style="display: none;" class="jarviswidget jarviswidget-color-darken" id="wid-id-0" data-widget-editbutton="false" data-widget-colorbutton="false" data-widget-deletebutton="false">
-					<header>
-						<span class="widget-icon"> <i class="fa fa-table"></i> </span>
-						<h2>Pengubahan {{ $section }}</h2>
-					</header>
-					<!-- widget div-->
-					<div>
-						<!-- widget edit box -->
-						<div class="jarviswidget-editbox">
-							<!-- This area used as dropdown edit box -->
-						</div>
-						<!-- end widget edit box -->
-						<h3 style="font-weight: bold; color: #C91503;font-size: 19px;">Mode : EDIT</h3>
-
-						<input type="hidden" id="mbranchid" value=""></input>
-						<div id="edit-wrapper" class="form-horizontal" data-parsley-validate>
-							<div class="container">
-								<style>
-									.alert-info {
-										color: #D9ECF5;
-										background-color: #48AFE3;
-										border-color: #2F9ACF;
-									}
-								</style>
-                <input type="hidden" id="mcustomerid">
-								<div style="height: 21px;" class="form-group">
-									<label class="col-md-3 control-label"><b>Nama Kategori</b> (<font color="red">*</font>) &nbsp  :</label>
-									<div class="col-md-7">
-										<div class="icon-addon addon-md">
-											<input id="edit-category_name" value="{{old('category_name')}}" name="category_name" class="form-control forminput" placeholder="Nama Kategori" type="text" required data-parsley-required-message="Field Ini Tidak Boleh Kosong" @if (Session::has('autofocus')) autofocus @endif >
-											<label for="mgoodsgroup1" class="glyphicon glyphicon-info-sign" rel="tooltip" title="Nama Kategori"></label>
-										</div>
-									</div>
-								</div>
-								<div class="form-group">
-									<label class="col-md-3 control-label"><b>Keterangan</b> &nbsp  :</label>
-									<div class="col-md-7">
-										<div class="icon-addon addon-md">
-											<input id="edit-information" value="{{old('information')}}" name="information" class="form-control forminput" placeholder="Keterangan" type="text" @if (Session::has('autofocus')) autofocus @endif >
-											<label for="mgoodsgroup1" class="glyphicon glyphicon-search" rel="tooltip" title="Keterangan"></label>
-										</div>
-									</div>
-								</div>
-								<input type="hidden" name="void" value="0">
-								<center>
-									<div class="row">
-										<div class="col-md-12">
-											<a onclick="backmcategory()" title="" class="btn btn-default">Batal</a>
-											<button onclick="updatemcategory()" class="btn btn-primary" type="submit">
-												<i class="fa fa-save"></i> Simpan</button>
-											</div>
-										</center>
-									</br>
-								</div>
-							</div>
-						</div>
-					</div>
-					<div class="row">
-						<!-- NEW WIDGET START -->
-						<article class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-							<!-- Widget ID (each widget will need unique ID)-->
-							<div id="formview" style="display: none;" class="jarviswidget jarviswidget-color-darken" id="wid-id-0" data-widget-editbutton="false" data-widget-colorbutton="false" data-widget-deletebutton="false">
-					      <header>
-						      <span class="widget-icon"> <i class="fa fa-table"></i> </span>
-                  <h2>View {{ $section }} </h2>
-						    </header>
-  						<!-- widget div-->
-  					  <div>
-						  <!-- widget edit box -->
-						    <div class="jarviswidget-editbox">
-							  <!-- This area used as dropdown edit box -->
-						    </div>
-						    <!-- end widget edit box -->
-						    <h3 style="font-weight: bold; color: #291817;font-size: 19px;">Mode : VIEW</h3>
-
-						    <input type="hidden" id="mbranchid" value=""></input>
-						    <div class="form-horizontal">
-
-							  <div class="container">
-								<style>
-									.alert-info {
-										color: #D9ECF5;
-										background-color: #48AFE3;
-										border-color: #2F9ACF;
-									}
-								</style>
-								<div style="height: 21px;" class="form-group">
-									<label class="col-md-3 control-label"><b>Nama Kategori</b> (<font color="red">*</font>) &nbsp  :</label>
-									<div class="col-md-7">
-										<div class="icon-addon addon-md">
-											<input disabled id="view-category_name" value="{{old('category_name')}}" name="category_name" class="form-control forminput" placeholder="Nama Kategori" type="text" required data-parsley-required-message="Field Ini Tidak Boleh Kosong" @if (Session::has('autofocus')) autofocus @endif >
-											<label for="mgoodsgroup1" class="glyphicon glyphicon-info-sign" rel="tooltip" title="Nama Kategori"></label>
-										</div>
-									</div>
-								</div>
-								<div class="form-group">
-									<label class="col-md-3 control-label"><b>Keterangan</b> &nbsp  :</label>
-									<div class="col-md-7">
-										<div class="icon-addon addon-md">
-											<input disabled id="view-information" value="{{old('information')}}" name="information" class="form-control forminput" placeholder="Keterangan" type="text" @if (Session::has('autofocus')) autofocus @endif >
-											<label for="mgoodsgroup1" class="glyphicon glyphicon-search" rel="tooltip" title="Keterangan"></label>
-										</div>
-									</div>
-								</div>
-								<center>
-									<div class="row">
-										<div class="col-md-12">
-											</br>
-											<button onclick="backmcategory()" class="btn btn-default" type="submit">
-												<i class="fa fa-save"></i> Kembali
-                      </button>
-										</div>
-									</center>
-									</br>
-								</div>
-							</div>
-						</div>
-					</div>
-					<article class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-						<section id="widget-grid" class="">
-							<!-- row -->
+                <div class="row">
+                    <!-- NEW WIDGET START -->
+                    <article class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                        <!-- Widget ID (each widget will need unique ID)-->
+                        <div id="forminput" class="forminput jarviswidget jarviswidget-color-darken" id="wid-id-0" data-widget-editbutton="false" data-widget-colorbutton="false" data-widget-deletebutton="false">
+                            <header>
+                                <span class="widget-icon"> <i class="fa fa-table"></i> </span>
+                                <h2>{{ $section }}</h2>
+                            </header>
+                            <!-- widget div-->
+                            <div>
+                                <!-- widget edit box -->
+                                <div class="jarviswidget-editbox">
+                                    <!-- This area used as dropdown edit box -->
+                                </div>
+                                <!-- end widget edit box -->
+                                {{--<h3 style="font-weight: bold; color: #1883B8;font-size: 19px;">Mode : INSERT</h3>--}}
+                                <!-- widget content -->
+                                <div class="widget-body no-padding">
+                                    <div class="container">
+                                        <div id="stockcardreport">
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    <br>
+                                                    <h4 class="text-center">PT Officepedia Solusi Indonesia</h4>
+                                                    <h4 class="text-center">Laporan Stock Card Report</h4>
+                                                    <h4 class="text-center">Periode 1 November - 30 November</h4>
+                                                </div>
+                                            </div>
+                                            <br>
+                                                <div class="row">
+                                                <p class="col-md-1 report-label">Gudang</p>
+                                                <select class="col-md-2">
+                          					                <option value="">Semua</option>
+                                                    <option v-for="warehouse in warehouses" :value="warehouse.mwarehousename">@{{warehouse.mwarehousename}}</option>
+                                                   
+                                                </select>
+                                            </div>
+                                              <div class="row">
+                                                <p class="col-md-1 report-label">Kode Barang</p>
+                                                <select class="col-md-2">
+                                                    <option>Semua</option>
+                          						               <option v-for="good in goods" value="good.mgoodscode">@{{good.mgoodscode}}</option>
+                                                    
+                                                </select>
+                                            </div>
+                                            <br>
+                                           {{--  <div class="row">
+                                                <div class="col-md-3 col-md-offset-9">
+                                                    <button class="dt-button pull-right" v-on:click="printTable">Print</button>
+                                                    <button class="dt-button pull-right" v-on:click="pdfTable">PDF</button>
+                                                    <button class="dt-button pull-right" v-on:click="excelTable">Excel</button>
+                                                    <button class="dt-button pull-right" v-on:click="csvTable">CSV</button>
+                                                </div>
+                                            </div> --}}
+                                            <br>
 							<div class="row">
-								<!-- NEW WIDGET START -->
-								<!-- Widget ID (each widget will need unique ID)-->
-								<div class="jarviswidget jarviswidget-color-darken" id="wid-id-1" data-widget-editbutton="false" data-widget-colorbutton="false" data-widget-deletebutton="false">
-					<header>
-						<span class="widget-icon"> <i class="fa fa-table"></i> </span>
-						<h2>Master {{ $section }} </h2>
-					</header>
-					<!-- widget div-->
-					<div>
-					</br>
-					<!-- widget edit box -->
-					<div class="jarviswidget-editbox">
-						<!-- This area used as dropdown edit box -->
-					</div>
-					<!-- end widget edit box -->
-
-					<!-- widget content -->
-					<div class="widget-body">
-
-							{{-- <table  id="tableapi" class="tableapi table table-bordered" width="100%">
-
-								<thead>
-									<tr>
-                    <th class="hasinput" style="width:10%">
-
-										</th>
-										<th class="hasinput" style="width:5%">
-											<input type="text" class="form-control" placeholder="Filter No" />
-										</th>
-										<th class="hasinput" style="width:9%">
-											<input type="text" class="form-control" placeholder="Filter Nama Kategori" />
-										</th>
-                    <th class="hasinput" style="width:9%">
-											<input type="text" class="form-control" placeholder="Filter Keterangan" />
-										</th>
-									</tr>
-									<tr>
-										<th data-hide="action"><center>Aksi</center></th>
-                    <th data-hide="no"><center>No</center></th>
-                    <th data-hide="category_name"><center>Nama Kategori</center></th>
-										<th data-hide="information"><center>Keterangan</center></th>
-									</tr>
-								</thead>
-								<tbody>
-								</tbody>
-
-							</table> --}}
-							<div id="stockcardreport">
-							<table class="table table-responsive">
+							 <div class="col-md-12">
+							<table class="table table-bordered">
+							<thead>
 								<tr>
-									<th>No</th>
 									<th>Kode Barang</th>
 									<th>Nama Barang</th>
 									<th>QTY Stock</th>
@@ -303,13 +112,29 @@
 									<th>Gudang</th>
 									<th>Cabang</th>
 									<th>Keterangan</th>
-									<th>Action</th>
 
 								</tr>
-								<tr>
-									<td>A</td>
+								</thead>
+								<tbody>
+								<tr v-for="stock in stocks">
+									<td>@{{ stock.mstockcardgoodsid }}</td>
+									<td>@{{ stock.mstockcardgoodsname }}</td>
+									<td>@{{ stock.mstockcarddate }}</td>
+									<td>@{{ stock.mstockcardtranstype }}</td>
+									<td>@{{ stock.mstockcardtransno }}</td>
+									<td>@{{ stock.mstockcardremark }}</td>
+									<td>@{{ stock.mstockcardstockin }}</td>
+									<td>@{{ stock.mstockcardstockout }}</td>
+									<td>@{{ stock.mstockcardstocktotal }}</td>
+									<td>@{{ stock.mstockcardwhouse }}</td>
+									<td>@{{ stock.mstockcarduserid }}</td>
+									<td>@{{ stock.mstockcardusername }}</td>
+									<td>@{{ stock.mstockcardeventdate }}</td>
 								</tr>
+								</tbody>
 							</table>
+							</div>
+							</div>
 							</div>
 							@push('scripts')
 							<tfoot>
