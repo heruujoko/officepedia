@@ -187,12 +187,14 @@ class MHInvoice extends Model
         }
 
         foreach ($request->goods as $g) {
-          $invoice_detail = MDInvoice::on(Auth::user()->db_name)->where('mdinvoicegoodsid',$g['goods']['mgoodscode'])->first();
+          $invoice_detail = MDInvoice::on(Auth::user()->db_name)->where('mdinvoicegoodsid',$g['goods']['mgoodscode'])->where('mhinvoiceno',$header->mhinvoiceno)->first();
           $mgoods = MGoods::on(Auth::user()->db_name)->where('mgoodscode',$g['goods']['mgoodscode'])->first();
 
           $last_stock = MStockCard::on(Auth::user()->db_name)->where('mstockcardtransno',$invoice_detail->mhinvoiceno)->where('mstockcardgoodsid',$mgoods->mgoodscode)->get()->last();
           $old_qty = $invoice_detail->mdinvoicegoodsqty;
-          $mgoods->mgoodsstock += $last_stock->mstockcardstockout;
+          if($old_qty != $g['usage']){
+            $mgoods->mgoodsstock += $last_stock->mstockcardstockout;
+          }
           $mgoods->save();
 
           $invoice_detail->mhinvoiceno = $header->mhinvoiceno;
@@ -220,7 +222,7 @@ class MHInvoice extends Model
             $stock_card->mstockcarddate = Carbon::parse($request->date);
             $stock_card->mstockcardtranstype = $request->type;
             $stock_card->mstockcardtransno = $header->mhinvoiceno;
-            $stock_card->mstockcardremark = "Editing Transaksi ".$request->type." untuk ".$customer->mcustomername;
+            $stock_card->mstockcardremark = "Revisi Transaksi ".$request->type." untuk ".$customer->mcustomername;
             $stock_card->mstockcardstockin = $old_qty;
             $stock_card->mstockcardstockout = 0;
             $stock_card->mstockcardstocktotal = $mgoods->mgoodsstock;
@@ -230,6 +232,7 @@ class MHInvoice extends Model
             $stock_card->mstockcardeventdate = Carbon::now();
             $stock_card->mstockcardeventtime = Carbon::now();
             $stock_card->edited = 1;
+            $stock_card->void = 0;
             $stock_card->save();
 
             //out dengan qty baru
@@ -250,6 +253,7 @@ class MHInvoice extends Model
             $stock_card->mstockcardeventdate = Carbon::now();
             $stock_card->mstockcardeventtime = Carbon::now();
             $stock_card->edited = 1;
+            $stock_card->void = 0;
             $stock_card->save();
 
             $mgoods->mgoodsstock = $stock_card->mstockcardstocktotal;
@@ -280,7 +284,12 @@ class MHInvoice extends Model
               return 'empty';
             }
 
-          }
+        } else {
+            // data tdk berubah
+            // $invoice_detail = MDInvoice::on(Auth::user()->db_name)->where('mdinvoicegoodsid',$g['goods']['mgoodscode'])->where('mhinvoiceno',$header->mhinvoiceno)->first();
+            $invoice_detail->void=0;
+            $invoice_detail->save();
+        }
 
           //voided details
           $voided_details = MDInvoice::on(Auth::user()->db_name)->where('mhinvoiceno',$invoice_header->mhinvoiceno)->where('void',1)->get();
@@ -314,7 +323,7 @@ class MHInvoice extends Model
         return 'ok';
       } catch(Exception $e){
         DB::connection(Auth::user()->db_name)->rollBack();
-        return 'err';
+        return $e;
       }
 
     }

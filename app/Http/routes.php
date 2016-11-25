@@ -176,7 +176,7 @@ Route::group(['prefix'=>'admin-nano','middleware' => ['auth','tenantdb']],functi
 
 
   //API
-  Route::group(['prefix'=>'admin-api','middleware' => 'api'],function(){
+  Route::group(['prefix'=>'admin-api','middleware' => 'jwt'],function(){
   Route::get('mcoa/tree','Api\MCOAController@tree');
   Route::resource('cabang', 'Api\MBranchController');
   Route::get('mcoagrandparent/lists','Api\MCOAGrandParentController@lists');
@@ -225,7 +225,7 @@ Route::group(['prefix'=>'admin-nano','middleware' => ['auth','tenantdb']],functi
 
 
   Route::get('mstockcardreport','Api\MStockcardreportController@filter');
-  
+
   Route::get('mstockcardreport/mgoods','Api\MStockcardreportController@mgoods');
   Route::get('mstockcardreport/mwarehouse','Api\MStockcardreportController@mwarehouse');
 

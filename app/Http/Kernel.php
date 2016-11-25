@@ -32,7 +32,7 @@ class Kernel extends HttpKernel
         ],
 
         'api' => [
-            'throttle:60,1',
+            'throttle:90,1',
             \App\Http\Middleware\JWTCookies::class,
         ],
     ];
@@ -51,5 +51,6 @@ class Kernel extends HttpKernel
         'guest' => \App\Http\Middleware\RedirectIfAuthenticated::class,
         'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
         'tenantdb' => \App\Http\Middleware\TenantDBMiddleware::class,
+        'jwt' => \App\Http\Middleware\JWTCookies::class,
     ];
 }
