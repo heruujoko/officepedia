@@ -60,7 +60,8 @@
                                                     <br>
                                                     <h4 class="text-center">{{ $config->msyscompname }}</h4>
                                                     <h4 class="text-center">Laporan Piutang</h4>
-                                                    <h4 class="text-center">Periode <input v-dpicker v-model="invoice_date_start" type="text" class="small-date" /> - <input v-dpicker v-model="invoice_date_end" type="text" class="small-date" /></h4>
+                                                    <h4 class="text-center">Periode 
+                                                    <input v-dpicker v-model="invoice_date_start" type="text" class="small-date" /> - <input v-dpicker v-model="invoice_date_end" type="text" class="small-date" /></h4>
                                                 </div>
                                             </div>
                                             <br>

@@ -223,9 +223,13 @@ Route::group(['prefix'=>'admin-nano','middleware' => ['auth','tenantdb']],functi
   Route::resource('salesinvoice','Api\SalesInvoiceController');
   Route::resource('muser','Api\MUserController');
 
+
+  Route::get('mstockcardreport','Api\MStockcardreportController@filter');
+  
   Route::get('mstockcardreport/mgoods','Api\MStockcardreportController@mgoods');
   Route::get('mstockcardreport/mwarehouse','Api\MStockcardreportController@mwarehouse');
-  Route::resource('mstockcardreport','Api\MStockcardreportController');
+
+
 
 
   Route::get('salesreport','Api\SalesController@index');
