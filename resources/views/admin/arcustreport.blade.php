@@ -99,32 +99,26 @@
                                                     <table class="table table-bordered" id="tableapi">
                                                         <thead>
                                                             <tr>
-                                                                <th colspan="4">&nbsp;</th>
-                                                                <th colspan="5" class="text-center">Outstanding</th>
-                                                            </tr>
-                                                            <tr>
                                                                 <th>Kode Customer</th>
                                                                 <th>Nama Customer</th>
+                                                                <th>No Invoice</th>
+                                                                <th>Tgl Invoice</th>
+                                                                <th>Tgl Jatuh Tempo</th>
                                                                 <th>Total Nota</th>
                                                                 <th>Outstanding</th>
-                                                                <th>1-7 Hari</th>
-                                                                <th>7-14 Hari</th>
-                                                                <th>14-21 Hari</th>
-                                                                <th>21-30 Hari</th>
-                                                                <th>> 1 Bulan</th>
+                                                                <th>Aging</th>
                                                             </tr>
                                                         </thead>
                                                         <tbody>
                                                             <tr v-for="ar in ars">
-                                                                <td>@{{ ar.marcardcustomerid }}</td>
-                                                                <td>@{{ ar.marcardcustomername }}</td>
+                                                                <td>@{{ ar.customerid }}</td>
+                                                                <td>@{{ ar.customername }}</td>
+                                                                <td>@{{ ar.marcardtransno }}</td>
+                                                                <td>@{{ ar.marcarddate }}</td>
+                                                                <td>@{{ ar.marcardduedate }}</td>
                                                                 <td>@{{ ar.trans_count }}</td>
-                                                                <td style="text-align:right" v-priceformatlabel="num_format">@{{ ar.marcardoutstanding }}</td>
-                                                                <td style="text-align:right" v-priceformatlabel="num_format">@{{ ar.seven }}</td>
-                                                                <td style="text-align:right" v-priceformatlabel="num_format">@{{ ar.fourteen }}</td>
-                                                                <td style="text-align:right" v-priceformatlabel="num_format">@{{ ar.twentyone }}</td>
-                                                                <td style="text-align:right" v-priceformatlabel="num_format">@{{ ar.thirty }}</td>
-                                                                <td style="text-align:right" v-priceformatlabel="num_format">@{{ ar.month }}</td>
+                                                                <td style="text-align:right">@{{ ar.outstanding_prc }}</td>
+                                                                <td>@{{ ar.aging }}</td>
                                                             </tr>
                                                         </tbody>
                                                     </table>
@@ -157,7 +151,7 @@
 @stop
 
 @section('js')
-    <script src="{{ url('/js/arreport.js') }}"></script>
+    <script src="{{ url('/js/arcustreport.js') }}"></script>
 @stop
 
 @section('css')

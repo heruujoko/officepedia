@@ -939,36 +939,37 @@ class ReportController extends Controller
             $now = Carbon::now();
             $due = Carbon::parse($ar->marcardduedate);
             $diff = $now->diffInDays($due,false);
+            $ar['trans_count'] = count(MDInvoice::on(Auth::user()->db_name)->where('mhinvoiceno',$ar->marcardtransno)->get());
             if($diff <= 7){
-                $ar['seven'] = $ar->marcardtotalinv;
+                $ar['seven'] = $ar->marcardoutstanding;
                 $ar['fourteen'] =0;
                 $ar['twentyone'] =0;
                 $ar['thirty'] =0;
                 $ar['month'] =0;
             } else if($diff <= 14){
                 $ar['seven'] = 0;
-                $ar['fourteen'] = $ar->marcardtotalinv;
+                $ar['fourteen'] = $ar->marcardoutstanding;
                 $ar['twentyone'] =0;
                 $ar['thirty'] =0;
                 $ar['month'] =0;
             } else if($diff <= 21){
                 $ar['seven'] = 0;
                 $ar['fourteen'] =0;
-                $ar['twentyone'] = $ar->marcardtotalinv;
+                $ar['twentyone'] = $ar->marcardoutstanding;
                 $ar['thirty'] =0;
                 $ar['month'] =0;
             } else if($diff <= 30){
                 $ar['seven'] = 0;
                 $ar['fourteen'] =0;
                 $ar['twentyone'] =0;
-                $ar['thirty'] = $ar->marcardtotalinv;
+                $ar['thirty'] = $ar->marcardoutstanding;
                 $ar['month'] =0;
             } else {
                 $ar['seven'] = 0;
                 $ar['fourteen'] =0;
                 $ar['twentyone'] =0;
                 $ar['thirty'] =0;
-                $ar['month'] = $ar->marcardtotalinv;
+                $ar['month'] = $ar->marcardoutstanding;
             }
         }
 
@@ -1010,36 +1011,37 @@ class ReportController extends Controller
             $now = Carbon::now();
             $due = Carbon::parse($ar->marcardduedate);
             $diff = $now->diffInDays($due,false);
+            $ar['trans_count'] = count(MDInvoice::on(Auth::user()->db_name)->where('mhinvoiceno',$ar->marcardtransno)->get());
             if($diff <= 7){
-                $ar['seven'] = $ar->marcardtotalinv;
+                $ar['seven'] = $ar->marcardoutstanding;
                 $ar['fourteen'] =0;
                 $ar['twentyone'] =0;
                 $ar['thirty'] =0;
                 $ar['month'] =0;
             } else if($diff <= 14){
                 $ar['seven'] = 0;
-                $ar['fourteen'] = $ar->marcardtotalinv;
+                $ar['fourteen'] = $ar->marcardoutstanding;
                 $ar['twentyone'] =0;
                 $ar['thirty'] =0;
                 $ar['month'] =0;
             } else if($diff <= 21){
                 $ar['seven'] = 0;
                 $ar['fourteen'] =0;
-                $ar['twentyone'] = $ar->marcardtotalinv;
+                $ar['twentyone'] = $ar->marcardoutstanding;
                 $ar['thirty'] =0;
                 $ar['month'] =0;
             } else if($diff <= 30){
                 $ar['seven'] = 0;
                 $ar['fourteen'] =0;
                 $ar['twentyone'] =0;
-                $ar['thirty'] = $ar->marcardtotalinv;
+                $ar['thirty'] = $ar->marcardoutstanding;
                 $ar['month'] =0;
             } else {
                 $ar['seven'] = 0;
                 $ar['fourteen'] =0;
                 $ar['twentyone'] =0;
                 $ar['thirty'] =0;
-                $ar['month'] = $ar->marcardtotalinv;
+                $ar['month'] = $ar->marcardoutstanding;
             }
         }
 
@@ -1057,6 +1059,10 @@ class ReportController extends Controller
         $data['start'] = Carbon::parse($request->start)->formatLocalized('%d %B %Y');
         $data['end'] = Carbon::parse($request->end)->formatLocalized('%d %B %Y');
         $pdf = PDF::loadview('admin/export/arreport',$data);
+        $pdf->output();
+        $dom_pdf = $pdf->getDomPDF();
+        $canvas = $dom_pdf ->get_canvas();
+        $canvas->page_text(0, 0, "Page {PAGE_NUM} of {PAGE_COUNT}", null, 10, array(0, 0, 0));
 		return $pdf->setPaper('a4', 'potrait')->download('AR Report.pdf');
     }
 
@@ -1082,36 +1088,37 @@ class ReportController extends Controller
             $now = Carbon::now();
             $due = Carbon::parse($ar->marcardduedate);
             $diff = $now->diffInDays($due,false);
+            $ar['trans_count'] = count(MDInvoice::on(Auth::user()->db_name)->where('mhinvoiceno',$ar->marcardtransno)->get());
             if($diff <= 7){
-                $ar['seven'] = $ar->marcardtotalinv;
+                $ar['seven'] = $ar->marcardoutstanding;
                 $ar['fourteen'] =0;
                 $ar['twentyone'] =0;
                 $ar['thirty'] =0;
                 $ar['month'] =0;
             } else if($diff <= 14){
                 $ar['seven'] = 0;
-                $ar['fourteen'] = $ar->marcardtotalinv;
+                $ar['fourteen'] = $ar->marcardoutstanding;
                 $ar['twentyone'] =0;
                 $ar['thirty'] =0;
                 $ar['month'] =0;
             } else if($diff <= 21){
                 $ar['seven'] = 0;
                 $ar['fourteen'] =0;
-                $ar['twentyone'] = $ar->marcardtotalinv;
+                $ar['twentyone'] = $ar->marcardoutstanding;
                 $ar['thirty'] =0;
                 $ar['month'] =0;
             } else if($diff <= 30){
                 $ar['seven'] = 0;
                 $ar['fourteen'] =0;
                 $ar['twentyone'] =0;
-                $ar['thirty'] = $ar->marcardtotalinv;
+                $ar['thirty'] = $ar->marcardoutstanding;
                 $ar['month'] =0;
             } else {
                 $ar['seven'] = 0;
                 $ar['fourteen'] =0;
                 $ar['twentyone'] =0;
                 $ar['thirty'] =0;
-                $ar['month'] = $ar->marcardtotalinv;
+                $ar['month'] = $ar->marcardoutstanding;
             }
         }
 
@@ -1179,9 +1186,9 @@ class ReportController extends Controller
                     $this->count++;
                     $sheet->row($this->count,array(
                         $ar->marcardcustomerid,
-                        $ar->marcardcustomercard,
-                        number_format($ar->marcardtotalinv,$this->data['decimals'],$this->data['dec_point'],$this->data['thousands_sep']),
-                        number_format($ar->marcardtotalinv,$this->data['decimals'],$this->data['dec_point'],$this->data['thousands_sep']),
+                        $ar->marcardcustomername,
+                        $ar['trans_count'],
+                        number_format($ar->marcardoutstanding,$this->data['decimals'],$this->data['dec_point'],$this->data['thousands_sep']),
                         number_format($ar['seven'],$this->data['decimals'],$this->data['dec_point'],$this->data['thousands_sep']),
                         number_format($ar['fourteen'],$this->data['decimals'],$this->data['dec_point'],$this->data['thousands_sep']),
                         number_format($ar['twentyone'],$this->data['decimals'],$this->data['dec_point'],$this->data['thousands_sep']),
@@ -1217,36 +1224,37 @@ class ReportController extends Controller
             $now = Carbon::now();
             $due = Carbon::parse($ar->marcardduedate);
             $diff = $now->diffInDays($due,false);
+            $ar['trans_count'] = count(MDInvoice::on(Auth::user()->db_name)->where('mhinvoiceno',$ar->marcardtransno)->get());
             if($diff <= 7){
-                $ar['seven'] = $ar->marcardtotalinv;
+                $ar['seven'] = $ar->marcardoutstanding;
                 $ar['fourteen'] =0;
                 $ar['twentyone'] =0;
                 $ar['thirty'] =0;
                 $ar['month'] =0;
             } else if($diff <= 14){
                 $ar['seven'] = 0;
-                $ar['fourteen'] = $ar->marcardtotalinv;
+                $ar['fourteen'] = $ar->marcardoutstanding;
                 $ar['twentyone'] =0;
                 $ar['thirty'] =0;
                 $ar['month'] =0;
             } else if($diff <= 21){
                 $ar['seven'] = 0;
                 $ar['fourteen'] =0;
-                $ar['twentyone'] = $ar->marcardtotalinv;
+                $ar['twentyone'] = $ar->marcardoutstanding;
                 $ar['thirty'] =0;
                 $ar['month'] =0;
             } else if($diff <= 30){
                 $ar['seven'] = 0;
                 $ar['fourteen'] =0;
                 $ar['twentyone'] =0;
-                $ar['thirty'] = $ar->marcardtotalinv;
+                $ar['thirty'] = $ar->marcardoutstanding;
                 $ar['month'] =0;
             } else {
                 $ar['seven'] = 0;
                 $ar['fourteen'] =0;
                 $ar['twentyone'] =0;
                 $ar['thirty'] =0;
-                $ar['month'] = $ar->marcardtotalinv;
+                $ar['month'] = $ar->marcardoutstanding;
             }
         }
 
@@ -1314,15 +1322,429 @@ class ReportController extends Controller
                     $this->count++;
                     $sheet->row($this->count,array(
                         $ar->marcardcustomerid,
-                        $ar->marcardcustomercard,
-                        number_format($ar->marcardtotalinv,$this->data['decimals'],$this->data['dec_point'],$this->data['thousands_sep']),
-                        number_format($ar->marcardtotalinv,$this->data['decimals'],$this->data['dec_point'],$this->data['thousands_sep']),
+                        $ar->marcardcustomername,
+                        $ar['trans_count'],
+                        number_format($ar->marcardoutstanding,$this->data['decimals'],$this->data['dec_point'],$this->data['thousands_sep']),
                         number_format($ar['seven'],$this->data['decimals'],$this->data['dec_point'],$this->data['thousands_sep']),
                         number_format($ar['fourteen'],$this->data['decimals'],$this->data['dec_point'],$this->data['thousands_sep']),
                         number_format($ar['twentyone'],$this->data['decimals'],$this->data['dec_point'],$this->data['thousands_sep']),
                         number_format($ar['thirty'],$this->data['decimals'],$this->data['dec_point'],$this->data['thousands_sep']),
                         number_format($ar['month'],$this->data['decimals'],$this->data['dec_point'],$this->data['thousands_sep'])
                     ));
+                }
+
+
+			});
+		})->export('csv');
+    }
+
+    public function arcustreport(){
+        $data['config'] = MConfig::on(Auth::user()->db_name)->first();
+        $data['active'] = 'arcustreport';
+        $data['section'] = 'AR Customer Report';
+        return view('admin.arcustreport',$data);
+    }
+
+    public function arcustreport_print(Request $request){
+        /*
+         * price config
+         */
+        $config = MConfig::on(Auth::user()->db_name)->where('id',1)->first();
+        $data['decimals'] = $config->msysgenrounddec;
+        $data['dec_point'] = $config->msysnumseparator;
+        if($data['dec_point'] == ","){
+          $data['thousands_sep'] = ".";
+        } else {
+          $data['thousands_sep'] = ",";
+        }
+
+        $header_query = MARCard::on(Auth::user()->db_name);
+        if($request->has('cust')){
+            $header_query->where('marcardcustomerid',$request->cust);
+        }
+        if($request->has('start')){
+            $header_query->whereDate('marcarddate','>=',Carbon::parse($request->start));
+        }
+        if($request->has('end')){
+            $header_query->whereDate('marcarddate','<=',Carbon::parse($request->end));
+        }
+        $headers = $header_query->get();
+        $customers = [];
+        foreach($headers as $h){
+            array_push($customers,$h->marcardcustomerid);
+        }
+        $customers = array_unique($customers);
+
+        $ar_detail_data = [];
+
+        /*
+         * Build detail data per customer head
+         */
+         $idx=0;
+        foreach ($customers as $cust) {
+            $detail_query = MARCard::on(Auth::user()->db_name)->where('marcardcustomerid',$cust);
+            if($request->has('start')){
+                $detail_query->whereDate('marcarddate','>=',Carbon::parse($request->start));
+            }
+            if($request->has('end')){
+                $detail_query->whereDate('marcarddate','<=',Carbon::parse($request->end));
+            }
+            $details = $detail_query->get();
+
+            array_push($ar_detail_data,['customerid' => $cust,'customername' => $details[$idx]->marcardcustomername ,'header' => true]);
+            foreach($details as $dt){
+                $dt['outstanding_prc'] = number_format($dt->arcardoutstanding,$data['decimals'],$data['dec_point'],$data['thousands_sep']);
+                $dt['aging'] = Carbon::now()->diffInDays(Carbon::parse($dt->marcarddate));
+                $dt['trans_count'] = count(MDInvoice::on(Auth::user()->db_name)->where('mhinvoiceno',$dt->marcardtransno)->get());
+                $dt['header'] = false;
+                array_push($ar_detail_data,$dt);
+            }
+            $idx++;
+        }
+
+        $data['ars'] = $ar_detail_data;
+        $data['company'] = $config->msyscompname;
+        $data['start'] = Carbon::parse($request->start)->formatLocalized('%d %B %Y');
+        $data['end'] = Carbon::parse($request->end)->formatLocalized('%d %B %Y');
+        $data['cust'] = $request->cust;
+        if($data['cust'] == ""){
+            $data['cust'] = "Semua";
+        }
+        $data['br'] = $request->br;
+        if($data['br'] == ""){
+            $data['br'] = "Semua";
+        }
+        return view('admin/export/arcustreport',$data);
+    }
+
+    public function arcustreport_pdf(Request $request){
+        /*
+         * price config
+         */
+        $config = MConfig::on(Auth::user()->db_name)->where('id',1)->first();
+        $data['decimals'] = $config->msysgenrounddec;
+        $data['dec_point'] = $config->msysnumseparator;
+        if($data['dec_point'] == ","){
+          $data['thousands_sep'] = ".";
+        } else {
+          $data['thousands_sep'] = ",";
+        }
+
+        $header_query = MARCard::on(Auth::user()->db_name);
+        if($request->has('cust')){
+            $header_query->where('marcardcustomerid',$request->cust);
+        }
+        if($request->has('start')){
+            $header_query->whereDate('marcarddate','>=',Carbon::parse($request->start));
+        }
+        if($request->has('end')){
+            $header_query->whereDate('marcarddate','<=',Carbon::parse($request->end));
+        }
+        $headers = $header_query->get();
+        $customers = [];
+        foreach($headers as $h){
+            array_push($customers,$h->marcardcustomerid);
+        }
+        $customers = array_unique($customers);
+
+        $ar_detail_data = [];
+
+        /*
+         * Build detail data per customer head
+         */
+         $idx=0;
+        foreach ($customers as $cust) {
+            $detail_query = MARCard::on(Auth::user()->db_name)->where('marcardcustomerid',$cust);
+            if($request->has('start')){
+                $detail_query->whereDate('marcarddate','>=',Carbon::parse($request->start));
+            }
+            if($request->has('end')){
+                $detail_query->whereDate('marcarddate','<=',Carbon::parse($request->end));
+            }
+            $details = $detail_query->get();
+
+            array_push($ar_detail_data,['customerid' => $cust,'customername' => $details[$idx]->marcardcustomername ,'header' => true]);
+            foreach($details as $dt){
+                $dt['outstanding_prc'] = number_format($dt->arcardoutstanding,$data['decimals'],$data['dec_point'],$data['thousands_sep']);
+                $dt['aging'] = Carbon::now()->diffInDays(Carbon::parse($dt->marcarddate));
+                $dt['trans_count'] = count(MDInvoice::on(Auth::user()->db_name)->where('mhinvoiceno',$dt->marcardtransno)->get());
+                $dt['header'] = false;
+                array_push($ar_detail_data,$dt);
+            }
+            $idx++;
+        }
+
+        $data['ars'] = $ar_detail_data;
+        $data['company'] = $config->msyscompname;
+        $data['start'] = Carbon::parse($request->start)->formatLocalized('%d %B %Y');
+        $data['end'] = Carbon::parse($request->end)->formatLocalized('%d %B %Y');
+        $data['cust'] = $request->cust;
+        if($data['cust'] == ""){
+            $data['cust'] = "Semua";
+        }
+        $data['br'] = $request->br;
+        if($data['br'] == ""){
+            $data['br'] = "Semua";
+        }
+        $pdf = PDF::loadview('admin/export/arcustreport',$data);
+		return $pdf->setPaper('a4', 'potrait')->download('AR Customer Report.pdf');
+    }
+
+    public function arcustreport_excel(Request $request){
+        /*
+         * price config
+         */
+         $this->count = 0;
+         $config = MConfig::on(Auth::user()->db_name)->where('id',1)->first();
+         $this->data['decimals'] = $config->msysgenrounddec;
+         $this->data['dec_point'] = $config->msysnumseparator;
+         if($this->data['dec_point'] == ","){
+           $this->data['thousands_sep'] = ".";
+         } else {
+           $this->data['thousands_sep'] = ",";
+         }
+         $this->data['company'] = $config->msyscompname;
+         $this->data['start'] = Carbon::parse($request->start)->formatLocalized('%d %B %Y');
+         $this->data['end'] = Carbon::parse($request->end)->formatLocalized('%d %B %Y');
+
+        $header_query = MARCard::on(Auth::user()->db_name);
+        if($request->has('cust')){
+            $header_query->where('marcardcustomerid',$request->cust);
+        }
+        if($request->has('start')){
+            $header_query->whereDate('marcarddate','>=',Carbon::parse($request->start));
+        }
+        if($request->has('end')){
+            $header_query->whereDate('marcarddate','<=',Carbon::parse($request->end));
+        }
+        $headers = $header_query->get();
+        $customers = [];
+        foreach($headers as $h){
+            array_push($customers,$h->marcardcustomerid);
+        }
+        $customers = array_unique($customers);
+
+        $ar_detail_data = [];
+
+        /*
+         * Build detail data per customer head
+         */
+         $idx=0;
+        foreach ($customers as $cust) {
+            $detail_query = MARCard::on(Auth::user()->db_name)->where('marcardcustomerid',$cust);
+            if($request->has('start')){
+                $detail_query->whereDate('marcarddate','>=',Carbon::parse($request->start));
+            }
+            if($request->has('end')){
+                $detail_query->whereDate('marcarddate','<=',Carbon::parse($request->end));
+            }
+            $details = $detail_query->get();
+
+            array_push($ar_detail_data,['customerid' => $cust,'customername' => $details[$idx]->marcardcustomername ,'header' => true]);
+            foreach($details as $dt){
+                $dt['outstanding_prc'] = number_format($dt->arcardoutstanding,$this->data['decimals'],$this->data['dec_point'],$this->data['thousands_sep']);
+                $dt['aging'] = Carbon::now()->diffInDays(Carbon::parse($dt->marcarddate));
+                $dt['trans_count'] = count(MDInvoice::on(Auth::user()->db_name)->where('mhinvoiceno',$dt->marcardtransno)->get());
+                $dt['header'] = false;
+                array_push($ar_detail_data,$dt);
+            }
+            $idx++;
+        }
+
+        $this->ars = $ar_detail_data;
+        return Excel::create('Ar Customer Report',function($excel){
+			$excel->sheet('Ar Customer Report',function($sheet){
+				$this->count++;
+                $sheet->mergeCells('A1:H1');
+                $sheet->row($this->count,array($this->data['company']));
+                $sheet->cell('A1',function($cell){
+                    $cell->setAlignment('center');
+                });
+                $this->count++;
+                $sheet->mergeCells('A2:H2');
+                $sheet->row($this->count,array('Laporan Buku Piutang Customer'));
+                $sheet->cell('A2',function($cell){
+                    $cell->setAlignment('center');
+                });
+                $this->count++;
+                $sheet->mergeCells('A3:H3');
+                $sheet->row($this->count,array('Periode '.$this->data['start'].' - '.$this->data['end']));
+                $sheet->cell('A3',function($cell){
+                    $cell->setAlignment('center');
+                });
+                $this->count+=2;
+
+                $sheet->cell('G4',function($cell){
+                    $cell->setValue('Tgl Cetak/ Jam');
+                });
+                $sheet->cell('H4',function($cell){
+                    $cell->setValue(Carbon::now());
+                });
+
+                $this->count++;
+                $sheet->cell('G5',function($cell){
+                    $cell->setValue('User');
+                });
+                $sheet->cell('H5',function($cell){
+                    $cell->setValue(Auth::user()->name);
+                });
+
+                $this->count+=2;
+                $sheet->row($this->count,array(
+                    'Kode Customer','Nama Customer','No Invoice','Tgl Invoice','Tgl Jatuh Tempo','Total Nota','Outstanding','Aging'
+                ));
+
+                foreach ($this->ars as $ar) {
+                    $this->count++;
+                    if($ar['header']){
+                        $sheet->row($this->count,array(
+                            $ar['customerid'],
+                            $ar['customername'],
+                        ));
+                    } else {
+                        $sheet->row($this->count,array(
+                            '',
+                            '',
+                            $ar->marcardtransno,
+                            $ar->marcarddate,
+                            $ar->marcardduedate,
+                            $ar['trans_count'],
+                            $ar['outstanding_prc'],
+                            $ar['aging']
+                        ));
+                    }
+
+                }
+
+
+			});
+		})->export('xlsx');
+    }
+
+    public function arcustreport_csv(Request $request){
+        /*
+         * price config
+         */
+         $this->count = 0;
+         $config = MConfig::on(Auth::user()->db_name)->where('id',1)->first();
+         $this->data['decimals'] = $config->msysgenrounddec;
+         $this->data['dec_point'] = $config->msysnumseparator;
+         if($this->data['dec_point'] == ","){
+           $this->data['thousands_sep'] = ".";
+         } else {
+           $this->data['thousands_sep'] = ",";
+         }
+         $this->data['company'] = $config->msyscompname;
+         $this->data['start'] = Carbon::parse($request->start)->formatLocalized('%d %B %Y');
+         $this->data['end'] = Carbon::parse($request->end)->formatLocalized('%d %B %Y');
+
+        $header_query = MARCard::on(Auth::user()->db_name);
+        if($request->has('cust')){
+            $header_query->where('marcardcustomerid',$request->cust);
+        }
+        if($request->has('start')){
+            $header_query->whereDate('marcarddate','>=',Carbon::parse($request->start));
+        }
+        if($request->has('end')){
+            $header_query->whereDate('marcarddate','<=',Carbon::parse($request->end));
+        }
+        $headers = $header_query->get();
+        $customers = [];
+        foreach($headers as $h){
+            array_push($customers,$h->marcardcustomerid);
+        }
+        $customers = array_unique($customers);
+
+        $ar_detail_data = [];
+
+        /*
+         * Build detail data per customer head
+         */
+         $idx=0;
+        foreach ($customers as $cust) {
+            $detail_query = MARCard::on(Auth::user()->db_name)->where('marcardcustomerid',$cust);
+            if($request->has('start')){
+                $detail_query->whereDate('marcarddate','>=',Carbon::parse($request->start));
+            }
+            if($request->has('end')){
+                $detail_query->whereDate('marcarddate','<=',Carbon::parse($request->end));
+            }
+            $details = $detail_query->get();
+
+            array_push($ar_detail_data,['customerid' => $cust,'customername' => $details[$idx]->marcardcustomername ,'header' => true]);
+            foreach($details as $dt){
+                $dt['outstanding_prc'] = number_format($dt->arcardoutstanding,$this->data['decimals'],$this->data['dec_point'],$this->data['thousands_sep']);
+                $dt['aging'] = Carbon::now()->diffInDays(Carbon::parse($dt->marcarddate));
+                $dt['trans_count'] = count(MDInvoice::on(Auth::user()->db_name)->where('mhinvoiceno',$dt->marcardtransno)->get());
+                $dt['header'] = false;
+                array_push($ar_detail_data,$dt);
+            }
+            $idx++;
+        }
+
+        $this->ars = $ar_detail_data;
+        return Excel::create('Ar Customer Report',function($excel){
+			$excel->sheet('Ar Customer Report',function($sheet){
+				$this->count++;
+                $sheet->mergeCells('A1:H1');
+                $sheet->row($this->count,array($this->data['company']));
+                $sheet->cell('A1',function($cell){
+                    $cell->setAlignment('center');
+                });
+                $this->count++;
+                $sheet->mergeCells('A2:H2');
+                $sheet->row($this->count,array('Laporan Buku Piutang Customer'));
+                $sheet->cell('A2',function($cell){
+                    $cell->setAlignment('center');
+                });
+                $this->count++;
+                $sheet->mergeCells('A3:H3');
+                $sheet->row($this->count,array('Periode '.$this->data['start'].' - '.$this->data['end']));
+                $sheet->cell('A3',function($cell){
+                    $cell->setAlignment('center');
+                });
+                $this->count+=2;
+
+                $sheet->cell('G4',function($cell){
+                    $cell->setValue('Tgl Cetak/ Jam');
+                });
+                $sheet->cell('H4',function($cell){
+                    $cell->setValue(Carbon::now());
+                });
+
+                $this->count++;
+                $sheet->cell('G5',function($cell){
+                    $cell->setValue('User');
+                });
+                $sheet->cell('H5',function($cell){
+                    $cell->setValue(Auth::user()->name);
+                });
+
+                $this->count+=2;
+                $sheet->row($this->count,array(
+                    'Kode Customer','Nama Customer','No Invoice','Tgl Invoice','Tgl Jatuh Tempo','Total Nota','Outstanding','Aging'
+                ));
+
+                foreach ($this->ars as $ar) {
+                    $this->count++;
+                    if($ar['header']){
+                        $sheet->row($this->count,array(
+                            $ar['customerid'],
+                            $ar['customername'],
+                        ));
+                    } else {
+                        $sheet->row($this->count,array(
+                            '',
+                            '',
+                            $ar->marcardtransno,
+                            $ar->marcarddate,
+                            $ar->marcardduedate,
+                            $ar['trans_count'],
+                            $ar['outstanding_prc'],
+                            $ar['aging']
+                        ));
+                    }
+
                 }
 
 

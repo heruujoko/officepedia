@@ -161,6 +161,12 @@ Route::group(['prefix'=>'admin-nano','middleware' => ['auth','tenantdb']],functi
   Route::get('reports/arreport/export/excel','ReportController@arreport_excel');
   Route::get('reports/arreport/export/csv','ReportController@arreport_csv');
 
+  Route::get('reports/arcustreport','ReportController@arcustreport');
+  Route::get('reports/arcustreport/export/print','ReportController@arcustreport_print');
+  Route::get('reports/arcustreport/export/pdf','ReportController@arcustreport_pdf');
+  Route::get('reports/arcustreport/export/excel','ReportController@arcustreport_excel');
+  Route::get('reports/arcustreport/export/csv','ReportController@arcustreport_csv');
+
   Route::controllers([
     '/'=>'AdminController'
   ]);
@@ -225,6 +231,7 @@ Route::group(['prefix'=>'admin-nano','middleware' => ['auth','tenantdb']],functi
   Route::get('salesreport','Api\SalesController@index');
   Route::get('invoicereport','Api\SalesController@invoices');
   Route::get('arreport','Api\SalesController@ar');
+  Route::get('arcustreport','Api\SalesController@arcust');
 
   Route::controllers([
     '/'=>'ApiController'

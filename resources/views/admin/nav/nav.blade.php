@@ -206,6 +206,11 @@
       @else
         <li><a href="{{ url('admin-nano/reports/arreport') }}">Laporan Piutang</a></li>
       @endif
+      @if($active == 'arcustreport')
+        <li class="active"><a href="{{ url('admin-nano/reports/arcustreport') }}">Laporan Piutang Customer</a></li>
+      @else
+        <li><a href="{{ url('admin-nano/reports/arcustreport') }}">Laporan Piutang Customer</a></li>
+      @endif
     </ul>
   </li>
 </ul>

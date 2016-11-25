@@ -176,39 +176,100 @@ class SalesController extends Controller
             $now = Carbon::now();
             $due = Carbon::parse($ar->marcardduedate);
             $diff = $now->diffInDays($due,false);
+            $ar['trans_count'] = count(MDInvoice::on(Auth::user()->db_name)->where('mhinvoiceno',$ar->marcardtransno)->get());
             if($diff <= 7){
-                $ar['seven'] = $ar->marcardtotalinv;
+                $ar['seven'] = $ar->marcardoutstanding;
                 $ar['fourteen'] =0;
                 $ar['twentyone'] =0;
                 $ar['thirty'] =0;
                 $ar['month'] =0;
             } else if($diff <= 14){
                 $ar['seven'] = 0;
-                $ar['fourteen'] = $ar->marcardtotalinv;
+                $ar['fourteen'] = $ar->marcardoutstanding;
                 $ar['twentyone'] =0;
                 $ar['thirty'] =0;
                 $ar['month'] =0;
             } else if($diff <= 21){
                 $ar['seven'] = 0;
                 $ar['fourteen'] =0;
-                $ar['twentyone'] = $ar->marcardtotalinv;
+                $ar['twentyone'] = $ar->marcardoutstanding;
                 $ar['thirty'] =0;
                 $ar['month'] =0;
             } else if($diff <= 30){
                 $ar['seven'] = 0;
                 $ar['fourteen'] =0;
                 $ar['twentyone'] =0;
-                $ar['thirty'] = $ar->marcardtotalinv;
+                $ar['thirty'] = $ar->marcardoutstanding;
                 $ar['month'] =0;
             } else {
                 $ar['seven'] = 0;
                 $ar['fourteen'] =0;
                 $ar['twentyone'] =0;
                 $ar['thirty'] =0;
-                $ar['month'] = $ar->marcardtotalinv;
+                $ar['month'] = $ar->marcardoutstanding;
             }
         }
 
         return response()->json($ars);
+    }
+
+    public function arcust(Request $request){
+
+        /*
+         * price config
+         */
+        $config = MConfig::on(Auth::user()->db_name)->where('id',1)->first();
+        $data['decimals'] = $config->msysgenrounddec;
+        $data['dec_point'] = $config->msysnumseparator;
+        if($data['dec_point'] == ","){
+          $data['thousands_sep'] = ".";
+        } else {
+          $data['thousands_sep'] = ",";
+        }
+
+        $header_query = MARCard::on(Auth::user()->db_name);
+        if($request->has('cust')){
+            $header_query->where('marcardcustomerid',$request->cust);
+        }
+        if($request->has('start')){
+            $header_query->whereDate('marcarddate','>=',Carbon::parse($request->start));
+        }
+        if($request->has('end')){
+            $header_query->whereDate('marcarddate','<=',Carbon::parse($request->end));
+        }
+        $headers = $header_query->get();
+        $customers = [];
+        foreach($headers as $h){
+            array_push($customers,$h->marcardcustomerid);
+        }
+        $customers = array_unique($customers);
+
+        $ar_detail_data = [];
+
+        /*
+         * Build detail data per customer head
+         */
+         $idx=0;
+        foreach ($customers as $cust) {
+            $detail_query = MARCard::on(Auth::user()->db_name)->where('marcardcustomerid',$cust);
+            if($request->has('start')){
+                $detail_query->whereDate('marcarddate','>=',Carbon::parse($request->start));
+            }
+            if($request->has('end')){
+                $detail_query->whereDate('marcarddate','<=',Carbon::parse($request->end));
+            }
+            $details = $detail_query->get();
+
+            array_push($ar_detail_data,['customerid' => $cust,'customername' => $details[$idx]->marcardcustomername]);
+            foreach($details as $dt){
+                $dt['outstanding_prc'] = number_format($dt->arcardoutstanding,$data['decimals'],$data['dec_point'],$data['thousands_sep']);
+                $dt['aging'] = Carbon::now()->diffInDays(Carbon::parse($dt->marcarddate));
+                $dt['trans_count'] = count(MDInvoice::on(Auth::user()->db_name)->where('mhinvoiceno',$dt->marcardtransno)->get());
+                array_push($ar_detail_data,$dt);
+            }
+            $idx++;
+        }
+
+        return response()->json($ar_detail_data);
     }
 }
