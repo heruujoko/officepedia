@@ -60,6 +60,10 @@
             text-align: right;
             display: block;
         }
+        .filter-status {
+            font-size: 9px;
+            display: block;
+        }
         </style>
     </head>
     <body>
@@ -67,6 +71,8 @@
         <h5 class="text-center">Laporan Buku Piutang</h5>
         <h5 class="text-center">Periode {{ $start }} - {{ $end }}</h5>
         <br>
+        <p class="filter-status">Cabang {{ $br }}</p>
+        <p class="filter-status">Customer {{ $cust }}</p>
         <p class="header-status">User {{ Auth::user()->name }}</p>
         <p class="header-status">Tanggal Cetak {{ Carbon\Carbon::now() }}</p>
         </div>

@@ -14,10 +14,10 @@ require('laravel-elixir-vue');
  */
 
 elixir(mix => {
-    mix.webpack('arcustreport.js');
-    mix.webpack('arreport.js');
     mix.webpack('salesinvoice.js');
     mix.webpack('stockcardreport.js');
     mix.webpack('salesreport.js');
     mix.webpack('invoicereport.js');
+    mix.webpack('arcustreport.js');
+    mix.webpack('arreport.js');
 });

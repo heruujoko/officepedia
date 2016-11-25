@@ -12,6 +12,8 @@ use App\Http\Requests;
 use Excel;
 use Carbon\Carbon;
 use App\MARCard;
+use App\MWarehouse;
+use App\MCUSTOMER;
 
 class ReportController extends Controller
 {
@@ -102,6 +104,18 @@ class ReportController extends Controller
         $data['company'] = $config->msyscompname;
         $data['start'] = Carbon::parse($request->start)->formatLocalized('%d %B %Y');
         $data['end'] = Carbon::parse($request->end)->formatLocalized('%d %B %Y');
+        if($request->wh != ''){
+            $data['wh'] = MWarehouse::on(Auth::user()->db_name)->where('id',$request->wh)->first()->mwarehousename;
+        } else {
+            $data['wh'] = "Semua";
+        }
+
+        if($request->goods != ''){
+            $data['goods'] = $request->goods;
+        } else {
+            $data['goods'] = "Semua";
+        }
+
         return view('admin/export/salesreport',$data);
     }
 
@@ -184,7 +198,17 @@ class ReportController extends Controller
         $data['company'] = $config->msyscompname;
         $data['start'] = Carbon::parse($request->start)->formatLocalized('%d %B %Y');
         $data['end'] = Carbon::parse($request->end)->formatLocalized('%d %B %Y');
+        if($request->wh != ''){
+            $data['wh'] = MWarehouse::on(Auth::user()->db_name)->where('id',$request->wh)->first()->mwarehousename;
+        } else {
+            $data['wh'] = "Semua";
+        }
 
+        if($request->goods != ''){
+            $data['goods'] = $request->goods;
+        } else {
+            $data['goods'] = "Semua";
+        }
         $pdf = PDF::loadview('admin/export/salesreport',$data);
 		return $pdf->setPaper('a4', 'potrait')->download('Sales Report.pdf');
     }
@@ -268,7 +292,7 @@ class ReportController extends Controller
         $this->data['company'] = $config->msyscompname;
         $this->data['start'] = Carbon::parse($request->start)->formatLocalized('%d %B %Y');
         $this->data['end'] = Carbon::parse($request->end)->formatLocalized('%d %B %Y');
-
+        $this->request = $request;
 		return Excel::create('Sales Report',function($excel){
 			$excel->sheet('Sales Report',function($sheet){
 				$this->count++;
@@ -291,6 +315,17 @@ class ReportController extends Controller
                 });
                 $this->count+=2;
 
+                $sheet->cell('A4',function($cell){
+                    $cell->setValue('Gudang');
+                });
+                $sheet->cell('B4',function($cell){
+                    if($this->request->has('wh')){
+                        $cell->setValue(MWarehouse::on(Auth::user()->db_name)->where('id',$this->request->wh)->first()->mwarehousename);
+                    } else {
+                        $cell->setValue('Semua');
+                    }
+                });
+
                 $sheet->cell('J4',function($cell){
                     $cell->setValue('Tgl Cetak/ Jam');
                 });
@@ -299,6 +334,16 @@ class ReportController extends Controller
                 });
 
                 $this->count++;
+                $sheet->cell('A5',function($cell){
+                    $cell->setValue('Barang');
+                });
+                $sheet->cell('B5',function($cell){
+                    if($this->request->has('goods')){
+                        $cell->setValue($this->request->goods);
+                    } else {
+                        $cell->setValue('Semua');
+                    }
+                });
                 $sheet->cell('J5',function($cell){
                     $cell->setValue('User');
                 });
@@ -411,7 +456,7 @@ class ReportController extends Controller
         $this->data['company'] = $config->msyscompname;
         $this->data['start'] = Carbon::parse($request->start)->formatLocalized('%d %B %Y');
         $this->data['end'] = Carbon::parse($request->end)->formatLocalized('%d %B %Y');
-
+        $this->request = $request;
 		return Excel::create('Sales Report',function($excel){
 			$excel->sheet('Sales Report',function($sheet){
 				$this->count++;
@@ -434,6 +479,17 @@ class ReportController extends Controller
                 });
                 $this->count+=2;
 
+                $sheet->cell('A4',function($cell){
+                    $cell->setValue('Gudang');
+                });
+                $sheet->cell('B4',function($cell){
+                    if($this->request->has('wh')){
+                        $cell->setValue(MWarehouse::on(Auth::user()->db_name)->where('id',$this->request->wh)->first()->mwarehousename);
+                    } else {
+                        $cell->setValue('Semua');
+                    }
+                });
+
                 $sheet->cell('J4',function($cell){
                     $cell->setValue('Tgl Cetak/ Jam');
                 });
@@ -442,6 +498,16 @@ class ReportController extends Controller
                 });
 
                 $this->count++;
+                $sheet->cell('A5',function($cell){
+                    $cell->setValue('Barang');
+                });
+                $sheet->cell('B5',function($cell){
+                    if($this->request->has('goods')){
+                        $cell->setValue($this->request->goods);
+                    } else {
+                        $cell->setValue('Semua');
+                    }
+                });
                 $sheet->cell('J5',function($cell){
                     $cell->setValue('User');
                 });
@@ -551,6 +617,21 @@ class ReportController extends Controller
         $data['company'] = $config->msyscompname;
         $data['start'] = Carbon::parse($request->start)->formatLocalized('%d %B %Y');
         $data['end'] = Carbon::parse($request->end)->formatLocalized('%d %B %Y');
+        if($request->has('br')){
+            $data['br'] = $request->br;
+        } else {
+            $data['br'] = "Semua";
+        }
+        if($request->has('wh')){
+            $data['wh'] = MWarehouse::on(Auth::user()->db_name)->where('id',$request->wh)->first()->mwarehousename;
+        } else {
+            $data['wh'] = "Semua";
+        }
+        if($request->has('goods')){
+            $data['goods'] = $request->goods;
+        } else {
+            $data['goods'] = "Semua";
+        }
         return view('admin.export.invoicereport',$data);
 
     }
@@ -624,6 +705,21 @@ class ReportController extends Controller
         $data['company'] = $config->msyscompname;
         $data['start'] = Carbon::parse($request->start)->formatLocalized('%d %B %Y');
         $data['end'] = Carbon::parse($request->end)->formatLocalized('%d %B %Y');
+        if($request->has('br')){
+            $data['br'] = $request->br;
+        } else {
+            $data['br'] = "Semua";
+        }
+        if($request->has('wh')){
+            $data['wh'] = MWarehouse::on(Auth::user()->db_name)->where('id',$request->wh)->first()->mwarehousename;
+        } else {
+            $data['wh'] = "Semua";
+        }
+        if($request->has('goods')){
+            $data['goods'] = $request->goods;
+        } else {
+            $data['goods'] = "Semua";
+        }
         $pdf = PDF::loadview('admin/export/invoicereport',$data);
 		return $pdf->setPaper('a4', 'potrait')->download('Invoice Report.pdf');
     }
@@ -698,6 +794,7 @@ class ReportController extends Controller
         $this->data['company'] = $config->msyscompname;
         $this->data['start'] = Carbon::parse($request->start)->formatLocalized('%d %B %Y');
         $this->data['end'] = Carbon::parse($request->end)->formatLocalized('%d %B %Y');
+        $this->request = $request;
         return Excel::create('Invoice Report',function($excel){
             $excel->sheet('Invoice Report',function($sheet){
                 $this->count++;
@@ -718,20 +815,51 @@ class ReportController extends Controller
                 $sheet->cell('A3',function($cell){
                     $cell->setAlignment('center');
                 });
-                $this->count+=2;
+                $this->count+=3;
 
-                $sheet->cell('K4',function($cell){
+                $sheet->cell('A4',function($cell){
+                    $cell->setValue('Cabang');
+                });
+                $sheet->cell('B4',function($cell){
+                    if($this->request->has('br')){
+                        $cell->setValue($this->request->br);
+                    } else {
+                        $cell->setValue('Semua');
+                    }
+                });
+                $sheet->cell('A5',function($cell){
+                    $cell->setValue('Gudang');
+                });
+                $sheet->cell('B5',function($cell){
+                    if($this->request->has('wh')){
+                        $cell->setValue(MWarehouse::on(Auth::user()->db_name)->where('id',$this->request->wh)->first()->mwarehousename);
+                    } else {
+                        $cell->setValue('Semua');
+                    }
+                });
+
+                $sheet->cell('K5',function($cell){
                     $cell->setValue('Tgl Cetak/ Jam');
                 });
-                $sheet->cell('L4',function($cell){
+                $sheet->cell('L5',function($cell){
                     $cell->setValue(Carbon::now());
                 });
 
                 $this->count++;
-                $sheet->cell('K5',function($cell){
+                $sheet->cell('A6',function($cell){
+                    $cell->setValue('Barang');
+                });
+                $sheet->cell('B6',function($cell){
+                    if($this->request->has('goods')){
+                        $cell->setValue($this->request->goods);
+                    } else {
+                        $cell->setValue('Semua');
+                    }
+                });
+                $sheet->cell('K6',function($cell){
                     $cell->setValue('User');
                 });
-                $sheet->cell('L5',function($cell){
+                $sheet->cell('L6',function($cell){
                     $cell->setValue(Auth::user()->name);
                 });
 
@@ -839,6 +967,7 @@ class ReportController extends Controller
         $this->data['company'] = $config->msyscompname;
         $this->data['start'] = Carbon::parse($request->start)->formatLocalized('%d %B %Y');
         $this->data['end'] = Carbon::parse($request->end)->formatLocalized('%d %B %Y');
+        $this->request = $request;
         return Excel::create('Invoice Report',function($excel){
             $excel->sheet('Invoice Report',function($sheet){
                 $this->count++;
@@ -859,20 +988,51 @@ class ReportController extends Controller
                 $sheet->cell('A3',function($cell){
                     $cell->setAlignment('center');
                 });
-                $this->count+=2;
+                $this->count+=3;
 
-                $sheet->cell('K4',function($cell){
+                $sheet->cell('A4',function($cell){
+                    $cell->setValue('Cabang');
+                });
+                $sheet->cell('B4',function($cell){
+                    if($this->request->has('br')){
+                        $cell->setValue($this->request->br);
+                    } else {
+                        $cell->setValue('Semua');
+                    }
+                });
+                $sheet->cell('A5',function($cell){
+                    $cell->setValue('Gudang');
+                });
+                $sheet->cell('B5',function($cell){
+                    if($this->request->has('wh')){
+                        $cell->setValue(MWarehouse::on(Auth::user()->db_name)->where('id',$this->request->wh)->first()->mwarehousename);
+                    } else {
+                        $cell->setValue('Semua');
+                    }
+                });
+
+                $sheet->cell('K5',function($cell){
                     $cell->setValue('Tgl Cetak/ Jam');
                 });
-                $sheet->cell('L4',function($cell){
+                $sheet->cell('L5',function($cell){
                     $cell->setValue(Carbon::now());
                 });
 
                 $this->count++;
-                $sheet->cell('K5',function($cell){
+                $sheet->cell('A6',function($cell){
+                    $cell->setValue('Barang');
+                });
+                $sheet->cell('B6',function($cell){
+                    if($this->request->has('goods')){
+                        $cell->setValue($this->request->goods);
+                    } else {
+                        $cell->setValue('Semua');
+                    }
+                });
+                $sheet->cell('K6',function($cell){
                     $cell->setValue('User');
                 });
-                $sheet->cell('L5',function($cell){
+                $sheet->cell('L6',function($cell){
                     $cell->setValue(Auth::user()->name);
                 });
 
@@ -986,6 +1146,16 @@ class ReportController extends Controller
         $data['company'] = $config->msyscompname;
         $data['start'] = Carbon::parse($request->start)->formatLocalized('%d %B %Y');
         $data['end'] = Carbon::parse($request->end)->formatLocalized('%d %B %Y');
+        if($request->has('br')){
+            $data['br'] = $request->br;
+        } else {
+            $data['br'] = 'Semua';
+        }
+        if($request->has('cust')){
+            $data['cust'] = MCUSTOMER::on(Auth::user()->db_name)->where('mcustomerid',$request->cust)->first()->mcustomername;
+        } else {
+            $data['cust'] = 'Semua';
+        }
         return view('admin/export/arreport',$data);
     }
 
@@ -1058,6 +1228,16 @@ class ReportController extends Controller
         $data['company'] = $config->msyscompname;
         $data['start'] = Carbon::parse($request->start)->formatLocalized('%d %B %Y');
         $data['end'] = Carbon::parse($request->end)->formatLocalized('%d %B %Y');
+        if($request->has('br')){
+            $data['br'] = $request->br;
+        } else {
+            $data['br'] = 'Semua';
+        }
+        if($request->has('cust')){
+            $data['cust'] = MCUSTOMER::on(Auth::user()->db_name)->where('mcustomerid',$request->cust)->first()->mcustomername;
+        } else {
+            $data['cust'] = 'Semua';
+        }
         $pdf = PDF::loadview('admin/export/arreport',$data);
         $pdf->output();
         $dom_pdf = $pdf->getDomPDF();
@@ -1135,7 +1315,7 @@ class ReportController extends Controller
         $this->data['company'] = $config->msyscompname;
         $this->data['start'] = Carbon::parse($request->start)->formatLocalized('%d %B %Y');
         $this->data['end'] = Carbon::parse($request->end)->formatLocalized('%d %B %Y');
-
+        $this->request = $request;
         return Excel::create('Ar Report',function($excel){
 			$excel->sheet('Ar Report',function($sheet){
 				$this->count++;
@@ -1158,6 +1338,18 @@ class ReportController extends Controller
                 });
                 $this->count+=2;
 
+                $sheet->cell('A4',function($cell){
+                    $cell->setValue('Cabang');
+                });
+                $sheet->cell('B4',function($cell){
+                    if($this->request->has('br')){
+                        $cell->setValue($this->request->br);
+                    } else {
+                        $cell->setValue('Semua');
+                    }
+
+                });
+
                 $sheet->cell('J4',function($cell){
                     $cell->setValue('Tgl Cetak/ Jam');
                 });
@@ -1166,6 +1358,16 @@ class ReportController extends Controller
                 });
 
                 $this->count++;
+                $sheet->cell('A5',function($cell){
+                    $cell->setValue('Customer');
+                });
+                $sheet->cell('B5',function($cell){
+                    if($this->request->has('cust')){
+                        $cell->setValue(MCUSTOMER::on(Auth::user()->db_name)->where('mcustomerid',$this->request->cust)->first()->mcustomername);
+                    } else {
+                        $cell->setValue('Semua');
+                    }
+                });
                 $sheet->cell('J5',function($cell){
                     $cell->setValue('User');
                 });
@@ -1271,7 +1473,7 @@ class ReportController extends Controller
         $this->data['company'] = $config->msyscompname;
         $this->data['start'] = Carbon::parse($request->start)->formatLocalized('%d %B %Y');
         $this->data['end'] = Carbon::parse($request->end)->formatLocalized('%d %B %Y');
-
+        $this->request = $request;
         return Excel::create('Ar Report',function($excel){
 			$excel->sheet('Ar Report',function($sheet){
 				$this->count++;
@@ -1294,6 +1496,18 @@ class ReportController extends Controller
                 });
                 $this->count+=2;
 
+                $sheet->cell('A4',function($cell){
+                    $cell->setValue('Cabang');
+                });
+                $sheet->cell('B4',function($cell){
+                    if($this->request->has('br')){
+                        $cell->setValue($this->request->br);
+                    } else {
+                        $cell->setValue('Semua');
+                    }
+
+                });
+
                 $sheet->cell('J4',function($cell){
                     $cell->setValue('Tgl Cetak/ Jam');
                 });
@@ -1302,6 +1516,16 @@ class ReportController extends Controller
                 });
 
                 $this->count++;
+                $sheet->cell('A5',function($cell){
+                    $cell->setValue('Customer');
+                });
+                $sheet->cell('B5',function($cell){
+                    if($this->request->has('cust')){
+                        $cell->setValue(MCUSTOMER::on(Auth::user()->db_name)->where('mcustomerid',$this->request->cust)->first()->mcustomername);
+                    } else {
+                        $cell->setValue('Semua');
+                    }
+                });
                 $sheet->cell('J5',function($cell){
                     $cell->setValue('User');
                 });
@@ -1407,11 +1631,14 @@ class ReportController extends Controller
         $data['start'] = Carbon::parse($request->start)->formatLocalized('%d %B %Y');
         $data['end'] = Carbon::parse($request->end)->formatLocalized('%d %B %Y');
         $data['cust'] = $request->cust;
-        if($data['cust'] == ""){
+        if($request->has('cust')){
+            $data['cust'] = MCUSTOMER::on(Auth::user()->db_name)->where('mcustomerid',$request->cust)->first()->mcustomername;
+        } else {
             $data['cust'] = "Semua";
         }
-        $data['br'] = $request->br;
-        if($data['br'] == ""){
+        if($request->has('br')){
+            $data['br'] = $request->br;
+        } else {
             $data['br'] = "Semua";
         }
         return view('admin/export/arcustreport',$data);
@@ -1478,12 +1705,14 @@ class ReportController extends Controller
         $data['company'] = $config->msyscompname;
         $data['start'] = Carbon::parse($request->start)->formatLocalized('%d %B %Y');
         $data['end'] = Carbon::parse($request->end)->formatLocalized('%d %B %Y');
-        $data['cust'] = $request->cust;
-        if($data['cust'] == ""){
+        if($request->has('cust')){
+            $data['cust'] = MCUSTOMER::on(Auth::user()->db_name)->where('mcustomerid',$request->cust)->first()->mcustomername;
+        } else {
             $data['cust'] = "Semua";
         }
-        $data['br'] = $request->br;
-        if($data['br'] == ""){
+        if($request->has('br')){
+            $data['br'] = $request->br;
+        } else {
             $data['br'] = "Semua";
         }
         $pdf = PDF::loadview('admin/export/arcustreport',$data);
@@ -1552,6 +1781,8 @@ class ReportController extends Controller
         }
 
         $this->ars = $ar_detail_data;
+        $this->request = $request;
+
         return Excel::create('Ar Customer Report',function($excel){
 			$excel->sheet('Ar Customer Report',function($sheet){
 				$this->count++;
@@ -1574,6 +1805,17 @@ class ReportController extends Controller
                 });
                 $this->count+=2;
 
+                $sheet->cell('A4',function($cell){
+                    $cell->setValue('Cabang');
+                });
+                $sheet->cell('B4',function($cell){
+                    if($this->request->has('br')){
+                        $cell->setValue($this->request->br);
+                    } else {
+                        $cell->setValue('Semua');
+                    }
+                });
+
                 $sheet->cell('G4',function($cell){
                     $cell->setValue('Tgl Cetak/ Jam');
                 });
@@ -1582,6 +1824,18 @@ class ReportController extends Controller
                 });
 
                 $this->count++;
+
+                $sheet->cell('A5',function($cell){
+                    $cell->setValue('Customer');
+                });
+                $sheet->cell('B5',function($cell){
+                    if($this->request->has('cust')){
+                        $cell->setValue(MCUSTOMER::on(Auth::user()->db_name)->where('mcustomerid',$this->request->cust)->first()->mcustomername);
+                    } else {
+                        $cell->setValue('Semua');
+                    }
+                });
+
                 $sheet->cell('G5',function($cell){
                     $cell->setValue('User');
                 });
@@ -1683,6 +1937,8 @@ class ReportController extends Controller
         }
 
         $this->ars = $ar_detail_data;
+        $this->request = $request;
+
         return Excel::create('Ar Customer Report',function($excel){
 			$excel->sheet('Ar Customer Report',function($sheet){
 				$this->count++;
@@ -1705,6 +1961,17 @@ class ReportController extends Controller
                 });
                 $this->count+=2;
 
+                $sheet->cell('A4',function($cell){
+                    $cell->setValue('Cabang');
+                });
+                $sheet->cell('B4',function($cell){
+                    if($this->request->has('br')){
+                        $cell->setValue($this->request->br);
+                    } else {
+                        $cell->setValue('Semua');
+                    }
+                });
+
                 $sheet->cell('G4',function($cell){
                     $cell->setValue('Tgl Cetak/ Jam');
                 });
@@ -1713,6 +1980,18 @@ class ReportController extends Controller
                 });
 
                 $this->count++;
+
+                $sheet->cell('A5',function($cell){
+                    $cell->setValue('Customer');
+                });
+                $sheet->cell('B5',function($cell){
+                    if($this->request->has('cust')){
+                        $cell->setValue(MCUSTOMER::on(Auth::user()->db_name)->where('mcustomerid',$this->request->cust)->first()->mcustomername);
+                    } else {
+                        $cell->setValue('Semua');
+                    }
+                });
+
                 $sheet->cell('G5',function($cell){
                     $cell->setValue('User');
                 });

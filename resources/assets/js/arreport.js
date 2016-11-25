@@ -109,16 +109,16 @@ const arreport = new Vue({
             });
         },
         printTable(){
-            window.open('/admin-nano/reports/arreport/export/print?wh='+this.selected_warehouse+'&goods='+this.selected_goods+'&start='+this.invoice_date_start+'&end='+this.invoice_date_end,'_blank');
+            window.open('/admin-nano/reports/arreport/export/print?br='+this.selected_branch+'&cust='+this.selected_customer+'&start='+this.invoice_date_start+'&end='+this.invoice_date_end,'_blank');
         },
         pdfTable(){
-            window.open('/admin-nano/reports/arreport/export/pdf?wh='+this.selected_warehouse+'&goods='+this.selected_goods+'&start='+this.invoice_date_start+'&end='+this.invoice_date_end,'_blank');
+            window.open('/admin-nano/reports/arreport/export/pdf?br='+this.selected_branch+'&cust='+this.selected_customer+'&start='+this.invoice_date_start+'&end='+this.invoice_date_end,'_blank');
         },
         excelTable(){
-            window.open('/admin-nano/reports/arreport/export/excel?wh='+this.selected_warehouse+'&goods='+this.selected_goods+'&start='+this.invoice_date_start+'&end='+this.invoice_date_end,'_blank');
+            window.open('/admin-nano/reports/arreport/export/excel?br='+this.selected_branch+'&cust='+this.selected_customer+'&start='+this.invoice_date_start+'&end='+this.invoice_date_end,'_blank');
         },
         csvTable(){
-            window.open('/admin-nano/reports/arreport/export/csv?wh='+this.selected_warehouse+'&goods='+this.selected_goods+'&start='+this.invoice_date_start+'&end='+this.invoice_date_end,'_blank');
+            window.open('/admin-nano/reports/arreport/export/csv?br='+this.selected_branch+'&cust='+this.selected_customer+'&start='+this.invoice_date_start+'&end='+this.invoice_date_end,'_blank');
         }
     },
     watch:{
