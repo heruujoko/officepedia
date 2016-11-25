@@ -24,7 +24,6 @@ class MHInvoice extends Model
   		});
       static::created(function($mhinvoice){
         $mhinvoice->update_prefix_status();
-        $mhinvoice->autogenproc();
       });
   	}
 
@@ -71,6 +70,17 @@ class MHInvoice extends Model
         $invoice_header->mhinvoicecustomername = $customer->mcustomername;
         $invoice_header->mhinvoiceduedate = Carbon::now()->addDays($customer->mcustomerdefaultar);
         $invoice_header->save();
+
+        /*
+         * Auto or manual invoice no
+         */
+        if($request->autogen == true){
+            $invoice_header->autogenproc();
+        } else {
+            $invoice_header->mhinvoiceno = $request->no;
+        }
+        $invoice_header->save();
+
         $header = MHInvoice::on(Auth::user()->db_name)->where('id',$invoice_header->id)->first();
 
         //insert detail

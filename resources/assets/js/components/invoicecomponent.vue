@@ -21,7 +21,18 @@
         </div>
         <div class="col-md-4">
           <div class="form-group">
-            <label class="col-md-2 control-label">Type</label>
+            <label class="col-md-3 control-label">No Invoice</label>
+            <div class="col-md-8">
+                <div class="input-group">
+                    <input v-bind:disabled="invoice_auto" v-model="invoice_no" class="form-control forminput" placeholder="AUTO GENERATE" type="text">
+                    <span class="input-group-addon" style="background: none;">
+                        <input v-model="invoice_auto" type="checkbox" name="autogen" rel="tooltip" title="" data-original-title="ON/OFF auto generate kode transaksi" data-parsley-multiple="autogen" checked="checked">
+                    </span>
+                </div>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="col-md-3 control-label">Type</label>
             <div class="col-md-8">
               <select disabled v-selecttwo="transaksi_label" class="form-control" v-model="invoice_type">
                 <option>Penjualan</option>
@@ -255,7 +266,9 @@
         invoice_date:moment().format('L'),
         invoice_subtotal:0,
         invoice_disc:0,
-        invoice_tax:0
+        invoice_tax:0,
+        invoice_no:"",
+        invoice_auto: true
       }
     },
     computed:{
@@ -583,7 +596,9 @@
           goods: this.invoice_goods,
           mcustomerid: this.selected_customer.mcustomerid,
           mcustomername: this.selected_customer.mcustomername,
-          type: this.invoice_type
+          type: this.invoice_type,
+          no: this.invoice_no,
+          autogen: this.invoice_auto
         }
         console.log(invoice_data);
         Axios.post('/admin-api/salesinvoice',invoice_data)
