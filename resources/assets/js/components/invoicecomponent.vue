@@ -585,6 +585,7 @@
           mcustomername: this.selected_customer.mcustomername,
           type: this.invoice_type
         }
+        console.log(invoice_data);
         Axios.post('/admin-api/salesinvoice',invoice_data)
         .then((res) => {
           if(this.mode == 'edit'){

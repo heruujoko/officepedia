@@ -92,6 +92,7 @@ class MHInvoice extends Model
           $invoice_detail->mdinvoicegoodsdiscount = $g['disc'];
           $invoice_detail->mdinvoicegoodstax = $g['tax'];
           $invoice_detail->saved_unit = $g['saved_unit'];
+          $invoice_detail->mdinvoicegoodsidwhouse = $g['warehouse'];
           $invoice_detail->save();
 
           //update stock card
@@ -209,6 +210,7 @@ class MHInvoice extends Model
           $invoice_detail->mdinvoicegoodsdiscount = $g['disc'];
           $invoice_detail->mdinvoicegoodstax = $g['tax'];
           $invoice_detail->saved_unit = $g['saved_unit'];
+          $invoice_detail->mdinvoicegoodsidwhouse = $g['warehouse'];
           $invoice_detail->void = 0;
           $invoice_detail->save();
 
