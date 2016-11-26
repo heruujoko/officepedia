@@ -196,6 +196,11 @@
       @else
         <li><a href="{{ url('admin-nano/mstockcardreport') }}">Laporan Stock</a></li>
       @endif
+      @if($active == 'salesreports')
+        <li class="active"><a href="{{ url('admin-nano/reports/salesreport') }}">Laporan Penjualan</a></li>
+      @else
+        <li><a href="{{ url('admin-nano/reports/salesreport') }}">Laporan Penjualan</a></li>
+      @endif
       @if($active == 'invoicereports')
         <li class="active"><a href="{{ url('admin-nano/reports/invoicereport') }}">Laporan Penjualan Invoice</a></li>
       @else
