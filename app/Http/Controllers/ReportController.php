@@ -2213,7 +2213,7 @@ class ReportController extends Controller
                     $sheet->row($this->count,array(
                         $st->mstockcardgoodsid,
                         $st->mstockcardgoodsname,
-                        $st->goods()->mgoodsstock,
+                        $st->mstockcardstocktotal,
                         $st->saved_unit,
                         $st->mstockcardstockin,
                         $st->mstockcardstockout,
@@ -2338,7 +2338,7 @@ class ReportController extends Controller
                     $sheet->row($this->count,array(
                         $st->mstockcardgoodsid,
                         $st->mstockcardgoodsname,
-                        $st->goods()->mgoodsstock,
+                        $st->mstockcardstocktotal,
                         $st->saved_unit,
                         $st->mstockcardstockin,
                         $st->mstockcardstockout,

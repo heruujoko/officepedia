@@ -118,7 +118,7 @@
 								<tr v-for="stock in stocks">
 									<td>@{{ stock.mstockcardgoodsid }}</td>
 			                        <td>@{{ stock.mstockcardgoodsname }}</td>
-			                        <td>@{{ stock.goodsqty }}</td>
+			                        <td>@{{ stock.mstockcardstocktotal }}</td>
 			                        <td>@{{ stock.saved_unit }}</td>
 			                        <td>@{{ stock.mstockcardstockin }}</td>
 			                        <td>@{{ stock.mstockcardstockout }}</td>

@@ -100,7 +100,7 @@
                     <tr>
                         <td>{{ $st->mstockcardgoodsid }}</td>
                         <td>{{ $st->mstockcardgoodsname }}</td>
-                        <td>{{ $st->goods()->mgoodsstock }}</td>
+                        <td>{{ $st->mstockcardstocktotal }}</td>
                         <td>{{ $st->saved_unit }}</td>
                         <td>{{ $st->mstockcardstockin }}</td>
                         <td>{{ $st->mstockcardstockout }}</td>
