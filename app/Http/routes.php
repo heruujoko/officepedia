@@ -167,6 +167,11 @@ Route::group(['prefix'=>'admin-nano','middleware' => ['auth','tenantdb']],functi
   Route::get('reports/arcustreport/export/excel','ReportController@arcustreport_excel');
   Route::get('reports/arcustreport/export/csv','ReportController@arcustreport_csv');
 
+  Route::get('reports/stockreport/export/print','ReportController@stockreport_print');
+  Route::get('reports/stockreport/export/pdf','ReportController@stockreport_pdf');
+  Route::get('reports/stockreport/export/excel','ReportController@stockreport_excel');
+  Route::get('reports/stockreport/export/csv','ReportController@stockreport_csv');
+
   Route::controllers([
     '/'=>'AdminController'
   ]);

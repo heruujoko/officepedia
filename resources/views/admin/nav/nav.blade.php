@@ -191,10 +191,10 @@
   <li>
     <a href="#"><i class="fa fa-lg fa-fw fa-briefcase"></i> <span class="menu-item-parent">Laporan</span></a>
     <ul>
-      @if($active == 'salesreports')
-        <li class="active"><a href="{{ url('admin-nano/reports/salesreport') }}">Laporan Penjualan</a></li>
+      @if($active == 'mstockcardreport')
+        <li class="active"><a href="{{ url('admin-nano/mstockcardreport') }}">Laporan Stock</a></li>
       @else
-        <li><a href="{{ url('admin-nano/reports/salesreport') }}">Laporan Penjualan</a></li>
+        <li><a href="{{ url('admin-nano/mstockcardreport') }}">Laporan Stock</a></li>
       @endif
       @if($active == 'invoicereports')
         <li class="active"><a href="{{ url('admin-nano/reports/invoicereport') }}">Laporan Penjualan Invoice</a></li>

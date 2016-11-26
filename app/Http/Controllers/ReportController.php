@@ -14,6 +14,7 @@ use Carbon\Carbon;
 use App\MARCard;
 use App\MWarehouse;
 use App\MCUSTOMER;
+use App\MStockCard;
 
 class ReportController extends Controller
 {
@@ -2024,6 +2025,331 @@ class ReportController extends Controller
                         ));
                     }
 
+                }
+
+
+			});
+		})->export('csv');
+    }
+
+    public function stockreport_print(Request $request){
+        $query = MStockCard::on(Auth::user()->db_name);
+        if ($request->has('start')) {
+             $query->whereDate('mstockcarddate','>=',Carbon::parse($request->start));
+        }
+        if($request->has('end')){
+                $query->whereDate('mstockcarddate','<=',Carbon::parse($request->end));
+            }
+        if($request->has('mstockcardgoodsid')){
+                $query->where('mstockcardgoodsid',$request->mstockcardgoodsid);
+        }
+        if ($request->has('mstockcardwhouse')) {
+            $query->where('mstockcardwhouse',$request->mstockcardwhouse);
+        }
+        // http://stackoverflow.com/questions/20731606/laravel-eloquent-inner-join-with-multiple-conditions
+        $query->join('mdinvoice',function($join){
+            $join->on('mdinvoice.mhinvoiceno','=','mstockcard.mstockcardtransno');
+            $join->on('mdinvoice.mdinvoicegoodsid','=','mstockcard.mstockcardgoodsid');
+        });
+        $config = MConfig::on(Auth::user()->db_name)->where('id',1)->first();
+        $data['stocks'] = $query->get();
+        $data['company'] = $config->msyscompname;
+        $data['start'] = Carbon::parse($request->start)->formatLocalized('%d %B %Y');
+        $data['end'] = Carbon::parse($request->end)->formatLocalized('%d %B %Y');
+        if($request->has('wh')){
+            $data['wh'] = $request->wh;
+        } else {
+            $data['wh'] = 'Semua';
+        }
+        if($request->has('goods')){
+            $data['goods'] = $request->goods;
+        } else {
+            $data['goods'] = 'Semua';
+        }
+        return view('admin.export.stockreport',$data);
+    }
+
+    public function stockreport_pdf(Request $request){
+        $query = MStockCard::on(Auth::user()->db_name);
+        if ($request->has('start')) {
+             $query->whereDate('mstockcarddate','>=',Carbon::parse($request->start));
+        }
+        if($request->has('end')){
+                $query->whereDate('mstockcarddate','<=',Carbon::parse($request->end));
+            }
+        if($request->has('mstockcardgoodsid')){
+                $query->where('mstockcardgoodsid',$request->mstockcardgoodsid);
+        }
+        if ($request->has('mstockcardwhouse')) {
+            $query->where('mstockcardwhouse',$request->mstockcardwhouse);
+        }
+        // http://stackoverflow.com/questions/20731606/laravel-eloquent-inner-join-with-multiple-conditions
+        $query->join('mdinvoice',function($join){
+            $join->on('mdinvoice.mhinvoiceno','=','mstockcard.mstockcardtransno');
+            $join->on('mdinvoice.mdinvoicegoodsid','=','mstockcard.mstockcardgoodsid');
+        });
+        $config = MConfig::on(Auth::user()->db_name)->where('id',1)->first();
+        $data['stocks'] = $query->get();
+        $data['company'] = $config->msyscompname;
+        $data['start'] = Carbon::parse($request->start)->formatLocalized('%d %B %Y');
+        $data['end'] = Carbon::parse($request->end)->formatLocalized('%d %B %Y');
+        if($request->has('wh')){
+            $data['wh'] = $request->wh;
+        } else {
+            $data['wh'] = 'Semua';
+        }
+        if($request->has('goods')){
+            $data['goods'] = $request->goods;
+        } else {
+            $data['goods'] = 'Semua';
+        }
+        $pdf = PDF::loadview('admin/export/stockreport',$data);
+		return $pdf->setPaper('a4', 'potrait')->download('Stock Card Report.pdf');
+    }
+
+    public function stockreport_excel(Request $request){
+        $query = MStockCard::on(Auth::user()->db_name);
+        if ($request->has('start')) {
+             $query->whereDate('mstockcarddate','>=',Carbon::parse($request->start));
+        }
+        if($request->has('end')){
+                $query->whereDate('mstockcarddate','<=',Carbon::parse($request->end));
+            }
+        if($request->has('mstockcardgoodsid')){
+                $query->where('mstockcardgoodsid',$request->mstockcardgoodsid);
+        }
+        if ($request->has('mstockcardwhouse')) {
+            $query->where('mstockcardwhouse',$request->mstockcardwhouse);
+        }
+        // http://stackoverflow.com/questions/20731606/laravel-eloquent-inner-join-with-multiple-conditions
+        $query->join('mdinvoice',function($join){
+            $join->on('mdinvoice.mhinvoiceno','=','mstockcard.mstockcardtransno');
+            $join->on('mdinvoice.mdinvoicegoodsid','=','mstockcard.mstockcardgoodsid');
+        });
+        $this->config = MConfig::on(Auth::user()->db_name)->where('id',1)->first();
+        $this->data['stocks'] = $query->get();
+        $this->data['company'] = $this->config->msyscompname;
+        $this->data['start'] = Carbon::parse($request->start)->formatLocalized('%d %B %Y');
+        $this->data['end'] = Carbon::parse($request->end)->formatLocalized('%d %B %Y');
+        if($request->has('wh')){
+            $this->data['wh'] = $request->wh;
+        } else {
+            $this->data['wh'] = 'Semua';
+        }
+        if($request->has('goods')){
+            $this->data['goods'] = $request->goods;
+        } else {
+            $this->data['goods'] = 'Semua';
+        }
+        $this->count = 0;
+        $this->request = $request;
+        return Excel::create('Stock Report',function($excel){
+			$excel->sheet('Stock Report',function($sheet){
+				$this->count++;
+                $sheet->mergeCells('A1:M1');
+                $sheet->row($this->count,array($this->data['company']));
+                $sheet->cell('A1',function($cell){
+                    $cell->setAlignment('center');
+                });
+                $this->count++;
+                $sheet->mergeCells('A2:M2');
+                $sheet->row($this->count,array('Laporan Stock'));
+                $sheet->cell('A2',function($cell){
+                    $cell->setAlignment('center');
+                });
+                $this->count++;
+                $sheet->mergeCells('A3:M3');
+                $sheet->row($this->count,array('Periode '.$this->data['start'].' - '.$this->data['end']));
+                $sheet->cell('A3',function($cell){
+                    $cell->setAlignment('center');
+                });
+                $this->count+=2;
+
+                $sheet->cell('A4',function($cell){
+                    $cell->setValue('Gudang');
+                });
+                $sheet->cell('B4',function($cell){
+                    if($this->request->has('wh')){
+                        $cell->setValue($this->request->wh);
+                    } else {
+                        $cell->setValue('Semua');
+                    }
+                });
+
+                $sheet->cell('L4',function($cell){
+                    $cell->setValue('Tgl Cetak/ Jam');
+                });
+                $sheet->cell('M4',function($cell){
+                    $cell->setValue(Carbon::now());
+                });
+
+                $this->count++;
+
+                $sheet->cell('A5',function($cell){
+                    $cell->setValue('Barang');
+                });
+                $sheet->cell('B5',function($cell){
+                    if($this->request->has('goods')){
+                        $cell->setValue($this->request->goods);
+                    } else {
+                        $cell->setValue('Semua');
+                    }
+                });
+
+                $sheet->cell('L5',function($cell){
+                    $cell->setValue('User');
+                });
+                $sheet->cell('M5',function($cell){
+                    $cell->setValue(Auth::user()->name);
+                });
+
+                $this->count+=2;
+                $sheet->row($this->count,array(
+                    'Kode Barang','Nama Barang','QTY Stock','Multi Satuan','Masuk','Keluar','Saldo','Tgl Trans','Tipe Trans','No Trans','Gudang','Cabang','Keterangan'
+                ));
+
+                foreach ($this->data['stocks'] as $st) {
+                    $this->count++;
+                    $sheet->row($this->count,array(
+                        $st->mstockcardgoodsid,
+                        $st->mstockcardgoodsname,
+                        $st->goods()->mgoodsstock,
+                        $st->saved_unit,
+                        $st->mstockcardstockin,
+                        $st->mstockcardstockout,
+                        $st->mdinvoicegoodsgrossamount,
+                        $st->mstockcarddate,
+                        $st->mstockcardtranstype,
+                        $st->mstockcardtransno,
+                        $st->gudang()->mwarehousename,
+                        'Umum',
+                        ''
+                    ));
+                }
+
+
+			});
+		})->export('xlsx');
+    }
+
+    public function stockreport_csv(Request $request){
+        $query = MStockCard::on(Auth::user()->db_name);
+        if ($request->has('start')) {
+             $query->whereDate('mstockcarddate','>=',Carbon::parse($request->start));
+        }
+        if($request->has('end')){
+                $query->whereDate('mstockcarddate','<=',Carbon::parse($request->end));
+            }
+        if($request->has('mstockcardgoodsid')){
+                $query->where('mstockcardgoodsid',$request->mstockcardgoodsid);
+        }
+        if ($request->has('mstockcardwhouse')) {
+            $query->where('mstockcardwhouse',$request->mstockcardwhouse);
+        }
+        // http://stackoverflow.com/questions/20731606/laravel-eloquent-inner-join-with-multiple-conditions
+        $query->join('mdinvoice',function($join){
+            $join->on('mdinvoice.mhinvoiceno','=','mstockcard.mstockcardtransno');
+            $join->on('mdinvoice.mdinvoicegoodsid','=','mstockcard.mstockcardgoodsid');
+        });
+        $this->config = MConfig::on(Auth::user()->db_name)->where('id',1)->first();
+        $this->data['stocks'] = $query->get();
+        $this->data['company'] = $this->config->msyscompname;
+        $this->data['start'] = Carbon::parse($request->start)->formatLocalized('%d %B %Y');
+        $this->data['end'] = Carbon::parse($request->end)->formatLocalized('%d %B %Y');
+        if($request->has('wh')){
+            $this->data['wh'] = $request->wh;
+        } else {
+            $this->data['wh'] = 'Semua';
+        }
+        if($request->has('goods')){
+            $this->data['goods'] = $request->goods;
+        } else {
+            $this->data['goods'] = 'Semua';
+        }
+        $this->count = 0;
+        $this->request = $request;
+        return Excel::create('Stock Report',function($excel){
+			$excel->sheet('Stock Report',function($sheet){
+				$this->count++;
+                $sheet->mergeCells('A1:M1');
+                $sheet->row($this->count,array($this->data['company']));
+                $sheet->cell('A1',function($cell){
+                    $cell->setAlignment('center');
+                });
+                $this->count++;
+                $sheet->mergeCells('A2:M2');
+                $sheet->row($this->count,array('Laporan Stock'));
+                $sheet->cell('A2',function($cell){
+                    $cell->setAlignment('center');
+                });
+                $this->count++;
+                $sheet->mergeCells('A3:M3');
+                $sheet->row($this->count,array('Periode '.$this->data['start'].' - '.$this->data['end']));
+                $sheet->cell('A3',function($cell){
+                    $cell->setAlignment('center');
+                });
+                $this->count+=2;
+
+                $sheet->cell('A4',function($cell){
+                    $cell->setValue('Gudang');
+                });
+                $sheet->cell('B4',function($cell){
+                    if($this->request->has('wh')){
+                        $cell->setValue($this->request->wh);
+                    } else {
+                        $cell->setValue('Semua');
+                    }
+                });
+
+                $sheet->cell('L4',function($cell){
+                    $cell->setValue('Tgl Cetak/ Jam');
+                });
+                $sheet->cell('M4',function($cell){
+                    $cell->setValue(Carbon::now());
+                });
+
+                $this->count++;
+
+                $sheet->cell('A5',function($cell){
+                    $cell->setValue('Barang');
+                });
+                $sheet->cell('B5',function($cell){
+                    if($this->request->has('goods')){
+                        $cell->setValue($this->request->goods);
+                    } else {
+                        $cell->setValue('Semua');
+                    }
+                });
+
+                $sheet->cell('L5',function($cell){
+                    $cell->setValue('User');
+                });
+                $sheet->cell('M5',function($cell){
+                    $cell->setValue(Auth::user()->name);
+                });
+
+                $this->count+=2;
+                $sheet->row($this->count,array(
+                    'Kode Barang','Nama Barang','QTY Stock','Multi Satuan','Masuk','Keluar','Saldo','Tgl Trans','Tipe Trans','No Trans','Gudang','Cabang','Keterangan'
+                ));
+
+                foreach ($this->data['stocks'] as $st) {
+                    $this->count++;
+                    $sheet->row($this->count,array(
+                        $st->mstockcardgoodsid,
+                        $st->mstockcardgoodsname,
+                        $st->goods()->mgoodsstock,
+                        $st->saved_unit,
+                        $st->mstockcardstockin,
+                        $st->mstockcardstockout,
+                        $st->mdinvoicegoodsgrossamount,
+                        $st->mstockcarddate,
+                        $st->mstockcardtranstype,
+                        $st->mstockcardtransno,
+                        $st->gudang()->mwarehousename,
+                        'Umum',
+                        ''
+                    ));
                 }
 
 

@@ -41,7 +41,17 @@ class MStockcardreportController extends Controller
     if ($request->has('mstockcardwhouse')) {
         $query->where('mstockcardwhouse',$request->mstockcardwhouse);
     }
+    // http://stackoverflow.com/questions/20731606/laravel-eloquent-inner-join-with-multiple-conditions
+    $query->join('mdinvoice',function($join){
+        $join->on('mdinvoice.mhinvoiceno','=','mstockcard.mstockcardtransno');
+        $join->on('mdinvoice.mdinvoicegoodsid','=','mstockcard.mstockcardgoodsid');
+    });
     $data = $query->get();
+
+    foreach($data as $d){
+        $d['gudang'] = $d->gudang()->mwarehousename;
+        $d['goodsqty'] = $d->goods()->mgoodsstock;
+    }
 
     return response()->json($data);
   }

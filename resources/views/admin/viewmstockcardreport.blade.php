@@ -64,38 +64,38 @@
                                                     <br>
                                                     <h4 class="text-center">{{ $config->msyscompname }}</h4>
                                                     <h4 class="text-center">Laporan Stock Card Report</h4>
-                                                     <h4 class="text-center">Periode <input v-model="invoice_date_start" type="text" class="small-date" /> - <input  v-model="invoice_date_end" type="text" class="small-date" /></h4>
-                                                    
+                                                     <h4 class="text-center">Periode <input v-dpicker v-model="invoice_date_start" type="text" class="small-date" /> - <input v-dpicker v-model="invoice_date_end" type="text" class="small-date" /></h4>
+
                                                 </div>
                                             </div>
                                             <br>
                                                 <div class="row">
                                                 <p class="col-md-1 report-label">Gudang</p>
-                                                <select class="col-md-2" v-model="mstockcardwhouse">
+                                                <select v-selecttwo class="col-md-2" v-model="mstockcardwhouse">
                           					                <option value="">Semua</option>
                                                     <option v-for="warehouse in warehouses" :value="warehouse.id">@{{warehouse.mwarehousename}}</option>
                                                    </select>
                                             </div>
                                               <div class="row">
                                                 <p class="col-md-1 report-label">Kode Barang</p>
-                                                <select class="col-md-2" v-model="mstockcardgoodsid">
+                                                <select v-selecttwo class="col-md-2" v-model="mstockcardgoodsid">
                                                     <option value="">Semua</option>
                           						               <option v-for="good in goods" :value="good.mgoodscode">@{{good.mgoodscode}}</option>
                                                     </select>
                                             </div>
                                             <br>
-                                           {{--  <div class="row">
+                                           <div class="row">
                                                 <div class="col-md-3 col-md-offset-9">
                                                     <button class="dt-button pull-right" v-on:click="printTable">Print</button>
                                                     <button class="dt-button pull-right" v-on:click="pdfTable">PDF</button>
                                                     <button class="dt-button pull-right" v-on:click="excelTable">Excel</button>
                                                     <button class="dt-button pull-right" v-on:click="csvTable">CSV</button>
                                                 </div>
-                                            </div> --}}
+                                            </div>
                                             <br>
 							<div class="row">
 							 <div class="col-md-12">
-							<table class="table table-bordered" id="tableapi">  
+							<table class="table table-bordered" id="tableapi">
 							<thead>
 								<tr>
 									<th>Kode Barang</th>
@@ -117,18 +117,18 @@
 								<tbody>
 								<tr v-for="stock in stocks">
 									<td>@{{ stock.mstockcardgoodsid }}</td>
-									<td>@{{ stock.mstockcardgoodsname }}</td>
-									<td>@{{ stock.mstockcarddate }}</td>
-									<td>@{{ stock.mstockcardtranstype }}</td>
-									<td>@{{ stock.mstockcardtransno }}</td>
-									<td>@{{ stock.mstockcardremark }}</td>
-									<td>@{{ stock.mstockcardstockin }}</td>
-									<td>@{{ stock.mstockcardstockout }}</td>
-									<td>@{{ stock.mstockcardstocktotal }}</td>
-									<td>@{{ stock.mstockcardwhouse }}</td>
-									<td>@{{ stock.mstockcarduserid }}</td>
-									<td>@{{ stock.mstockcardusername }}</td>
-									<td>@{{ stock.mstockcardeventdate }}</td>
+			                        <td>@{{ stock.mstockcardgoodsname }}</td>
+			                        <td>@{{ stock.goodsqty }}</td>
+			                        <td>@{{ stock.saved_unit }}</td>
+			                        <td>@{{ stock.mstockcardstockin }}</td>
+			                        <td>@{{ stock.mstockcardstockout }}</td>
+			                        <td v-priceformatlabel="num_format" style="text-align:right">@{{ stock.mdinvoicegoodsgrossamount }}</td>
+			                        <td>@{{ stock.mstockcarddate }}</td>
+			                        <td>@{{ stock.mstockcardtranstype }}</td>
+			                        <td>@{{ stock.mstockcardtransno }}</td>
+			                        <td>@{{ stock.gudang }}</td>
+			                        <td> Umum </td>
+			                        <td></td>
 								</tr>
 								</tbody>
 							</table>
@@ -137,7 +137,7 @@
 							</div>
 							@push('scripts')
 							<tfoot>
-						
+
 							</tfoot>
 							@endpush
 						  <script>
