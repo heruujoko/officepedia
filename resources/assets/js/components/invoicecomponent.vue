@@ -876,7 +876,10 @@
         },
         invoice_customer(){
             this.selected_customer = _.find(this.customers,  {id: parseInt(this.invoice_customer)});
-            this.invoice_due_date = moment().add(this.selected_customer.mcustomerdefaultar,'day').format('L');
+            this.invoice_due_date = moment(this.invoice_date).add(this.selected_customer.mcustomerdefaultar,'day').format('L');
+        },
+        invoice_date(){
+            this.invoice_due_date = moment(this.invoice_date).add(this.selected_customer.mcustomerdefaultar,'day').format('L');
         },
         detail_goods_unit3(){
             this.convertUnits();
