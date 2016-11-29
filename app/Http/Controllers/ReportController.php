@@ -2229,7 +2229,7 @@ class ReportController extends Controller
 
 
 			});
-		})->export('xlsx');
+		})->export('xls');
     }
 
     public function stockreport_csv(Request $request){
