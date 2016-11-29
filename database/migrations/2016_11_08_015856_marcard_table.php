@@ -22,8 +22,8 @@ class MarcardTable extends Migration
           $table->text('marcardremark');
           $table->date('marcardduedate');
           $table->double('marcardtotalinv');
-          $table->boolean('marcardpayamount');
-          $table->boolean('marcardoutstanding');
+          $table->double('marcardpayamount');
+          $table->double('marcardoutstanding');
           $table->integer('marcarduserid');
           $table->string('marcardusername');
           $table->date('marcardusereventdate');

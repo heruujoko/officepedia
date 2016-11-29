@@ -96,6 +96,15 @@ class MHInvoice extends Model
           $invoice_detail->mdinvoicedate = $header->mhinvoicedate;
           $invoice_detail->mdinvoicegoodsid = $g['goods']['mgoodscode'];
           $invoice_detail->mdinvoicegoodsname = $g['goods']['mgoodsname'];
+          $invoice_detail->mdinvoiceunit3 = $g['detail_goods_unit3'];
+          $invoice_detail->mdinvoiceunit3conv = $g['detail_goods_unit3_conv'];
+          $invoice_detail->mdinvoiceunit3label = $g['detail_goods_unit3_label'];
+          $invoice_detail->mdinvoiceunit2 = $g['detail_goods_unit2'];
+          $invoice_detail->mdinvoiceunit2conv = $g['detail_goods_unit2_conv'];
+          $invoice_detail->mdinvoiceunit2label = $g['detail_goods_unit2_label'];
+          $invoice_detail->mdinvoiceunit1 = $g['detail_goods_unit1'];
+          $invoice_detail->mdinvoiceunit1conv = $g['detail_goods_unit1_conv'];
+          $invoice_detail->mdinvoiceunit1label = $g['detail_goods_unit1_label'];
           $invoice_detail->mdinvoicegoodsqty = $g['usage'];
           $invoice_detail->mdinvoicegoodsprice = $g['goods']['mgoodspriceout'];
           $invoice_detail->mdinvoicegoodsgrossamount = $g['subtotal'];
@@ -150,7 +159,7 @@ class MHInvoice extends Model
         $ar->marcardduedate = Carbon::now()->addDays($customer->mcustomerdefaultar);
         $ar->marcardtotalinv = $request->subtotal + $request->tax - $request->disc;
         $ar->marcardpayamount = 0;
-        $ar->marcardoutstanding = 0;
+        $ar->marcardoutstanding = $request->subtotal + $request->tax - $request->disc;
         $ar->marcarduserid = Auth::user()->id;
         $ar->marcardusername = Auth::user()->name;
         $ar->marcardusereventdate = Carbon::now();
@@ -159,7 +168,7 @@ class MHInvoice extends Model
 
         DB::connection(Auth::user()->db_name)->commit();
         return 'ok';
-      } catch(Exception $e){
+      } catch(Exception $e){  
         DB::connection(Auth::user()->db_name)->rollBack();
         return 'err';
       }
@@ -214,6 +223,15 @@ class MHInvoice extends Model
           $invoice_detail->mdinvoicedate = $header->mhinvoicedate;
           $invoice_detail->mdinvoicegoodsid = $g['goods']['mgoodscode'];
           $invoice_detail->mdinvoicegoodsname = $g['goods']['mgoodsname'];
+          $invoice_detail->mdinvoiceunit3 = $g['detail_goods_unit3'];
+          $invoice_detail->mdinvoiceunit3conv = $g['detail_goods_unit3_conv'];
+          $invoice_detail->mdinvoiceunit3label = $g['detail_goods_unit3_label'];
+          $invoice_detail->mdinvoiceunit2 = $g['detail_goods_unit2'];
+          $invoice_detail->mdinvoiceunit2conv = $g['detail_goods_unit2_conv'];
+          $invoice_detail->mdinvoiceunit2label = $g['detail_goods_unit2_label'];
+          $invoice_detail->mdinvoiceunit1 = $g['detail_goods_unit1'];
+          $invoice_detail->mdinvoiceunit1conv = $g['detail_goods_unit1_conv'];
+          $invoice_detail->mdinvoiceunit1label = $g['detail_goods_unit1_label'];
           $invoice_detail->mdinvoicegoodsqty = $g['usage'];
           $invoice_detail->mdinvoicegoodsprice = $g['goods']['mgoodspriceout'];
           $invoice_detail->mdinvoicegoodsgrossamount = $g['subtotal'];
@@ -283,7 +301,7 @@ class MHInvoice extends Model
             $ar->marcardduedate = Carbon::now()->addDays($customer->mcustomerdefaultar);
             $ar->marcardtotalinv = $request->subtotal + $request->tax - $request->disc;
             $ar->marcardpayamount = 0;
-            $ar->marcardoutstanding = 0;
+            $ar->marcardoutstanding = $request->subtotal + $request->tax - $request->disc;
             $ar->marcarduserid = Auth::user()->id;
             $ar->marcardusername = Auth::user()->name;
             $ar->marcardusereventdate = Carbon::now();
