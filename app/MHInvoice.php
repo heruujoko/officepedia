@@ -20,7 +20,8 @@ class MHInvoice extends Model
     protected static function boot(){
   		parent::boot();
   		static::addGlobalScope('actives', function(Builder $builder) {
-  					$builder->where('void', '=', 0);
+  				$builder->where('void', '=', 0);
+                $builder->orderBy('mhinvoicedate','desc');
   		});
       static::created(function($mhinvoice){
         $mhinvoice->update_prefix_status();
@@ -125,7 +126,8 @@ class MHInvoice extends Model
           $stock_card->mstockcardremark = "Transaksi ".$request->type." untuk ".$customer->mcustomername;
           $stock_card->mstockcardstockin = 0;
           $stock_card->mstockcardstockout = $g['usage'];
-          $stock_card->mstockcardstocktotal = $mgoods->mgoodsstock - $g['usage'];
+        //   $stock_card->mstockcardstocktotal = $mgoods->mgoodsstock - $g['usage'];
+          $stock_card->mstockcardstocktotal = $mgoods->mgoodsstock;
           $stock_card->mstockcardwhouse = $g['warehouse'];
           $stock_card->mstockcarduserid = Auth::user()->id;
           $stock_card->mstockcardusername = Auth::user()->name;
@@ -135,7 +137,8 @@ class MHInvoice extends Model
           $stock_card->save();
 
           // update master barang
-          $mgoods->mgoodsstock = $stock_card->mstockcardstocktotal;
+        //   $mgoods->mgoodsstock = $stock_card->mstockcardstocktotal;
+          $mgoods->mgoodsstock = $mgoods->mgoodsstock - $g['usage'];
           $mgoods->save();
 
           //check allow minus
@@ -168,7 +171,7 @@ class MHInvoice extends Model
 
         DB::connection(Auth::user()->db_name)->commit();
         return 'ok';
-      } catch(Exception $e){  
+      } catch(Exception $e){
         DB::connection(Auth::user()->db_name)->rollBack();
         return 'err';
       }
@@ -210,12 +213,8 @@ class MHInvoice extends Model
           $invoice_detail = MDInvoice::on(Auth::user()->db_name)->where('mdinvoicegoodsid',$g['goods']['mgoodscode'])->where('mhinvoiceno',$header->mhinvoiceno)->first();
           $mgoods = MGoods::on(Auth::user()->db_name)->where('mgoodscode',$g['goods']['mgoodscode'])->first();
 
-          $last_stock = MStockCard::on(Auth::user()->db_name)->where('mstockcardtransno',$invoice_detail->mhinvoiceno)->where('mstockcardgoodsid',$mgoods->mgoodscode)->get()->last();
+          $last_stock = MStockCard::on(Auth::user()->db_name)->where('mstockcardtransno',$invoice_detail->mhinvoiceno)->where('mstockcardgoodsid',$mgoods->mgoodscode)->get()->first();
           $old_qty = $invoice_detail->mdinvoicegoodsqty;
-          if($old_qty != $g['usage']){
-            $mgoods->mgoodsstock += $last_stock->mstockcardstockout;
-          }
-          $mgoods->save();
 
           $invoice_detail->mhinvoiceno = $header->mhinvoiceno;
           $invoice_detail->mdcustomerid = $customer->mcustomerid;
@@ -265,6 +264,11 @@ class MHInvoice extends Model
             $stock_card->void = 0;
             $stock_card->save();
 
+            if($old_qty != $g['usage']){
+              $mgoods->mgoodsstock += $last_stock->mstockcardstockout;
+            }
+            $mgoods->save();
+
             //out dengan qty baru
             $stock_card = new MStockCard;
             $stock_card->setConnection(Auth::user()->db_name);
@@ -276,7 +280,7 @@ class MHInvoice extends Model
             $stock_card->mstockcardremark = "Editing Transaksi ".$request->type." untuk ".$customer->mcustomername;
             $stock_card->mstockcardstockin = 0;
             $stock_card->mstockcardstockout = $g['usage'];
-            $stock_card->mstockcardstocktotal = $mgoods->mgoodsstock - $g['usage'];
+            $stock_card->mstockcardstocktotal = $mgoods->mgoodsstock;
             $stock_card->mstockcardwhouse = $g['warehouse'];
             $stock_card->mstockcarduserid = Auth::user()->id;
             $stock_card->mstockcardusername = Auth::user()->name;
@@ -286,7 +290,7 @@ class MHInvoice extends Model
             $stock_card->void = 0;
             $stock_card->save();
 
-            $mgoods->mgoodsstock = $stock_card->mstockcardstocktotal;
+            $mgoods->mgoodsstock = $stock_card->mstockcardstocktotal  - $g['usage'];
             $mgoods->save();
 
             // update AR

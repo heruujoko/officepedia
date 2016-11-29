@@ -122,7 +122,7 @@
 			                        <td>@{{ stock.saved_unit }}</td>
 			                        <td>@{{ stock.mstockcardstockin }}</td>
 			                        <td>@{{ stock.mstockcardstockout }}</td>
-			                        <td v-priceformatlabel="num_format" style="text-align:right">@{{ stock.mdinvoicegoodsgrossamount }}</td>
+			                        <td>@{{ stock.mstockcardstocktotal +  stock.mstockcardstockin - stock.mstockcardstockout }}</td>
 			                        <td>@{{ stock.mstockcarddate }}</td>
 			                        <td>@{{ stock.mstockcardtranstype }}</td>
 			                        <td>@{{ stock.mstockcardtransno }}</td>
