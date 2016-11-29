@@ -375,7 +375,7 @@ class ReportController extends Controller
 
 
 			});
-		})->export('xlsx');
+		})->export('xls');
 	}
 
     public function salesreport_csv(Request $request){
@@ -895,7 +895,7 @@ class ReportController extends Controller
 
 
             });
-        })->export('xlsx');
+        })->export('xls');
     }
 
     public function invoicereport_csv(Request $request){
@@ -1402,7 +1402,7 @@ class ReportController extends Controller
 
 
 			});
-		})->export('xlsx');
+		})->export('xls');
     }
 
     public function arreport_csv(Request $request){
@@ -1873,7 +1873,7 @@ class ReportController extends Controller
 
 
 			});
-		})->export('xlsx');
+		})->export('xls');
     }
 
     public function arcustreport_csv(Request $request){
