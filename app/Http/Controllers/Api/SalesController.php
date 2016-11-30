@@ -167,9 +167,6 @@ class SalesController extends Controller
 
     public function ar(Request $request){
         $queries = MARCard::on(Auth::user()->db_name);
-        if($request->has('start')){
-            $queries->whereDate('marcarddate','>=',Carbon::parse($request->start));
-        }
         if($request->has('end')){
             $queries->whereDate('marcarddate','<=',Carbon::parse($request->end));
         }
@@ -177,50 +174,65 @@ class SalesController extends Controller
             $queries->where('marcardcustomerid',$request->cust);
         }
 
-        $ars = $queries->get();
+        // $ars = $queries->get();
+        $ars = $queries->groupBy('marcardcustomerid')
+        ->selectRaw('* , sum(marcardoutstanding) as marcardoutstanding_sum')
+        ->get();
 
         /*
          * groupping ars
          */
+        $marcardoutstanding_total = 0;
+        $trans_count_total = 0;
+        $seven_total = 0;
+        $fourteen_total = 0;
+        $twentyone_total = 0;
+        $thirty_total = 0;
+        $month_total = 0;
 
         foreach($ars as $ar){
+            $marcardoutstanding_total += $ar->marcardoutstanding_sum;
             $now = Carbon::now();
             $due = Carbon::parse($ar->marcardduedate);
             $diff = $now->diffInDays($due,false);
-            $ar['trans_count'] = count(MDInvoice::on(Auth::user()->db_name)->where('mhinvoiceno',$ar->marcardtransno)->get());
+            $ar['trans_count'] = count(MHInvoice::on(Auth::user()->db_name)->where('mhinvoicecustomerid',$ar->marcardcustomerid)->get());
             if($diff <= 7){
-                $ar['seven'] = $ar->marcardoutstanding;
+                $ar['seven'] = $ar->marcardoutstanding_sum;
                 $ar['fourteen'] =0;
                 $ar['twentyone'] =0;
                 $ar['thirty'] =0;
                 $ar['month'] =0;
+                $seven_total += $ar->marcardoutstanding_sum;
             } else if($diff <= 14){
                 $ar['seven'] = 0;
-                $ar['fourteen'] = $ar->marcardoutstanding;
+                $ar['fourteen'] = $ar->marcardoutstanding_sum;
                 $ar['twentyone'] =0;
                 $ar['thirty'] =0;
                 $ar['month'] =0;
+                $fourteen_total += $ar->marcardoutstanding_sum;
             } else if($diff <= 21){
                 $ar['seven'] = 0;
                 $ar['fourteen'] =0;
-                $ar['twentyone'] = $ar->marcardoutstanding;
+                $ar['twentyone'] = $ar->marcardoutstanding_sum;
                 $ar['thirty'] =0;
                 $ar['month'] =0;
+                $twentyone_total += $ar->marcardoutstanding_sum;
             } else if($diff <= 30){
                 $ar['seven'] = 0;
                 $ar['fourteen'] =0;
                 $ar['twentyone'] =0;
-                $ar['thirty'] = $ar->marcardoutstanding;
+                $ar['thirty'] = $ar->marcardoutstanding_sum;
                 $ar['month'] =0;
+                $thirty_total += $ar->marcardoutstanding_sum;
             } else {
                 $ar['seven'] = 0;
                 $ar['fourteen'] =0;
                 $ar['twentyone'] =0;
                 $ar['thirty'] =0;
-                $ar['month'] = $ar->marcardoutstanding;
+                $ar['month'] = $ar->marcardoutstanding_sum;
+                $month_total += $ar->marcardoutstanding_sum;
             }
         }
-
         return response()->json($ars);
     }
 
@@ -242,9 +254,6 @@ class SalesController extends Controller
         if($request->has('cust')){
             $header_query->where('marcardcustomerid',$request->cust);
         }
-        if($request->has('start')){
-            $header_query->whereDate('marcarddate','>=',Carbon::parse($request->start));
-        }
         if($request->has('end')){
             $header_query->whereDate('marcarddate','<=',Carbon::parse($request->end));
         }
@@ -263,9 +272,6 @@ class SalesController extends Controller
          $idx=0;
         foreach ($customers as $cust) {
             $detail_query = MARCard::on(Auth::user()->db_name)->where('marcardcustomerid',$cust);
-            if($request->has('start')){
-                $detail_query->whereDate('marcarddate','>=',Carbon::parse($request->start));
-            }
             if($request->has('end')){
                 $detail_query->whereDate('marcarddate','<=',Carbon::parse($request->end));
             }
@@ -273,7 +279,7 @@ class SalesController extends Controller
 
             array_push($ar_detail_data,['customerid' => $cust,'customername' => $details[$idx]->marcardcustomername]);
             foreach($details as $dt){
-                $dt['outstanding_prc'] = number_format($dt->arcardoutstanding,$data['decimals'],$data['dec_point'],$data['thousands_sep']);
+                $dt['outstanding_prc'] = number_format($dt->marcardoutstanding,$data['decimals'],$data['dec_point'],$data['thousands_sep']);
                 $dt['aging'] = Carbon::now()->diffInDays(Carbon::parse($dt->marcarddate));
                 $dt['trans_count'] = count(MDInvoice::on(Auth::user()->db_name)->where('mhinvoiceno',$dt->marcardtransno)->get());
                 array_push($ar_detail_data,$dt);

@@ -79,6 +79,63 @@ const arreport = new Vue({
         invoice_date_start:moment().format('L'),
         invoice_date_end:moment().format('L')
     },
+    computed:{
+        label_branch(){
+            let self = this;
+            if(this.selected_branch != ""){
+                return _.find(this.branches,(wh) => {
+                    return wh.id == self.selected_branch;
+                }).mbranchname;
+            } else {
+                return "Semua"
+            }
+        },
+        label_customer(){
+            let self = this;
+            if(this.selected_customer != ""){
+                return _.find(this.customers,(wh) => {
+                    return wh.mcustomerid == self.selected_customer;
+                }).mcustomername;
+            } else {
+                return "Semua"
+            }
+        },
+        trans_count_total(){
+            return _.sumBy(this.ars,(ar) => {
+                return ar.trans_count;
+            });
+        },
+        outstanding_total(){
+            return _.sumBy(this.ars,(ar) => {
+                return ar.marcardoutstanding_sum;
+            });
+        },
+        seven_total(){
+            return _.sumBy(this.ars,(ar) => {
+                return ar.seven;
+            });
+        },
+        fourteen_total(){
+            return _.sumBy(this.ars,(ar) => {
+                return ar.fourteen;
+            });
+        },
+        twentyone_total(){
+            return _.sumBy(this.ars,(ar) => {
+                return ar.twentyone;
+            });
+        },
+        thirty_total(){
+            return _.sumBy(this.ars,(ar) => {
+                return ar.thirty;
+            });
+        },
+        month_total(){
+            return _.sumBy(this.ars,(ar) => {
+                return ar.month;
+            });
+        },
+    },
     methods:{
         fetchArs(){
             var self = this;
@@ -109,16 +166,16 @@ const arreport = new Vue({
             });
         },
         printTable(){
-            window.open('/admin-nano/reports/arreport/export/print?br='+this.selected_branch+'&cust='+this.selected_customer+'&start='+this.invoice_date_start+'&end='+this.invoice_date_end,'_blank');
+            window.open('/admin-nano/reports/arreport/export/print?br='+this.selected_branch+'&cust='+this.selected_customer+'&end='+this.invoice_date_end,'_blank');
         },
         pdfTable(){
-            window.open('/admin-nano/reports/arreport/export/pdf?br='+this.selected_branch+'&cust='+this.selected_customer+'&start='+this.invoice_date_start+'&end='+this.invoice_date_end,'_blank');
+            window.open('/admin-nano/reports/arreport/export/pdf?br='+this.selected_branch+'&cust='+this.selected_customer+'&end='+this.invoice_date_end,'_blank');
         },
         excelTable(){
-            window.open('/admin-nano/reports/arreport/export/excel?br='+this.selected_branch+'&cust='+this.selected_customer+'&start='+this.invoice_date_start+'&end='+this.invoice_date_end,'_blank');
+            window.open('/admin-nano/reports/arreport/export/excel?br='+this.selected_branch+'&cust='+this.selected_customer+'&end='+this.invoice_date_end,'_blank');
         },
         csvTable(){
-            window.open('/admin-nano/reports/arreport/export/csv?br='+this.selected_branch+'&cust='+this.selected_customer+'&start='+this.invoice_date_start+'&end='+this.invoice_date_end,'_blank');
+            window.open('/admin-nano/reports/arreport/export/csv?br='+this.selected_branch+'&cust='+this.selected_customer+'&end='+this.invoice_date_end,'_blank');
         }
     },
     watch:{

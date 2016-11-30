@@ -103,6 +103,19 @@ class ReportController extends Controller
             }
         }
 
+        $invoice_count =0;
+        $sales_total =0;
+        $discount_total =0;
+        $tax_total =0;
+        $grandtotal_total =0;
+        foreach ($sales as $sl) {
+            $invoice_count += $sl['detail_count'];
+            $sales_total += $sl->mhinvoicesubtotal_sum;
+            $discount_total += $sl->mhinvoicediscounttotal_sum;
+            $tax_total += $sl->mhinvoicetaxtotal_sum;
+            $grandtotal_total += $sl->mhinvoicegrandtotal_sum;
+        }
+
         $config = MConfig::on(Auth::user()->db_name)->where('id',1)->first();
         $data['decimals'] = $config->msysgenrounddec;
         $data['dec_point'] = $config->msysnumseparator;
@@ -111,6 +124,12 @@ class ReportController extends Controller
         } else {
           $data['thousands_sep'] = ",";
         }
+
+        $data['invoice_count_total'] = number_format($invoice_count,$data['decimals'],$data['dec_point'],$data['thousands_sep']);
+        $data['sales_total'] = number_format($sales_total,$data['decimals'],$data['dec_point'],$data['thousands_sep']);
+        $data['discount_total'] = number_format($discount_total,$data['decimals'],$data['dec_point'],$data['thousands_sep']);
+        $data['tax_total'] = number_format($tax_total,$data['decimals'],$data['dec_point'],$data['thousands_sep']);
+        $data['grandtotal_total'] = number_format($grandtotal_total,$data['decimals'],$data['dec_point'],$data['thousands_sep']);
 
         $data['sales'] = $sales;
         $data['company'] = $config->msyscompname;
@@ -207,6 +226,34 @@ class ReportController extends Controller
 
             }
         }
+
+        $invoice_count =0;
+        $sales_total =0;
+        $discount_total =0;
+        $tax_total =0;
+        $grandtotal_total =0;
+        foreach ($sales as $sl) {
+            $invoice_count += $sl['detail_count'];
+            $sales_total += $sl->mhinvoicesubtotal_sum;
+            $discount_total += $sl->mhinvoicediscounttotal_sum;
+            $tax_total += $sl->mhinvoicetaxtotal_sum;
+            $grandtotal_total += $sl->mhinvoicegrandtotal_sum;
+        }
+
+        $config = MConfig::on(Auth::user()->db_name)->where('id',1)->first();
+        $data['decimals'] = $config->msysgenrounddec;
+        $data['dec_point'] = $config->msysnumseparator;
+        if($data['dec_point'] == ","){
+          $data['thousands_sep'] = ".";
+        } else {
+          $data['thousands_sep'] = ",";
+        }
+
+        $data['invoice_count_total'] = number_format($invoice_count,$data['decimals'],$data['dec_point'],$data['thousands_sep']);
+        $data['sales_total'] = number_format($sales_total,$data['decimals'],$data['dec_point'],$data['thousands_sep']);
+        $data['discount_total'] = number_format($discount_total,$data['decimals'],$data['dec_point'],$data['thousands_sep']);
+        $data['tax_total'] = number_format($tax_total,$data['decimals'],$data['dec_point'],$data['thousands_sep']);
+        $data['grandtotal_total'] = number_format($grandtotal_total,$data['decimals'],$data['dec_point'],$data['thousands_sep']);
 
         $config = MConfig::on(Auth::user()->db_name)->where('id',1)->first();
         $data['decimals'] = $config->msysgenrounddec;
@@ -314,6 +361,19 @@ class ReportController extends Controller
             }
         }
 
+        $this->invoice_count =0;
+        $this->sales_total =0;
+        $this->discount_total =0;
+        $this->tax_total =0;
+        $this->grandtotal_total =0;
+        foreach ($sales as $sl) {
+            $this->invoice_count += $sl['detail_count'];
+            $this->sales_total += $sl->mhinvoicesubtotal_sum;
+            $this->discount_total += $sl->mhinvoicediscounttotal_sum;
+            $this->tax_total += $sl->mhinvoicetaxtotal_sum;
+            $this->grandtotal_total += $sl->mhinvoicegrandtotal_sum;
+        }
+
         $this->sales = $sales;
 		$this->count = 0;
         $config = MConfig::on(Auth::user()->db_name)->where('id',1)->first();
@@ -324,6 +384,12 @@ class ReportController extends Controller
         } else {
           $this->data['thousands_sep'] = ",";
         }
+        $this->data['invoice_count_total'] = number_format($this->invoice_count,$this->data['decimals'],$this->data['dec_point'],$this->data['thousands_sep']);
+        $this->data['sales_total'] = number_format($this->sales_total,$this->data['decimals'],$this->data['dec_point'],$this->data['thousands_sep']);
+        $this->data['discount_total'] = number_format($this->discount_total,$this->data['decimals'],$this->data['dec_point'],$this->data['thousands_sep']);
+        $this->data['tax_total'] = number_format($this->tax_total,$this->data['decimals'],$this->data['dec_point'],$this->data['thousands_sep']);
+        $this->data['grandtotal_total'] = number_format($this->grandtotal_total,$this->data['decimals'],$this->data['dec_point'],$this->data['thousands_sep']);
+
         $this->data['company'] = $config->msyscompname;
         $this->data['start'] = Carbon::parse($request->start)->formatLocalized('%d %B %Y');
         $this->data['end'] = Carbon::parse($request->end)->formatLocalized('%d %B %Y');
@@ -407,6 +473,20 @@ class ReportController extends Controller
                     ));
                 }
 
+                $this->count++;
+                $sheet->row($this->count,array(
+                    'TOTAL',
+                    '',
+                    $this->data['invoice_count_total'],
+                    $this->data['sales_total'],
+                    '0',
+                    $this->data['discount_total'],
+                    $this->data['sales_total'],
+                    $this->data['tax_total'],
+                    $this->data['grandtotal_total'],
+                    '0',
+                    $this->data['grandtotal_total'],
+                ));
 
 			});
 		})->export('xls');
@@ -489,9 +569,22 @@ class ReportController extends Controller
 
             }
         }
-        
+
+        $this->invoice_count =0;
+        $this->sales_total =0;
+        $this->discount_total =0;
+        $this->tax_total =0;
+        $this->grandtotal_total =0;
+        foreach ($sales as $sl) {
+            $this->invoice_count += $sl['detail_count'];
+            $this->sales_total += $sl->mhinvoicesubtotal_sum;
+            $this->discount_total += $sl->mhinvoicediscounttotal_sum;
+            $this->tax_total += $sl->mhinvoicetaxtotal_sum;
+            $this->grandtotal_total += $sl->mhinvoicegrandtotal_sum;
+        }
+
         $this->sales = $sales;
-		$this->count = 0;
+        $this->count = 0;
         $config = MConfig::on(Auth::user()->db_name)->where('id',1)->first();
         $this->data['decimals'] = $config->msysgenrounddec;
         $this->data['dec_point'] = $config->msysnumseparator;
@@ -500,13 +593,19 @@ class ReportController extends Controller
         } else {
           $this->data['thousands_sep'] = ",";
         }
+        $this->data['invoice_count_total'] = number_format($this->invoice_count,$this->data['decimals'],$this->data['dec_point'],$this->data['thousands_sep']);
+        $this->data['sales_total'] = number_format($this->sales_total,$this->data['decimals'],$this->data['dec_point'],$this->data['thousands_sep']);
+        $this->data['discount_total'] = number_format($this->discount_total,$this->data['decimals'],$this->data['dec_point'],$this->data['thousands_sep']);
+        $this->data['tax_total'] = number_format($this->tax_total,$this->data['decimals'],$this->data['dec_point'],$this->data['thousands_sep']);
+        $this->data['grandtotal_total'] = number_format($this->grandtotal_total,$this->data['decimals'],$this->data['dec_point'],$this->data['thousands_sep']);
+
         $this->data['company'] = $config->msyscompname;
         $this->data['start'] = Carbon::parse($request->start)->formatLocalized('%d %B %Y');
         $this->data['end'] = Carbon::parse($request->end)->formatLocalized('%d %B %Y');
         $this->request = $request;
-		return Excel::create('Sales Report',function($excel){
-			$excel->sheet('Sales Report',function($sheet){
-				$this->count++;
+        return Excel::create('Sales Report',function($excel){
+            $excel->sheet('Sales Report',function($sheet){
+                $this->count++;
                 $sheet->mergeCells('A1:K1');
                 $sheet->row($this->count,array($this->data['company']));
                 $sheet->cell('A1',function($cell){
@@ -583,9 +682,23 @@ class ReportController extends Controller
                     ));
                 }
 
+                $this->count++;
+                $sheet->row($this->count,array(
+                    'TOTAL',
+                    '',
+                    $this->data['invoice_count_total'],
+                    $this->data['sales_total'],
+                    '0',
+                    $this->data['discount_total'],
+                    $this->data['sales_total'],
+                    $this->data['tax_total'],
+                    $this->data['grandtotal_total'],
+                    '0',
+                    $this->data['grandtotal_total'],
+                ));
 
-			});
-		})->export('csv');
+            });
+        })->export('csv');
 	}
 
     public function invoicereport(){
@@ -634,6 +747,11 @@ class ReportController extends Controller
         }
         $dates = array_unique($dates);
         $date_group_invoices = [];
+
+        $discount_total = 0;
+        $subtotal_total = 0;
+        $tax_total = 0;
+
         foreach ($dates as $dt) {
             array_push($date_group_invoices,['date' => $dt,'data' => false]);
             /*
@@ -657,8 +775,16 @@ class ReportController extends Controller
                 $iv['sub'] = number_format($iv->mdinvoicegoodsgrossamount ,$data['decimals'],$data['dec_point'],$data['thousands_sep']);
                 $iv['total'] = number_format(($iv->mdinvoicegoodsgrossamount + $iv->mdinvoicegoodstax - $iv->mdinvoicegoodsdiscount) ,$data['decimals'],$data['dec_point'],$data['thousands_sep']);
                 array_push($date_group_invoices,$iv);
+                $discount_total += $iv->mdinvoicegoodsdiscount;
+                $tax_total += $iv->mdinvoicegoodstax;
+                $subtotal_total += $iv->mdinvoicegoodsgrossamount;
             }
         }
+
+        $data['discount_total'] = $discount_total;
+        $data['tax_total'] = $tax_total;
+        $data['subtotal_total'] = $subtotal_total;
+        $data['total_total'] = $subtotal_total + $tax_total - $discount_total;
 
         $data['invoices'] = $date_group_invoices;
         $data['company'] = $config->msyscompname;
@@ -722,6 +848,10 @@ class ReportController extends Controller
         }
         $dates = array_unique($dates);
         $date_group_invoices = [];
+        $discount_total = 0;
+        $subtotal_total = 0;
+        $tax_total = 0;
+
         foreach ($dates as $dt) {
             array_push($date_group_invoices,['date' => $dt,'data' => false]);
             /*
@@ -745,8 +875,16 @@ class ReportController extends Controller
                 $iv['sub'] = number_format($iv->mdinvoicegoodsgrossamount ,$data['decimals'],$data['dec_point'],$data['thousands_sep']);
                 $iv['total'] = number_format(($iv->mdinvoicegoodsgrossamount + $iv->mdinvoicegoodstax - $iv->mdinvoicegoodsdiscount) ,$data['decimals'],$data['dec_point'],$data['thousands_sep']);
                 array_push($date_group_invoices,$iv);
+                $discount_total += $iv->mdinvoicegoodsdiscount;
+                $tax_total += $iv->mdinvoicegoodstax;
+                $subtotal_total += $iv->mdinvoicegoodsgrossamount;
             }
         }
+
+        $data['discount_total'] = number_format($discount_total,$data['decimals'],$data['dec_point'],$data['thousands_sep']);
+        $data['tax_total'] = number_format($tax_total,$data['decimals'],$data['dec_point'],$data['thousands_sep']);
+        $data['subtotal_total'] = number_format($subtotal_total,$data['decimals'],$data['dec_point'],$data['thousands_sep']);
+        $data['total_total'] = number_format($subtotal_total + $tax_total - $discount_total,$data['decimals'],$data['dec_point'],$data['thousands_sep']);
 
         $data['invoices'] = $date_group_invoices;
         $data['company'] = $config->msyscompname;
@@ -810,6 +948,10 @@ class ReportController extends Controller
         }
         $dates = array_unique($dates);
         $date_group_invoices = [];
+        $discount_total = 0;
+        $subtotal_total = 0;
+        $tax_total = 0;
+
         foreach ($dates as $dt) {
             array_push($date_group_invoices,['date' => $dt,'data' => false]);
             /*
@@ -833,8 +975,16 @@ class ReportController extends Controller
                 $iv['sub'] = number_format($iv->mdinvoicegoodsgrossamount ,$data['decimals'],$data['dec_point'],$data['thousands_sep']);
                 $iv['total'] = number_format(($iv->mdinvoicegoodsgrossamount + $iv->mdinvoicegoodstax - $iv->mdinvoicegoodsdiscount) ,$data['decimals'],$data['dec_point'],$data['thousands_sep']);
                 array_push($date_group_invoices,$iv);
+                $discount_total += $iv->mdinvoicegoodsdiscount;
+                $tax_total += $iv->mdinvoicegoodstax;
+                $subtotal_total += $iv->mdinvoicegoodsgrossamount;
             }
         }
+
+        $this->discount_total = number_format($discount_total,$data['decimals'],$data['dec_point'],$data['thousands_sep']);
+        $this->tax_total = number_format($tax_total,$data['decimals'],$data['dec_point'],$data['thousands_sep']);
+        $this->subtotal_total = number_format($subtotal_total,$data['decimals'],$data['dec_point'],$data['thousands_sep']);
+        $this->total_total = number_format($subtotal_total + $tax_total - $discount_total,$data['decimals'],$data['dec_point'],$data['thousands_sep']);
 
         $this->invoices = $date_group_invoices;
         $this->count = 0;
@@ -938,6 +1088,21 @@ class ReportController extends Controller
                     }
 
                 }
+
+                $sheet->row($this->count,array(
+                    'TOTAL',
+                    '',
+                    '',
+                    '',
+                    '',
+                    '',
+                    '',
+                    $this->discount_total,
+                    $this->subtotal_total,
+                    $this->tax_total,
+                    $this->total_total,
+                    "",
+                ));
 
 
             });
@@ -983,6 +1148,10 @@ class ReportController extends Controller
         }
         $dates = array_unique($dates);
         $date_group_invoices = [];
+        $discount_total = 0;
+        $subtotal_total = 0;
+        $tax_total = 0;
+
         foreach ($dates as $dt) {
             array_push($date_group_invoices,['date' => $dt,'data' => false]);
             /*
@@ -1006,8 +1175,16 @@ class ReportController extends Controller
                 $iv['sub'] = number_format($iv->mdinvoicegoodsgrossamount ,$data['decimals'],$data['dec_point'],$data['thousands_sep']);
                 $iv['total'] = number_format(($iv->mdinvoicegoodsgrossamount + $iv->mdinvoicegoodstax - $iv->mdinvoicegoodsdiscount) ,$data['decimals'],$data['dec_point'],$data['thousands_sep']);
                 array_push($date_group_invoices,$iv);
+                $discount_total += $iv->mdinvoicegoodsdiscount;
+                $tax_total += $iv->mdinvoicegoodstax;
+                $subtotal_total += $iv->mdinvoicegoodsgrossamount;
             }
         }
+
+        $this->discount_total = number_format($discount_total,$data['decimals'],$data['dec_point'],$data['thousands_sep']);
+        $this->tax_total = number_format($tax_total,$data['decimals'],$data['dec_point'],$data['thousands_sep']);
+        $this->subtotal_total = number_format($subtotal_total,$data['decimals'],$data['dec_point'],$data['thousands_sep']);
+        $this->total_total = number_format($subtotal_total + $tax_total - $discount_total,$data['decimals'],$data['dec_point'],$data['thousands_sep']);
 
         $this->invoices = $date_group_invoices;
         $this->count = 0;
@@ -1112,6 +1289,21 @@ class ReportController extends Controller
 
                 }
 
+                $sheet->row($this->count,array(
+                    'TOTAL',
+                    '',
+                    '',
+                    '',
+                    '',
+                    '',
+                    '',
+                    $this->discount_total,
+                    $this->subtotal_total,
+                    $this->tax_total,
+                    $this->total_total,
+                    "",
+                ));
+
 
             });
         })->export('csv');
@@ -1126,9 +1318,6 @@ class ReportController extends Controller
 
     public function arreport_print(Request $request){
         $queries = MARCard::on(Auth::user()->db_name);
-        if($request->has('start')){
-            $queries->whereDate('marcarddate','>=',Carbon::parse($request->start));
-        }
         if($request->has('end')){
             $queries->whereDate('marcarddate','<=',Carbon::parse($request->end));
         }
@@ -1136,51 +1325,77 @@ class ReportController extends Controller
             $queries->where('marcardcustomerid',$request->cust);
         }
 
-        $ars = $queries->get();
+        // $ars = $queries->get();
+        $ars = $queries->groupBy('marcardcustomerid')
+        ->selectRaw('* , sum(marcardoutstanding) as marcardoutstanding_sum')
+        ->get();
 
         /*
          * groupping ars
          */
+         $marcardoutstanding_total = 0;
+         $trans_count_total = 0;
+         $seven_total = 0;
+         $fourteen_total = 0;
+         $twentyone_total = 0;
+         $thirty_total = 0;
+         $month_total = 0;
 
-        foreach($ars as $ar){
-            $now = Carbon::now();
-            $due = Carbon::parse($ar->marcardduedate);
-            $diff = $now->diffInDays($due,false);
-            $ar['trans_count'] = count(MDInvoice::on(Auth::user()->db_name)->where('mhinvoiceno',$ar->marcardtransno)->get());
-            if($diff <= 7){
-                $ar['seven'] = $ar->marcardoutstanding;
-                $ar['fourteen'] =0;
-                $ar['twentyone'] =0;
-                $ar['thirty'] =0;
-                $ar['month'] =0;
-            } else if($diff <= 14){
-                $ar['seven'] = 0;
-                $ar['fourteen'] = $ar->marcardoutstanding;
-                $ar['twentyone'] =0;
-                $ar['thirty'] =0;
-                $ar['month'] =0;
-            } else if($diff <= 21){
-                $ar['seven'] = 0;
-                $ar['fourteen'] =0;
-                $ar['twentyone'] = $ar->marcardoutstanding;
-                $ar['thirty'] =0;
-                $ar['month'] =0;
-            } else if($diff <= 30){
-                $ar['seven'] = 0;
-                $ar['fourteen'] =0;
-                $ar['twentyone'] =0;
-                $ar['thirty'] = $ar->marcardoutstanding;
-                $ar['month'] =0;
-            } else {
-                $ar['seven'] = 0;
-                $ar['fourteen'] =0;
-                $ar['twentyone'] =0;
-                $ar['thirty'] =0;
-                $ar['month'] = $ar->marcardoutstanding;
-            }
-        }
+         foreach($ars as $ar){
+             $marcardoutstanding_total += $ar->marcardoutstanding_sum;
+             $now = Carbon::now();
+             $due = Carbon::parse($ar->marcardduedate);
+             $diff = $now->diffInDays($due,false);
+             $ar['trans_count'] = count(MHInvoice::on(Auth::user()->db_name)->where('mhinvoicecustomerid',$ar->marcardcustomerid)->get());
+             $trans_count_total += $ar['trans_count'];
+             if($diff <= 7){
+                 $ar['seven'] = $ar->marcardoutstanding_sum;
+                 $ar['fourteen'] =0;
+                 $ar['twentyone'] =0;
+                 $ar['thirty'] =0;
+                 $ar['month'] =0;
+                 $seven_total += $ar->marcardoutstanding_sum;
+             } else if($diff <= 14){
+                 $ar['seven'] = 0;
+                 $ar['fourteen'] = $ar->marcardoutstanding_sum;
+                 $ar['twentyone'] =0;
+                 $ar['thirty'] =0;
+                 $ar['month'] =0;
+                 $fourteen_total += $ar->marcardoutstanding_sum;
+             } else if($diff <= 21){
+                 $ar['seven'] = 0;
+                 $ar['fourteen'] =0;
+                 $ar['twentyone'] = $ar->marcardoutstanding_sum;
+                 $ar['thirty'] =0;
+                 $ar['month'] =0;
+                 $twentyone_total += $ar->marcardoutstanding_sum;
+             } else if($diff <= 30){
+                 $ar['seven'] = 0;
+                 $ar['fourteen'] =0;
+                 $ar['twentyone'] =0;
+                 $ar['thirty'] = $ar->marcardoutstanding_sum;
+                 $ar['month'] =0;
+                 $thirty_total += $ar->marcardoutstanding_sum;
+             } else {
+                 $ar['seven'] = 0;
+                 $ar['fourteen'] =0;
+                 $ar['twentyone'] =0;
+                 $ar['thirty'] =0;
+                 $ar['month'] = $ar->marcardoutstanding_sum;
+                 $month_total += $ar->marcardoutstanding_sum;
+             }
+         }
 
         $config = MConfig::on(Auth::user()->db_name)->where('id',1)->first();
+
+        $data['marcardoutstanding_total'] = $marcardoutstanding_total;
+        $data['seven_total'] = $seven_total;
+        $data['fourteen_total'] = $fourteen_total;
+        $data['twentyone_total'] = $twentyone_total;
+        $data['thirty_total'] = $thirty_total;
+        $data['month_total'] = $month_total;
+        $data['trans_count_total'] = $trans_count_total;
+
         $data['decimals'] = $config->msysgenrounddec;
         $data['dec_point'] = $config->msysnumseparator;
         if($data['dec_point'] == ","){
@@ -1208,9 +1423,6 @@ class ReportController extends Controller
 
     public function arreport_pdf(Request $request){
         $queries = MARCard::on(Auth::user()->db_name);
-        if($request->has('start')){
-            $queries->whereDate('marcarddate','>=',Carbon::parse($request->start));
-        }
         if($request->has('end')){
             $queries->whereDate('marcarddate','<=',Carbon::parse($request->end));
         }
@@ -1218,51 +1430,73 @@ class ReportController extends Controller
             $queries->where('marcardcustomerid',$request->cust);
         }
 
-        $ars = $queries->get();
+        // $ars = $queries->get();
+        $ars = $queries->groupBy('marcardcustomerid')
+        ->selectRaw('* , sum(marcardoutstanding) as marcardoutstanding_sum')
+        ->get();
 
-        /*
-         * groupping ars
-         */
+        $marcardoutstanding_total = 0;
+        $trans_count_total = 0;
+        $seven_total = 0;
+        $fourteen_total = 0;
+        $twentyone_total = 0;
+        $thirty_total = 0;
+        $month_total = 0;
 
         foreach($ars as $ar){
+            $marcardoutstanding_total += $ar->marcardoutstanding_sum;
             $now = Carbon::now();
             $due = Carbon::parse($ar->marcardduedate);
             $diff = $now->diffInDays($due,false);
-            $ar['trans_count'] = count(MDInvoice::on(Auth::user()->db_name)->where('mhinvoiceno',$ar->marcardtransno)->get());
+            $ar['trans_count'] = count(MHInvoice::on(Auth::user()->db_name)->where('mhinvoicecustomerid',$ar->marcardcustomerid)->get());
+            $trans_count_total += $ar['trans_count'];
             if($diff <= 7){
-                $ar['seven'] = $ar->marcardoutstanding;
+                $ar['seven'] = $ar->marcardoutstanding_sum;
                 $ar['fourteen'] =0;
                 $ar['twentyone'] =0;
                 $ar['thirty'] =0;
                 $ar['month'] =0;
+                $seven_total += $ar->marcardoutstanding_sum;
             } else if($diff <= 14){
                 $ar['seven'] = 0;
-                $ar['fourteen'] = $ar->marcardoutstanding;
+                $ar['fourteen'] = $ar->marcardoutstanding_sum;
                 $ar['twentyone'] =0;
                 $ar['thirty'] =0;
                 $ar['month'] =0;
+                $fourteen_total += $ar->marcardoutstanding_sum;
             } else if($diff <= 21){
                 $ar['seven'] = 0;
                 $ar['fourteen'] =0;
-                $ar['twentyone'] = $ar->marcardoutstanding;
+                $ar['twentyone'] = $ar->marcardoutstanding_sum;
                 $ar['thirty'] =0;
                 $ar['month'] =0;
+                $twentyone_total += $ar->marcardoutstanding_sum;
             } else if($diff <= 30){
                 $ar['seven'] = 0;
                 $ar['fourteen'] =0;
                 $ar['twentyone'] =0;
-                $ar['thirty'] = $ar->marcardoutstanding;
+                $ar['thirty'] = $ar->marcardoutstanding_sum;
                 $ar['month'] =0;
+                $thirty_total += $ar->marcardoutstanding_sum;
             } else {
                 $ar['seven'] = 0;
                 $ar['fourteen'] =0;
                 $ar['twentyone'] =0;
                 $ar['thirty'] =0;
-                $ar['month'] = $ar->marcardoutstanding;
+                $ar['month'] = $ar->marcardoutstanding_sum;
+                $month_total += $ar->marcardoutstanding_sum;
             }
         }
 
-        $config = MConfig::on(Auth::user()->db_name)->where('id',1)->first();
+       $config = MConfig::on(Auth::user()->db_name)->where('id',1)->first();
+
+       $data['marcardoutstanding_total'] = $marcardoutstanding_total;
+       $data['seven_total'] = $seven_total;
+       $data['fourteen_total'] = $fourteen_total;
+       $data['twentyone_total'] = $twentyone_total;
+       $data['thirty_total'] = $thirty_total;
+       $data['month_total'] = $month_total;
+       $data['trans_count_total'] = $trans_count_total;
         $data['decimals'] = $config->msysgenrounddec;
         $data['dec_point'] = $config->msysnumseparator;
         if($data['dec_point'] == ","){
@@ -1295,9 +1529,6 @@ class ReportController extends Controller
 
     public function arreport_excel(Request $request){
         $queries = MARCard::on(Auth::user()->db_name);
-        if($request->has('start')){
-            $queries->whereDate('marcarddate','>=',Carbon::parse($request->start));
-        }
         if($request->has('end')){
             $queries->whereDate('marcarddate','<=',Carbon::parse($request->end));
         }
@@ -1305,49 +1536,71 @@ class ReportController extends Controller
             $queries->where('marcardcustomerid',$request->cust);
         }
 
-        $ars = $queries->get();
+        // $ars = $queries->get();
+        $ars = $queries->groupBy('marcardcustomerid')
+        ->selectRaw('* , sum(marcardoutstanding) as marcardoutstanding_sum')
+        ->get();
 
-        /*
-         * groupping ars
-         */
+        $marcardoutstanding_total = 0;
+        $trans_count_total = 0;
+        $seven_total = 0;
+        $fourteen_total = 0;
+        $twentyone_total = 0;
+        $thirty_total = 0;
+        $month_total = 0;
 
         foreach($ars as $ar){
+            $marcardoutstanding_total += $ar->marcardoutstanding_sum;
             $now = Carbon::now();
             $due = Carbon::parse($ar->marcardduedate);
             $diff = $now->diffInDays($due,false);
-            $ar['trans_count'] = count(MDInvoice::on(Auth::user()->db_name)->where('mhinvoiceno',$ar->marcardtransno)->get());
+            $ar['trans_count'] = count(MHInvoice::on(Auth::user()->db_name)->where('mhinvoicecustomerid',$ar->marcardcustomerid)->get());
+            $trans_count_total += $ar['trans_count'];
             if($diff <= 7){
-                $ar['seven'] = $ar->marcardoutstanding;
+                $ar['seven'] = $ar->marcardoutstanding_sum;
                 $ar['fourteen'] =0;
                 $ar['twentyone'] =0;
                 $ar['thirty'] =0;
                 $ar['month'] =0;
+                $seven_total += $ar->marcardoutstanding_sum;
             } else if($diff <= 14){
                 $ar['seven'] = 0;
-                $ar['fourteen'] = $ar->marcardoutstanding;
+                $ar['fourteen'] = $ar->marcardoutstanding_sum;
                 $ar['twentyone'] =0;
                 $ar['thirty'] =0;
                 $ar['month'] =0;
+                $fourteen_total += $ar->marcardoutstanding_sum;
             } else if($diff <= 21){
                 $ar['seven'] = 0;
                 $ar['fourteen'] =0;
-                $ar['twentyone'] = $ar->marcardoutstanding;
+                $ar['twentyone'] = $ar->marcardoutstanding_sum;
                 $ar['thirty'] =0;
                 $ar['month'] =0;
+                $twentyone_total += $ar->marcardoutstanding_sum;
             } else if($diff <= 30){
                 $ar['seven'] = 0;
                 $ar['fourteen'] =0;
                 $ar['twentyone'] =0;
-                $ar['thirty'] = $ar->marcardoutstanding;
+                $ar['thirty'] = $ar->marcardoutstanding_sum;
                 $ar['month'] =0;
+                $thirty_total += $ar->marcardoutstanding_sum;
             } else {
                 $ar['seven'] = 0;
                 $ar['fourteen'] =0;
                 $ar['twentyone'] =0;
                 $ar['thirty'] =0;
-                $ar['month'] = $ar->marcardoutstanding;
+                $ar['month'] = $ar->marcardoutstanding_sum;
+                $month_total += $ar->marcardoutstanding_sum;
             }
         }
+
+        $this->marcardoutstanding_total = $marcardoutstanding_total;
+        $this->seven_total = $seven_total;
+        $this->fourteen_total = $fourteen_total;
+        $this->twentyone_total = $twentyone_total;
+        $this->thirty_total = $thirty_total;
+        $this->month_total = $month_total;
+        $this->trans_count_total = $trans_count_total;
 
         $this->ars = $ars;
 		$this->count = 0;
@@ -1437,7 +1690,7 @@ class ReportController extends Controller
                         $ar->marcardcustomerid,
                         $ar->marcardcustomername,
                         $ar['trans_count'],
-                        number_format($ar->marcardoutstanding,$this->data['decimals'],$this->data['dec_point'],$this->data['thousands_sep']),
+                        number_format($ar->marcardoutstanding_sum,$this->data['decimals'],$this->data['dec_point'],$this->data['thousands_sep']),
                         number_format($ar['seven'],$this->data['decimals'],$this->data['dec_point'],$this->data['thousands_sep']),
                         number_format($ar['fourteen'],$this->data['decimals'],$this->data['dec_point'],$this->data['thousands_sep']),
                         number_format($ar['twentyone'],$this->data['decimals'],$this->data['dec_point'],$this->data['thousands_sep']),
@@ -1445,6 +1698,19 @@ class ReportController extends Controller
                         number_format($ar['month'],$this->data['decimals'],$this->data['dec_point'],$this->data['thousands_sep'])
                     ));
                 }
+
+                $this->count++;
+                $sheet->row($this->count,array(
+                    "TOTAL",
+                    '',
+                    $this->trans_count_total,
+                    number_format($this->marcardoutstanding_total,$this->data['decimals'],$this->data['dec_point'],$this->data['thousands_sep']),
+                    number_format($this->seven_total,$this->data['decimals'],$this->data['dec_point'],$this->data['thousands_sep']),
+                    number_format($this->fourteen_total,$this->data['decimals'],$this->data['dec_point'],$this->data['thousands_sep']),
+                    number_format($this->twentyone_total,$this->data['decimals'],$this->data['dec_point'],$this->data['thousands_sep']),
+                    number_format($this->thirty_total,$this->data['decimals'],$this->data['dec_point'],$this->data['thousands_sep']),
+                    number_format($this->month_total,$this->data['decimals'],$this->data['dec_point'],$this->data['thousands_sep'])
+                ));
 
 
 			});
@@ -1453,9 +1719,6 @@ class ReportController extends Controller
 
     public function arreport_csv(Request $request){
         $queries = MARCard::on(Auth::user()->db_name);
-        if($request->has('start')){
-            $queries->whereDate('marcarddate','>=',Carbon::parse($request->start));
-        }
         if($request->has('end')){
             $queries->whereDate('marcarddate','<=',Carbon::parse($request->end));
         }
@@ -1463,49 +1726,71 @@ class ReportController extends Controller
             $queries->where('marcardcustomerid',$request->cust);
         }
 
-        $ars = $queries->get();
+        // $ars = $queries->get();
+        $ars = $queries->groupBy('marcardcustomerid')
+        ->selectRaw('* , sum(marcardoutstanding) as marcardoutstanding_sum')
+        ->get();
 
-        /*
-         * groupping ars
-         */
+        $marcardoutstanding_total = 0;
+        $trans_count_total = 0;
+        $seven_total = 0;
+        $fourteen_total = 0;
+        $twentyone_total = 0;
+        $thirty_total = 0;
+        $month_total = 0;
 
         foreach($ars as $ar){
+            $marcardoutstanding_total += $ar->marcardoutstanding_sum;
             $now = Carbon::now();
             $due = Carbon::parse($ar->marcardduedate);
             $diff = $now->diffInDays($due,false);
-            $ar['trans_count'] = count(MDInvoice::on(Auth::user()->db_name)->where('mhinvoiceno',$ar->marcardtransno)->get());
+            $ar['trans_count'] = count(MHInvoice::on(Auth::user()->db_name)->where('mhinvoicecustomerid',$ar->marcardcustomerid)->get());
+            $trans_count_total += $ar['trans_count'];
             if($diff <= 7){
-                $ar['seven'] = $ar->marcardoutstanding;
+                $ar['seven'] = $ar->marcardoutstanding_sum;
                 $ar['fourteen'] =0;
                 $ar['twentyone'] =0;
                 $ar['thirty'] =0;
                 $ar['month'] =0;
+                $seven_total += $ar->marcardoutstanding_sum;
             } else if($diff <= 14){
                 $ar['seven'] = 0;
-                $ar['fourteen'] = $ar->marcardoutstanding;
+                $ar['fourteen'] = $ar->marcardoutstanding_sum;
                 $ar['twentyone'] =0;
                 $ar['thirty'] =0;
                 $ar['month'] =0;
+                $fourteen_total += $ar->marcardoutstanding_sum;
             } else if($diff <= 21){
                 $ar['seven'] = 0;
                 $ar['fourteen'] =0;
-                $ar['twentyone'] = $ar->marcardoutstanding;
+                $ar['twentyone'] = $ar->marcardoutstanding_sum;
                 $ar['thirty'] =0;
                 $ar['month'] =0;
+                $twentyone_total += $ar->marcardoutstanding_sum;
             } else if($diff <= 30){
                 $ar['seven'] = 0;
                 $ar['fourteen'] =0;
                 $ar['twentyone'] =0;
-                $ar['thirty'] = $ar->marcardoutstanding;
+                $ar['thirty'] = $ar->marcardoutstanding_sum;
                 $ar['month'] =0;
+                $thirty_total += $ar->marcardoutstanding_sum;
             } else {
                 $ar['seven'] = 0;
                 $ar['fourteen'] =0;
                 $ar['twentyone'] =0;
                 $ar['thirty'] =0;
-                $ar['month'] = $ar->marcardoutstanding;
+                $ar['month'] = $ar->marcardoutstanding_sum;
+                $month_total += $ar->marcardoutstanding_sum;
             }
         }
+
+        $this->marcardoutstanding_total = $marcardoutstanding_total;
+        $this->seven_total = $seven_total;
+        $this->fourteen_total = $fourteen_total;
+        $this->twentyone_total = $twentyone_total;
+        $this->thirty_total = $thirty_total;
+        $this->month_total = $month_total;
+        $this->trans_count_total = $trans_count_total;
 
         $this->ars = $ars;
 		$this->count = 0;
@@ -1595,7 +1880,7 @@ class ReportController extends Controller
                         $ar->marcardcustomerid,
                         $ar->marcardcustomername,
                         $ar['trans_count'],
-                        number_format($ar->marcardoutstanding,$this->data['decimals'],$this->data['dec_point'],$this->data['thousands_sep']),
+                        number_format($ar->marcardoutstanding_sum,$this->data['decimals'],$this->data['dec_point'],$this->data['thousands_sep']),
                         number_format($ar['seven'],$this->data['decimals'],$this->data['dec_point'],$this->data['thousands_sep']),
                         number_format($ar['fourteen'],$this->data['decimals'],$this->data['dec_point'],$this->data['thousands_sep']),
                         number_format($ar['twentyone'],$this->data['decimals'],$this->data['dec_point'],$this->data['thousands_sep']),
@@ -1603,6 +1888,19 @@ class ReportController extends Controller
                         number_format($ar['month'],$this->data['decimals'],$this->data['dec_point'],$this->data['thousands_sep'])
                     ));
                 }
+
+                $this->count++;
+                $sheet->row($this->count,array(
+                    "TOTAL",
+                    '',
+                    $this->trans_count_total,
+                    number_format($this->marcardoutstanding_total,$this->data['decimals'],$this->data['dec_point'],$this->data['thousands_sep']),
+                    number_format($this->seven_total,$this->data['decimals'],$this->data['dec_point'],$this->data['thousands_sep']),
+                    number_format($this->fourteen_total,$this->data['decimals'],$this->data['dec_point'],$this->data['thousands_sep']),
+                    number_format($this->twentyone_total,$this->data['decimals'],$this->data['dec_point'],$this->data['thousands_sep']),
+                    number_format($this->thirty_total,$this->data['decimals'],$this->data['dec_point'],$this->data['thousands_sep']),
+                    number_format($this->month_total,$this->data['decimals'],$this->data['dec_point'],$this->data['thousands_sep'])
+                ));
 
 
 			});
@@ -1633,9 +1931,6 @@ class ReportController extends Controller
         if($request->has('cust')){
             $header_query->where('marcardcustomerid',$request->cust);
         }
-        if($request->has('start')){
-            $header_query->whereDate('marcarddate','>=',Carbon::parse($request->start));
-        }
         if($request->has('end')){
             $header_query->whereDate('marcarddate','<=',Carbon::parse($request->end));
         }
@@ -1652,11 +1947,9 @@ class ReportController extends Controller
          * Build detail data per customer head
          */
          $idx=0;
+         $marcardoutstanding_total = 0;
         foreach ($customers as $cust) {
             $detail_query = MARCard::on(Auth::user()->db_name)->where('marcardcustomerid',$cust);
-            if($request->has('start')){
-                $detail_query->whereDate('marcarddate','>=',Carbon::parse($request->start));
-            }
             if($request->has('end')){
                 $detail_query->whereDate('marcarddate','<=',Carbon::parse($request->end));
             }
@@ -1664,7 +1957,8 @@ class ReportController extends Controller
 
             array_push($ar_detail_data,['customerid' => $cust,'customername' => $details[$idx]->marcardcustomername ,'header' => true]);
             foreach($details as $dt){
-                $dt['outstanding_prc'] = number_format($dt->arcardoutstanding,$data['decimals'],$data['dec_point'],$data['thousands_sep']);
+                $marcardoutstanding_total += $dt->marcardoutstanding;
+                $dt['outstanding_prc'] = number_format($dt->marcardoutstanding,$data['decimals'],$data['dec_point'],$data['thousands_sep']);
                 $dt['aging'] = Carbon::now()->diffInDays(Carbon::parse($dt->marcarddate));
                 $dt['trans_count'] = count(MDInvoice::on(Auth::user()->db_name)->where('mhinvoiceno',$dt->marcardtransno)->get());
                 $dt['header'] = false;
@@ -1678,6 +1972,7 @@ class ReportController extends Controller
         $data['start'] = Carbon::parse($request->start)->formatLocalized('%d %B %Y');
         $data['end'] = Carbon::parse($request->end)->formatLocalized('%d %B %Y');
         $data['cust'] = $request->cust;
+        $data['marcardoutstanding_total'] = number_format($marcardoutstanding_total,$data['decimals'],$data['dec_point'],$data['thousands_sep']);
         if($request->has('cust')){
             $data['cust'] = MCUSTOMER::on(Auth::user()->db_name)->where('mcustomerid',$request->cust)->first()->mcustomername;
         } else {
@@ -1708,9 +2003,6 @@ class ReportController extends Controller
         if($request->has('cust')){
             $header_query->where('marcardcustomerid',$request->cust);
         }
-        if($request->has('start')){
-            $header_query->whereDate('marcarddate','>=',Carbon::parse($request->start));
-        }
         if($request->has('end')){
             $header_query->whereDate('marcarddate','<=',Carbon::parse($request->end));
         }
@@ -1727,11 +2019,9 @@ class ReportController extends Controller
          * Build detail data per customer head
          */
          $idx=0;
+         $marcardoutstanding_total = 0;
         foreach ($customers as $cust) {
             $detail_query = MARCard::on(Auth::user()->db_name)->where('marcardcustomerid',$cust);
-            if($request->has('start')){
-                $detail_query->whereDate('marcarddate','>=',Carbon::parse($request->start));
-            }
             if($request->has('end')){
                 $detail_query->whereDate('marcarddate','<=',Carbon::parse($request->end));
             }
@@ -1739,7 +2029,8 @@ class ReportController extends Controller
 
             array_push($ar_detail_data,['customerid' => $cust,'customername' => $details[$idx]->marcardcustomername ,'header' => true]);
             foreach($details as $dt){
-                $dt['outstanding_prc'] = number_format($dt->arcardoutstanding,$data['decimals'],$data['dec_point'],$data['thousands_sep']);
+                $marcardoutstanding_total += $dt->marcardoutstanding;
+                $dt['outstanding_prc'] = number_format($dt->marcardoutstanding,$data['decimals'],$data['dec_point'],$data['thousands_sep']);
                 $dt['aging'] = Carbon::now()->diffInDays(Carbon::parse($dt->marcarddate));
                 $dt['trans_count'] = count(MDInvoice::on(Auth::user()->db_name)->where('mhinvoiceno',$dt->marcardtransno)->get());
                 $dt['header'] = false;
@@ -1752,6 +2043,8 @@ class ReportController extends Controller
         $data['company'] = $config->msyscompname;
         $data['start'] = Carbon::parse($request->start)->formatLocalized('%d %B %Y');
         $data['end'] = Carbon::parse($request->end)->formatLocalized('%d %B %Y');
+        $data['cust'] = $request->cust;
+        $data['marcardoutstanding_total'] = number_format($marcardoutstanding_total,$data['decimals'],$data['dec_point'],$data['thousands_sep']);
         if($request->has('cust')){
             $data['cust'] = MCUSTOMER::on(Auth::user()->db_name)->where('mcustomerid',$request->cust)->first()->mcustomername;
         } else {
@@ -1787,9 +2080,6 @@ class ReportController extends Controller
         if($request->has('cust')){
             $header_query->where('marcardcustomerid',$request->cust);
         }
-        if($request->has('start')){
-            $header_query->whereDate('marcarddate','>=',Carbon::parse($request->start));
-        }
         if($request->has('end')){
             $header_query->whereDate('marcarddate','<=',Carbon::parse($request->end));
         }
@@ -1806,11 +2096,9 @@ class ReportController extends Controller
          * Build detail data per customer head
          */
          $idx=0;
+         $this->marcardoutstanding_total = 0;
         foreach ($customers as $cust) {
             $detail_query = MARCard::on(Auth::user()->db_name)->where('marcardcustomerid',$cust);
-            if($request->has('start')){
-                $detail_query->whereDate('marcarddate','>=',Carbon::parse($request->start));
-            }
             if($request->has('end')){
                 $detail_query->whereDate('marcarddate','<=',Carbon::parse($request->end));
             }
@@ -1818,7 +2106,8 @@ class ReportController extends Controller
 
             array_push($ar_detail_data,['customerid' => $cust,'customername' => $details[$idx]->marcardcustomername ,'header' => true]);
             foreach($details as $dt){
-                $dt['outstanding_prc'] = number_format($dt->arcardoutstanding,$this->data['decimals'],$this->data['dec_point'],$this->data['thousands_sep']);
+                $this->marcardoutstanding_total += $dt->marcardoutstanding;
+                $dt['outstanding_prc'] = number_format($dt->marcardoutstanding,$this->data['decimals'],$this->data['dec_point'],$this->data['thousands_sep']);
                 $dt['aging'] = Carbon::now()->diffInDays(Carbon::parse($dt->marcarddate));
                 $dt['trans_count'] = count(MDInvoice::on(Auth::user()->db_name)->where('mhinvoiceno',$dt->marcardtransno)->get());
                 $dt['header'] = false;
@@ -1826,7 +2115,7 @@ class ReportController extends Controller
             }
             $idx++;
         }
-
+        $this->marcardoutstanding_total = number_format($this->marcardoutstanding_total,$this->data['decimals'],$this->data['dec_point'],$this->data['thousands_sep']);
         $this->ars = $ar_detail_data;
         $this->request = $request;
 
@@ -1892,7 +2181,7 @@ class ReportController extends Controller
 
                 $this->count+=2;
                 $sheet->row($this->count,array(
-                    'Kode Customer','Nama Customer','No Invoice','Tgl Invoice','Tgl Jatuh Tempo','Total Nota','Outstanding','Aging'
+                    'Kode Customer','Nama Customer','No Invoice','Tgl Invoice','Tgl Jatuh Tempo','Nilai Nota','Outstanding','Aging'
                 ));
 
                 foreach ($this->ars as $ar) {
@@ -1909,13 +2198,24 @@ class ReportController extends Controller
                             $ar->marcardtransno,
                             $ar->marcarddate,
                             $ar->marcardduedate,
-                            $ar['trans_count'],
+                            $ar['outstanding_prc'],
                             $ar['outstanding_prc'],
                             $ar['aging']
                         ));
                     }
 
                 }
+
+                $sheet->row($this->count,array(
+                    'TOTAL',
+                    '',
+                    '',
+                    '',
+                    '',
+                    $this->marcardoutstanding_total,
+                    $this->marcardoutstanding_total,
+                    ''
+                ));
 
 
 			});
@@ -1943,9 +2243,6 @@ class ReportController extends Controller
         if($request->has('cust')){
             $header_query->where('marcardcustomerid',$request->cust);
         }
-        if($request->has('start')){
-            $header_query->whereDate('marcarddate','>=',Carbon::parse($request->start));
-        }
         if($request->has('end')){
             $header_query->whereDate('marcarddate','<=',Carbon::parse($request->end));
         }
@@ -1962,11 +2259,9 @@ class ReportController extends Controller
          * Build detail data per customer head
          */
          $idx=0;
+         $this->marcardoutstanding_total = 0;
         foreach ($customers as $cust) {
             $detail_query = MARCard::on(Auth::user()->db_name)->where('marcardcustomerid',$cust);
-            if($request->has('start')){
-                $detail_query->whereDate('marcarddate','>=',Carbon::parse($request->start));
-            }
             if($request->has('end')){
                 $detail_query->whereDate('marcarddate','<=',Carbon::parse($request->end));
             }
@@ -1974,7 +2269,8 @@ class ReportController extends Controller
 
             array_push($ar_detail_data,['customerid' => $cust,'customername' => $details[$idx]->marcardcustomername ,'header' => true]);
             foreach($details as $dt){
-                $dt['outstanding_prc'] = number_format($dt->arcardoutstanding,$this->data['decimals'],$this->data['dec_point'],$this->data['thousands_sep']);
+                $this->marcardoutstanding_total += $dt->marcardoutstanding;
+                $dt['outstanding_prc'] = number_format($dt->marcardoutstanding,$this->data['decimals'],$this->data['dec_point'],$this->data['thousands_sep']);
                 $dt['aging'] = Carbon::now()->diffInDays(Carbon::parse($dt->marcarddate));
                 $dt['trans_count'] = count(MDInvoice::on(Auth::user()->db_name)->where('mhinvoiceno',$dt->marcardtransno)->get());
                 $dt['header'] = false;
@@ -1985,7 +2281,7 @@ class ReportController extends Controller
 
         $this->ars = $ar_detail_data;
         $this->request = $request;
-
+        $this->marcardoutstanding_total = number_format($this->marcardoutstanding_total,$this->data['decimals'],$this->data['dec_point'],$this->data['thousands_sep']);
         return Excel::create('Ar Customer Report',function($excel){
 			$excel->sheet('Ar Customer Report',function($sheet){
 				$this->count++;
@@ -2048,7 +2344,7 @@ class ReportController extends Controller
 
                 $this->count+=2;
                 $sheet->row($this->count,array(
-                    'Kode Customer','Nama Customer','No Invoice','Tgl Invoice','Tgl Jatuh Tempo','Total Nota','Outstanding','Aging'
+                    'Kode Customer','Nama Customer','No Invoice','Tgl Invoice','Tgl Jatuh Tempo','Nilai Nota','Outstanding','Aging'
                 ));
 
                 foreach ($this->ars as $ar) {
@@ -2065,13 +2361,24 @@ class ReportController extends Controller
                             $ar->marcardtransno,
                             $ar->marcarddate,
                             $ar->marcardduedate,
-                            $ar['trans_count'],
+                            $ar['outstanding_prc'],
                             $ar['outstanding_prc'],
                             $ar['aging']
                         ));
                     }
 
                 }
+
+                $sheet->row($this->count,array(
+                    'TOTAL',
+                    '',
+                    '',
+                    '',
+                    '',
+                    $this->marcardoutstanding_total,
+                    $this->marcardoutstanding_total,
+                    ''
+                ));
 
 
 			});

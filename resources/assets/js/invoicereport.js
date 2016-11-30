@@ -79,6 +79,56 @@ const invoicereport = new Vue({
         inv:"",
         invoices:[]
     },
+    computed:{
+        label_branch(){
+            let self = this;
+            if(this.selected_branch != ""){
+                return _.find(this.branches,(wh) => {
+                    return wh.id == self.selected_branch;
+                }).mbranchname;
+            } else {
+                return "Semua"
+            }
+        },
+        label_warehouse(){
+            let self = this;
+            if(this.selected_warehouse != ""){
+                return _.find(this.warehouses,(wh) => {
+                    return wh.id == self.selected_warehouse;
+                }).mwarehousename;
+            } else {
+                return "Semua"
+            }
+        },
+        label_goods(){
+            let self = this;
+            if(this.selected_goods != ""){
+                return _.find(this.goods,(wh) => {
+                    return wh.mgoodscode == self.selected_goods;
+                }).mgoodsname;
+            } else {
+                return "Semua"
+            }
+        },
+        discount_total(){
+            return _.sumBy(this.invoices, (iv) => {
+                return iv.mdinvoicegoodsdiscount;
+            })
+        },
+        subtotal_total(){
+            return _.sumBy(this.invoices, (iv) => {
+                return iv.mdinvoicegoodsgrossamount;
+            })
+        },
+        tax_total(){
+            return _.sumBy(this.invoices, (iv) => {
+                return iv.mdinvoicegoodstax;
+            })
+        },
+        total_total(){
+            return this.subtotal_total + this.tax_total - this.discount_total;
+        }
+    },
     methods:{
         fetchInvoices(){
             var self = this;

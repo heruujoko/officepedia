@@ -143,10 +143,24 @@
                                                                 <td style="text-align:right" v-priceformatlabel="num_format" >@{{ sale.mhinvoicesubtotal_sum }}</td>
                                                                 <td style="text-align:right" v-priceformatlabel="num_format" >@{{ sale.mhinvoicetaxtotal_sum }}</td>
                                                                 <td style="text-align:right" v-priceformatlabel="num_format" >@{{ sale.mhinvoicegrandtotal_sum }}</td>
-                                                                <td style="text-align:right">0</td>
+                                                                <td style="text-align:right" v-priceformatlabel="num_format">0</td>
                                                                 <td style="text-align:right" v-priceformatlabel="num_format" >@{{ sale.mhinvoicegrandtotal_sum }}</td>
                                                             </tr>
                                                         </tbody>
+                                                        <thead>
+                                                            <tr>
+                                                                <th>TOTAL</th>
+                                                                <th>@{{ invoice_count_total }}</th>
+                                                                <th style="text-align:right" v-priceformatlabel="num_format" >@{{ sales_total }}</th>
+                                                                <th style="text-align:right" v-priceformatlabel="num_format" >@{{ free_total }}</th>
+                                                                <th style="text-align:right" v-priceformatlabel="num_format" >@{{ discount_total }}</th>
+                                                                <th style="text-align:right" v-priceformatlabel="num_format" >@{{ sales_total }}</th>
+                                                                <th style="text-align:right" v-priceformatlabel="num_format" >@{{ tax_total }}</th>
+                                                                <th style="text-align:right" v-priceformatlabel="num_format" >@{{ sales_total + tax_total - discount_total }}</th>
+                                                                <th style="text-align:right" v-priceformatlabel="num_format" >0</th>
+                                                                <th style="text-align:right" v-priceformatlabel="num_format" >@{{ sales_total + tax_total - discount_total }}</th>
+                                                            </tr>
+                                                        </thead>
                                                     </table>
                                                 </div>
                                             </div>

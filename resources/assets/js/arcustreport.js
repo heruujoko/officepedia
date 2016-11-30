@@ -75,6 +75,33 @@ const arcustreport = new Vue({
         ],
         selected_sort:"marcarddate"
     },
+    computed:{
+        label_branch(){
+            let self = this;
+            if(this.selected_branch != ""){
+                return _.find(this.branches,(wh) => {
+                    return wh.id == self.selected_branch;
+                }).mbranchname;
+            } else {
+                return "Semua"
+            }
+        },
+        label_customer(){
+            let self = this;
+            if(this.selected_customer != ""){
+                return _.find(this.customers,(wh) => {
+                    return wh.mcustomerid == self.selected_customer;
+                }).mcustomername;
+            } else {
+                return "Semua"
+            }
+        },
+        outstanding_total(){
+            return _.sumBy(this.ars,(ar) => {
+                return ar.marcardoutstanding;
+            });
+        }
+    },
     methods:{
         fetchArs(){
             var self = this;

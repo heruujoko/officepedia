@@ -94,6 +94,29 @@ const stockreport = new Vue({
             } else {
                 return "Semua"
             }
+        },
+        invoice_count_total(){
+            return _.sumBy(this.sales, (iv) => {
+                return iv.detail_count;
+            })
+        },
+        sales_total(){
+            return _.sumBy(this.sales, (iv) => {
+                return iv.mhinvoicesubtotal_sum;
+            })
+        },
+        free_total(){
+            return 0;
+        },
+        discount_total(){
+            return _.sumBy(this.sales, (iv) => {
+                return iv.mhinvoicediscounttotal_sum;
+            })
+        },
+        tax_total(){
+            return _.sumBy(this.sales, (iv) => {
+                return iv.mhinvoicetaxtotal_sum;
+            })
         }
     },
     methods:{
