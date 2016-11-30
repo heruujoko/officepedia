@@ -37,10 +37,13 @@ class SalesController extends Controller
                 array_push($headers,$d->mhinvoiceno);
             }
             $headers = array_unique($headers);
-            $sales = $header_query->whereIn('mhinvoiceno',$headers)->get();
+            // $sales = $header_query->whereIn('mhinvoiceno',$headers)->get();
+            $sales = $header_query->whereIn('mhinvoiceno',$headers)->groupBy('mhinvoicedate')
+            ->selectRaw('*,sum(mhinvoicesubtotal) as mhinvoicesubtotal_sum,sum(mhinvoicediscounttotal) as mhinvoicediscounttotal_sum,sum(mhinvoicetaxtotal) as mhinvoicetaxtotal_sum,sum(mhinvoicegrandtotal) as mhinvoicegrandtotal_sum')
+            ->get();
             foreach($sales as $s){
 
-                $details = MDInvoice::on(Auth::user()->db_name)->where('mhinvoiceno',$s->mhinvoiceno)->get();
+                $details = MDInvoice::on(Auth::user()->db_name)->where('mdinvoicedate',$s->mhinvoicedate)->get();
                 $s['detail_count'] = count($details);
 
             }
@@ -51,10 +54,13 @@ class SalesController extends Controller
                 array_push($headers,$d->mhinvoiceno);
             }
             $headers = array_unique($headers);
-            $sales = $header_query->whereIn('mhinvoiceno',$headers)->get();
+            // $sales = $header_query->whereIn('mhinvoiceno',$headers)->get();
+            $sales = $header_query->whereIn('mhinvoiceno',$headers)->groupBy('mhinvoicedate')
+            ->selectRaw('*,sum(mhinvoicesubtotal) as mhinvoicesubtotal_sum,sum(mhinvoicediscounttotal) as mhinvoicediscounttotal_sum,sum(mhinvoicetaxtotal) as mhinvoicetaxtotal_sum,sum(mhinvoicegrandtotal) as mhinvoicegrandtotal_sum')
+            ->get();
             foreach($sales as $s){
 
-                $details = MDInvoice::on(Auth::user()->db_name)->where('mhinvoiceno',$s->mhinvoiceno)->get();
+                $details = MDInvoice::on(Auth::user()->db_name)->where('mdinvoicedate',$s->mhinvoicedate)->get();
                 $s['detail_count'] = count($details);
 
             }
@@ -64,19 +70,24 @@ class SalesController extends Controller
                 array_push($headers,$d->mhinvoiceno);
             }
             $headers = array_unique($headers);
-            $sales = $header_query->whereIn('mhinvoiceno',$headers)->get();
+            // $sales = $header_query->whereIn('mhinvoiceno',$headers)->get();
+            $sales = $header_query->whereIn('mhinvoiceno',$headers)->groupBy('mhinvoicedate')
+            ->selectRaw('*,sum(mhinvoicesubtotal) as mhinvoicesubtotal_sum,sum(mhinvoicediscounttotal) as mhinvoicediscounttotal_sum,sum(mhinvoicetaxtotal) as mhinvoicetaxtotal_sum,sum(mhinvoicegrandtotal) as mhinvoicegrandtotal_sum')
+            ->get();
             foreach($sales as $s){
 
-                $details = MDInvoice::on(Auth::user()->db_name)->where('mhinvoiceno',$s->mhinvoiceno)->get();
+                $details = MDInvoice::on(Auth::user()->db_name)->where('mdinvoicedate',$s->mhinvoicedate)->get();
                 $s['detail_count'] = count($details);
 
             }
         } else {
-            $sales = $header_query->get();
+            $sales = $header_query->groupBy('mhinvoicedate')
+            ->selectRaw('*,sum(mhinvoicesubtotal) as mhinvoicesubtotal_sum,sum(mhinvoicediscounttotal) as mhinvoicediscounttotal_sum,sum(mhinvoicetaxtotal) as mhinvoicetaxtotal_sum,sum(mhinvoicegrandtotal) as mhinvoicegrandtotal_sum')
+            ->get();
 
             foreach($sales as $s){
 
-                $details = MDInvoice::on(Auth::user()->db_name)->where('mhinvoiceno',$s->mhinvoiceno)->get();
+                $details = MDInvoice::on(Auth::user()->db_name)->where('mdinvoicedate',$s->mhinvoicedate)->get();
                 $s['detail_count'] = count($details);
 
             }

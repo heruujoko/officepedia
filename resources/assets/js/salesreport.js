@@ -74,6 +74,28 @@ const stockreport = new Vue({
             { id: "mhinvoicecustomername", label: "Nama Customer"}
         ]
     },
+    computed:{
+        label_warehouse(){
+            let self = this;
+            if(this.selected_warehouse != ""){
+                return _.find(this.warehouses,(wh) => {
+                    return wh.id == self.selected_warehouse;
+                }).mwarehousename;
+            } else {
+                return "Semua"
+            }
+        },
+        label_goods(){
+            let self = this;
+            if(this.selected_goods != ""){
+                return _.find(this.goods,(wh) => {
+                    return wh.mgoodscode == self.selected_goods;
+                }).mgoodsname;
+            } else {
+                return "Semua"
+            }
+        }
+    },
     methods:{
         fetchSales(){
             var self = this;
