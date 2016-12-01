@@ -2400,10 +2400,10 @@ class ReportController extends Controller
             $query->where('mstockcardwhouse',$request->mstockcardwhouse);
         }
         // http://stackoverflow.com/questions/20731606/laravel-eloquent-inner-join-with-multiple-conditions
-        $query->join('mdinvoice',function($join){
-            $join->on('mdinvoice.mhinvoiceno','=','mstockcard.mstockcardtransno');
-            $join->on('mdinvoice.mdinvoicegoodsid','=','mstockcard.mstockcardgoodsid');
-        });
+        // $query->join('mdinvoice',function($join){
+        //     $join->on('mdinvoice.mhinvoiceno','=','mstockcard.mstockcardtransno');
+        //     $join->on('mdinvoice.mdinvoicegoodsid','=','mstockcard.mstockcardgoodsid');
+        // });
         $config = MConfig::on(Auth::user()->db_name)->where('id',1)->first();
         $data['stocks'] = $query->get();
         $data['company'] = $config->msyscompname;
@@ -2475,10 +2475,10 @@ class ReportController extends Controller
             $query->where('mstockcardwhouse',$request->mstockcardwhouse);
         }
         // http://stackoverflow.com/questions/20731606/laravel-eloquent-inner-join-with-multiple-conditions
-        $query->join('mdinvoice',function($join){
-            $join->on('mdinvoice.mhinvoiceno','=','mstockcard.mstockcardtransno');
-            $join->on('mdinvoice.mdinvoicegoodsid','=','mstockcard.mstockcardgoodsid');
-        });
+        // $query->join('mdinvoice',function($join){
+        //     $join->on('mdinvoice.mhinvoiceno','=','mstockcard.mstockcardtransno');
+        //     $join->on('mdinvoice.mdinvoicegoodsid','=','mstockcard.mstockcardgoodsid');
+        // });
         $this->config = MConfig::on(Auth::user()->db_name)->where('id',1)->first();
         $this->data['stocks'] = $query->get();
         $this->data['company'] = $this->config->msyscompname;
@@ -2600,10 +2600,11 @@ class ReportController extends Controller
             $query->where('mstockcardwhouse',$request->mstockcardwhouse);
         }
         // http://stackoverflow.com/questions/20731606/laravel-eloquent-inner-join-with-multiple-conditions
-        $query->join('mdinvoice',function($join){
-            $join->on('mdinvoice.mhinvoiceno','=','mstockcard.mstockcardtransno');
-            $join->on('mdinvoice.mdinvoicegoodsid','=','mstockcard.mstockcardgoodsid');
-        });
+        // $query->join('mdinvoice',function($join){
+        //     $join->on('mdinvoice.mhinvoiceno','=','mstockcard.mstockcardtransno');
+        //     $join->on('mdinvoice.mdinvoicegoodsid','=','mstockcard.mstockcardgoodsid');
+        // });
+
         $this->config = MConfig::on(Auth::user()->db_name)->where('id',1)->first();
         $this->data['stocks'] = $query->get();
         $this->data['company'] = $this->config->msyscompname;

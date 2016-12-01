@@ -42,10 +42,10 @@ class MStockcardreportController extends Controller
         $query->where('mstockcardwhouse',$request->mstockcardwhouse);
     }
     // http://stackoverflow.com/questions/20731606/laravel-eloquent-inner-join-with-multiple-conditions
-    $query->join('mdinvoice',function($join){
-        $join->on('mdinvoice.mhinvoiceno','=','mstockcard.mstockcardtransno');
-        $join->on('mdinvoice.mdinvoicegoodsid','=','mstockcard.mstockcardgoodsid');
-    });
+    // $query->join('mdinvoice',function($join){
+    //     $join->on('mdinvoice.mhinvoiceno','=','mstockcard.mstockcardtransno');
+    //     $join->on('mdinvoice.mdinvoicegoodsid','=','mstockcard.mstockcardgoodsid');
+    // });
     $data = $query->get();
 
     foreach($data as $d){

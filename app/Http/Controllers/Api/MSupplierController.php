@@ -37,6 +37,11 @@ class MSupplierController extends Controller
         ->make(true);
 }
 
+    public function datalist(){
+        $suppliers = MSupplier::on(Auth::user()->db_name)->get();
+        return response()->json($suppliers);
+    }
+
   public function show($id){
     $msupplier = MSupplier::on(Auth::user()->db_name)->where('id',$id)->first();
     return response()->json($msupplier);
