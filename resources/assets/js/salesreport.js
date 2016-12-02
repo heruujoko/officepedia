@@ -120,6 +120,27 @@ const stockreport = new Vue({
         }
     },
     methods:{
+        fetchConfig(){
+            var self = this;
+            Axios.get('/admin-api/mconfig')
+                .then(function(res){
+                    let separator = res.data.msysnumseparator
+                    let decimals = res.data.msysgenrounddec
+                    console.log(separator +" "+decimals);
+                    if(separator == ',' && decimals == 2){
+                        self.num_format = "0,0.00"
+                    } else if(separator == ',' && decimals == 0){
+                        self.num_format = "0,0"
+                    } else if(separator == '.' && decimals == 2){
+                        self.num_format = "0.0,00"
+                    } else {
+                        self.num_format = "0.0"
+                    }
+                })
+                .catch(function(err){
+                    console.log(err);
+                });
+        },
         fetchSales(){
             var self = this;
             Axios.get('/admin-api/salesreport?wh='+this.selected_warehouse+'&goods='+this.selected_goods+'&start='+this.invoice_date_start+'&end='+this.invoice_date_end)
@@ -197,6 +218,7 @@ const stockreport = new Vue({
     },
     created(){
         $('#loading_modal').modal('toggle');
+        this.fetchConfig();
         this.fetchSales();
         this.fetchWarehouses();
         this.fetchGoods();

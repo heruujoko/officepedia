@@ -66,6 +66,7 @@ const arcustreport = new Vue({
         branches:[],
         customers:[],
         ars:[],
+        num_format:"0,0.00",
         selected_branch:"",
         selected_customer:"",
         invoice_date_start: moment().format('L'),
@@ -103,6 +104,27 @@ const arcustreport = new Vue({
         }
     },
     methods:{
+        fetchConfig(){
+            var self = this;
+            Axios.get('/admin-api/mconfig')
+                .then(function(res){
+                    let separator = res.data.msysnumseparator
+                    let decimals = res.data.msysgenrounddec
+                    console.log(separator +" "+decimals);
+                    if(separator == ',' && decimals == 2){
+                        self.num_format = "0,0.00"
+                    } else if(separator == ',' && decimals == 0){
+                        self.num_format = "0,0"
+                    } else if(separator == '.' && decimals == 2){
+                        self.num_format = "0.0,00"
+                    } else {
+                        self.num_format = "0.0"
+                    }
+                })
+                .catch(function(err){
+                    console.log(err);
+                });
+        },
         fetchArs(){
             var self = this;
             Axios.get('/admin-api/arcustreport?br='+this.selected_branch+'&cust='+this.selected_customer+'&start='+this.invoice_date_start+'&end='+this.invoice_date_end)
@@ -163,6 +185,7 @@ const arcustreport = new Vue({
     },
     created(){
         $('#loading_modal').modal('toggle');
+        this.fetchConfig();
         this.fetchArs();
         this.fetchCustomers();
     }
