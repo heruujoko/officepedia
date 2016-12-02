@@ -101,7 +101,7 @@
                         <td>{{ $st->mstockcardgoodsid }}</td>
                         <td>{{ $st->mstockcardgoodsname }}</td>
                         <td>{{ $st->mstockcardstocktotal }}</td>
-                        <td>{{ $st->saved_unit }}</td>
+                        <td>{{ $st['verbs'] }}</td>
                         <td>{{ $st->mstockcardstockin }}</td>
                         <td>{{ $st->mstockcardstockout }}</td>
                         <td>{{ $st->mdinvoicegoodsgrossamount }}</td>

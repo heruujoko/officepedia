@@ -7,6 +7,7 @@ use PDF;
 use Auth;
 use App\MHInvoice;
 use App\MDInvoice;
+use App\MDPurchase;
 use App\MConfig;
 use App\Http\Requests;
 use Excel;
@@ -2406,6 +2407,37 @@ class ReportController extends Controller
         // });
         $config = MConfig::on(Auth::user()->db_name)->where('id',1)->first();
         $data['stocks'] = $query->get();
+
+        foreach ($data['stocks'] as $d) {
+            // get multi unit verbs
+            if($d['mstockcardtranstype'] == 'Penjualan'){
+                $details = MDInvoice::on(Auth::user()->db_name)->where('mhinvoiceno',$d->mstockcardtransno)->where('mdinvoicegoodsid',$d->mstockcardgoodsid)->first();
+                $verbs = "";
+                if($details->mdinvoiceunit3 != 0){
+                    $verbs .= $details->mdinvoiceunit3." ".$details->mdinvoiceunit3label;
+                }
+                if($details->mdinvoiceunit2 != 0){
+                    $verbs .= " ".$details->mdinvoiceunit2." ".$details->mdinvoiceunit2label;
+                }
+                if($details->mdinvoiceunit1 != 0){
+                    $verbs .= " ".$details->mdinvoiceunit1." ".$details->mdinvoiceunit1label;
+                }
+            } else {
+                $details = MDPurchase::on(Auth::user()->db_name)->where('mhpurchaseno',$d->mstockcardtransno)->where('mdpurchasegoodsid',$d->mstockcardgoodsid)->first();
+                $verbs = "";
+                if($details->mdpurchasegoodsunit3 != 0){
+                    $verbs .= $details->mdpurchasegoodsunit3." ".$details->mdpurchasegoodsunit3label;
+                }
+                if($details->mdpurchasegoodsunit2 != 0){
+                    $verbs .= " ".$details->mdpurchasegoodsunit2." ".$details->mdpurchasegoodsunit2label;
+                }
+                if($details->mdpurchasegoodsunit1 != 0){
+                    $verbs .= " ".$details->mdpurchasegoodsunit1." ".$details->mdpurchasegoodsunit1label;
+                }
+            }
+            $d['verbs'] = $verbs;
+        }
+
         $data['company'] = $config->msyscompname;
         $data['start'] = Carbon::parse($request->start)->formatLocalized('%d %B %Y');
         $data['end'] = Carbon::parse($request->end)->formatLocalized('%d %B %Y');
@@ -2437,12 +2469,43 @@ class ReportController extends Controller
             $query->where('mstockcardwhouse',$request->mstockcardwhouse);
         }
         // http://stackoverflow.com/questions/20731606/laravel-eloquent-inner-join-with-multiple-conditions
-        $query->join('mdinvoice',function($join){
-            $join->on('mdinvoice.mhinvoiceno','=','mstockcard.mstockcardtransno');
-            $join->on('mdinvoice.mdinvoicegoodsid','=','mstockcard.mstockcardgoodsid');
-        });
+        // $query->join('mdinvoice',function($join){
+        //     $join->on('mdinvoice.mhinvoiceno','=','mstockcard.mstockcardtransno');
+        //     $join->on('mdinvoice.mdinvoicegoodsid','=','mstockcard.mstockcardgoodsid');
+        // });
         $config = MConfig::on(Auth::user()->db_name)->where('id',1)->first();
         $data['stocks'] = $query->get();
+
+        foreach ($data['stocks'] as $d) {
+            // get multi unit verbs
+            if($d['mstockcardtranstype'] == 'Penjualan'){
+                $details = MDInvoice::on(Auth::user()->db_name)->where('mhinvoiceno',$d->mstockcardtransno)->where('mdinvoicegoodsid',$d->mstockcardgoodsid)->first();
+                $verbs = "";
+                if($details->mdinvoiceunit3 != 0){
+                    $verbs .= $details->mdinvoiceunit3." ".$details->mdinvoiceunit3label;
+                }
+                if($details->mdinvoiceunit2 != 0){
+                    $verbs .= " ".$details->mdinvoiceunit2." ".$details->mdinvoiceunit2label;
+                }
+                if($details->mdinvoiceunit1 != 0){
+                    $verbs .= " ".$details->mdinvoiceunit1." ".$details->mdinvoiceunit1label;
+                }
+            } else {
+                $details = MDPurchase::on(Auth::user()->db_name)->where('mhpurchaseno',$d->mstockcardtransno)->where('mdpurchasegoodsid',$d->mstockcardgoodsid)->first();
+                $verbs = "";
+                if($details->mdpurchasegoodsunit3 != 0){
+                    $verbs .= $details->mdpurchasegoodsunit3." ".$details->mdpurchasegoodsunit3label;
+                }
+                if($details->mdpurchasegoodsunit2 != 0){
+                    $verbs .= " ".$details->mdpurchasegoodsunit2." ".$details->mdpurchasegoodsunit2label;
+                }
+                if($details->mdpurchasegoodsunit1 != 0){
+                    $verbs .= " ".$details->mdpurchasegoodsunit1." ".$details->mdpurchasegoodsunit1label;
+                }
+            }
+            $d['verbs'] = $verbs;
+        }
+
         $data['company'] = $config->msyscompname;
         $data['start'] = Carbon::parse($request->start)->formatLocalized('%d %B %Y');
         $data['end'] = Carbon::parse($request->end)->formatLocalized('%d %B %Y');
@@ -2481,6 +2544,35 @@ class ReportController extends Controller
         // });
         $this->config = MConfig::on(Auth::user()->db_name)->where('id',1)->first();
         $this->data['stocks'] = $query->get();
+        foreach ($this->data['stocks'] as $d) {
+            // get multi unit verbs
+            if($d['mstockcardtranstype'] == 'Penjualan'){
+                $details = MDInvoice::on(Auth::user()->db_name)->where('mhinvoiceno',$d->mstockcardtransno)->where('mdinvoicegoodsid',$d->mstockcardgoodsid)->first();
+                $verbs = "";
+                if($details->mdinvoiceunit3 != 0){
+                    $verbs .= $details->mdinvoiceunit3." ".$details->mdinvoiceunit3label;
+                }
+                if($details->mdinvoiceunit2 != 0){
+                    $verbs .= " ".$details->mdinvoiceunit2." ".$details->mdinvoiceunit2label;
+                }
+                if($details->mdinvoiceunit1 != 0){
+                    $verbs .= " ".$details->mdinvoiceunit1." ".$details->mdinvoiceunit1label;
+                }
+            } else {
+                $details = MDPurchase::on(Auth::user()->db_name)->where('mhpurchaseno',$d->mstockcardtransno)->where('mdpurchasegoodsid',$d->mstockcardgoodsid)->first();
+                $verbs = "";
+                if($details->mdpurchasegoodsunit3 != 0){
+                    $verbs .= $details->mdpurchasegoodsunit3." ".$details->mdpurchasegoodsunit3label;
+                }
+                if($details->mdpurchasegoodsunit2 != 0){
+                    $verbs .= " ".$details->mdpurchasegoodsunit2." ".$details->mdpurchasegoodsunit2label;
+                }
+                if($details->mdpurchasegoodsunit1 != 0){
+                    $verbs .= " ".$details->mdpurchasegoodsunit1." ".$details->mdpurchasegoodsunit1label;
+                }
+            }
+            $d['verbs'] = $verbs;
+        }
         $this->data['company'] = $this->config->msyscompname;
         $this->data['start'] = Carbon::parse($request->start)->formatLocalized('%d %B %Y');
         $this->data['end'] = Carbon::parse($request->end)->formatLocalized('%d %B %Y');
@@ -2567,7 +2659,7 @@ class ReportController extends Controller
                         $st->mstockcardgoodsid,
                         $st->mstockcardgoodsname,
                         $st->mstockcardstocktotal,
-                        $st->saved_unit,
+                        $st['verbs'],
                         $st->mstockcardstockin,
                         $st->mstockcardstockout,
                         $st->mdinvoicegoodsgrossamount,
@@ -2607,6 +2699,35 @@ class ReportController extends Controller
 
         $this->config = MConfig::on(Auth::user()->db_name)->where('id',1)->first();
         $this->data['stocks'] = $query->get();
+        foreach ($this->data['stocks'] as $d) {
+            // get multi unit verbs
+            if($d['mstockcardtranstype'] == 'Penjualan'){
+                $details = MDInvoice::on(Auth::user()->db_name)->where('mhinvoiceno',$d->mstockcardtransno)->where('mdinvoicegoodsid',$d->mstockcardgoodsid)->first();
+                $verbs = "";
+                if($details->mdinvoiceunit3 != 0){
+                    $verbs .= $details->mdinvoiceunit3." ".$details->mdinvoiceunit3label;
+                }
+                if($details->mdinvoiceunit2 != 0){
+                    $verbs .= " ".$details->mdinvoiceunit2." ".$details->mdinvoiceunit2label;
+                }
+                if($details->mdinvoiceunit1 != 0){
+                    $verbs .= " ".$details->mdinvoiceunit1." ".$details->mdinvoiceunit1label;
+                }
+            } else {
+                $details = MDPurchase::on(Auth::user()->db_name)->where('mhpurchaseno',$d->mstockcardtransno)->where('mdpurchasegoodsid',$d->mstockcardgoodsid)->first();
+                $verbs = "";
+                if($details->mdpurchasegoodsunit3 != 0){
+                    $verbs .= $details->mdpurchasegoodsunit3." ".$details->mdpurchasegoodsunit3label;
+                }
+                if($details->mdpurchasegoodsunit2 != 0){
+                    $verbs .= " ".$details->mdpurchasegoodsunit2." ".$details->mdpurchasegoodsunit2label;
+                }
+                if($details->mdpurchasegoodsunit1 != 0){
+                    $verbs .= " ".$details->mdpurchasegoodsunit1." ".$details->mdpurchasegoodsunit1label;
+                }
+            }
+            $d['verbs'] = $verbs;
+        }
         $this->data['company'] = $this->config->msyscompname;
         $this->data['start'] = Carbon::parse($request->start)->formatLocalized('%d %B %Y');
         $this->data['end'] = Carbon::parse($request->end)->formatLocalized('%d %B %Y');
@@ -2693,7 +2814,7 @@ class ReportController extends Controller
                         $st->mstockcardgoodsid,
                         $st->mstockcardgoodsname,
                         $st->mstockcardstocktotal,
-                        $st->saved_unit,
+                        $st['verbs'],
                         $st->mstockcardstockin,
                         $st->mstockcardstockout,
                         $st->mdinvoicegoodsgrossamount,
