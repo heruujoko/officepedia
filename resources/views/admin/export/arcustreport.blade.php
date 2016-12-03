@@ -85,7 +85,7 @@
                     <th>No Invoice</th>
                     <th>Tgl Invoice</th>
                     <th>Tgl Jatuh Tempo</th>
-                    <th>Total Nota</th>
+                    <th>Nilai Nota</th>
                     <th>Outstanding</th>
                     <th>Aging</th>
                 </tr>
@@ -110,13 +110,24 @@
                         <td>{{ $ar->marcardtransno }}</td>
                         <td>{{ $ar->marcarddate }}</td>
                         <td>{{ $ar->marcardduedate }}</td>
-                        <td>{{ $ar['trans_count'] }}</td>
+                        <td style="text-align:right">{{ $ar['outstanding_prc'] }}</td>
                         <td style="text-align:right">{{ $ar['outstanding_prc'] }}</td>
                         <td>{{ $ar['aging'] }}</td>
                     </tr>
                     @endif
                 @endforeach
             </tbody>
+            <thead>
+                <tr>
+                    <th colspan="2">TOTAL</th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                    <th style="text-align:right" >{{ $marcardoutstanding_total }}</th>
+                    <th style="text-align:right" >{{ $marcardoutstanding_total }}</th>
+                    <th></th>
+                </tr>
+            </thead>
         </table>
         <script>
             window.print();

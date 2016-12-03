@@ -131,6 +131,11 @@ Route::group(['prefix'=>'admin-nano','middleware' => ['auth','tenantdb']],functi
   Route::get('salesinvoice/export/excel','SalesInvoiceController@excel');
   Route::get('salesinvoice/export/pdf','SalesInvoiceController@pdf');
 
+  Route::get('purchaseinvoice','PurchaseController@index');
+  Route::get('purchaseinvoice/export/csv','PurchaseController@csv');
+  Route::get('purchaseinvoice/export/excel','PurchaseController@excel');
+  Route::get('purchaseinvoice/export/pdf','PurchaseController@pdf');
+
   Route::get('muser','MUserController@index');
   Route::get('muser/export/csv','MUserController@csv');
   Route::get('muser/export/excel','MUserController@excel');
@@ -192,6 +197,7 @@ Route::group(['prefix'=>'admin-nano','middleware' => ['auth','tenantdb']],functi
   Route::resource('mprefix','Api\MPrefixController');
   Route::get('pelanggan/datalist','Api\MCustomerController@datalist');
   Route::resource('pelanggan','Api\MCustomerController');
+  Route::get('msupplier/datalist','Api\MSupplierController@datalist');
   Route::resource('msupplier','Api\MSupplierController');
   Route::get('mconfig','Api\MConfigController@index');
   Route::put('mconfig','Api\MConfigController@update');
@@ -226,16 +232,14 @@ Route::group(['prefix'=>'admin-nano','middleware' => ['auth','tenantdb']],functi
   Route::resource('mwarehouse','Api\MWarehouseController');
   Route::get('salesinvoice/details/{inv}','Api\SalesInvoiceController@details');
   Route::resource('salesinvoice','Api\SalesInvoiceController');
+  Route::get('purchaseinvoice/details/{inv}','Api\PurchaseController@details');
+  Route::resource('purchaseinvoice','Api\PurchaseController');
   Route::resource('muser','Api\MUserController');
-
 
   Route::get('mstockcardreport','Api\MStockcardreportController@filter');
 
   Route::get('mstockcardreport/mgoods','Api\MStockcardreportController@mgoods');
   Route::get('mstockcardreport/mwarehouse','Api\MStockcardreportController@mwarehouse');
-
-
-
 
   Route::get('salesreport','Api\SalesController@index');
   Route::get('invoicereport','Api\SalesController@invoices');

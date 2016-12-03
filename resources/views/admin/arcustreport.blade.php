@@ -55,13 +55,10 @@
                                 <div class="widget-body no-padding">
                                     <div class="container">
                                         <div id="report">
+                                            <br>
                                             <div class="row">
-                                                <div class="col-md-12">
-                                                    <br>
-                                                    <h4 class="text-center">{{ $config->msyscompname }}</h4>
-                                                    <h4 class="text-center">Laporan Piutang</h4>
-                                                    <h4 class="text-center">Periode <input v-dpicker v-model="invoice_date_start" type="text" class="small-date" /> - <input v-dpicker v-model="invoice_date_end" type="text" class="small-date" /></h4>
-                                                </div>
+                                                <p class="col-md-1 report-label">Per</p>
+                                                <input v-dpicker v-model="invoice_date_end" type="text" class="small-date form-control" />
                                             </div>
                                             <br>
                                             <div class="row">
@@ -93,6 +90,26 @@
                                                     <button class="dt-button pull-right" v-on:click="csvTable">CSV</button>
                                                 </div>
                                             </div>
+                                            <hr>
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    <br>
+                                                    <h4 class="text-center">{{ $config->msyscompname }}</h4>
+                                                    <h4 class="text-center">Laporan Piutang</h4>
+                                                    <h4 class="text-center">Per @{{ invoice_date_end }}</h4>
+                                                </div>
+                                            </div>
+                                            <br>
+                                            <div class="row">
+                                                <div class="col-md-4">
+                                                    <p>Cabang : @{{ label_branch }}</p>
+                                                    <p>Customer : @{{ label_customer }}</p>
+                                                </div>
+                                                <div class="pull-right" style="padding-right:20px;">
+                                                    <p>User : {{ Auth::user()->name }}</p>
+                                                    <p>Tgl Cetak : {{ Carbon\Carbon::now() }}</p>
+                                                </div>
+                                            </div>
                                             <br>
                                             <div class="row">
                                                 <div class="col-md-12">
@@ -104,7 +121,7 @@
                                                                 <th>No Invoice</th>
                                                                 <th>Tgl Invoice</th>
                                                                 <th>Tgl Jatuh Tempo</th>
-                                                                <th>Total Nota</th>
+                                                                <th>Nilai Nota</th>
                                                                 <th>Outstanding</th>
                                                                 <th>Aging</th>
                                                             </tr>
@@ -116,11 +133,22 @@
                                                                 <td>@{{ ar.marcardtransno }}</td>
                                                                 <td>@{{ ar.marcarddate }}</td>
                                                                 <td>@{{ ar.marcardduedate }}</td>
-                                                                <td>@{{ ar.trans_count }}</td>
+                                                                <td style="text-align:right">@{{ ar.outstanding_prc }}</td>
                                                                 <td style="text-align:right">@{{ ar.outstanding_prc }}</td>
                                                                 <td>@{{ ar.aging }}</td>
                                                             </tr>
                                                         </tbody>
+                                                        <thead>
+                                                            <tr>
+                                                                <th colspan="2">TOTAL</th>
+                                                                <th></th>
+                                                                <th></th>
+                                                                <th></th>
+                                                                <th style="text-align:right" v-priceformatlabel="num_format" >@{{ outstanding_total }}</th>
+                                                                <th style="text-align:right" v-priceformatlabel="num_format" >@{{ outstanding_total }}</th>
+                                                                <th></th>
+                                                            </tr>
+                                                        </thead>
                                                     </table>
                                                 </div>
                                             </div>
@@ -167,7 +195,7 @@
     	    border: 1px solid #ddd !important;
     	}
         .small-date{
-            width: 95px;
+            width: 195px;
             font-size: 11px;
         }
     </style>

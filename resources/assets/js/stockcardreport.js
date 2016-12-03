@@ -64,7 +64,28 @@ const stockcardreport = new Vue({
         invoice_date_end:moment().format('L'),
 
 	},
-
+    computed:{
+        label_warehouse(){
+            let self = this;
+            if(this.mstockcardwhouse != ""){
+                return _.find(this.warehouses,(wh) => {
+                    return wh.id == self.mstockcardwhouse;
+                });
+            } else {
+                return "Semua"
+            }
+        },
+        label_goods(){
+            let self = this;
+            if(this.mstockcardgoodsid != ""){
+                return _.find(this.goods,(wh) => {
+                    return wh.mgoodscode == self.mstockcardgoodsid;
+                });
+            } else {
+                return "Semua"
+            }
+        }
+    },
 	methods: {
 		fetchStocks(){
 			var self = this;

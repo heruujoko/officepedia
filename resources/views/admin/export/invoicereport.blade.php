@@ -130,6 +130,22 @@
                     @endif
                 @endforeach
             </tbody>
+            <thead>
+                <tr>
+                    <th>TOTAL</th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                    <th style="text-align:right" v-priceformatlabel="num_format">{{ $discount_total }}</th>
+                    <th style="text-align:right" v-priceformatlabel="num_format">{{ $subtotal_total }}</th>
+                    <th style="text-align:right" v-priceformatlabel="num_format">{{ $tax_total }}</th>
+                    <th style="text-align:right" v-priceformatlabel="num_format">{{ $total_total }}</th>
+                    <th></th>
+                </tr>
+            </thead>
         </table>
         <script>
             window.print();

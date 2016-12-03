@@ -100,8 +100,8 @@
                 <tr >
                     <td>{{ $ar->marcardcustomerid }}</td>
                     <td>{{ $ar->marcardcustomername }}</td>
-                    <td style="text-align:right">{{ number_format($ar->marcardtotalinv,$decimals,$dec_point,$thousands_sep) }}</td>
-                    <td style="text-align:right">{{ number_format($ar->marcardtotalinv,$decimals,$dec_point,$thousands_sep) }}</td>
+                    <td>{{ $ar['trans_count'] }}</td>
+                    <td style="text-align:right">{{ number_format($ar->marcardoutstanding_sum,$decimals,$dec_point,$thousands_sep) }}</td>
                     <td style="text-align:right">{{ number_format($ar->seven,$decimals,$dec_point,$thousands_sep) }}</td>
                     <td style="text-align:right">{{ number_format($ar->fourteen,$decimals,$dec_point,$thousands_sep) }}</td>
                     <td style="text-align:right">{{ number_format($ar->twentyone,$decimals,$dec_point,$thousands_sep) }}</td>
@@ -110,6 +110,18 @@
                 </tr>
                 @endforeach
             </tbody>
+            <thead>
+                <tr>
+                    <th colspan="2">TOTAL</th>
+                    <th>{{ $trans_count_total }}</th>
+                    <th style="text-align:right" v-priceformatlabel="num_format">{{ number_format($marcardoutstanding_total,$decimals,$dec_point,$thousands_sep) }}</th>
+                    <th style="text-align:right" v-priceformatlabel="num_format">{{ number_format($seven_total,$decimals,$dec_point,$thousands_sep) }}</th>
+                    <th style="text-align:right" v-priceformatlabel="num_format">{{ number_format($fourteen_total,$decimals,$dec_point,$thousands_sep) }}</th>
+                    <th style="text-align:right" v-priceformatlabel="num_format">{{ number_format($twentyone_total,$decimals,$dec_point,$thousands_sep) }}</th>
+                    <th style="text-align:right" v-priceformatlabel="num_format">{{ number_format($thirty_total,$decimals,$dec_point,$thousands_sep) }}</th>
+                    <th style="text-align:right" v-priceformatlabel="num_format">{{ number_format($month_total,$decimals,$dec_point,$thousands_sep) }}</th>
+                </tr>
+            </thead>
         </table>
         <script>
             window.print();

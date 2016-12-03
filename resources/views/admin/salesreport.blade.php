@@ -55,13 +55,15 @@
                                 <div class="widget-body no-padding">
                                     <div class="container">
                                         <div id="report">
+                                            <br>
                                             <div class="row">
-                                                <div class="col-md-12">
-                                                    <br>
-                                                    <h4 class="text-center">{{ $config->msyscompname }}</h4>
-                                                    <h4 class="text-center">Laporan Buku Penjualan</h4>
-                                                    <h4 class="text-center">Periode <input v-dpicker v-model="invoice_date_start" type="text" class="small-date" /> - <input v-dpicker v-model="invoice_date_end" type="text" class="small-date" /></h4>
-                                                </div>
+                                                <p class="col-md-1 report-label">Mulai</p>
+                                                <input v-dpicker v-model="invoice_date_start" type="text" class="small-date form-control" />
+                                            </div>
+                                            <br>
+                                            <div class="row">
+                                                <p class="col-md-1 report-label">Selesai</p>
+                                                <input v-dpicker v-model="invoice_date_end" type="text" class="small-date form-control" />
                                             </div>
                                             <br>
                                             <div class="row">
@@ -93,13 +95,32 @@
                                                     <button class="dt-button pull-right" v-on:click="csvTable">CSV</button>
                                                 </div>
                                             </div>
+                                            <hr>
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    <br>
+                                                    <h4 class="text-center">{{ $config->msyscompname }}</h4>
+                                                    <h4 class="text-center">Laporan Buku Penjualan</h4>
+                                                    <h4 class="text-center">Periode @{{ invoice_date_start}} - @{{ invoice_date_end }}</h4>
+                                                </div>
+                                            </div>
+                                            <br>
+                                            <div class="row">
+                                                <div class="col-md-4">
+                                                    <p>Gudang : @{{ label_warehouse }}</p>
+                                                    <p>Barang : @{{ label_goods }}</p>
+                                                </div>
+                                                <div class="pull-right" style="padding-right:20px;">
+                                                    <p>User : {{ Auth::user()->name }}</p>
+                                                    <p>Tgl Cetak : {{ Carbon\Carbon::now() }}</p>
+                                                </div>
+                                            </div>
                                             <br>
                                             <div class="row">
                                                 <div class="col-md-12">
                                                     <table class="table table-bordered" id="tableapi">
                                                         <thead>
                                                             <tr>
-                                                                <th>Customer</th>
                                                                 <th>Tgl Invoice</th>
                                                                 <th>Jumlah Invoice</th>
                                                                 <th>Penjualan</th>
@@ -114,19 +135,32 @@
                                                         </thead>
                                                         <tbody>
                                                             <tr v-for="sale in sales">
-                                                                <td>@{{ sale.mhinvoicecustomername }}</td>
                                                                 <td>@{{ sale.mhinvoicedate }}</td>
                                                                 <td>@{{ sale.detail_count }}</td>
-                                                                <td style="text-align:right" v-priceformatlabel="num_format" >@{{ sale.mhinvoicesubtotal + sale.mhinvoicediscounttotal }}</td>
+                                                                <td style="text-align:right" v-priceformatlabel="num_format" >@{{ sale.mhinvoicesubtotal_sum }}</td>
                                                                 <td style="text-align:right" v-priceformatlabel="num_format">0</td>
-                                                                <td style="text-align:right" v-priceformatlabel="num_format" >@{{ sale.mhinvoicediscounttotal }}</td>
-                                                                <td style="text-align:right" v-priceformatlabel="num_format" >@{{ sale.mhinvoicesubtotal }}</td>
-                                                                <td style="text-align:right" v-priceformatlabel="num_format" >@{{ sale.mhinvoicetaxtotal }}</td>
-                                                                <td style="text-align:right" v-priceformatlabel="num_format" >@{{ sale.mhinvoicegrandtotal }}</td>
-                                                                <td style="text-align:right">0</td>
-                                                                <td style="text-align:right" v-priceformatlabel="num_format" >@{{ sale.mhinvoicegrandtotal }}</td>
+                                                                <td style="text-align:right" v-priceformatlabel="num_format" >@{{ sale.mhinvoicediscounttotal_sum }}</td>
+                                                                <td style="text-align:right" v-priceformatlabel="num_format" >@{{ sale.mhinvoicesubtotal_sum }}</td>
+                                                                <td style="text-align:right" v-priceformatlabel="num_format" >@{{ sale.mhinvoicetaxtotal_sum }}</td>
+                                                                <td style="text-align:right" v-priceformatlabel="num_format" >@{{ sale.mhinvoicegrandtotal_sum }}</td>
+                                                                <td style="text-align:right" v-priceformatlabel="num_format">0</td>
+                                                                <td style="text-align:right" v-priceformatlabel="num_format" >@{{ sale.mhinvoicegrandtotal_sum }}</td>
                                                             </tr>
                                                         </tbody>
+                                                        <thead>
+                                                            <tr>
+                                                                <th>TOTAL</th>
+                                                                <th>@{{ invoice_count_total }}</th>
+                                                                <th style="text-align:right" v-priceformatlabel="num_format" >@{{ sales_total }}</th>
+                                                                <th style="text-align:right" v-priceformatlabel="num_format" >@{{ free_total }}</th>
+                                                                <th style="text-align:right" v-priceformatlabel="num_format" >@{{ discount_total }}</th>
+                                                                <th style="text-align:right" v-priceformatlabel="num_format" >@{{ sales_total }}</th>
+                                                                <th style="text-align:right" v-priceformatlabel="num_format" >@{{ tax_total }}</th>
+                                                                <th style="text-align:right" v-priceformatlabel="num_format" >@{{ sales_total + tax_total - discount_total }}</th>
+                                                                <th style="text-align:right" v-priceformatlabel="num_format" >0</th>
+                                                                <th style="text-align:right" v-priceformatlabel="num_format" >@{{ sales_total + tax_total - discount_total }}</th>
+                                                            </tr>
+                                                        </thead>
                                                     </table>
                                                 </div>
                                             </div>
@@ -173,7 +207,7 @@
     	    border: 1px solid #ddd !important;
     	}
         .small-date{
-            width: 95px;
+            width: 195px;
             font-size: 11px;
         }
     </style>

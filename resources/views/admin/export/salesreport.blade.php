@@ -110,6 +110,20 @@
                     </tr>
                 @endforeach
             </tbody>
+            <thead>
+                <tr>
+                    <th colspan="2">TOTAL</th>
+                    <th>{{ $invoice_count_total }}</th>
+                    <th style="text-align:right" v-priceformatlabel="num_format" >{{ $sales_total }}</th>
+                    <th style="text-align:right" v-priceformatlabel="num_format" >0</th>
+                    <th style="text-align:right" v-priceformatlabel="num_format" >{{ $discount_total }}</th>
+                    <th style="text-align:right" v-priceformatlabel="num_format" >{{ $sales_total }}</th>
+                    <th style="text-align:right" v-priceformatlabel="num_format" >{{ $tax_total }}</th>
+                    <th style="text-align:right" v-priceformatlabel="num_format" >{{ $sales_total + $tax_total - $discount_total }}</th>
+                    <th style="text-align:right" v-priceformatlabel="num_format" >0</th>
+                    <th style="text-align:right" v-priceformatlabel="num_format" >{{ $sales_total + $tax_total - $discount_total }}</th>
+                </tr>
+            </thead>
         </table>
         <script>
             window.print();

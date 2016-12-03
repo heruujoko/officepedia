@@ -88,25 +88,25 @@
               </tbody>
             </table>
           </div>
-          <div class="row">
+          <div class="row" style="color:white;">
             <br>
-            <div class="col-md-4">
+            <div class="col-md-2 well bg-color-greenLight">
               <h5>Total Item</h5>
               <p>{{ invoice_goods.length }}</p>
             </div>
-            <div class="col-md-2">
+            <div class="col-md-2 col-md-offset-2 well bg-color-magenta">
               <h5>Sub Total</h5>
               <p id="insertsubtotal"  >{{ format_subtotal }}</p>
             </div>
-            <div class="col-md-2">
+            <div class="col-md-2 well bg-color-blue">
               <h5>Discount</h5>
               <p id="insertdisc"  >{{ format_disc }}</p>
             </div>
-            <div class="col-md-2">
+            <div class="col-md-2 well well bg-color-orangeDark">
               <h5>PPN 10%</h5>
               <p id="insertppn" >{{ format_tax }}</p>
             </div>
-            <div class="col-md-2">
+            <div class="col-md-2 well bg-color-redLight">
               <h5>Total</h5>
               <p>{{ invoice_grandtotal }}</p>
             </div>
@@ -537,6 +537,7 @@
         if(isNaN(this.rp)){
           this.rp = 0;
         }
+        this.unit = 1;
         this.detail_total = (this.detail_goods.mgoodspriceout * parseInt(this.detail_qty) * parseInt(this.unit)) - parseInt(this.rp);
       },
       countRp(){

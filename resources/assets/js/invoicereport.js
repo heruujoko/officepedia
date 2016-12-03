@@ -79,7 +79,78 @@ const invoicereport = new Vue({
         inv:"",
         invoices:[]
     },
+    computed:{
+        label_branch(){
+            let self = this;
+            if(this.selected_branch != ""){
+                return _.find(this.branches,(wh) => {
+                    return wh.id == self.selected_branch;
+                }).mbranchname;
+            } else {
+                return "Semua"
+            }
+        },
+        label_warehouse(){
+            let self = this;
+            if(this.selected_warehouse != ""){
+                return _.find(this.warehouses,(wh) => {
+                    return wh.id == self.selected_warehouse;
+                }).mwarehousename;
+            } else {
+                return "Semua"
+            }
+        },
+        label_goods(){
+            let self = this;
+            if(this.selected_goods != ""){
+                return _.find(this.goods,(wh) => {
+                    return wh.mgoodscode == self.selected_goods;
+                }).mgoodsname;
+            } else {
+                return "Semua"
+            }
+        },
+        discount_total(){
+            return _.sumBy(this.invoices, (iv) => {
+                return iv.mdinvoicegoodsdiscount;
+            })
+        },
+        subtotal_total(){
+            return _.sumBy(this.invoices, (iv) => {
+                return iv.mdinvoicegoodsgrossamount;
+            })
+        },
+        tax_total(){
+            return _.sumBy(this.invoices, (iv) => {
+                return iv.mdinvoicegoodstax;
+            })
+        },
+        total_total(){
+            return this.subtotal_total + this.tax_total - this.discount_total;
+        }
+    },
     methods:{
+        fetchConfig(){
+            var self = this;
+            Axios.get('/admin-api/mconfig')
+                .then(function(res){
+                    let separator = res.data.msysnumseparator
+                    let decimals = res.data.msysgenrounddec
+                    console.log(separator +" "+decimals);
+                    if(separator == ',' && decimals == 2){
+                        self.num_format = "0,0.00"
+                    } else if(separator == ',' && decimals == 0){
+                        self.num_format = "0,0"
+                    } else if(separator == '.' && decimals == 2){
+                        self.num_format = "0.0,00"
+                    } else {
+                        self.num_format = "0.0"
+                    }
+                })
+                .catch(function(err){
+                    console.log(err);
+                });
+        },
         fetchInvoices(){
             var self = this;
             Axios.get('/admin-api/invoicereport?br='+this.selected_branch+"&wh="+this.selected_warehouse+"&goods="+this.selected_goods+'&start='+this.invoice_date_start+'&end='+this.invoice_date_end)
@@ -148,6 +219,7 @@ const invoicereport = new Vue({
     },
     created(){
         $('#loading_modal').modal('toggle');
+        this.fetchConfig();
         this.fetchInvoices();
         this.fetchWarehouses();
         this.fetchGoods();

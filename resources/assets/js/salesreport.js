@@ -74,7 +74,73 @@ const stockreport = new Vue({
             { id: "mhinvoicecustomername", label: "Nama Customer"}
         ]
     },
+    computed:{
+        label_warehouse(){
+            let self = this;
+            if(this.selected_warehouse != ""){
+                return _.find(this.warehouses,(wh) => {
+                    return wh.id == self.selected_warehouse;
+                }).mwarehousename;
+            } else {
+                return "Semua"
+            }
+        },
+        label_goods(){
+            let self = this;
+            if(this.selected_goods != ""){
+                return _.find(this.goods,(wh) => {
+                    return wh.mgoodscode == self.selected_goods;
+                }).mgoodsname;
+            } else {
+                return "Semua"
+            }
+        },
+        invoice_count_total(){
+            return _.sumBy(this.sales, (iv) => {
+                return iv.detail_count;
+            })
+        },
+        sales_total(){
+            return _.sumBy(this.sales, (iv) => {
+                return iv.mhinvoicesubtotal_sum;
+            })
+        },
+        free_total(){
+            return 0;
+        },
+        discount_total(){
+            return _.sumBy(this.sales, (iv) => {
+                return iv.mhinvoicediscounttotal_sum;
+            })
+        },
+        tax_total(){
+            return _.sumBy(this.sales, (iv) => {
+                return iv.mhinvoicetaxtotal_sum;
+            })
+        }
+    },
     methods:{
+        fetchConfig(){
+            var self = this;
+            Axios.get('/admin-api/mconfig')
+                .then(function(res){
+                    let separator = res.data.msysnumseparator
+                    let decimals = res.data.msysgenrounddec
+                    console.log(separator +" "+decimals);
+                    if(separator == ',' && decimals == 2){
+                        self.num_format = "0,0.00"
+                    } else if(separator == ',' && decimals == 0){
+                        self.num_format = "0,0"
+                    } else if(separator == '.' && decimals == 2){
+                        self.num_format = "0.0,00"
+                    } else {
+                        self.num_format = "0.0"
+                    }
+                })
+                .catch(function(err){
+                    console.log(err);
+                });
+        },
         fetchSales(){
             var self = this;
             Axios.get('/admin-api/salesreport?wh='+this.selected_warehouse+'&goods='+this.selected_goods+'&start='+this.invoice_date_start+'&end='+this.invoice_date_end)
@@ -152,6 +218,7 @@ const stockreport = new Vue({
     },
     created(){
         $('#loading_modal').modal('toggle');
+        this.fetchConfig();
         this.fetchSales();
         this.fetchWarehouses();
         this.fetchGoods();
