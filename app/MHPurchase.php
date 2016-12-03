@@ -433,7 +433,6 @@ class MHPurchase extends Model
             DB::connection(Auth::user()->db_name)->commit();
             return 'ok';
         } catch(\Exception $e){
-            var_dump($e);
             DB::connection(Auth::user()->db_name)->rollBack();
             return 'err';
         }
