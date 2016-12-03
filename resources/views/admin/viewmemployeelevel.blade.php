@@ -131,7 +131,7 @@
 						<!-- end widget edit box -->
 						<h3 style="font-weight: bold; color: #C91503;font-size: 19px;">Mode : EDIT</h3>
 
-						<input type="hidden" id="mbranchid" value=""></input>
+						<input type="hidden" id="memployeelevelid" value=""></input>
 						<div id="edit-wrapper" class="form-horizontal" data-parsley-validate>
 							<div class="container">
 								<style>
@@ -226,7 +226,7 @@
 										<div class="col-md-12">
 											</br>
 											<button onclick="backmcategory()" class="btn btn-default" type="submit">
-												<i class="fa fa-save"></i> Kembali
+												<i class=""></i> Kembali
                       </button>
 										</div>
 									</center>
@@ -390,6 +390,7 @@
               						  title: "Terhapus!",
               						  text: "Data Anda Berhasil Terhapus.",
               						  type: "success",
+              						  timer: 1000
             						  });
                           $('#forminput').show();
                     			$('#formview').hide();

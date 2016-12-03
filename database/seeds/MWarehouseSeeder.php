@@ -13,7 +13,7 @@ class MWarehouseSeeder extends Seeder
     {
      
       MWarehouse::create([
-         'mwarehousename' => 'Umum',
+         'mwarehousename' => 'Gudang Utama',
          'mwarehouseremark' => '',
          'void' => 0
       ]);

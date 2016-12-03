@@ -22,7 +22,7 @@ function insertmtax(){
           type: "success",
           timer: 1000
         });
-        resetmcategory();
+        resetmtax();
         window.location = "#tableapi";
       },
       error: function(response){
@@ -47,8 +47,8 @@ function viewmtax(id){
       $('#forminput').hide();
       $('#formedit').hide();
       $('#formview').show();
-
-      console.log(response);
+      resetmtax();
+      
     }
 
 });
@@ -61,12 +61,13 @@ function editmtax(id){
     type : 'GET',
     success : function(response){
       $('#taxid').val(response.id);
-      $('#edit-mtaxtype').val(response.mtaxtype);
+      $('#edit-mtaxtype').val(response.mtaxtype).change();
       $('#edit-mtaxtdesc').val(response.mtaxtdesc);
       $('#edit-mtaxtpercentage').val(response.mtaxtpercentage);
       $('#forminput').hide();
       $('#formview').hide();
       $('#formedit').show();
+      resetmtax();
     }
 
 });

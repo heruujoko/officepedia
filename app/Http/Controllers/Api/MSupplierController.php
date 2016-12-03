@@ -44,7 +44,7 @@ class MSupplierController extends Controller
 
   public function update(Request $request,$id){
       $new_cust = MSupplier::on(Auth::user()->db_name)->where('id',$id)->first();
-			$new_cust->update($request->all());
+	$new_cust->update($request->all());
     return response()->json($new_cust);
   }
 

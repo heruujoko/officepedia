@@ -1,11 +1,9 @@
 var API_URL = '/admin-api';
 var WEB_URL = '/admin-nano';
 
-function backmwarehouse(){
-  $('#formedit').hide();
-  $('#formview').hide();
-  $('#forminput').show();
-}
+$(document).ready(function(){
+  $('#insert-mwarehousename').focus();
+});
 
 function resetmwarehouse(){
   $('#insert-mwarehousename').val('');
@@ -13,6 +11,14 @@ function resetmwarehouse(){
   $('#insert-wrapper').parsley().reset();
   $('#edit-wrapper').parsley().reset();
 }
+
+function backmwarehouse(){
+  $('#formedit').hide();
+  $('#formview').hide();
+  $('#forminput').show();
+  resetmwarehouse();
+}
+
 
 function insertmwarehouse(){
    $('#insert-wrapper').parsley().validate();
@@ -61,10 +67,11 @@ function viewmwarehouse(id){
       $('#forminput').hide();
       $('#formedit').hide();
       $('#formview').show();
-      console.log(response);
+      resetmwarehouse();
     }
 
 });
+  resetmwarehouse();
   window.location = "#main";
 }
 
@@ -79,6 +86,7 @@ function editmwarehouse(id){
       $('#forminput').hide();
       $('#formview').hide();
       $('#formedit').show();
+       resetmwarehouse();
     }
 
 });
@@ -99,7 +107,6 @@ function updatemwarehouse(){
         url: API_URL+"/mwarehouse/"+updateid,
         data: data,
         success: function(response){
-          console.log(response);
           table.ajax.reload();
           window.location = "#tableapi";
           swal({
@@ -110,6 +117,7 @@ function updatemwarehouse(){
           $('#forminput').show();
           $('#formview').hide();
           $('#formedit').hide();
+
           resetmwarehouse();
         },
         error: function(response){

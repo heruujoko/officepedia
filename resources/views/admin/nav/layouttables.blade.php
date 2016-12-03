@@ -657,8 +657,8 @@
 				    );
 				    return $state;
 				  };
-					$('.phoneregex').mask('(0000) 000-000');
-					$('.mobileregex').mask('0000-0000-0000');
+					$('.phoneregex').mask('(000) 0000-0000-0000');
+					$('.mobileregex').mask('000-0000-0000-0000');
 					$('.buttons-colvis').click(function(){
 						console.log('click');
 						$('.buttons-columnVisibility').each(function(){

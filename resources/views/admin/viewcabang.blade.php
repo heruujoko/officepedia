@@ -212,7 +212,8 @@
 									<label class="col-md-3 control-label"><b>Keterangan</b> &nbsp  :</label>
 									<div class="col-md-7">
 										<div class="icon-addon addon-md">
-											<input id="insert-information" value="{{old('information')}}" name="information" class="form-control forminput" placeholder="Keterangan" type="text" @if (Session::has('autofocus')) autofocus @endif >
+											{{-- <input id="insert-information" value="{{old('information')}}" name="information" class="form-control forminput" placeholder="Keterangan" type="text" @if (Session::has('autofocus')) autofocus @endif > --}}
+											<textarea id="insert-information" value="{{old('information')}}" name="information" class="form-control forminput" placeholder="Keterangan" type="text" @if (Session::has('autofocus')) autofocus @endif ></textarea>
 											<label for="mgoodsgroup1" class="glyphicon glyphicon-search" rel="tooltip" title="Keterangan"></label>
 										</div>
 									</div>
@@ -342,7 +343,7 @@
 									<label class="col-md-3 control-label"><b>Alamat</b>  &nbsp  :</label>
 									<div class="col-md-7">
 										<div class="icon-addon addon-md">
-											<input value="" id="address" name="address" class="form-control forminput" placeholder="Alamat" type="text" required data-parsley-required-message="Field Ini Tidak Boleh Kosong">
+											<input value="" id="address" name="address" class="form-control forminput" placeholder="Alamat" type="text"  data-parsley-required-message="Field Ini Tidak Boleh Kosong">
 											<label for="mgoodsgroup1" class="glyphicon glyphicon-home" rel="tooltip" title="Alamat"></label>
 										</div>
 									</div>
@@ -351,7 +352,7 @@
 									<label class="col-md-3 control-label"><b>Telepon</b>  &nbsp  :</label>
 									<div  class="col-md-7">
 										<div class="icon-addon addon-md">
-											<input value="" id="phone" name="phone" class="form-control forminput phoneregex" placeholder="Telepon" type="text" required data-parsley-required-message="Field Ini Tidak Boleh Kosong">
+											<input value="" id="phone" name="phone" class="form-control forminput phoneregex" placeholder="Telepon" type="text"  data-parsley-required-message="Field Ini Tidak Boleh Kosong">
 											<label for="mgoodsgroup1" class="glyphicon glyphicon-phone-alt" rel="tooltip" title="Telepon"></label>
 
 										<div style="height: 5px;">
@@ -364,7 +365,7 @@
 									<label class="col-md-3 control-label"><b>Kota</b>  &nbsp  :</label>
 									<div class="col-md-7">
 										<div class="icon-addon addon-md">
-											<input value="" id="city" name="city" class="form-control forminput" placeholder="Kota" type="text" required data-parsley-required-message="Field Ini Tidak Boleh Kosong">
+											<input value="" id="city" name="city" class="form-control forminput" placeholder="Kota" type="text"  data-parsley-required-message="Field Ini Tidak Boleh Kosong">
 											<label for="mgoodsgroup1" class="glyphicon glyphicon-road" rel="tooltip" title="Kota"></label>
 										</div>
 									</div>
@@ -373,7 +374,7 @@
 									<label class="col-md-3 control-label"><b>Orang Yang Bertanggung Jawab</b>  &nbsp  :</label>
 									<div class="col-md-7">
 										<div class="icon-addon addon-md">
-											<input value="" id="person_in_charge" name="person_in_charge" class="form-control forminput" placeholder="Orang Yang Bertanggung Jawab" type="text" required data-parsley-required-message="Field Ini Tidak Boleh Kosong">
+											<input value="" id="person_in_charge" name="person_in_charge" class="form-control forminput" placeholder="Orang Yang Bertanggung Jawab" type="text"  data-parsley-required-message="Field Ini Tidak Boleh Kosong">
 											<label for="mgoodsgroup1" class="glyphicon glyphicon-user" rel="tooltip" title="Orang Yang Bertanggung Jawab"></label>
 										</div>
 									</div>
@@ -382,7 +383,8 @@
 									<label class="col-md-3 control-label"><b>Keterangan</b> &nbsp  :</label>
 									<div class="col-md-7">
 										<div class="icon-addon addon-md">
-											<input value="" id="information" name="information" class="form-control forminput" placeholder="Keterangan" type="text">
+											{{-- <input value="" id="information" name="information" class="form-control forminput" placeholder="Keterangan" type="text"> --}}
+											<textarea value="" id="information" name="information" class="form-control forminput" placeholder="Keterangan"></textarea>
 											<label for="mgoodsgroup1" class="glyphicon glyphicon-search" rel="tooltip" title="Keterangan"></label>
 										</div>
 									</div>
@@ -538,7 +540,8 @@
 									<label class="col-md-3 control-label"><b>Keterangan</b> &nbsp  :</label>
 									<div class="col-md-7">
 										<div class="icon-addon addon-md">
-											<input disabled value="" name="information" class="form-control" placeholder="Keterangan" type="text" id="information2" @if (Session::has('autofocus')) autofocus @endif >
+										{{-- 	<input disabled value="" name="information" class="form-control" placeholder="Keterangan" type="text" id="information2" @if (Session::has('autofocus')) autofocus @endif > --}}
+											<textarea disabled value="" name="information" class="form-control" placeholder="Keterangan" type="text" id="information2" @if (Session::has('autofocus')) autofocus @endif></textarea>
 											<label for="mgoodsgroup1" class="glyphicon glyphicon-search" rel="tooltip" title="Keterangan"></label>
 										</div>
 									</div>
@@ -548,7 +551,7 @@
 										<div class="col-md-12">
 											</br>
 											<button onclick="back()" class="btn btn-default" type="submit">
-												<i class="fa fa-save"></i> Kembali</button>
+												<i class=""></i> Kembali</button>
 
 
 											</div>
@@ -805,7 +808,7 @@
 						title: "Terhapus!",
 						text: "Data Anda Berhasil Terhapus.",
 						type: "success",
-
+						timer: 1000,
 						});
 					window.setTimeout(function(){
 					window.location = '{{ URL::to('/') }}'+'/admin-nano/delcabang/'+id+'/delete'

@@ -158,14 +158,14 @@
               									</div>
               								</div>
                               <div style="height: 21px;" class="form-group">
-              									<div class="col-md-offset-3 col-md-5 col-sm-12" style="margin-top:20px;">
+              									<div class="col-md-offset-3 col-md-5 col-sm-12" style="margin-top:10px;">
               										<div class="icon-addon addon-md">
                                     <div class="icon-addon addon-md">
                 											<input id="insert-msuppliercity" value="{{old('msuppliercity')}}" name="msuppliercity" class="form-control forminput" placeholder="Kota" type="text"  @if (Session::has('autofocus')) autofocus @endif >
                 										</div>
               										</div>
               									</div>
-                                <div class="col-md-4 col-sm-12" style="margin-top:20px;">
+                                <div class="col-md-4 col-sm-12" style="margin-top:10px;">
               										<div class="icon-addon addon-md">
                                     <div class="icon-addon addon-md">
                 											<input id="insert-msupplierzipcode" value="{{old('msupplierzipcode')}}" name="msupplierzipcode" class="form-control forminput" placeholder="K.Pos" type="text"  @if (Session::has('autofocus')) autofocus @endif >
@@ -174,21 +174,21 @@
               									</div>
               								</div>
                               <div style="height: 21px;" class="form-group">
-              									<div class="col-md-offset-3 col-md-9 col-sm-12" style="margin-top:20px;">
+              									<div class="col-md-offset-3 col-md-9 col-sm-12" style="margin-top:9px;">
               										<div class="icon-addon addon-md">
                                     <div class="icon-addon addon-md">
                                       <input id="insert-msupplierprovince" value="{{old('msupplierprovince')}}" name="msupplierprovince" class="form-control forminput" placeholder="Provinsi " type="text"  @if (Session::has('autofocus')) autofocus @endif >
-                											<label for="mgoodsgroup1" class="glyphicon glyphicon-star" rel="tooltip" title="Propinsi"></label>
+                											<label for="mgoodsgroup1" class="" rel="tooltip" title="Propinsi"></label>
                 										</div>
               										</div>
               									</div>
               								</div>
                               <div style="height: 21px;" class="form-group">
-              									<div class="col-md-offset-3 col-md-9 col-sm-12" style="margin-top:20px;">
+              									<div class="col-md-offset-3 col-md-9 col-sm-12" style="margin-top:-3px;">
               										<div class="icon-addon addon-md">
                                     <div class="icon-addon addon-md">
                                       <input id="insert-msuppliercountry" value="{{old('msuppliercountry')}}" name="msuppliercountry" class="form-control forminput" placeholder="Negara" type="text"  @if (Session::has('autofocus')) autofocus @endif >
-                											<label for="mgoodsgroup1" class="glyphicon glyphicon-star" rel="tooltip" title="Negara"></label>
+                											<label for="mgoodsgroup1" class="" rel="tooltip" title="Negara"></label>
                 										</div>
               										</div>
               									</div>
@@ -413,14 +413,14 @@
               									</div>
               								</div>
                               <div style="height: 21px;" class="form-group">
-              									<div class="col-md-offset-3 col-md-5 col-sm-12" style="margin-top:20px;">
+              									<div class="col-md-offset-3 col-md-5 col-sm-12" style="margin-top:10px;">
               										<div class="icon-addon addon-md">
                                     <div class="icon-addon addon-md">
                 											<input id="edit-msuppliercity" value="{{old('msuppliercity')}}" name="msuppliercity" class="form-control forminput" placeholder="Kota" type="text"  @if (Session::has('autofocus')) autofocus @endif >
                 										</div>
               										</div>
               									</div>
-                                <div class="col-md-4 col-sm-12" style="margin-top:20px;">
+                                <div class="col-md-4 col-sm-12" style="margin-top:10px;">
               										<div class="icon-addon addon-md">
                                     <div class="icon-addon addon-md">
                 											<input id="edit-msupplierzipcode" value="{{old('msupplierzipcode')}}" name="msupplierzipcode" class="form-control forminput" placeholder="K.Pos" type="text"  @if (Session::has('autofocus')) autofocus @endif >
@@ -429,21 +429,21 @@
               									</div>
               								</div>
                               <div style="height: 21px;" class="form-group">
-              									<div class="col-md-offset-3 col-md-9 col-sm-12" style="margin-top:20px;">
+              									<div class="col-md-offset-3 col-md-9 col-sm-12" style="margin-top:9px;">
               										<div class="icon-addon addon-md">
                                     <div class="icon-addon addon-md">
                                       <input id="editmsupplierprovince" value="{{old('msupplierprovince')}}" name="msupplierprovince" class="form-control forminput" placeholder="Provinsi " type="text"  @if (Session::has('autofocus')) autofocus @endif >
-                											<label for="mgoodsgroup1" class="glyphicon glyphicon-star" rel="tooltip" title="Propinsi"></label>
+                											<label for="mgoodsgroup1" class="" rel="tooltip" title="Propinsi"></label>
                 										</div>
               										</div>
               									</div>
               								</div>
                               <div style="height: 21px;" class="form-group">
-              									<div class="col-md-offset-3 col-md-9 col-sm-12" style="margin-top:20px;">
+              									<div class="col-md-offset-3 col-md-9 col-sm-12" style="margin-top:-3px;">
               										<div class="icon-addon addon-md">
                                     <div class="icon-addon addon-md">
                                       <input id="editmsuppliercountry" value="{{old('msuppliercountry')}}" name="msuppliercountry" class="form-control forminput" placeholder="Negara" type="text"  @if (Session::has('autofocus')) autofocus @endif >
-                											<label for="mgoodsgroup1" class="glyphicon glyphicon-star" rel="tooltip" title="Negara"></label>
+                											<label for="mgoodsgroup1" class="" rel="tooltip" title="Negara"></label>
                 										</div>
               										</div>
               									</div>
@@ -667,14 +667,14 @@
                                 </div>
                               </div>
                               <div style="height: 21px;" class="form-group">
-                                <div class="col-md-offset-3 col-md-5 col-sm-12" style="margin-top:20px;">
+                                <div class="col-md-offset-3 col-md-5 col-sm-12" style="margin-top:10px;">
                                   <div class="icon-addon addon-md">
                                     <div class="icon-addon addon-md">
                                       <input disabled id="view-msuppliercity" value="{{old('msuppliercity')}}" name="msuppliercity" class="form-control forminput" placeholder="Kota" type="text"  @if (Session::has('autofocus')) autofocus @endif >
                                     </div>
                                   </div>
                                 </div>
-                                <div class="col-md-4 col-sm-12" style="margin-top:20px;">
+                                <div class="col-md-4 col-sm-12" style="margin-top:10px;">
                                   <div class="icon-addon addon-md">
                                     <div class="icon-addon addon-md">
                                       <input disabled id="view-msupplierzipcode" value="{{old('msupplierzipcode')}}" name="msupplierzipcode" class="form-control forminput" placeholder="K.Pos" type="text"  @if (Session::has('autofocus')) autofocus @endif >
@@ -683,21 +683,21 @@
                                 </div>
                               </div>
                               <div style="height: 21px;" class="form-group">
-                                <div class="col-md-offset-3 col-md-9 col-sm-12" style="margin-top:20px;">
+                                <div class="col-md-offset-3 col-md-9 col-sm-12" style="margin-top:9px;">
                                   <div class="icon-addon addon-md">
                                     <div class="icon-addon addon-md">
                                       <input disabled id="editmsupplierprovince" value="{{old('msupplierprovince')}}" name="msupplierprovince" class="form-control forminput" placeholder="Provinsi " type="text"  @if (Session::has('autofocus')) autofocus @endif >
-                                      <label for="mgoodsgroup1" class="glyphicon glyphicon-star" rel="tooltip" title="Propinsi"></label>
+                                      <label for="mgoodsgroup1" class="" rel="tooltip" title="Propinsi"></label>
                                     </div>
                                   </div>
                                 </div>
                               </div>
                               <div style="height: 21px;" class="form-group">
-                                <div class="col-md-offset-3 col-md-9 col-sm-12" style="margin-top:20px;">
+                                <div class="col-md-offset-3 col-md-9 col-sm-12" style="margin-top:-3px;">
                                   <div class="icon-addon addon-md">
                                     <div class="icon-addon addon-md">
                                       <input disabled id="editmsuppliercountry" value="{{old('msuppliercountry')}}" name="msuppliercountry" class="form-control forminput" placeholder="Negara" type="text"  @if (Session::has('autofocus')) autofocus @endif >
-                                      <label for="mgoodsgroup1" class="glyphicon glyphicon-star" rel="tooltip" title="Negara"></label>
+                                      <label for="mgoodsgroup1" class="" rel="tooltip" title="Negara"></label>
                                     </div>
                                   </div>
                                 </div>
@@ -1042,6 +1042,10 @@
               }).on('xhr.dt',function(){
 								$('#loading_modal').modal('hide');
 							});
+
+         
+
+
       $(".table thead th input[type=text]").on( 'keyup change', function () {
         table
             .column( $(this).parent().index()+':visible' )
@@ -1073,6 +1077,7 @@
                 title: "Terhapus!",
                 text: "Data Anda Berhasil Terhapus.",
                 type: "success",
+                timer: 1000
               });
               $('#forminput').show();
               $('#formview').hide();

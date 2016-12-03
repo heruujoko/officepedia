@@ -1,6 +1,10 @@
 var API_URL = '/admin-api';
 var WEB_URL = '/admin-nano';
 
+$(document).ready(function(){
+  $('#insert-msuppliername').focus();
+});
+
 function backmsupplier(){
   resetmsupplier();
   $('#formedit').hide();
@@ -121,7 +125,7 @@ function insertmsupplier(){
             timer: 1000
           });
           resetmsupplier();
-          window.location = "#tableapi";
+          window.location = "#forminput";
         },
         error: function(response){
           var err_msg = response.responseJSON.errorInfo[2];
@@ -174,7 +178,6 @@ function viewmsupplier(id){
       $('#formedit').hide();
       $('#formview').show();
 
-      console.log(response);
     }
 
 });
@@ -214,6 +217,7 @@ function editmsupplier(id){
       setTimeout(function(){
           $("#msuppliername").focus();
       },100);
+      console.log(response);
     }
 
 });

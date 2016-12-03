@@ -81,7 +81,7 @@
 									<label class="col-md-3 control-label"><b>Nama User</b> (<font color="red">*</font>) &nbsp  :</label>
 									<div class="col-md-7">
 										<div class="icon-addon addon-md">
-											<input id="insert-musername" value="{{old('musername')}}" name="musername" class="form-control forminput" placeholder="Nama Kategori" type="text" required data-parsley-required-message="Field Ini Tidak Boleh Kosong" @if (Session::has('autofocus')) autofocus @endif >
+											<input id="insert-musername" value="{{old('musername')}}" name="musername" class="form-control forminput" placeholder="Nama User" type="text" required data-parsley-required-message="Field Ini Tidak Boleh Kosong" @if (Session::has('autofocus')) autofocus @endif >
 											<label for="mgoodsgroup1" class="glyphicon glyphicon-info-sign" rel="tooltip" title="Nama Kategori"></label>
 										</div>
 									</div>
@@ -90,7 +90,7 @@
 									<label class="col-md-3 control-label"><b>Password</b> (<font color="red">*</font>) &nbsp  :</label>
 									<div class="col-md-7">
 										<div class="icon-addon addon-md">
-											<input id="insert-muserpass" value="{{old('muserpass')}}" name="muserpass" class="form-control forminput" placeholder="Nama Kategori" type="text" required data-parsley-required-message="Field Ini Tidak Boleh Kosong" @if (Session::has('autofocus')) autofocus @endif >
+											<input id="insert-muserpass" value="{{old('muserpass')}}" name="muserpass" class="form-control forminput" placeholder="Password" type="text" required data-parsley-required-message="Field Ini Tidak Boleh Kosong" @if (Session::has('autofocus')) autofocus @endif >
 											<label for="mgoodsgroup1" class="glyphicon glyphicon-info-sign" rel="tooltip" title="Nama Kategori"></label>
 										</div>
 									</div>
@@ -100,7 +100,7 @@
 									<label class="col-md-3 control-label"><b>Kategori User</b> &nbsp  :</label>
 									<div class="col-md-7">
 										<div class="icon-addon addon-md">
-											<input id="insert-musercategory" value="{{old('musercategory')}}" name="musercategory" class="form-control forminput" placeholder="Keterangan" type="text" @if (Session::has('autofocus')) autofocus @endif >
+											<input id="insert-musercategory" value="{{old('musercategory')}}" name="musercategory" class="form-control forminput" placeholder="Kategori User" type="text" @if (Session::has('autofocus')) autofocus @endif >
 											<label for="mgoodsgroup1" class="glyphicon glyphicon-search" rel="tooltip" title="Keterangan"></label>
 										</div>
 									</div>
@@ -156,7 +156,7 @@
 									<label class="col-md-3 control-label"><b>Nama User</b> (<font color="red">*</font>) &nbsp  :</label>
 									<div class="col-md-7">
 										<div class="icon-addon addon-md">
-											<input id="edit-musername" value="{{old('musername')}}" name="musername" class="form-control forminput" placeholder="Nama Kategori" type="text" required data-parsley-required-message="Field Ini Tidak Boleh Kosong" @if (Session::has('autofocus')) autofocus @endif >
+											<input id="edit-musername" value="{{old('musername')}}" name="musername" class="form-control forminput" placeholder="Nama User" type="text" required data-parsley-required-message="Field Ini Tidak Boleh Kosong" @if (Session::has('autofocus')) autofocus @endif >
 											<label for="mgoodsgroup1" class="glyphicon glyphicon-info-sign" rel="tooltip" title="Nama Kategori"></label>
 										</div>
 									</div>
@@ -165,7 +165,7 @@
 									<label class="col-md-3 control-label"><b>Password</b> (<font color="red">*</font>) &nbsp  :</label>
 									<div class="col-md-7">
 										<div class="icon-addon addon-md">
-											<input id="edit-muserpass" value="{{old('muserpass')}}" name="muserpass" class="form-control forminput" placeholder="Nama Kategori" type="text" required data-parsley-required-message="Field Ini Tidak Boleh Kosong" @if (Session::has('autofocus')) autofocus @endif >
+											<input id="edit-muserpass" value="{{old('muserpass')}}" name="muserpass" class="form-control forminput" placeholder="Password" type="text" required data-parsley-required-message="Field Ini Tidak Boleh Kosong" @if (Session::has('autofocus')) autofocus @endif >
 											<label for="mgoodsgroup1" class="glyphicon glyphicon-info-sign" rel="tooltip" title="Nama Kategori"></label>
 										</div>
 									</div>
@@ -175,7 +175,7 @@
 									<label class="col-md-3 control-label"><b>Kategori User</b> &nbsp  :</label>
 									<div class="col-md-7">
 										<div class="icon-addon addon-md">
-											<input id="edit-musercategory" value="{{old('musercategory')}}" name="musercategory" class="form-control forminput" placeholder="Keterangan" type="text" @if (Session::has('autofocus')) autofocus @endif >
+											<input id="edit-musercategory" value="{{old('musercategory')}}" name="musercategory" class="form-control forminput" placeholder="Kategori User" type="text" @if (Session::has('autofocus')) autofocus @endif >
 											<label for="mgoodsgroup1" class="glyphicon glyphicon-search" rel="tooltip" title="Keterangan"></label>
 										</div>
 									</div>
@@ -228,7 +228,7 @@
 									<div class="col-md-7">
 										<div class="icon-addon addon-md">
 											<input disabled id="view-musername" value="{{old('musername')}}" name="musername" class="form-control forminput" placeholder="Nama Kategori" type="text" required data-parsley-required-message="Field Ini Tidak Boleh Kosong" @if (Session::has('autofocus')) autofocus @endif >
-											<label for="mgoodsgroup1" class="glyphicon glyphicon-info-sign" rel="tooltip" title="Nama Kategori"></label>
+											<label for="mgoodsgroup1" class="glyphicon glyphicon-info-sign" rel="tooltip" title="Nama User"></label>
 										</div>
 									</div>
 								</div>
@@ -237,7 +237,7 @@
 									<div class="col-md-7">
 										<div class="icon-addon addon-md">
 											<input disabled id="view-muserpass" value="{{old('muserpass')}}" name="muserpass" class="form-control forminput" placeholder="Nama Kategori" type="text" required data-parsley-required-message="Field Ini Tidak Boleh Kosong" @if (Session::has('autofocus')) autofocus @endif >
-											<label for="mgoodsgroup1" class="glyphicon glyphicon-info-sign" rel="tooltip" title="Nama Kategori"></label>
+											<label for="mgoodsgroup1" class="glyphicon glyphicon-info-sign" rel="tooltip" title="Password"></label>
 										</div>
 									</div>
 								</div>
@@ -246,7 +246,7 @@
 									<label class="col-md-3 control-label"><b>Kategori User</b> &nbsp  :</label>
 									<div class="col-md-7">
 										<div class="icon-addon addon-md">
-											<input disabled id="view-musercategory" value="{{old('musercategory')}}" name="musercategory" class="form-control forminput" placeholder="Keterangan" type="text" @if (Session::has('autofocus')) autofocus @endif >
+											<input disabled id="view-musercategory" value="{{old('musercategory')}}" name="musercategory" class="form-control forminput" placeholder="Kategori User" type="text" @if (Session::has('autofocus')) autofocus @endif >
 											<label for="mgoodsgroup1" class="glyphicon glyphicon-search" rel="tooltip" title="Keterangan"></label>
 										</div>
 									</div>
@@ -256,7 +256,7 @@
 										<div class="col-md-12">
 											</br>
 											<button onclick="backmuser()" class="btn btn-default" type="submit">
-												<i class="fa fa-save"></i> Kembali
+												<i class=""></i> Kembali
                       </button>
 										</div>
 									</center>
@@ -425,6 +425,7 @@
               						  title: "Terhapus!",
               						  text: "Data Anda Berhasil Terhapus.",
               						  type: "success",
+              						  timer: 1000
             						  });
                           $('#forminput').show();
                     			$('#formview').hide();

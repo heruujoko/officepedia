@@ -17,7 +17,6 @@ class MCategorysupplierController extends Controller
 {
 
 	public function index(){
-		DBHelper::configureConnection(Auth::user()->db_alias);
 		$this->iteration = 0;
         $mcategory = MCategorysupplier::on(Auth::user()->db_name)->where('void', '0')->orderby('created_at','desc')->get();
         return Datatables::of($mcategory)->addColumn('action', function($mcategory){
@@ -34,13 +33,11 @@ class MCategorysupplierController extends Controller
         ->make(true);
 	}
 	public function show($id){
-		DBHelper::configureConnection(Auth::user()->db_alias);
-    $mcategory = MCategorysupplier::on(Auth::user()->db_name)->get();
+    $mcategory = MCategorysupplier::on(Auth::user()->db_name)->where('id',$id)->first();
     return response()->json($mcategory);
 
 	}
 	public function store(Request $request){
-		DBHelper::configureConnection(Auth::user()->db_alias);
     try{
         $mcategory = new MCategorysupplier($request->all());
 				$mcategory->setConnection(Auth::user()->db_name);
@@ -52,9 +49,8 @@ class MCategorysupplierController extends Controller
       }
 	}
 	public function update(Request $request,$id){
-		DBHelper::configureConnection(Auth::user()->db_alias);
     try{
-	    $mcategory = MCategorysupplier::on(Auth::user()->db_name)->get();
+	    $mcategory = MCategorysupplier::on(Auth::user()->db_name)->where('id',$id)->first();
       $mcategory->update($request->all());
       return response()->json($mcategory);
     }catch(Exception $e){
@@ -63,10 +59,9 @@ class MCategorysupplierController extends Controller
 
 	}
 	public function destroy($id){
-		DBHelper::configureConnection(Auth::user()->db_alias);
-    $mcategory = MCategorysupplier::on(Auth::user()->db_name)->get();
+    $mcategory = MCategorysupplier::on(Auth::user()->db_name)->where('id',$id)->first();
     $mcategory->void = 1;
-		$mcategory-save();
+    $mcategory->save();
     return response()->json();
 	}
 

@@ -1,6 +1,10 @@
 var API_URL = '/admin-api';
 var WEB_URL = '/admin-nano';
 
+$(document).ready(function(){
+  $('#insert-mgoodsunitname').focus();
+});
+
 function backmunit(){
   $('#formedit').hide();
   $('#formview').hide();
@@ -8,8 +12,8 @@ function backmunit(){
 }
 
 function resetmunit(){
-  $('#insert-mgoodstypename').val('');
-  $('#insert-mgoodstyperemark').val('');
+  $('#insert-mgoodsunitname').val('');
+  $('#insert-mgoodsunitremark').val('');
   $('#insert-wrapper').parsley().reset();
   $('#edit-wrapper').parsley().reset();
 }
@@ -62,6 +66,7 @@ function viewmunit(id){
       $('#formedit').hide();
       $('#formview').show();
       console.log(response);
+      resetmunit();
     }
 
 });
@@ -79,6 +84,7 @@ function editmunit(id){
       $('#forminput').hide();
       $('#formview').hide();
       $('#formedit').show();
+      resetmunit();
     }
 
 });

@@ -226,7 +226,7 @@
 										<div class="col-md-12">
 											</br>
 											<button onclick="backmcategory()" class="btn btn-default" type="submit">
-												<i class="fa fa-save"></i> Kembali
+												<i class=""></i> Kembali
                       </button>
 										</div>
 									</center>
@@ -390,6 +390,7 @@
               						  title: "Terhapus!",
               						  text: "Data Anda Berhasil Terhapus.",
               						  type: "success",
+              						  timer: 1000
             						  });
                           $('#forminput').show();
                     			$('#formview').hide();

@@ -1,6 +1,10 @@
 var API_URL = '/admin-api';
 var WEB_URL = '/admin-nano';
 
+$(document).ready(function(){
+  $('#insert-mgoodssubtypename').focus();
+});
+
 function backmgoodssubtype(){
   $('#formedit').hide();
   $('#formview').hide();
@@ -63,6 +67,7 @@ function viewmgoodssubtype(id){
       $('#forminput').hide();
       $('#formedit').hide();
       $('#formview').show();
+      resetmgoodssubtype();
       console.log(response);
     }
 
@@ -82,6 +87,7 @@ function editmgoodssubtype(id){
       $('#forminput').hide();
       $('#formview').hide();
       $('#formedit').show();
+      resetmgoodssubtype();
     }
 
 });

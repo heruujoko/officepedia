@@ -105,9 +105,9 @@
                                 </div>
                               </div>
                               <div style="height: 21px;" class="form-group">
-                                <label class="col-md-3 control-label"><b>Telfon</b> &nbsp  :</label>
+                                <label class="col-md-3 control-label"><b>Telepon</b> &nbsp  :</label>
                                 <div class="col-md-8">
-                                  <input id="insert-memployeehomephone" value="" name="memployeehomephone" class="form-control forminput phoneregex" placeholder="Telfon" type="text" data-parsley-required-message="Field Ini Tidak Boleh Kosong">
+                                  <input id="insert-memployeehomephone" value="" name="memployeehomephone" class="form-control forminput phoneregex" placeholder="Telepon" type="text" data-parsley-required-message="Field Ini Tidak Boleh Kosong">
                                 </div>
                               </div>
                               <div style="height: 21px;" class="form-group">
@@ -265,9 +265,9 @@
                                 </div>
                               </div>
                               <div style="height: 21px;" class="form-group">
-                                <label class="col-md-3 control-label"><b>Telfon</b> &nbsp  :</label>
+                                <label class="col-md-3 control-label"><b>Telepon</b> &nbsp  :</label>
                                 <div class="col-md-8">
-                                  <input id="edit-memployeehomephone" value="" name="memployeehomephone" class="form-control forminput phoneregex" placeholder="Telfon" type="text" data-parsley-required-message="Field Ini Tidak Boleh Kosong">
+                                  <input id="edit-memployeehomephone" value="" name="memployeehomephone" class="form-control forminput phoneregex" placeholder="Telepon" type="text" data-parsley-required-message="Field Ini Tidak Boleh Kosong">
                                 </div>
                               </div>
                               <div style="height: 21px;" class="form-group">
@@ -425,9 +425,9 @@
 																</div>
 															</div>
 															<div style="height: 21px;" class="form-group">
-																<label class="col-md-3 control-label"><b>Telfon</b> &nbsp  :</label>
+																<label class="col-md-3 control-label"><b>Telepon</b> &nbsp  :</label>
 																<div class="col-md-8">
-																	<input disabled id="view-memployeehomephone" value="" name="memployeehomephone" class="form-control forminput phoneregex" placeholder="Telfon" type="text" data-parsley-required-message="Field Ini Tidak Boleh Kosong">
+																	<input disabled id="view-memployeehomephone" value="" name="memployeehomephone" class="form-control forminput phoneregex" placeholder="Telepon" type="text" data-parsley-required-message="Field Ini Tidak Boleh Kosong">
 																</div>
 															</div>
 															<div style="height: 21px;" class="form-group">
@@ -556,7 +556,7 @@
       											<input type="text" class="form-control" placeholder="Filter HP Karyawan" />
       										</th>
 													<th class="hasinput" style="width:9%">
-      											<input type="text" class="form-control" placeholder="Filter Telfon Karyawan" />
+      											<input type="text" class="form-control" placeholder="Filter Telepon Karyawan" />
       										</th>
 													<th class="hasinput" style="width:9%">
       											<input type="text" class="form-control" placeholder="Filter BBM Karyawan" />
@@ -588,7 +588,7 @@
 													<th data-hide="memployeeposition"><center>Posisi Karyawan</center></th>
 													<th data-hide="memployeelevel"><center>Level Karyawan</center></th>
 													<th data-hide="memployeephone"><center>HP Karyawan</center></th>
-													<th data-hide="memployeehomephone"><center>Telfon Karyawan</center></th>
+													<th data-hide="memployeehomephone"><center>Telepon Karyawan</center></th>
 													<th data-hide="memployeebbmpin"><center>BBM Karyawan</center></th>
 													<th data-hide="memployeeidcard"><center>KTP Karyawan</center></th>
 													<th data-hide="memployeecity"><center>Kota</center></th>
@@ -736,6 +736,7 @@
                 title: "Terhapus!",
                 text: "Data Anda Berhasil Terhapus.",
                 type: "success",
+                timer: 1000
               });
               $('#forminput').show();
               $('#formview').hide();

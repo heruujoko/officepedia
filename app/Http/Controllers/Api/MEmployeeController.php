@@ -29,7 +29,7 @@ class MEmployeeController extends Controller
           return "<span>".$this->iteration."</span>";
         })
         ->addColumn('level',function($memployee){
-          return "<span>".$memployee->level()->level."</span>";
+          return "<span>".$memployee->level()."</span>";
         })
           ->make(true);
     }

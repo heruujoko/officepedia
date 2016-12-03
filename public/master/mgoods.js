@@ -69,7 +69,7 @@ $(document).ready(function(){
   //   handleWidth: 50,
   //   labelWidth: 40
   // });
-
+  $('#insert-mgoodsname').focus();
 });
 //MGoods Script
 function insertmgoods(){
@@ -129,7 +129,7 @@ function insertmgoods(){
             type: "success",
             timer: 1000
           });
-          resetbarang();
+          resetmgoods();
           window.location = "#tableapi";
         },
         error: function(response){
@@ -254,7 +254,7 @@ function editmgoods(id){
         $('#edit-mgoodstaxppn').val(2).change();
         $('#edit-mgoodstaxppnbm').val(2).change();
       }
-
+    resetmgoods();
     }
 
 });
@@ -322,7 +322,7 @@ function updatemgoods(){
           $('#forminput').show();
           $('#formview').hide();
           $('#formedit').hide();
-          resetbarang();
+          resetmgoods();
         },
         error: function(response){
           var err_msg = response.responseJSON.errorInfo[2];
@@ -332,6 +332,7 @@ function updatemgoods(){
             text: err_msg,
             timer: 2000
           });
+          resetmgoods();
         }
       });
     }
@@ -429,7 +430,7 @@ function updatemgoods(){
           $("#mgoodsname").focus();
       },100);
 
-
+      resetmgoods();
       console.log(response);
     }
 

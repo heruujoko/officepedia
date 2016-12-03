@@ -259,7 +259,7 @@
 										<div class="col-md-12">
 											</br>
 											<button onclick="backmtax()" class="btn btn-default" type="submit">
-												<i class="fa fa-save"></i> Kembali
+												<i class=""></i> Kembali
                       </button>
 										</div>
 									</center>
@@ -420,7 +420,7 @@
         					  if (isconfirm) {
                       $.ajax({
                         type: "DELETE",
-                        url: API_URL+"/mcategorycustomer/"+id,
+                        url: API_URL+"/mtax/"+id,
                         success: function(response){
                           table.ajax.reload();
                           window.location = "#tableapi";
@@ -428,10 +428,12 @@
               						  title: "Terhapus!",
               						  text: "Data Anda Berhasil Terhapus.",
               						  type: "success",
+              						  timer: 1000,
             						  });
                           $('#forminput').show();
                     			$('#formview').hide();
                     			$('#formedit').hide();
+
                         },
                         error: function(response){
                           swal({

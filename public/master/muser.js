@@ -1,5 +1,9 @@
 var API_URL = '/admin-api';
 var WEB_URL = '/admin-nano';
+$(document).ready(function(){
+$('#insert-musername').focus();
+});
+
 
 function backmuser(){
   $('#formedit').hide();
@@ -13,6 +17,8 @@ function resetmuser(){
   $('#insert-musercategory').val('');
   $('#insert-wrapper').parsley().reset();
   $('#edit-wrapper').parsley().reset();
+  
+  
 }
 
 function insertmuser(){
@@ -37,8 +43,9 @@ function insertmuser(){
             type: "success",
             timer: 1000
           });
-          resetmcategory();
+          resetmuser();
           window.location = "#tableapi";
+
         },
         error: function(response){
           swal({
@@ -82,6 +89,7 @@ function editmuser(id){
       $('#forminput').hide();
       $('#formview').hide();
       $('#formedit').show();
+      $('#insert-musername').focus();
     }
 
 });
@@ -114,7 +122,7 @@ function updatemuser(){
           $('#forminput').show();
           $('#formview').hide();
           $('#formedit').hide();
-          resetmcategory();
+          resetmuser();
         },
         error: function(response){
           swal({
@@ -128,15 +136,3 @@ function updatemuser(){
 
   }
 
-if(document.getElementById('disableforminput')){
-  document.getElementById('disableforminput').onchange = function() {
-      document.getElementById('insert-mcategoryid').disabled = this.checked;
-      if($('#disableforminput').is(':checked')){
-        $('#insert-mcategoryid').removeAttr('required');
-        $('#insert-wrapper').parsley().validate();
-      } else{
-        $('#insert-mcategoryid').attr('required','true');
-        $('#insert-wrapper').parsley().validate();
-      }
-  };
-}

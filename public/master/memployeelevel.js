@@ -1,13 +1,16 @@
 var API_URL = '/admin-api';
 var WEB_URL = '/admin-nano';
 
+$(document).ready(function(){
+  $('#insert-category_name').focus();
+});
 function backmcategory(){
   $('#formedit').hide();
   $('#formview').hide();
   $('#forminput').show();
 }
 
-function resetmcategory(){
+function memployeelevel(){
   $('#insert-category_name').val('');
   $('#insert-information').val('');
   $('#insert-wrapper').parsley().reset();
@@ -35,7 +38,7 @@ function insertmcategory(){
             type: "success",
             timer: 1000
           });
-          resetmcategory();
+          memployeelevel();
           window.location = "#tableapi";
         },
         error: function(response){
@@ -59,7 +62,7 @@ function viewmcategory(id){
       $('#forminput').hide();
       $('#formedit').hide();
       $('#formview').show();
-
+      memployeelevel();
       console.log(response);
     }
 
@@ -72,12 +75,13 @@ function editmcategory(id){
     url : API_URL+'/memployeelevel/'+id,
     type : 'GET',
     success : function(response){
-      $('#msupplierid').val(response.id);
+      $('#memployeelevelid').val(response.id);
       $('#edit-category_name').val(response.level);
       $('#edit-information').val(response.information);
       $('#forminput').hide();
       $('#formview').hide();
       $('#formedit').show();
+      memployeelevel();
     }
 
 });
@@ -87,7 +91,7 @@ function editmcategory(id){
 function updatemcategory(){
   $('#edit-wrapper').parsley().validate();
     if($('#edit-wrapper').parsley().isValid()){
-    var updateid = $('#msupplierid').val();
+    var updateid = $('#memployeelevelid').val();
     var data = {
          level: $('#edit-category_name').val(),
         information: $('#edit-information').val(),
@@ -109,7 +113,7 @@ function updatemcategory(){
           $('#forminput').show();
           $('#formview').hide();
           $('#formedit').hide();
-          resetmcategory();
+          memployeelevel();
         },
         error: function(response){
           swal({

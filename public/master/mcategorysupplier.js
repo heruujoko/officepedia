@@ -1,6 +1,10 @@
 var API_URL = '/admin-api';
 var WEB_URL = '/admin-nano';
 
+$(document).ready(function(){
+  $('#insert-category_name').focus();
+});
+
 function backmcategory(){
   $('#formedit').hide();
   $('#formview').hide();
@@ -59,7 +63,7 @@ function viewmcategory(id){
       $('#forminput').hide();
       $('#formedit').hide();
       $('#formview').show();
-
+      resetmcategory();
       console.log(response);
     }
 
@@ -78,6 +82,7 @@ function editmcategory(id){
       $('#forminput').hide();
       $('#formview').hide();
       $('#formedit').show();
+      resetmcategory();
     }
 
 });

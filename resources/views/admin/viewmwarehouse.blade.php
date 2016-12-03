@@ -87,11 +87,11 @@
 									</div>
 								</div>
               					<div style="height: 65px;" class="form-group">
-									<label class="col-md-3 control-label"><b>Remark</b>  :</label>
+									<label class="col-md-3 control-label"><b>Keterangan</b>  :</label>
 									<div class="col-md-7" style="margin-top:5px;">
 										<div class="icon-addon addon-md">
-											<input id="insert-mwarehouseremark" value="{{old('mwarehouseremark')}}" name="mwarehouseremark" class="form-control forminput" placeholder="Remark" type="text" data-parsley-required-message="Field Ini Tidak Boleh Kosong" @if (Session::has('autofocus')) autofocus @endif >
-											<label for="mgoodsgroup1" class="glyphicon glyphicon-info-sign" rel="tooltip" title="Remark"></label>
+											<input id="insert-mwarehouseremark" value="{{old('mwarehouseremark')}}" name="mwarehouseremark" class="form-control forminput" placeholder="Keterangan" type="text" data-parsley-required-message="Field Ini Tidak Boleh Kosong" @if (Session::has('autofocus')) autofocus @endif >
+											<label for="mgoodsgroup1" class="glyphicon glyphicon-info-sign" rel="tooltip" title="Keterangan"></label>
 										</div>
 									</div>
 								</div>
@@ -155,11 +155,11 @@
 								
 
               					<div style="height: 65px;" class="form-group">
-									<label class="col-md-3 control-label"><b>Remark</b>  :</label>
+									<label class="col-md-3 control-label"><b>Keterangan</b>  :</label>
 									<div class="col-md-7" style="margin-top:5px;">
 										<div class="icon-addon addon-md">
-											<input id="edit-mwarehouseremark" value="{{old('mwarehouseremark')}}" name="mwarehouseremark" class="form-control forminput" placeholder="Remark" type="text" data-parsley-required-message="Field Ini Tidak Boleh Kosong" @if (Session::has('autofocus')) autofocus @endif >
-											<label for="mgoodsgroup1" class="glyphicon glyphicon-info-sign" rel="tooltip" title="Remark"></label>
+											<input id="edit-mwarehouseremark" value="{{old('mwarehouseremark')}}" name="mwarehouseremark" class="form-control forminput" placeholder="Keterangan" type="text" data-parsley-required-message="Field Ini Tidak Boleh Kosong" @if (Session::has('autofocus')) autofocus @endif >
+											<label for="mgoodsgroup1" class="glyphicon glyphicon-info-sign" rel="tooltip" title="Keterangan"></label>
 										</div>
 									</div>
 								</div>
@@ -218,11 +218,11 @@
 							
 
               					<div style="height: 65px;" class="form-group">
-									<label class="col-md-3 control-label"><b>Remark</b>  :</label>
+									<label class="col-md-3 control-label"><b>Keterangan</b>  :</label>
 									<div class="col-md-7" style="margin-top:5px;">
 										<div class="icon-addon addon-md">
-											<input disabled id="view-mwarehouseremark" value="{{old('mwarehouseremark')}}" name="mwarehouseremark" class="form-control forminput" placeholder="Remark" type="text" required data-parsley-required-message="Field Ini Tidak Boleh Kosong" @if (Session::has('autofocus')) autofocus @endif >
-											<label for="mgoodsgroup1" class="glyphicon glyphicon-info-sign" rel="tooltip" title="Remark"></label>
+											<input disabled id="view-mwarehouseremark" value="{{old('mwarehouseremark')}}" name="mwarehouseremark" class="form-control forminput" placeholder="Keterangan" type="text" required data-parsley-required-message="Field Ini Tidak Boleh Kosong" @if (Session::has('autofocus')) autofocus @endif >
+											<label for="mgoodsgroup1" class="glyphicon glyphicon-info-sign" rel="tooltip" title="Keterangan"></label>
 										</div>
 									</div>
 								</div>
@@ -232,7 +232,7 @@
 										<div class="col-md-12">
 											</br>
 											<button onclick="backmwarehouse()" class="btn btn-default" type="submit">
-												<i class="fa fa-save"></i> Kembali
+												<i class=""></i> Kembali
                       </button>
 										</div>
 									</center>
@@ -402,6 +402,7 @@
               						  title: "Terhapus!",
               						  text: "Data Anda Berhasil Terhapus.",
               						  type: "success",
+              						  timer: 1000
             						  });
                           $('#forminput').show();
                     			$('#formview').hide();

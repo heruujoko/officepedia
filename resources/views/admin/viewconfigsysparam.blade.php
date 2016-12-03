@@ -59,7 +59,7 @@
                       <ul class="nav nav-tabs" style="padding-left:10px;">
                        	<li class="active"><a data-toggle="tab" href="#menu1">Profil Perusahaan</a></li>
                        	<li><a data-toggle="tab" href="#menu2">Fitur Umum</a></li>
-                    	 	<li><a data-toggle="tab" href="#menu3">Header Prefix</a></li>
+                    	 	<li><a data-toggle="tab" href="#menu3">Last Count & Example</a></li>
                       </ul>
                       <div id="insert-wrapper" class="tab-content" data-parsley-validate>
                         <div id="menu1" class="tab-pane fade in active">

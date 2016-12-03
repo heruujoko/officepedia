@@ -286,7 +286,7 @@
 										<div class="col-md-12">
 											</br>
 											<button onclick="backall()" class="btn btn-default" type="submit">
-												<i class="fa fa-save"></i> Kembali
+												<i class=""></i> Kembali
                       </button>
 										</div>
 									</center>

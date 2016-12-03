@@ -95,7 +95,7 @@
                                 <label class="col-md-3 control-label"><b>Nama Barang</b>  (<font color="red">*</font>) &nbsp  :</label>
                                 <div  class="col-md-9 col-sm-12">
                                   <div class="icon-addon addon-md">
-                                    <input id="insert-mgoodsname" value="{{old('mgoodsname')}}" name="mgoodsname" class="form-control forminput" placeholder="Nama Barang" type="text" @if (Session::has('autofocus')) autofocus @endif >
+                                    <input required id="insert-mgoodsname" value="{{old('mgoodsname')}}" name="mgoodsname" class="form-control forminput" placeholder="Nama Barang" type="text" @if (Session::has('autofocus')) autofocus @endif >
                                     <label for="mgoodsgroup1" class="glyphicon glyphicon-info-sign" rel="tooltip" title="Nama Barang"></label>
                                   </div>
                                 </div>
@@ -104,7 +104,7 @@
                                 <label class="col-md-3 control-label"><b>Kategori Barang</b>  (<font color="red">*</font>) &nbsp  :</label>
                                 <div class="col-md-9 col-sm-12">
                                   <div class="icon-addon addon-md">
-                                    <select id="insert-mgoodscategory" name="mgoodscategory" class="form-control select2">
+                                    <select required id="insert-mgoodscategory" name="mgoodscategory" class="form-control select2">
                                       @foreach($categories as $cat)
                                         <option value="{{ $cat->id }}">{{ $cat->category_name }}</option>
                                       @endforeach
@@ -413,7 +413,7 @@
                                 <div class="col-md-1">
                                   <!-- <input id="insert-mgoodsmultiunit" value="" name="mgoodsmultiunit" class="nice-toggle" placeholder="mgoodsactive" type="checkbox" data-toggle="toggle"> -->
                                   <div class="yesnoswitch">
-                                      <input type="checkbox" name="mgoodsbranches" class="yesnoswitch-checkbox" id="insert-mgoodstaxable">
+                                      <input  type="checkbox" name="mgoodsbranches" class="yesnoswitch-checkbox" id="insert-mgoodstaxable">
                                       <label class="yesnoswitch-label" for="insert-mgoodstaxable">
                                           <span class="yesnoswitch-inner"></span>
                                           <span class="yesnoswitch-switch"></span>
@@ -901,7 +901,7 @@
                     <div class="row">
                       <div class="col-md-offset-5 col-md-5" style="margin-top:20px;margin-bottom:20px;">
                         <button onclick="updatemgoods()" type="submit" name="button" class="btn btn-primary">Simpan</button>
-                        <a id="btn-insert-reset" onclick="resetmgoods()" class="btn btn-default" ><i class=""></i> Reset</a>
+                        <a id="btn-insert-reset" onclick="reseteditmgoods()" class="btn btn-default" ><i class=""></i> Reset</a>
                       </div>
                     </div>
                   </div>
@@ -1628,6 +1628,7 @@
                 title: "Terhapus!",
                 text: "Data Anda Berhasil Terhapus.",
                 type: "success",
+                timer: 1000
               });
               $('#forminput').show();
               $('#formview').hide();

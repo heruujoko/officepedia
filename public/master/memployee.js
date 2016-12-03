@@ -19,6 +19,50 @@ if(document.getElementById('autogenemployee')){
       }
   };
 }
+function resetmemployee(){
+  $('#insert-idmemployeeid').val('');
+  $('#insert-memployeeid').val('');
+  $('#insert-memployeename').val('');
+  $('#insert-memployeeposition').val('');
+  $('#insert-memployeephone').val('');
+  $('#insert-memployeehomephone').val('');
+  $('#insert-memployeebbmpin').val('');
+  $('#insert-memployeeidcard').val('');
+  $('#insert-memployeecity').val('');
+  $('#insert-memployeezipcode').val('');
+  $('#insert-memployeeprovince').val('');
+  $('#insert-memployeecountry').val('');
+  $('#insert-memployeecontactname').val('');
+  $('#insert-memployeecontactposition').val('');
+  $('#insert-memployeecontactemail').val('');
+  $('#insert-memployeecontactemailphone').val('');
+  $('#insert-memployeearlimit').val('');
+  $('#insert-memployeecoa').val('');
+  $('#insert-memployeearmax').val('');
+  $('#insert-memployeedefaultar').val('');
+
+  $('#edit-idmemployeeid').val('');
+  $('#edit-memployeeid').val('');
+  $('#edit-memployeename').val('');
+  $('#edit-memployeeposition').val('');
+  $('#edit-memployeephone').val('');
+  $('#edit-memployeehomephone').val('');
+  $('#edit-memployeebbmpin').val('');
+  $('#edit-memployeeidcard').val('');
+  $('#edit-memployeecity').val('');
+  $('#edit-memployeezipcode').val('');
+  $('#edit-memployeeprovince').val('');
+  $('#edit-memployeecountry').val('');
+  $('#edit-memployeecontactname').val('');
+  $('#edit-memployeecontactposition').val('');
+  $('#edit-memployeecontactemail').val('');
+  $('#edit-memployeecontactemailphone').val('');
+  $('#edit-memployeearlimit').val('');
+  $('#edit-memployeecoa').val('');
+  $('#edit-memployeearmax').val('');
+  $('#edit-memployeedefaultar').val('');
+  $('#insert-memployeeinfo').val('');
+}
 
 function insertmemployee(){
   $('#insert-wrapper').parsley().validate();
@@ -49,11 +93,13 @@ function insertmemployee(){
         console.log(response);
         table.ajax.reload();
         window.location = "#tableapi";
+        resetmemployee();
         swal({
           title: "Input Berhasil!",
           type: "success",
           timer: 1000
         });
+        
       },
       error: function(response){
         var err_msg = response.responseJSON.errorInfo[2];
@@ -77,6 +123,7 @@ function editmemployee(id){
     url: API_URL+"/memployee/"+id,
     method: "GET",
     success: function(response){
+      
       $('#edit-idmemployeeid').val(response.id);
       $('#edit-memployeeid').val(response.memployeeid);
       $('#edit-memployeename').val(response.memployeename);
@@ -93,6 +140,8 @@ function editmemployee(id){
       $('#edit-memployeecountry').val(response.memployeecountry);
       $('#edit-memployeeinfo').val(response.memployeeinfo);
       window.location.href = '#main';
+      resetmemployee();
+      console.log(response);
     },
     error : function(repsonse){
 
@@ -100,7 +149,8 @@ function editmemployee(id){
   });
 }
 
-function updatememployee(){
+function updatememployee(id){
+  var idmemployeeid = $('#edit-memployeeid').val();
   $('#edit-wrapper').parsley().validate();
   if($('#edit-wrapper').parsley().isValid()){
     var data = {
@@ -121,7 +171,7 @@ function updatememployee(){
     }
 
     $.ajax({
-      url: API_URL+"/memployee/"+$('#edit-idmemployeeid').val(),
+      url: API_URL+"/memployee/"+idmemployeeid,
       method: "PUT",
       data: data,
       success:function(response){
@@ -133,6 +183,7 @@ function updatememployee(){
           type: "success",
           timer: 1000
         });
+        resetmemployee();
       },
       error: function(){
         var err_msg = response.responseJSON.errorInfo[2];
@@ -179,6 +230,7 @@ function viewmemployee(id){
       $('#view-memployeedefaultar').val(response.memployeedefaultar);
       $('#view-memployeeinfo').val(response.memployeeinfo);
       window.location.href = '#main';
+      resetmemployee();
     },
     error: function(response){
 
@@ -186,50 +238,7 @@ function viewmemployee(id){
   })
 }
 
-function resetmemployee(){
-  $('#insert-idmemployeeid').val('');
-  $('#insert-memployeeid').val('');
-  $('#insert-memployeename').val('');
-  $('#insert-memployeeposition').val('');
-  $('#insert-memployeephone').val('');
-  $('#insert-memployeehomephone').val('');
-  $('#insert-memployeebbmpin').val('');
-  $('#insert-memployeeidcard').val('');
-  $('#insert-memployeecity').val('');
-  $('#insert-memployeezipcode').val('');
-  $('#insert-memployeeprovince').val('');
-  $('#insert-memployeecountry').val('');
-  $('#insert-memployeecontactname').val('');
-  $('#insert-memployeecontactposition').val('');
-  $('#insert-memployeecontactemail').val('');
-  $('#insert-memployeecontactemailphone').val('');
-  $('#insert-memployeearlimit').val('');
-  $('#insert-memployeecoa').val('');
-  $('#insert-memployeearmax').val('');
-  $('#insert-memployeedefaultar').val('');
 
-  $('#edit-idmemployeeid').val('');
-  $('#edit-memployeeid').val('');
-  $('#edit-memployeename').val('');
-  $('#edit-memployeeposition').val('');
-  $('#edit-memployeephone').val('');
-  $('#edit-memployeehomephone').val('');
-  $('#edit-memployeebbmpin').val('');
-  $('#edit-memployeeidcard').val('');
-  $('#edit-memployeecity').val('');
-  $('#edit-memployeezipcode').val('');
-  $('#edit-memployeeprovince').val('');
-  $('#edit-memployeecountry').val('');
-  $('#edit-memployeecontactname').val('');
-  $('#edit-memployeecontactposition').val('');
-  $('#edit-memployeecontactemail').val('');
-  $('#edit-memployeecontactemailphone').val('');
-  $('#edit-memployeearlimit').val('');
-  $('#edit-memployeecoa').val('');
-  $('#edit-memployeearmax').val('');
-  $('#edit-memployeedefaultar').val('');
-  $('#insert-memployeeinfo').val('');
-}
 
 function backmemployee(){
   resetmemployee()

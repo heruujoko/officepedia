@@ -30,7 +30,7 @@ class MCustomerController extends Controller
             $this->iteration++;
             return "<span>".$this->iteration."</span>";
         })->addColumn('akun',function($mcustomer){
-            return $mcustomer->akun()->mcoaname;
+            return $mcustomer->akun();
         })->addColumn('category',function($mcustomer){
             return $mcustomer->categories()->category_name;
         })
@@ -84,7 +84,7 @@ class MCustomerController extends Controller
   public function destroy($id){
     $mbranch = MCUSTOMER::on(Auth::user()->db_name)->where('id',$id)->first();
     $mbranch->void = 1;
-		$mbranch->save();
+	$mbranch->save();
     return response()->json();
   }
 

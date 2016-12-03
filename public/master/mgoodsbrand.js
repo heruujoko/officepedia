@@ -1,6 +1,10 @@
 var API_URL = '/admin-api';
 var WEB_URL = '/admin-nano';
 
+$(document).ready(function(){
+  $('#insert-mgoodsbrandname').focus();
+});
+
 function backmgoodsbrand(){
   $('#formedit').hide();
   $('#formview').hide();
@@ -35,7 +39,7 @@ function insertmgoodsbrand(){
             type: "success",
             timer: 1000
           });
-          resetmbrand();
+         resetmgoodsbrand();
           window.location = "#tableapi";
         },
         error: function(response){
@@ -61,7 +65,7 @@ function viewmgoodsbrand(id){
       $('#forminput').hide();
       $('#formedit').hide();
       $('#formview').show();
-
+      resetmgoodsbrand();
       console.log(response);
     }
 
@@ -80,6 +84,7 @@ function editmgoodsbrand(id){
       $('#forminput').hide();
       $('#formview').hide();
       $('#formedit').show();
+      resetmgoodsbrand();
     }
 
 });
@@ -111,7 +116,7 @@ function updatemgoodsbrand(){
           $('#forminput').show();
           $('#formview').hide();
           $('#formedit').hide();
-          resetmcategory();
+          resetmgoodsbrand();
         },
         error: function(response){
           var err_msg = response.responseJSON.errorInfo[2];

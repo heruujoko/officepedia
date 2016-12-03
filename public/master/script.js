@@ -5,6 +5,11 @@ $('.forminputcoa').hide();
 var API_URL = '/admin-api';
 var WEB_URL = '/admin-nano';
 
+
+$(document).ready(function(){
+$('#insert-mbranchcode').focus();
+});
+
 // MBRANCH SCRIPT
 
 $("#insert-phone").keyup(function(){
@@ -36,7 +41,6 @@ function insertmbranch(){
         url: API_URL+"/cabang",
         data: data,
         success: function(response){
-          console.log(response);
           table.ajax.reload();
           window.location = "#tableapi";
           swal({
@@ -44,6 +48,7 @@ function insertmbranch(){
             type: "success",
             timer: 1000
           });
+          reset();
         },
         error: function(response){
           var err_msg = response.responseJSON.errorInfo[2];
@@ -107,6 +112,7 @@ function editmbranch(id){
       setTimeout(function(){
           $("#mbranchcode").focus();
       },100);
+      $('#mbranchname').focus();
 		},
 
 	});
@@ -240,6 +246,7 @@ $('#edit-wrapper').parsley().validate();
       			type: "success",
       			timer: 1000
       		});
+          resetgrandparent();
         },
         error: function(response){
           var err_msg = response.responseJSON.errorInfo[2];
@@ -272,6 +279,7 @@ $('#edit-wrapper').parsley().validate();
   				type: "error",
   				timer: 1000
   			});
+        resetgrandparent();
       }
     });
     window.location = "#main";
@@ -302,6 +310,7 @@ $('#edit-wrapper').parsley().validate();
           type: "error",
           timer: 1000
         });
+        resetgrandparent();
       }
     });
     window.location = "#main";
@@ -326,6 +335,7 @@ $('#edit-wrapper').parsley().validate();
   			type: "error",
   			timer: 1000
   		});
+      resetgrandparent();
       }
     });
     window.location = "#main";
@@ -356,6 +366,7 @@ $('#edit-wrapper').parsley().validate();
   			  type: "error",
   			  timer: 1000
   		});
+      resetgrandparent();
       }
     });
     window.location = "#main";
@@ -444,7 +455,8 @@ $('#edit-wrapper').parsley().validate();
       			type: "success",
       			timer: 1000
       		});
-
+          resetparent();
+          
         },
         error: function(response){
           var err_msg = response.responseJSON.errorInfo[2];
@@ -506,6 +518,8 @@ $('#edit-wrapper').parsley().validate();
         $('#forminput').hide();
   			$('#formview').hide();
   			$('#formedit').hide();
+          resetparent();
+        
       },
       error: function(response){
         swal({
@@ -530,6 +544,8 @@ $('#edit-wrapper').parsley().validate();
         $('#forminput').hide();
   			$('#formview').hide();
   			$('#formedit').show();
+          resetparent();
+
       },
       error: function(response){
         swal({
@@ -558,6 +574,8 @@ $('#edit-wrapper').parsley().validate();
         $('#forminput').hide();
   			$('#formview').hide();
   			$('#formedit').hide();
+          resetparent();
+
       },
       error: function(response){
         swal({
@@ -595,6 +613,7 @@ $('#edit-wrapper').parsley().validate();
           $('#forminput').hide();
           $('#formview').hide();
           $('#formedit').hide();
+          resetparent();
         },
         error: function(response){
           var err_msg = response.responseJSON.errorInfo[2];
@@ -627,6 +646,7 @@ $('#edit-wrapper').parsley().validate();
   				type: "error",
   				timer: 1000
   			});
+        resetparent();
       }
     });
     window.location = "#main";
@@ -1259,6 +1279,7 @@ function viewmcustomer(id){
       $('#forminput').hide();
       $('#formedit').hide();
       $('#formview').show();
+      resetcustomer1();
     }
 
 });
@@ -1298,6 +1319,8 @@ function editmcustomer(id){
       setTimeout(function(){
           $("#mcustomername").focus();
       },100);
+      console.log(response);
+      resetcustomer1();
     }
 
 });
@@ -1349,7 +1372,7 @@ function updatemcustomer(){
           $('#forminput').show();
           $('#formview').hide();
           $('#formedit').hide();
-          resetcustomer();
+          resetcustomer1();
         },
         error: function(response){
           swal({

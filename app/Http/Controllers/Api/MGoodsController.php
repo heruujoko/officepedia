@@ -59,16 +59,16 @@ class MGoodsController extends Controller
             return "<span>".$MGoods->category()->category_name."</span>";
         })
         ->addColumn('brand',function($MGoods){
-            return "<span>".$MGoods->mark()->category_name."</span>";
+            return "<span>".$MGoods->mark()."</span>";
         })
         ->addColumn('type',function($MGoods){
-            return "<span>".$MGoods->types()->mgoodstypename."</span>";
+            return "<span>".$MGoods->types()."</span>";
         })
         ->addColumn('subtype',function($MGoods){
-            return "<span>".$MGoods->subtypes()->mgoodssubtypename."</span>";
+            return "<span>".$MGoods->subtypes()."</span>";
         })
         ->addColumn('supplier',function($MGoods){
-            return "<span>".$MGoods->supplier()->msuppliername."</span>";
+            return "<span>".$MGoods->supplier()."</span>";
         })
         ->addColumn('pricein',function($MGoods){
           $decimals = $this->round;

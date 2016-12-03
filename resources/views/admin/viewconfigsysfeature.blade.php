@@ -139,15 +139,15 @@
                               
                              
                               <div class="form-group">
-                                <label class="col-md-3 control-label"><b>Foot Note Invoice</b> (<font color="red">*</font>) &nbsp  :</label>
+                                <label class="col-md-3 control-label"><b>Footnote Invoice</b> (<font color="red">*</font>) &nbsp  :</label>
                           			<div class="col-md-7">
-																	<textarea rows="6" id="edit-msysinvinvfootnote" class="form-control forminput" placeholder="Foot Note Invoice" data-parsley-required-message="Field Ini Tidak Boleh Kosong" required></textarea>
+																	<textarea rows="6" id="edit-msysinvinvfootnote" class="form-control forminput" placeholder="Footnote Invoice" data-parsley-required-message="Field Ini Tidak Boleh Kosong" required></textarea>
                           			</div>
                               </div>
                               <div class="form-group">
-                                <label class="col-md-3 control-label"><b>Foot Note Penjualan</b> (<font color="red">*</font>) &nbsp  :</label>
+                                <label class="col-md-3 control-label"><b>Footnote Penjualan</b> (<font color="red">*</font>) &nbsp  :</label>
                           			<div class="col-md-7">
-																	<textarea rows="6" id="edit-msysinvsellingfootnote" class="form-control forminput" placeholder="Foot Note Invoice" data-parsley-required-message="Field Ini Tidak Boleh Kosong" required></textarea>
+																	<textarea rows="6" id="edit-msysinvsellingfootnote" class="form-control forminput" placeholder="Footnote Penjualan" data-parsley-required-message="Field Ini Tidak Boleh Kosong" required></textarea>
                           			</div>
                               </div>
                                <div style="height: 21px;" class="form-group">
