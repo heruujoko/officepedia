@@ -14,6 +14,8 @@ class ConfigSeeder extends Seeder
     {
         MConfig::create([
           'msyscompname' => 'Sample Company',
+          'msysgenrounddec' => 2,
+          'msysnumseparator' => ',',
           'msysprefixgoods' => 'BRG',
           'msysprefixgoodscount' => 0,
           'msysprefixgoodslastcount' => '00000000000',

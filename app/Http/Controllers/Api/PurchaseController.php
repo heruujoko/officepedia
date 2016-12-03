@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use App\MHPurchase;
+use App\MDPurchase;
 use App\MConfig;
 use Auth;
 use Datatables;
@@ -78,6 +79,27 @@ class PurchaseController extends Controller
 
     public function store(Request $request){
         $transaction = MHPurchase::start_transaction($request);
+        if($transaction == "ok"){
+            return response()->json($transaction);
+        } else if($transaction == "empty") {
+            return response()->json($transaction,400);
+        } else {
+            return response()->json($transaction,500);
+        }
+    }
+
+    public function show($id){
+        $purchase = MHPurchase::on(Auth::user()->db_name)->where('id',$id)->first();
+        return response()->json($purchase);
+    }
+
+    public function details($inv){
+        $details = MDPurchase::on(Auth::user()->db_name)->where('mhpurchaseno',$inv)->get();
+        return response()->json($details);
+    }
+
+    public function update($id,Request $request){
+        $transaction = MHPurchase::update_transaction($id,$request);
         if($transaction == "ok"){
             return response()->json($transaction);
         } else if($transaction == "empty") {

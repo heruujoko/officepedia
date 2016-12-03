@@ -94,3 +94,6 @@ const purchaseapp = new Vue({
       console.log('purchase app ready');
     }
 })
+
+//add vue to globals
+window.purchaseapp = purchaseapp;

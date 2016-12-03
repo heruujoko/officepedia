@@ -294,7 +294,7 @@
             barang_label: "Pilih Barang",
             transaksi_label: "Pilih Tipe Transaksi",
             supplier_label: "Pilih Suppplier",
-            invoice_supplier:"",
+            invoice_supplier:{},
             selected_supplier: {},
             invoice_goods:[],
             invoice_type:"Pembelian",
@@ -338,6 +338,7 @@
       },
     watch:{
         invoice_supplier(){
+            console.log('change supplier');
             this.selected_supplier = _.find(this.suppliers,  {id: parseInt(this.invoice_supplier)});
             console.log(this.selected_supplier.msupplierdefaultar);
             this.invoice_due_date = moment(this.invoice_date).add(this.selected_supplier.msupplierdefaultar,'day').format('L');
@@ -433,7 +434,14 @@
           if(isNaN(this.rp)){
             this.rp = 0;
           }
+          this.unit = 1;
+          console.log("detail_price "+this.detail_goods.mgoodspriceout);
           this.detail_total = (this.detail_goods.mgoodspriceout * parseInt(this.detail_qty) * parseInt(this.unit)) - parseInt(this.rp);
+          console.log("detail_total "+this.detail_total);
+          console.log("detail_price "+this.detail_goods.mgoodspriceout);
+          console.log("detail_unit "+this.unit);
+          console.log("detail_rp "+this.rp);
+          console.log("detail_qty "+this.detail_qty);
         },
         countRp(){
           this.rp = (parseInt(this.percentage) / 100) * this.detail_total;
@@ -602,8 +610,11 @@
           this.rp = current.disc;
           this.unit = current.saved_unit+"";
           this.detail_qty = parseInt(current.usage) / parseInt(current.saved_unit);
+          console.log('1');
+          console.log(this.detail_goods.mgoodspriceout);
           this.countDetailTotal();
           this.countPercent();
+          console.log('2');
           this.countDetailTotal();
           this.$nextTick(function(){
             if(this.mode == 'edit'){
@@ -774,14 +785,137 @@
           this.invoice_subtotal =0;
           this.invoice_tax =0;
           this.detail_goods = {};
+      },
+      fetchInvoiceData(id){
+          let self = this;
+          this.resetDetail();
+          this.resetInvoice();
+          Axios.get('/admin-api/purchaseinvoice/'+id)
+          .then((res) => {
+            let data = res.data;
+            this.invoice_date = moment(data.mhpurchasedate).format('L');
+            //find suppliers
+            let spl = _.find(this.suppliers, { msupplierid: data.mhpurchasesupplierid});
+            self.invoice_supplier = spl.id+"";
+            this.fetchDetailData(data.mhpurchaseno);
+          });
+      },
+      fetchDetailData(inv){
+        Axios.get('/admin-api/purchaseinvoice/details/'+inv)
+        .then((res) => {
+            console.log(res.data);
+          for(var i=0;i<res.data.length;i++){
+            var item = {
+              id: _.find(this.goods,{ mgoodscode: res.data[i].mdpurchasegoodsid}).id,
+              subtotal: 0,
+              disc: res.data[i].mdpurchasegoodsdiscount,
+              goods: _.find(this.goods,{ mgoodscode: res.data[i].mdpurchasegoodsid}),
+            //   tax: res.data[i].mdpurchasegoodstax,
+                tax: 0,
+              warehouse: 0,
+              saved_unit: res.data[i].saved_unit+""
+            };
+
+            // converted units
+            item.detail_goods_unit3 = res.data[i].mdpurchasegoodsunit3;
+            item.detail_goods_unit3_conv = res.data[i].mdpurchasegoodsunit3conv;
+            item.detail_goods_unit3_label = res.data[i].mdpurchasegoodsunit3label;
+            item.detail_goods_unit2 = res.data[i].mdpurchasegoodsunit2;
+            item.detail_goods_unit2_conv = res.data[i].mdpurchasegoodsunit2conv;
+            item.detail_goods_unit2_label = res.data[i].mdpurchasegoodsunit2label;
+            item.detail_goods_unit1 = res.data[i].mdpurchasegoodsunit1;
+            item.detail_goods_unit1_conv = res.data[i].mdpurchasegoodsunit1conv;
+            item.detail_goods_unit1_label = res.data[i].mdpurchasegoodsunit1label;
+
+            item.usage = res.data[i].mdpurchasegoodsqty;
+            item.goods.mgoodsname = res.data[i].mdpurchasegoodsname;
+            item.goods.mgoodscode = res.data[i].mdpurchasegoodsid;
+            item.goods.mgoodspriceout = this.goodsPrice(res.data[i].mdpurchasegoodsid);
+            item.subtotal = parseInt(item.goods.mgoodspriceout) * parseInt(item.usage);
+            this.invoice_goods.push(item);
+            this.invoice_subtotal += item.subtotal;
+            this.invoice_disc += item.disc;
+            this.invoice_tax += item.tax;
+          }
+        });
+      },
+      goodsPrice(code){
+        console.log(code);
+        let g = _.find(this.goods,{ mgoodscode: code});
+        return parseInt(g.mgoodspriceout);
+      },
+      updateInvoice(){
+        if(this.mode == 'edit'){
+            $('#edit_loading_modal').modal('toggle');
+        } else {
+            $('#insert_loading_modal').modal('toggle');
         }
+        let invoice_data = {
+          date: this.invoice_date,
+          subtotal: this.invoice_subtotal,
+          discount: this.invoice_disc,
+          tax: this.invoice_tax,
+          goods: this.invoice_goods,
+          msupplierid: this.selected_supplier.msupplierid,
+          msuppliername: this.selected_supplier.msuppliername,
+          type: this.invoice_type
+        }
+        console.log(invoice_data);
+        Axios.put('/admin-api/purchaseinvoice/'+this.editinvoiceid,invoice_data)
+        .then((res) => {
+          if(this.mode == 'edit'){
+              $('#edit_loading_modal').modal('toggle');
+          } else {
+              $('#insert_loading_modal').modal('toggle');
+          }
+          swal({
+            title: "Input Berhasil!",
+            type: "success",
+            timer: 1000
+          });
+          this.resetInvoice();
+          $('.tableapi').DataTable().ajax.reload();
+          window.location.href="#formtable";
+        })
+        .catch((err) => {
+          if(this.mode == 'edit'){
+              $('#edit_loading_modal').modal('toggle');
+          } else {
+              $('#insert_loading_modal').modal('toggle');
+          }
+          var status_message ="";
+          if(err.response.status == 500){
+            status_message = "Transaksi gagal, periksa kembali input";
+          } else {
+            status_message = "Stok tidak bisa minus";
+          }
+          swal({
+            title: "Oops!",
+            text: status_message,
+            type: "error",
+            timer: 1000
+          });
+        });
+      }
     },
     created(){
+        this.fetchGoods();
         this.fetchConfig();
         this.fetchSuppliers();
         this.fetchTax();
         this.fetchWareHouses();
-        this.fetchGoods();
+        if(this.mode == "edit"){
+          this.$parent.$on('edit-selected',(id) => {
+            this.editinvoiceid = id;
+            this.fetchInvoiceData(id);
+          });
+        }
+        if(this.mode == "view"){
+          this.$parent.$on('edit-selected',(id) => {
+            this.editinvoiceid = id;
+            this.fetchInvoiceData(id);
+          });
+        }
     }
 }
 

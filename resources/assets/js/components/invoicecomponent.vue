@@ -537,6 +537,7 @@
         if(isNaN(this.rp)){
           this.rp = 0;
         }
+        this.unit = 1;
         this.detail_total = (this.detail_goods.mgoodspriceout * parseInt(this.detail_qty) * parseInt(this.unit)) - parseInt(this.rp);
       },
       countRp(){

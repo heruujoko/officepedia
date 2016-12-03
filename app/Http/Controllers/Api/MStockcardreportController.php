@@ -68,16 +68,19 @@ class MStockcardreportController extends Controller
                 $verbs .= " ".$details->mdinvoiceunit1." ".$details->mdinvoiceunit1label;
             }
         } else {
-            $details = MDPurchase::on(Auth::user()->db_name)->where('mhpurchaseno',$d->mstockcardtransno)->where('mdpurchasegoodsid',$d->mstockcardgoodsid)->first();
+            // $details = MDPurchase::on(Auth::user()->db_name)->where('mhpurchaseno',$d->mstockcardtransno)->where('mdpurchasegoodsid',$d->mstockcardgoodsid)->first();
             $verbs = "";
-            if($details->mdpurchasegoodsunit3 != 0){
-                $verbs .= $details->mdpurchasegoodsunit3." ".$details->mdpurchasegoodsunit3label;
+            if($d->mstockcardunit3 != 0){
+                $verbs .= $d->mstockcardunit3." ".$d->mstockcardunit3label;
             }
-            if($details->mdpurchasegoodsunit2 != 0){
-                $verbs .= " ".$details->mdpurchasegoodsunit2." ".$details->mdpurchasegoodsunit2label;
+            if($d->mstockcardunit2 != 0){
+                $verbs .= " ".$d->mstockcardunit2." ".$d->mstockcardunit2label;
             }
-            if($details->mdpurchasegoodsunit1 != 0){
-                $verbs .= " ".$details->mdpurchasegoodsunit1." ".$details->mdpurchasegoodsunit1label;
+            if($d->mstockcardunit1 != 0){
+                $verbs .= " ".$d->mstockcardunit1." ".$d->mstockcardunit1label;
+            }
+            if($d->mstockcardunit3 == 0 && $d->mstockcardunit2 == 0 && $d->mstockcardunit1 == 0){
+                $verbs = "-";
             }
         }
         $d['verbs'] = $verbs;

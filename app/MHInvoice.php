@@ -213,7 +213,7 @@ class MHInvoice extends Model
           $invoice_detail = MDInvoice::on(Auth::user()->db_name)->where('mdinvoicegoodsid',$g['goods']['mgoodscode'])->where('mhinvoiceno',$header->mhinvoiceno)->first();
           $mgoods = MGoods::on(Auth::user()->db_name)->where('mgoodscode',$g['goods']['mgoodscode'])->first();
 
-          $last_stock = MStockCard::on(Auth::user()->db_name)->where('mstockcardtransno',$invoice_detail->mhinvoiceno)->where('mstockcardgoodsid',$mgoods->mgoodscode)->get()->first();
+          $last_stock = MStockCard::on(Auth::user()->db_name)->where('mstockcardtransno',$invoice_detail->mhinvoiceno)->where('mstockcardgoodsid',$mgoods->mgoodscode)->get()->last();
           $old_qty = $invoice_detail->mdinvoicegoodsqty;
 
           $invoice_detail->mhinvoiceno = $header->mhinvoiceno;
@@ -293,25 +293,6 @@ class MHInvoice extends Model
             $mgoods->mgoodsstock = $stock_card->mstockcardstocktotal  - $g['usage'];
             $mgoods->save();
 
-            // update AR
-            $ar = new MARCard;
-            $ar->setConnection(Auth::user()->db_name);
-            $ar->marcardcustomerid = $customer->mcustomerid;
-            $ar->marcardcustomername = $customer->mcustomername;
-            $ar->marcarddate = Carbon::now();
-            $ar->marcardtranstype = $request->type;
-            $ar->marcardtransno = $header->mhinvoiceno;
-            $ar->marcardremark = "Edit Transaksi ".$request->type." untuk ".$customer->mcustomername;
-            $ar->marcardduedate = Carbon::now()->addDays($customer->mcustomerdefaultar);
-            $ar->marcardtotalinv = $request->subtotal + $request->tax - $request->disc;
-            $ar->marcardpayamount = 0;
-            $ar->marcardoutstanding = $request->subtotal + $request->tax - $request->disc;
-            $ar->marcarduserid = Auth::user()->id;
-            $ar->marcardusername = Auth::user()->name;
-            $ar->marcardusereventdate = Carbon::now();
-            $ar->marcardusereventtime = Carbon::now();
-            $ar->save();
-
             //check allow minus
             if($allow_minus == 0 && ($mgoods->mgoodsstock < 0)){
               DB::connection(Auth::user()->db_name)->rollBack();
@@ -324,6 +305,24 @@ class MHInvoice extends Model
             $invoice_detail->void=0;
             $invoice_detail->save();
         }
+
+        // update AR
+        $ar = MARCard::on(Auth::user()->db_name)->where('marcardcustomerid',$header->mhinvoicecustomerid)->where('marcardtransno',$header->mhinvoiceno)->first();
+        $ar->marcardcustomerid = $customer->mcustomerid;
+        $ar->marcardcustomername = $customer->mcustomername;
+        $ar->marcarddate = Carbon::now();
+        $ar->marcardtranstype = $request->type;
+        $ar->marcardtransno = $header->mhinvoiceno;
+        $ar->marcardremark = "Edit Transaksi ".$request->type." untuk ".$customer->mcustomername;
+        $ar->marcardduedate = Carbon::now()->addDays($customer->mcustomerdefaultar);
+        $ar->marcardtotalinv = $request->subtotal + $request->tax - $request->disc;
+        $ar->marcardpayamount = 0;
+        $ar->marcardoutstanding = $request->subtotal + $request->tax - $request->disc;
+        $ar->marcarduserid = Auth::user()->id;
+        $ar->marcardusername = Auth::user()->name;
+        $ar->marcardusereventdate = Carbon::now();
+        $ar->marcardusereventtime = Carbon::now();
+        $ar->save();
 
           //voided details
           $voided_details = MDInvoice::on(Auth::user()->db_name)->where('mhinvoiceno',$invoice_header->mhinvoiceno)->where('void',1)->get();
@@ -340,7 +339,7 @@ class MHInvoice extends Model
             $stock_card->mstockcardremark = "Editing Transaksi Hapus item".$request->type." untuk ".$customer->mcustomername;
             $stock_card->mstockcardstockin = $v->mdinvoicegoodsqty;
             $stock_card->mstockcardstockout = 0;
-            $stock_card->mstockcardstocktotal = $mgoods->mgoodsstock - $g['usage'];
+            $stock_card->mstockcardstocktotal = $mgoods->mgoodsstock + $v->mdinvoicegoodsqty;
             $stock_card->mstockcardwhouse = $g['warehouse'];
             $stock_card->mstockcarduserid = Auth::user()->id;
             $stock_card->mstockcardusername = Auth::user()->name;
