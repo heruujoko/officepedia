@@ -125,7 +125,8 @@ class MGoodsController extends Controller
         $MGoods->mgoodsmultiunit = $this->convertBoolean($request->mgoodsmultiunit);
         $MGoods->mgoodssetmaxdisc = $this->convertBoolean($request->mgoodssetmaxdisc);
         $MGoods->mgoodstaxable = $this->convertBoolean($request->mgoodstaxable);
-				$MGoods->save();
+        $MGoods->mgoodssuppliercode = $request->mgoodssuppliercode;
+		$MGoods->save();
         $MGoods->mgoodssuppliername = $MGoods->supplier()->msuppliername;
         $MGoods->save();
         if($request->autogen == "true"){

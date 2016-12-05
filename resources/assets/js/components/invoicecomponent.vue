@@ -150,7 +150,7 @@
                     <label class="control-label col-md-2">Kuantitas</label>
                     <div class="col-md-8">
                       <div class="input-group">
-                        <input autofocus class="form-control forminput" v-bind:placeholder="detail_goods_unit3_label" type="text" v-model="detail_goods_unit3">
+                        <input v-bind:id="conv_3_id" class="form-control forminput" v-bind:placeholder="detail_goods_unit3_label" type="text" v-model="detail_goods_unit3">
                         <span class="input-group-addon" id="sizing-addon2" style="font-size:11px;">{{ detail_goods_unit3_label }}</span>
                       </div>
                     </div>
@@ -160,7 +160,7 @@
                     <div class="col-md-2" v-if="detail_goods_unit3_conv != 0"></div>
                     <div class="col-md-8">
                       <div class="input-group">
-                        <input class="form-control forminput" v-bind:placeholder="detail_goods_unit2_label" type="text" v-model="detail_goods_unit2">
+                        <input v-bind:id="conv_2_id" class="form-control forminput" v-bind:placeholder="detail_goods_unit2_label" type="text" v-model="detail_goods_unit2">
                         <span class="input-group-addon" id="sizing-addon2" style="font-size:11px;">{{ detail_goods_unit2_label }}</span>
                       </div>
                     </div>
@@ -168,7 +168,7 @@
                   <div class="form-group">
                     <div class="col-md-8 col-md-offset-2">
                       <div class="input-group">
-                        <input class="form-control forminput" v-bind:placeholder="detail_goods_unit1_label" type="text" v-model="detail_goods_unit1">
+                        <input v-bind:id="conv_1_id" class="form-control forminput" v-bind:placeholder="detail_goods_unit1_label" type="text" v-model="detail_goods_unit1">
                         <span class="input-group-addon" id="sizing-addon2" style="font-size:11px;">{{ detail_goods_unit1_label }}</span>
                       </div>
                     </div>
@@ -334,7 +334,16 @@
       },
       notview(){
         return this.mode != "view";
-      }
+    },
+    conv_3_id(){
+        return this.mode+"_conv3";
+    },
+    conv_2_id(){
+        return this.mode+"_conv2";
+    },
+    conv_1_id(){
+        return this.mode+"_conv1";
+    },
     },
     methods: {
       fetchTax(){
@@ -476,6 +485,17 @@
           this.detail_goods_unit2_label = res.data.mgoodsunit2;
           this.detail_goods_unit1_conv = 1;
           this.detail_goods_unit1_label = res.data.mgoodsunit;
+
+          // autofocus mode
+          if(this.detail_goods_unit3_conv != 0){
+              setTimeout(function () { $('#'+self.conv_3_id).focus(); }, 1);
+          }
+          if(this.detail_goods_unit2_conv != 0 && this.detail_goods_unit3_conv == 0){
+              setTimeout(function () { $('#'+self.conv_2_id).focus(); }, 1);
+          }
+          if(this.detail_goods_unit1_conv != 0 && this.detail_goods_unit2_conv == 0){
+              setTimeout(function () { $('#'+self.conv_1_id).focus(); }, 1);
+          }
 
           if(this.mode == 'edit'){
             $('#edit_detail_rp').on('keyup',function(){
@@ -732,6 +752,17 @@
         this.detail_goods_unit1 = current.detail_goods_unit1;
         this.detail_goods_unit1_conv = current.detail_goods_unit1_conv;
         this.detail_goods_unit1_label = current.detail_goods_unit1_label;
+
+        // autofocus mode
+        if(this.detail_goods_unit3_conv != 0){
+            setTimeout(function () { $('#'+self.conv_3_id).focus(); }, 1);
+        }
+        if(this.detail_goods_unit2_conv != 0 && this.detail_goods_unit3_conv == 0){
+            setTimeout(function () { $('#'+self.conv_2_id).focus(); }, 1);
+        }
+        if(this.detail_goods_unit1_conv != 0 && this.detail_goods_unit2_conv == 0){
+            setTimeout(function () { $('#'+self.conv_1_id).focus(); }, 1);
+        }
 
         this.rp = current.disc;
         this.unit = current.saved_unit+"";

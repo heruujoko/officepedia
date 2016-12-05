@@ -1921,11 +1921,11 @@ class ReportController extends Controller
          */
         $config = MConfig::on(Auth::user()->db_name)->where('id',1)->first();
         $data['decimals'] = $config->msysgenrounddec;
-        $data['dec_point'] = $config->msysnumseparator;
-        if($data['dec_point'] == ","){
-          $data['thousands_sep'] = ".";
+        $data['thousands_sep'] = $config->msysnumseparator;
+        if($data['thousands_sep'] == ","){
+          $data['dec_point'] = ".";
         } else {
-          $data['thousands_sep'] = ",";
+          $data['dec_point'] = ",";
         }
 
         $header_query = MARCard::on(Auth::user()->db_name);
@@ -1993,11 +1993,11 @@ class ReportController extends Controller
          */
         $config = MConfig::on(Auth::user()->db_name)->where('id',1)->first();
         $data['decimals'] = $config->msysgenrounddec;
-        $data['dec_point'] = $config->msysnumseparator;
-        if($data['dec_point'] == ","){
-          $data['thousands_sep'] = ".";
+        $data['thousands_sep'] = $config->msysnumseparator;
+        if($data['thousands_sep'] == ","){
+          $data['dec_point'] = ".";
         } else {
-          $data['thousands_sep'] = ",";
+          $data['dec_point'] = ",";
         }
 
         $header_query = MARCard::on(Auth::user()->db_name);
@@ -2067,11 +2067,11 @@ class ReportController extends Controller
          $this->count = 0;
          $config = MConfig::on(Auth::user()->db_name)->where('id',1)->first();
          $this->data['decimals'] = $config->msysgenrounddec;
-         $this->data['dec_point'] = $config->msysnumseparator;
-         if($this->data['dec_point'] == ","){
-           $this->data['thousands_sep'] = ".";
+         $this->data['thousands_sep'] = $config->msysnumseparator;
+         if($this->data['thousands_sep'] == ","){
+           $this->data['dec_point'] = ".";
          } else {
-           $this->data['thousands_sep'] = ",";
+           $this->data['dec_point'] = ",";
          }
          $this->data['company'] = $config->msyscompname;
          $this->data['start'] = Carbon::parse($request->start)->formatLocalized('%d %B %Y');
@@ -2230,11 +2230,11 @@ class ReportController extends Controller
          $this->count = 0;
          $config = MConfig::on(Auth::user()->db_name)->where('id',1)->first();
          $this->data['decimals'] = $config->msysgenrounddec;
-         $this->data['dec_point'] = $config->msysnumseparator;
-         if($this->data['dec_point'] == ","){
-           $this->data['thousands_sep'] = ".";
+         $this->data['thousands_sep'] = $config->msysnumseparator;
+         if($this->data['thousands_sep'] == ","){
+           $this->data['dec_point'] = ".";
          } else {
-           $this->data['thousands_sep'] = ",";
+           $this->data['dec_point'] = ",";
          }
          $this->data['company'] = $config->msyscompname;
          $this->data['start'] = Carbon::parse($request->start)->formatLocalized('%d %B %Y');

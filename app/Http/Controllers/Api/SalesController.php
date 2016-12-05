@@ -39,7 +39,7 @@ class SalesController extends Controller
             $headers = array_unique($headers);
             // $sales = $header_query->whereIn('mhinvoiceno',$headers)->get();
             $sales = $header_query->whereIn('mhinvoiceno',$headers)->groupBy('mhinvoicedate')
-            ->selectRaw('*,sum(mhinvoicesubtotal) as mhinvoicesubtotal_sum,sum(mhinvoicediscounttotal) as mhinvoicediscounttotal_sum,sum(mhinvoicetaxtotal) as mhinvoicetaxtotal_sum,sum(mhinvoicegrandtotal) as mhinvoicegrandtotal_sum')
+            ->selectRaw('*,sum(mhinvoicesubtotal) as mhinvoicesubtotal_sum,sum(mhinvoicediscounttotal) as mhinvoicediscounttotal_sum,sum(mhinvoicetaxtotal) as mhinvoicetaxtotal_sum,sum(mhinvoicegrandtotal) as mhinvoicegrandtotal_sum,count(mhinvoiceno) as numoftrans')
             ->get();
             foreach($sales as $s){
 
@@ -56,7 +56,7 @@ class SalesController extends Controller
             $headers = array_unique($headers);
             // $sales = $header_query->whereIn('mhinvoiceno',$headers)->get();
             $sales = $header_query->whereIn('mhinvoiceno',$headers)->groupBy('mhinvoicedate')
-            ->selectRaw('*,sum(mhinvoicesubtotal) as mhinvoicesubtotal_sum,sum(mhinvoicediscounttotal) as mhinvoicediscounttotal_sum,sum(mhinvoicetaxtotal) as mhinvoicetaxtotal_sum,sum(mhinvoicegrandtotal) as mhinvoicegrandtotal_sum')
+            ->selectRaw('*,sum(mhinvoicesubtotal) as mhinvoicesubtotal_sum,sum(mhinvoicediscounttotal) as mhinvoicediscounttotal_sum,sum(mhinvoicetaxtotal) as mhinvoicetaxtotal_sum,sum(mhinvoicegrandtotal) as mhinvoicegrandtotal_sum,count(mhinvoiceno) as numoftrans')
             ->get();
             foreach($sales as $s){
 
@@ -72,7 +72,7 @@ class SalesController extends Controller
             $headers = array_unique($headers);
             // $sales = $header_query->whereIn('mhinvoiceno',$headers)->get();
             $sales = $header_query->whereIn('mhinvoiceno',$headers)->groupBy('mhinvoicedate')
-            ->selectRaw('*,sum(mhinvoicesubtotal) as mhinvoicesubtotal_sum,sum(mhinvoicediscounttotal) as mhinvoicediscounttotal_sum,sum(mhinvoicetaxtotal) as mhinvoicetaxtotal_sum,sum(mhinvoicegrandtotal) as mhinvoicegrandtotal_sum')
+            ->selectRaw('*,sum(mhinvoicesubtotal) as mhinvoicesubtotal_sum,sum(mhinvoicediscounttotal) as mhinvoicediscounttotal_sum,sum(mhinvoicetaxtotal) as mhinvoicetaxtotal_sum,sum(mhinvoicegrandtotal) as mhinvoicegrandtotal_sum,count(mhinvoiceno) as numoftrans')
             ->get();
             foreach($sales as $s){
 
@@ -82,7 +82,7 @@ class SalesController extends Controller
             }
         } else {
             $sales = $header_query->groupBy('mhinvoicedate')
-            ->selectRaw('*,sum(mhinvoicesubtotal) as mhinvoicesubtotal_sum,sum(mhinvoicediscounttotal) as mhinvoicediscounttotal_sum,sum(mhinvoicetaxtotal) as mhinvoicetaxtotal_sum,sum(mhinvoicegrandtotal) as mhinvoicegrandtotal_sum')
+            ->selectRaw('*,sum(mhinvoicesubtotal) as mhinvoicesubtotal_sum,sum(mhinvoicediscounttotal) as mhinvoicediscounttotal_sum,sum(mhinvoicetaxtotal) as mhinvoicetaxtotal_sum,sum(mhinvoicegrandtotal) as mhinvoicegrandtotal_sum,count(mhinvoiceno) as numoftrans')
             ->get();
 
             foreach($sales as $s){
@@ -243,13 +243,13 @@ class SalesController extends Controller
          */
         $config = MConfig::on(Auth::user()->db_name)->where('id',1)->first();
         $data['decimals'] = $config->msysgenrounddec;
-        $data['dec_point'] = $config->msysnumseparator;
-        if($data['dec_point'] == ","){
-          $data['thousands_sep'] = ".";
+        $data['thousands_sep'] = $config->msysnumseparator;
+        if($data['thousands_sep'] == ","){
+          $data['dec_point'] = ".";
         } else {
-          $data['thousands_sep'] = ",";
+          $data['dec_point'] = ",";
         }
-
+        
         $header_query = MARCard::on(Auth::user()->db_name);
         if($request->has('cust')){
             $header_query->where('marcardcustomerid',$request->cust);

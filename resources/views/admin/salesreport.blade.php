@@ -136,7 +136,7 @@
                                                         <tbody>
                                                             <tr v-for="sale in sales">
                                                                 <td>@{{ sale.mhinvoicedate }}</td>
-                                                                <td>@{{ sale.detail_count }}</td>
+                                                                <td>@{{ sale.numoftrans }}</td>
                                                                 <td style="text-align:right" v-priceformatlabel="num_format" >@{{ sale.mhinvoicesubtotal_sum }}</td>
                                                                 <td style="text-align:right" v-priceformatlabel="num_format">0</td>
                                                                 <td style="text-align:right" v-priceformatlabel="num_format" >@{{ sale.mhinvoicediscounttotal_sum }}</td>

@@ -48,7 +48,6 @@ class MStockcardreportController extends Controller
     //     $join->on('mdinvoice.mhinvoiceno','=','mstockcard.mstockcardtransno');
     //     $join->on('mdinvoice.mdinvoicegoodsid','=','mstockcard.mstockcardgoodsid');
     // });
-
     $data = $query->get();
 
     foreach($data as $d){

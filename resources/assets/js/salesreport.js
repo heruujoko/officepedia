@@ -97,7 +97,7 @@ const stockreport = new Vue({
         },
         invoice_count_total(){
             return _.sumBy(this.sales, (iv) => {
-                return iv.detail_count;
+                return iv.numoftrans;
             })
         },
         sales_total(){

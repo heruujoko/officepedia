@@ -8,6 +8,7 @@
             <label class="col-md-2 control-label">Supplier</label>
             <div class="col-md-8">
               <select v-bind:disabled="!notview" v-selecttwo="supplier_label" v-model="invoice_supplier">
+                <option></option>
                 <option v-for="sp in suppliers" :value="sp.id">{{ sp.msuppliername }}</option>
               </select>
             </div>
@@ -56,6 +57,7 @@
           <div class="row">
             <div class="col-md-6">
               <select v-bind:disabled="!notview" class="form-control" id="insert-selectgoods" v-selecttwo="barang_label" v-model="selected_goods">
+                  <option></option>
                 <option v-for="g in goods" :value="g.id">{{ g.mgoodscode }} {{ g.mgoodsname }}</option>
               </select>
             </div>
@@ -150,7 +152,7 @@
                     <label class="control-label col-md-2">Kuantitas</label>
                     <div class="col-md-8">
                       <div class="input-group">
-                        <input autofocus class="form-control forminput" v-bind:placeholder="detail_goods_unit3_label" type="text" v-model="detail_goods_unit3">
+                        <input v-bind:id="conv_3_id" class="form-control forminput" v-bind:placeholder="detail_goods_unit3_label" type="text" v-model="detail_goods_unit3">
                         <span class="input-group-addon" id="sizing-addon2" style="font-size:11px;">{{ detail_goods_unit3_label }}</span>
                       </div>
                     </div>
@@ -160,7 +162,7 @@
                     <div class="col-md-2" v-if="detail_goods_unit3_conv != 0"></div>
                     <div class="col-md-8">
                       <div class="input-group">
-                        <input class="form-control forminput" v-bind:placeholder="detail_goods_unit2_label" type="text" v-model="detail_goods_unit2">
+                        <input v-bind:id="conv_2_id" class="form-control forminput" v-bind:placeholder="detail_goods_unit2_label" type="text" v-model="detail_goods_unit2">
                         <span class="input-group-addon" id="sizing-addon2" style="font-size:11px;">{{ detail_goods_unit2_label }}</span>
                       </div>
                     </div>
@@ -168,7 +170,7 @@
                   <div class="form-group">
                     <div class="col-md-8 col-md-offset-2">
                       <div class="input-group">
-                        <input class="form-control forminput" v-bind:placeholder="detail_goods_unit1_label" type="text" v-model="detail_goods_unit1">
+                        <input v-bind:id="conv_1_id" class="form-control forminput" v-bind:placeholder="detail_goods_unit1_label" type="text" v-model="detail_goods_unit1">
                         <span class="input-group-addon" id="sizing-addon2" style="font-size:11px;">{{ detail_goods_unit1_label }}</span>
                       </div>
                     </div>
@@ -322,6 +324,15 @@
           },
           modal_id(){
             return this.mode+"_detail_modal";
+          },
+          conv_3_id(){
+              return this.mode+"_conv3";
+          },
+          conv_2_id(){
+              return this.mode+"_conv2";
+          },
+          conv_1_id(){
+              return this.mode+"_conv1";
           },
           rp_id(){
             return this.mode+"_detail_rp";
@@ -478,6 +489,17 @@
             this.detail_goods_unit1_conv = 1;
             this.detail_goods_unit1_label = res.data.mgoodsunit;
 
+            // autofocus mode
+            if(this.detail_goods_unit3_conv != 0){
+                setTimeout(function () { $('#'+self.conv_3_id).focus(); }, 1);
+            }
+            if(this.detail_goods_unit2_conv != 0 && this.detail_goods_unit3_conv == 0){
+                setTimeout(function () { $('#'+self.conv_2_id).focus(); }, 1);
+            }
+            if(this.detail_goods_unit1_conv != 0 && this.detail_goods_unit2_conv == 0){
+                setTimeout(function () { $('#'+self.conv_1_id).focus(); }, 1);
+            }
+
             if(this.mode == 'edit'){
               $('#edit_detail_rp').on('keyup',function(){
                   self.countPercent();
@@ -606,6 +628,17 @@
           this.detail_goods_unit1 = current.detail_goods_unit1;
           this.detail_goods_unit1_conv = current.detail_goods_unit1_conv;
           this.detail_goods_unit1_label = current.detail_goods_unit1_label;
+
+          // autofocus mode
+          if(this.detail_goods_unit3_conv != 0){
+              setTimeout(function () { $('#'+self.conv_3_id).focus(); }, 1);
+          }
+          if(this.detail_goods_unit2_conv != 0 && this.detail_goods_unit3_conv == 0){
+              setTimeout(function () { $('#'+self.conv_2_id).focus(); }, 1);
+          }
+          if(this.detail_goods_unit1_conv != 0 && this.detail_goods_unit2_conv == 0){
+              setTimeout(function () { $('#'+self.conv_1_id).focus(); }, 1);
+          }
 
           this.rp = current.disc;
           this.unit = current.saved_unit+"";

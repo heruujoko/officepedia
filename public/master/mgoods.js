@@ -35,7 +35,7 @@ $(document).ready(function(){
       else{
         $('#insert-mgoodstaxable').attr('checked',false);
       }
-      
+
     }
 
 });
@@ -133,6 +133,7 @@ function insertmgoods(){
           window.location = "#tableapi";
         },
         error: function(response){
+            console.log(response);
           var err_msg = response.responseJSON.errorInfo[2];
           swal({
             title: "Input Gagal!",
@@ -651,9 +652,9 @@ function resetmgoods(){
         $('#insert-mgoodsname').val(''),
         $('#insert-mgoodsalias').val(''),
         $('#insert-mgoodsremark').val(''),
-        $('#insert-mgoodsunit').val(''),
-        $('#insert-mgoodsunit2').val(''),
-        $('#insert-mgoodsunit3').val(''),
+        // $('#insert-mgoodsunit').val(''),
+        // $('#insert-mgoodsunit2').val(''),
+        // $('#insert-mgoodsunit3').val(''),
         $('#insert-mgoodsactive').is(':checked'),
         $('#insert-mgoodspricein').val(''),
         $('#insert-mgoodspriceout').val(''),
@@ -662,8 +663,8 @@ function resetmgoods(){
         $('#insert-mgoodsgroup1').val(''),
         $('#insert-mgoodsgroup2').val(''),
         $('#insert-mgoodsgroup3').val(''),
-        $('#insert-mgoodssuppliercode').val(''),
-        $('#insert-mgoodssuppliername').val(''),
+        // $('#insert-mgoodssuppliercode').val(''),
+        // $('#insert-mgoodssuppliername').val(''),
         $('#insert-mgoodsbranches').is(':checked'),
         $('#insert-mgoodsuniquetransaction').is(':checked'),
         $('#insert-mgoodspicture').val(''),
