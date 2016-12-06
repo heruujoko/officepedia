@@ -228,10 +228,10 @@ class MHPurchase extends Model
             $trans_header->mhpurchaseduedate = Carbon::parse($request->duedate);
             $trans_header->mhpurchasesupplierid = $request->msupplierid;
             $trans_header->mhpurchasesuppliername = $request->msuppliername;
-            $trans_header->mhpurchasesubtotal = $request->subtotal;
+            $trans_header->mhpurchasesubtotal = $request->subtotal + $request->discount;
             $trans_header->mhpurchasetaxtotal = $request->tax;
             $trans_header->mhpurchasediscounttotal = $request->discount;
-            $trans_header->mhpurchasegrandtotal = $request->subtotal + $request->tax - $request->discount;
+            $trans_header->mhpurchasegrandtotal = $request->subtotal + $request->tax;
             $trans_header->mhpurchaseothertotal = 0;
             if($request->tax > 0){
               $trans_header->mhpurchasewithppn = 1;

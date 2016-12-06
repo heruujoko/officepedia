@@ -474,8 +474,10 @@
           this.rp = (parseInt(this.percentage) / 100) * (buyprice * parseInt(this.detail_qty));
         },
         countPercent(){
+            console.log(this.rp);
           this.percentage = (numeral().unformat(this.rp)/this.detail_total) * 100;
           if(isNaN(this.percentage)){
+              console.log('isnan');
             this.percentage = 0;
           }
         },
@@ -635,6 +637,8 @@
           this.detail_goods_unit1_conv = current.detail_goods_unit1_conv;
           this.detail_goods_unit1_label = current.detail_goods_unit1_label;
 
+          this.buy_price = current.buy_price;
+
           // autofocus mode
           if(this.detail_goods_unit3_conv != 0){
               setTimeout(function () { $('#'+self.conv_3_id).focus(); }, 1);
@@ -648,12 +652,9 @@
 
           this.rp = current.disc;
           this.unit = current.saved_unit+"";
-          this.detail_qty = parseInt(current.usage) / parseInt(current.saved_unit);
-          console.log('1');
-          console.log(this.detail_goods.mgoodspriceout);
+          this.detail_qty = parseInt(current.usage);
           this.countDetailTotal();
           this.countPercent();
-          console.log('2');
           this.countDetailTotal();
           this.$nextTick(function(){
             if(this.mode == 'edit'){
@@ -849,6 +850,9 @@
             let spl = _.find(this.suppliers, { msupplierid: data.mhpurchasesupplierid});
             self.invoice_supplier = spl.id+"";
             this.fetchDetailData(data.mhpurchaseno);
+            this.invoice_subtotal = parseInt(res.data.mhpurchasesubtotal) - parseInt(res.data.mhpurchasediscounttotal);
+            this.invoice_disc = res.data.mhpurchasediscounttotal;
+            this.invoice_tax = res.data.mhpurchasetaxtotal;
           });
       },
       fetchDetailData(inv){
@@ -896,11 +900,11 @@
             item.goods.mgoodsname = res.data[i].mdpurchasegoodsname;
             item.goods.mgoodscode = res.data[i].mdpurchasegoodsid;
             item.goods.mgoodspriceout = this.goodsPrice(res.data[i].mdpurchasegoodsid);
-            item.subtotal = parseInt(item.goods.mgoodspriceout) * parseInt(item.usage);
+            item.subtotal = parseInt(item.goods.mgoodspricein) * parseInt(item.usage);
             this.invoice_goods.push(item);
-            this.invoice_subtotal += item.subtotal;
-            this.invoice_disc += item.disc;
-            this.invoice_tax += item.tax;
+            // this.invoice_subtotal += item.subtotal;
+            // this.invoice_disc += item.disc;
+            // this.invoice_tax += item.tax;
           }
         });
       },
