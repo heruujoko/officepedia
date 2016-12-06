@@ -71,6 +71,8 @@
                   <th style="width:10%;">Kode</th>
                   <th style="width:45%;">Nama</th>
                   <th style="width:10%;">Harga Jual</th>
+                  <th style="width:10%;">QTY</th>
+                  <th style="width:10%;">Jumlah Satuan</th>
                   <th style="width:10%;">Diskon</th>
                   <th style="width:10%;">Jumlah</th>
                   <th v-if="notview" style="width:10%;">Aksi</th>
@@ -81,6 +83,8 @@
                   <td>{{ item.goods.mgoodscode }}</td>
                   <td>{{ item.goods.mgoodsname }}</td>
                   <td v-priceformatlabel="num_format">{{ item.goods.mgoodspriceout }}</td>
+                  <td>{{ item.usage }}</td>
+                  <td>{{ item.usage_label }}</td>
                   <td v-priceformatlabel="num_format">{{ item.disc }}</td>
                   <td v-priceformatlabel="num_format">{{ item.subtotal }}</td>
                   <td v-if="notview"><a v-on:click="editGoods(item.goods.id)"><span style="color:lightblue">Edit</span></a> <a v-on:click="removeGoods(item.goods.id)"><span style="color:red">Hapus</span></a></td>
@@ -209,7 +213,7 @@
                   <div class="form-group">
                     <label class="control-label col-md-2">Pajak</label>
                     <div class="col-md-8">
-                      <select v-selecttwo :disabled="detail_goods.mgoodstaxable == 0" class="form-control" id="insertdetailgoodstax">
+                      <select v-selecttwo :disabled="detail_goods.mgoodstaxable == 0" class="form-control" id="insertdetailgoodstax" v-model="detail_tax">
                         <option v-for="t in taxes" :value="t.id">{{ t.mtaxtdesc }}</option>
                       </select>
                     </div>
@@ -309,10 +313,10 @@
     },
     computed:{
       invoice_grandtotal(){
-        return numeral(this.invoice_subtotal - this.invoice_disc + this.invoice_tax).format(this.num_format);
+        return numeral(this.invoice_subtotal + this.invoice_tax).format(this.num_format);
       },
       format_subtotal(){
-        return numeral(this.invoice_subtotal).format(this.num_format);
+        return numeral(this.invoice_subtotal + this.invoice_disc).format(this.num_format);
       },
       format_tax(){
         return numeral(this.invoice_tax).format(this.num_format);
@@ -582,8 +586,10 @@
         this.invoice_disc += this.rp;
         let just_tax =0;
         if(this.detail_goods.mgoodstaxable == 1){
-            this.invoice_tax += (this.detail_tax.mtaxtpercentage /100) * this.detail_total;
-            just_tax = (this.detail_tax.mtaxtpercentage /100) * this.detail_total;
+            let tax_obj = _.find(this.taxes, { id: parseInt(this.detail_tax) });
+            // count taxes
+            this.invoice_tax += (tax_obj.mtaxtpercentage /100) * (this.detail_qty * this.detail_goods.mgoodspriceout);
+            just_tax = (tax_obj.mtaxtpercentage /100) * (this.detail_qty * this.detail_goods.mgoodspriceout);
         } else {
           this.invoice_tax += 0;
         }
@@ -805,8 +811,10 @@
       updateDetail(){
         let just_tax =0;
         if(this.detail_goods.mgoodstaxable == 1){
-            this.invoice_tax += (this.detail_tax.mtaxtpercentage /100) * this.detail_total;
-            just_tax = (this.detail_tax.mtaxtpercentage /100) * this.detail_total;
+            let tax_obj = _.find(this.taxes, { id: parseInt(this.detail_tax) });
+            // count taxes
+            this.invoice_tax += (tax_obj.mtaxtpercentage /100) * (this.detail_qty * this.detail_goods.mgoodspriceout);
+            just_tax = (tax_obj.mtaxtpercentage /100) * (this.detail_qty * this.detail_goods.mgoodspriceout);
         } else {
           this.invoice_tax += 0;
         }
