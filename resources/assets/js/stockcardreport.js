@@ -78,9 +78,10 @@ const stockcardreport = new Vue({
         label_goods(){
             let self = this;
             if(this.mstockcardgoodsid != ""){
-                return _.find(this.goods,(wh) => {
+                let g =  _.find(this.goods,(wh) => {
                     return wh.mgoodscode == self.mstockcardgoodsid;
                 });
+                return g.mgoodscode+" "+g.mgoodsname;
             } else {
                 return "Semua"
             }

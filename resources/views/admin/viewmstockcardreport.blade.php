@@ -72,16 +72,16 @@
                                             <br>
                                                 <div class="row">
                                                 <p class="col-md-1 report-label">Gudang</p>
-                                                <select v-selecttwo class="col-md-2" v-model="mstockcardwhouse">
+                                                <select v-selecttwo class="col-md-4" v-model="mstockcardwhouse">
                           					                <option value="">Semua</option>
                                                     <option v-for="warehouse in warehouses" :value="warehouse.id">@{{warehouse.mwarehousename}}</option>
                                                    </select>
                                             </div>
                                               <div class="row">
                                                 <p class="col-md-1 report-label">Kode Barang</p>
-                                                <select v-selecttwo class="col-md-2" v-model="mstockcardgoodsid">
+                                                <select v-selecttwo class="col-md-4" v-model="mstockcardgoodsid">
                                                     <option value="">Semua</option>
-                          						               <option v-for="good in goods" :value="good.mgoodscode">@{{good.mgoodscode}}</option>
+                          						               <option v-for="good in goods" :value="good.mgoodscode">@{{good.mgoodscode}} @{{good.mgoodsname}}</option>
                                                     </select>
                                             </div>
                                             <br>

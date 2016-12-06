@@ -1,6 +1,8 @@
 <template>
   <div>
-
+      <div class="row" v-show="mode != 'insert'" v-on:click="toInsertMode">
+          <button class="btn btn-default pull-right" style="margin-right:4%">Kembali</button>
+      </div>  
     <div class="row">
       <div class="form form-horizontal" style="margin-top:20px">
         <div class="col-md-8">
@@ -352,6 +354,14 @@
     },
     },
     methods: {
+        toInsertMode(){
+            this.resetDetail();
+            this.resetInvoice();
+            $('#forminput').show();
+    		$('#formview').hide();
+    		$('#formedit').hide();
+            window.location.href = '#forminput';
+        },
       fetchTax(){
         Axios.get('/admin-api/mtax/datalist')
         .then((res) => {
