@@ -73,6 +73,7 @@
                   <th style="width:10%;">Harga Jual</th>
                   <th style="width:10%;">QTY</th>
                   <th style="width:10%;">Jumlah Satuan</th>
+                  <th style="width:10%;">Subtotal</th>
                   <th style="width:10%;">Diskon</th>
                   <th style="width:10%;">Jumlah</th>
                   <th v-if="notview" style="width:10%;">Aksi</th>
@@ -85,6 +86,7 @@
                   <td v-priceformatlabel="num_format">{{ item.goods.mgoodspriceout }}</td>
                   <td>{{ item.usage }}</td>
                   <td>{{ item.usage_label }}</td>
+                  <td v-priceformatlabel="num_format">{{ item.usage * item.goods.mgoodspriceout }}</td>
                   <td v-priceformatlabel="num_format">{{ item.disc }}</td>
                   <td v-priceformatlabel="num_format">{{ item.subtotal }}</td>
                   <td v-if="notview"><a v-on:click="editGoods(item.goods.id)"><span style="color:lightblue">Edit</span></a> <a v-on:click="removeGoods(item.goods.id)"><span style="color:red">Hapus</span></a></td>
@@ -291,7 +293,7 @@
         edit_index: 0,
         detail_state: "insert",
         detail_total: 0,
-        detail_tax:0,
+        detail_tax:"2",
         detail_warehouse: 0,
         num_format: "0,0.00",
         unit_label: "Pilih Unit",
@@ -401,8 +403,10 @@
           //find customers
           let cust = _.find(this.customers, { mcustomerid: data.mhinvoicecustomerid});
           this.invoice_customer = cust.id+"";
-
           this.fetchDetailData(data.mhinvoiceno);
+          this.invoice_subtotal = parseInt(res.data.mhinvoicesubtotal) - parseInt(res.data.mhinvoicediscounttotal);
+          this.invoice_disc = res.data.mhinvoicediscounttotal;
+          this.invoice_tax = res.data.mhinvoicetaxtotal;
         });
       },
       fetchDetailData(inv){
@@ -430,15 +434,28 @@
             item.detail_goods_unit1_conv = res.data[i].mdinvoiceunit1conv;
             item.detail_goods_unit1_label = res.data[i].mdinvoiceunit1label;
 
+            let usage_label = ""
+            if(item.detail_goods_unit3 != 0){
+                usage_label += item.detail_goods_unit3 +" "+item.detail_goods_unit3_label;
+            }
+            if(item.detail_goods_unit2 != 0){
+                usage_label += item.detail_goods_unit2 +" "+item.detail_goods_unit2_label;
+            }
+            if(item.detail_goods_unit1 != 0){
+                usage_label += item.detail_goods_unit1 +" "+item.detail_goods_unit1_label;
+            }
+
+            item.usage_label = usage_label;
+
             item.usage = res.data[i].mdinvoicegoodsqty;
             item.goods.mgoodsname = res.data[i].mdinvoicegoodsname;
             item.goods.mgoodscode = res.data[i].mdinvoicegoodsid;
             item.goods.mgoodspriceout = this.goodsPrice(res.data[i].mdinvoicegoodsid);
             item.subtotal = parseInt(item.goods.mgoodspriceout) * parseInt(item.usage);
             this.invoice_goods.push(item);
-            this.invoice_subtotal += item.subtotal;
-            this.invoice_disc += item.disc;
-            this.invoice_tax += item.tax;
+            // this.invoice_subtotal += item.subtotal;
+            // this.invoice_disc += item.disc;
+            // this.invoice_tax += item.tax;
           }
         });
       },
@@ -593,6 +610,18 @@
         } else {
           this.invoice_tax += 0;
         }
+
+        let usage_label = ""
+        if(this.detail_goods_unit3 != 0){
+            usage_label += this.detail_goods_unit3 +" "+this.detail_goods_unit3_label;
+        }
+        if(this.detail_goods_unit2 != 0){
+            usage_label += this.detail_goods_unit2 +" "+this.detail_goods_unit2_label;
+        }
+        if(this.detail_goods_unit1 != 0){
+            usage_label += this.detail_goods_unit1 +" "+this.detail_goods_unit1_label;
+        }
+
         let newGoods = {
           id: this.detail_goods.id,
           detail_goods_unit3: parseInt(this.detail_goods_unit3),
@@ -605,6 +634,7 @@
           detail_goods_unit1_conv: this.detail_goods_unit1_conv,
           detail_goods_unit1_label: this.detail_goods_unit1_label,
           usage: parseInt(this.detail_qty) * parseInt(this.unit),
+          usage_label: usage_label,
           disc: this.rp,
           subtotal: this.detail_total,
           goods: this.detail_goods,
@@ -618,9 +648,9 @@
       },
       predictTax(){
         if(this.detail_goods.mgoodstaxable == 1){
-          this.detail_tax = _.find(this.taxes, {id: this.detail_goods.mgoodstaxppn});
+          this.detail_tax = "1";
         } else {
-          this.detail_tax = 0;
+          this.detail_tax = "2";
         }
       },
       updateInvoice(){

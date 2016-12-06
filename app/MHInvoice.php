@@ -57,10 +57,10 @@ class MHInvoice extends Model
         $invoice_header = new MHInvoice;
         $invoice_header->setConnection(Auth::user()->db_name);
         $invoice_header->mhinvoicedate = Carbon::parse($request->date);
-        $invoice_header->mhinvoicesubtotal = $request->subtotal;
+        $invoice_header->mhinvoicesubtotal = $request->subtotal + $request->discount;
         $invoice_header->mhinvoicetaxtotal = $request->tax;
         $invoice_header->mhinvoicediscounttotal = $request->discount;
-        $invoice_header->mhinvoicegrandtotal = $request->subtotal + $request->tax - $request->disc;
+        $invoice_header->mhinvoicegrandtotal = $request->subtotal + $request->tax;
         if($request->tax > 0){
           $invoice_header->mhinvoicewithppn = 1;
         } else {
@@ -214,10 +214,10 @@ class MHInvoice extends Model
         $invoice_header = $this;
         $invoice_header->setConnection(Auth::user()->db_name);
         $invoice_header->mhinvoicedate = Carbon::parse($request->date);
-        $invoice_header->mhinvoicesubtotal = $request->subtotal;
+        $invoice_header->mhinvoicesubtotal = $request->subtotal + $request->disc;
         $invoice_header->mhinvoicetaxtotal = $request->tax;
         $invoice_header->mhinvoicediscounttotal = $request->discount;
-        $invoice_header->mhinvoicegrandtotal = $request->subtotal + $request->tax - $request->disc;
+        $invoice_header->mhinvoicegrandtotal = $request->subtotal + $request->tax;
         if($request->tax > 0){
           $invoice_header->mhinvoicewithppn = 1;
         } else {
