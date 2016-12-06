@@ -74,6 +74,8 @@
                   <th style="width:10%;">Kode</th>
                   <th style="width:45%;">Nama</th>
                   <th style="width:10%;">Harga Beli</th>
+                  <th style="width:10%;">QTY</th>
+                  <th style="width:10%;">Jumlah Satuan</th>
                   <th style="width:10%;">Diskon</th>
                   <th style="width:10%;">Jumlah</th>
                   <th v-if="notview" style="width:10%;">Aksi</th>
@@ -83,7 +85,9 @@
                 <tr v-for="item in invoice_goods">
                   <td>{{ item.goods.mgoodscode }}</td>
                   <td>{{ item.goods.mgoodsname }}</td>
-                  <td v-priceformatlabel="num_format">{{ item.goods.mgoodspriceout }}</td>
+                  <td v-priceformatlabel="num_format">{{ item.buy_price }}</td>
+                  <td>{{ item.usage }}</td>
+                  <td>{{ item.usage_label }}</td>
                   <td v-priceformatlabel="num_format">{{ item.disc }}</td>
                   <td v-priceformatlabel="num_format">{{ item.subtotal }}</td>
                   <td v-if="notview"><a v-on:click="editGoods(item.goods.id)"><span style="color:lightblue">Edit</span></a> <a v-on:click="removeGoods(item.goods.id)"><span style="color:red">Hapus</span></a></td>
@@ -184,7 +188,7 @@
                   <div class="form-group">
                     <label class="control-label col-md-2">Harga Satuan</label>
                     <div class="col-md-8">
-                      <input v-priceformat="num_format" class="form-control pricelabel" disabled type="text" id="insertdetailgoodsprice" v-model="detail_goods.mgoodspriceout"/>
+                      <input v-priceformatsatuan="num_format" class="form-control pricelabel" type="text" id="insertdetailgoodsprice" v-model="buy_price"/>
                     </div>
                   </div>
                   <div class="form-group">
@@ -198,7 +202,7 @@
                     <div class="col-md-4">
                       <div class="input-group">
                         <span class="input-group-addon" id="sizing-addon2" style="font-size:8px;">Rp</span>
-                        <input v-priceformattype="num_format" v-bind:id="rp_id" v-model="rp" class="form-control forminput pricelabel" placeholder="Rupiah" type="text">
+                        <input v-priceformatdiskon="num_format" v-bind:id="rp_id" v-model="rp" class="form-control forminput pricelabel" placeholder="Rupiah" type="text">
                       </div>
                     </div>
                   </div>
@@ -211,7 +215,7 @@
                   <div class="form-group">
                     <label class="control-label col-md-2">Pajak</label>
                     <div class="col-md-8">
-                      <select v-selecttwo :disabled="detail_goods.mgoodstaxable == 0" class="form-control" id="insertdetailgoodstax">
+                      <select v-selecttwo class="form-control" id="insertdetailgoodstax" v-model="detail_tax">
                         <option v-for="t in taxes" :value="t.id">{{ t.mtaxtdesc }}</option>
                       </select>
                     </div>
@@ -289,7 +293,7 @@
             edit_index: 0,
             detail_state: "insert",
             detail_total: 0,
-            detail_tax:0,
+            detail_tax:"2",
             detail_warehouse: 0,
             num_format: "0,0.00",
             unit_label: "Pilih Unit",
@@ -302,6 +306,7 @@
             invoice_type:"Pembelian",
             invoice_date:moment().format('L'),
             invoice_due_date:"",
+            buy_price:0,
             invoice_subtotal:0,
             invoice_disc:0,
             invoice_tax:0,
@@ -311,10 +316,10 @@
         },
         computed:{
           invoice_grandtotal(){
-            return numeral(this.invoice_subtotal - this.invoice_disc + this.invoice_tax).format(this.num_format);
+            return numeral(this.invoice_subtotal + this.invoice_tax).format(this.num_format);
           },
           format_subtotal(){
-            return numeral(this.invoice_subtotal).format(this.num_format);
+            return numeral(this.invoice_subtotal + this.invoice_disc).format(this.num_format);
           },
           format_tax(){
             return numeral(this.invoice_tax).format(this.num_format);
@@ -372,7 +377,13 @@
         selected_goods(){
             this.detailGoods();
         },
+        selected_tax(){
+
+        },
         detail_qty(){
+            this.countDetailTotal();
+        },
+        buy_price(){
             this.countDetailTotal();
         }
     },
@@ -442,26 +453,28 @@
 
         },
         countDetailTotal(){
+            let buyprice =0;
+            if(this.buy_price != 0){
+                buyprice = numeral().unformat(this.buy_price);
+            }
           if(isNaN(this.rp)){
             this.rp = 0;
           }
           this.unit = 1;
-          console.log("detail_price "+this.detail_goods.mgoodspriceout);
-          this.detail_total = (this.detail_goods.mgoodspriceout * parseInt(this.detail_qty) * parseInt(this.unit)) - parseInt(this.rp);
-          console.log("detail_total "+this.detail_total);
-          console.log("detail_price "+this.detail_goods.mgoodspriceout);
-          console.log("detail_unit "+this.unit);
-          console.log("detail_rp "+this.rp);
-          console.log("detail_qty "+this.detail_qty);
+          this.detail_total = (buyprice * parseInt(this.detail_qty) * parseInt(this.unit)) - parseInt(this.rp);
+          if(this.percentage != 0){
+              this.countRp();
+          }
         },
         countRp(){
-          this.rp = (parseInt(this.percentage) / 100) * this.detail_total;
+            let buyprice =0;
+            if(this.buy_price != 0){
+                buyprice = numeral().unformat(this.buy_price);
+            }
+          this.rp = (parseInt(this.percentage) / 100) * (buyprice * parseInt(this.detail_qty));
         },
         countPercent(){
-          console.log(numeral().unformat(this.rp));
           this.percentage = (numeral().unformat(this.rp)/this.detail_total) * 100;
-          console.log(this.detail_total);
-          console.log(this.percentage);
           if(isNaN(this.percentage)){
             this.percentage = 0;
           }
@@ -500,6 +513,8 @@
                 setTimeout(function () { $('#'+self.conv_1_id).focus(); }, 1);
             }
 
+            this.buy_price = this.detail_goods.mgoodspricein;
+
             if(this.mode == 'edit'){
               $('#edit_detail_rp').on('keyup',function(){
                   self.countPercent();
@@ -507,17 +522,6 @@
               });
               $('#edit_detail_percentage').on('keyup',function(evt){
                 // diskon yg di input lebih besar
-                if(res.data.mgoodssetmaxdisc == 1){
-                  if(evt.target.value > res.data.mgoodsmaxdisc){
-                    self.percentage = res.data.mgoodsmaxdisc;
-                    swal({
-                      title: "Oops!",
-                      text: "Maksimal diskon item ini tidak bisa melebihi "+res.data.mgoodsmaxdisc+"%",
-                      type: "error",
-                      timer: 1000
-                    });
-                  }
-                }
                 self.countRp();
                 self.countDetailTotal();
               });
@@ -530,17 +534,6 @@
               });
               $('#insert_detail_percentage').on('keyup',function(evt){
                 // diskon yg di input lebih besar
-                if(res.data.mgoodssetmaxdisc == 1){
-                  if(evt.target.value > res.data.mgoodsmaxdisc){
-                    self.percentage = res.data.mgoodsmaxdisc;
-                    swal({
-                      title: "Oops!",
-                      text: "Maksimal diskon item ini tidak bisa melebihi "+res.data.mgoodsmaxdisc+"%",
-                      type: "error",
-                      timer: 1000
-                    });
-                  }
-                }
                 self.countRp();
                 self.countDetailTotal();
               });
@@ -551,11 +544,12 @@
           });
         },
         predictTax(){
-          if(this.detail_goods.mgoodstaxable == 1){
-            this.detail_tax = _.find(this.taxes, {id: this.detail_goods.mgoodstaxppn});
-          } else {
-            this.detail_tax = 0;
-          }
+        //   if(this.detail_goods.mgoodstaxable == 1){
+        //     this.detail_tax = _.find(this.taxes, {id: this.detail_goods.mgoodstaxppn});
+        //   } else {
+        //     this.detail_tax = 0;
+        //   }
+
         },
         convertUnits(){
             let unit3 =0;
@@ -569,7 +563,7 @@
             }
             unit1 = parseInt(this.detail_goods_unit1);
             this.detail_qty = unit3 + unit2 + unit1;
-
+            this.countDetailTotal();
         },
         addToGoods(){
             if(this.mode == 'edit'){
@@ -580,12 +574,22 @@
             this.invoice_subtotal += this.detail_total;
             this.invoice_disc += this.rp;
             let just_tax =0;
-            if(this.detail_goods.mgoodstaxable == 1){
-                this.invoice_tax += (this.detail_tax.mtaxtpercentage /100) * this.detail_total;
-                just_tax = (this.detail_tax.mtaxtpercentage /100) * this.detail_total;
-            } else {
-              this.invoice_tax += 0;
+            let tax_obj = _.find(this.taxes, { id: parseInt(this.detail_tax) });
+            // count taxes
+            this.invoice_tax += (tax_obj.mtaxtpercentage /100) * (this.detail_qty * this.buy_price);
+            just_tax = (tax_obj.mtaxtpercentage /100) * (this.detail_qty * this.buy_price);
+
+            let usage_label = ""
+            if(this.detail_goods_unit3 != 0){
+                usage_label += this.detail_goods_unit3 +" "+this.detail_goods_unit3_label;
             }
+            if(this.detail_goods_unit2 != 0){
+                usage_label += this.detail_goods_unit2 +" "+this.detail_goods_unit2_label;
+            }
+            if(this.detail_goods_unit1 != 0){
+                usage_label += this.detail_goods_unit1 +" "+this.detail_goods_unit1_label;
+            }
+
             let newGoods = {
               id: this.detail_goods.id,
               detail_goods_unit3: parseInt(this.detail_goods_unit3),
@@ -598,6 +602,8 @@
               detail_goods_unit1_conv: this.detail_goods_unit1_conv,
               detail_goods_unit1_label: this.detail_goods_unit1_label,
               usage: parseInt(this.detail_qty) * parseInt(this.unit),
+              usage_label: usage_label,
+              buy_price: this.buy_price,
               disc: this.rp,
               subtotal: this.detail_total,
               goods: this.detail_goods,
@@ -683,12 +689,22 @@
         },
         updateDetail(){
             let just_tax =0;
-            if(this.detail_goods.mgoodstaxable == 1){
-                this.invoice_tax += (this.detail_tax.mtaxtpercentage /100) * this.detail_total;
-                just_tax = (this.detail_tax.mtaxtpercentage /100) * this.detail_total;
-            } else {
-              this.invoice_tax += 0;
+            let tax_obj = _.find(this.taxes, { id: parseInt(this.detail_tax) });
+            // count taxes
+            this.invoice_tax += (tax_obj.mtaxtpercentage /100) * (this.detail_qty * this.buy_price);
+            just_tax = (tax_obj.mtaxtpercentage /100) * (this.detail_qty * this.buy_price);
+
+            let usage_label = ""
+            if(this.detail_goods_unit3 != 0){
+                usage_label += this.detail_goods_unit3 +" "+this.detail_goods_unit3_label;
             }
+            if(this.detail_goods_unit2 != 0){
+                usage_label += this.detail_goods_unit2 +" "+this.detail_goods_unit2_label;
+            }
+            if(this.detail_goods_unit1 != 0){
+                usage_label += this.detail_goods_unit1 +" "+this.detail_goods_unit1_label;
+            }
+
             let editedGoods = {
               id: this.detail_goods.id,
               detail_goods_unit3: parseInt(this.detail_goods_unit3),
@@ -701,10 +717,12 @@
               detail_goods_unit1_conv: this.detail_goods_unit1_conv,
               detail_goods_unit1_label: this.detail_goods_unit1_label,
               usage: parseInt(this.detail_qty) * parseInt(this.unit),
+              usage_label: usage_label,
               disc: this.rp,
               subtotal: this.detail_total,
               goods: this.detail_goods,
               tax: just_tax,
+              buy_price: this.buy_price,
               warehouse: parseInt(this.detail_warehouse),
               saved_unit: this.unit //for editing purpose only
             };
@@ -859,6 +877,20 @@
             item.detail_goods_unit1 = res.data[i].mdpurchasegoodsunit1;
             item.detail_goods_unit1_conv = res.data[i].mdpurchasegoodsunit1conv;
             item.detail_goods_unit1_label = res.data[i].mdpurchasegoodsunit1label;
+
+            let usage_label = ""
+            if(item.detail_goods_unit3 != 0){
+                usage_label += item.detail_goods_unit3 +" "+item.detail_goods_unit3_label;
+            }
+            if(item.detail_goods_unit2 != 0){
+                usage_label += item.detail_goods_unit2 +" "+item.detail_goods_unit2_label;
+            }
+            if(item.detail_goods_unit1 != 0){
+                usage_label += item.detail_goods_unit1 +" "+item.detail_goods_unit1_label;
+            }
+
+            item.usage_label = usage_label;
+            item.buy_price = res.data[i].mdpurchasebuyprice;
 
             item.usage = res.data[i].mdpurchasegoodsqty;
             item.goods.mgoodsname = res.data[i].mdpurchasegoodsname;

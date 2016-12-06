@@ -62,10 +62,10 @@ class MHPurchase extends Model
             $trans_header->mhpurchaseduedate = Carbon::parse($request->duedate);
             $trans_header->mhpurchasesupplierid = $request->msupplierid;
             $trans_header->mhpurchasesuppliername = $request->msuppliername;
-            $trans_header->mhpurchasesubtotal = $request->subtotal;
+            $trans_header->mhpurchasesubtotal = $request->subtotal + $request->discount;
             $trans_header->mhpurchasetaxtotal = $request->tax;
             $trans_header->mhpurchasediscounttotal = $request->discount;
-            $trans_header->mhpurchasegrandtotal = $request->subtotal + $request->tax - $request->discount;
+            $trans_header->mhpurchasegrandtotal = $request->subtotal + $request->tax;
             $trans_header->mhpurchaseothertotal = 0;
             if($request->tax > 0){
               $trans_header->mhpurchasewithppn = 1;
@@ -85,6 +85,9 @@ class MHPurchase extends Model
             // fill the detail info
             foreach($request->goods as $g){
                 $mgoods = MGoods::on(Auth::user()->db_name)->where('mgoodscode',$g['goods']['mgoodscode'])->first();
+
+                $mgoods->mgoodspricein = $g['buy_price'];
+                $mgoods->save();
 
                 $detail = new MDPurchase;
                 $detail->setConnection(Auth::user()->db_name);
@@ -110,6 +113,7 @@ class MHPurchase extends Model
                 $detail->mdpurchasegoodsgrossamount = $g['subtotal'];
                 $detail->mdpurchasegoodsdiscount = $g['disc'];
                 $detail->mdpurchasegoodsidwhouse = $g['warehouse'];
+                $detail->mdpurchasebuyprice = $g['buy_price'];
                 $detail->save();
 
                 // update stock card
@@ -248,7 +252,8 @@ class MHPurchase extends Model
             foreach ($request->goods as $g) {
                 $invoice_detail = MDPurchase::on(Auth::user()->db_name)->where('mdpurchasegoodsid',$g['goods']['mgoodscode'])->where('mhpurchaseno',$trans_header->mhpurchaseno)->first();
                 $mgoods = MGoods::on(Auth::user()->db_name)->where('mgoodscode',$g['goods']['mgoodscode'])->first();
-
+                $mgoods->mgoodspricein = $g['buy_price'];
+                $mgoods->save();
                 $last_stock = MStockCard::on(Auth::user()->db_name)->where('mstockcardtransno',$trans_header->mhpurchaseno)->where('mstockcardgoodsid',$mgoods->mgoodscode)->orderBy('created_at','desc')->get()->first();
                 $old_qty = $invoice_detail->mdpurchasegoodsqty;
                 // dd($old_qty);
@@ -276,6 +281,7 @@ class MHPurchase extends Model
                 $invoice_detail->mdpurchasegoodsgrossamount = $g['subtotal'];
                 $invoice_detail->mdpurchasegoodsdiscount = $g['disc'];
                 $invoice_detail->mdpurchasegoodsidwhouse = $g['warehouse'];
+                $invoice_detail->mdpurchasebuyprice = $g['buy_price'];
                 $invoice_detail->void = 0;
                 $invoice_detail->save();
 
