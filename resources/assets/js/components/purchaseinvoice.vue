@@ -9,7 +9,7 @@
           <div class="form-group">
             <label class="col-md-2 control-label">Supplier</label>
             <div class="col-md-8">
-              <select v-bind:disabled="!notview" v-selecttwo="supplier_label" v-model="invoice_supplier">
+              <select v-bind:disabled="disable_supplier" v-selecttwo="supplier_label" v-model="invoice_supplier">
                 <option></option>
                 <option v-for="sp in suppliers" :value="sp.id">{{ sp.msuppliername }}</option>
               </select>
@@ -313,7 +313,8 @@
             invoice_disc:0,
             invoice_tax:0,
             invoice_no:"",
-            invoice_auto: true
+            invoice_auto: true,
+            disable_supplier: false
           }
         },
         computed:{
@@ -390,6 +391,11 @@
         }
     },
     methods: {
+        disableSupplier(){
+            if(this.selected_supplier != ""){
+                this.disable_supplier = true;
+            }
+        },
         toInsertMode(){
             this.resetDetail();
             this.resetInvoice();
@@ -578,6 +584,7 @@
             this.countDetailTotal();
         },
         addToGoods(){
+            this.disableSupplier();
             if(this.mode == 'edit'){
                 $('#edit_detail_modal').modal('toggle');
             } else {
@@ -993,6 +1000,7 @@
           this.$parent.$on('edit-selected',(id) => {
             this.editinvoiceid = id;
             this.fetchInvoiceData(id);
+            this.disableSupplier();
           });
         }
     }

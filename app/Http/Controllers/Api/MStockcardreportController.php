@@ -18,6 +18,7 @@ use DB;
 use Auth;
 use Carbon\Carbon;
 use App\Helper\DBHelper;
+use App\Helper\UnitHelper;
 
 class MStockcardreportController extends Controller
 {
@@ -55,32 +56,11 @@ class MStockcardreportController extends Controller
         $d['goodsqty'] = $d->goods()->mgoodsstock;
         // get multi unit verbs
         if($d['mstockcardtranstype'] == 'Penjualan'){
-            $details = MDInvoice::on(Auth::user()->db_name)->where('mhinvoiceno',$d->mstockcardtransno)->where('mdinvoicegoodsid',$d->mstockcardgoodsid)->first();
-            $verbs = "";
-            if($details->mdinvoiceunit3 != 0){
-                $verbs .= $details->mdinvoiceunit3." ".$details->mdinvoiceunit3label;
-            }
-            if($details->mdinvoiceunit2 != 0){
-                $verbs .= " ".$details->mdinvoiceunit2." ".$details->mdinvoiceunit2label;
-            }
-            if($details->mdinvoiceunit1 != 0){
-                $verbs .= " ".$details->mdinvoiceunit1." ".$details->mdinvoiceunit1label;
-            }
+            $mgoods = MGoods::on(Auth::user()->db_name)->where('mgoodscode',$d->mstockcardgoodsid)->first();
+            $verbs = UnitHelper::label($mgoods,$d->mstockcardstockout);
         } else {
-            // $details = MDPurchase::on(Auth::user()->db_name)->where('mhpurchaseno',$d->mstockcardtransno)->where('mdpurchasegoodsid',$d->mstockcardgoodsid)->first();
-            $verbs = "";
-            if($d->mstockcardunit3 != 0){
-                $verbs .= $d->mstockcardunit3." ".$d->mstockcardunit3label;
-            }
-            if($d->mstockcardunit2 != 0){
-                $verbs .= " ".$d->mstockcardunit2." ".$d->mstockcardunit2label;
-            }
-            if($d->mstockcardunit1 != 0){
-                $verbs .= " ".$d->mstockcardunit1." ".$d->mstockcardunit1label;
-            }
-            if($d->mstockcardunit3 == 0 && $d->mstockcardunit2 == 0 && $d->mstockcardunit1 == 0){
-                $verbs = "-";
-            }
+            $mgoods = MGoods::on(Auth::user()->db_name)->where('mgoodscode',$d->mstockcardgoodsid)->first();
+            $verbs = UnitHelper::label($mgoods,$d->mstockcardstockin);
         }
         $d['verbs'] = $verbs;
 

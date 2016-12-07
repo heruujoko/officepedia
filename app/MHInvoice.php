@@ -88,6 +88,8 @@ class MHInvoice extends Model
         foreach($request->goods as $g){
 
           $mgoods = MGoods::on(Auth::user()->db_name)->where('mgoodscode',$g['goods']['mgoodscode'])->first();
+          $mgoods->mgoodspriceout = $g['sell_price'];
+          $mgoods->save();
 
           $invoice_detail = new MDInvoice;
           $invoice_detail->setConnection(Auth::user()->db_name);
@@ -242,6 +244,8 @@ class MHInvoice extends Model
 
           if($invoice_detail != null){
               $mgoods = MGoods::on(Auth::user()->db_name)->where('mgoodscode',$g['goods']['mgoodscode'])->first();
+              $mgoods->mgoodspriceout = $g['sell_price'];
+              $mgoods->save();
               $last_stock = MStockCard::on(Auth::user()->db_name)->where('mstockcardtransno',$invoice_detail->mhinvoiceno)->where('mstockcardgoodsid',$mgoods->mgoodscode)->orderBy('created_at','desc')->get()->first();
               $old_qty = $invoice_detail->mdinvoicegoodsqty;
 
@@ -471,7 +475,7 @@ class MHInvoice extends Model
                 return 'empty';
               }
           }
-          
+
         }
 
         // update AR

@@ -13,12 +13,15 @@ class UnitHelper {
         $label1 = $mgoods->mgoodsunit1;
 
         $label_str = "";
+        if($qty == 0){
+            $label_str = "-";
+        }
 
-        if($qty >= $conv3){
+        if($qty >= $conv3 && $conv3 != 0){
             $label_str .= "".floor($qty / $conv3)." ".$label3;
             $qty = $qty % $conv3;
         }
-        if($qty >= $conv2){
+        if($qty >= $conv2 && $conv2 != 0){
             $label_str .= " ".floor($qty / $conv2)." ".$label2;
             $qty = $qty % $conv2;
         }
