@@ -163,7 +163,7 @@
                       </div>
                     </div>
                   </div>
-                  <div class="form-group">
+                  <div class="form-group" v-if="detail_goods_unit2_conv != 0">
                     <label v-if="detail_goods_unit3_conv == 0" class="control-label col-md-2">Kuantitas</label>
                     <div class="col-md-2" v-if="detail_goods_unit3_conv != 0"></div>
                     <div class="col-md-8">
@@ -174,19 +174,16 @@
                     </div>
                   </div>
                   <div class="form-group">
-                    <div class="col-md-8 col-md-offset-2">
+                    <label v-if="detail_goods_unit2_conv == 0" class="control-label col-md-2">Kuantitas</label>
+                    <div class="col-md-2" v-if="detail_goods_unit2_conv != 0"></div>
+                    <div class="col-md-8">
                       <div class="input-group">
                         <input v-bind:id="conv_1_id" class="form-control forminput" v-bind:placeholder="detail_goods_unit1_label" type="text" v-model="detail_goods_unit1">
                         <span class="input-group-addon" id="sizing-addon2" style="font-size:11px;">{{ detail_goods_unit1_label }}</span>
                       </div>
                     </div>
                   </div>
-                  <div class="form-group">
-                    <label class="control-label col-md-2">Total Qty</label>
-                    <div class="col-md-8">
-                      <input placeholder="Kuantitas" class="form-control forminput" value="1" type="text" id="insertdetailgoodsqty" v-model="detail_qty"/>
-                    </div>
-                  </div>
+                  <input placeholder="Kuantitas" class="form-control forminput" value="1" type="hidden" id="insertdetailgoodsqty" v-model="detail_qty"/>
                   <div class="form-group">
                     <label class="control-label col-md-2">Harga Satuan</label>
                     <div class="col-md-8">
@@ -357,10 +354,11 @@
       },
     watch:{
         invoice_supplier(){
-            console.log('change supplier');
-            this.selected_supplier = _.find(this.suppliers,  {id: parseInt(this.invoice_supplier)});
-            console.log(this.selected_supplier.msupplierdefaultar);
-            this.invoice_due_date = moment(this.invoice_date).add(this.selected_supplier.msupplierdefaultar,'day').format('L');
+            if(this.invoice_supplier != ""){
+                this.selected_supplier = _.find(this.suppliers,  {id: parseInt(this.invoice_supplier)});
+                console.log(this.selected_supplier.msupplierdefaultar);
+                this.invoice_due_date = moment(this.invoice_date).add(this.selected_supplier.msupplierdefaultar,'day').format('L');
+            }
         },
         invoice_date(){
             this.invoice_due_date = moment(this.invoice_date).add(this.selected_supplier.msupplierdefaultar,'day').format('L');
@@ -849,6 +847,12 @@
             this.detail_goods_unit1_label ="";
         },
         resetInvoice(){
+            this.disable_supplier = false;
+            this.invoice_supplier = [];
+            this.invoice_date = moment().format('L');
+            this.invoice_due_date = "";
+            this.invoice_no = "";
+            this.autogen = true;
           this.invoice_goods = [];
           this.invoice_disc =0;
           this.invoice_subtotal =0;

@@ -9,7 +9,7 @@
           <div class="form-group">
             <label class="col-md-2 control-label">Pelanggan</label>
             <div class="col-md-8">
-              <select v-bind:disabled="!notview" v-selecttwo="pelanggan_label" v-model="invoice_customer">
+              <select v-bind:disabled="disable_customer" v-selecttwo="pelanggan_label" v-model="invoice_customer">
                 <option v-for="c in customers" :value="c.id">{{ c.mcustomername }}</option>
               </select>
             </div>
@@ -163,7 +163,7 @@
                       </div>
                     </div>
                   </div>
-                  <div class="form-group">
+                  <div class="form-group" v-if="detail_goods_unit2_conv != 0">
                     <label v-if="detail_goods_unit3_conv == 0" class="control-label col-md-2">Kuantitas</label>
                     <div class="col-md-2" v-if="detail_goods_unit3_conv != 0"></div>
                     <div class="col-md-8">
@@ -174,19 +174,16 @@
                     </div>
                   </div>
                   <div class="form-group">
-                    <div class="col-md-8 col-md-offset-2">
+                    <label v-if="detail_goods_unit2_conv == 0" class="control-label col-md-2">Kuantitas</label>
+                    <div class="col-md-2" v-if="detail_goods_unit2_conv != 0"></div>
+                    <div class="col-md-8">
                       <div class="input-group">
                         <input v-bind:id="conv_1_id" class="form-control forminput" v-bind:placeholder="detail_goods_unit1_label" type="text" v-model="detail_goods_unit1">
                         <span class="input-group-addon" id="sizing-addon2" style="font-size:11px;">{{ detail_goods_unit1_label }}</span>
                       </div>
                     </div>
                   </div>
-                  <div class="form-group">
-                    <label class="control-label col-md-2">Total Qty</label>
-                    <div class="col-md-8">
-                      <input placeholder="Kuantitas" class="form-control forminput" value="1" type="text" id="insertdetailgoodsqty" v-model="detail_qty"/>
-                    </div>
-                  </div>
+                  <input placeholder="Kuantitas" class="form-control forminput" value="1" type="hidden" id="insertdetailgoodsqty" v-model="detail_qty"/>
                   <div class="form-group">
                     <label class="control-label col-md-2">Harga Satuan</label>
                     <div class="col-md-8">
@@ -314,7 +311,8 @@
         invoice_tax:0,
         invoice_no:"",
         invoice_auto: true,
-        lock_sell_price: false
+        lock_sell_price: false,
+        disable_customer: false
       }
     },
     computed:{
@@ -356,6 +354,11 @@
     },
     },
     methods: {
+        disableCustomer(){
+            if(this.selected_customer != ""){
+                this.disable_customer = true;
+            }
+        },
         toInsertMode(){
             this.resetDetail();
             this.resetInvoice();
@@ -667,6 +670,7 @@
         };
         this.invoice_goods.push(newGoods);
         this.selected_goods = "";
+        this.disableCustomer();
         this.resetDetail();
       },
       predictTax(){
@@ -932,6 +936,12 @@
         this.invoice_tax = taxs;
       },
       resetInvoice(){
+          this.disable_customer = false;
+          this.invoice_customer = [];
+          this.invoice_date = moment().format('L');
+          this.invoice_due_date = "";
+          this.invoice_no = "";
+          this.autogen = true;
         this.invoice_goods = [];
         this.invoice_disc =0;
         this.invoice_subtotal =0;
@@ -989,8 +999,10 @@
             this.countDetailTotal();
         },
         invoice_customer(){
-            this.selected_customer = _.find(this.customers,  {id: parseInt(this.invoice_customer)});
-            this.invoice_due_date = moment(this.invoice_date).add(this.selected_customer.mcustomerdefaultar,'day').format('L');
+            if(this.invoice_customer != ""){
+                this.selected_customer = _.find(this.customers,  {id: parseInt(this.invoice_customer)});
+                this.invoice_due_date = moment(this.invoice_date).add(this.selected_customer.mcustomerdefaultar,'day').format('L');
+            }
         },
         invoice_date(){
             this.invoice_due_date = moment(this.invoice_date).add(this.selected_customer.mcustomerdefaultar,'day').format('L');
@@ -1014,6 +1026,7 @@
       if(this.mode == "view"){
         this.$parent.$on('edit-selected',(id) => {
           this.editinvoiceid = id;
+          this.disableCustomer();
           this.fetchInvoiceData(id);
         });
       }
