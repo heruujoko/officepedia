@@ -185,7 +185,8 @@ class MHInvoice extends Model
         $ar->setConnection(Auth::user()->db_name);
         $ar->marcardcustomerid = $customer->mcustomerid;
         $ar->marcardcustomername = $customer->mcustomername;
-        $ar->marcarddate = Carbon::now();
+        $ar->marcarddate = Carbon::parse($request->date);
+        $ar->marcardduedate = Carbon::parse($request->duedate);
         $ar->marcardtranstype = $request->type;
         $ar->marcardtransno = $header->mhinvoiceno;
         $ar->marcardremark = "Transaksi ".$request->type." untuk ".$customer->mcustomername;
@@ -482,7 +483,8 @@ class MHInvoice extends Model
         $ar = MARCard::on(Auth::user()->db_name)->where('marcardcustomerid',$header->mhinvoicecustomerid)->where('marcardtransno',$header->mhinvoiceno)->first();
         $ar->marcardcustomerid = $customer->mcustomerid;
         $ar->marcardcustomername = $customer->mcustomername;
-        $ar->marcarddate = Carbon::now();
+        $ar->marcarddate = Carbon::parse($request->date);
+        $ar->marcardduedate = Carbon::parse($request->duedate);
         $ar->marcardtranstype = $request->type;
         $ar->marcardtransno = $header->mhinvoiceno;
         $ar->marcardremark = "Edit Transaksi ".$request->type." untuk ".$customer->mcustomername;

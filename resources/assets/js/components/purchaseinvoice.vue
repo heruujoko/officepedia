@@ -938,6 +938,7 @@
         }
         let invoice_data = {
           date: this.invoice_date,
+          duedate: this.invoice_due_date,
           subtotal: this.invoice_subtotal,
           discount: this.invoice_disc,
           tax: this.invoice_tax,
