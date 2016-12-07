@@ -104,7 +104,7 @@
                         <td>{{ $st['verbs'] }}</td>
                         <td>{{ $st->mstockcardstockin }}</td>
                         <td>{{ $st->mstockcardstockout }}</td>
-                        <td>{{ $st->mdinvoicegoodsgrossamount }}</td>
+                        <td>{{ ($st->mstockcardstocktotal +$st->mstockcardstockin - $st->mstockcardstockout) }}</td>
                         <td>{{ $st->mstockcarddate }}</td>
                         <td>{{ $st->mstockcardtranstype }}</td>
                         <td>{{ $st->mstockcardtransno }}</td>

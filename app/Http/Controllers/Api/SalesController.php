@@ -196,42 +196,52 @@ class SalesController extends Controller
             $due = Carbon::parse($ar->marcardduedate);
             $diff = $now->diffInDays($due,false);
             $ar['trans_count'] = count(MHInvoice::on(Auth::user()->db_name)->where('mhinvoicecustomerid',$ar->marcardcustomerid)->get());
-            if($diff <= 7){
-                $ar['seven'] = $ar->marcardoutstanding_sum;
-                $ar['fourteen'] =0;
-                $ar['twentyone'] =0;
-                $ar['thirty'] =0;
-                $ar['month'] =0;
-                $seven_total += $ar->marcardoutstanding_sum;
-            } else if($diff <= 14){
-                $ar['seven'] = 0;
-                $ar['fourteen'] = $ar->marcardoutstanding_sum;
-                $ar['twentyone'] =0;
-                $ar['thirty'] =0;
-                $ar['month'] =0;
-                $fourteen_total += $ar->marcardoutstanding_sum;
-            } else if($diff <= 21){
-                $ar['seven'] = 0;
-                $ar['fourteen'] =0;
-                $ar['twentyone'] = $ar->marcardoutstanding_sum;
-                $ar['thirty'] =0;
-                $ar['month'] =0;
-                $twentyone_total += $ar->marcardoutstanding_sum;
-            } else if($diff <= 30){
-                $ar['seven'] = 0;
-                $ar['fourteen'] =0;
-                $ar['twentyone'] =0;
-                $ar['thirty'] = $ar->marcardoutstanding_sum;
-                $ar['month'] =0;
-                $thirty_total += $ar->marcardoutstanding_sum;
+            if($diff > 0){
+                if($diff <= 7){
+                    $ar['seven'] = $ar->marcardoutstanding_sum;
+                    $ar['fourteen'] =0;
+                    $ar['twentyone'] =0;
+                    $ar['thirty'] =0;
+                    $ar['month'] =0;
+                    $seven_total += $ar->marcardoutstanding_sum;
+                } else if($diff <= 14){
+                    $ar['seven'] = 0;
+                    $ar['fourteen'] = $ar->marcardoutstanding_sum;
+                    $ar['twentyone'] =0;
+                    $ar['thirty'] =0;
+                    $ar['month'] =0;
+                    $fourteen_total += $ar->marcardoutstanding_sum;
+                } else if($diff <= 21){
+                    $ar['seven'] = 0;
+                    $ar['fourteen'] =0;
+                    $ar['twentyone'] = $ar->marcardoutstanding_sum;
+                    $ar['thirty'] =0;
+                    $ar['month'] =0;
+                    $twentyone_total += $ar->marcardoutstanding_sum;
+                } else if($diff <= 30){
+                    $ar['seven'] = 0;
+                    $ar['fourteen'] =0;
+                    $ar['twentyone'] =0;
+                    $ar['thirty'] = $ar->marcardoutstanding_sum;
+                    $ar['month'] =0;
+                    $thirty_total += $ar->marcardoutstanding_sum;
+                } else {
+                    $ar['seven'] = 0;
+                    $ar['fourteen'] =0;
+                    $ar['twentyone'] =0;
+                    $ar['thirty'] =0;
+                    $ar['month'] = $ar->marcardoutstanding_sum;
+                    $month_total += $ar->marcardoutstanding_sum;
+                }
             } else {
                 $ar['seven'] = 0;
                 $ar['fourteen'] =0;
                 $ar['twentyone'] =0;
                 $ar['thirty'] =0;
-                $ar['month'] = $ar->marcardoutstanding_sum;
-                $month_total += $ar->marcardoutstanding_sum;
+                $ar['month'] = 0;
+                $month_total += 0;
             }
+
         }
         return response()->json($ars);
     }
