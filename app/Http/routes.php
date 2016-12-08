@@ -177,6 +177,12 @@ Route::group(['prefix'=>'admin-nano','middleware' => ['auth','tenantdb']],functi
   Route::get('reports/stockreport/export/excel','ReportController@stockreport_excel');
   Route::get('reports/stockreport/export/csv','ReportController@stockreport_csv');
 
+  Route::get('reports/purchasereport','PurchaseReportController@purchasereport');
+  Route::get('reports/purchasereport/export/print','PurchaseReportController@purchasereport_print');
+  Route::get('reports/purchasereport/export/pdf','PurchaseReportController@purchasereport_pdf');
+  Route::get('reports/purchasereport/export/excel','PurchaseReportController@purchasereport_excel');
+  Route::get('reports/purchasereport/export/csv','PurchaseReportController@purchasereport_csv');
+
   Route::get('reports/stockvalue','StockValueReportController@stockvalue');
   Route::get('reports/stockvalue/export/print','StockValueReportController@stockvalue_print');
   Route::get('reports/stockvalue/export/pdf','StockValueReportController@stockvalue_pdf');
@@ -252,6 +258,7 @@ Route::group(['prefix'=>'admin-nano','middleware' => ['auth','tenantdb']],functi
   Route::get('arreport','Api\SalesController@ar');
   Route::get('arcustreport','Api\SalesController@arcust');
   Route::get('stockvalues','Api\StockValueController@index');
+  Route::get('purchasereport','Api\PurchaseController@purchasereport');
 
   Route::controllers([
     '/'=>'ApiController'

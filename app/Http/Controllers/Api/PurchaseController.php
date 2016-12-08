@@ -108,4 +108,56 @@ class PurchaseController extends Controller
             return response()->json($transaction,500);
         }
     }
+
+    public function purchasereport(Request $request){
+        $query = MDPurchase::on(Auth::user()->db_name);
+
+        if($request->has('wh')){
+            $query->where('mdpurchasegoodsidwhouse',$request->wh);
+        }
+
+        if($request->has('goods')){
+            $query->where('mdpurchasegoodsid',$request->goods);
+        }
+
+        if($request->has('spl')){
+            $query->where('mdpurchasesupplierid',$request->spl);
+        }
+
+        $purchase_group = $query->groupBy('mdpurchasedate')->get();
+        $purchase_dates = [];
+        foreach($purchase_group as $grp){
+            array_push($purchase_dates,$grp->mdpurchasedate);
+        }
+
+        $purchases = [];
+        foreach ($purchase_dates as $dates) {
+            $header = array(
+                'data' => false,
+                'mdpurchasedate' => $dates
+            );
+            array_push($purchases,$header);
+            $grp_q = MDPurchase::on(Auth::user()->db_name)->where('mdpurchasedate',$dates);
+
+            if($request->has('wh')){
+                $grp_q->where('mdpurchasegoodsidwhouse',$request->wh);
+            }
+
+            if($request->has('goods')){
+                $grp_q->where('mdpurchasegoodsid',$request->goods);
+            }
+
+            if($request->has('spl')){
+                $grp_q->where('mdpurchasesupplierid',$request->spl);
+            }
+
+            $grp_data = $grp_q->get();
+
+            foreach($grp_data as $d){
+                $d['data'] = true;
+                array_push($purchases,$d);
+            }
+        }
+        return response()->json($purchases);
+    }
 }

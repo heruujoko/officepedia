@@ -114,6 +114,7 @@ class MHPurchase extends Model
                 $detail->mdpurchasegoodsdiscount = $g['disc'];
                 $detail->mdpurchasegoodsidwhouse = $g['warehouse'];
                 $detail->mdpurchasebuyprice = $g['buy_price'];
+                $detail->mdpurchasetax = $g['tax'];
                 $detail->save();
 
                 // update stock card
@@ -284,6 +285,7 @@ class MHPurchase extends Model
                     $invoice_detail->mdpurchasegoodsdiscount = $g['disc'];
                     $invoice_detail->mdpurchasegoodsidwhouse = $g['warehouse'];
                     $invoice_detail->mdpurchasebuyprice = $g['buy_price'];
+                    $invoice_detail->mdpurchasetax = $g['tax'];
                     $invoice_detail->void = 0;
                     $invoice_detail->save();
 
