@@ -6,6 +6,23 @@ import moment from 'moment'
 
 Vue.config.devtools = true
 
+Vue.directive('dpicker',{
+  inserted(el,binding,vnode){
+      let self = this;
+      $(el).datepicker({
+
+      }).on('change',(evt) => {
+        let modelName = vnode.data.directives.find(function(o) {
+            return o.name === 'model';
+        }).expression;
+        vnode.context[modelName] = evt.target.value;
+      });
+  },
+  update(el,binding,vnode){
+
+  }
+});
+
 Vue.directive('selecttwo',{
   inserted(el,binding,vnode){
       let self = this;
@@ -57,7 +74,8 @@ const stockvaluereport = new Vue({
         selected_goods:"",
         selected_warehouse:"",
         selected_sort:"",
-        num_format:"0,0.00"
+        num_format:"0,0.00",
+        invoice_date_end:moment().format('L')
     },
     computed:{
         label_branch(){
@@ -91,7 +109,7 @@ const stockvaluereport = new Vue({
         },
         sum_stockvalues(){
             let sums = _.sumBy(this.stockvalues,(o) => {
-                return o.mgoodsstock * o.mcogslastcogs;
+                return o.stock * o.cogs;
             });
             return sums;
         }
@@ -116,7 +134,7 @@ const stockvaluereport = new Vue({
 		},
         fetchStockValues(){
             var self = this;
-			Axios.get('/admin-api/stockvalues?goods='+this.selected_goods+"&spl="+this.selected_supplier).then(function(res){
+			Axios.get('/admin-api/stockvalues?goods='+this.selected_goods+"&spl="+this.selected_supplier+"&end="+this.invoice_date_end).then(function(res){
 				$('#loading_modal').modal('toggle');
 				self.stockvalues = res.data;
 			})
@@ -134,16 +152,16 @@ const stockvaluereport = new Vue({
 			});
         },
         printTable(){
-            window.open('/admin-nano/reports/stockvalue/export/print?goods='+this.selected_goods+"&spl="+this.selected_supplier);
+            window.open('/admin-nano/reports/stockvalue/export/print?goods='+this.selected_goods+"&spl="+this.selected_supplier+"&end="+this.invoice_date_end);
         },
         pdfTable(){
-            window.open('/admin-nano/reports/stockvalue/export/pdf?goods='+this.selected_goods+"&spl="+this.selected_supplier);
+            window.open('/admin-nano/reports/stockvalue/export/pdf?goods='+this.selected_goods+"&spl="+this.selected_supplier+"&end="+this.invoice_date_end);
         },
         excelTable(){
-            window.open('/admin-nano/reports/stockvalue/export/excel?goods='+this.selected_goods+"&spl="+this.selected_supplier);
+            window.open('/admin-nano/reports/stockvalue/export/excel?goods='+this.selected_goods+"&spl="+this.selected_supplier+"&end="+this.invoice_date_end);
         },
         csvTable(){
-            window.open('/admin-nano/reports/stockvalue/export/csv?goods='+this.selected_goods+"&spl="+this.selected_supplier);
+            window.open('/admin-nano/reports/stockvalue/export/csv?goods='+this.selected_goods+"&spl="+this.selected_supplier+"&end="+this.invoice_date_end);
         }
     },
     watch:{
@@ -160,6 +178,10 @@ const stockvaluereport = new Vue({
             this.fetchStockValues();
         },
         selected_branch(){
+            $('#loading_modal').modal('toggle');
+            this.fetchStockValues();
+        },
+        invoice_date_end(){
             $('#loading_modal').modal('toggle');
             this.fetchStockValues();
         }

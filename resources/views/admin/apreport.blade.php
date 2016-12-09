@@ -57,6 +57,11 @@
                                         <div id="apreportapp">
                                             <br>
                                             <div class="row">
+                                                <p class="col-md-1 report-label">Per</p>
+                                                <input v-dpicker v-model="invoice_date_end" type="text" class="small-date form-control" />
+                                            </div>
+                                            <br>
+                                            <div class="row">
                                                 <p class="col-md-1 report-label">Cabang</p>
                                                 <select v-selecttwo class="col-md-4" v-model="selected_branch">
                                                     <option value="">Semua</option>
@@ -91,6 +96,7 @@
                                                     <br>
                                                     <h4 class="text-center">{{ $config->msyscompname }}</h4>
                                                     <h4 class="text-center">Laporan Hutang Dagang</h4>
+                                                    <h4 class="text-center">Per @{{ invoice_date_end }}</h4>
                                                 </div>
                                             </div>
                                             <br>

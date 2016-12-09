@@ -70,7 +70,8 @@ const apreportapp = new Vue({
         selected_branch:"",
         selected_supplier:"",
         selected_sort:"",
-        num_format:"0,0.00"
+        num_format:"0,0.00",
+        invoice_date_end: moment().format('L')
     },
     methods:{
         fetchBranches(){
@@ -82,22 +83,22 @@ const apreportapp = new Vue({
             });
         },
         fetchAps(){
-            Axios.get('/admin-api/apreport?br='+this.selected_branch+'&spl='+this.selected_supplier).then((res) => {
+            Axios.get('/admin-api/apreport?br='+this.selected_branch+'&spl='+this.selected_supplier+"&end="+this.invoice_date_end).then((res) => {
                 $('#loading_modal').modal('toggle');
                 this.aps = res.data;
             });
         },
         printTable(){
-            window.open('/admin-nano/reports/stockvalue/export/print?goods='+this.selected_goods+"&spl="+this.selected_supplier);
+            window.open('/admin-nano/reports/apreport/export/print?br='+this.selected_branch+'&spl='+this.selected_supplier);
         },
         pdfTable(){
-            window.open('/admin-nano/reports/stockvalue/export/pdf?goods='+this.selected_goods+"&spl="+this.selected_supplier);
+            window.open('/admin-nano/reports/apreport/export/pdf?br='+this.selected_branch+'&spl='+this.selected_supplier);
         },
         excelTable(){
-            window.open('/admin-nano/reports/stockvalue/export/excel?goods='+this.selected_goods+"&spl="+this.selected_supplier);
+            window.open('/admin-nano/reports/apreport/export/excel?br='+this.selected_branch+'&spl='+this.selected_supplier);
         },
         csvTable(){
-            window.open('/admin-nano/reports/stockvalue/export/csv?goods='+this.selected_goods+"&spl="+this.selected_supplier);
+            window.open('/admin-nano/reports/apreport/export/csv?br='+this.selected_branch+'&spl='+this.selected_supplier);
         }
     },
     watch:{
@@ -106,6 +107,10 @@ const apreportapp = new Vue({
             this.fetchAps();
         },
         selected_branch(){
+            $('#loading_modal').modal('toggle');
+            this.fetchAps();
+        },
+        invoice_date_end(){
             $('#loading_modal').modal('toggle');
             this.fetchAps();
         }

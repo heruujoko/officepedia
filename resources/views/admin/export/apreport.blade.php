@@ -68,13 +68,11 @@
     </head>
     <body>
         <h5 class="text-center">{{ $company }}</h5>
-        <h5 class="text-center">Laporan Nilai Persediaan</h5>
+        <h5 class="text-center">Laporan Buku Piutang</h5>
         <h5 class="text-center">Per {{ $end }}</h5>
         <br>
-        <p class="filter-status">Cabang {{ $br }}</p>
         <p class="filter-status">Supplier {{ $spl }}</p>
-        <p class="filter-status">Barang {{ $goods }}</p>
-        <p class="filter-status">Gudang {{ $wh }}</p>
+        <p class="filter-status">Cabang {{ $br }}</p>
         <p class="header-status">User {{ Auth::user()->name }}</p>
         <p class="header-status">Tanggal Cetak {{ Carbon\Carbon::now() }}</p>
         </div>
@@ -82,29 +80,21 @@
         <table class="table" id="tableapi" style="width:100%">
             <thead>
                 <tr>
-                    <th>Kode Barang</th>
-                    <th>Nama Barang</th>
-                    <th>Saldo Stock</th>
-                    <th>Harga Beli</th>
-                    <th>Nilai Persediaan</th>
+                    <th>Kode Supplier</th>
+                    <th>Nama Supplier</th>
+                    <th>No Pembelian</th>
+                    <th>Tgl Invoice</th>
+                    <th>Tgl Jatuh Tempo</th>
+                    <th>Nilai Pembelian</th>
+                    <th>Outstanding</th>
+                    <th>Aging</th>
                 </tr>
             </thead>
             <tbody>
-                @foreach($stockvalues as $st)
-                <tr >
-                    <td>{{ $st->mstockcardgoodsid }}</td>
-                    <td>{{ $st->mstockcardgoodsname }}</td>
-                    <td>{{ $st->verbs }}</td>
-                    <td style="text-align:right">{{ number_format($st->cogs,$decimals,$dec_point,$thousands_sep) }}</td>
-                    <td style="text-align:right">{{ number_format(($st['stock'] * $st['cogs']),$decimals,$dec_point,$thousands_sep) }}</td>
-                </tr>
-                @endforeach
+
             </tbody>
             <thead>
-                <tr>
-                    <th colspan="4">TOTAL</th>
-                    <th style="text-align:right">{{ number_format($total,$decimals,$dec_point,$thousands_sep) }}</th>
-                </tr>
+
             </thead>
         </table>
         <script>

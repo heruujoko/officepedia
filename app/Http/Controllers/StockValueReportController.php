@@ -13,6 +13,10 @@ use PDF;
 use Excel;
 use App\Helper\UnitHelper;
 use Carbon\Carbon;
+use App\MStockCard;
+use App\MHPurchase;
+use App\MCOGS;
+use App\MGoods;
 
 class StockValueReportController extends Controller
 {
@@ -39,26 +43,66 @@ class StockValueReportController extends Controller
         $data['wh'] = 'Semua';
         $data['company'] = $data['config']->msyscompname;
 
-        $query = DB::connection(Auth::user()->db_name)->table('mgoods')
-        ->join('mcogs','mgoods.mgoodscode','=','mcogs.mcogsgoodscode');
+        $filter_invoices = [];
 
         if($request->has('spl')){
-            $query->where('mgoodssuppliercode',$request->spl);
-            $data['spl'] = MSupplier::on(Auth::user()->db_name)->where('msupplierid',$request->spl)->first()->msuppliername;
+            $ivs = MHPurchase::on(Auth::user()->db_name)->where('mhpurchasesupplierid',$request->spl)->get();
+            foreach($ivs as $iv){
+                array_push($filter_invoices,$iv->mhpurchaseno);
+            }
+        }
+
+        $stocks_query = MStockCard::on(Auth::user()->db_name);
+
+        if($request->has('spl')){
+            $stocks_query->whereIn('mstockcardtransno',$filter_invoices);
         }
 
         if($request->has('goods')){
-            $query->where('mgoodscode',$request->goods);
-            $data['goods'] = MGoods::on(Auth::user()->db_name)->where('mgoodscode',$request->goods)->first()->mgoodsname;
+            $stocks_query->where('mstockcardgoodsid',$request->goods);
         }
 
-        $stockvalues = $query->orderBy('mgoodscode','asc')->get();
-        $data['total'] = 0;
-        foreach($stockvalues as $st){
-            $st->verbs = UnitHelper::label($st,$st->mgoodsstock);
-            $data['total'] +=$st->mgoodsstock *$st->mcogslastcogs;
+        if($request->has('end')){
+            $stocks_query->whereDate('mstockcarddate','<=',Carbon::parse($request->end));
         }
-        $data['stockvalues'] = $stockvalues;
+
+        $stocks_group_goods = $stocks_query->groupBy('mstockcardgoodsid')->get();
+        $goods_group = [];
+        foreach ($stocks_group_goods as $st) {
+            array_push($goods_group,$st->mstockcardgoodsid);
+        }
+
+        $stocks = [];
+        foreach($goods_group as $grp){
+            $stck_q = MStockCard::on(Auth::user()->db_name)->where('mstockcardgoodsid',$grp);
+
+            if($request->has('end')){
+                $stocks_query->whereDate('mstockcarddate','<=',$request->end);
+            }
+
+            if($request->has('goods')){
+                $stocks_query->where('mstockcardgoodsid',$request->goods);
+            }
+
+            $stck = $stck_q->orderBy('created_at','desc')->first();
+
+            if($stck->mstockcardtranstype == 'Pembelian'){
+                $stck['stock'] = $stck->mstockcardstockin + $stck->mstockcardstocktotal;
+            } else {
+                $stck['stock'] = $stck->mstockcardstockout + $stck->mstockcardstocktotal;
+            }
+            $good = MGoods::on(Auth::user()->db_name)->where('mgoodscode',$stck->mstockcardgoodsid)->first();
+            $stck['verbs'] = UnitHelper::label($good,$stck['stock']);
+            $stck['cogs'] = MCOGS::on(Auth::user()->db_name)->where('mcogsgoodscode',$stck->mstockcardgoodsid)->first()->mcogslastcogs;
+            array_push($stocks,$stck);
+        }
+        $data['total'] = 0;
+        foreach($stocks as $st){
+            $st->verbs = UnitHelper::label($st,$st->mgoodsstock);
+            $data['total'] += $st['stock'] * $st['cogs'];
+        }
+        $data['stockvalues'] = $stocks;
+        $data['end'] = $request->end;
         return view('admin.export.stockvalues',$data);
     }
 
@@ -78,26 +122,66 @@ class StockValueReportController extends Controller
         $data['wh'] = 'Semua';
         $data['company'] = $data['config']->msyscompname;
 
-        $query = DB::connection(Auth::user()->db_name)->table('mgoods')
-        ->join('mcogs','mgoods.mgoodscode','=','mcogs.mcogsgoodscode');
+        $filter_invoices = [];
 
         if($request->has('spl')){
-            $query->where('mgoodssuppliercode',$request->spl);
-            $data['spl'] = MSupplier::on(Auth::user()->db_name)->where('msupplierid',$request->spl)->first()->msuppliername;
+            $ivs = MHPurchase::on(Auth::user()->db_name)->where('mhpurchasesupplierid',$request->spl)->get();
+            foreach($ivs as $iv){
+                array_push($filter_invoices,$iv->mhpurchaseno);
+            }
+        }
+
+        $stocks_query = MStockCard::on(Auth::user()->db_name);
+
+        if($request->has('spl')){
+            $stocks_query->whereIn('mstockcardtransno',$filter_invoices);
         }
 
         if($request->has('goods')){
-            $query->where('mgoodscode',$request->goods);
-            $data['goods'] = MGoods::on(Auth::user()->db_name)->where('mgoodscode',$request->goods)->first()->mgoodsname;
+            $stocks_query->where('mstockcardgoodsid',$request->goods);
         }
 
-        $stockvalues = $query->orderBy('mgoodscode','asc')->get();
-        $data['total'] = 0;
-        foreach($stockvalues as $st){
-            $st->verbs = UnitHelper::label($st,$st->mgoodsstock);
-            $data['total'] +=$st->mgoodsstock *$st->mcogslastcogs;
+        if($request->has('end')){
+            $stocks_query->whereDate('mstockcarddate','<=',Carbon::parse($request->end));
         }
-        $data['stockvalues'] = $stockvalues;
+
+        $stocks_group_goods = $stocks_query->groupBy('mstockcardgoodsid')->get();
+        $goods_group = [];
+        foreach ($stocks_group_goods as $st) {
+            array_push($goods_group,$st->mstockcardgoodsid);
+        }
+
+        $stocks = [];
+        foreach($goods_group as $grp){
+            $stck_q = MStockCard::on(Auth::user()->db_name)->where('mstockcardgoodsid',$grp);
+
+            if($request->has('end')){
+                $stocks_query->whereDate('mstockcarddate','<=',$request->end);
+            }
+
+            if($request->has('goods')){
+                $stocks_query->where('mstockcardgoodsid',$request->goods);
+            }
+
+            $stck = $stck_q->orderBy('created_at','desc')->first();
+
+            if($stck->mstockcardtranstype == 'Pembelian'){
+                $stck['stock'] = $stck->mstockcardstockin + $stck->mstockcardstocktotal;
+            } else {
+                $stck['stock'] = $stck->mstockcardstockout + $stck->mstockcardstocktotal;
+            }
+            $good = MGoods::on(Auth::user()->db_name)->where('mgoodscode',$stck->mstockcardgoodsid)->first();
+            $stck['verbs'] = UnitHelper::label($good,$stck['stock']);
+            $stck['cogs'] = MCOGS::on(Auth::user()->db_name)->where('mcogsgoodscode',$stck->mstockcardgoodsid)->first()->mcogslastcogs;
+            array_push($stocks,$stck);
+        }
+        $data['total'] = 0;
+        foreach($stocks as $st){
+            $st->verbs = UnitHelper::label($st,$st->mgoodsstock);
+            $data['total'] += $st['stock'] * $st['cogs'];
+        }
+        $data['stockvalues'] = $stocks;
+        $data['end'] = $request->end;
         $pdf = PDF::loadview('admin/export/stockvalues',$data);
 		return $pdf->setPaper('a4', 'potrait')->download('Laporan Nilai Persediaan.pdf');
     }
@@ -118,26 +202,66 @@ class StockValueReportController extends Controller
         $this->data['wh'] = 'Semua';
         $this->data['company'] = $this->data['config']->msyscompname;
 
-        $query = DB::connection(Auth::user()->db_name)->table('mgoods')
-        ->join('mcogs','mgoods.mgoodscode','=','mcogs.mcogsgoodscode');
+        $filter_invoices = [];
 
         if($request->has('spl')){
-            $query->where('mgoodssuppliercode',$request->spl);
-            $this->data['spl'] = MSupplier::on(Auth::user()->db_name)->where('msupplierid',$request->spl)->first()->msuppliername;
+            $ivs = MHPurchase::on(Auth::user()->db_name)->where('mhpurchasesupplierid',$request->spl)->get();
+            foreach($ivs as $iv){
+                array_push($filter_invoices,$iv->mhpurchaseno);
+            }
+        }
+
+        $stocks_query = MStockCard::on(Auth::user()->db_name);
+
+        if($request->has('spl')){
+            $stocks_query->whereIn('mstockcardtransno',$filter_invoices);
         }
 
         if($request->has('goods')){
-            $query->where('mgoodscode',$request->goods);
-            $this->data['goods'] = MGoods::on(Auth::user()->db_name)->where('mgoodscode',$request->goods)->first()->mgoodsname;
+            $stocks_query->where('mstockcardgoodsid',$request->goods);
         }
 
-        $stockvalues = $query->orderBy('mgoodscode','asc')->get();
-        $this->data['total'] = 0;
-        foreach($stockvalues as $st){
-            $st->verbs = UnitHelper::label($st,$st->mgoodsstock);
-            $this->data['total'] +=$st->mgoodsstock *$st->mcogslastcogs;
+        if($request->has('end')){
+            $stocks_query->whereDate('mstockcarddate','<=',Carbon::parse($request->end));
         }
-        $this->data['stockvalues'] = $stockvalues;
+
+        $stocks_group_goods = $stocks_query->groupBy('mstockcardgoodsid')->get();
+        $goods_group = [];
+        foreach ($stocks_group_goods as $st) {
+            array_push($goods_group,$st->mstockcardgoodsid);
+        }
+
+        $stocks = [];
+        foreach($goods_group as $grp){
+            $stck_q = MStockCard::on(Auth::user()->db_name)->where('mstockcardgoodsid',$grp);
+
+            if($request->has('end')){
+                $stocks_query->whereDate('mstockcarddate','<=',$request->end);
+            }
+
+            if($request->has('goods')){
+                $stocks_query->where('mstockcardgoodsid',$request->goods);
+            }
+
+            $stck = $stck_q->orderBy('created_at','desc')->first();
+
+            if($stck->mstockcardtranstype == 'Pembelian'){
+                $stck['stock'] = $stck->mstockcardstockin + $stck->mstockcardstocktotal;
+            } else {
+                $stck['stock'] = $stck->mstockcardstockout + $stck->mstockcardstocktotal;
+            }
+            $good = MGoods::on(Auth::user()->db_name)->where('mgoodscode',$stck->mstockcardgoodsid)->first();
+            $stck['verbs'] = UnitHelper::label($good,$stck['stock']);
+            $stck['cogs'] = MCOGS::on(Auth::user()->db_name)->where('mcogsgoodscode',$stck->mstockcardgoodsid)->first()->mcogslastcogs;
+            array_push($stocks,$stck);
+        }
+        $this->data['total'] = 0;
+        foreach($stocks as $st){
+            $st->verbs = UnitHelper::label($st,$st->mgoodsstock);
+            $this->data['total'] += $st['stock'] * $st['cogs'];
+        }
+        $this->data['stockvalues'] = $stocks;
+        $this->data['end'] = $request->end;
         $this->count = 0;
         return Excel::create('Laporan Nilai Persediaan',function($excel){
 			$excel->sheet('Laporan Nilai Persediaan',function($sheet){
@@ -153,7 +277,15 @@ class StockValueReportController extends Controller
                 $sheet->cell('A2',function($cell){
                     $cell->setAlignment('center');
                 });
-                $this->count+=2;
+
+                $this->count++;
+                $sheet->mergeCells('A3:E3');
+                $sheet->row($this->count,array('Per '.$this->data['end']));
+                $sheet->cell('A3',function($cell){
+                    $cell->setAlignment('center');
+                });
+
+                $this->count+=1;
 
                 $sheet->cell('A4',function($cell){
                     $cell->setValue('Cabang');
@@ -206,11 +338,11 @@ class StockValueReportController extends Controller
                 foreach($this->data['stockvalues'] as $sv){
                     $this->count++;
                     $sheet->row($this->count,array(
-                        $sv->mgoodscode,
-                        $sv->mgoodsname,
-                        $sv->verbs,
-                        $sv->mcogslastcogs,
-                        $sv->mgoodsstock * $sv->mcogslastcogs,
+                        $sv->mstockcardgoodsid,
+                        $sv->mstockcardgoodsname,
+                        $sv['verbs'],
+                        $sv['cogs'],
+                        $sv['stock'] * $sv['cogs'],
                     ));
                 }
 
@@ -244,26 +376,66 @@ class StockValueReportController extends Controller
         $this->data['wh'] = 'Semua';
         $this->data['company'] = $this->data['config']->msyscompname;
 
-        $query = DB::connection(Auth::user()->db_name)->table('mgoods')
-        ->join('mcogs','mgoods.mgoodscode','=','mcogs.mcogsgoodscode');
+        $filter_invoices = [];
 
         if($request->has('spl')){
-            $query->where('mgoodssuppliercode',$request->spl);
-            $this->data['spl'] = MSupplier::on(Auth::user()->db_name)->where('msupplierid',$request->spl)->first()->msuppliername;
+            $ivs = MHPurchase::on(Auth::user()->db_name)->where('mhpurchasesupplierid',$request->spl)->get();
+            foreach($ivs as $iv){
+                array_push($filter_invoices,$iv->mhpurchaseno);
+            }
+        }
+
+        $stocks_query = MStockCard::on(Auth::user()->db_name);
+
+        if($request->has('spl')){
+            $stocks_query->whereIn('mstockcardtransno',$filter_invoices);
         }
 
         if($request->has('goods')){
-            $query->where('mgoodscode',$request->goods);
-            $this->data['goods'] = MGoods::on(Auth::user()->db_name)->where('mgoodscode',$request->goods)->first()->mgoodsname;
+            $stocks_query->where('mstockcardgoodsid',$request->goods);
         }
 
-        $stockvalues = $query->orderBy('mgoodscode','asc')->get();
-        $this->data['total'] = 0;
-        foreach($stockvalues as $st){
-            $st->verbs = UnitHelper::label($st,$st->mgoodsstock);
-            $this->data['total'] +=$st->mgoodsstock *$st->mcogslastcogs;
+        if($request->has('end')){
+            $stocks_query->whereDate('mstockcarddate','<=',Carbon::parse($request->end));
         }
-        $this->data['stockvalues'] = $stockvalues;
+
+        $stocks_group_goods = $stocks_query->groupBy('mstockcardgoodsid')->get();
+        $goods_group = [];
+        foreach ($stocks_group_goods as $st) {
+            array_push($goods_group,$st->mstockcardgoodsid);
+        }
+
+        $stocks = [];
+        foreach($goods_group as $grp){
+            $stck_q = MStockCard::on(Auth::user()->db_name)->where('mstockcardgoodsid',$grp);
+
+            if($request->has('end')){
+                $stocks_query->whereDate('mstockcarddate','<=',$request->end);
+            }
+
+            if($request->has('goods')){
+                $stocks_query->where('mstockcardgoodsid',$request->goods);
+            }
+
+            $stck = $stck_q->orderBy('created_at','desc')->first();
+
+            if($stck->mstockcardtranstype == 'Pembelian'){
+                $stck['stock'] = $stck->mstockcardstockin + $stck->mstockcardstocktotal;
+            } else {
+                $stck['stock'] = $stck->mstockcardstockout + $stck->mstockcardstocktotal;
+            }
+            $good = MGoods::on(Auth::user()->db_name)->where('mgoodscode',$stck->mstockcardgoodsid)->first();
+            $stck['verbs'] = UnitHelper::label($good,$stck['stock']);
+            $stck['cogs'] = MCOGS::on(Auth::user()->db_name)->where('mcogsgoodscode',$stck->mstockcardgoodsid)->first()->mcogslastcogs;
+            array_push($stocks,$stck);
+        }
+        $this->data['total'] = 0;
+        foreach($stocks as $st){
+            $st->verbs = UnitHelper::label($st,$st->mgoodsstock);
+            $this->data['total'] += $st['stock'] * $st['cogs'];
+        }
+        $this->data['stockvalues'] = $stocks;
+        $this->data['end'] = $request->end;
         $this->count = 0;
         return Excel::create('Laporan Nilai Persediaan',function($excel){
 			$excel->sheet('Laporan Nilai Persediaan',function($sheet){
@@ -279,7 +451,15 @@ class StockValueReportController extends Controller
                 $sheet->cell('A2',function($cell){
                     $cell->setAlignment('center');
                 });
-                $this->count+=2;
+
+                $this->count++;
+                $sheet->mergeCells('A3:E3');
+                $sheet->row($this->count,array('Per '.$this->data['end']));
+                $sheet->cell('A3',function($cell){
+                    $cell->setAlignment('center');
+                });
+
+                $this->count+=1;
 
                 $sheet->cell('A4',function($cell){
                     $cell->setValue('Cabang');
@@ -332,11 +512,11 @@ class StockValueReportController extends Controller
                 foreach($this->data['stockvalues'] as $sv){
                     $this->count++;
                     $sheet->row($this->count,array(
-                        $sv->mgoodscode,
-                        $sv->mgoodsname,
-                        $sv->verbs,
-                        $sv->mcogslastcogs,
-                        $sv->mgoodsstock * $sv->mcogslastcogs,
+                        $sv->mstockcardgoodsid,
+                        $sv->mstockcardgoodsname,
+                        $sv['verbs'],
+                        $sv['cogs'],
+                        $sv['stock'] * $sv['cogs'],
                     ));
                 }
 

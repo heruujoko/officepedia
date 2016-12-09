@@ -57,6 +57,11 @@
                                         <div id="stockvalueapp">
                                             <br>
                                             <div class="row">
+                                                <p class="col-md-1 report-label">Per</p>
+                                                <input v-dpicker v-model="invoice_date_end" type="text" class="small-date form-control" />
+                                            </div>
+                                            <br>
+                                            <div class="row">
                                                 <p class="col-md-1 report-label">Cabang</p>
                                                 <select v-selecttwo class="col-md-4" v-model="selected_branch">
                                                     <option value="">Semua</option>
@@ -105,6 +110,7 @@
                                                     <br>
                                                     <h4 class="text-center">{{ $config->msyscompname }}</h4>
                                                     <h4 class="text-center">Laporan Nilai Persediaan</h4>
+                                                    <h4 class="text-center">Per @{{ invoice_date_end }}</h4>
                                                 </div>
                                             </div>
                                             <br>
@@ -135,11 +141,11 @@
                                                         </thead>
                                                         <tbody>
                                                             <tr v-for="st in stockvalues">
-                                                                <td>@{{ st.mgoodscode }}</td>
-                                                                <td>@{{ st.mgoodsname }}</td>
+                                                                <td>@{{ st.mstockcardgoodsid }}</td>
+                                                                <td>@{{ st.mstockcardgoodsname }}</td>
                                                                 <td>@{{ st.verbs }}</td>
-                                                                <td v-priceformatlabel="num_format" style="text-align:right">@{{ st.mcogslastcogs }}</td>
-                                                                <td v-priceformatlabel="num_format" style="text-align:right">@{{ st.mgoodsstock * st.mcogslastcogs }}</td>
+                                                                <td v-priceformatlabel="num_format" style="text-align:right">@{{ st.cogs }}</td>
+                                                                <td v-priceformatlabel="num_format" style="text-align:right">@{{ st.stock * st.cogs }}</td>
                                                             </tr>
                                                         </tbody>
                                                         <thead>

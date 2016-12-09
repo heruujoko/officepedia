@@ -23,6 +23,10 @@ class APController extends Controller
             $header_query->where('mapcardsupplierid',$request->spl);
         }
 
+        if($request->has('end')){
+            $header_query->whereDate('mapcardtdate','<=',Carbon::parse($request->end));
+        }
+
         $headers = $header_query->groupBy('mapcardsupplierid')->orderBy('created_at')->get();
         $dates = [];
         foreach($headers as $hd){
@@ -36,7 +40,21 @@ class APController extends Controller
                 'mapcardsuppliername' => $d['mapcardsuppliername'],
             );
             array_push($reports,$h);
-            $dtl = MAPCard::on(Auth::user()->db_name)->where('mapcardsupplierid',$d['mapcardsupplierid'])->orderBy('created_at')->get();
+            $dtl_query = MAPCard::on(Auth::user()->db_name)->where('mapcardsupplierid',$d['mapcardsupplierid'])->orderBy('created_at');
+            if($request->has('br')){
+
+            }
+
+            if($request->has('spl')){
+                $dtl_query->where('mapcardsupplierid',$request->spl);
+            }
+
+            if($request->has('end')){
+                $dtl_query->whereDate('mapcardtdate','<=',Carbon::parse($request->end));
+            }
+
+            $dtl = $dtl_query->get();
+
             foreach ($dtl as $dt) {
                 $dt['data'] = true;
                 $dt['aging'] = Carbon::parse($dt->mapcardtdate)->diffInDays(Carbon::now());
