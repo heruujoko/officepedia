@@ -57,7 +57,7 @@ class MCategorycustomerController extends Controller
 					));
 				}
 			});
-		})->export('xlsx');
+		})->export('xls');
 	}
 	public function pdf(){
 		$data['mcategory'] = MCategorycustomer::on(Auth::user()->db_name)->where('void',0)->get();

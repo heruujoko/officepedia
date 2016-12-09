@@ -85,7 +85,7 @@ class MSupplierController extends Controller
 					));
 				}
 			});
-		})->export('xlsx');
+		})->export('xls');
 		}
 	public function pdf(){
 		$data['supplier'] = MSupplier::on(Auth::user()->db_name)->where('void',0)->get();

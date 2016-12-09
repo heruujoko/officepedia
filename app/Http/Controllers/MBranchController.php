@@ -46,7 +46,7 @@ class MBranchController extends Controller
           ));
         }
       });
-    })->export('xlsx');
+    })->export('xls');
   }
 
   public function pdf(){

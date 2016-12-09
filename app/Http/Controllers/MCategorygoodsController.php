@@ -53,7 +53,7 @@ class MCategorygoodsController extends Controller
 					));
 				}
 			});
-		})->export('xlsx');
+		})->export('xls');
 	}
 	public function pdf(){
 		$data['mcategory'] = MCategorygoods::where('void',0)->get();

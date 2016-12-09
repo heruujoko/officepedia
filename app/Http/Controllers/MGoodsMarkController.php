@@ -52,7 +52,7 @@ class MGoodsMarkController extends Controller
   					));
   				}
   			});
-  		})->export('xlsx');
+  		})->export('xls');
   	}
   	public function pdf(){
   		$data['mcategory'] = MGoodsMark::on(Auth::user()->db_name)->where('void',0)->get();

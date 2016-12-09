@@ -14,8 +14,15 @@ class CreateMcategoryfixedassets extends Migration
     {
         Schema::create('mcategoryfixedassets', function (Blueprint $table) {
         $table->increments('id');
-        $table->string('category_name');
-        $table->string('information');
+        $table->string('mcategoryfixedassetgroupcode');
+        $table->string('mcategoryfixedassetgroupname');
+        $table->string('mcategoryfixedassetage');
+        $table->string('mcategoryfixedassetshrink');
+        $table->string('mcategoryfixedassetdepreciaton');
+        $table->string('mcategoryfixedassetcoaasset');
+        $table->string('mcategoryfixedassetcoaaccudepr');
+        $table->string('mcategoryfixedassetcoadeprexp');
+        $table->string('mcategoryfixedassetremark');
         $table->string('void');
         $table->timestamps();
         });

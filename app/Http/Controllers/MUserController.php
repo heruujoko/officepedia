@@ -59,7 +59,7 @@ class MUserController extends Controller
 					));
 				}
 			});
-		})->export('xlsx');
+		})->export('xls');
 	}
 	public function pdf(){
     DBHelper::configureConnection(Auth::user()->db_alias);

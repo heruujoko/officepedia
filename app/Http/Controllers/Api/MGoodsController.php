@@ -53,7 +53,7 @@ class MGoodsController extends Controller
         <input type="hidden" name="id" value="@{{ task.id }}"> <font style="font-family: arial;">Hapus </font></a>     </div></center>';
         })->addColumn('no',function($MGoods){
             $this->iteration++;
-            return "<span>".$this->iteration."</span>";
+            return "<span style=\"float:right\">".$this->iteration."</span>";
         })
         ->addColumn('category',function($MGoods){
             return "<span>".$MGoods->category()->category_name."</span>";
@@ -111,9 +111,12 @@ class MGoodsController extends Controller
     public function store(Request $request){
       $MGoods = "";
 			try{
-				$MGoods = new MGoods($request->all());
+
+    $validate = MGoods::on(Auth::user()->db_name)->where('mgoodsname',$request->mgoodsname)->orWhere('mgoodsbarcode',$request->mgoodsbarcode)->where('void',0)->first();
+        if ($validate == null) {
+        $MGoods = new MGoods($request->all());
         $MGoods->setConnection(Auth::user()->db_name);
-				$MGoods->void = 0;
+        $MGoods->void = 0;
         $MGoods->mgoodsactive = $this->convertBoolean($request->mgoodsactive);
         $MGoods->mgoodscategory = intval($request->mgoodscategory);
         $MGoods->mgoodstype = intval($request->mgoodstype);
@@ -126,9 +129,10 @@ class MGoodsController extends Controller
         $MGoods->mgoodssetmaxdisc = $this->convertBoolean($request->mgoodssetmaxdisc);
         $MGoods->mgoodstaxable = $this->convertBoolean($request->mgoodstaxable);
         $MGoods->mgoodssuppliercode = $request->mgoodssuppliercode;
-		$MGoods->save();
+        $MGoods->save();
         $MGoods->mgoodssuppliername = $MGoods->supplier()->msuppliername;
         $MGoods->save();
+
         if($request->autogen == "true"){
           $MGoods->autogenproc();
           $MGoods->save();
@@ -146,7 +150,11 @@ class MGoodsController extends Controller
           $MGoods->revert_creation();
           return response()->json($e,400);
         }
-			} catch(Exception $e){
+      }
+      else{
+        return response()->json('',400);
+      }
+      }catch(Exception $e){
         return response()->json($e,400);
 			}
 

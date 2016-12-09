@@ -77,23 +77,137 @@
 								{{ csrf_field() }}
 								<div class="container">
 								</br>
+								<div class="row">
+								<h4 class="pajak-text"></h4>
+								<div class="col-md-11 box-group1">
+								<div class="box-pajak-wrapper">
+
 								<div style="height: 21px;" class="form-group">
-									<label class="col-md-3 control-label"><b>Nama Kategori</b> (<font color="red">*</font>) &nbsp  :</label>
+									<label class="col-md-3 control-label"><b>Kode Grup</b> (<font color="red">*</font>) &nbsp  :</label>
 									<div class="col-md-7">
 										<div class="icon-addon addon-md">
-											<input id="insert-category_name" value="{{old('category_name')}}" name="category_name" class="form-control forminput" placeholder="Nama Kategori" type="text" required data-parsley-required-message="Field Ini Tidak Boleh Kosong" @if (Session::has('autofocus')) autofocus @endif >
-											<label for="mgoodsgroup1" class="glyphicon glyphicon-info-sign" rel="tooltip" title="Nama Kategori"></label>
+											<input id="insert-mcategoryfixedassetgroupcode" value="{{old('mcategoryfixedassetgroupcode')}}" name="mcategoryfixedassetgroupcode" class="form-control forminput" placeholder="Kode Grup" type="text" required data-parsley-required-message="Field Ini Tidak Boleh Kosong" @if (Session::has('autofocus')) autofocus @endif >
+											<label for="mgoodsgroup1" class="glyphicon glyphicon-info-sign" rel="tooltip" title="Kode Grup"></label>
 										</div>
 									</div>
 								</div>
-								<div class="form-group">
-									<label class="col-md-3 control-label"><b>Keterangan</b> &nbsp  :</label>
+								<div style="height: 21px;" class="form-group">
+									<label class="col-md-3 control-label"><b>Nama Grup</b> (<font color="red">*</font>) &nbsp  :</label>
 									<div class="col-md-7">
 										<div class="icon-addon addon-md">
-											<input id="insert-information" value="{{old('information')}}" name="information" class="form-control forminput" placeholder="Keterangan" type="text" @if (Session::has('autofocus')) autofocus @endif >
-											<label for="mgoodsgroup1" class="glyphicon glyphicon-search" rel="tooltip" title="Keterangan"></label>
+											<input id="insert-mcategoryfixedassetgroupname" value="{{old('mcategoryfixedassetgroupname')}}" name="mcategoryfixedassetgroupname" class="form-control forminput" placeholder="Nama Grup" type="text" required data-parsley-required-message="Field Ini Tidak Boleh Kosong" @if (Session::has('autofocus')) autofocus @endif >
+											<label for="mgoodsgroup1" class="glyphicon glyphicon-info-sign" rel="tooltip" title="Nama Grup"></label>
 										</div>
 									</div>
+								</div>
+								<div style="height: 21px;" class="form-group">
+									<label class="col-md-3 control-label"><b>Umur Ekonomis (Tahun)</b> (<font color="red">*</font>) &nbsp  :</label>
+									<div class="col-md-7">
+										<div class="icon-addon addon-md">
+											<select id="insert-mcategoryfixedassetage" class="form-control select2">
+											<?php
+											    for ($i=1; $i<=100; $i++)
+											    {
+											        ?>
+											            <option value="<?php echo $i;?>"><?php echo $i;?></option>
+											        <?php
+											    }
+											?>
+											</select>
+										</div>
+									</div>
+								</div>
+								
+
+																</div>
+															</div>
+														</div>
+
+								<div class="row">
+								<h4 class="pajak-text"></h4>
+								<div class="col-md-11 box-group1">
+								<div class="box-pajak-wrapper">
+
+								<div style="height: 21px;" class="form-group">
+									<label class="col-md-3 control-label"><b>Mengalami Penyusutan</b>  &nbsp  :</label>
+									<div class="col-md-7">
+										<div class="icon-addon addon-md">
+											<div class="yesnoswitch">
+                                        <input id="insert-mcategoryfixedassetshrink" type="checkbox" name="mcategoryfixedassetshrink" class="yesnoswitch-checkbox" id="insert-mcategoryfixedassetshrink">
+                                        <label class="yesnoswitch-label" for="insert-mcategoryfixedassetshrink">
+                                            <span class="yesnoswitch-inner"></span>
+                                            <span class="yesnoswitch-switch"></span>
+                                        </label>
+                                    </div>
+                                  </div>
+									</div>
+								</div>
+
+								<div style="height: 21px;" class="form-group">
+									<label class="col-md-3 control-label"><b>Metode Depresiasi</b>  &nbsp  :</label>
+									<div class="col-md-7">
+										<div class="icon-addon addon-md">
+											<select disabled id="insert-mcategoryfixedassetdepreciaton" class="form-control select2">
+												<option value="Metode Garis Lurus">Metode Garis Lurus</option>
+												<option value="Metode Saldo Menurun">Metode Saldo Menurun</option>
+											</select>
+										</div>
+									</div>
+								</div>
+
+								<div style="height: 21px;" class="form-group">
+									<label class="col-md-3 control-label"><b>COA Harta</b>  &nbsp  :</label>
+									<div class="col-md-7">
+										<div class="icon-addon addon-md">
+											<div class="icon-addon addon-md">
+											<select disabled id="insert-mcategoryfixedassetcoaasset" class="form-control select2">
+											@foreach($mcoa as $m)
+												<option value="{{ $m->mcoacode }}">{{ $m->mcoaname }}</option>
+											@endforeach
+											</select>
+										</div>
+										</div>
+									</div>
+								</div>
+
+								<div style="height: 21px;" class="form-group">
+									<label class="col-md-3 control-label"><b>COA Akumulasi Penyusutan</b>  &nbsp  :</label>
+									<div class="col-md-7">
+										<div class="icon-addon addon-md">
+											<select id="insert-mcategoryfixedassetcoaaccudepr" class="form-control select2">
+											@foreach($mcoa as $m)
+												<option value="{{ $m->mcoacode }}">{{ $m->mcoaname }}</option>
+											@endforeach
+											</select>
+										</div>
+									</div>
+								</div>
+
+									<div style="height: 21px;" class="form-group">
+									<label class="col-md-3 control-label"><b>COA Beban Penyusutan</b>  &nbsp  :</label>
+									<div class="col-md-7">
+										<div class="icon-addon addon-md">
+											<select id="insert-mcategoryfixedassetcoadeprexp" class="form-control select2">
+											@foreach($mcoa as $m)
+												<option value="{{ $m->mcoacode }}">{{ $m->mcoaname }}</option>
+											@endforeach
+											</select>
+										</div>
+									</div>
+								</div>
+
+								<div style="height: 21px;" class="form-group">
+									<label class="col-md-3 control-label"><b>Keterangan</b>  &nbsp  :</label>
+									<div class="col-md-7">
+										<div class="icon-addon addon-md">
+											<input id="insert-mcategoryfixedassetremark" value="{{old('mcategoryfixedassetremark')}}" name="mcategoryfixedassetremark" class="form-control forminput" placeholder="Keterangan" type="text" required data-parsley-required-message="Field Ini Tidak Boleh Kosong" @if (Session::has('autofocus')) autofocus @endif >
+											<label for="mgoodsgroup1" class="glyphicon glyphicon-info-sign" rel="tooltip" title="Keterangan"></label>
+										</div>
+									</div>
+								</div>
+
+								</div>
+								</div>
 								</div>
 								<input type="hidden" name="void" value="0">
 								<center>
@@ -142,23 +256,137 @@
 									}
 								</style>
                 <input type="hidden" id="mfixedassetsid">
+								<div class="row">
+								<h4 class="pajak-text"></h4>
+								<div class="col-md-11 box-group1">
+								<div class="box-pajak-wrapper">
+
 								<div style="height: 21px;" class="form-group">
-									<label class="col-md-3 control-label"><b>Nama Kategori</b> (<font color="red">*</font>) &nbsp  :</label>
+									<label class="col-md-3 control-label"><b>Kode Grup</b> (<font color="red">*</font>) &nbsp  :</label>
 									<div class="col-md-7">
 										<div class="icon-addon addon-md">
-											<input id="edit-category_name" value="{{old('category_name')}}" name="category_name" class="form-control forminput" placeholder="Nama Kategori" type="text" required data-parsley-required-message="Field Ini Tidak Boleh Kosong" @if (Session::has('autofocus')) autofocus @endif >
-											<label for="mgoodsgroup1" class="glyphicon glyphicon-info-sign" rel="tooltip" title="Nama Kategori"></label>
+											<input id="edit-mcategoryfixedassetgroupcode" value="{{old('mcategoryfixedassetgroupcode')}}" name="mcategoryfixedassetgroupcode" class="form-control forminput" placeholder="Kode Grup" type="text" required data-parsley-required-message="Field Ini Tidak Boleh Kosong" @if (Session::has('autofocus')) autofocus @endif >
+											<label for="mgoodsgroup1" class="glyphicon glyphicon-info-sign" rel="tooltip" title="Kode Grup"></label>
 										</div>
 									</div>
 								</div>
-								<div class="form-group">
-									<label class="col-md-3 control-label"><b>Keterangan</b> &nbsp  :</label>
+								<div style="height: 21px;" class="form-group">
+									<label class="col-md-3 control-label"><b>Nama Grup</b> (<font color="red">*</font>) &nbsp  :</label>
 									<div class="col-md-7">
 										<div class="icon-addon addon-md">
-											<input id="edit-information" value="{{old('information')}}" name="information" class="form-control forminput" placeholder="Keterangan" type="text" @if (Session::has('autofocus')) autofocus @endif >
-											<label for="mgoodsgroup1" class="glyphicon glyphicon-search" rel="tooltip" title="Keterangan"></label>
+											<input id="edit-mcategoryfixedassetgroupname" value="{{old('mcategoryfixedassetgroupname')}}" name="mcategoryfixedassetgroupname" class="form-control forminput" placeholder="Nama Grup" type="text" required data-parsley-required-message="Field Ini Tidak Boleh Kosong" @if (Session::has('autofocus')) autofocus @endif >
+											<label for="mgoodsgroup1" class="glyphicon glyphicon-info-sign" rel="tooltip" title="Nama Grup"></label>
 										</div>
 									</div>
+								</div>
+								<div style="height: 21px;" class="form-group">
+									<label class="col-md-3 control-label"><b>Umur Ekonomis (Tahun)</b> (<font color="red">*</font>) &nbsp  :</label>
+									<div class="col-md-7">
+										<div class="icon-addon addon-md">
+											<select id="insert-mcategoryfixedassetage" class="form-control select2">
+											<?php
+											    for ($i=1; $i<=100; $i++)
+											    {
+											        ?>
+											            <option value="<?php echo $i;?>"><?php echo $i;?></option>
+											        <?php
+											    }
+											?>
+											</select>
+										</div>
+									</div>
+								</div>
+								
+
+																</div>
+															</div>
+														</div>
+
+								<div class="row">
+								<h4 class="pajak-text"></h4>
+								<div class="col-md-11 box-group1">
+								<div class="box-pajak-wrapper">
+
+								<div style="height: 21px;" class="form-group">
+									<label class="col-md-3 control-label"><b>Mengalami Penyusutan</b>  &nbsp  :</label>
+									<div class="col-md-7">
+										<div class="icon-addon addon-md">
+											<div class="yesnoswitch">
+                                        <input id="edit-mcategoryfixedassetshrink" type="checkbox" name="mcategoryfixedassetshrink" class="yesnoswitch-checkbox" id="edit-mcategoryfixedassetshrink">
+                                        <label class="yesnoswitch-label" for="edit-mcategoryfixedassetshrink">
+                                            <span class="yesnoswitch-inner"></span>
+                                            <span class="yesnoswitch-switch"></span>
+                                        </label>
+                                    </div>
+                                  </div>
+									</div>
+								</div>
+
+								<div style="height: 21px;" class="form-group">
+									<label class="col-md-3 control-label"><b>Metode Depresiasi</b>  &nbsp  :</label>
+									<div class="col-md-7">
+										<div class="icon-addon addon-md">
+											<select id="edit-mcategoryfixedassetdepreciaton" class="form-control select2">
+												<option value="Metode Garis Lurus">Metode Garis Lurus</option>
+												<option value="Metode Saldo Menurun">Metode Saldo Menurun</option>
+											</select>
+										</div>
+									</div>
+								</div>
+
+								<div style="height: 21px;" class="form-group">
+									<label class="col-md-3 control-label"><b>COA Harta</b>  &nbsp  :</label>
+									<div class="col-md-7">
+										<div class="icon-addon addon-md">
+											<div class="icon-addon addon-md">
+											<select id="edit-mcategoryfixedassetcoaasset" class="form-control select2">
+											@foreach($mcoa as $m)
+												<option value="{{ $m->mcoacode }}">{{ $m->mcoaname }}</option>
+											@endforeach
+											</select>
+										</div>
+										</div>
+									</div>
+								</div>
+
+								<div style="height: 21px;" class="form-group">
+									<label class="col-md-3 control-label"><b>COA Akumulasi Penyusutan</b>  &nbsp  :</label>
+									<div class="col-md-7">
+										<div class="icon-addon addon-md">
+											<select id="edit-mcategoryfixedassetcoaaccudepr" class="form-control select2">
+											@foreach($mcoa as $m)
+												<option value="{{ $m->mcoacode }}">{{ $m->mcoaname }}</option>
+											@endforeach
+											</select>
+										</div>
+									</div>
+								</div>
+
+									<div style="height: 21px;" class="form-group">
+									<label class="col-md-3 control-label"><b>COA Beban Penyusutan</b>  &nbsp  :</label>
+									<div class="col-md-7">
+										<div class="icon-addon addon-md">
+											<select id="edit-mcategoryfixedassetcoadeprexp" class="form-control select2">
+											@foreach($mcoa as $m)
+												<option value="{{ $m->mcoacode }}">{{ $m->mcoaname }}</option>
+											@endforeach
+											</select>
+										</div>
+									</div>
+								</div>
+
+								<div style="height: 21px;" class="form-group">
+									<label class="col-md-3 control-label"><b>Keterangan</b>  &nbsp  :</label>
+									<div class="col-md-7">
+										<div class="icon-addon addon-md">
+											<input id="edit-mcategoryfixedassetremark" value="{{old('mcategoryfixedassetremark')}}" name="mcategoryfixedassetremark" class="form-control forminput" placeholder="Keterangan" type="text" required data-parsley-required-message="Field Ini Tidak Boleh Kosong" @if (Session::has('autofocus')) autofocus @endif >
+											<label for="mgoodsgroup1" class="glyphicon glyphicon-info-sign" rel="tooltip" title="Keterangan"></label>
+										</div>
+									</div>
+								</div>
+
+								</div>
+								</div>
 								</div>
 								<input type="hidden" name="void" value="0">
 								<center>
@@ -203,23 +431,137 @@
 										border-color: #2F9ACF;
 									}
 								</style>
+								<div class="row">
+								<h4 class="pajak-text"></h4>
+								<div class="col-md-11 box-group1">
+								<div class="box-pajak-wrapper">
+
 								<div style="height: 21px;" class="form-group">
-									<label class="col-md-3 control-label"><b>Nama Kategori</b> (<font color="red">*</font>) &nbsp  :</label>
+									<label class="col-md-3 control-label"><b>Kode Grup</b> (<font color="red">*</font>) &nbsp  :</label>
 									<div class="col-md-7">
 										<div class="icon-addon addon-md">
-											<input disabled id="view-category_name" value="{{old('category_name')}}" name="category_name" class="form-control forminput" placeholder="Nama Kategori" type="text" required data-parsley-required-message="Field Ini Tidak Boleh Kosong" @if (Session::has('autofocus')) autofocus @endif >
-											<label for="mgoodsgroup1" class="glyphicon glyphicon-info-sign" rel="tooltip" title="Nama Kategori"></label>
+											<input disabled id="view-mcategoryfixedassetgroupcode" value="{{old('mcategoryfixedassetgroupcode')}}" name="mcategoryfixedassetgroupcode" class="form-control forminput" placeholder="Kode Grup" type="text" required data-parsley-required-message="Field Ini Tidak Boleh Kosong" @if (Session::has('autofocus')) autofocus @endif >
+											<label for="mgoodsgroup1" class="glyphicon glyphicon-info-sign" rel="tooltip" title="Kode Grup"></label>
 										</div>
 									</div>
 								</div>
-								<div class="form-group">
-									<label class="col-md-3 control-label"><b>Keterangan</b> &nbsp  :</label>
+								<div style="height: 21px;" class="form-group">
+									<label class="col-md-3 control-label"><b>Nama Grup</b> (<font color="red">*</font>) &nbsp  :</label>
 									<div class="col-md-7">
 										<div class="icon-addon addon-md">
-											<input disabled id="view-information" value="{{old('information')}}" name="information" class="form-control forminput" placeholder="Keterangan" type="text" @if (Session::has('autofocus')) autofocus @endif >
-											<label for="mgoodsgroup1" class="glyphicon glyphicon-search" rel="tooltip" title="Keterangan"></label>
+											<input disabled id="view-mcategoryfixedassetgroupname" value="{{old('mcategoryfixedassetgroupname')}}" name="mcategoryfixedassetgroupname" class="form-control forminput" placeholder="Nama Grup" type="text" required data-parsley-required-message="Field Ini Tidak Boleh Kosong" @if (Session::has('autofocus')) autofocus @endif >
+											<label for="mgoodsgroup1" class="glyphicon glyphicon-info-sign" rel="tooltip" title="Nama Grup"></label>
 										</div>
 									</div>
+								</div>
+								<div style="height: 21px;" class="form-group">
+									<label class="col-md-3 control-label"><b>Umur Ekonomis (Tahun)</b> (<font color="red">*</font>) &nbsp  :</label>
+									<div class="col-md-7">
+										<div class="icon-addon addon-md">
+											<select disabled id="insert-mcategoryfixedassetage" class="form-control select2">
+											<?php
+											    for ($i=1; $i<=100; $i++)
+											    {
+											        ?>
+											            <option value="<?php echo $i;?>"><?php echo $i;?></option>
+											        <?php
+											    }
+											?>
+											</select>
+										</div>
+									</div>
+								</div>
+								
+
+																</div>
+															</div>
+														</div>
+
+								<div class="row">
+								<h4 class="pajak-text"></h4>
+								<div class="col-md-11 box-group1">
+								<div class="box-pajak-wrapper">
+
+								<div style="height: 21px;" class="form-group">
+									<label class="col-md-3 control-label"><b>Mengalami Penyusutan</b>  &nbsp  :</label>
+									<div class="col-md-7">
+										<div class="icon-addon addon-md">
+											<div class="yesnoswitch">
+                                        <input disabled id="view-mcategoryfixedassetshrink" type="checkbox" name="mcategoryfixedassetshrink" class="yesnoswitch-checkbox" id="view-mcategoryfixedassetshrink">
+                                        <label class="yesnoswitch-label" for="view-mcategoryfixedassetshrink">
+                                            <span class="yesnoswitch-inner"></span>
+                                            <span class="yesnoswitch-switch"></span>
+                                        </label>
+                                    </div>
+                                  </div>
+									</div>
+								</div>
+
+								<div style="height: 21px;" class="form-group">
+									<label class="col-md-3 control-label"><b>Metode Depresiasi</b>  &nbsp  :</label>
+									<div class="col-md-7">
+										<div class="icon-addon addon-md">
+											<select disabled id="view-mcategoryfixedassetdepreciaton" class="form-control select2">
+												<option value="Metode Garis Lurus">Metode Garis Lurus</option>
+												<option value="Metode Saldo Menurun">Metode Saldo Menurun</option>
+											</select>
+										</div>
+									</div>
+								</div>
+
+								<div style="height: 21px;" class="form-group">
+									<label class="col-md-3 control-label"><b>COA Harta</b>  &nbsp  :</label>
+									<div class="col-md-7">
+										<div class="icon-addon addon-md">
+											<div class="icon-addon addon-md">
+											<select disabled id="view-mcategoryfixedassetcoaasset" class="form-control select2">
+											@foreach($mcoa as $m)
+												<option value="{{ $m->mcoacode }}">{{ $m->mcoaname }}</option>
+											@endforeach
+											</select>
+										</div>
+										</div>
+									</div>
+								</div>
+
+								<div style="height: 21px;" class="form-group">
+									<label class="col-md-3 control-label"><b>COA Akumulasi Penyusutan</b>  &nbsp  :</label>
+									<div class="col-md-7">
+										<div class="icon-addon addon-md">
+											<select disabled id="view-mcategoryfixedassetcoaaccudepr" class="form-control select2">
+											@foreach($mcoa as $m)
+												<option value="{{ $m->mcoacode }}">{{ $m->mcoaname }}</option>
+											@endforeach
+											</select>
+										</div>
+									</div>
+								</div>
+
+									<div style="height: 21px;" class="form-group">
+									<label class="col-md-3 control-label"><b>COA Beban Penyusutan</b>  &nbsp  :</label>
+									<div class="col-md-7">
+										<div class="icon-addon addon-md">
+											<select disabled id="view-mcategoryfixedassetcoadeprexp" class="form-control select2">
+											@foreach($mcoa as $m)
+												<option value="{{ $m->mcoacode }}">{{ $m->mcoaname }}</option>
+											@endforeach
+											</select>
+										</div>
+									</div>
+								</div>
+
+								<div style="height: 21px;" class="form-group">
+									<label class="col-md-3 control-label"><b>Keterangan</b>  &nbsp  :</label>
+									<div class="col-md-7">
+										<div class="icon-addon addon-md">
+											<input disabled id="view-mcategoryfixedassetremark" value="{{old('mcategoryfixedassetremark')}}" name="mcategoryfixedassetremark" class="form-control forminput" placeholder="Keterangan" type="text" required data-parsley-required-message="Field Ini Tidak Boleh Kosong" @if (Session::has('autofocus')) autofocus @endif >
+											<label for="mgoodsgroup1" class="glyphicon glyphicon-info-sign" rel="tooltip" title="Keterangan"></label>
+										</div>
+									</div>
+								</div>
+
+								</div>
+								</div>
 								</div>
 								<center>
 									<div class="row">
@@ -269,17 +611,45 @@
 											<input type="text" class="form-control" placeholder="Filter No" />
 										</th>
 										<th class="hasinput" style="width:9%">
-											<input type="text" class="form-control" placeholder="Filter Nama Kategori" />
+											<input type="text" class="form-control" placeholder="Filter Kode Group" />
+										</th>
+										<th class="hasinput" style="width:9%">
+											<input type="text" class="form-control" placeholder="Filter Nama Group" />
+										</th>
+										<th class="hasinput" style="width:9%">
+											<input type="text" class="form-control" placeholder="Filter Umur Ekonomis (Tahun)" />
+										</th>
+										<th class="hasinput" style="width:9%">
+											<input type="text" class="form-control" placeholder="Filter Mengalami Penyusutan" />
+										</th>
+										<th class="hasinput" style="width:9%">
+											<input type="text" class="form-control" placeholder="Filter Metode Depresiasi" />
+										</th>
+										<th class="hasinput" style="width:9%">
+											<input type="text" class="form-control" placeholder="Filter COA Harta" />
+										</th>
+										<th class="hasinput" style="width:9%">
+											<input type="text" class="form-control" placeholder="Filter COA Akumulasi Penyusutan" />
+										</th>
+										<th class="hasinput" style="width:9%">
+											<input type="text" class="form-control" placeholder="Filter COA Beban Penyusutan" />
 										</th>
                     <th class="hasinput" style="width:9%">
 											<input type="text" class="form-control" placeholder="Filter Keterangan" />
 										</th>
 									</tr>
 									<tr>
-										<th data-hide="action"><center>Aksi</center></th>
+					<th data-hide="action"><center>Aksi</center></th>
                     <th data-hide="no"><center>No</center></th>
-                    <th data-hide="category_name"><center>Nama Kategori</center></th>
-										<th data-hide="information"><center>Keterangan</center></th>
+                    <th data-hide="mcategoryfixedassetgroupcode"><center>Kode Group</center></th>
+                    <th data-hide="mcategoryfixedassetgroupname"><center>Nama Group</center></th>
+                    <th data-hide="mcategoryfixedassetage"><center>Umur Ekonomis (Tahun)</center></th>
+                    <th data-hide="mcategoryfixedassetshrink"><center>Mengalami Penyusutan</center></th>
+                    <th data-hide="mcategoryfixedassetdepreciaton"><center>Metode Depresiasi</center></th>
+                    <th data-hide="mcategoryfixedassetcoaasset"><center>COA Harta</center></th>
+                    <th data-hide="mcategoryfixedassetcoaaccudepr"><center>COA Akumulasi Penyusutan</center></th>
+                    <th data-hide="mcategoryfixedassetcoadeprexp"><center>COA Beban Penyusutan</center></th>
+					<th data-hide="mcategoryfixedassetremark"><center>Keterangan</center></th>
 									</tr>
 								</thead>
 								<tbody>
@@ -302,7 +672,7 @@
                               buttons: [ {
                                     extend: 'copyHtml5',
                                     exportOptions: {
-                                        columns: [ 1,2,3]
+                                        columns: [ 1, 2, 3, 4, 5, 6, 7, 8, 9]
                                     }
                                   },
                                   {
@@ -326,7 +696,7 @@
                                   {
                                       extend: 'print',
                                       exportOptions: {
-                                          columns: [ 1, 2, 3] //setting kolom mana yg mau di export
+                                          columns: [ 1, 2, 3, 4, 5, 6, 7, 8, 9] //setting kolom mana yg mau di export
                                       }
 
                                   },
@@ -342,8 +712,15 @@
           										columns: [
                               {data: 'action', name:'action', searchable: false, orderable: false},
                               {data: 'no', no: 'no' },
-                              {data: 'category_name', category_name: 'category_name'},
-							  {data: 'information', information: 'information'}
+                              {data: 'mcategoryfixedassetgroupcode', mcategoryfixedassetgroupcode: 'mcategoryfixedassetgroupcode'},
+							  {data: 'mcategoryfixedassetgroupname', mcategoryfixedassetgroupname: 'mcategoryfixedassetgroupname'},
+							  {data: 'mcategoryfixedassetage', mcategoryfixedassetage: 'mcategoryfixedassetage'},
+							  {data: 'mcategoryfixedassetshrink', mcategoryfixedassetshrink: 'mcategoryfixedassetshrink'},
+							  {data: 'mcategoryfixedassetdepreciaton', mcategoryfixedassetdepreciaton: 'mcategoryfixedassetdepreciaton'},
+							  {data: 'mcategoryfixedassetcoaasset', mcategoryfixedassetcoaasset: 'mcategoryfixedassetcoaasset'},
+							  {data: 'mcategoryfixedassetcoaaccudepr', mcategoryfixedassetcoaaccudepr: 'mcategoryfixedassetcoaaccudepr'},
+							  {data: 'mcategoryfixedassetcoadeprexp', mcategoryfixedassetcoadeprexp: 'mcategoryfixedassetcoadeprexp'},
+							  {data: 'mcategoryfixedassetremark', mcategoryfixedassetremark: 'mcategoryfixedassetremark'}
           										]
 									       });
 
@@ -390,6 +767,7 @@
               						  title: "Terhapus!",
               						  text: "Data Anda Berhasil Terhapus.",
               						  type: "success",
+              						  timer: 1000
             						  });
                           $('#forminput').show();
                     			$('#formview').hide();
@@ -442,4 +820,28 @@
 @stop
 @section('js')
 <script src="{{ url('/master/mcategoryfixedassets.js') }}"></script>
+<script src="{{ url('/js/bootstrap-switch.min.js') }}"></script>
+@stop
+@section('css')
+<link rel="stylesheet" href="{{ url('/css/onoff.css') }}">
+  	<link rel="stylesheet" href="{{ url('/css/yesno.css') }}">
+  	<link rel="stylesheet" href="{{ url('/css/bootstrap-datepicker3.min.css') }}">
+<style type="text/css">
+	.box-group1 {
+			width: 92%;
+			border: 4px #ddd solid;
+			padding: 2%;
+			margin-left: 50px;
+		}
+		.box-pajak-wrapper {
+			margin-left: -110px;
+		}
+		.pajak-text {
+			color: #777;
+			margin-left: 4%;
+			margin-bottom: 1%;
+			margin-top: 3%;
+		}
+
+</style>
 @stop

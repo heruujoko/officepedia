@@ -52,7 +52,7 @@ class MEmployeeLevelController extends Controller
   					));
   				}
   			});
-  		})->export('xlsx');
+  		})->export('xls');
   	}
 
   	public function pdf(){

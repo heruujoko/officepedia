@@ -89,7 +89,7 @@ class MCOAController extends Controller
             }
           }
         });
-      })->export('xlsx');
+      })->export('xls');
 
     }
 

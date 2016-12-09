@@ -91,7 +91,7 @@ class MCustomerController extends Controller
 					));
 				}
 			});
-		})->export('xlsx');
+		})->export('xls');
 	}
 
 	public function pdf(){

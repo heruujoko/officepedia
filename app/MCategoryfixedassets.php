@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Builder;
 class MCategoryfixedassets extends Model
 {
     protected $table = 'mcategoryfixedassets';
-    protected $fillable = ['category_name','information'];
+    protected $fillable = ['mcategoryfixedassetgroupcode','mcategoryfixedassetgroupname','mcategoryfixedassetage','mcategoryfixedassetshrink','mcategoryfixedassetdepreciaton','mcategoryfixedassetcoaasset','mcategoryfixedassetcoaaccudepr','mcategoryfixedassetcoadeprexp','mcategoryfixedassetremark'];
 
     protected static function boot(){
       parent::boot();

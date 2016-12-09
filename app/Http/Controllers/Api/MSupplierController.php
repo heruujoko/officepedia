@@ -28,7 +28,7 @@ class MSupplierController extends Controller
         <input type="hidden" name="id" value="@{{ task.id }}"> <font style="font-family: arial;">Hapus </font></a>     </div></center>';
         })->addColumn('no',function($msupplier){
             $this->iteration++;
-            return "<span>".$this->iteration."</span>";
+            return "<span style=\"float:right\">".$this->iteration."</span>";
         })->addColumn('akun',function($msupplier){
             return $msupplier->akun()->mcoaname;
         })->addColumn('category',function($msupplier){

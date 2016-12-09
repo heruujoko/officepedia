@@ -290,13 +290,13 @@
           									</div>
                           </div>
                           <div style="height: 21px;" class="form-group">
-                         {{--    <label class="col-md-2 control-label"><b>Default TOP</b>  &nbsp  :</label>
+                            <label class="col-md-2 control-label"><b>Default TOP</b>  &nbsp  :</label>
           									<div  class="col-md-4">
           										<div class="icon-addon addon-md">
           											<input id="insert-mcustomerdefaultar" value="0" name="mcustomerdefaultar" class="form-control forminput" placeholder="Default" type="text" @if (Session::has('autofocus')) autofocus @endif >
           											<label for="mgoodsgroup1" class="glyphicon glyphicon-chevron-right" rel="tooltip" title="Maksimal Nota"></label>
           										</div>
-          									</div> --}}
+          									</div>
                           </div>
                         </div>
                       </div>
@@ -572,13 +572,13 @@
           									</div>
                           </div>
                           <div style="height: 21px;" class="form-group">
-                         {{--    <label class="col-md-2 control-label"><b>Default TOP</b>  &nbsp  :</label>
+                            <label class="col-md-2 control-label"><b>Default TOP</b>  &nbsp  :</label>
           									<div  class="col-md-4">
           										<div class="icon-addon addon-md">
           											<input id="edit-mcustomerdefaultar" value="0" name="mcustomerdefaultar" class="form-control forminput" placeholder="Default" type="text" @if (Session::has('autofocus')) autofocus @endif >
           											<label for="mgoodsgroup1" class="glyphicon glyphicon-chevron-right" rel="tooltip" title="Maksimal Nota"></label>
           										</div>
-          									</div> --}}
+          									</div>
                           </div>
                         </div>
                       </div>
@@ -853,13 +853,13 @@
                             </div>
                           </div>
                           <div style="height: 21px;" class="form-group">
-                           {{--  <label class="col-md-2 control-label"><b>Default TOP</b>  &nbsp  :</label>
+                            <label class="col-md-2 control-label"><b>Default TOP</b>  &nbsp  :</label>
                             <div  class="col-md-4">
                               <div class="icon-addon addon-md">
                                 <input disabled id="view-mcustomerdefaultar" value="0" name="mcustomerdefaultar" class="form-control forminput" placeholder="Default" type="text" @if (Session::has('autofocus')) autofocus @endif >
                                 <label for="mgoodsgroup1" class="glyphicon glyphicon-chevron-right" rel="tooltip" title="Maksimal Nota"></label>
                               </div>
-                            </div> --}}
+                            </div>
                           </div>
                         </div>
                       </div>

@@ -26,7 +26,7 @@ $(document).ready(function(){
   $.ajax({
     url : API_URL+'/barang/pkp',
     type : 'GET',
-    succesfs : function(response){
+    success : function(response){
       if (response.msyscomptaxable==true) {
         $('#insert-mgoodstaxable').attr('checked',true);
         $('#insert-mgoodstaxppn').removeAttr('disabled');

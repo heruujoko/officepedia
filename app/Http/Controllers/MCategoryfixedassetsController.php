@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\MCategoryfixedassets;
+use App\MCOA;
 use Excel;
 use PDF;
 use Auth;
@@ -15,11 +16,12 @@ class MCategoryfixedassetsController extends Controller
 {
     public function index(){
       DBHelper::configureConnection(Auth::user()->db_alias);
+      	$data['mcoa'] = MCOA::on(Auth::user()->db_name)->get();
     	$data['active'] = 'categoryfixedassets';
-		  $data['section'] = 'Kategori Asset Tetap';
+		$data['section'] = 'Kategori Asset Tetap';
     	$data['activetab'] = 1;
-		  $data['MCategorygoods'] = MCategoryfixedassets::on(Auth::user()->db_name)->get();
-		  $data['id'] = null;
+		$data['MCategorygoods'] = MCategoryfixedassets::on(Auth::user()->db_name)->get();
+		$data['id'] = null;
 	    return view('admin/viewmcategoryfixedassets',$data);
 	  }
 
@@ -31,12 +33,12 @@ class MCategoryfixedassetsController extends Controller
 			$excel->sheet('Master Kategori Aset Tetap',function($sheet){
 				$this->count++;
 				$sheet->row($this->count,array(
-					'Nama Kategori','Barcode'
+					'Kode Group','Nama Group','Umur Ekonomis (Tahun)','Mengalami Penyusutan','Metode Depresiasi','COA Harta','COA Akumulasi Penyusutan','COA Beban Penyusutan','Keterangan'
 				));
 				foreach($this->mcategory as $cust){
 					$this->count++;
 					$sheet->row($this->count,array(
-						$cust->category_name,$cust->information
+						$cust->mcategoryfixedassetgroupcode,$cust->mcategoryfixedassetgroupname,$cust->mcategoryfixedassetage,$cust->mcategoryfixedassetshrink,$cust->mcategoryfixedassetdepreciaton,$cust->mcategoryfixedassetcoaasset,$cust->mcategoryfixedassetcoaaccudepr,$cust->mcategoryfixedassetcoadeprexp,$cust->mcategoryfixedassetremark
 					));
 				}
 			});
@@ -50,21 +52,21 @@ class MCategoryfixedassetsController extends Controller
 			$excel->sheet('Master Kategori Aset Tetap',function($sheet){
 				$this->count++;
 				$sheet->row($this->count,array(
-				'Nama Kategori','Barcode'
+					'Kode Group','Nama Group','Umur Ekonomis (Tahun)','Mengalami Penyusutan','Metode Depresiasi','COA Harta','COA Akumulasi Penyusutan','COA Beban Penyusutan','Keterangan'
 				));
 				foreach($this->mcategory as $cust){
 					$this->count++;
 					$sheet->row($this->count,array(
-						$cust->category_name,$cust->information
+						$cust->mcategoryfixedassetgroupcode,$cust->mcategoryfixedassetgroupname,$cust->mcategoryfixedassetage,$cust->mcategoryfixedassetshrink,$cust->mcategoryfixedassetdepreciaton,$cust->mcategoryfixedassetcoaasset,$cust->mcategoryfixedassetcoaaccudepr,$cust->mcategoryfixedassetcoadeprexp,$cust->mcategoryfixedassetremark
 					));
 				}
 			});
-		})->export('xlsx');
+		})->export('xls');
 	}
 	public function pdf(){
     DBHelper::configureConnection(Auth::user()->db_alias);
 		$data['mcategory'] = MCategoryfixedassets::on(Auth::user()->db_name)->where('void',0)->get();
-		$pdf = PDF::loadview('admin/export/mcategory',$data);
+		$pdf = PDF::loadview('admin/export/mcategoryfixedassets',$data);
 		return $pdf->setPaper('a3', 'landscape')->download('Master Kategori Aset Tetap.pdf');
 	}
 }

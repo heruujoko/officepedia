@@ -46,7 +46,7 @@ class CashBankListController extends Controller
             ));
           }
         });
-      })->export('xlsx');
+      })->export('xls');
 
     }
 
@@ -115,7 +115,7 @@ class CashBankListController extends Controller
             ));
           }
         });
-      })->export('xlsx');
+      })->export('xls');
 
     }
 

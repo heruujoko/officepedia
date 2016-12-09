@@ -83,7 +83,7 @@ class MEmployeeController extends Controller
   					));
   				}
   			});
-  		})->export('xlsx');
+  		})->export('xls');
   	}
 
     public function pdf(){

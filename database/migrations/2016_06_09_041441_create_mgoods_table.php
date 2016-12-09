@@ -16,7 +16,7 @@ class CreateMgoodsTable extends Migration
             $table->increments('id');
             $table->string('mgoodscode');
             $table->string('mgoodsbarcode');
-            $table->string('mgoodsname')->unique();
+            $table->string('mgoodsname');
             $table->string('mgoodsalias');
             $table->string('mgoodsremark');
             $table->string('mgoodsunit');

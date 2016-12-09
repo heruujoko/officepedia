@@ -28,7 +28,7 @@ class MTaxController extends Controller
       <input type="hidden" name="id" value="@{{ task.id }}"> <font style="font-family: arial;">Hapus </font></a>     </div></center>';
     })->addColumn('no',function($mtax){
           $this->iteration++;
-          return "<span>".$this->iteration."</span>";
+          return "<span style=\"float:right\">".$this->iteration."</span>";
       })->addColumn('percent',function($mtax){
           return "<span>".$mtax->mtaxtpercentage."% </span>";
       })

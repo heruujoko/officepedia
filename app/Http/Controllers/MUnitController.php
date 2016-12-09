@@ -52,7 +52,7 @@ class MUnitController extends Controller
           ));
         }
       });
-    })->export('xlsx');
+    })->export('xls');
   }
 
   public function pdf(){

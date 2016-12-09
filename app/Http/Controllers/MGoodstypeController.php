@@ -53,7 +53,7 @@ public function excel(){
           ));
         }
       });
-    })->export('xlsx');
+    })->export('xls');
   }
 
   public function pdf(){
