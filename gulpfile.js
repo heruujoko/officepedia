@@ -23,4 +23,5 @@ elixir(mix => {
     mix.webpack('arreport.js');
     mix.webpack('stockvaluereport.js');
     mix.webpack('purchasereport.js');
+    mix.webpack('apreport.js');
 });

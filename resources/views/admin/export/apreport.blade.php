@@ -91,10 +91,36 @@
                 </tr>
             </thead>
             <tbody>
-
+                @foreach($aps as $ap)
+                <tr>
+                    @if($ap['data'] == false)
+                        <td>{{ $ap['mapcardsupplierid'] }}</td>
+                        <td>{{ $ap['mapcardsuppliername'] }}</td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    @else
+                        <td></td>
+                        <td></td>
+                        <td>{{ $ap->mapcardtransno }}</td>
+                        <td>{{ $ap->mapcardtdate }}</td>
+                        <td>{{ $ap->mapcardduedate }}</td>
+                        <td>{{ number_format($ap->mapcardtotalinv,$decimals,$dec_point,$thousands_sep) }}</td>
+                        <td>{{ number_format($ap->mapcardoutstanding,$decimals,$dec_point,$thousands_sep) }}</td>
+                        <td>{{ $ap->aging }}</td>
+                    @endif
+                </tr>
+                @endforeach
             </tbody>
             <thead>
-
+                <tr>
+                    <th colspan="5">TOTAL</th>
+                    <th>{{ number_format($total_iv,$decimals,$dec_point,$thousands_sep) }}</th>
+                    <th>{{ number_format($total_out,$decimals,$dec_point,$thousands_sep) }}</th>
+                </tr>
             </thead>
         </table>
         <script>
