@@ -2,14 +2,14 @@
   <div>
       <div class="row" v-show="mode != 'insert'" v-on:click="toInsertMode">
           <button class="btn btn-default pull-right" style="margin-right:4%">Kembali</button>
-      </div>  
+      </div>
     <div class="row">
       <div class="form form-horizontal" style="margin-top:20px">
         <div class="col-md-8">
           <div class="form-group">
             <label class="col-md-2 control-label">Pelanggan</label>
             <div class="col-md-8">
-              <select v-bind:disabled="!notview" v-selecttwo="pelanggan_label" v-model="invoice_customer">
+              <select v-bind:disabled="disable_customer" v-selecttwo="pelanggan_label" v-model="invoice_customer">
                 <option v-for="c in customers" :value="c.id">{{ c.mcustomername }}</option>
               </select>
             </div>
@@ -85,10 +85,10 @@
                 <tr v-for="item in invoice_goods">
                   <td>{{ item.goods.mgoodscode }}</td>
                   <td>{{ item.goods.mgoodsname }}</td>
-                  <td v-priceformatlabel="num_format">{{ item.goods.mgoodspriceout }}</td>
+                  <td v-priceformatlabel="num_format">{{ item.sell_price }}</td>
                   <td>{{ item.usage }}</td>
                   <td>{{ item.usage_label }}</td>
-                  <td v-priceformatlabel="num_format">{{ item.usage * item.goods.mgoodspriceout }}</td>
+                  <td v-priceformatlabel="num_format">{{ item.usage * item.sell_price }}</td>
                   <td v-priceformatlabel="num_format">{{ item.disc }}</td>
                   <td v-priceformatlabel="num_format">{{ item.subtotal }}</td>
                   <td v-if="notview"><a v-on:click="editGoods(item.goods.id)"><span style="color:lightblue">Edit</span></a> <a v-on:click="removeGoods(item.goods.id)"><span style="color:red">Hapus</span></a></td>
@@ -163,7 +163,7 @@
                       </div>
                     </div>
                   </div>
-                  <div class="form-group">
+                  <div class="form-group" v-if="detail_goods_unit2_conv != 0">
                     <label v-if="detail_goods_unit3_conv == 0" class="control-label col-md-2">Kuantitas</label>
                     <div class="col-md-2" v-if="detail_goods_unit3_conv != 0"></div>
                     <div class="col-md-8">
@@ -174,23 +174,20 @@
                     </div>
                   </div>
                   <div class="form-group">
-                    <div class="col-md-8 col-md-offset-2">
+                    <label v-if="detail_goods_unit2_conv == 0" class="control-label col-md-2">Kuantitas</label>
+                    <div class="col-md-2" v-if="detail_goods_unit2_conv != 0"></div>
+                    <div class="col-md-8">
                       <div class="input-group">
                         <input v-bind:id="conv_1_id" class="form-control forminput" v-bind:placeholder="detail_goods_unit1_label" type="text" v-model="detail_goods_unit1">
                         <span class="input-group-addon" id="sizing-addon2" style="font-size:11px;">{{ detail_goods_unit1_label }}</span>
                       </div>
                     </div>
                   </div>
-                  <div class="form-group">
-                    <label class="control-label col-md-2">Total Qty</label>
-                    <div class="col-md-8">
-                      <input placeholder="Kuantitas" class="form-control forminput" value="1" type="text" id="insertdetailgoodsqty" v-model="detail_qty"/>
-                    </div>
-                  </div>
+                  <input placeholder="Kuantitas" class="form-control forminput" value="1" type="hidden" id="insertdetailgoodsqty" v-model="detail_qty"/>
                   <div class="form-group">
                     <label class="control-label col-md-2">Harga Satuan</label>
                     <div class="col-md-8">
-                      <input v-priceformat="num_format" class="form-control pricelabel" disabled type="text" id="insertdetailgoodsprice" v-model="detail_goods.mgoodspriceout"/>
+                      <input v-bind:disabled="lock_sell_price" v-priceformatsatuan="num_format" class="form-control pricelabel" type="text" id="insertdetailgoodsprice" v-model="sell_price"/>
                     </div>
                   </div>
                   <div class="form-group">
@@ -204,7 +201,7 @@
                     <div class="col-md-4">
                       <div class="input-group">
                         <span class="input-group-addon" id="sizing-addon2" style="font-size:8px;">Rp</span>
-                        <input v-priceformattype="num_format" v-bind:id="rp_id" v-model="rp" class="form-control forminput pricelabel" placeholder="Rupiah" type="text">
+                        <input v-priceformatdiskon="num_format" v-bind:id="rp_id" v-model="rp" class="form-control forminput pricelabel" placeholder="Rupiah" type="text">
                       </div>
                     </div>
                   </div>
@@ -305,6 +302,7 @@
         invoice_customer:{},
         selected_customer: {},
         invoice_goods:[],
+        sell_price:0,
         invoice_type:"Penjualan",
         invoice_date:moment().format('L'),
         invoice_due_date:"",
@@ -312,7 +310,9 @@
         invoice_disc:0,
         invoice_tax:0,
         invoice_no:"",
-        invoice_auto: true
+        invoice_auto: true,
+        lock_sell_price: false,
+        disable_customer: false
       }
     },
     computed:{
@@ -354,6 +354,11 @@
     },
     },
     methods: {
+        disableCustomer(){
+            if(this.selected_customer != ""){
+                this.disable_customer = true;
+            }
+        },
         toInsertMode(){
             this.resetDetail();
             this.resetInvoice();
@@ -380,6 +385,11 @@
             this.num_format = "0.0,00";
           } else {
             this.num_format = "0.0";
+          }
+          if(conf.msysinvlocksellingprice == 1){
+              this.lock_sell_price = true;
+          } else {
+              this.lock_sell_price = false;
           }
         });
       },
@@ -444,6 +454,8 @@
             item.detail_goods_unit1_conv = res.data[i].mdinvoiceunit1conv;
             item.detail_goods_unit1_label = res.data[i].mdinvoiceunit1label;
 
+            this.sell_price = res.data[i].mgoodspriceout;
+
             let usage_label = ""
             if(item.detail_goods_unit3 != 0){
                 usage_label += item.detail_goods_unit3 +" "+item.detail_goods_unit3_label;
@@ -456,6 +468,10 @@
             }
 
             item.usage_label = usage_label;
+
+            // find goods price
+            let gds = _.find(this.goods,{ mgoodscode: res.data[i].mdinvoicegoodsid});
+            item.sell_price = gds.mgoodspriceout;
 
             item.usage = res.data[i].mdinvoicegoodsqty;
             item.goods.mgoodsname = res.data[i].mdinvoicegoodsname;
@@ -528,6 +544,8 @@
               setTimeout(function () { $('#'+self.conv_1_id).focus(); }, 1);
           }
 
+          this.sell_price = res.data.mgoodspriceout;
+
           if(this.mode == 'edit'){
             $('#edit_detail_rp').on('keyup',function(){
                 self.countPercent();
@@ -589,16 +607,13 @@
           this.rp = 0;
         }
         this.unit = 1;
-        this.detail_total = (this.detail_goods.mgoodspriceout * parseInt(this.detail_qty) * parseInt(this.unit)) - parseInt(this.rp);
+        this.detail_total = (numeral().unformat(this.sell_price) * parseInt(this.detail_qty) * parseInt(this.unit)) - parseInt(this.rp);
       },
       countRp(){
         this.rp = (parseInt(this.percentage) / 100) * this.detail_total;
       },
       countPercent(){
-        console.log(numeral().unformat(this.rp));
         this.percentage = (numeral().unformat(this.rp)/this.detail_total) * 100;
-        console.log(this.detail_total);
-        console.log(this.percentage);
         if(isNaN(this.percentage)){
           this.percentage = 0;
         }
@@ -645,6 +660,7 @@
           detail_goods_unit1_label: this.detail_goods_unit1_label,
           usage: parseInt(this.detail_qty) * parseInt(this.unit),
           usage_label: usage_label,
+          sell_price: this.sell_price,
           disc: this.rp,
           subtotal: this.detail_total,
           goods: this.detail_goods,
@@ -654,6 +670,7 @@
         };
         this.invoice_goods.push(newGoods);
         this.selected_goods = "";
+        this.disableCustomer();
         this.resetDetail();
       },
       predictTax(){
@@ -671,6 +688,7 @@
         }
         let invoice_data = {
           date: this.invoice_date,
+          duedate: this.invoice_due_date,
           subtotal: this.invoice_subtotal,
           discount: this.invoice_disc,
           tax: this.invoice_tax,
@@ -723,6 +741,7 @@
         }
         let invoice_data = {
           date: this.invoice_date,
+          duedate: this.invoice_due_date,
           subtotal: this.invoice_subtotal,
           discount: this.invoice_disc,
           tax: this.invoice_tax,
@@ -799,6 +818,8 @@
         this.detail_goods_unit1_conv = current.detail_goods_unit1_conv;
         this.detail_goods_unit1_label = current.detail_goods_unit1_label;
 
+        this.sell_price = current.sell_price
+
         // autofocus mode
         if(this.detail_goods_unit3_conv != 0){
             setTimeout(function () { $('#'+self.conv_3_id).focus(); }, 1);
@@ -858,6 +879,18 @@
         } else {
           this.invoice_tax += 0;
         }
+
+        let usage_label = ""
+        if(this.detail_goods_unit3 != 0){
+            usage_label += this.detail_goods_unit3 +" "+this.detail_goods_unit3_label;
+        }
+        if(this.detail_goods_unit2 != 0){
+            usage_label += this.detail_goods_unit2 +" "+this.detail_goods_unit2_label;
+        }
+        if(this.detail_goods_unit1 != 0){
+            usage_label += this.detail_goods_unit1 +" "+this.detail_goods_unit1_label;
+        }
+
         let editedGoods = {
           id: this.detail_goods.id,
           detail_goods_unit3: parseInt(this.detail_goods_unit3),
@@ -870,7 +903,9 @@
           detail_goods_unit1_conv: this.detail_goods_unit1_conv,
           detail_goods_unit1_label: this.detail_goods_unit1_label,
           usage: parseInt(this.detail_qty) * parseInt(this.unit),
+          usage_label: usage_label,
           disc: this.rp,
+          sell_price: this.sell_price,
           subtotal: this.detail_total,
           goods: this.detail_goods,
           tax: just_tax,
@@ -901,6 +936,12 @@
         this.invoice_tax = taxs;
       },
       resetInvoice(){
+          this.disable_customer = false;
+          this.invoice_customer = [];
+          this.invoice_date = moment().format('L');
+          this.invoice_due_date = "";
+          this.invoice_no = "";
+          this.autogen = true;
         this.invoice_goods = [];
         this.invoice_disc =0;
         this.invoice_subtotal =0;
@@ -939,6 +980,9 @@
       }
     },
     watch: {
+        sell_price(){
+            this.countDetailTotal();
+        },
         detail_goods_unit2(){
             this.convertUnits();
         },
@@ -955,8 +999,10 @@
             this.countDetailTotal();
         },
         invoice_customer(){
-            this.selected_customer = _.find(this.customers,  {id: parseInt(this.invoice_customer)});
-            this.invoice_due_date = moment(this.invoice_date).add(this.selected_customer.mcustomerdefaultar,'day').format('L');
+            if(this.invoice_customer != ""){
+                this.selected_customer = _.find(this.customers,  {id: parseInt(this.invoice_customer)});
+                this.invoice_due_date = moment(this.invoice_date).add(this.selected_customer.mcustomerdefaultar,'day').format('L');
+            }
         },
         invoice_date(){
             this.invoice_due_date = moment(this.invoice_date).add(this.selected_customer.mcustomerdefaultar,'day').format('L');
@@ -980,6 +1026,7 @@
       if(this.mode == "view"){
         this.$parent.$on('edit-selected',(id) => {
           this.editinvoiceid = id;
+          this.disableCustomer();
           this.fetchInvoiceData(id);
         });
       }

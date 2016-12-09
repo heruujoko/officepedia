@@ -68,52 +68,44 @@
     </head>
     <body>
         <h5 class="text-center">{{ $company }}</h5>
-        <h5 class="text-center">Laporan Buku Penjualan</h5>
-        <h5 class="text-center">Periode {{ $start }} - {{ $end }}</h5>
+        <h5 class="text-center">Laporan Nilai Persediaan</h5>
+        <h5 class="text-center">Per {{ $end }}</h5>
         <br>
-        <p class="filter-status">Gudang {{ $wh }}</p>
+        <p class="filter-status">Cabang {{ $br }}</p>
+        <p class="filter-status">Supplier {{ $spl }}</p>
         <p class="filter-status">Barang {{ $goods }}</p>
+        <p class="filter-status">Gudang {{ $wh }}</p>
         <p class="header-status">User {{ Auth::user()->name }}</p>
         <p class="header-status">Tanggal Cetak {{ Carbon\Carbon::now() }}</p>
         </div>
         <br>
-        <table class="table" id="tableapi">
+        <table class="table" id="tableapi" style="width:100%">
             <thead>
                 <tr>
                     <th>Kode Barang</th>
                     <th>Nama Barang</th>
-                    <th>QTY Stock</th>
-                    <th>Multi Satuan</th>
-                    <th>Masuk</th>
-                    <th>Keluar</th>
-                    <th>Saldo</th>
-                    <th>Tgl Trans</th>
-                    <th>Tipe Transaksi</th>
-                    <th>No Transaksi</th>
-                    <th>Gudang</th>
-                    <th>Cabang</th>
-                    <th>Keterangan</th>
+                    <th>Saldo Stock</th>
+                    <th>Harga Beli</th>
+                    <th>Nilai Persediaan</th>
                 </tr>
             </thead>
             <tbody>
-                @foreach($stocks as $st)
-                    <tr>
-                        <td>{{ $st->mstockcardgoodsid }}</td>
-                        <td>{{ $st->mstockcardgoodsname }}</td>
-                        <td>{{ $st->mstockcardstocktotal }}</td>
-                        <td>{{ $st['verbs'] }}</td>
-                        <td>{{ $st->mstockcardstockin }}</td>
-                        <td>{{ $st->mstockcardstockout }}</td>
-                        <td>{{ ($st->mstockcardstocktotal +$st->mstockcardstockin - $st->mstockcardstockout) }}</td>
-                        <td>{{ $st->mstockcarddate }}</td>
-                        <td>{{ $st->mstockcardtranstype }}</td>
-                        <td>{{ $st->mstockcardtransno }}</td>
-                        <td>{{ $st->gudang()->mwarehousename }}</td>
-                        <td> Umum </td>
-                        <td></td>
-                    </tr>
+                @foreach($stockvalues as $st)
+                <tr >
+                    <td>{{ $st->mstockcardgoodsid }}</td>
+                    <td>{{ $st->mstockcardgoodsname }}</td>
+                    <td>{{ $st->verbs }}</td>
+                    <td style="text-align:right">{{ number_format($st->cogs,$decimals,$dec_point,$thousands_sep) }}</td>
+                    <td style="text-align:right">{{ number_format(($st['stock'] * $st['cogs']),$decimals,$dec_point,$thousands_sep) }}</td>
+                </tr>
                 @endforeach
             </tbody>
+            <thead>
+                <tr>
+                    <th colspan="4">TOTAL</th>
+                    <th style="text-align:right">{{ number_format($total,$decimals,$dec_point,$thousands_sep) }}</th>
+                </tr>
+            </thead>
         </table>
         <script>
             window.print();

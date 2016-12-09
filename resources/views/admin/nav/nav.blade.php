@@ -221,6 +221,16 @@
       @else
         <li><a href="{{ url('admin-nano/reports/arcustreport') }}">Laporan Piutang Customer</a></li>
       @endif
+      @if($active == 'purchasereport')
+        <li class="active"><a href="{{ url('admin-nano/reports/purchasereport') }}">Laporan Pembelian</a></li>
+      @else
+        <li><a href="{{ url('admin-nano/reports/purchasereport') }}">Laporan Pembelian</a></li>
+      @endif
+      @if($active == 'stockvalue')
+        <li class="active"><a href="{{ url('admin-nano/reports/stockvalue') }}">Laporan Nilai Persediaan</a></li>
+      @else
+        <li><a href="{{ url('admin-nano/reports/stockvalue') }}">Laporan Nilai Persediaan</a></li>
+      @endif
     </ul>
   </li>
 </ul>

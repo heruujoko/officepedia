@@ -68,52 +68,60 @@
     </head>
     <body>
         <h5 class="text-center">{{ $company }}</h5>
-        <h5 class="text-center">Laporan Buku Penjualan</h5>
-        <h5 class="text-center">Periode {{ $start }} - {{ $end }}</h5>
+        <h5 class="text-center">Laporan Buku Piutang</h5>
+        <h5 class="text-center">Per {{ $end }}</h5>
         <br>
-        <p class="filter-status">Gudang {{ $wh }}</p>
-        <p class="filter-status">Barang {{ $goods }}</p>
+        <p class="filter-status">Supplier {{ $spl }}</p>
+        <p class="filter-status">Cabang {{ $br }}</p>
         <p class="header-status">User {{ Auth::user()->name }}</p>
         <p class="header-status">Tanggal Cetak {{ Carbon\Carbon::now() }}</p>
         </div>
         <br>
-        <table class="table" id="tableapi">
+        <table class="table" id="tableapi" style="width:100%">
             <thead>
                 <tr>
-                    <th>Kode Barang</th>
-                    <th>Nama Barang</th>
-                    <th>QTY Stock</th>
-                    <th>Multi Satuan</th>
-                    <th>Masuk</th>
-                    <th>Keluar</th>
-                    <th>Saldo</th>
-                    <th>Tgl Trans</th>
-                    <th>Tipe Transaksi</th>
-                    <th>No Transaksi</th>
-                    <th>Gudang</th>
-                    <th>Cabang</th>
-                    <th>Keterangan</th>
+                    <th>Kode Supplier</th>
+                    <th>Nama Supplier</th>
+                    <th>No Pembelian</th>
+                    <th>Tgl Invoice</th>
+                    <th>Tgl Jatuh Tempo</th>
+                    <th>Nilai Pembelian</th>
+                    <th>Outstanding</th>
+                    <th>Aging</th>
                 </tr>
             </thead>
             <tbody>
-                @foreach($stocks as $st)
-                    <tr>
-                        <td>{{ $st->mstockcardgoodsid }}</td>
-                        <td>{{ $st->mstockcardgoodsname }}</td>
-                        <td>{{ $st->mstockcardstocktotal }}</td>
-                        <td>{{ $st['verbs'] }}</td>
-                        <td>{{ $st->mstockcardstockin }}</td>
-                        <td>{{ $st->mstockcardstockout }}</td>
-                        <td>{{ ($st->mstockcardstocktotal +$st->mstockcardstockin - $st->mstockcardstockout) }}</td>
-                        <td>{{ $st->mstockcarddate }}</td>
-                        <td>{{ $st->mstockcardtranstype }}</td>
-                        <td>{{ $st->mstockcardtransno }}</td>
-                        <td>{{ $st->gudang()->mwarehousename }}</td>
-                        <td> Umum </td>
+                @foreach($aps as $ap)
+                <tr>
+                    @if($ap['data'] == false)
+                        <td>{{ $ap['mapcardsupplierid'] }}</td>
+                        <td>{{ $ap['mapcardsuppliername'] }}</td>
                         <td></td>
-                    </tr>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    @else
+                        <td></td>
+                        <td></td>
+                        <td>{{ $ap->mapcardtransno }}</td>
+                        <td>{{ $ap->mapcardtdate }}</td>
+                        <td>{{ $ap->mapcardduedate }}</td>
+                        <td>{{ number_format($ap->mapcardtotalinv,$decimals,$dec_point,$thousands_sep) }}</td>
+                        <td>{{ number_format($ap->mapcardoutstanding,$decimals,$dec_point,$thousands_sep) }}</td>
+                        <td>{{ $ap->aging }}</td>
+                    @endif
+                </tr>
                 @endforeach
             </tbody>
+            <thead>
+                <tr>
+                    <th colspan="5">TOTAL</th>
+                    <th>{{ number_format($total_iv,$decimals,$dec_point,$thousands_sep) }}</th>
+                    <th>{{ number_format($total_out,$decimals,$dec_point,$thousands_sep) }}</th>
+                </tr>
+            </thead>
         </table>
         <script>
             window.print();

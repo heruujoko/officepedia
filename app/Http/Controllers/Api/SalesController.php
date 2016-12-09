@@ -145,13 +145,13 @@ class SalesController extends Controller
              */
 
             if($request->has('goods') && $request->has('wh') != ""){
-                $inv = MDInvoice::on(Auth::user()->db_name)->where('mdinvoicedate',$dt)->where('mdinvoicegoodsid',$request->goods)->where('mdinvoicegoodsidwhouse',$request->wh)->get();
+                $inv = MDInvoice::on(Auth::user()->db_name)->where('mdinvoicedate',$dt)->where('mdinvoicegoodsid',$request->goods)->where('mdinvoicegoodsidwhouse',$request->wh)->where('void',0)->get();
             } else if($request->has('goods') && $request->goods != ""){
-                $inv = MDInvoice::on(Auth::user()->db_name)->where('mdinvoicedate',$dt)->where('mdinvoicegoodsid',$request->goods)->get();
+                $inv = MDInvoice::on(Auth::user()->db_name)->where('mdinvoicedate',$dt)->where('mdinvoicegoodsid',$request->goods)->where('void',0)->get();
             } else if($request->has('wh') && $request->wh != "" ){
-                $inv = MDInvoice::on(Auth::user()->db_name)->where('mdinvoicedate',$dt)->where('mdinvoicegoodsidwhouse',$request->wh)->get();
+                $inv = MDInvoice::on(Auth::user()->db_name)->where('mdinvoicedate',$dt)->where('mdinvoicegoodsidwhouse',$request->wh)->where('void',0)->get();
             } else {
-                $inv = MDInvoice::on(Auth::user()->db_name)->where('mdinvoicedate',$dt)->get();
+                $inv = MDInvoice::on(Auth::user()->db_name)->where('mdinvoicedate',$dt)->where('void',0)->get();
             }
             foreach ($inv as $iv) {
                 $iv['price'] = number_format($iv->mdinvoicegoodsprice,$data['decimals'],$data['dec_point'],$data['thousands_sep']);
@@ -196,42 +196,52 @@ class SalesController extends Controller
             $due = Carbon::parse($ar->marcardduedate);
             $diff = $now->diffInDays($due,false);
             $ar['trans_count'] = count(MHInvoice::on(Auth::user()->db_name)->where('mhinvoicecustomerid',$ar->marcardcustomerid)->get());
-            if($diff <= 7){
-                $ar['seven'] = $ar->marcardoutstanding_sum;
-                $ar['fourteen'] =0;
-                $ar['twentyone'] =0;
-                $ar['thirty'] =0;
-                $ar['month'] =0;
-                $seven_total += $ar->marcardoutstanding_sum;
-            } else if($diff <= 14){
-                $ar['seven'] = 0;
-                $ar['fourteen'] = $ar->marcardoutstanding_sum;
-                $ar['twentyone'] =0;
-                $ar['thirty'] =0;
-                $ar['month'] =0;
-                $fourteen_total += $ar->marcardoutstanding_sum;
-            } else if($diff <= 21){
-                $ar['seven'] = 0;
-                $ar['fourteen'] =0;
-                $ar['twentyone'] = $ar->marcardoutstanding_sum;
-                $ar['thirty'] =0;
-                $ar['month'] =0;
-                $twentyone_total += $ar->marcardoutstanding_sum;
-            } else if($diff <= 30){
-                $ar['seven'] = 0;
-                $ar['fourteen'] =0;
-                $ar['twentyone'] =0;
-                $ar['thirty'] = $ar->marcardoutstanding_sum;
-                $ar['month'] =0;
-                $thirty_total += $ar->marcardoutstanding_sum;
+            if($diff > 0){
+                if($diff <= 7){
+                    $ar['seven'] = $ar->marcardoutstanding_sum;
+                    $ar['fourteen'] =0;
+                    $ar['twentyone'] =0;
+                    $ar['thirty'] =0;
+                    $ar['month'] =0;
+                    $seven_total += $ar->marcardoutstanding_sum;
+                } else if($diff <= 14){
+                    $ar['seven'] = 0;
+                    $ar['fourteen'] = $ar->marcardoutstanding_sum;
+                    $ar['twentyone'] =0;
+                    $ar['thirty'] =0;
+                    $ar['month'] =0;
+                    $fourteen_total += $ar->marcardoutstanding_sum;
+                } else if($diff <= 21){
+                    $ar['seven'] = 0;
+                    $ar['fourteen'] =0;
+                    $ar['twentyone'] = $ar->marcardoutstanding_sum;
+                    $ar['thirty'] =0;
+                    $ar['month'] =0;
+                    $twentyone_total += $ar->marcardoutstanding_sum;
+                } else if($diff <= 30){
+                    $ar['seven'] = 0;
+                    $ar['fourteen'] =0;
+                    $ar['twentyone'] =0;
+                    $ar['thirty'] = $ar->marcardoutstanding_sum;
+                    $ar['month'] =0;
+                    $thirty_total += $ar->marcardoutstanding_sum;
+                } else {
+                    $ar['seven'] = 0;
+                    $ar['fourteen'] =0;
+                    $ar['twentyone'] =0;
+                    $ar['thirty'] =0;
+                    $ar['month'] = $ar->marcardoutstanding_sum;
+                    $month_total += $ar->marcardoutstanding_sum;
+                }
             } else {
                 $ar['seven'] = 0;
                 $ar['fourteen'] =0;
                 $ar['twentyone'] =0;
                 $ar['thirty'] =0;
-                $ar['month'] = $ar->marcardoutstanding_sum;
-                $month_total += $ar->marcardoutstanding_sum;
+                $ar['month'] = 0;
+                $month_total += 0;
             }
+
         }
         return response()->json($ars);
     }
@@ -249,7 +259,7 @@ class SalesController extends Controller
         } else {
           $data['dec_point'] = ",";
         }
-        
+
         $header_query = MARCard::on(Auth::user()->db_name);
         if($request->has('cust')){
             $header_query->where('marcardcustomerid',$request->cust);

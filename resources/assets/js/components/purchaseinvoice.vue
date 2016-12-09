@@ -9,7 +9,7 @@
           <div class="form-group">
             <label class="col-md-2 control-label">Supplier</label>
             <div class="col-md-8">
-              <select v-bind:disabled="!notview" v-selecttwo="supplier_label" v-model="invoice_supplier">
+              <select v-bind:disabled="disable_supplier" v-selecttwo="supplier_label" v-model="invoice_supplier">
                 <option></option>
                 <option v-for="sp in suppliers" :value="sp.id">{{ sp.msuppliername }}</option>
               </select>
@@ -163,7 +163,7 @@
                       </div>
                     </div>
                   </div>
-                  <div class="form-group">
+                  <div class="form-group" v-if="detail_goods_unit2_conv != 0">
                     <label v-if="detail_goods_unit3_conv == 0" class="control-label col-md-2">Kuantitas</label>
                     <div class="col-md-2" v-if="detail_goods_unit3_conv != 0"></div>
                     <div class="col-md-8">
@@ -174,19 +174,16 @@
                     </div>
                   </div>
                   <div class="form-group">
-                    <div class="col-md-8 col-md-offset-2">
+                    <label v-if="detail_goods_unit2_conv == 0" class="control-label col-md-2">Kuantitas</label>
+                    <div class="col-md-2" v-if="detail_goods_unit2_conv != 0"></div>
+                    <div class="col-md-8">
                       <div class="input-group">
                         <input v-bind:id="conv_1_id" class="form-control forminput" v-bind:placeholder="detail_goods_unit1_label" type="text" v-model="detail_goods_unit1">
                         <span class="input-group-addon" id="sizing-addon2" style="font-size:11px;">{{ detail_goods_unit1_label }}</span>
                       </div>
                     </div>
                   </div>
-                  <div class="form-group">
-                    <label class="control-label col-md-2">Total Qty</label>
-                    <div class="col-md-8">
-                      <input placeholder="Kuantitas" class="form-control forminput" value="1" type="text" id="insertdetailgoodsqty" v-model="detail_qty"/>
-                    </div>
-                  </div>
+                  <input placeholder="Kuantitas" class="form-control forminput" value="1" type="hidden" id="insertdetailgoodsqty" v-model="detail_qty"/>
                   <div class="form-group">
                     <label class="control-label col-md-2">Harga Satuan</label>
                     <div class="col-md-8">
@@ -313,7 +310,8 @@
             invoice_disc:0,
             invoice_tax:0,
             invoice_no:"",
-            invoice_auto: true
+            invoice_auto: true,
+            disable_supplier: false
           }
         },
         computed:{
@@ -356,10 +354,11 @@
       },
     watch:{
         invoice_supplier(){
-            console.log('change supplier');
-            this.selected_supplier = _.find(this.suppliers,  {id: parseInt(this.invoice_supplier)});
-            console.log(this.selected_supplier.msupplierdefaultar);
-            this.invoice_due_date = moment(this.invoice_date).add(this.selected_supplier.msupplierdefaultar,'day').format('L');
+            if(this.invoice_supplier != ""){
+                this.selected_supplier = _.find(this.suppliers,  {id: parseInt(this.invoice_supplier)});
+                console.log(this.selected_supplier.msupplierdefaultar);
+                this.invoice_due_date = moment(this.invoice_date).add(this.selected_supplier.msupplierdefaultar,'day').format('L');
+            }
         },
         invoice_date(){
             this.invoice_due_date = moment(this.invoice_date).add(this.selected_supplier.msupplierdefaultar,'day').format('L');
@@ -390,6 +389,11 @@
         }
     },
     methods: {
+        disableSupplier(){
+            if(this.selected_supplier != ""){
+                this.disable_supplier = true;
+            }
+        },
         toInsertMode(){
             this.resetDetail();
             this.resetInvoice();
@@ -578,6 +582,7 @@
             this.countDetailTotal();
         },
         addToGoods(){
+            this.disableSupplier();
             if(this.mode == 'edit'){
                 $('#edit_detail_modal').modal('toggle');
             } else {
@@ -842,6 +847,12 @@
             this.detail_goods_unit1_label ="";
         },
         resetInvoice(){
+            this.disable_supplier = false;
+            this.invoice_supplier = [];
+            this.invoice_date = moment().format('L');
+            this.invoice_due_date = "";
+            this.invoice_no = "";
+            this.autogen = true;
           this.invoice_goods = [];
           this.invoice_disc =0;
           this.invoice_subtotal =0;
@@ -931,6 +942,7 @@
         }
         let invoice_data = {
           date: this.invoice_date,
+          duedate: this.invoice_due_date,
           subtotal: this.invoice_subtotal,
           discount: this.invoice_disc,
           tax: this.invoice_tax,
@@ -993,6 +1005,7 @@
           this.$parent.$on('edit-selected',(id) => {
             this.editinvoiceid = id;
             this.fetchInvoiceData(id);
+            this.disableSupplier();
           });
         }
     }

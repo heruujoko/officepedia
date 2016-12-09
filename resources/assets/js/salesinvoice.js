@@ -2,6 +2,10 @@ import Vue from 'vue/dist/vue.js'
 import Axios from 'axios'
 import Invoice from './components/invoicecomponent.vue'
 
+var typingTimerSatuan;
+var doneTypingInterval = 1000;
+var typingTimerDiskon;
+
 Vue.config.devtools = true
 
 Vue.directive('selecttwo',{
@@ -49,26 +53,33 @@ Vue.directive('priceformat',{
   },
 });
 
-Vue.directive('priceformattype',{
+Vue.directive('priceformatsatuan',{
   inserted(el,binding){
     let formatted = numeral($(el).val()).format(binding.value);
     $(el).val(formatted);
   },
   update(el,binding){
-
-    // clearTimeout(window.timer);
-    // window.typing = true;
-    // window.formatValue = binding.value
-    // window.timer = setTimeout(function () {
-    //   window.typing = false;
-    //   if(window.typing == false){
-    //     console.log('done typing');
-    //     let formatted = numeral($(el).val()).format(window.formatValue);
-    //     $(el).val(formatted);
-    //   }
-    // }, 1500);
-        let formatted = numeral($(el).val()).format(binding.value);
+    clearTimeout(typingTimerSatuan);
+    typingTimerSatuan = setTimeout(() => {
+        let formatted = numeral(numeral().unformat($(el).val())).format(binding.value);
         $(el).val(formatted);
+    }, doneTypingInterval);
+  },
+});
+
+Vue.directive('priceformatdiskon',{
+  inserted(el,binding){
+    let formatted = numeral($(el).val()).format(binding.value);
+    $(el).val(formatted);
+  },
+  update(el,binding){
+    clearTimeout(typingTimerDiskon);
+    typingTimerDiskon = setTimeout(() => {
+        if($(el).val() != ''){
+            let formatted = numeral(numeral().unformat($(el).val())).format(binding.value);
+            $(el).val(formatted);
+        }
+    }, doneTypingInterval);
   },
 });
 

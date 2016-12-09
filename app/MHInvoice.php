@@ -88,6 +88,8 @@ class MHInvoice extends Model
         foreach($request->goods as $g){
 
           $mgoods = MGoods::on(Auth::user()->db_name)->where('mgoodscode',$g['goods']['mgoodscode'])->first();
+          $mgoods->mgoodspriceout = $g['sell_price'];
+          $mgoods->save();
 
           $invoice_detail = new MDInvoice;
           $invoice_detail->setConnection(Auth::user()->db_name);
@@ -183,7 +185,8 @@ class MHInvoice extends Model
         $ar->setConnection(Auth::user()->db_name);
         $ar->marcardcustomerid = $customer->mcustomerid;
         $ar->marcardcustomername = $customer->mcustomername;
-        $ar->marcarddate = Carbon::now();
+        $ar->marcarddate = Carbon::parse($request->date);
+        $ar->marcardduedate = Carbon::parse($request->duedate);
         $ar->marcardtranstype = $request->type;
         $ar->marcardtransno = $header->mhinvoiceno;
         $ar->marcardremark = "Transaksi ".$request->type." untuk ".$customer->mcustomername;
@@ -242,6 +245,8 @@ class MHInvoice extends Model
 
           if($invoice_detail != null){
               $mgoods = MGoods::on(Auth::user()->db_name)->where('mgoodscode',$g['goods']['mgoodscode'])->first();
+              $mgoods->mgoodspriceout = $g['sell_price'];
+              $mgoods->save();
               $last_stock = MStockCard::on(Auth::user()->db_name)->where('mstockcardtransno',$invoice_detail->mhinvoiceno)->where('mstockcardgoodsid',$mgoods->mgoodscode)->orderBy('created_at','desc')->get()->first();
               $old_qty = $invoice_detail->mdinvoicegoodsqty;
 
@@ -471,14 +476,15 @@ class MHInvoice extends Model
                 return 'empty';
               }
           }
-          
+
         }
 
         // update AR
         $ar = MARCard::on(Auth::user()->db_name)->where('marcardcustomerid',$header->mhinvoicecustomerid)->where('marcardtransno',$header->mhinvoiceno)->first();
         $ar->marcardcustomerid = $customer->mcustomerid;
         $ar->marcardcustomername = $customer->mcustomername;
-        $ar->marcarddate = Carbon::now();
+        $ar->marcarddate = Carbon::parse($request->date);
+        $ar->marcardduedate = Carbon::parse($request->duedate);
         $ar->marcardtranstype = $request->type;
         $ar->marcardtransno = $header->mhinvoiceno;
         $ar->marcardremark = "Edit Transaksi ".$request->type." untuk ".$customer->mcustomername;
