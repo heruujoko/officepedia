@@ -34,6 +34,14 @@ class PurchaseReportController extends Controller
             $query->where('mdpurchasegoodsid',$request->goods);
         }
 
+        if($request->has('end')){
+            $query->whereDate('mdpurchasedate','<=',Carbon::parse($request->end));
+        }
+
+        if($request->has('start')){
+            $query->whereDate('mdpurchasedate','>=',Carbon::parse($request->start));
+        }
+
         if($request->has('spl')){
             $query->where('mdpurchasesupplierid',$request->spl);
         }
@@ -87,6 +95,8 @@ class PurchaseReportController extends Controller
         $data['br'] = 'Semua';
         $data['wh'] = 'Semua';
         $data['company'] = $data['config']->msyscompname;
+        $data['start'] = $request->start;
+        $data['end'] = $request->end;
         return view('admin.export.purchasereport',$data);
     }
 
@@ -102,6 +112,14 @@ class PurchaseReportController extends Controller
             $query->where('mdpurchasegoodsid',$request->goods);
         }
 
+        if($request->has('end')){
+            $query->whereDate('mdpurchasedate','<=',Carbon::parse($request->end));
+        }
+
+        if($request->has('start')){
+            $query->whereDate('mdpurchasedate','>=',Carbon::parse($request->start));
+        }
+
         if($request->has('spl')){
             $query->where('mdpurchasesupplierid',$request->spl);
         }
@@ -155,6 +173,9 @@ class PurchaseReportController extends Controller
         $data['br'] = 'Semua';
         $data['wh'] = 'Semua';
         $data['company'] = $data['config']->msyscompname;
+        $data['start'] = $request->start;
+        $data['end'] = $request->end;
+
         $pdf = PDF::loadview('admin/export/purchasereport',$data);
 		return $pdf->setPaper('a4', 'potrait')->download('Laporan Pembelian.pdf');
     }
@@ -168,6 +189,14 @@ class PurchaseReportController extends Controller
 
         if($request->has('goods')){
             $query->where('mdpurchasegoodsid',$request->goods);
+        }
+
+        if($request->has('end')){
+            $query->whereDate('mdpurchasedate','<=',Carbon::parse($request->end));
+        }
+
+        if($request->has('start')){
+            $query->whereDate('mdpurchasedate','>=',Carbon::parse($request->start));
         }
 
         if($request->has('spl')){
@@ -223,6 +252,8 @@ class PurchaseReportController extends Controller
         $this->data['br'] = 'Semua';
         $this->data['wh'] = 'Semua';
         $this->data['company'] = $this->data['config']->msyscompname;
+        $this->data['start'] = $request->start;
+        $this->data['end'] = $request->end;
         $this->count = 0;
         return Excel::create('Laporan Pembelian',function($excel){
 			$excel->sheet('Laporan Pembelian',function($sheet){
@@ -238,6 +269,14 @@ class PurchaseReportController extends Controller
                 $sheet->cell('A2',function($cell){
                     $cell->setAlignment('center');
                 });
+
+                $this->count++;
+                $sheet->mergeCells('A3:L3');
+                $sheet->row($this->count,array('Periode '.$this->data['start'].' - '.$this->data['end']));
+                $sheet->cell('A3',function($cell){
+                    $cell->setAlignment('center');
+                });
+
                 $this->count+=2;
 
                 $sheet->cell('A4',function($cell){
@@ -328,6 +367,14 @@ class PurchaseReportController extends Controller
             $query->where('mdpurchasegoodsid',$request->goods);
         }
 
+        if($request->has('end')){
+            $query->whereDate('mdpurchasedate','<=',Carbon::parse($request->end));
+        }
+
+        if($request->has('start')){
+            $query->whereDate('mdpurchasedate','>=',Carbon::parse($request->start));
+        }
+
         if($request->has('spl')){
             $query->where('mdpurchasesupplierid',$request->spl);
         }
@@ -381,10 +428,12 @@ class PurchaseReportController extends Controller
         $this->data['br'] = 'Semua';
         $this->data['wh'] = 'Semua';
         $this->data['company'] = $this->data['config']->msyscompname;
+        $this->data['start'] = $request->start;
+        $this->data['end'] = $request->end;
         $this->count = 0;
         return Excel::create('Laporan Pembelian',function($excel){
-			$excel->sheet('Laporan Pembelian',function($sheet){
-				$this->count++;
+            $excel->sheet('Laporan Pembelian',function($sheet){
+                $this->count++;
                 $sheet->mergeCells('A1:L1');
                 $sheet->row($this->count,array($this->data['company']));
                 $sheet->cell('A1',function($cell){
@@ -396,6 +445,14 @@ class PurchaseReportController extends Controller
                 $sheet->cell('A2',function($cell){
                     $cell->setAlignment('center');
                 });
+
+                $this->count++;
+                $sheet->mergeCells('A3:L3');
+                $sheet->row($this->count,array('Periode '.$this->data['start'].' - '.$this->data['end']));
+                $sheet->cell('A3',function($cell){
+                    $cell->setAlignment('center');
+                });
+
                 $this->count+=2;
 
                 $sheet->cell('A4',function($cell){
@@ -471,7 +528,7 @@ class PurchaseReportController extends Controller
 
                 }
 
-			});
-		})->export('csv');
+            });
+        })->export('csv');
     }
 }

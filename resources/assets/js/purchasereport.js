@@ -6,6 +6,23 @@ import moment from 'moment'
 
 Vue.config.devtools = true
 
+Vue.directive('dpicker',{
+  inserted(el,binding,vnode){
+      let self = this;
+      $(el).datepicker({
+
+      }).on('change',(evt) => {
+        let modelName = vnode.data.directives.find(function(o) {
+            return o.name === 'model';
+        }).expression;
+        vnode.context[modelName] = evt.target.value;
+      });
+  },
+  update(el,binding,vnode){
+
+  }
+});
+
 Vue.directive('selecttwo',{
   inserted(el,binding,vnode){
       let self = this;
@@ -57,7 +74,9 @@ const purchasereportapp = new Vue({
         selected_supplier:"",
         selected_goods:"",
         selected_warehouse:"",
-        selected_sort:""
+        selected_sort:"",
+        invoice_date_end:moment().format('L'),
+        invoice_date_start:moment().format('L')
     },
     computed:{
         label_branch(){
@@ -92,16 +111,16 @@ const purchasereportapp = new Vue({
     },
     methods:{
         printTable(){
-            window.open('/admin-nano/reports/purchasereport/export/print?goods='+this.selected_goods+'&wh='+this.selected_warehouse+'&spl='+this.selected_supplier);
+            window.open('/admin-nano/reports/purchasereport/export/print?goods='+this.selected_goods+'&wh='+this.selected_warehouse+'&spl='+this.selected_supplier+"&start="+this.invoice_date_start+"&end="+this.invoice_date_end);
         },
         pdfTable(){
-            window.open('/admin-nano/reports/purchasereport/export/pdf?goods='+this.selected_goods+'&wh='+this.selected_warehouse+'&spl='+this.selected_supplier);
+            window.open('/admin-nano/reports/purchasereport/export/pdf?goods='+this.selected_goods+'&wh='+this.selected_warehouse+'&spl='+this.selected_supplier+"&start="+this.invoice_date_start+"&end="+this.invoice_date_end);
         },
         excelTable(){
-            window.open('/admin-nano/reports/purchasereport/export/excel?goods='+this.selected_goods+'&wh='+this.selected_warehouse+'&spl='+this.selected_supplier);
+            window.open('/admin-nano/reports/purchasereport/export/excel?goods='+this.selected_goods+'&wh='+this.selected_warehouse+'&spl='+this.selected_supplier+"&start="+this.invoice_date_start+"&end="+this.invoice_date_end);
         },
         csvTable(){
-            window.open('/admin-nano/reports/purchasereport/export/csv?goods='+this.selected_goods+'&wh='+this.selected_warehouse+'&spl='+this.selected_supplier);
+            window.open('/admin-nano/reports/purchasereport/export/csv?goods='+this.selected_goods+'&wh='+this.selected_warehouse+'&spl='+this.selected_supplier+"&start="+this.invoice_date_start+"&end="+this.invoice_date_end);
         },
         fetchBranches(){
 
@@ -131,7 +150,7 @@ const purchasereportapp = new Vue({
         },
         fetchPurchases(){
             var self = this;
-			Axios.get('/admin-api/purchasereport?goods='+this.selected_goods+'&wh='+this.selected_warehouse+'&spl='+this.selected_supplier).then(function(res){
+			Axios.get('/admin-api/purchasereport?goods='+this.selected_goods+'&wh='+this.selected_warehouse+'&spl='+this.selected_supplier+"&start="+this.invoice_date_start+"&end="+this.invoice_date_end).then(function(res){
                 $('#loading_modal').modal('toggle');
 				self.purchases = res.data;
 			})
@@ -154,6 +173,14 @@ const purchasereportapp = new Vue({
             this.fetchPurchases();
         },
         selected_branch(){
+            $('#loading_modal').modal('toggle');
+            this.fetchPurchases();
+        },
+        invoice_date_end(){
+            $('#loading_modal').modal('toggle');
+            this.fetchPurchases();
+        },
+        invoice_date_start(){
             $('#loading_modal').modal('toggle');
             this.fetchPurchases();
         }

@@ -69,6 +69,7 @@
     <body>
         <h5 class="text-center">{{ $company }}</h5>
         <h5 class="text-center">Laporan Pembelian</h5>
+        <h5 class="text-center">Periode {{ $start }} - {{ $end }}</h5>
         <br>
         <p class="filter-status">Cabang {{ $br }}</p>
         <p class="filter-status">Supplier {{ $spl }}</p>

@@ -11,6 +11,7 @@ use App\MDPurchase;
 use App\MConfig;
 use Auth;
 use Datatables;
+use Carbon\Carbon;
 
 class PurchaseController extends Controller
 {
@@ -120,6 +121,14 @@ class PurchaseController extends Controller
             $query->where('mdpurchasegoodsid',$request->goods);
         }
 
+        if($request->has('end')){
+            $query->whereDate('mdpurchasedate','<=',Carbon::parse($request->end));
+        }
+
+        if($request->has('start')){
+            $query->whereDate('mdpurchasedate','>=',Carbon::parse($request->start));
+        }
+
         if($request->has('spl')){
             $query->where('mdpurchasesupplierid',$request->spl);
         }
@@ -129,7 +138,6 @@ class PurchaseController extends Controller
         foreach($purchase_group as $grp){
             array_push($purchase_dates,$grp->mdpurchasedate);
         }
-
         $purchases = [];
         foreach ($purchase_dates as $dates) {
             $header = array(

@@ -57,6 +57,16 @@
                                         <div id="purchasereportapp">
                                             <br>
                                             <div class="row">
+                                                <p class="col-md-1 report-label">Mulai</p>
+                                                <input v-dpicker v-model="invoice_date_start" type="text" class="small-date form-control" />
+                                            </div>
+                                            <br>
+                                            <div class="row">
+                                                <p class="col-md-1 report-label">Selesai</p>
+                                                <input v-dpicker v-model="invoice_date_end" type="text" class="small-date form-control" />
+                                            </div>
+                                            <br>
+                                            <div class="row">
                                                 <p class="col-md-1 report-label">Cabang</p>
                                                 <select v-selecttwo class="col-md-4" v-model="selected_branch">
                                                     <option value="">Semua</option>
@@ -105,6 +115,7 @@
                                                     <br>
                                                     <h4 class="text-center">{{ $config->msyscompname }}</h4>
                                                     <h4 class="text-center">Laporan Pembelian</h4>
+                                                    <h4 class="text-center">Periode @{{ invoice_date_start }} - @{{ invoice_date_end }}</h4>
                                                 </div>
                                             </div>
                                             <br>
