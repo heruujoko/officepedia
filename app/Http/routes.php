@@ -189,6 +189,12 @@ Route::group(['prefix'=>'admin-nano','middleware' => ['auth','tenantdb']],functi
   Route::get('reports/stockvalue/export/excel','StockValueReportController@stockvalue_excel');
   Route::get('reports/stockvalue/export/csv','StockValueReportController@stockvalue_csv');
 
+  Route::get('reports/apreport','APReportController@apreport');
+  Route::get('reports/apreport/export/print','APReportController@apreport_print');
+  Route::get('reports/apreport/export/pdf','APReportController@apreport_pdf');
+  Route::get('reports/apreport/export/excel','APReportController@apreport_excel');
+  Route::get('reports/apreport/export/csv','APReportController@apreport_csv');
+
   Route::controllers([
     '/'=>'AdminController'
   ]);
@@ -259,6 +265,7 @@ Route::group(['prefix'=>'admin-nano','middleware' => ['auth','tenantdb']],functi
   Route::get('arcustreport','Api\SalesController@arcust');
   Route::get('stockvalues','Api\StockValueController@index');
   Route::get('purchasereport','Api\PurchaseController@purchasereport');
+  Route::get('apreport','Api\APController@apreport');
 
   Route::controllers([
     '/'=>'ApiController'
