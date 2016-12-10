@@ -488,8 +488,8 @@
           this.rp = (parseInt(this.percentage) / 100) * (buyprice * parseInt(this.detail_qty));
         },
         countPercent(){
-            console.log(this.rp);
-          this.percentage = (numeral().unformat(this.rp)/this.detail_total) * 100;
+
+          this.percentage = (numeral().unformat(this.rp)/(this.detail_qty * this.buy_price)) * 100;
           if(isNaN(this.percentage)){
               console.log('isnan');
             this.percentage = 0;
@@ -668,7 +668,7 @@
           this.rp = current.disc;
           this.unit = current.saved_unit+"";
           this.detail_qty = parseInt(current.usage);
-          this.countDetailTotal();
+        //   this.countDetailTotal();
           this.countPercent();
           this.countDetailTotal();
           this.$nextTick(function(){

@@ -610,10 +610,10 @@
         this.detail_total = (numeral().unformat(this.sell_price) * parseInt(this.detail_qty) * parseInt(this.unit)) - parseInt(this.rp);
       },
       countRp(){
-        this.rp = (parseInt(this.percentage) / 100) * this.detail_total;
+        this.rp = (parseInt(this.percentage) / 100) * (this.sell_price * this.detail_qty);
       },
       countPercent(){
-        this.percentage = (numeral().unformat(this.rp)/this.detail_total) * 100;
+        this.percentage = (numeral().unformat(this.rp)/(this.sell_price * this.detail_qty)) * 100;
         if(isNaN(this.percentage)){
           this.percentage = 0;
         }
@@ -834,7 +834,7 @@
         this.rp = current.disc;
         this.unit = current.saved_unit+"";
         this.detail_qty = parseInt(current.usage) / parseInt(current.saved_unit);
-        this.countDetailTotal();
+        // this.countDetailTotal();
         this.countPercent();
         this.countDetailTotal();
         this.$nextTick(function(){
