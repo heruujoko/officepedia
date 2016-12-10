@@ -983,8 +983,6 @@
     },
     watch: {
         sell_price(){
-            this.countRp();
-            this.countPercent();
             this.countDetailTotal();
         },
         detail_goods_unit2(){
