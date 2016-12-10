@@ -583,6 +583,7 @@
         },
         addToGoods(){
             this.disableSupplier();
+            this.buy_price = numeral().unformat(this.buy_price);
             if(this.mode == 'edit'){
                 $('#edit_detail_modal').modal('toggle');
             } else {
@@ -704,6 +705,7 @@
           }
         },
         updateDetail(){
+            this.buy_price = numeral().unformat(this.buy_price);
             let just_tax =0;
             let tax_obj = _.find(this.taxes, { id: parseInt(this.detail_tax) });
             // count taxes

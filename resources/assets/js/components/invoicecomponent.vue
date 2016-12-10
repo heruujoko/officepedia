@@ -610,9 +610,11 @@
         this.detail_total = (numeral().unformat(this.sell_price) * parseInt(this.detail_qty) * parseInt(this.unit)) - parseInt(this.rp);
       },
       countRp(){
+        this.sell_price = numeral().unformat(this.sell_price);
         this.rp = (parseInt(this.percentage) / 100) * (this.sell_price * this.detail_qty);
       },
       countPercent(){
+        this.sell_price = numeral().unformat(this.sell_price);
         this.percentage = (numeral().unformat(this.rp)/(this.sell_price * this.detail_qty)) * 100;
         if(isNaN(this.percentage)){
           this.percentage = 0;
@@ -981,6 +983,8 @@
     },
     watch: {
         sell_price(){
+            this.countRp();
+            this.countPercent();
             this.countDetailTotal();
         },
         detail_goods_unit2(){
