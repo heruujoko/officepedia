@@ -2433,8 +2433,8 @@ class ReportController extends Controller
         if($request->has('end')){
                 $query->whereDate('mstockcarddate','<=',Carbon::parse($request->end));
             }
-        if($request->has('mstockcardgoodsid')){
-                $query->where('mstockcardgoodsid',$request->mstockcardgoodsid);
+        if($request->has('goods')){
+                $query->where('mstockcardgoodsid',$request->goods);
         }
         if ($request->has('mstockcardwhouse')) {
             $query->where('mstockcardwhouse',$request->mstockcardwhouse);
@@ -2444,26 +2444,60 @@ class ReportController extends Controller
         //     $join->on('mdinvoice.mhinvoiceno','=','mstockcard.mstockcardtransno');
         //     $join->on('mdinvoice.mdinvoicegoodsid','=','mstockcard.mstockcardgoodsid');
         // });
-        $config = MConfig::on(Auth::user()->db_name)->where('id',1)->first();
-        $data['stocks'] = $query->get();
+        $data = $query->groupBy('mstockcardgoodsid')->get();
 
-        foreach ($data['stocks'] as $d) {
-            // get multi unit verbs
-            if($d['mstockcardtranstype'] == 'Penjualan'){
-                $mgoods = MGoods::on(Auth::user()->db_name)->where('mgoodscode',$d->mstockcardgoodsid)->first();
-                $verbs = UnitHelper::label($mgoods,$d->mstockcardstockout);
-            } else {
-                $mgoods = MGoods::on(Auth::user()->db_name)->where('mgoodscode',$d->mstockcardgoodsid)->first();
-                $verbs = UnitHelper::label($mgoods,$d->mstockcardstockin);
-            }
-            $d['verbs'] = $verbs;
+        $headers = [];
+        $stocks =[];
+
+        foreach($data as $dt){
+            array_push($headers,array('mstockcardgoodsid' => $dt->mstockcardgoodsid,'mstockcardgoodsname' => $dt->mstockcardgoodsname));
         }
 
+        foreach ($headers as $dtl) {
+            $grp_h = array(
+                'data' => 'header',
+                'mstockcardgoodsid' => $dtl['mstockcardgoodsid'],
+                'mstockcardgoodsname' => $dtl['mstockcardgoodsname'],
+            );
+            array_push($stocks,$grp_h);
+            $grp_query = MStockCard::on(Auth::user()->db_name)->where('mstockcardgoodsid',$dtl['mstockcardgoodsid']);
+
+            if ($request->has('start')) {
+                 $grp_query->whereDate('mstockcarddate','>=',Carbon::parse($request->start));
+            }
+            if($request->has('end')){
+                    $grp_query->whereDate('mstockcarddate','<=',Carbon::parse($request->end));
+            }
+            if ($request->has('mstockcardwhouse')) {
+                $grp_query->where('mstockcardwhouse',$request->mstockcardwhouse);
+            }
+
+            $grp = $grp_query->get();
+
+            foreach ($grp as $g) {
+
+                $mgoods = MGoods::on(Auth::user()->db_name)->where('mgoodscode',$g->mstockcardgoodsid)->first();
+
+                $g['data'] = 'data';
+                $g['verbs'] = UnitHelper::label($mgoods,$g->mstockcardstocktotal);
+                $g['gudang'] = $g->gudang()->mwarehousename;
+                array_push($stocks,$g);
+            }
+
+            // add total per barang
+            $footer = array(
+                'data' => 'footer',
+            );
+            array_push($stocks,$footer);
+
+        }
+        $data['stocks'] = $stocks;
+        $config = MConfig::on(Auth::user()->db_name)->where('id',1)->first();
         $data['company'] = $config->msyscompname;
         $data['start'] = Carbon::parse($request->start)->formatLocalized('%d %B %Y');
         $data['end'] = Carbon::parse($request->end)->formatLocalized('%d %B %Y');
         if($request->has('wh')){
-            $data['wh'] = $request->wh;
+            $data['wh'] = MWarehouse::on(Auth::user()->db_name)->where('id',$request->wh)->first()->mwarehousename;
         } else {
             $data['wh'] = 'Semua';
         }
@@ -2483,8 +2517,8 @@ class ReportController extends Controller
         if($request->has('end')){
                 $query->whereDate('mstockcarddate','<=',Carbon::parse($request->end));
             }
-        if($request->has('mstockcardgoodsid')){
-                $query->where('mstockcardgoodsid',$request->mstockcardgoodsid);
+        if($request->has('goods')){
+                $query->where('mstockcardgoodsid',$request->goods);
         }
         if ($request->has('mstockcardwhouse')) {
             $query->where('mstockcardwhouse',$request->mstockcardwhouse);
@@ -2494,26 +2528,60 @@ class ReportController extends Controller
         //     $join->on('mdinvoice.mhinvoiceno','=','mstockcard.mstockcardtransno');
         //     $join->on('mdinvoice.mdinvoicegoodsid','=','mstockcard.mstockcardgoodsid');
         // });
-        $config = MConfig::on(Auth::user()->db_name)->where('id',1)->first();
-        $data['stocks'] = $query->get();
+        $data = $query->groupBy('mstockcardgoodsid')->get();
 
-        foreach ($data['stocks'] as $d) {
-            // get multi unit verbs
-            if($d['mstockcardtranstype'] == 'Penjualan'){
-                $mgoods = MGoods::on(Auth::user()->db_name)->where('mgoodscode',$d->mstockcardgoodsid)->first();
-                $verbs = UnitHelper::label($mgoods,$d->mstockcardstockout);
-            } else {
-                $mgoods = MGoods::on(Auth::user()->db_name)->where('mgoodscode',$d->mstockcardgoodsid)->first();
-                $verbs = UnitHelper::label($mgoods,$d->mstockcardstockin);
-            }
-            $d['verbs'] = $verbs;
+        $headers = [];
+        $stocks =[];
+
+        foreach($data as $dt){
+            array_push($headers,array('mstockcardgoodsid' => $dt->mstockcardgoodsid,'mstockcardgoodsname' => $dt->mstockcardgoodsname));
         }
 
+        foreach ($headers as $dtl) {
+            $grp_h = array(
+                'data' => 'header',
+                'mstockcardgoodsid' => $dtl['mstockcardgoodsid'],
+                'mstockcardgoodsname' => $dtl['mstockcardgoodsname'],
+            );
+            array_push($stocks,$grp_h);
+            $grp_query = MStockCard::on(Auth::user()->db_name)->where('mstockcardgoodsid',$dtl['mstockcardgoodsid']);
+
+            if ($request->has('start')) {
+                 $grp_query->whereDate('mstockcarddate','>=',Carbon::parse($request->start));
+            }
+            if($request->has('end')){
+                    $grp_query->whereDate('mstockcarddate','<=',Carbon::parse($request->end));
+            }
+            if ($request->has('mstockcardwhouse')) {
+                $grp_query->where('mstockcardwhouse',$request->mstockcardwhouse);
+            }
+
+            $grp = $grp_query->get();
+
+            foreach ($grp as $g) {
+
+                $mgoods = MGoods::on(Auth::user()->db_name)->where('mgoodscode',$g->mstockcardgoodsid)->first();
+
+                $g['data'] = 'data';
+                $g['verbs'] = UnitHelper::label($mgoods,$g->mstockcardstocktotal);
+                $g['gudang'] = $g->gudang()->mwarehousename;
+                array_push($stocks,$g);
+            }
+
+            // add total per barang
+            $footer = array(
+                'data' => 'footer',
+            );
+            array_push($stocks,$footer);
+
+        }
+        $data['stocks'] = $stocks;
+        $config = MConfig::on(Auth::user()->db_name)->where('id',1)->first();
         $data['company'] = $config->msyscompname;
         $data['start'] = Carbon::parse($request->start)->formatLocalized('%d %B %Y');
         $data['end'] = Carbon::parse($request->end)->formatLocalized('%d %B %Y');
         if($request->has('wh')){
-            $data['wh'] = $request->wh;
+            $data['wh'] = MWarehouse::on(Auth::user()->db_name)->where('id',$request->wh)->first()->mwarehousename;
         } else {
             $data['wh'] = 'Semua';
         }
@@ -2534,8 +2602,8 @@ class ReportController extends Controller
         if($request->has('end')){
                 $query->whereDate('mstockcarddate','<=',Carbon::parse($request->end));
             }
-        if($request->has('mstockcardgoodsid')){
-                $query->where('mstockcardgoodsid',$request->mstockcardgoodsid);
+        if($request->has('goods')){
+                $query->where('mstockcardgoodsid',$request->goods);
         }
         if ($request->has('mstockcardwhouse')) {
             $query->where('mstockcardwhouse',$request->mstockcardwhouse);
@@ -2545,24 +2613,60 @@ class ReportController extends Controller
         //     $join->on('mdinvoice.mhinvoiceno','=','mstockcard.mstockcardtransno');
         //     $join->on('mdinvoice.mdinvoicegoodsid','=','mstockcard.mstockcardgoodsid');
         // });
-        $this->config = MConfig::on(Auth::user()->db_name)->where('id',1)->first();
-        $this->data['stocks'] = $query->get();
-        foreach ($this->data['stocks'] as $d) {
-            // get multi unit verbs
-            if($d['mstockcardtranstype'] == 'Penjualan'){
-                $mgoods = MGoods::on(Auth::user()->db_name)->where('mgoodscode',$d->mstockcardgoodsid)->first();
-                $verbs = UnitHelper::label($mgoods,$d->mstockcardstockout);
-            } else {
-                $mgoods = MGoods::on(Auth::user()->db_name)->where('mgoodscode',$d->mstockcardgoodsid)->first();
-                $verbs = UnitHelper::label($mgoods,$d->mstockcardstockin);
-            }
-            $d['verbs'] = $verbs;
+        $data = $query->groupBy('mstockcardgoodsid')->get();
+
+        $headers = [];
+        $stocks =[];
+
+        foreach($data as $dt){
+            array_push($headers,array('mstockcardgoodsid' => $dt->mstockcardgoodsid,'mstockcardgoodsname' => $dt->mstockcardgoodsname));
         }
-        $this->data['company'] = $this->config->msyscompname;
+
+        foreach ($headers as $dtl) {
+            $grp_h = array(
+                'data' => 'header',
+                'mstockcardgoodsid' => $dtl['mstockcardgoodsid'],
+                'mstockcardgoodsname' => $dtl['mstockcardgoodsname'],
+            );
+            array_push($stocks,$grp_h);
+            $grp_query = MStockCard::on(Auth::user()->db_name)->where('mstockcardgoodsid',$dtl['mstockcardgoodsid']);
+
+            if ($request->has('start')) {
+                 $grp_query->whereDate('mstockcarddate','>=',Carbon::parse($request->start));
+            }
+            if($request->has('end')){
+                    $grp_query->whereDate('mstockcarddate','<=',Carbon::parse($request->end));
+            }
+            if ($request->has('mstockcardwhouse')) {
+                $grp_query->where('mstockcardwhouse',$request->mstockcardwhouse);
+            }
+
+            $grp = $grp_query->get();
+
+            foreach ($grp as $g) {
+
+                $mgoods = MGoods::on(Auth::user()->db_name)->where('mgoodscode',$g->mstockcardgoodsid)->first();
+
+                $g['data'] = 'data';
+                $g['verbs'] = UnitHelper::label($mgoods,$g->mstockcardstocktotal);
+                $g['gudang'] = $g->gudang()->mwarehousename;
+                array_push($stocks,$g);
+            }
+
+            // add total per barang
+            $footer = array(
+                'data' => 'footer',
+            );
+            array_push($stocks,$footer);
+
+        }
+        $this->data['stocks'] = $stocks;
+        $config = MConfig::on(Auth::user()->db_name)->where('id',1)->first();
+        $this->data['company'] = $config->msyscompname;
         $this->data['start'] = Carbon::parse($request->start)->formatLocalized('%d %B %Y');
         $this->data['end'] = Carbon::parse($request->end)->formatLocalized('%d %B %Y');
         if($request->has('wh')){
-            $this->data['wh'] = $request->wh;
+            $this->data['wh'] = MWarehouse::on(Auth::user()->db_name)->where('id',$request->wh)->first()->mwarehousename;
         } else {
             $this->data['wh'] = 'Semua';
         }
@@ -2571,6 +2675,7 @@ class ReportController extends Controller
         } else {
             $this->data['goods'] = 'Semua';
         }
+
         $this->count = 0;
         $this->request = $request;
         return Excel::create('Stock Report',function($excel){
@@ -2600,7 +2705,7 @@ class ReportController extends Controller
                 });
                 $sheet->cell('B4',function($cell){
                     if($this->request->has('wh')){
-                        $cell->setValue($this->request->wh);
+                        $cell->setValue($this->data['wh']);
                     } else {
                         $cell->setValue('Semua');
                     }
@@ -2620,7 +2725,7 @@ class ReportController extends Controller
                 });
                 $sheet->cell('B5',function($cell){
                     if($this->request->has('goods')){
-                        $cell->setValue($this->request->goods);
+                        $cell->setValue($this->data['goods']);
                     } else {
                         $cell->setValue('Semua');
                     }
@@ -2640,21 +2745,55 @@ class ReportController extends Controller
 
                 foreach ($this->data['stocks'] as $st) {
                     $this->count++;
-                    $sheet->row($this->count,array(
-                        $st->mstockcardgoodsid,
-                        $st->mstockcardgoodsname,
-                        $st->mstockcardstocktotal,
-                        $st['verbs'],
-                        $st->mstockcardstockin,
-                        $st->mstockcardstockout,
-                        ($st->mstockcardstocktotal +$st->mstockcardstockin - $st->mstockcardstockout),
-                        $st->mstockcarddate,
-                        $st->mstockcardtranstype,
-                        $st->mstockcardtransno,
-                        $st->gudang()->mwarehousename,
-                        'Umum',
-                        ''
-                    ));
+                    if($st['data'] == 'header'){
+                        $sheet->row($this->count,array(
+                            $st['mstockcardgoodsid'],
+                            $st['mstockcardgoodsname'],
+                            '',
+                            '',
+                            '',
+                            '',
+                            '',
+                            '',
+                            '',
+                            '',
+                            '',
+                            'Umum',
+                            ''
+                        ));
+                    } else if($st['data'] == 'data'){
+                        $sheet->row($this->count,array(
+                            '',
+                            '',
+                            $st->mstockcardstocktotal,
+                            $st['verbs'],
+                            $st->mstockcardstockin,
+                            $st->mstockcardstockout,
+                            ($st->mstockcardstocktotal +$st->mstockcardstockin - $st->mstockcardstockout),
+                            $st->mstockcarddate,
+                            $st->mstockcardtranstype,
+                            $st->mstockcardtransno,
+                            $st['gudang'],
+                            'Umum',
+                            ''
+                        ));
+                    } else {
+                        $sheet->row($this->count,array(
+                            '',
+                            '',
+                            '',
+                            '',
+                            '',
+                            '',
+                            '',
+                            '',
+                            '',
+                            '',
+                            '',
+                            '',
+                            ''
+                        ));
+                    }
                 }
 
 
@@ -2670,8 +2809,8 @@ class ReportController extends Controller
         if($request->has('end')){
                 $query->whereDate('mstockcarddate','<=',Carbon::parse($request->end));
             }
-        if($request->has('mstockcardgoodsid')){
-                $query->where('mstockcardgoodsid',$request->mstockcardgoodsid);
+        if($request->has('goods')){
+                $query->where('mstockcardgoodsid',$request->goods);
         }
         if ($request->has('mstockcardwhouse')) {
             $query->where('mstockcardwhouse',$request->mstockcardwhouse);
@@ -2681,25 +2820,60 @@ class ReportController extends Controller
         //     $join->on('mdinvoice.mhinvoiceno','=','mstockcard.mstockcardtransno');
         //     $join->on('mdinvoice.mdinvoicegoodsid','=','mstockcard.mstockcardgoodsid');
         // });
+        $data = $query->groupBy('mstockcardgoodsid')->get();
 
-        $this->config = MConfig::on(Auth::user()->db_name)->where('id',1)->first();
-        $this->data['stocks'] = $query->get();
-        foreach ($this->data['stocks'] as $d) {
-            // get multi unit verbs
-            if($d['mstockcardtranstype'] == 'Penjualan'){
-                $mgoods = MGoods::on(Auth::user()->db_name)->where('mgoodscode',$d->mstockcardgoodsid)->first();
-                $verbs = UnitHelper::label($mgoods,$d->mstockcardstockout);
-            } else {
-                $mgoods = MGoods::on(Auth::user()->db_name)->where('mgoodscode',$d->mstockcardgoodsid)->first();
-                $verbs = UnitHelper::label($mgoods,$d->mstockcardstockin);
-            }
-            $d['verbs'] = $verbs;
+        $headers = [];
+        $stocks =[];
+
+        foreach($data as $dt){
+            array_push($headers,array('mstockcardgoodsid' => $dt->mstockcardgoodsid,'mstockcardgoodsname' => $dt->mstockcardgoodsname));
         }
-        $this->data['company'] = $this->config->msyscompname;
+
+        foreach ($headers as $dtl) {
+            $grp_h = array(
+                'data' => 'header',
+                'mstockcardgoodsid' => $dtl['mstockcardgoodsid'],
+                'mstockcardgoodsname' => $dtl['mstockcardgoodsname'],
+            );
+            array_push($stocks,$grp_h);
+            $grp_query = MStockCard::on(Auth::user()->db_name)->where('mstockcardgoodsid',$dtl['mstockcardgoodsid']);
+
+            if ($request->has('start')) {
+                 $grp_query->whereDate('mstockcarddate','>=',Carbon::parse($request->start));
+            }
+            if($request->has('end')){
+                    $grp_query->whereDate('mstockcarddate','<=',Carbon::parse($request->end));
+            }
+            if ($request->has('mstockcardwhouse')) {
+                $grp_query->where('mstockcardwhouse',$request->mstockcardwhouse);
+            }
+
+            $grp = $grp_query->get();
+
+            foreach ($grp as $g) {
+
+                $mgoods = MGoods::on(Auth::user()->db_name)->where('mgoodscode',$g->mstockcardgoodsid)->first();
+
+                $g['data'] = 'data';
+                $g['verbs'] = UnitHelper::label($mgoods,$g->mstockcardstocktotal);
+                $g['gudang'] = $g->gudang()->mwarehousename;
+                array_push($stocks,$g);
+            }
+
+            // add total per barang
+            $footer = array(
+                'data' => 'footer',
+            );
+            array_push($stocks,$footer);
+
+        }
+        $this->data['stocks'] = $stocks;
+        $config = MConfig::on(Auth::user()->db_name)->where('id',1)->first();
+        $this->data['company'] = $config->msyscompname;
         $this->data['start'] = Carbon::parse($request->start)->formatLocalized('%d %B %Y');
         $this->data['end'] = Carbon::parse($request->end)->formatLocalized('%d %B %Y');
         if($request->has('wh')){
-            $this->data['wh'] = $request->wh;
+            $this->data['wh'] = MWarehouse::on(Auth::user()->db_name)->where('id',$request->wh)->first()->mwarehousename;
         } else {
             $this->data['wh'] = 'Semua';
         }
@@ -2708,6 +2882,7 @@ class ReportController extends Controller
         } else {
             $this->data['goods'] = 'Semua';
         }
+
         $this->count = 0;
         $this->request = $request;
         return Excel::create('Stock Report',function($excel){
@@ -2737,7 +2912,7 @@ class ReportController extends Controller
                 });
                 $sheet->cell('B4',function($cell){
                     if($this->request->has('wh')){
-                        $cell->setValue($this->request->wh);
+                        $cell->setValue($this->data['wh']);
                     } else {
                         $cell->setValue('Semua');
                     }
@@ -2757,7 +2932,7 @@ class ReportController extends Controller
                 });
                 $sheet->cell('B5',function($cell){
                     if($this->request->has('goods')){
-                        $cell->setValue($this->request->goods);
+                        $cell->setValue($this->data['goods']);
                     } else {
                         $cell->setValue('Semua');
                     }
@@ -2777,21 +2952,55 @@ class ReportController extends Controller
 
                 foreach ($this->data['stocks'] as $st) {
                     $this->count++;
-                    $sheet->row($this->count,array(
-                        $st->mstockcardgoodsid,
-                        $st->mstockcardgoodsname,
-                        $st->mstockcardstocktotal,
-                        $st['verbs'],
-                        $st->mstockcardstockin,
-                        $st->mstockcardstockout,
-                        ($st->mstockcardstocktotal +$st->mstockcardstockin - $st->mstockcardstockout),
-                        $st->mstockcarddate,
-                        $st->mstockcardtranstype,
-                        $st->mstockcardtransno,
-                        $st->gudang()->mwarehousename,
-                        'Umum',
-                        ''
-                    ));
+                    if($st['data'] == 'header'){
+                        $sheet->row($this->count,array(
+                            $st['mstockcardgoodsid'],
+                            $st['mstockcardgoodsname'],
+                            '',
+                            '',
+                            '',
+                            '',
+                            '',
+                            '',
+                            '',
+                            '',
+                            '',
+                            'Umum',
+                            ''
+                        ));
+                    } else if($st['data'] == 'data'){
+                        $sheet->row($this->count,array(
+                            '',
+                            '',
+                            $st->mstockcardstocktotal,
+                            $st['verbs'],
+                            $st->mstockcardstockin,
+                            $st->mstockcardstockout,
+                            ($st->mstockcardstocktotal +$st->mstockcardstockin - $st->mstockcardstockout),
+                            $st->mstockcarddate,
+                            $st->mstockcardtranstype,
+                            $st->mstockcardtransno,
+                            $st['gudang'],
+                            'Umum',
+                            ''
+                        ));
+                    } else {
+                        $sheet->row($this->count,array(
+                            '',
+                            '',
+                            '',
+                            '',
+                            '',
+                            '',
+                            '',
+                            '',
+                            '',
+                            '',
+                            '',
+                            '',
+                            ''
+                        ));
+                    }
                 }
 
 

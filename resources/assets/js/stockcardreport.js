@@ -68,9 +68,10 @@ const stockcardreport = new Vue({
         label_warehouse(){
             let self = this;
             if(this.mstockcardwhouse != ""){
-                return _.find(this.warehouses,(wh) => {
+                let wh = _.find(this.warehouses,(wh) => {
                     return wh.id == self.mstockcardwhouse;
                 });
+                return wh.mwarehousename;
             } else {
                 return "Semua"
             }

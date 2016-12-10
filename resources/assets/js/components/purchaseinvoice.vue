@@ -319,7 +319,7 @@
             return numeral(this.invoice_subtotal + this.invoice_tax).format(this.num_format);
           },
           format_subtotal(){
-            return numeral(this.invoice_subtotal + this.invoice_disc).format(this.num_format);
+            return numeral(this.invoice_subtotal).format(this.num_format);
           },
           format_tax(){
             return numeral(this.invoice_tax).format(this.num_format);

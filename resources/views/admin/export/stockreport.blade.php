@@ -97,9 +97,26 @@
             </thead>
             <tbody>
                 @foreach($stocks as $st)
+                    @if($st['data'] == 'header')
                     <tr>
-                        <td>{{ $st->mstockcardgoodsid }}</td>
-                        <td>{{ $st->mstockcardgoodsname }}</td>
+                        <td>{{ $st['mstockcardgoodsid'] }}</td>
+                        <td>{{ $st['mstockcardgoodsname'] }}</td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td> Umum </td>
+                        <td></td>
+                    </tr>
+                    @elseif($st['data'] == 'data')
+                    <tr>
+                        <td></td>
+                        <td></td>
                         <td>{{ $st->mstockcardstocktotal }}</td>
                         <td>{{ $st['verbs'] }}</td>
                         <td>{{ $st->mstockcardstockin }}</td>
@@ -108,10 +125,27 @@
                         <td>{{ $st->mstockcarddate }}</td>
                         <td>{{ $st->mstockcardtranstype }}</td>
                         <td>{{ $st->mstockcardtransno }}</td>
-                        <td>{{ $st->gudang()->mwarehousename }}</td>
+                        <td>{{ $st['gudang'] }}</td>
                         <td> Umum </td>
                         <td></td>
                     </tr>
+                    @else
+                    <tr>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    @endif
                 @endforeach
             </tbody>
         </table>

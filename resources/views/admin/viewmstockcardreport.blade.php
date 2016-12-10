@@ -138,19 +138,19 @@
 								</thead>
 								<tbody>
 								<tr v-for="stock in stocks">
-									<td>@{{ stock.mstockcardgoodsid }}</td>
-			                        <td>@{{ stock.mstockcardgoodsname }}</td>
-			                        <td>@{{ stock.mstockcardstocktotal }}</td>
-			                        <td>@{{ stock.verbs }}</td>
-			                        <td>@{{ stock.mstockcardstockin }}</td>
-			                        <td>@{{ stock.mstockcardstockout }}</td>
-			                        <td>@{{ stock.mstockcardstocktotal +  stock.mstockcardstockin - stock.mstockcardstockout }}</td>
-			                        <td>@{{ stock.mstockcarddate }}</td>
-			                        <td>@{{ stock.mstockcardtranstype }}</td>
-			                        <td>@{{ stock.mstockcardtransno }}</td>
-			                        <td>@{{ stock.gudang }}</td>
-			                        <td> Umum </td>
-			                        <td></td>
+									<td><span v-if="stock.data == false">@{{ stock.mstockcardgoodsid }}</span></td>
+                                    <td><span v-if="stock.data == false">@{{ stock.mstockcardgoodsname }}</span></td>
+                                    <td><span v-if="stock.data == true">@{{ stock.mstockcardstocktotal }}</span></td>
+                                    <td><span v-if="stock.data == true">@{{ stock.verbs }}</span></td>
+                                    <td><span v-if="stock.data == true">@{{ stock.mstockcardstockin }}</span></td>
+                                    <td><span v-if="stock.data == true">@{{ stock.mstockcardstockout }}</span></td>
+                                    <td><span v-if="stock.data == true">@{{ (stock.mstockcardstocktotal +stock.mstockcardstockin - stock.mstockcardstockout) }}</span></td>
+                                    <td><span v-if="stock.data == true">@{{ stock.mstockcarddate }}</span></td>
+                                    <td><span v-if="stock.data == true">@{{ stock.mstockcardtranstype }}</span></td>
+                                    <td><span v-if="stock.data == true">@{{ stock.mstockcardtransno }}</span></td>
+                                    <td><span v-if="stock.data == true">@{{ stock.gudang }}</span></td>
+                                    <td><span v-if="stock.data == true">Umum</span></td>
+                                    <td></td>
 								</tr>
 								</tbody>
 							</table>
