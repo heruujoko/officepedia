@@ -256,19 +256,19 @@
         {
             text: 'CSV',
             action: function(){
-              window.location.href = "{{ url('/admin-nano/salesinvoice/export/csv') }}"
+              window.location.href = "{{ url('/admin-nano/purchaseinvoice/export/csv') }}"
             }
         },
         {
             text: 'Excel',
             action: function(){
-              window.location.href = "{{ url('/admin-nano/salesinvoice/export/excel') }}"
+              window.location.href = "{{ url('/admin-nano/purchaseinvoice/export/excel') }}"
             }
         },
         {
             text: 'PDF',
             action: function(){
-              window.location.href = "{{ url('/admin-nano/salesinvoice/export/pdf') }}"
+              window.location.href = "{{ url('/admin-nano/purchaseinvoice/export/pdf') }}"
             }
         },
         {
