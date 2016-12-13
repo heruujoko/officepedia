@@ -273,27 +273,39 @@ class SalesController extends Controller
             array_push($customers,$h->marcardcustomerid);
         }
         $customers = array_unique($customers);
-
         $ar_detail_data = [];
 
         /*
          * Build detail data per customer head
          */
-         $idx=0;
         foreach ($customers as $cust) {
+            $idx=0;
+            $total_inv =0;
+            $total_trans =0;
+            $total_outstanding = 0;
             $detail_query = MARCard::on(Auth::user()->db_name)->where('marcardcustomerid',$cust);
             if($request->has('end')){
                 $detail_query->whereDate('marcarddate','<=',Carbon::parse($request->end));
             }
             $details = $detail_query->get();
-
-            array_push($ar_detail_data,['customerid' => $cust,'customername' => $details[$idx]->marcardcustomername]);
+            array_push($ar_detail_data,['customerid' => $cust,'customername' => $details[$idx]->marcardcustomername,'footer' => false]);
             foreach($details as $dt){
                 $dt['outstanding_prc'] = number_format($dt->marcardoutstanding,$data['decimals'],$data['dec_point'],$data['thousands_sep']);
                 $dt['aging'] = Carbon::now()->diffInDays(Carbon::parse($dt->marcarddate));
                 $dt['trans_count'] = count(MDInvoice::on(Auth::user()->db_name)->where('mhinvoiceno',$dt->marcardtransno)->get());
+                $total_inv += $dt->marcardtotalinv;
+                $total_trans += $dt['trans_count'];
+                $total_outstanding += $dt->marcardoutstanding;
+                $dt['footer'] = false;
                 array_push($ar_detail_data,$dt);
             }
+            $footer = array(
+                'footer' => true,
+                'total_inv' => $total_inv,
+                'total_trans' => $total_trans,
+                'total_outstanding' => $total_outstanding
+            );
+            array_push($ar_detail_data,$footer);
             $idx++;
         }
 

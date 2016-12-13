@@ -69,7 +69,7 @@
     <body>
         <h5 class="text-center">{{ $company }}</h5>
         <h5 class="text-center">Laporan Buku Piutang</h5>
-        <h5 class="text-center">Periode {{ $start }} - {{ $end }}</h5>
+        <h5 class="text-center">Per {{ $end }}</h5>
         <br>
         <p class="filter-status">Cabang {{ $br }}</p>
         <p class="filter-status">Customer {{ $cust }}</p>
@@ -103,6 +103,16 @@
                         <td></td>
                         <td></td>
                     </tr>
+                    @elseif($ar['footer'])
+                    <tr>
+                        <th colspan="2">Total</th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                        <th style="text-align:right">{{ $ar['total_inv'] }}</th>
+                        <th style="text-align:right">{{ $ar['total_outstanding'] }}</th>
+                        <th></th>
+                    </tr>
                     @else
                     <tr>
                         <td></td>
@@ -119,7 +129,7 @@
             </tbody>
             <thead>
                 <tr>
-                    <th colspan="2">TOTAL</th>
+                    <th colspan="2">Grand Total</th>
                     <th></th>
                     <th></th>
                     <th></th>

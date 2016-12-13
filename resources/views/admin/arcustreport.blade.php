@@ -128,19 +128,27 @@
                                                         </thead>
                                                         <tbody>
                                                             <tr v-for="ar in ars">
-                                                                <td>@{{ ar.customerid }}</td>
-                                                                <td>@{{ ar.customername }}</td>
-                                                                <td>@{{ ar.marcardtransno }}</td>
-                                                                <td>@{{ ar.marcarddate }}</td>
-                                                                <td>@{{ ar.marcardduedate }}</td>
-                                                                <td style="text-align:right">@{{ ar.outstanding_prc }}</td>
-                                                                <td style="text-align:right">@{{ ar.outstanding_prc }}</td>
-                                                                <td>@{{ ar.aging }}</td>
+                                                                <td v-if="ar.footer == false">@{{ ar.customerid }}</td>
+                                                                <td v-if="ar.footer == false">@{{ ar.customername }}</td>
+                                                                <td v-if="ar.footer == false">@{{ ar.marcardtransno }}</td>
+                                                                <td v-if="ar.footer == false">@{{ ar.marcarddate }}</td>
+                                                                <td v-if="ar.footer == false">@{{ ar.marcardduedate }}</td>
+                                                                <td v-if="ar.footer == false" style="text-align:right">@{{ ar.outstanding_prc }}</td>
+                                                                <td v-if="ar.footer == false" style="text-align:right">@{{ ar.outstanding_prc }}</td>
+                                                                <td v-if="ar.footer == false">@{{ ar.aging }}</td>
+                                                                <!--  footer -->
+                                                                <td v-if="ar.footer == true" class="tbl-footer" colspan="2">Total</td>
+                                                                <td v-if="ar.footer == true" class="tbl-footer"></td>
+                                                                <td v-if="ar.footer == true" class="tbl-footer"></td>
+                                                                <td v-if="ar.footer == true" class="tbl-footer"></td>
+                                                                <td v-if="ar.footer == true" class="tbl-footer" style="text-align:right" v-priceformatlabel="num_format">@{{ ar.total_inv }}</td>
+                                                                <td v-if="ar.footer == true" class="tbl-footer" style="text-align:right" v-priceformatlabel="num_format">@{{ ar.total_outstanding }}</td>
+                                                                <td v-if="ar.footer == true" class="tbl-footer"></td>
                                                             </tr>
                                                         </tbody>
                                                         <thead>
                                                             <tr>
-                                                                <th colspan="2">TOTAL</th>
+                                                                <th colspan="2">Grand Total</th>
                                                                 <th></th>
                                                                 <th></th>
                                                                 <th></th>
@@ -197,6 +205,9 @@
         .small-date{
             width: 195px;
             font-size: 11px;
+        }
+        .tbl-footer {
+            background-image: -webkit-linear-gradient(top,#f2f2f2 0,#fafafa 100%);
         }
     </style>
 @stop

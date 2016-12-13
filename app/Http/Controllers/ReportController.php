@@ -1986,9 +1986,12 @@ class ReportController extends Controller
         /*
          * Build detail data per customer head
          */
-         $idx=0;
          $marcardoutstanding_total = 0;
         foreach ($customers as $cust) {
+            $idx=0;
+            $total_inv =0;
+            $total_trans =0;
+            $total_outstanding = 0;
             $detail_query = MARCard::on(Auth::user()->db_name)->where('marcardcustomerid',$cust);
             if($request->has('end')){
                 $detail_query->whereDate('marcarddate','<=',Carbon::parse($request->end));
@@ -2002,8 +2005,19 @@ class ReportController extends Controller
                 $dt['aging'] = Carbon::now()->diffInDays(Carbon::parse($dt->marcarddate));
                 $dt['trans_count'] = count(MDInvoice::on(Auth::user()->db_name)->where('mhinvoiceno',$dt->marcardtransno)->get());
                 $dt['header'] = false;
+                $total_inv += $dt->marcardtotalinv;
+                $total_trans += $dt['trans_count'];
+                $total_outstanding += $dt->marcardoutstanding;
+                $dt['footer'] = false;
                 array_push($ar_detail_data,$dt);
             }
+            $footer = array(
+                'header' => false,
+                'footer' => true,
+                'total_inv' => number_format($total_inv,$data['decimals'],$data['dec_point'],$data['thousands_sep']),
+                'total_outstanding' => number_format($total_outstanding,$data['decimals'],$data['dec_point'],$data['thousands_sep'])
+            );
+            array_push($ar_detail_data,$footer);
             $idx++;
         }
 
@@ -2058,9 +2072,12 @@ class ReportController extends Controller
         /*
          * Build detail data per customer head
          */
-         $idx=0;
          $marcardoutstanding_total = 0;
         foreach ($customers as $cust) {
+            $idx=0;
+            $total_inv =0;
+            $total_trans =0;
+            $total_outstanding = 0;
             $detail_query = MARCard::on(Auth::user()->db_name)->where('marcardcustomerid',$cust);
             if($request->has('end')){
                 $detail_query->whereDate('marcarddate','<=',Carbon::parse($request->end));
@@ -2074,8 +2091,19 @@ class ReportController extends Controller
                 $dt['aging'] = Carbon::now()->diffInDays(Carbon::parse($dt->marcarddate));
                 $dt['trans_count'] = count(MDInvoice::on(Auth::user()->db_name)->where('mhinvoiceno',$dt->marcardtransno)->get());
                 $dt['header'] = false;
+                $total_inv += $dt->marcardtotalinv;
+                $total_trans += $dt['trans_count'];
+                $total_outstanding += $dt->marcardoutstanding;
+                $dt['footer'] = false;
                 array_push($ar_detail_data,$dt);
             }
+            $footer = array(
+                'header' => false,
+                'footer' => true,
+                'total_inv' => number_format($total_inv,$data['decimals'],$data['dec_point'],$data['thousands_sep']),
+                'total_outstanding' => number_format($total_outstanding,$data['decimals'],$data['dec_point'],$data['thousands_sep'])
+            );
+            array_push($ar_detail_data,$footer);
             $idx++;
         }
 
@@ -2135,9 +2163,12 @@ class ReportController extends Controller
         /*
          * Build detail data per customer head
          */
-         $idx=0;
          $this->marcardoutstanding_total = 0;
         foreach ($customers as $cust) {
+            $idx=0;
+            $total_inv =0;
+            $total_trans =0;
+            $total_outstanding = 0;
             $detail_query = MARCard::on(Auth::user()->db_name)->where('marcardcustomerid',$cust);
             if($request->has('end')){
                 $detail_query->whereDate('marcarddate','<=',Carbon::parse($request->end));
@@ -2151,8 +2182,19 @@ class ReportController extends Controller
                 $dt['aging'] = Carbon::now()->diffInDays(Carbon::parse($dt->marcarddate));
                 $dt['trans_count'] = count(MDInvoice::on(Auth::user()->db_name)->where('mhinvoiceno',$dt->marcardtransno)->get());
                 $dt['header'] = false;
+                $total_inv += $dt->marcardtotalinv;
+                $total_trans += $dt['trans_count'];
+                $total_outstanding += $dt->marcardoutstanding;
+                $dt['footer'] = false;
                 array_push($ar_detail_data,$dt);
             }
+            $footer = array(
+                'header' => false,
+                'footer' => true,
+                'total_inv' => $total_inv,
+                'total_outstanding' => $total_outstanding
+            );
+            array_push($ar_detail_data,$footer);
             $idx++;
         }
         $this->marcardoutstanding_total = $this->marcardoutstanding_total;
@@ -2231,6 +2273,17 @@ class ReportController extends Controller
                             $ar['customerid'],
                             $ar['customername'],
                         ));
+                    } else if($ar['footer']){
+                        $sheet->row($this->count,array(
+                            'Total',
+                            '',
+                            '',
+                            '',
+                            '',
+                            $ar['total_inv'],
+                            $ar['total_outstanding'],
+                            ''
+                        ));
                     } else {
                         $sheet->row($this->count,array(
                             '',
@@ -2245,9 +2298,9 @@ class ReportController extends Controller
                     }
 
                 }
-
+                $this->count++;
                 $sheet->row($this->count,array(
-                    'TOTAL',
+                    'Grand Total',
                     '',
                     '',
                     '',
@@ -2298,9 +2351,12 @@ class ReportController extends Controller
         /*
          * Build detail data per customer head
          */
-         $idx=0;
          $this->marcardoutstanding_total = 0;
         foreach ($customers as $cust) {
+            $idx=0;
+            $total_inv =0;
+            $total_trans =0;
+            $total_outstanding = 0;
             $detail_query = MARCard::on(Auth::user()->db_name)->where('marcardcustomerid',$cust);
             if($request->has('end')){
                 $detail_query->whereDate('marcarddate','<=',Carbon::parse($request->end));
@@ -2314,14 +2370,25 @@ class ReportController extends Controller
                 $dt['aging'] = Carbon::now()->diffInDays(Carbon::parse($dt->marcarddate));
                 $dt['trans_count'] = count(MDInvoice::on(Auth::user()->db_name)->where('mhinvoiceno',$dt->marcardtransno)->get());
                 $dt['header'] = false;
+                $total_inv += $dt->marcardtotalinv;
+                $total_trans += $dt['trans_count'];
+                $total_outstanding += $dt->marcardoutstanding;
+                $dt['footer'] = false;
                 array_push($ar_detail_data,$dt);
             }
+            $footer = array(
+                'header' => false,
+                'footer' => true,
+                'total_inv' => $total_inv,
+                'total_outstanding' => $total_outstanding
+            );
+            array_push($ar_detail_data,$footer);
             $idx++;
         }
-
+        $this->marcardoutstanding_total = $this->marcardoutstanding_total;
         $this->ars = $ar_detail_data;
         $this->request = $request;
-        $this->marcardoutstanding_total = $this->marcardoutstanding_total;
+
         return Excel::create('Ar Customer Report',function($excel){
 			$excel->sheet('Ar Customer Report',function($sheet){
 				$this->count++;
@@ -2394,6 +2461,17 @@ class ReportController extends Controller
                             $ar['customerid'],
                             $ar['customername'],
                         ));
+                    } else if($ar['footer']){
+                        $sheet->row($this->count,array(
+                            'Total',
+                            '',
+                            '',
+                            '',
+                            '',
+                            $ar['total_inv'],
+                            $ar['total_outstanding'],
+                            ''
+                        ));
                     } else {
                         $sheet->row($this->count,array(
                             '',
@@ -2408,9 +2486,9 @@ class ReportController extends Controller
                     }
 
                 }
-
+                $this->count++;
                 $sheet->row($this->count,array(
-                    'TOTAL',
+                    'Grand Total',
                     '',
                     '',
                     '',
