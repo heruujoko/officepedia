@@ -319,13 +319,14 @@
         confirmButtonText: "Iya, Hapus!",
         cancelButtonText: "Tidak, Batal!",
         closeOnConfirm: false,
-        closeOnCancel: false
+        closeOnCancel: false,
+        timer: 1500
       },
       function(isconfirm){
         if (isconfirm) {
           $.ajax({
             type: "DELETE",
-            url: API_URL+"/salesinvoice/"+id,
+            url: API_URL+"/purchaseinvoice/"+id,
             success: function(response){
               console.log(response);
               table.ajax.reload();
@@ -340,10 +341,15 @@
               $('#formedit').hide();
             },
             error: function(response){
+                var msg = "";
+                if(response.status == 400){
+                    msg = "Stock tidak bisa minus!";
+                }
               swal({
                 title: "Pengubahan Gagal!",
+                text: msg,
                 type: "error",
-                timer: 1000
+                timer: 1500
               });
               window.location = "#tableapi";
             }

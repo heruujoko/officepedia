@@ -136,40 +136,44 @@ class MHInvoice extends Model
           $stock_card->mstockcardeventdate = Carbon::now();
           $stock_card->mstockcardeventtime = Carbon::now();
           $stock_card->edited = 0;
-          $stock_card->mstockcardunit3 = $mgoods->mgoodscurrentunit3;
-          $stock_card->mstockcardunit3conv = $mgoods->mgoodscurrentunit3conv;
-          $stock_card->mstockcardunit3label = $mgoods->mgoodscurrentunit3label;
-          $stock_card->mstockcardunit2 = $mgoods->mgoodscurrentunit2;
-          $stock_card->mstockcardunit2conv = $mgoods->mgoodscurrentunit2conv;
-          $stock_card->mstockcardunit2label = $mgoods->mgoodscurrentunit2label;
-          $stock_card->mstockcardunit1 = $mgoods->mgoodscurrentunit1;
-          $stock_card->mstockcardunit1conv = $mgoods->mgoodscurrentunit1conv;
-          $stock_card->mstockcardunit1label = $mgoods->mgoodscurrentunit1label;
+        //   $stock_card->mstockcardunit3 = $mgoods->mgoodscurrentunit3;
+        //   $stock_card->mstockcardunit3conv = $mgoods->mgoodscurrentunit3conv;
+        //   $stock_card->mstockcardunit3label = $mgoods->mgoodscurrentunit3label;
+        //   $stock_card->mstockcardunit2 = $mgoods->mgoodscurrentunit2;
+        //   $stock_card->mstockcardunit2conv = $mgoods->mgoodscurrentunit2conv;
+        //   $stock_card->mstockcardunit2label = $mgoods->mgoodscurrentunit2label;
+        //   $stock_card->mstockcardunit1 = $mgoods->mgoodscurrentunit1;
+        //   $stock_card->mstockcardunit1conv = $mgoods->mgoodscurrentunit1conv;
+        //   $stock_card->mstockcardunit1label = $mgoods->mgoodscurrentunit1label;
           // out conversion
-          $stock_card->mstockcardoutunit3 = $g['detail_goods_unit3'];
-          $stock_card->mstockcardoutunit3conv = $g['detail_goods_unit3_conv'];
-          $stock_card->mstockcardoutunit3label = $g['detail_goods_unit3_label'];
-          $stock_card->mstockcardoutunit2 = $g['detail_goods_unit2'];
-          $stock_card->mstockcardoutunit2conv = $g['detail_goods_unit2_conv'];
-          $stock_card->mstockcardoutunit2label = $g['detail_goods_unit2_label'];
-          $stock_card->mstockcardoutunit1 = $g['detail_goods_unit1'];
-          $stock_card->mstockcardoutunit1conv = $g['detail_goods_unit1_conv'];
-          $stock_card->mstockcardoutunit1label = $g['detail_goods_unit1_label'];
+        //   $stock_card->mstockcardoutunit3 = $g['detail_goods_unit3'];
+        //   $stock_card->mstockcardoutunit3conv = $g['detail_goods_unit3_conv'];
+        //   $stock_card->mstockcardoutunit3label = $g['detail_goods_unit3_label'];
+        //   $stock_card->mstockcardoutunit2 = $g['detail_goods_unit2'];
+        //   $stock_card->mstockcardoutunit2conv = $g['detail_goods_unit2_conv'];
+        //   $stock_card->mstockcardoutunit2label = $g['detail_goods_unit2_label'];
+        //   $stock_card->mstockcardoutunit1 = $g['detail_goods_unit1'];
+        //   $stock_card->mstockcardoutunit1conv = $g['detail_goods_unit1_conv'];
+        //   $stock_card->mstockcardoutunit1label = $g['detail_goods_unit1_label'];
           $stock_card->save();
 
           // update master barang
         //   $mgoods->mgoodsstock = $stock_card->mstockcardstocktotal;
           $mgoods->mgoodsstock = $mgoods->mgoodsstock - $g['usage'];
-          $mgoods->mgoodscurrentunit3 -= $g['detail_goods_unit3'];
-          $mgoods->mgoodscurrentunit3conv = $g['detail_goods_unit3_conv'];
-          $mgoods->mgoodscurrentunit3label = $g['detail_goods_unit3_label'];
-          $mgoods->mgoodscurrentunit2 -= $g['detail_goods_unit2'];
-          $mgoods->mgoodscurrentunit2conv = $g['detail_goods_unit2_conv'];
-          $mgoods->mgoodscurrentunit2label = $g['detail_goods_unit2_label'];
-          $mgoods->mgoodscurrentunit1 -= $g['detail_goods_unit1'];
-          $mgoods->mgoodscurrentunit1conv = $g['detail_goods_unit1_conv'];
-          $mgoods->mgoodscurrentunit1label = $g['detail_goods_unit1_label'];
+        //   $mgoods->mgoodscurrentunit3 -= $g['detail_goods_unit3'];
+        //   $mgoods->mgoodscurrentunit3conv = $g['detail_goods_unit3_conv'];
+        //   $mgoods->mgoodscurrentunit3label = $g['detail_goods_unit3_label'];
+        //   $mgoods->mgoodscurrentunit2 -= $g['detail_goods_unit2'];
+        //   $mgoods->mgoodscurrentunit2conv = $g['detail_goods_unit2_conv'];
+        //   $mgoods->mgoodscurrentunit2label = $g['detail_goods_unit2_label'];
+        //   $mgoods->mgoodscurrentunit1 -= $g['detail_goods_unit1'];
+        //   $mgoods->mgoodscurrentunit1conv = $g['detail_goods_unit1_conv'];
+        //   $mgoods->mgoodscurrentunit1label = $g['detail_goods_unit1_label'];
           $mgoods->save();
+
+          // update detail stock refs
+          $invoice_detail->stock_ref = $stock_card->id;
+          $invoice_detail->save();
 
           //check allow minus
           if($allow_minus == 0 && ($mgoods->mgoodsstock < 0)){
@@ -297,28 +301,28 @@ class MHInvoice extends Model
                 $stock_card->edited = 1;
                 $stock_card->void = 0;
                 // in conversion
-                $stock_card->mstockcardinunit3 += $last_stock->mstockcardoutunit3;
-                $stock_card->mstockcardinunit3conv = $last_stock->mstockcardoutunit3conv;
-                $stock_card->mstockcardinunit3label = $last_stock->mstockcardoutunit3label;
-                $stock_card->mstockcardinunit2 += $last_stock->mstockcardoutunit2;
-                $stock_card->mstockcardinunit2conv = $last_stock->mstockcardoutunit2conv;
-                $stock_card->mstockcardinunit2label = $last_stock->mstockcardoutunit2label;
-                $stock_card->mstockcardinunit1 += $last_stock->mstockcardoutunit1;
-                $stock_card->mstockcardinunit1conv = $last_stock->mstockcardoutunit1conv;
-                $stock_card->mstockcardinunit1label = $last_stock->mstockcardoutunit1label;
+                // $stock_card->mstockcardinunit3 += $last_stock->mstockcardoutunit3;
+                // $stock_card->mstockcardinunit3conv = $last_stock->mstockcardoutunit3conv;
+                // $stock_card->mstockcardinunit3label = $last_stock->mstockcardoutunit3label;
+                // $stock_card->mstockcardinunit2 += $last_stock->mstockcardoutunit2;
+                // $stock_card->mstockcardinunit2conv = $last_stock->mstockcardoutunit2conv;
+                // $stock_card->mstockcardinunit2label = $last_stock->mstockcardoutunit2label;
+                // $stock_card->mstockcardinunit1 += $last_stock->mstockcardoutunit1;
+                // $stock_card->mstockcardinunit1conv = $last_stock->mstockcardoutunit1conv;
+                // $stock_card->mstockcardinunit1label = $last_stock->mstockcardoutunit1label;
                 $stock_card->save();
 
                 if($old_qty != $g['usage']){
                     $mgoods->mgoodsstock += $last_stock->mstockcardstockout;
-                    $mgoods->mgoodscurrentunit3 += $last_stock->mstockcardoutunit3;
-                    $mgoods->mgoodscurrentunit3conv = $last_stock->mstockcardoutunit3conv;
-                    $mgoods->mgoodscurrentunit3label = $last_stock->mstockcardoutunit3label;
-                    $mgoods->mgoodscurrentunit2 += $last_stock->mstockcardoutunit2;
-                    $mgoods->mgoodscurrentunit2conv = $last_stock->mstockcardoutunit2conv;
-                    $mgoods->mgoodscurrentunit2label = $last_stock->mstockcardoutunit2label;
-                    $mgoods->mgoodscurrentunit1 += $last_stock->mstockcardoutunit1;
-                    $mgoods->mgoodscurrentunit1conv = $last_stock->mstockcardoutunit1conv;
-                    $mgoods->mgoodscurrentunit1label = $last_stock->mstockcardoutunit1label;
+                    // $mgoods->mgoodscurrentunit3 += $last_stock->mstockcardoutunit3;
+                    // $mgoods->mgoodscurrentunit3conv = $last_stock->mstockcardoutunit3conv;
+                    // $mgoods->mgoodscurrentunit3label = $last_stock->mstockcardoutunit3label;
+                    // $mgoods->mgoodscurrentunit2 += $last_stock->mstockcardoutunit2;
+                    // $mgoods->mgoodscurrentunit2conv = $last_stock->mstockcardoutunit2conv;
+                    // $mgoods->mgoodscurrentunit2label = $last_stock->mstockcardoutunit2label;
+                    // $mgoods->mgoodscurrentunit1 += $last_stock->mstockcardoutunit1;
+                    // $mgoods->mgoodscurrentunit1conv = $last_stock->mstockcardoutunit1conv;
+                    // $mgoods->mgoodscurrentunit1label = $last_stock->mstockcardoutunit1label;
                 }
                 $mgoods->save();
 
@@ -339,40 +343,44 @@ class MHInvoice extends Model
                 $stock_card->mstockcardusername = Auth::user()->name;
                 $stock_card->mstockcardeventdate = Carbon::now();
                 $stock_card->mstockcardeventtime = Carbon::now();
-                $stock_card->mstockcardunit3 = $mgoods->mgoodscurrentunit3;
-                $stock_card->mstockcardunit3conv = $mgoods->mgoodscurrentunit3conv;
-                $stock_card->mstockcardunit3label = $mgoods->mgoodscurrentunit3label;
-                $stock_card->mstockcardunit2 = $mgoods->mgoodscurrentunit2;
-                $stock_card->mstockcardunit2conv = $mgoods->mgoodscurrentunit2conv;
-                $stock_card->mstockcardunit2label = $mgoods->mgoodscurrentunit2label;
-                $stock_card->mstockcardunit1 = $mgoods->mgoodscurrentunit1;
-                $stock_card->mstockcardunit1conv = $mgoods->mgoodscurrentunit1conv;
-                $stock_card->mstockcardunit1label = $mgoods->mgoodscurrentunit1label;
+                // $stock_card->mstockcardunit3 = $mgoods->mgoodscurrentunit3;
+                // $stock_card->mstockcardunit3conv = $mgoods->mgoodscurrentunit3conv;
+                // $stock_card->mstockcardunit3label = $mgoods->mgoodscurrentunit3label;
+                // $stock_card->mstockcardunit2 = $mgoods->mgoodscurrentunit2;
+                // $stock_card->mstockcardunit2conv = $mgoods->mgoodscurrentunit2conv;
+                // $stock_card->mstockcardunit2label = $mgoods->mgoodscurrentunit2label;
+                // $stock_card->mstockcardunit1 = $mgoods->mgoodscurrentunit1;
+                // $stock_card->mstockcardunit1conv = $mgoods->mgoodscurrentunit1conv;
+                // $stock_card->mstockcardunit1label = $mgoods->mgoodscurrentunit1label;
                 $stock_card->edited = 1;
                 $stock_card->void = 0;
                 // out conversion
-                $stock_card->mstockcardoutunit3 = $g['detail_goods_unit3'];
-                $stock_card->mstockcardoutunit3conv = $g['detail_goods_unit3_conv'];
-                $stock_card->mstockcardoutunit3label = $g['detail_goods_unit3_label'];
-                $stock_card->mstockcardoutunit2 = $g['detail_goods_unit2'];
-                $stock_card->mstockcardoutunit2conv = $g['detail_goods_unit2_conv'];
-                $stock_card->mstockcardoutunit2label = $g['detail_goods_unit2_label'];
-                $stock_card->mstockcardoutunit1 = $g['detail_goods_unit1'];
-                $stock_card->mstockcardoutunit1conv = $g['detail_goods_unit1_conv'];
-                $stock_card->mstockcardoutunit1label = $g['detail_goods_unit1_label'];
+                // $stock_card->mstockcardoutunit3 = $g['detail_goods_unit3'];
+                // $stock_card->mstockcardoutunit3conv = $g['detail_goods_unit3_conv'];
+                // $stock_card->mstockcardoutunit3label = $g['detail_goods_unit3_label'];
+                // $stock_card->mstockcardoutunit2 = $g['detail_goods_unit2'];
+                // $stock_card->mstockcardoutunit2conv = $g['detail_goods_unit2_conv'];
+                // $stock_card->mstockcardoutunit2label = $g['detail_goods_unit2_label'];
+                // $stock_card->mstockcardoutunit1 = $g['detail_goods_unit1'];
+                // $stock_card->mstockcardoutunit1conv = $g['detail_goods_unit1_conv'];
+                // $stock_card->mstockcardoutunit1label = $g['detail_goods_unit1_label'];
                 $stock_card->save();
 
                 $mgoods->mgoodsstock -= $g['usage'];
-                $mgoods->mgoodscurrentunit3 -= $g['detail_goods_unit3'];
-                $mgoods->mgoodscurrentunit3conv = $g['detail_goods_unit3_conv'];
-                $mgoods->mgoodscurrentunit3label = $g['detail_goods_unit3_label'];
-                $mgoods->mgoodscurrentunit2 -= $g['detail_goods_unit2'];
-                $mgoods->mgoodscurrentunit2conv = $g['detail_goods_unit2_conv'];
-                $mgoods->mgoodscurrentunit2label = $g['detail_goods_unit2_label'];
-                $mgoods->mgoodscurrentunit1 -= $g['detail_goods_unit1'];
-                $mgoods->mgoodscurrentunit1conv = $g['detail_goods_unit1_conv'];
-                $mgoods->mgoodscurrentunit1label = $g['detail_goods_unit1_label'];
+                // $mgoods->mgoodscurrentunit3 -= $g['detail_goods_unit3'];
+                // $mgoods->mgoodscurrentunit3conv = $g['detail_goods_unit3_conv'];
+                // $mgoods->mgoodscurrentunit3label = $g['detail_goods_unit3_label'];
+                // $mgoods->mgoodscurrentunit2 -= $g['detail_goods_unit2'];
+                // $mgoods->mgoodscurrentunit2conv = $g['detail_goods_unit2_conv'];
+                // $mgoods->mgoodscurrentunit2label = $g['detail_goods_unit2_label'];
+                // $mgoods->mgoodscurrentunit1 -= $g['detail_goods_unit1'];
+                // $mgoods->mgoodscurrentunit1conv = $g['detail_goods_unit1_conv'];
+                // $mgoods->mgoodscurrentunit1label = $g['detail_goods_unit1_label'];
                 $mgoods->save();
+
+                // update detail stock refs
+                $invoice_detail->stock_ref = $stock_card->id;
+                $invoice_detail->save();
 
                 //check allow minus
                 if($allow_minus == 0 && ($mgoods->mgoodsstock < 0)){
@@ -533,37 +541,64 @@ class MHInvoice extends Model
 
     }
 
-    public function void_transaction(){
-      $details = MDInvoice::on(Auth::user()->db_name)->where('mhinvoiceno',$this->mhinvoiceno)->get();
-      foreach($details as $d){
-        $d->void = 1;
-        $d->save();
+    public static function void_transaction($id){
+        DB::connection(Auth::user()->db_name)->beginTransaction();
+        try{
+            $header = MHInvoice::on(Auth::user()->db_name)->where('id',$id)->first();
+            $header->void = 1;
+            $header->save();
 
-        // return the stock
-        $old_stock = MStockCard::on(Auth::user()->db_name)->where('mstockcardgoodsid',$d->mdinvoicegoodsid)->first();
+            $details = MDInvoice::on(Auth::user()->db_name)->where('mhinvoiceno',$header->mhinvoiceno)->get();
 
-        $stock_card = new MStockCard;
-        $stock_card->setConnection(Auth::user()->db_name);
-        $stock_card->mstockcardgoodsid = $old_stock->mstockcardgoodsid;
-        $stock_card->mstockcardgoodsname = $old_stock->mstockcardgoodsname;
-        $stock_card->mstockcarddate = $old_stock->mstockcarddate;
-        $stock_card->mstockcardtranstype = $old_stock->mstockcardtranstype;
-        $stock_card->mstockcardtransno = $old_stock->mstockcardtransno;
-        $stock_card->mstockcardremark = "Pembatalan Transaksi ".$old_stock->mstockcardtranstype;
-        // yg in adalah yg out sebelumnya
-        $stock_card->mstockcardstockin = $old_stock->mstockcardstockout;
-        $stock_card->mstockcardstockout = 0;
-        $stock_card->mstockcardwhouse = 1;
-        $stock_card->mstockcarduserid = Auth::user()->id;
-        $stock_card->mstockcardusername = Auth::user()->name;
-        $stock_card->mstockcardeventdate = Carbon::now();
-        $stock_card->mstockcardeventtime = Carbon::now();
-        $stock_card->save();
+            // void all details and return the stock
+            foreach($details as $detail){
 
-      }
+                $detail->void = 1;
+                $detail->save();
 
-      $this->void = 1;
-      $this->save();
+                $mgoods = MGoods::on(Auth::user()->db_name)->where('mgoodscode',$detail->mdinvoicegoodsid)->first();
+                $stock_ref = MStockCard::on(Auth::user()->db_name)->where('mstockcardtransno',$header->mhinvoiceno)->first();
+
+                // create deletion stock
+                $stock_card = new MStockCard;
+                $stock_card->setConnection(Auth::user()->db_name);
+                $stock_card->mstockcardgoodsid = $stock_ref->mstockcardgoodsid;
+                $stock_card->mstockcardgoodsname = $stock_ref->mstockcardgoodsname;
+                $stock_card->mstockcarddate = Carbon::now();
+                $stock_card->mstockcardtranstype = 'Pembatalan transaksi';
+                $stock_card->mstockcardtransno = $header->mhinvoiceno;
+                $stock_card->mstockcardremark = "Pembatalan transaksi oleh ".Auth::user()->name."/".Auth::user()->id;
+                $stock_card->mstockcardstockout = 0;
+                $stock_card->mstockcardstockin = $stock_ref->mstockcardstockout;
+                $stock_card->mstockcardstocktotal = $mgoods->mgoodsstock;
+                $stock_card->mstockcardwhouse = $stock_ref->mstockcardwhouse;
+                $stock_card->mstockcarduserid = Auth::user()->id;
+                $stock_card->mstockcardusername = Auth::user()->name;
+                $stock_card->mstockcardeventdate = Carbon::now();
+                $stock_card->mstockcardeventtime = Carbon::now();
+                $stock_card->edited = 0;
+                $stock_card->save();
+
+                // update goods stock
+                $last_stock = $mgoods->mgoodsstock;
+                $last_stock += $stock_card->mstockcardstockin;
+                $mgoods->mgoodsstock = $last_stock;
+                $mgoods->save();
+
+                // void ar
+                $ar = MARCard::on(Auth::user()->db_name)->where('marcardtransno',$header->mhinvoiceno)->first();
+                $ar->void = 1;
+                $ar->save();
+
+                DB::connection(Auth::user()->db_name)->commit();
+                return 'ok';
+            }
+
+        } catch(\Exception $e){
+            DB::connection(Auth::user()->db_name)->rollBack();
+            var_dump($e);
+            return 'err';
+        }
     }
 
     //relation

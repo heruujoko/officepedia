@@ -110,6 +110,17 @@ class PurchaseController extends Controller
         }
     }
 
+    public function destroy($id){
+        $transaction = MHPurchase::delete_transaction($id);
+        if($transaction == "ok"){
+            return response()->json($transaction);
+        } else if($transaction == "empty") {
+            return response()->json($transaction,400);
+        } else {
+            return response()->json($transaction,500);
+        }
+    }
+
     public function purchasereport(Request $request){
         $query = MDPurchase::on(Auth::user()->db_name);
 

@@ -114,8 +114,13 @@ class SalesInvoiceController extends Controller
     }
 
     public function destroy($id){
-      $invoice = MHInvoice::on(Auth::user()->db_name)->where('id',$id)->first();
-      $invoice->void_transaction();
-      return response()->json();
+      $transaction = MHInvoice::void_transaction($id);
+      if($transaction == "ok"){
+          return response()->json($transaction);
+      } else if($transaction == "empty") {
+          return response()->json($transaction,400);
+      } else {
+          return response()->json($transaction,500);
+      }
     }
 }

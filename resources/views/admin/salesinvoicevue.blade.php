@@ -322,7 +322,8 @@
         confirmButtonText: "Iya, Hapus!",
         cancelButtonText: "Tidak, Batal!",
         closeOnConfirm: false,
-        closeOnCancel: false
+        closeOnCancel: false,
+        timer: 1500
       },
       function(isconfirm){
         if (isconfirm) {
@@ -346,7 +347,7 @@
               swal({
                 title: "Pengubahan Gagal!",
                 type: "error",
-                timer: 1000
+                timer: 1500
               });
               window.location = "#tableapi";
             }
