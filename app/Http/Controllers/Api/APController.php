@@ -36,6 +36,7 @@ class APController extends Controller
         foreach($dates as $d){
             $h = array(
                 'data' => false,
+                'footer' => false,
                 'mapcardsupplierid' => $d['mapcardsupplierid'],
                 'mapcardsuppliername' => $d['mapcardsuppliername'],
             );
@@ -55,11 +56,25 @@ class APController extends Controller
 
             $dtl = $dtl_query->get();
 
+            $total_inv = 0;
+            $total_outstanding = 0;
+
             foreach ($dtl as $dt) {
                 $dt['data'] = true;
                 $dt['aging'] = Carbon::parse($dt->mapcardtdate)->diffInDays(Carbon::now());
+                $dt['footer'] = false;
+                $total_inv += $dt->mapcardtotalinv;
+                $total_outstanding += $dt->mapcardoutstanding;
                 array_push($reports,$dt);
             }
+
+            $footer = array(
+                'footer' => true,
+                'total_inv' => $total_inv,
+                'total_outstanding' => $total_outstanding
+            );
+            array_push($reports,$footer);
+
         }
 
         return response()->json($reports);

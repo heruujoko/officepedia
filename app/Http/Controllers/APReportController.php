@@ -40,16 +40,29 @@ class APReportController extends Controller
         foreach($dates as $d){
             $h = array(
                 'data' => false,
+                'footer' => false,
                 'mapcardsupplierid' => $d['mapcardsupplierid'],
                 'mapcardsuppliername' => $d['mapcardsuppliername'],
             );
             array_push($reports,$h);
             $dtl = MAPCard::on(Auth::user()->db_name)->where('mapcardsupplierid',$d['mapcardsupplierid'])->orderBy('created_at')->get();
+            $total_inv = 0;
+            $total_outstanding = 0;
             foreach ($dtl as $dt) {
                 $dt['data'] = true;
                 $dt['aging'] = Carbon::parse($dt->mapcardtdate)->diffInDays(Carbon::now());
+                $dt['footer'] = false;
+                $total_inv += $dt->mapcardtotalinv;
+                $total_outstanding += $dt->mapcardoutstanding;
                 array_push($reports,$dt);
             }
+            $footer = array(
+                'data' =>false,
+                'footer' => true,
+                'total_inv' => $total_inv,
+                'total_outstanding' => $total_outstanding
+            );
+            array_push($reports,$footer);
         }
 
         $data['aps'] = $reports;
@@ -102,16 +115,29 @@ class APReportController extends Controller
         foreach($dates as $d){
             $h = array(
                 'data' => false,
+                'footer' => false,
                 'mapcardsupplierid' => $d['mapcardsupplierid'],
                 'mapcardsuppliername' => $d['mapcardsuppliername'],
             );
             array_push($reports,$h);
             $dtl = MAPCard::on(Auth::user()->db_name)->where('mapcardsupplierid',$d['mapcardsupplierid'])->orderBy('created_at')->get();
+            $total_inv = 0;
+            $total_outstanding = 0;
             foreach ($dtl as $dt) {
                 $dt['data'] = true;
                 $dt['aging'] = Carbon::parse($dt->mapcardtdate)->diffInDays(Carbon::now());
+                $dt['footer'] = false;
+                $total_inv += $dt->mapcardtotalinv;
+                $total_outstanding += $dt->mapcardoutstanding;
                 array_push($reports,$dt);
             }
+            $footer = array(
+                'data' =>false,
+                'footer' => true,
+                'total_inv' => $total_inv,
+                'total_outstanding' => $total_outstanding
+            );
+            array_push($reports,$footer);
         }
 
         $data['aps'] = $reports;
@@ -165,16 +191,29 @@ class APReportController extends Controller
         foreach($dates as $d){
             $h = array(
                 'data' => false,
+                'footer' => false,
                 'mapcardsupplierid' => $d['mapcardsupplierid'],
                 'mapcardsuppliername' => $d['mapcardsuppliername'],
             );
             array_push($reports,$h);
             $dtl = MAPCard::on(Auth::user()->db_name)->where('mapcardsupplierid',$d['mapcardsupplierid'])->orderBy('created_at')->get();
+            $total_inv = 0;
+            $total_outstanding = 0;
             foreach ($dtl as $dt) {
                 $dt['data'] = true;
                 $dt['aging'] = Carbon::parse($dt->mapcardtdate)->diffInDays(Carbon::now());
+                $dt['footer'] = false;
+                $total_inv += $dt->mapcardtotalinv;
+                $total_outstanding += $dt->mapcardoutstanding;
                 array_push($reports,$dt);
             }
+            $footer = array(
+                'data' =>false,
+                'footer' => true,
+                'total_inv' => $total_inv,
+                'total_outstanding' => $total_outstanding
+            );
+            array_push($reports,$footer);
         }
 
         $this->data['aps'] = $reports;
@@ -265,10 +304,21 @@ class APReportController extends Controller
                 ));
                 foreach($this->data['aps'] as $sv){
                     $this->count++;
-                    if($sv['data'] == false){
+                    if($sv['data'] == false && $sv['footer'] == false){
                         $sheet->row($this->count,array(
                             $sv['mapcardsupplierid'],
                             $sv['mapcardsuppliername'],
+                        ));
+                    } else if($sv['footer'] == true){
+                        $sheet->row($this->count,array(
+                            'Total',
+                            '',
+                            '',
+                            '',
+                            '',
+                            $sv['total_inv'],
+                            $sv['total_outstanding'],
+                            ''
                         ));
                     } else {
                         $sheet->row($this->count,array(
@@ -287,7 +337,7 @@ class APReportController extends Controller
 
                 $this->count++;
                 $sheet->row($this->count,array(
-                    'TOTAL',
+                    'Grand Total',
                     '',
                     '',
                     '',
@@ -320,16 +370,29 @@ class APReportController extends Controller
         foreach($dates as $d){
             $h = array(
                 'data' => false,
+                'footer' => false,
                 'mapcardsupplierid' => $d['mapcardsupplierid'],
                 'mapcardsuppliername' => $d['mapcardsuppliername'],
             );
             array_push($reports,$h);
             $dtl = MAPCard::on(Auth::user()->db_name)->where('mapcardsupplierid',$d['mapcardsupplierid'])->orderBy('created_at')->get();
+            $total_inv = 0;
+            $total_outstanding = 0;
             foreach ($dtl as $dt) {
                 $dt['data'] = true;
                 $dt['aging'] = Carbon::parse($dt->mapcardtdate)->diffInDays(Carbon::now());
+                $dt['footer'] = false;
+                $total_inv += $dt->mapcardtotalinv;
+                $total_outstanding += $dt->mapcardoutstanding;
                 array_push($reports,$dt);
             }
+            $footer = array(
+                'data' =>false,
+                'footer' => true,
+                'total_inv' => $total_inv,
+                'total_outstanding' => $total_outstanding
+            );
+            array_push($reports,$footer);
         }
 
         $this->data['aps'] = $reports;
@@ -420,10 +483,21 @@ class APReportController extends Controller
                 ));
                 foreach($this->data['aps'] as $sv){
                     $this->count++;
-                    if($sv['data'] == false){
+                    if($sv['data'] == false && $sv['footer'] == false){
                         $sheet->row($this->count,array(
                             $sv['mapcardsupplierid'],
                             $sv['mapcardsuppliername'],
+                        ));
+                    } else if($sv['footer'] == true){
+                        $sheet->row($this->count,array(
+                            'Total',
+                            '',
+                            '',
+                            '',
+                            '',
+                            $sv['total_inv'],
+                            $sv['total_outstanding'],
+                            ''
                         ));
                     } else {
                         $sheet->row($this->count,array(
@@ -442,7 +516,7 @@ class APReportController extends Controller
 
                 $this->count++;
                 $sheet->row($this->count,array(
-                    'TOTAL',
+                    'Grand Total',
                     '',
                     '',
                     '',
@@ -454,4 +528,5 @@ class APReportController extends Controller
 			});
 		})->export('csv');
     }
+
 }

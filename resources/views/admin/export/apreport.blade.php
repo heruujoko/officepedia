@@ -93,7 +93,7 @@
             <tbody>
                 @foreach($aps as $ap)
                 <tr>
-                    @if($ap['data'] == false)
+                    @if($ap['data'] == false && $ap['footer'] == false)
                         <td>{{ $ap['mapcardsupplierid'] }}</td>
                         <td>{{ $ap['mapcardsuppliername'] }}</td>
                         <td></td>
@@ -102,6 +102,15 @@
                         <td></td>
                         <td></td>
                         <td></td>
+                    @elseif($ap['footer'] == true)
+                        <th>Total</th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                        <th>{{ number_format($ap['total_inv'],$decimals,$dec_point,$thousands_sep) }}</th>
+                        <th>{{ number_format($ap['total_outstanding'],$decimals,$dec_point,$thousands_sep) }}</th>
+                        <th></th>
                     @else
                         <td></td>
                         <td></td>
@@ -117,9 +126,10 @@
             </tbody>
             <thead>
                 <tr>
-                    <th colspan="5">TOTAL</th>
+                    <th colspan="5">Grand Total</th>
                     <th>{{ number_format($total_iv,$decimals,$dec_point,$thousands_sep) }}</th>
                     <th>{{ number_format($total_out,$decimals,$dec_point,$thousands_sep) }}</th>
+                    <th></th>
                 </tr>
             </thead>
         </table>

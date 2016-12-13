@@ -128,19 +128,28 @@
                                                         </thead>
                                                         <tbody>
                                                             <tr v-for="ap in aps">
-                                                                <td><span v-if="ap.data == false">@{{ ap.mapcardsupplierid }}</span></td>
-                                                                <td><span v-if="ap.data == false">@{{ ap.mapcardsuppliername }}</span></td>
-                                                                <td><span v-if="ap.data == true">@{{ ap.mapcardtransno }}</span></td>
-                                                                <td><span v-if="ap.data == true">@{{ ap.mapcardtdate }}</span></td>
-                                                                <td><span v-if="ap.data == true">@{{ ap.mapcardduedate }}</span></td>
-                                                                <td style="text-align:right"><span v-priceformatlabel="num_format" v-if="ap.data == true">@{{ ap.mapcardtotalinv }}</span></td>
-                                                                <td style="text-align:right"><span v-priceformatlabel="num_format" v-if="ap.data == true">@{{ ap.mapcardoutstanding }}</span></td>
-                                                                <td><span v-if="ap.data == true">@{{ ap.aging }}</span></td>
+                                                                <td v-if="ap.footer == false"><span v-if="ap.data == false">@{{ ap.mapcardsupplierid }}</span></td>
+                                                                <td v-if="ap.footer == false"><span v-if="ap.data == false">@{{ ap.mapcardsuppliername }}</span></td>
+                                                                <td v-if="ap.footer == false"><span v-if="ap.data == true">@{{ ap.mapcardtransno }}</span></td>
+                                                                <td v-if="ap.footer == false"><span v-if="ap.data == true">@{{ ap.mapcardtdate }}</span></td>
+                                                                <td v-if="ap.footer == false"><span v-if="ap.data == true">@{{ ap.mapcardduedate }}</span></td>
+                                                                <td v-if="ap.footer == false" style="text-align:right"><span v-priceformatlabel="num_format" v-if="ap.data == true">@{{ ap.mapcardtotalinv }}</span></td>
+                                                                <td v-if="ap.footer == false" style="text-align:right"><span v-priceformatlabel="num_format" v-if="ap.data == true">@{{ ap.mapcardoutstanding }}</span></td>
+                                                                <td v-if="ap.footer == false"><span v-if="ap.data == true">@{{ ap.aging }}</span></td>
+                                                                <!--  footer -->
+                                                                <td class="tbl-footer" v-if="ap.footer == true"><span>Total</span></td>
+                                                                <td class="tbl-footer" v-if="ap.footer == true"><span></span></td>
+                                                                <td class="tbl-footer" v-if="ap.footer == true"><span></span></td>
+                                                                <td class="tbl-footer" v-if="ap.footer == true"><span></span></td>
+                                                                <td class="tbl-footer" v-if="ap.footer == true"><span></span></td>
+                                                                <td class="tbl-footer" v-if="ap.footer == true" style="text-align:right"><span v-priceformatlabel="num_format">@{{ ap.total_inv }}</span></td>
+                                                                <td class="tbl-footer" v-if="ap.footer == true" style="text-align:right"><span v-priceformatlabel="num_format">@{{ ap.total_outstanding }}</span></td>
+                                                                <td class="tbl-footer" v-if="ap.footer == true"><span></span></td>
                                                             </tr>
                                                         </tbody>
                                                         <thead>
                                                             <tr>
-                                                                <th colspan="5">TOTAL</th>
+                                                                <th colspan="5">Grand Total</th>
                                                                 <th v-priceformatlabel="num_format" style="text-align:right">@{{ total_invs }}</th>
                                                                 <th v-priceformatlabel="num_format" style="text-align:right">@{{ total_outs }}</th>
                                                                 <th></th>
@@ -194,6 +203,9 @@
         .small-date{
             width: 195px;
             font-size: 11px;
+        }
+        .tbl-footer {
+            background-image: -webkit-linear-gradient(top,#f2f2f2 0,#fafafa 100%);
         }
     </style>
 @stop
