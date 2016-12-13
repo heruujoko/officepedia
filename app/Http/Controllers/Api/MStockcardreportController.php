@@ -60,7 +60,9 @@ class MStockcardreportController extends Controller
 
     foreach ($headers as $dtl) {
         $grp_h = array(
+            'blank' => false,
             'data' => false,
+            'footer' => false,
             'mstockcardgoodsid' => $dtl['mstockcardgoodsid'],
             'mstockcardgoodsname' => $dtl['mstockcardgoodsname'],
         );
@@ -84,15 +86,41 @@ class MStockcardreportController extends Controller
             $mgoods = MGoods::on(Auth::user()->db_name)->where('mgoodscode',$g->mstockcardgoodsid)->first();
 
             $g['data'] = true;
+            $g['blank'] = false;
+            $g['footer'] = false;
             $g['verbs'] = UnitHelper::label($mgoods,$g->mstockcardstocktotal);
             $g['gudang'] = $g->gudang()->mwarehousename;
             array_push($stocks,$g);
         }
 
-        // add total per barang
-        $footer = array(
-            'footer' => true,
+        $last_stock = end($stocks);
+
+        $blank = array(
+            'blank' => true,
+            'data' => false,
+            'footer' => false
         );
+        array_push($stocks,$blank);
+
+        $footer = array(
+            'data' => false,
+            'blank' => false,
+            'footer' => true,
+            'mstockcardgoodsid' => $last_stock['mstockcardgoodsid'],
+            'mstockcardgoodsname' => $last_stock->mstockcardgoodsname,
+            'mstockcardstocktotal' => $last_stock->mstockcardstocktotal,
+            'mstockcardstockin' => $last_stock->mstockcardstockin,
+            'mstockcardstockout' => $last_stock->mstockcardstockout,
+            'verbs' => $last_stock['verbs'],
+            'mstockcarddate' => $last_stock->mstockcarddate,
+            'mstockcardtranstype' => $last_stock->mstockcardtranstype,
+            'mstockcardtransno' => $last_stock->mstockcardtransno,
+            'gudang' => $last_stock['gudang'],
+            'mstockcardremark' => $last_stock->mstockcardremark
+        );
+
+        $footer['footer'] = true;
+        $footer['data'] = false;
         array_push($stocks,$footer);
 
     }

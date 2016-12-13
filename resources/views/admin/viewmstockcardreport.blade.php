@@ -138,19 +138,32 @@
 								</thead>
 								<tbody>
 								<tr v-for="stock in stocks">
-									<td><span v-if="stock.data == false">@{{ stock.mstockcardgoodsid }}</span></td>
-                                    <td><span v-if="stock.data == false">@{{ stock.mstockcardgoodsname }}</span></td>
-                                    <td><span v-if="stock.data == true">@{{ stock.mstockcardstocktotal }}</span></td>
-                                    <td><span v-if="stock.data == true">@{{ stock.verbs }}</span></td>
-                                    <td><span v-if="stock.data == true">@{{ stock.mstockcardstockin }}</span></td>
-                                    <td><span v-if="stock.data == true">@{{ stock.mstockcardstockout }}</span></td>
-                                    <td><span v-if="stock.data == true">@{{ (stock.mstockcardstocktotal +stock.mstockcardstockin - stock.mstockcardstockout) }}</span></td>
-                                    <td><span v-if="stock.data == true">@{{ stock.mstockcarddate }}</span></td>
-                                    <td><span v-if="stock.data == true">@{{ stock.mstockcardtranstype }}</span></td>
-                                    <td><span v-if="stock.data == true">@{{ stock.mstockcardtransno }}</span></td>
-                                    <td><span v-if="stock.data == true">@{{ stock.gudang }}</span></td>
-                                    <td><span v-if="stock.data == true">Umum</span></td>
-                                    <td></td>
+									<td v-if="stock.footer == false"><span v-if="stock.data == false">@{{ stock.mstockcardgoodsid }}</span></td>
+                                    <td v-if="stock.footer == false"><span v-if="stock.data == false">@{{ stock.mstockcardgoodsname }}</span></td>
+                                    <td v-if="stock.footer == false"><span v-if="stock.data == true">@{{ stock.mstockcardstocktotal }}</span></td>
+                                    <td v-if="stock.footer == false"><span v-if="stock.data == true">@{{ stock.verbs }}</span></td>
+                                    <td v-if="stock.footer == false"><span v-if="stock.data == true">@{{ stock.mstockcardstockin }}</span></td>
+                                    <td v-if="stock.footer == false"><span v-if="stock.data == true">@{{ stock.mstockcardstockout }}</span></td>
+                                    <td v-if="stock.footer == false"><span v-if="stock.data == true">@{{ (stock.mstockcardstocktotal +stock.mstockcardstockin - stock.mstockcardstockout) }}</span></td>
+                                    <td v-if="stock.footer == false"><span v-if="stock.data == true">@{{ stock.mstockcarddate }}</span></td>
+                                    <td v-if="stock.footer == false"><span v-if="stock.data == true">@{{ stock.mstockcardtranstype }}</span></td>
+                                    <td v-if="stock.footer == false"><span v-if="stock.data == true">@{{ stock.mstockcardtransno }}</span></td>
+                                    <td v-if="stock.footer == false"><span v-if="stock.data == true">@{{ stock.gudang }}</span></td>
+                                    <td v-if="stock.footer == false"><span v-if="stock.data == true">Umum</span></td>
+                                    <td v-if="stock.footer == false">@{{ stock.mstockcardremark }}</td>
+                                    <!--  footer -->
+                                    <th v-if="stock.footer == true" class="tbl-footer" colspan="2">Saldo</th>
+                                    <th v-if="stock.footer == true" class="tbl-footer">@{{ stock.mstockcardstocktotal }}</th>
+                                    <th v-if="stock.footer == true" class="tbl-footer">@{{ stock.verbs }}</th>
+                                    <th v-if="stock.footer == true" class="tbl-footer">@{{ stock.mstockcardstockin }}</th>
+                                    <th v-if="stock.footer == true" class="tbl-footer">@{{ stock.mstockcardstockout }}</th>
+                                    <th v-if="stock.footer == true" class="tbl-footer">@{{ (stock.mstockcardstocktotal +stock.mstockcardstockin - stock.mstockcardstockout) }}</th>
+                                    <th v-if="stock.footer == true" class="tbl-footer">@{{ stock.mstockcarddate }}</th>
+                                    <th v-if="stock.footer == true" class="tbl-footer">@{{ stock.mstockcardtranstype }}</th>
+                                    <th v-if="stock.footer == true" class="tbl-footer">@{{ stock.mstockcardtransno }}</th>
+                                    <th v-if="stock.footer == true" class="tbl-footer">@{{ stock.gudang }}</th>
+                                    <th v-if="stock.footer == true" class="tbl-footer">Umum</th>
+                                    <th v-if="stock.footer == true" class="tbl-footer">@{{ stock.mstockcardremark }}</th>
 								</tr>
 								</tbody>
 							</table>
@@ -265,6 +278,9 @@
         .small-date{
             width: 195px;
             font-size: 11px;
+        }
+        .tbl-footer {
+            background-image: -webkit-linear-gradient(top,#f2f2f2 0,#fafafa 100%);
         }
     </style>
 @stop

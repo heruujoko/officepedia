@@ -12,6 +12,7 @@
         }
         table {
             background-color: transparent;
+            width: 100%;
         }
         table {
             border-collapse: collapse;
@@ -64,6 +65,9 @@
             font-size: 9px;
             display: block;
         }
+        .tbl-footer {
+            background-image: -webkit-linear-gradient(top,#f2f2f2 0,#fafafa 100%);
+        }
         </style>
     </head>
     <body>
@@ -110,7 +114,7 @@
                         <td></td>
                         <td></td>
                         <td></td>
-                        <td> Umum </td>
+                        <td></td>
                         <td></td>
                     </tr>
                     @elseif($st['data'] == 'data')
@@ -128,6 +132,22 @@
                         <td>{{ $st['gudang'] }}</td>
                         <td> Umum </td>
                         <td></td>
+                    </tr>
+                    @elseif($st['data'] == 'footer')
+                    <tr>
+                        <th>Saldo</th>
+                        <th></th>
+                        <th>{{ $st['mstockcardstocktotal'] }}</th>
+                        <th>{{ $st['verbs'] }}</th>
+                        <th>{{ $st['mstockcardstockin'] }}</th>
+                        <th>{{ $st['mstockcardstockout'] }}</th>
+                        <th>{{ ($st['mstockcardstocktotal'] +$st['mstockcardstockin'] - $st['mstockcardstockout']) }}</th>
+                        <th>{{ $st['mstockcarddate'] }}</th>
+                        <th>{{ $st['mstockcardtranstype'] }}</th>
+                        <th>{{ $st['mstockcardtransno'] }}</th>
+                        <th>{{ $st['gudang'] }}</th>
+                        <th> Umum </th>
+                        <th></th>
                     </tr>
                     @else
                     <tr>

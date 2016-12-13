@@ -2484,10 +2484,32 @@ class ReportController extends Controller
                 array_push($stocks,$g);
             }
 
-            // add total per barang
+            $last_stock = end($stocks);
+
+            $blank = array(
+                'blank' => true,
+                'data' => false,
+                'footer' => false
+            );
+            array_push($stocks,$blank);
+
             $footer = array(
                 'data' => 'footer',
+                'blank' => false,
+                'footer' => true,
+                'mstockcardgoodsid' => $last_stock['mstockcardgoodsid'],
+                'mstockcardgoodsname' => $last_stock->mstockcardgoodsname,
+                'mstockcardstocktotal' => $last_stock->mstockcardstocktotal,
+                'mstockcardstockin' => $last_stock->mstockcardstockin,
+                'mstockcardstockout' => $last_stock->mstockcardstockout,
+                'verbs' => $last_stock['verbs'],
+                'mstockcarddate' => $last_stock->mstockcarddate,
+                'mstockcardtranstype' => $last_stock->mstockcardtranstype,
+                'mstockcardtransno' => $last_stock->mstockcardtransno,
+                'gudang' => $last_stock['gudang'],
+                'mstockcardremark' => $last_stock->mstockcardremark
             );
+
             array_push($stocks,$footer);
 
         }
@@ -2568,10 +2590,32 @@ class ReportController extends Controller
                 array_push($stocks,$g);
             }
 
-            // add total per barang
+            $last_stock = end($stocks);
+
+            $blank = array(
+                'blank' => true,
+                'data' => false,
+                'footer' => false
+            );
+            array_push($stocks,$blank);
+
             $footer = array(
                 'data' => 'footer',
+                'blank' => false,
+                'footer' => true,
+                'mstockcardgoodsid' => $last_stock['mstockcardgoodsid'],
+                'mstockcardgoodsname' => $last_stock->mstockcardgoodsname,
+                'mstockcardstocktotal' => $last_stock->mstockcardstocktotal,
+                'mstockcardstockin' => $last_stock->mstockcardstockin,
+                'mstockcardstockout' => $last_stock->mstockcardstockout,
+                'verbs' => $last_stock['verbs'],
+                'mstockcarddate' => $last_stock->mstockcarddate,
+                'mstockcardtranstype' => $last_stock->mstockcardtranstype,
+                'mstockcardtransno' => $last_stock->mstockcardtransno,
+                'gudang' => $last_stock['gudang'],
+                'mstockcardremark' => $last_stock->mstockcardremark
             );
+
             array_push($stocks,$footer);
 
         }
@@ -2591,7 +2635,7 @@ class ReportController extends Controller
             $data['goods'] = 'Semua';
         }
         $pdf = PDF::loadview('admin/export/stockreport',$data);
-		return $pdf->setPaper('a4', 'potrait')->download('Stock Card Report.pdf');
+		return $pdf->setPaper('a4', 'landscape')->download('Stock Card Report.pdf');
     }
 
     public function stockreport_excel(Request $request){
@@ -2653,10 +2697,32 @@ class ReportController extends Controller
                 array_push($stocks,$g);
             }
 
-            // add total per barang
+            $last_stock = end($stocks);
+
+            $blank = array(
+                'blank' => true,
+                'data' => false,
+                'footer' => false
+            );
+            array_push($stocks,$blank);
+
             $footer = array(
                 'data' => 'footer',
+                'blank' => false,
+                'footer' => true,
+                'mstockcardgoodsid' => $last_stock['mstockcardgoodsid'],
+                'mstockcardgoodsname' => $last_stock->mstockcardgoodsname,
+                'mstockcardstocktotal' => $last_stock->mstockcardstocktotal,
+                'mstockcardstockin' => $last_stock->mstockcardstockin,
+                'mstockcardstockout' => $last_stock->mstockcardstockout,
+                'verbs' => $last_stock['verbs'],
+                'mstockcarddate' => $last_stock->mstockcarddate,
+                'mstockcardtranstype' => $last_stock->mstockcardtranstype,
+                'mstockcardtransno' => $last_stock->mstockcardtransno,
+                'gudang' => $last_stock['gudang'],
+                'mstockcardremark' => $last_stock->mstockcardremark
             );
+
             array_push($stocks,$footer);
 
         }
@@ -2777,6 +2843,22 @@ class ReportController extends Controller
                             'Umum',
                             ''
                         ));
+                    } else if($st['data'] == 'footer'){
+                        $sheet->row($this->count,array(
+                            'Saldo',
+                            '',
+                            $st['mstockcardstocktotal'],
+                            $st['verbs'],
+                            $st['mstockcardstockin'],
+                            $st['mstockcardstockout'],
+                            ($st['mstockcardstocktotal'] +$st['mstockcardstockin'] - $st['mstockcardstockout']),
+                            $st['mstockcarddate'],
+                            $st['mstockcardtranstype'],
+                            $st['mstockcardtransno'],
+                            $st['gudang'],
+                            'Umum',
+                            ''
+                        ));
                     } else {
                         $sheet->row($this->count,array(
                             '',
@@ -2860,10 +2942,32 @@ class ReportController extends Controller
                 array_push($stocks,$g);
             }
 
-            // add total per barang
+            $last_stock = end($stocks);
+
+            $blank = array(
+                'blank' => true,
+                'data' => false,
+                'footer' => false
+            );
+            array_push($stocks,$blank);
+
             $footer = array(
                 'data' => 'footer',
+                'blank' => false,
+                'footer' => true,
+                'mstockcardgoodsid' => $last_stock['mstockcardgoodsid'],
+                'mstockcardgoodsname' => $last_stock->mstockcardgoodsname,
+                'mstockcardstocktotal' => $last_stock->mstockcardstocktotal,
+                'mstockcardstockin' => $last_stock->mstockcardstockin,
+                'mstockcardstockout' => $last_stock->mstockcardstockout,
+                'verbs' => $last_stock['verbs'],
+                'mstockcarddate' => $last_stock->mstockcarddate,
+                'mstockcardtranstype' => $last_stock->mstockcardtranstype,
+                'mstockcardtransno' => $last_stock->mstockcardtransno,
+                'gudang' => $last_stock['gudang'],
+                'mstockcardremark' => $last_stock->mstockcardremark
             );
+
             array_push($stocks,$footer);
 
         }
@@ -2980,6 +3084,22 @@ class ReportController extends Controller
                             $st->mstockcarddate,
                             $st->mstockcardtranstype,
                             $st->mstockcardtransno,
+                            $st['gudang'],
+                            'Umum',
+                            ''
+                        ));
+                    } else if($st['data'] == 'footer'){
+                        $sheet->row($this->count,array(
+                            'Saldo',
+                            '',
+                            $st['mstockcardstocktotal'],
+                            $st['verbs'],
+                            $st['mstockcardstockin'],
+                            $st['mstockcardstockout'],
+                            ($st['mstockcardstocktotal'] +$st['mstockcardstockin'] - $st['mstockcardstockout']),
+                            $st['mstockcarddate'],
+                            $st['mstockcardtranstype'],
+                            $st['mstockcardtransno'],
                             $st['gudang'],
                             'Umum',
                             ''
