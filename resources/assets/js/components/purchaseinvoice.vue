@@ -242,7 +242,7 @@
             </div>
                 </div>
           <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">
+                    <button v-on:click="dismissModal" type="button" class="btn btn-default" data-dismiss="modal">
                           Cancel
                     </button>
                     <button v-if="detail_state == 'insert'" type="button" class="btn btn-primary" v-on:click="addToGoods">
@@ -364,7 +364,10 @@
             this.invoice_due_date = moment(this.invoice_date).add(this.selected_supplier.msupplierdefaultar,'day').format('L');
         },
         selected_goods(){
-            this.detailGoods();
+            if(this.selected_goods != '-' && this.selected_goods != ''){
+                console.log('proceed');
+                this.detailGoods();
+            }
         },
         detail_goods_unit3(){
             this.convertUnits();
@@ -374,9 +377,6 @@
         },
         detail_goods_unit1(){
             this.convertUnits();
-        },
-        selected_goods(){
-            this.detailGoods();
         },
         selected_tax(){
 
@@ -389,6 +389,9 @@
         }
     },
     methods: {
+        dismissModal(){
+            this.selected_goods = "-";
+        },
         disableSupplier(){
             if(this.selected_supplier != ""){
                 this.disable_supplier = true;
@@ -443,7 +446,7 @@
         },
         detailGoods(){
             this.detail_state = "insert";
-            if(this.selected_goods != ""){
+            if(this.selected_goods != "" || this.selected_goods != '-'){
               this.canAddSingle(this.selected_goods);
             }
         },
@@ -496,68 +499,71 @@
           }
         },
         fetchGoodsSingle(id){
-          this.resetDetail();
-          Axios.get('/admin-api/barang/'+id)
-          .then((res) => {
-            this.detail_goods = res.data;
-            let self = this;
-            if(this.mode == 'edit'){
-                $('#edit_loading_modal').modal('toggle');
-                $('#edit_detail_modal').modal('toggle');
-            } else {
-                $('#insert_loading_modal').modal('toggle');
-                $('#insert_detail_modal').modal('toggle');
-            }
-          //   this.detail_qty = 1;
+            this.resetDetail();
+            if(this.selected_goods != '-' || this.selected_goods != " "){
+                console.log('fetching');
+                Axios.get('/admin-api/barang/'+id)
+                .then((res) => {
+                  this.detail_goods = res.data;
+                  let self = this;
+                  if(this.mode == 'edit'){
+                      $('#edit_loading_modal').modal('toggle');
+                      $('#edit_detail_modal').modal('toggle');
+                  } else {
+                      $('#insert_loading_modal').modal('toggle');
+                      $('#insert_detail_modal').modal('toggle');
+                  }
+                //   this.detail_qty = 1;
 
-            // isi konveris multi unit
-            this.detail_goods_unit3_conv = res.data.mgoodsunit3conv;
-            this.detail_goods_unit3_label = res.data.mgoodsunit3;
-            this.detail_goods_unit2_conv = res.data.mgoodsunit2conv;
-            this.detail_goods_unit2_label = res.data.mgoodsunit2;
-            this.detail_goods_unit1_conv = 1;
-            this.detail_goods_unit1_label = res.data.mgoodsunit;
+                  // isi konveris multi unit
+                  this.detail_goods_unit3_conv = res.data.mgoodsunit3conv;
+                  this.detail_goods_unit3_label = res.data.mgoodsunit3;
+                  this.detail_goods_unit2_conv = res.data.mgoodsunit2conv;
+                  this.detail_goods_unit2_label = res.data.mgoodsunit2;
+                  this.detail_goods_unit1_conv = 1;
+                  this.detail_goods_unit1_label = res.data.mgoodsunit;
 
-            // autofocus mode
-            if(this.detail_goods_unit3_conv != 0){
-                setTimeout(function () { $('#'+self.conv_3_id).focus(); }, 1);
-            }
-            if(this.detail_goods_unit2_conv != 0 && this.detail_goods_unit3_conv == 0){
-                setTimeout(function () { $('#'+self.conv_2_id).focus(); }, 1);
-            }
-            if(this.detail_goods_unit1_conv != 0 && this.detail_goods_unit2_conv == 0){
-                setTimeout(function () { $('#'+self.conv_1_id).focus(); }, 1);
-            }
+                  // autofocus mode
+                  if(this.detail_goods_unit3_conv != 0){
+                      setTimeout(function () { $('#'+self.conv_3_id).focus(); }, 1);
+                  }
+                  if(this.detail_goods_unit2_conv != 0 && this.detail_goods_unit3_conv == 0){
+                      setTimeout(function () { $('#'+self.conv_2_id).focus(); }, 1);
+                  }
+                  if(this.detail_goods_unit1_conv != 0 && this.detail_goods_unit2_conv == 0){
+                      setTimeout(function () { $('#'+self.conv_1_id).focus(); }, 1);
+                  }
 
-            this.buy_price = this.detail_goods.mgoodspricein;
+                  this.buy_price = this.detail_goods.mgoodspricein;
 
-            if(this.mode == 'edit'){
-              $('#edit_detail_rp').on('keyup',function(){
-                  self.countPercent();
-                  self.countDetailTotal();
-              });
-              $('#edit_detail_percentage').on('keyup',function(evt){
-                // diskon yg di input lebih besar
-                self.countRp();
-                self.countDetailTotal();
-              });
-            } else {
-              self.countRp();
-              self.countDetailTotal();
-              $('#insert_detail_rp').on('keyup',function(){
-                self.countPercent();
-                self.countDetailTotal();
-              });
-              $('#insert_detail_percentage').on('keyup',function(evt){
-                // diskon yg di input lebih besar
-                self.countRp();
-                self.countDetailTotal();
-              });
+                  if(this.mode == 'edit'){
+                    $('#edit_detail_rp').on('keyup',function(){
+                        self.countPercent();
+                        self.countDetailTotal();
+                    });
+                    $('#edit_detail_percentage').on('keyup',function(evt){
+                      // diskon yg di input lebih besar
+                      self.countRp();
+                      self.countDetailTotal();
+                    });
+                  } else {
+                    self.countRp();
+                    self.countDetailTotal();
+                    $('#insert_detail_rp').on('keyup',function(){
+                      self.countPercent();
+                      self.countDetailTotal();
+                    });
+                    $('#insert_detail_percentage').on('keyup',function(evt){
+                      // diskon yg di input lebih besar
+                      self.countRp();
+                      self.countDetailTotal();
+                    });
+                  }
+
+                  this.countDetailTotal();
+                  this.predictTax();
+                });
             }
-
-            this.countDetailTotal();
-            this.predictTax();
-          });
         },
         predictTax(){
         //   if(this.detail_goods.mgoodstaxable == 1){
@@ -630,8 +636,9 @@
               saved_unit: this.unit //for editing purpose only
             };
             this.invoice_goods.push(newGoods);
-            this.selected_goods = "";
+            this.selected_goods = "-";
             this.resetDetail();
+            this.dismissModal();
         },
         editGoods(idx){
           this.resetDetail();
@@ -752,6 +759,7 @@
             } else {
                 $('#insert_detail_modal').modal('toggle');
             }
+            this.dismissModal();
         },
         removeGoods(idx){
           let good = _.find(this.invoice_goods,  {id: idx});

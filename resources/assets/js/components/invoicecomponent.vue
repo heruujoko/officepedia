@@ -57,6 +57,7 @@
           <div class="row">
             <div class="col-md-6">
               <select v-bind:disabled="!notview" class="form-control" id="insert-selectgoods" v-selecttwo="barang_label" v-model="selected_goods">
+                <option></option>
                 <option v-for="g in goods" :value="g.id">{{ g.mgoodscode }} {{ g.mgoodsname }}</option>
               </select>
             </div>
@@ -242,7 +243,7 @@
             </div>
     			</div>
           <div class="modal-footer">
-    				<button type="button" class="btn btn-default" data-dismiss="modal">
+    				<button type="button" class="btn btn-default" data-dismiss="modal" v-on:click="dismissModal">
     				      Cancel
     				</button>
     				<button v-if="detail_state == 'insert'" type="button" class="btn btn-primary" v-on:click="addToGoods">
@@ -354,6 +355,9 @@
     },
     },
     methods: {
+        dismissModal(){
+            this.selected_goods = "-";
+        },
         disableCustomer(){
             if(this.selected_customer != ""){
                 this.disable_customer = true;
@@ -674,6 +678,7 @@
         this.selected_goods = "";
         this.disableCustomer();
         this.resetDetail();
+        this.dismissModal();
       },
       predictTax(){
         if(this.detail_goods.mgoodstaxable == 1){
@@ -922,6 +927,7 @@
         } else {
             $('#insert_detail_modal').modal('toggle');
         }
+        this.dismissModal();
       },
       reEvaluateInvoice(){
         let subs = 0;
@@ -992,7 +998,9 @@
             this.convertUnits();
         },
         selected_goods(){
-            this.detailGoods();
+            if(this.selected_goods != '-'){
+                this.detailGoods();
+            }
         },
         detail_qty(){
             this.countDetailTotal();
