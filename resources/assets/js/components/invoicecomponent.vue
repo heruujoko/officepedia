@@ -293,7 +293,7 @@
         edit_index: 0,
         detail_state: "insert",
         detail_total: 0,
-        detail_tax:"2",
+        detail_tax:"1",
         detail_warehouse: 0,
         num_format: "0,0.00",
         unit_label: "Pilih Unit",
