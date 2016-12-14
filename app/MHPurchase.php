@@ -57,7 +57,8 @@ class MHPurchase extends Model
             $trans_header = new MHPurchase;
             $trans_header->setConnection(Auth::user()->db_name);
             $trans_header->mhpurchaseno = "";
-            $trans_header->mhpurchasedeliveryno = "";
+            $trans_header->mhpurchasedeliveryno = $request->do;
+            $trans_header->mhpurchaseorderyno = $request->order;
             $trans_header->mhpurchasedate = Carbon::parse($request->date);
             $trans_header->mhpurchaseduedate = Carbon::parse($request->duedate);
             $trans_header->mhpurchasesupplierid = $request->msupplierid;
@@ -229,6 +230,8 @@ class MHPurchase extends Model
             // update header data
 
             $trans_header = MHPurchase::on(Auth::user()->db_name)->where('id',$id)->first();
+            $trans_header->mhpurchasedeliveryno = $request->do;
+            $trans_header->mhpurchaseorderyno = $request->order;
             $trans_header->mhpurchasedate = Carbon::parse($request->date);
             $trans_header->mhpurchaseduedate = Carbon::parse($request->duedate);
             $trans_header->mhpurchasesupplierid = $request->msupplierid;
@@ -609,7 +612,7 @@ class MHPurchase extends Model
                 // check if deletion cause minus
                 if($last_stock < 0){
                     DB::connection(Auth::user()->db_name)->rollBack();
-                    return 'empty';    
+                    return 'empty';
                 }
 
                 $mgoods->mgoodsstock = $last_stock;

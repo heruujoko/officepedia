@@ -6,6 +6,18 @@
     <div class="row">
       <div class="form form-horizontal" style="margin-top:20px">
         <div class="col-md-8">
+            <div class="form-group">
+              <label class="col-md-2 control-label">No Surat Jalan</label>
+              <div class="col-md-8">
+                <input v-bind:disabled="!notview" v-model="invoice_do" type="text" class="form-control" placeholder="No Surat Jalan" />
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="col-md-2 control-label">No Order</label>
+              <div class="col-md-8">
+                <input v-bind:disabled="!notview" v-model="invoice_order" type="text" class="form-control" placeholder="No Order" />
+              </div>
+            </div>
           <div class="form-group">
             <label class="col-md-2 control-label">Supplier</label>
             <div class="col-md-8">
@@ -311,7 +323,9 @@
             invoice_tax:0,
             invoice_no:"",
             invoice_auto: true,
-            disable_supplier: false
+            disable_supplier: false,
+            invoice_do:"",
+            invoice_order:""
           }
         },
         computed:{
@@ -401,7 +415,7 @@
             this.resetDetail();
             this.resetInvoice();
             $('#forminput').show();
-    		$('#formview').hide();
+    		$('#formaltview').hide();
     		$('#formedit').hide();
             window.location.href = '#forminput';
         },
@@ -791,6 +805,8 @@
                 $('#insert_loading_modal').modal('toggle');
             }
             let invoice_data = {
+                do: this.invoice_do,
+                order: this.invoice_order,
               date: this.invoice_date,
               duedate: this.invoice_due_date,
               subtotal: this.invoice_subtotal,
@@ -884,6 +900,8 @@
             this.invoice_subtotal = parseInt(res.data.mhpurchasesubtotal) - parseInt(res.data.mhpurchasediscounttotal);
             this.invoice_disc = res.data.mhpurchasediscounttotal;
             this.invoice_tax = res.data.mhpurchasetaxtotal;
+            this.invoice_do = res.data.mhpurchasedeliveryno;
+            this.invoice_order = res.data.mhpurchaseorderyno;
           });
       },
       fetchDetailData(inv){
