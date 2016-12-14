@@ -122,7 +122,7 @@ class PurchaseController extends Controller
     }
 
     public function purchasereport(Request $request){
-        $query = MDPurchase::on(Auth::user()->db_name);
+        $query = MDPurchase::on(Auth::user()->db_name)->where('void',0);
 
         if($request->has('wh')){
             $query->where('mdpurchasegoodsidwhouse',$request->wh);
@@ -156,7 +156,7 @@ class PurchaseController extends Controller
                 'mdpurchasedate' => $dates
             );
             array_push($purchases,$header);
-            $grp_q = MDPurchase::on(Auth::user()->db_name)->where('mdpurchasedate',$dates);
+            $grp_q = MDPurchase::on(Auth::user()->db_name)->where('mdpurchasedate',$dates)->where('void',0);;
 
             if($request->has('wh')){
                 $grp_q->where('mdpurchasegoodsidwhouse',$request->wh);

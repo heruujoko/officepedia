@@ -114,7 +114,7 @@ class SalesController extends Controller
          * filterings
          */
 
-        $queries = MDInvoice::on(Auth::user()->db_name);
+        $queries = MDInvoice::on(Auth::user()->db_name)->where('void',0);
         if($request->has('start')){
             $queries->whereDate('mdinvoicedate','>=',Carbon::parse($request->start));
         }
