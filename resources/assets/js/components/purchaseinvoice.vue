@@ -420,8 +420,15 @@
             this.selected_goods = "-";
         },
         disableSupplier(){
-            if(this.selected_supplier != ""){
+            if(typeof(this.invoice_supplier) == "string"){
                 this.disable_supplier = true;
+            } else {
+                swal({
+                  title: "Oops!",
+                  text: "Supplier belum dipilih",
+                  type: "error",
+                  timer: 1000
+                });
             }
         },
         toInsertMode(){
@@ -663,7 +670,9 @@
               warehouse: parseInt(this.detail_warehouse),
               saved_unit: this.unit //for editing purpose only
             };
-            this.invoice_goods.push(newGoods);
+            if(typeof(this.invoice_supplier) == 'string'){
+                this.invoice_goods.push(newGoods);    
+            }
             this.selected_goods = "-";
             this.resetDetail();
             this.dismissModal();

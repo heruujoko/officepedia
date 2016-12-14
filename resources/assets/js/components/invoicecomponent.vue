@@ -372,8 +372,15 @@
             this.selected_goods = "-";
         },
         disableCustomer(){
-            if(this.selected_customer != ""){
+            if(typeof(this.invoice_customer) == "string"){
                 this.disable_customer = true;
+            } else {
+                swal({
+                  title: "Oops!",
+                  text: "Customer belum dipilih",
+                  type: "error",
+                  timer: 1000
+                });
             }
         },
         toInsertMode(){
@@ -688,7 +695,9 @@
           saved_unit: this.unit, //for editing purpose only
           remark: this.goods_remark
         };
-        this.invoice_goods.push(newGoods);
+        if(typeof(this.invoice_customer) == "string"){
+            this.invoice_goods.push(newGoods);
+        }
         this.selected_goods = "";
         this.disableCustomer();
         this.resetDetail();
