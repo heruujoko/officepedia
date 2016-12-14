@@ -539,13 +539,13 @@
 
           // autofocus mode
           if(this.detail_goods_unit3_conv != 0){
-              setTimeout(function () { $('#'+self.conv_3_id).focus(); }, 1);
+              setTimeout(function () { $('#'+self.conv_3_id).select(); }, 1);
           }
           if(this.detail_goods_unit2_conv != 0 && this.detail_goods_unit3_conv == 0){
-              setTimeout(function () { $('#'+self.conv_2_id).focus(); }, 1);
+              setTimeout(function () { $('#'+self.conv_2_id).select(); }, 1);
           }
           if(this.detail_goods_unit1_conv != 0 && this.detail_goods_unit2_conv == 0){
-              setTimeout(function () { $('#'+self.conv_1_id).focus(); }, 1);
+              setTimeout(function () { $('#'+self.conv_1_id).select(); }, 1);
           }
 
           this.sell_price = res.data.mgoodspriceout;
@@ -829,13 +829,13 @@
 
         // autofocus mode
         if(this.detail_goods_unit3_conv != 0){
-            setTimeout(function () { $('#'+self.conv_3_id).focus(); }, 1);
+            setTimeout(function () { $('#'+self.conv_3_id).select(); }, 1);
         }
         if(this.detail_goods_unit2_conv != 0 && this.detail_goods_unit3_conv == 0){
-            setTimeout(function () { $('#'+self.conv_2_id).focus(); }, 1);
+            setTimeout(function () { $('#'+self.conv_2_id).select(); }, 1);
         }
         if(this.detail_goods_unit1_conv != 0 && this.detail_goods_unit2_conv == 0){
-            setTimeout(function () { $('#'+self.conv_1_id).focus(); }, 1);
+            setTimeout(function () { $('#'+self.conv_1_id).select(); }, 1);
         }
 
         this.rp = current.disc;
