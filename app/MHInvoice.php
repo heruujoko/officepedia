@@ -289,7 +289,7 @@ class MHInvoice extends Model
                 $stock_card->mstockcarddate = Carbon::parse($request->date);
                 $stock_card->mstockcardtranstype = $request->type;
                 $stock_card->mstockcardtransno = $header->mhinvoiceno;
-                $stock_card->mstockcardremark = "Revisi Transaksi ".$request->type." untuk ".$customer->mcustomername;
+                $stock_card->mstockcardremark = "Revisi Transaksi ".$request->type." oleh ".Auth::user()->name."/".Auth::user()->id;
                 $stock_card->mstockcardstockin = $old_qty;
                 $stock_card->mstockcardstockout = 0;
                 $stock_card->mstockcardstocktotal = $mgoods->mgoodsstock;
@@ -334,7 +334,7 @@ class MHInvoice extends Model
                 $stock_card->mstockcarddate = Carbon::parse($request->date);
                 $stock_card->mstockcardtranstype = $request->type;
                 $stock_card->mstockcardtransno = $header->mhinvoiceno;
-                $stock_card->mstockcardremark = "Editing Transaksi ".$request->type." untuk ".$customer->mcustomername;
+                $stock_card->mstockcardremark = "Revisi Transaksi ".$request->type." oleh ".Auth::user()->name."/".Auth::user()->id;
                 $stock_card->mstockcardstockin = 0;
                 $stock_card->mstockcardstockout = $g['usage'];
                 $stock_card->mstockcardstocktotal = $mgoods->mgoodsstock;
@@ -432,7 +432,7 @@ class MHInvoice extends Model
               $stock_card->mstockcarddate = Carbon::parse($request->date);
               $stock_card->mstockcardtranstype = $request->type;
               $stock_card->mstockcardtransno = $header->mhinvoiceno;
-              $stock_card->mstockcardremark = "Transaksi ".$request->type." untuk ".$customer->mcustomername;
+              $stock_card->mstockcardremark = "Revisi Transaksi ".$request->type." oleh ".Auth::user()->name."/".Auth::user()->id;
               $stock_card->mstockcardstockin = 0;
               $stock_card->mstockcardstockout = $g['usage'];
             //   $stock_card->mstockcardstocktotal = $mgoods->mgoodsstock - $g['usage'];

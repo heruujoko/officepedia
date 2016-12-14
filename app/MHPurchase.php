@@ -259,7 +259,7 @@ class MHPurchase extends Model
 
             foreach ($request->goods as $g) {
                 $invoice_detail = MDPurchase::on(Auth::user()->db_name)->where('mdpurchasegoodsid',$g['goods']['mgoodscode'])->where('mhpurchaseno',$trans_header->mhpurchaseno)->first();
-
+                // var_dump($invoice_detail);
                 if($invoice_detail != null ){
                     $mgoods = MGoods::on(Auth::user()->db_name)->where('mgoodscode',$g['goods']['mgoodscode'])->first();
                     $mgoods->mgoodspricein = $g['buy_price'];
@@ -360,7 +360,7 @@ class MHPurchase extends Model
                         $stock_card->mstockcarddate = Carbon::parse($request->date);
                         $stock_card->mstockcardtranstype = $request->type;
                         $stock_card->mstockcardtransno = $trans_header->mhpurchaseno;
-                        $stock_card->mstockcardremark = "Editing Transaksi ".$request->type;
+                        $stock_card->mstockcardremark = "Revisi Transaksi ".$request->type;
                         $stock_card->mstockcardstockin = $g['usage'];
                         $stock_card->mstockcardstockout = 0;
                         $stock_card->mstockcardstocktotal = $mgoods->mgoodsstock;
@@ -417,10 +417,10 @@ class MHPurchase extends Model
 
                     $detail = new MDPurchase;
                     $detail->setConnection(Auth::user()->db_name);
-                    $detail->mhpurchaseno = $header->mhpurchaseno;
-                    $detail->mdpurchasesupplierid = $header->mhpurchasesupplierid;
-                    $detail->mdpurchasesuppliername = $header->mhpurchasesuppliername;
-                    $detail->mdpurchasedate = $header->mhpurchasedate;
+                    $detail->mhpurchaseno = $trans_header->mhpurchaseno;
+                    $detail->mdpurchasesupplierid = $trans_header->mhpurchasesupplierid;
+                    $detail->mdpurchasesuppliername = $trans_header->mhpurchasesuppliername;
+                    $detail->mdpurchasedate = $trans_header->mhpurchasedate;
                     $detail->mdpurchasegoodsid = $mgoods->mgoodscode;
                     $detail->mdpurchasegoodsname = $mgoods->mgoodsname;
                     $detail->mdpurchasegoodsid = $g['goods']['mgoodscode'];
@@ -449,7 +449,7 @@ class MHPurchase extends Model
                     $stock_card->mstockcardgoodsname = $g['goods']['mgoodsname'];
                     $stock_card->mstockcarddate = Carbon::parse($request->date);
                     $stock_card->mstockcardtranstype = $request->type;
-                    $stock_card->mstockcardtransno = $header->mhpurchaseno;
+                    $stock_card->mstockcardtransno = $trans_header->mhpurchaseno;
                     $stock_card->mstockcardremark = "Transaksi ".$request->type." untuk ";
                     $stock_card->mstockcardstockin = $g['usage'];
                     $stock_card->mstockcardstockout = 0;
@@ -460,39 +460,39 @@ class MHPurchase extends Model
                     $stock_card->mstockcardeventdate = Carbon::now();
                     $stock_card->mstockcardeventtime = Carbon::now();
                     $stock_card->edited = 0;
-                    $stock_card->mstockcardunit3 = $mgoods->mgoodscurrentunit3;
-                    $stock_card->mstockcardunit3conv = $mgoods->mgoodscurrentunit3conv;
-                    $stock_card->mstockcardunit3label = $mgoods->mgoodscurrentunit3label;
-                    $stock_card->mstockcardunit2 = $mgoods->mgoodscurrentunit2;
-                    $stock_card->mstockcardunit2conv = $mgoods->mgoodscurrentunit2conv;
-                    $stock_card->mstockcardunit2label = $mgoods->mgoodscurrentunit2label;
-                    $stock_card->mstockcardunit1 = $mgoods->mgoodscurrentunit1;
-                    $stock_card->mstockcardunit1conv = $mgoods->mgoodscurrentunit1conv;
-                    $stock_card->mstockcardunit1label = $mgoods->mgoodscurrentunit1label;
+                    // $stock_card->mstockcardunit3 = $mgoods->mgoodscurrentunit3;
+                    // $stock_card->mstockcardunit3conv = $mgoods->mgoodscurrentunit3conv;
+                    // $stock_card->mstockcardunit3label = $mgoods->mgoodscurrentunit3label;
+                    // $stock_card->mstockcardunit2 = $mgoods->mgoodscurrentunit2;
+                    // $stock_card->mstockcardunit2conv = $mgoods->mgoodscurrentunit2conv;
+                    // $stock_card->mstockcardunit2label = $mgoods->mgoodscurrentunit2label;
+                    // $stock_card->mstockcardunit1 = $mgoods->mgoodscurrentunit1;
+                    // $stock_card->mstockcardunit1conv = $mgoods->mgoodscurrentunit1conv;
+                    // $stock_card->mstockcardunit1label = $mgoods->mgoodscurrentunit1label;
                     // in conversion
-                    $stock_card->mstockcardinunit3 = $g['detail_goods_unit3'];
-                    $stock_card->mstockcardinunit3conv = $g['detail_goods_unit3_conv'];
-                    $stock_card->mstockcardinunit3label = $g['detail_goods_unit3_label'];
-                    $stock_card->mstockcardinunit2 = $g['detail_goods_unit2'];
-                    $stock_card->mstockcardinunit2conv = $g['detail_goods_unit2_conv'];
-                    $stock_card->mstockcardinunit2label = $g['detail_goods_unit2_label'];
-                    $stock_card->mstockcardinunit1 = $g['detail_goods_unit1'];
-                    $stock_card->mstockcardinunit1conv = $g['detail_goods_unit1_conv'];
-                    $stock_card->mstockcardinunit1label = $g['detail_goods_unit1_label'];
+                    // $stock_card->mstockcardinunit3 = $g['detail_goods_unit3'];
+                    // $stock_card->mstockcardinunit3conv = $g['detail_goods_unit3_conv'];
+                    // $stock_card->mstockcardinunit3label = $g['detail_goods_unit3_label'];
+                    // $stock_card->mstockcardinunit2 = $g['detail_goods_unit2'];
+                    // $stock_card->mstockcardinunit2conv = $g['detail_goods_unit2_conv'];
+                    // $stock_card->mstockcardinunit2label = $g['detail_goods_unit2_label'];
+                    // $stock_card->mstockcardinunit1 = $g['detail_goods_unit1'];
+                    // $stock_card->mstockcardinunit1conv = $g['detail_goods_unit1_conv'];
+                    // $stock_card->mstockcardinunit1label = $g['detail_goods_unit1_label'];
                     $stock_card->save();
 
                     // update goods
                     $last_stock = $mgoods->mgoodsstock;
                     $mgoods->mgoodsstock += $g['usage'];
-                    $mgoods->mgoodscurrentunit3 += $g['detail_goods_unit3'];
-                    $mgoods->mgoodscurrentunit3conv = $g['detail_goods_unit3_conv'];
-                    $mgoods->mgoodscurrentunit3label = $g['detail_goods_unit3_label'];
-                    $mgoods->mgoodscurrentunit2 += $g['detail_goods_unit2'];
-                    $mgoods->mgoodscurrentunit2conv = $g['detail_goods_unit2_conv'];
-                    $mgoods->mgoodscurrentunit2label = $g['detail_goods_unit2_label'];
-                    $mgoods->mgoodscurrentunit1 += $g['detail_goods_unit1'];
-                    $mgoods->mgoodscurrentunit1conv = $g['detail_goods_unit1_conv'];
-                    $mgoods->mgoodscurrentunit1label = $g['detail_goods_unit1_label'];
+                    // $mgoods->mgoodscurrentunit3 += $g['detail_goods_unit3'];
+                    // $mgoods->mgoodscurrentunit3conv = $g['detail_goods_unit3_conv'];
+                    // $mgoods->mgoodscurrentunit3label = $g['detail_goods_unit3_label'];
+                    // $mgoods->mgoodscurrentunit2 += $g['detail_goods_unit2'];
+                    // $mgoods->mgoodscurrentunit2conv = $g['detail_goods_unit2_conv'];
+                    // $mgoods->mgoodscurrentunit2label = $g['detail_goods_unit2_label'];
+                    // $mgoods->mgoodscurrentunit1 += $g['detail_goods_unit1'];
+                    // $mgoods->mgoodscurrentunit1conv = $g['detail_goods_unit1_conv'];
+                    // $mgoods->mgoodscurrentunit1label = $g['detail_goods_unit1_label'];
                     $mgoods->save();
 
                     // update COGS
@@ -510,7 +510,7 @@ class MHPurchase extends Model
                     } else {
                         // update cogs
                         $goods_cogs->mcogsgoodstotalqty = $mgoods->mgoodsstock;
-                        $cogs_num = (($last_stock * $goods_cogs->mcogslastcogs) + $header->mhpurchasegrandtotal ) / $mgoods->mgoodsstock;
+                        $cogs_num = (($last_stock * $goods_cogs->mcogslastcogs) + $trans_header->mhpurchasegrandtotal ) / $mgoods->mgoodsstock;
                         $goods_cogs->mcogslastcogs = $cogs_num;
                         $goods_cogs->mcogsremarks = "";
                         $goods_cogs->save();
