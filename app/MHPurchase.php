@@ -116,6 +116,7 @@ class MHPurchase extends Model
                 $detail->mdpurchasegoodsidwhouse = $g['warehouse'];
                 $detail->mdpurchasebuyprice = $g['buy_price'];
                 $detail->mdpurchasetax = $g['tax'];
+                $detail->mdpurchaseremarks = $g['remark'];
                 $detail->save();
 
                 // update stock card
@@ -126,7 +127,7 @@ class MHPurchase extends Model
                 $stock_card->mstockcarddate = Carbon::parse($request->date);
                 $stock_card->mstockcardtranstype = $request->type;
                 $stock_card->mstockcardtransno = $header->mhpurchaseno;
-                $stock_card->mstockcardremark = "Transaksi ".$request->type." untuk ";
+                $stock_card->mstockcardremark = "Transaksi ".$request->type." oleh ".Auth::user()->name."/".Auth::user()->id." ".$g['remark'];
                 $stock_card->mstockcardstockin = $g['usage'];
                 $stock_card->mstockcardstockout = 0;
                 $stock_card->mstockcardstocktotal = $mgoods->mgoodsstock;
@@ -293,6 +294,7 @@ class MHPurchase extends Model
                     $invoice_detail->mdpurchasegoodsidwhouse = $g['warehouse'];
                     $invoice_detail->mdpurchasebuyprice = $g['buy_price'];
                     $invoice_detail->mdpurchasetax = $g['tax'];
+                    $invoice_detail->mdpurchaseremarks = $g['remark'];
                     $invoice_detail->void = 0;
                     $invoice_detail->save();
 
@@ -306,7 +308,7 @@ class MHPurchase extends Model
                         $stock_card->mstockcarddate = Carbon::parse($request->date);
                         $stock_card->mstockcardtranstype = $request->type;
                         $stock_card->mstockcardtransno = $trans_header->mhpurchaseno;
-                        $stock_card->mstockcardremark = "Revisi Transaksi ".$request->type;
+                        $stock_card->mstockcardremark = "Revisi Transaksi ".$request->type." oleh ".Auth::user()->name."/".Auth::user()->id." ".$g['remark'];
                         $stock_card->mstockcardstockin = 0;
                         $stock_card->mstockcardstockout = $old_qty;
                         $stock_card->mstockcardstocktotal = $mgoods->mgoodsstock;
@@ -360,7 +362,7 @@ class MHPurchase extends Model
                         $stock_card->mstockcarddate = Carbon::parse($request->date);
                         $stock_card->mstockcardtranstype = $request->type;
                         $stock_card->mstockcardtransno = $trans_header->mhpurchaseno;
-                        $stock_card->mstockcardremark = "Revisi Transaksi ".$request->type;
+                        $stock_card->mstockcardremark = "Revisi Transaksi ".$request->type." oleh ".Auth::user()->name."/".Auth::user()->id." ".$g['remark'];
                         $stock_card->mstockcardstockin = $g['usage'];
                         $stock_card->mstockcardstockout = 0;
                         $stock_card->mstockcardstocktotal = $mgoods->mgoodsstock;
@@ -450,7 +452,7 @@ class MHPurchase extends Model
                     $stock_card->mstockcarddate = Carbon::parse($request->date);
                     $stock_card->mstockcardtranstype = $request->type;
                     $stock_card->mstockcardtransno = $trans_header->mhpurchaseno;
-                    $stock_card->mstockcardremark = "Transaksi ".$request->type." untuk ";
+                    $stock_card->mstockcardremark = "Transaksi ".$request->type." oleh ".Auth::user()->name."/".Auth::user()->id." ".$g['remark'];
                     $stock_card->mstockcardstockin = $g['usage'];
                     $stock_card->mstockcardstockout = 0;
                     $stock_card->mstockcardstocktotal = $mgoods->mgoodsstock;
@@ -547,7 +549,7 @@ class MHPurchase extends Model
                 $stock_card->mstockcarddate = Carbon::parse($request->date);
                 $stock_card->mstockcardtranstype = $request->type;
                 $stock_card->mstockcardtransno = $trans_header->mhpurchaseno;
-                $stock_card->mstockcardremark = "Editing Transaksi Hapus item".$request->type;
+                $stock_card->mstockcardremark = "Editing Transaksi Hapus item".$request->type." oleh ".Auth::user()->name."/".Auth::user()->id." ".$g['remark'];;
                 $stock_card->mstockcardstockin =  0;
                 $stock_card->mstockcardstockout = $v->mdpurchasegoodsqty;
                 $stock_card->mstockcardstocktotal = $mgoods->mgoodsstock - $v->mdpurchasegoodsqty;
@@ -562,7 +564,6 @@ class MHPurchase extends Model
             DB::connection(Auth::user()->db_name)->commit();
             return 'ok';
         } catch(\Exception $e){
-            var_dump($e);
             DB::connection(Auth::user()->db_name)->rollBack();
             return 'err';
         }

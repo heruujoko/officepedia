@@ -115,6 +115,7 @@ class MHInvoice extends Model
           $invoice_detail->mdinvoicegoodstax = $g['tax'];
           $invoice_detail->saved_unit = $g['saved_unit'];
           $invoice_detail->mdinvoicegoodsidwhouse = $g['warehouse'];
+          $invoice_detail->mdinvoiceremarks = $g['remark'];
           $invoice_detail->save();
 
           //update stock card
@@ -125,7 +126,7 @@ class MHInvoice extends Model
           $stock_card->mstockcarddate = Carbon::parse($request->date);
           $stock_card->mstockcardtranstype = $request->type;
           $stock_card->mstockcardtransno = $header->mhinvoiceno;
-          $stock_card->mstockcardremark = "Transaksi ".$request->type." untuk ".$customer->mcustomername;
+          $stock_card->mstockcardremark = "Transaksi ".$request->type." untuk ".$customer->mcustomername." ".$g['remark'];
           $stock_card->mstockcardstockin = 0;
           $stock_card->mstockcardstockout = $g['usage'];
         //   $stock_card->mstockcardstocktotal = $mgoods->mgoodsstock - $g['usage'];
@@ -193,7 +194,7 @@ class MHInvoice extends Model
         $ar->marcardduedate = Carbon::parse($request->duedate);
         $ar->marcardtranstype = $request->type;
         $ar->marcardtransno = $header->mhinvoiceno;
-        $ar->marcardremark = "Transaksi ".$request->type." untuk ".$customer->mcustomername;
+        $ar->marcardremark = "Transaksi ".$request->type." untuk ".$customer->mcustomername." ".$g['remark'];
         $ar->marcardduedate = Carbon::now()->addDays($customer->mcustomerdefaultar);
         $ar->marcardtotalinv = $request->subtotal + $request->tax - $request->disc;
         $ar->marcardpayamount = 0;
@@ -276,6 +277,7 @@ class MHInvoice extends Model
               $invoice_detail->mdinvoicegoodstax = $g['tax'];
               $invoice_detail->saved_unit = $g['saved_unit'];
               $invoice_detail->mdinvoicegoodsidwhouse = $g['warehouse'];
+              $invoice_detail->mdinvoiceremarks = $g['remark'];
               $invoice_detail->void = 0;
               $invoice_detail->save();
 
@@ -289,7 +291,7 @@ class MHInvoice extends Model
                 $stock_card->mstockcarddate = Carbon::parse($request->date);
                 $stock_card->mstockcardtranstype = $request->type;
                 $stock_card->mstockcardtransno = $header->mhinvoiceno;
-                $stock_card->mstockcardremark = "Revisi Transaksi ".$request->type." oleh ".Auth::user()->name."/".Auth::user()->id;
+                $stock_card->mstockcardremark = "Revisi Transaksi ".$request->type." oleh ".Auth::user()->name."/".Auth::user()->id." ".$g['remark'];
                 $stock_card->mstockcardstockin = $old_qty;
                 $stock_card->mstockcardstockout = 0;
                 $stock_card->mstockcardstocktotal = $mgoods->mgoodsstock;
@@ -334,7 +336,7 @@ class MHInvoice extends Model
                 $stock_card->mstockcarddate = Carbon::parse($request->date);
                 $stock_card->mstockcardtranstype = $request->type;
                 $stock_card->mstockcardtransno = $header->mhinvoiceno;
-                $stock_card->mstockcardremark = "Revisi Transaksi ".$request->type." oleh ".Auth::user()->name."/".Auth::user()->id;
+                $stock_card->mstockcardremark = "Revisi Transaksi ".$request->type." oleh ".Auth::user()->name."/".Auth::user()->id." ".$g['remark'];
                 $stock_card->mstockcardstockin = 0;
                 $stock_card->mstockcardstockout = $g['usage'];
                 $stock_card->mstockcardstocktotal = $mgoods->mgoodsstock;
@@ -432,7 +434,7 @@ class MHInvoice extends Model
               $stock_card->mstockcarddate = Carbon::parse($request->date);
               $stock_card->mstockcardtranstype = $request->type;
               $stock_card->mstockcardtransno = $header->mhinvoiceno;
-              $stock_card->mstockcardremark = "Revisi Transaksi ".$request->type." oleh ".Auth::user()->name."/".Auth::user()->id;
+              $stock_card->mstockcardremark = "Revisi Transaksi ".$request->type." oleh ".Auth::user()->name."/".Auth::user()->id." ".$g['remark'];
               $stock_card->mstockcardstockin = 0;
               $stock_card->mstockcardstockout = $g['usage'];
             //   $stock_card->mstockcardstocktotal = $mgoods->mgoodsstock - $g['usage'];
@@ -495,7 +497,7 @@ class MHInvoice extends Model
         $ar->marcardduedate = Carbon::parse($request->duedate);
         $ar->marcardtranstype = $request->type;
         $ar->marcardtransno = $header->mhinvoiceno;
-        $ar->marcardremark = "Edit Transaksi ".$request->type." untuk ".$customer->mcustomername;
+        $ar->marcardremark = "Revisi Transaksi ".$request->type." untuk ".$customer->mcustomername." ".$g['remark'];
         $ar->marcardduedate = Carbon::now()->addDays($customer->mcustomerdefaultar);
         $ar->marcardtotalinv = $request->subtotal + $request->tax - $request->disc;
         $ar->marcardpayamount = 0;
@@ -518,7 +520,7 @@ class MHInvoice extends Model
             $stock_card->mstockcarddate = Carbon::parse($request->date);
             $stock_card->mstockcardtranstype = $request->type;
             $stock_card->mstockcardtransno = $header->mhinvoiceno;
-            $stock_card->mstockcardremark = "Editing Transaksi Hapus item".$request->type." untuk ".$customer->mcustomername;
+            $stock_card->mstockcardremark = "Revisi Transaksi Hapus item".$request->type." untuk ".$customer->mcustomername." ".$g['remark'];
             $stock_card->mstockcardstockin = $v->mdinvoicegoodsqty;
             $stock_card->mstockcardstockout = 0;
             $stock_card->mstockcardstocktotal = $mgoods->mgoodsstock + $v->mdinvoicegoodsqty;

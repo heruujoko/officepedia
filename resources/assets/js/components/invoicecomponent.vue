@@ -143,11 +143,11 @@
     			</div>
           <div class="modal-body">
             <ul class="nav nav-tabs">
-              <li class="active"><a data-toggle="tab" href="#insertdetailmenu1">Detail Barang</a></li>
-              <li><a data-toggle="tab" href="#insertdetailmenu2">Keterangan</a></li>
+              <li class="active"><a data-toggle="tab" v-bind:href="htab1_id">Detail Barang</a></li>
+              <li><a data-toggle="tab" v-bind:href="htab2_id">Keterangan</a></li>
             </ul>
             <div class="tab-content">
-              <div id="insertdetailmenu1" class="tab-pane fade in active">
+              <div v-bind:id="tab1_id" class="tab-pane fade in active">
                 <div class="form form-horizontal" style="margin-top:10px;">
                   <div class="form-group">
                     <label class="control-label col-md-2">Nama barang</label>
@@ -230,12 +230,12 @@
                   </div>
                 </div>
               </div>
-              <div id="insertdetailmenu2" class="tab-pane">
+              <div v-bind:id="tab2_id" class="tab-pane">
                 <div class="form form-horizontal" style="margin-top:10px;">
                   <div class="form-group">
                     <label class="control-label col-md-2">Keterangan</label>
                     <div class="col-md-8">
-                      <textarea class="form-control" placeholder="Keterangan"></textarea>
+                      <textarea class="form-control" placeholder="Keterangan" v-model="goods_remark"></textarea>
                     </div>
                   </div>
                 </div>
@@ -286,6 +286,7 @@
         detail_goods_unit1_label:0,
         detail_goods_unit1:0,
         detail_goods: {},
+        goods_remark:"",
         unit: 1,
         detail_qty:1,
         percentage: 0,
@@ -340,6 +341,18 @@
       },
       loading_id(){
         return this.mode+"_loading_modal";
+      },
+      tab1_id(){
+        return this.mode+"_tab1";
+      },
+      tab2_id(){
+        return this.mode+"_tab2";
+      },
+      htab1_id(){
+        return "#"+this.mode+"_tab1";
+      },
+      htab2_id(){
+        return "#"+this.mode+"_tab2";
       },
       notview(){
         return this.mode != "view";
@@ -672,7 +685,8 @@
           goods: this.detail_goods,
           tax: just_tax,
           warehouse: parseInt(this.detail_warehouse),
-          saved_unit: this.unit //for editing purpose only
+          saved_unit: this.unit, //for editing purpose only
+          remark: this.goods_remark
         };
         this.invoice_goods.push(newGoods);
         this.selected_goods = "";
@@ -917,7 +931,8 @@
           goods: this.detail_goods,
           tax: just_tax,
           warehouse: parseInt(this.detail_warehouse),
-          saved_unit: this.unit //for editing purpose only
+          saved_unit: this.unit, //for editing purpose only
+          remark: this.goods_remark
         };
         // this.invoice_goods[this.edit_index] = editedGoods;
         Vue.set(this.invoice_goods,this.edit_index,editedGoods);
@@ -957,6 +972,7 @@
         this.detail_goods = {};
       },
       resetDetail(){
+          this.goods_remark ="";
           this.detail_goods = {};
           this.rp = 0;
           this.percentage =0;
