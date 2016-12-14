@@ -140,11 +140,11 @@
 								<tr v-for="stock in stocks">
 									<td v-if="stock.footer == false"><span v-if="stock.data == false">@{{ stock.mstockcardgoodsid }}</span></td>
                                     <td v-if="stock.footer == false"><span v-if="stock.data == false">@{{ stock.mstockcardgoodsname }}</span></td>
-                                    <td v-if="stock.footer == false"><span v-if="stock.data == true">@{{ stock.mstockcardstocktotal }}</span></td>
+                                    <td v-if="stock.footer == false"><span v-if="stock.data == true" v-numberformatlabel>@{{ stock.mstockcardstocktotal }}</span></td>
                                     <td v-if="stock.footer == false"><span v-if="stock.data == true">@{{ stock.verbs }}</span></td>
-                                    <td v-if="stock.footer == false"><span v-if="stock.data == true">@{{ stock.mstockcardstockin }}</span></td>
-                                    <td v-if="stock.footer == false"><span v-if="stock.data == true">@{{ stock.mstockcardstockout }}</span></td>
-                                    <td v-if="stock.footer == false"><span v-if="stock.data == true">@{{ (stock.mstockcardstocktotal +stock.mstockcardstockin - stock.mstockcardstockout) }}</span></td>
+                                    <td v-if="stock.footer == false"><span v-if="stock.data == true" v-numberformatlabel>@{{ stock.mstockcardstockin }}</span></td>
+                                    <td v-if="stock.footer == false"><span v-if="stock.data == true" v-numberformatlabel>@{{ stock.mstockcardstockout }}</span></td>
+                                    <td v-if="stock.footer == false"><span v-if="stock.data == true" v-numberformatlabel>@{{ (stock.mstockcardstocktotal +stock.mstockcardstockin - stock.mstockcardstockout) }}</span></td>
                                     <td v-if="stock.footer == false"><span v-if="stock.data == true">@{{ stock.mstockcarddate }}</span></td>
                                     <td v-if="stock.footer == false"><span v-if="stock.data == true">@{{ stock.mstockcardtranstype }}</span></td>
                                     <td v-if="stock.footer == false"><span v-if="stock.data == true">@{{ stock.mstockcardtransno }}</span></td>
@@ -153,11 +153,11 @@
                                     <td v-if="stock.footer == false">@{{ stock.mstockcardremark }}</td>
                                     <!--  footer -->
                                     <th v-if="stock.footer == true" class="tbl-footer" colspan="2">Saldo</th>
-                                    <th v-if="stock.footer == true" class="tbl-footer">@{{ stock.mstockcardstocktotal }}</th>
+                                    <th v-if="stock.footer == true" class="tbl-footer" v-numberformatlabel>@{{ stock.mstockcardstocktotal }}</th>
                                     <th v-if="stock.footer == true" class="tbl-footer">@{{ stock.verbs }}</th>
-                                    <th v-if="stock.footer == true" class="tbl-footer">@{{ stock.mstockcardstockin }}</th>
-                                    <th v-if="stock.footer == true" class="tbl-footer">@{{ stock.mstockcardstockout }}</th>
-                                    <th v-if="stock.footer == true" class="tbl-footer">@{{ (stock.mstockcardstocktotal +stock.mstockcardstockin - stock.mstockcardstockout) }}</th>
+                                    <th v-if="stock.footer == true" class="tbl-footer" v-numberformatlabel>@{{ stock.mstockcardstockin }}</th>
+                                    <th v-if="stock.footer == true" class="tbl-footer" v-numberformatlabel>@{{ stock.mstockcardstockout }}</th>
+                                    <th v-if="stock.footer == true" class="tbl-footer" v-numberformatlabel>@{{ (stock.mstockcardstocktotal +stock.mstockcardstockin - stock.mstockcardstockout) }}</th>
                                     <th v-if="stock.footer == true" class="tbl-footer">@{{ stock.mstockcarddate }}</th>
                                     <th v-if="stock.footer == true" class="tbl-footer">@{{ stock.mstockcardtranstype }}</th>
                                     <th v-if="stock.footer == true" class="tbl-footer">@{{ stock.mstockcardtransno }}</th>

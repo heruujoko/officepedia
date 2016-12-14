@@ -121,11 +121,11 @@
                     <tr>
                         <td></td>
                         <td></td>
-                        <td>{{ $st->mstockcardstocktotal }}</td>
+                        <td>{{ number_format($st->mstockcardstocktotal,0,'.',',') }}</td>
                         <td>{{ $st['verbs'] }}</td>
-                        <td>{{ $st->mstockcardstockin }}</td>
-                        <td>{{ $st->mstockcardstockout }}</td>
-                        <td>{{ ($st->mstockcardstocktotal +$st->mstockcardstockin - $st->mstockcardstockout) }}</td>
+                        <td>{{ number_format($st->mstockcardstockin,0,'.',',') }}</td>
+                        <td>{{ number_format($st->mstockcardstockout,0,'.',',') }}</td>
+                        <td>{{ number_format(($st->mstockcardstocktotal +$st->mstockcardstockin - $st->mstockcardstockout),0,'.',',') }}</td>
                         <td>{{ $st->mstockcarddate }}</td>
                         <td>{{ $st->mstockcardtranstype }}</td>
                         <td>{{ $st->mstockcardtransno }}</td>
@@ -137,11 +137,11 @@
                     <tr>
                         <th>Saldo</th>
                         <th></th>
-                        <th>{{ $st['mstockcardstocktotal'] }}</th>
+                        <th>{{ number_format($st['mstockcardstocktotal'],0,'.',',') }}</th>
                         <th>{{ $st['verbs'] }}</th>
-                        <th>{{ $st['mstockcardstockin'] }}</th>
-                        <th>{{ $st['mstockcardstockout'] }}</th>
-                        <th>{{ ($st['mstockcardstocktotal'] +$st['mstockcardstockin'] - $st['mstockcardstockout']) }}</th>
+                        <th>{{ number_format($st['mstockcardstockin'],0,'.',',') }}</th>
+                        <th>{{ number_format($st['mstockcardstockout'],0,'.',',') }}</th>
+                        <th>{{ number_format(($st['mstockcardstocktotal'] +$st['mstockcardstockin'] - $st['mstockcardstockout']),0,'.',',') }}</th>
                         <th>{{ $st['mstockcarddate'] }}</th>
                         <th>{{ $st['mstockcardtranstype'] }}</th>
                         <th>{{ $st['mstockcardtransno'] }}</th>

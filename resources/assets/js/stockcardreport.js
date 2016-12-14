@@ -51,6 +51,19 @@ Vue.directive('priceformatlabel',{
 	}
 });
 
+Vue.directive('numberformatlabel',{
+	inserted(el,binding){
+		let num = $(el).context.textContent;
+		$(el).html(numeral(num).format("0,0"))
+	},
+	update(el,binding){
+	},
+	componentUpdated(el,binding){
+		let num = numeral().unformat($(el).context.textContent);
+		$(el).html(numeral(num).format("0,0"))
+	}
+});
+
 const stockcardreport = new Vue({
 	el: '#stockcardreport',
 	data: {

@@ -2606,6 +2606,13 @@ class ReportController extends Controller
         } else {
             $data['goods'] = 'Semua';
         }
+        $data['decimals'] = $config->msysgenrounddec;
+        $data['thousands_sep'] = $config->msysnumseparator;
+        if($data['thousands_sep'] == ","){
+          $data['dec_point'] = ".";
+        } else {
+          $data['dec_point'] = ",";
+        }
         return view('admin.export.stockreport',$data);
     }
 
