@@ -632,8 +632,8 @@
         if(this.detail_goods.mgoodstaxable == 1){
             let tax_obj = _.find(this.taxes, { id: parseInt(this.detail_tax) });
             // count taxes
-            this.invoice_tax += (tax_obj.mtaxtpercentage /100) * (this.detail_qty * this.detail_goods.mgoodspriceout);
-            just_tax = (tax_obj.mtaxtpercentage /100) * (this.detail_qty * this.detail_goods.mgoodspriceout);
+            this.invoice_tax += (tax_obj.mtaxtpercentage /100) * ((this.detail_qty * this.detail_goods.mgoodspriceout) - this.rp);
+            just_tax = (tax_obj.mtaxtpercentage /100) * ((this.detail_qty * this.detail_goods.mgoodspriceout) - this.rp);
         } else {
           this.invoice_tax += 0;
         }
@@ -876,8 +876,8 @@
         if(this.detail_goods.mgoodstaxable == 1){
             let tax_obj = _.find(this.taxes, { id: parseInt(this.detail_tax) });
             // count taxes
-            this.invoice_tax += (tax_obj.mtaxtpercentage /100) * (this.detail_qty * this.detail_goods.mgoodspriceout);
-            just_tax = (tax_obj.mtaxtpercentage /100) * (this.detail_qty * this.detail_goods.mgoodspriceout);
+            this.invoice_tax += (tax_obj.mtaxtpercentage /100) * ((this.detail_qty * this.detail_goods.mgoodspriceout) - this.rp);
+            just_tax = (tax_obj.mtaxtpercentage /100) * ((this.detail_qty * this.detail_goods.mgoodspriceout) - this.rp);
         } else {
           this.invoice_tax += 0;
         }

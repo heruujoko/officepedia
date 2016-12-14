@@ -594,8 +594,8 @@
             let just_tax =0;
             let tax_obj = _.find(this.taxes, { id: parseInt(this.detail_tax) });
             // count taxes
-            this.invoice_tax += (tax_obj.mtaxtpercentage /100) * (this.detail_qty * this.buy_price);
-            just_tax = (tax_obj.mtaxtpercentage /100) * (this.detail_qty * this.buy_price);
+            this.invoice_tax += (tax_obj.mtaxtpercentage /100) * ((this.detail_qty * this.buy_price) - this.rp);
+            just_tax = (tax_obj.mtaxtpercentage /100) * ((this.detail_qty * this.buy_price) - this.rp);
 
             let usage_label = ""
             if(this.detail_goods_unit3 != 0){
@@ -709,8 +709,8 @@
             let just_tax =0;
             let tax_obj = _.find(this.taxes, { id: parseInt(this.detail_tax) });
             // count taxes
-            this.invoice_tax += (tax_obj.mtaxtpercentage /100) * (this.detail_qty * this.buy_price);
-            just_tax = (tax_obj.mtaxtpercentage /100) * (this.detail_qty * this.buy_price);
+            this.invoice_tax += (tax_obj.mtaxtpercentage /100) * ((this.detail_qty * this.buy_price) - this.rp);
+            just_tax = (tax_obj.mtaxtpercentage /100) * ((this.detail_qty * this.buy_price) - this.rp);
 
             let usage_label = ""
             if(this.detail_goods_unit3 != 0){
