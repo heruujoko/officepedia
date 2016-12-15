@@ -375,12 +375,14 @@
             if(typeof(this.invoice_customer) == "string"){
                 this.disable_customer = true;
             } else {
-                swal({
-                  title: "Oops!",
-                  text: "Customer belum dipilih",
-                  type: "error",
-                  timer: 1000
-                });
+                if(this.mode == 'insert'){
+                    swal({
+                      title: "Oops!",
+                      text: "Customer belum dipilih",
+                      type: "error",
+                      timer: 1000
+                    });    
+                }
             }
         },
         toInsertMode(){

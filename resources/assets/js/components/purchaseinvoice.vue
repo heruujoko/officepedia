@@ -423,12 +423,14 @@
             if(typeof(this.invoice_supplier) == "string"){
                 this.disable_supplier = true;
             } else {
-                swal({
-                  title: "Oops!",
-                  text: "Supplier belum dipilih",
-                  type: "error",
-                  timer: 1000
-                });
+                if(this.mode == 'insert'){
+                    swal({
+                      title: "Oops!",
+                      text: "Customer belum dipilih",
+                      type: "error",
+                      timer: 1000
+                    });
+                }
             }
         },
         toInsertMode(){
@@ -671,7 +673,7 @@
               saved_unit: this.unit //for editing purpose only
             };
             if(typeof(this.invoice_supplier) == 'string'){
-                this.invoice_goods.push(newGoods);    
+                this.invoice_goods.push(newGoods);
             }
             this.selected_goods = "-";
             this.resetDetail();
