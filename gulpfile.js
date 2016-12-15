@@ -24,4 +24,5 @@ elixir(mix => {
     mix.webpack('stockvaluereport.js');
     mix.webpack('purchasereport.js');
     mix.webpack('apreport.js');
+    mix.webpack('cogshistory.js');
 });

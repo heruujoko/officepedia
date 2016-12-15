@@ -236,6 +236,11 @@
       @else
         <li><a href="{{ url('admin-nano/reports/stockvalue') }}">Laporan Nilai Persediaan</a></li>
       @endif
+      @if($active == 'cogshistory')
+        <li class="active"><a href="{{ url('admin-nano/reports/cogshistory') }}">Laporan History HPP</a></li>
+      @else
+        <li><a href="{{ url('admin-nano/reports/cogshistory') }}">Laporan History HPP</a></li>
+      @endif
     </ul>
   </li>
 </ul>

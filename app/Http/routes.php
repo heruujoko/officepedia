@@ -195,6 +195,12 @@ Route::group(['prefix'=>'admin-nano','middleware' => ['auth','tenantdb']],functi
   Route::get('reports/apreport/export/excel','APReportController@apreport_excel');
   Route::get('reports/apreport/export/csv','APReportController@apreport_csv');
 
+  Route::get('reports/cogshistory','COGSHistoryController@cogshistory');
+  Route::get('reports/cogshistory/export/print','COGSHistoryController@cogshistory_print');
+  Route::get('reports/cogshistory/export/pdf','COGSHistoryController@cogshistory_pdf');
+  Route::get('reports/cogshistory/export/excel','COGSHistoryController@cogshistory_excel');
+  Route::get('reports/cogshistory/export/csv','COGSHistoryController@cogshistory_csv');
+
   Route::controllers([
     '/'=>'AdminController'
   ]);
@@ -266,6 +272,7 @@ Route::group(['prefix'=>'admin-nano','middleware' => ['auth','tenantdb']],functi
   Route::get('stockvalues','Api\StockValueController@index');
   Route::get('purchasereport','Api\PurchaseController@purchasereport');
   Route::get('apreport','Api\APController@apreport');
+  Route::get('cogshistory','Api\COGSHistoryController@index');
 
   Route::controllers([
     '/'=>'ApiController'
