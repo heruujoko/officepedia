@@ -195,7 +195,9 @@
 		border-top: 1px solid #8c8b8b;
 	}
     #logo {
-        margin-top: 0px !important;
+        margin-top: -5px !important;
+        width: 350px;
+        padding-bottom: 10px;
     }
 </style>
 <style>
