@@ -4,7 +4,7 @@
 		<meta charset="utf-8">
 		<!--<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">-->
 
-		<title> @yield('title')Administrator</title>
+		<title>indoaccounting.id</title>
 		<meta name="description" content="">
 		<meta name="author" content="">
 
@@ -37,8 +37,8 @@
 		<link rel="stylesheet" type="text/css" media="screen" href="css/your_style.css"> -->
 
 		<!-- FAVICONS -->
-		<link rel="shortcut icon" href="img/favicon/favicon.ico" type="image/x-icon">
-		<link rel="icon" href="{{URL::to('/')}}/img/favicon/favicon.ico" type="image/x-icon">
+		<link rel="shortcut icon" href="img/favicon.ico" type="image/x-icon">
+		<link rel="icon" href="{{URL::to('/')}}/img/favicon.ico" type="image/x-icon">
 
 
 		<!-- GOOGLE FONT -->
@@ -194,6 +194,9 @@
 	hr.style1{
 		border-top: 1px solid #8c8b8b;
 	}
+    #logo {
+        margin-top: 0px !important;
+    }
 </style>
 <style>
 
@@ -259,7 +262,7 @@
 			<div id="logo-group">
 
 				<!-- PLACE YOUR LOGO HERE -->
-				<span id="logo"> <img src="{{URL::to('/')}}/img/logo.png" alt="SmartAdmin"> </span>
+				<span id="logo"> <img src="{{ url('/img/IAland.png') }}" alt="SmartAdmin"> </span>
 				<!-- END LOGO PLACEHOLDER -->
 			</div>
 
@@ -383,7 +386,7 @@
 					<a href="javascript:void(0);" id="show-shortcut" data-action="toggleShortcut">
 						<img src="{{URL::to('/')}}/img/avatars/sunny.png" alt="me" class="online" />
 						<span>
-							john.doe
+							{{ Auth::user()->name }}
 						</span>
 						<i class="fa fa-angle-down"></i>
 					</a>
