@@ -67,7 +67,7 @@
 			<!--<span id="logo"></span>-->
 
 			<div id="logo-group">
-				<!-- <span id="logo"> <img src="img/logo.png" alt="SmartAdmin"> </span> -->
+				<span id="logo" style="margin-top:0px !important;" class="hidden-md"> <img src="img/IAland.png" alt="SmartAdmin"> </span>
 
 				<!-- END AJAX-DROPDOWN -->
 			</div>

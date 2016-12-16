@@ -64,7 +64,7 @@
 	<body id="login">
 
 		<header id="header">
-			<!--<span id="logo"></span>-->
+			<span id="logo" style="margin-top:0px !important;" class="hidden-md"> <img src="img/IAland.png" alt="SmartAdmin"> </span>
 
 			<div id="logo-group">
 				<!-- END AJAX-DROPDOWN -->
