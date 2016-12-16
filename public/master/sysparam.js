@@ -55,9 +55,9 @@ function fetch_params_data(){
         $('#edit-msyscomptaxable').attr('checked',true);
         $('#edit-msyscomptaxabledate').prop('disabled',false);
         $('#edit-msyscomptaxablenumber').prop('disabled',false);
-        
+
       } else {
-        
+
          $('#edit-msyscomptaxable').removeAttr('checked');
          $('#edit-msyscomptaxabledate').prop('disabled',true);
         $('#edit-msyscomptaxablenumber').prop('disabled',true);
@@ -79,7 +79,7 @@ function fetch_params_data(){
          $('#edit-msysgenmultibranch').removeAttr('checked');
       }
       if(response.msysgenmulticurrency == true){
-        
+
          $('#edit-msysgenmulticurrency').attr('checked',true);
       } else {
         $('#edit-msysgenmulticurrency').removeAttr('checked');
@@ -101,7 +101,9 @@ function fetch_params_data(){
       }
 
       $('#edit-msysgenrounddec').val(response.msysgenrounddec).change();
-
+      if(response.msysnumseparatorset == 1){
+        $('#edit-msysgenrounddec').attr('disabled',true);
+      }
       $('#edit-msysnumseparator').val(response.msysnumseparator).change();
       if(response.msysnumseparatorset == 1){
         $('#edit-msysnumseparator').attr('disabled',true);
