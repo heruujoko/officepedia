@@ -641,6 +641,9 @@
         }
         this.unit = 1;
         this.detail_total = (numeral().unformat(this.sell_price) * parseInt(this.detail_qty) * parseInt(this.unit)) - parseInt(this.rp);
+        if(this.percentage != 0){
+            this.countRp();
+        }
       },
       countRp(){
         this.sell_price = numeral().unformat(this.sell_price);
