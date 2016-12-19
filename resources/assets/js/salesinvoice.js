@@ -62,9 +62,10 @@ Vue.directive('priceformatsatuan',{
     console.log('clear time');
     clearTimeout(typingTimerSatuan);
     typingTimerSatuan = setTimeout(() => {
-        console.log('done time');  
+        console.log('done time');
         let formatted = numeral(numeral().unformat($(el).val())).format(binding.value);
         $(el).val(formatted);
+        $(el).select();
     }, doneTypingInterval);
   },
 });

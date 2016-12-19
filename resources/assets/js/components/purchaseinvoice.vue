@@ -21,7 +21,7 @@
           <div class="form-group">
             <label class="col-md-2 control-label">Supplier</label>
             <div class="col-md-8">
-              <select v-bind:disabled="disable_supplier" v-selecttwo="supplier_label" v-model="invoice_supplier">
+              <select id="select_supplier" v-bind:disabled="disable_supplier" v-selecttwo="supplier_label" v-model="invoice_supplier">
                 <option></option>
                 <option v-for="sp in suppliers" :value="sp.id">{{ sp.msuppliername }}</option>
               </select>
@@ -424,9 +424,11 @@
                 this.disable_supplier = true;
             } else {
                 if(this.mode == 'insert'){
+                    $('#selected_supplier').trigger('select2:open');
+                    console.log('opening');
                     swal({
                       title: "Oops!",
-                      text: "Customer belum dipilih",
+                      text: "Supplier belum dipilih",
                       type: "error",
                       timer: 1000
                     });
