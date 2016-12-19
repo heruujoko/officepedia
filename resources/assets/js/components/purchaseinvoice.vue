@@ -25,6 +25,7 @@
                 <option></option>
                 <option v-for="sp in suppliers" :value="sp.id">{{ sp.msuppliername }}</option>
               </select>
+              <label v-if="supplier_alert" style="color:rgb(212, 103, 82)!important">Supplier tidak bisa kosong</label>
             </div>
           </div>
           <div class="form-group">
@@ -326,10 +327,15 @@
             invoice_auto: true,
             disable_supplier: false,
             invoice_do:"",
-            invoice_order:""
+            invoice_order:"",
+            set_alert: false
           }
         },
         computed:{
+            supplier_alert(){
+                console.log(typeof(this.invoice_supplier) == 'object');
+                return (this.set_alert == true) && (typeof(this.invoice_supplier) == 'object');
+            },
             tab1_id(){
               return this.mode+"_tab1";
             },
@@ -425,7 +431,7 @@
             } else {
                 if(this.mode == 'insert'){
                     $('#selected_supplier').trigger('select2:open');
-                    console.log('opening');
+                    this.set_alert = true;
                     swal({
                       title: "Oops!",
                       text: "Supplier belum dipilih",

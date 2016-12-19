@@ -65,7 +65,9 @@ Vue.directive('priceformatsatuan',{
         console.log('done time');
         let formatted = numeral(numeral().unformat($(el).val())).format(binding.value);
         $(el).val(formatted);
-        $(el).select();
+        if($(el).is(':focus')){
+            $(el).select();
+        }
     }, doneTypingInterval);
   },
 });
