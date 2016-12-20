@@ -79,4 +79,21 @@ class APController extends Controller
 
         return response()->json($reports);
     }
+
+    public function show($id){
+        $ap_query = MAPCard::on(Auth::user()->db_name)->where('id',$id)->first();
+    }
+
+    public function apdata(Request $request){
+
+        $ap_query = MAPCard::on(Auth::user()->db_name);
+        if($request->has('spl')){
+            $ap_query->where('mapcardsupplierid',$request->spl);
+        }
+
+        $apdata = $ap_query->get();
+
+        return response()->json($apdata);
+
+    }
 }

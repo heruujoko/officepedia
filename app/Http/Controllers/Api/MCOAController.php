@@ -106,6 +106,11 @@ class MCOAController extends Controller
       ->make(true);
     }
 
+    public function datalist(){
+        $mcoa = MCOA::on(Auth::user()->db_name)->get();
+        return response()->json($mcoa);
+    }
+
     public function show($id){
       DBHelper::configureConnection(Auth::user()->db_alias);
       $mcoa = MCOA::on(Auth::user()->db_name)->where('id',$id)->first();
