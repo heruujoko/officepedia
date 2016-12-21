@@ -95,38 +95,30 @@
 														<input type="text" class="form-control" placeholder="Filter Nomor Invoice" />
 													</th>
 			                    <th class="hasinput" style="width:9%">
-														<input type="text" class="form-control" placeholder="Filter Customer" />
+														<input type="text" class="form-control" placeholder="Filter Supplier" />
 													</th>
 													<th class="hasinput" style="width:9%">
 														<input type="text" class="form-control" placeholder="Filter Tanggal" />
 													</th>
 													<th class="hasinput" style="width:9%">
-														<input type="text" class="form-control" placeholder="Filter Jatuh Tempo" />
+														<input type="text" class="form-control" placeholder="Filter Pembayaran" />
 													</th>
 													<th class="hasinput" style="width:9%">
-														<input type="text" class="form-control" placeholder="Filter Subtotal" />
+														<input type="text" class="form-control" placeholder="Filter Outstanding" />
 													</th>
 													<th class="hasinput" style="width:9%">
-														<input type="text" class="form-control" placeholder="Filter Pajak" />
-													</th>
-													<th class="hasinput" style="width:9%">
-														<input type="text" class="form-control" placeholder="Filter Diskon" />
-													</th>
-													<th class="hasinput" style="width:9%">
-														<input type="text" class="form-control" placeholder="Filter Total" />
+														<input type="text" class="form-control" placeholder="Filter Remarks" />
 													</th>
 												</tr>
 												<tr>
 													<th data-hide="action"><center>Aksi</center></th>
 			                    <th data-hide="no"><center>No</center></th>
 			                    <th data-hide="mhinvoiceno"><center>Nomor Invoice</center></th>
-													<th data-hide="mhinvoicecustomername"><center>Customer</center></th>
+													<th data-hide="mhinvoicecustomername"><center>Nama Supplier</center></th>
 													<th data-hide="mhinvoicedate"><center>Tanggal</center></th>
-													<th data-hide="mhinvoiceduedate"><center>Jatuh Tempo</center></th>
-													<th data-hide="mhinvoicesubtotal"><center>Sub Total</center></th>
-													<th data-hide="mhinvoicetaxtotal"><center>Pajak</center></th>
-													<th data-hide="mhinvoicediscounttotal"><center>Diskon</center></th>
-													<th data-hide="mhinvoicegrandtotal"><center>Total</center></th>
+													<th data-hide="mhinvoiceduedate"><center>Pembayaran</center></th>
+													<th data-hide="mhinvoicesubtotal"><center>Outstanding</center></th>
+													<th data-hide="mhinvoicetaxtotal"><center>Remarks</center></th>
 												</tr>
 											</thead>
 											<tbody>
@@ -193,11 +185,11 @@
             "sLengthMenu": "Show _MENU_ Entries",
             "sInfo": "Showing ( _START_ to _END_ ) to _TOTAL_ Entries"
         },
-        "aoColumnDefs": [{ "bVisible": false, "aTargets": [5,6,7,8] }],
+        "aoColumnDefs": [{ "bVisible": false, "aTargets": [5,6,7] }],
         buttons: [ {
             extend: 'copyHtml5',
             exportOptions: {
-                columns: [1,2,3,4,5,6,7,8,9]
+                columns: [1,2,3,4,5,6,7]
             }
         },
         {
@@ -234,18 +226,16 @@
 
                     processing: false,
                 serverSide: false,
-                ajax: '{{URL::to('/')}}/admin-api/purchaseinvoice',
+                ajax: '{{URL::to('/')}}/admin-api/payap',
                 columns: [
                 {data: 'action', name:'action', searchable: false, orderable: false},
                 {data: 'no', no: 'no' },
-								{data: 'mhpurchaseno', mhpurchaseno: 'mhpurchaseno' },
-								{data: 'mhpurchasesuppliername', mhpurchasesuppliername: 'mhpurchasesuppliername' },
-								{data: 'mhpurchasedate', mhpurchasedate: 'mhpurchasedate' },
-								{data: 'mhpurchaseduedate', mhpurchaseduedate: 'mhpurchaseduedate' },
-								{data: 'subtotal', subtotal: 'subtotal' },
-								{data: 'tax', tax: 'tax' },
-								{data: 'disc', disc: 'disc' },
-								{data: 'gtotal', gtotal: 'gtotal' }
+								{data: 'mhpayapno', mhpayapno: 'mhpayapno' },
+								{data: 'mhpayapsuppliername', mhpayapsuppliername: 'mhpayapsuppliername' },
+								{data: 'mhpayapdate', mhpayapdate: 'mhpayapdate' },
+								{data: 'mhpayappayamount', mhpayappayamount: 'mhpayappayamount' },
+								{data: 'outstanding', outstanding: 'outstanding' },
+								{data: 'mhpayapremarks', mhpayapremarks: 'mhpayapremarks' }
                 ]
               }).on('xhr.dt',function(){
 								$('#loading_modal').modal('hide');

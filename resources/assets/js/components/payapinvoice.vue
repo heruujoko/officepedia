@@ -77,7 +77,7 @@
             <div class="col-md-6">
               <select v-bind:disabled="!notview" class="form-control" id="insert-selectaps" v-selecttwo="ap_label" v-model="selected_aps">
                   <option></option>
-                <option v-for="ap in aps" :value="ap.id">{{ ap.mapcardtransno }} <span v-priceformatlabel="num_format">{{ ap.mapcardtotalinv }}</span></option>
+                <option v-for="ap in aps" :value="ap.id">{{ ap.mapcardtransno }} <span v-priceformatlabel="num_format">{{ ap.mapcardoutstanding }}</span></option>
               </select>
             </div>
             <div class="col-md-6">
@@ -355,7 +355,7 @@
                 $('#'+this.modal_id).modal('toggle');
                 this.detail_state = "insert";
                 let self = this;
-                setTimeout(function () { $('#'+self.pay_id).select(); console.log('#'+self.pay_id); }, 1);
+                setTimeout(function () { $('#'+self.pay_id).select(); }, 1);
             },
             addToAPS(){
                 let proceed = this.checkFields();
@@ -403,12 +403,14 @@
                     invoice_date: this.invoice_date,
                     invoice_ref_no: this.invoice_ref_no,
                     invoice_check_no: this.invoice_check_no,
-                    total_pay: this.total_pay,
+                    total_pay: this.total_pay_amount,
+                    total_invoice: this.total_invoice,
                     over_pay: this.lebih_bayar,
                     discount: 0,
                     aps: this.invoice_aps
                 }
                 $('#'+this.loading_id).modal('toggle');
+                console.log(invoice_data);
                 Axios.post('/admin-api/payap',invoice_data)
                 .then((res) => {
                     $('#'+this.loading_id).modal('toggle');
@@ -417,6 +419,8 @@
                       type: "success",
                       timer: 1000
                     });
+                    this.resetInvoice();
+                    this.fetchAps();
                 })
                 .catch((err) => {
                     $('#'+this.loading_id).modal('toggle');
@@ -432,14 +436,31 @@
                 $('#'+this.modal_id).modal('toggle');
                 this.selected_aps = "-";
             },
+            resetInvoice(){
+                this.invoice_no = "";
+                this.invoice_supplier = {};
+                this.invoice_bank = {};
+                this.invoice_check_no = "";
+                this.invoice_ref_no = "";
+                this.invoice_date = moment().format('L');
+                this.invoice_pay_amount = 0;
+                this.invoice_type = "Pembarayan Hutang";
+                this.invoice_aps = [];
+                this.disable_supplier =  false;
+                this.supplier_alert =  false;
+                this.disable_bank =  false;
+                this.bank_alert =  false;
+                this.detail_ap = {};
+                this.detail_state = "insert";
+            },
             checkFields(){
                 let data_message = "Field"
                 let need_alert = false;
-                if(typeof(this.invoice_supplier) == 'object'){
+                if(typeof(this.invoice_supplier) == 'object' || this.invoice_supplier == ""){
                     data_message += " Supplier";
                     need_alert = true;
                 }
-                if(typeof(this.invoice_bank) == 'object'){
+                if(typeof(this.invoice_bank) == 'object' || this.invoice_bank == ""){
                     need_alert = true;
                     if(typeof(this.invoice_supplier) == 'object'){
                         data_message += " & Bank";

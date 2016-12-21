@@ -15,7 +15,6 @@ class CreateMDPayAP extends Migration
         Schema::create('mdpayap',function(Blueprint $table){
             $table->increments('id');
             $table->string('mhpayapno');
-            $table->string('mdpayapinvoiceno');
             $table->date('mdpayapinvoicedate');
             $table->double('mdpayapinvoicetotal');
             $table->double('mdpayapinvoiceoutstanding');
