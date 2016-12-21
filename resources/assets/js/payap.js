@@ -96,7 +96,7 @@ Vue.directive('priceformatlabel',{
   }
 });
 
-const purchaseapp = new Vue({
+const payapp = new Vue({
     el: '#main',
     components: {
       invoice: Invoice
@@ -107,4 +107,4 @@ const purchaseapp = new Vue({
 })
 
 //add vue to globals
-window.purchaseapp = purchaseapp;
+window.payapp = payapp;

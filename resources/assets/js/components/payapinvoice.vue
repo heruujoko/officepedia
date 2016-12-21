@@ -230,6 +230,7 @@
         props: ['mode'],
         data(){
             return {
+                editinvoiceid:0,
                 invoice_auto:true,
                 invoice_no:"",
                 invoice_supplier:{},
@@ -315,6 +316,31 @@
             }
         },
         methods:{
+            fetchInvoiceData(id){
+                let self = this;
+                Axios.get('/admin-api/payap/'+id)
+                .then((res) => {
+                    let spl = _.find(this.suppliers, { id: res.data.supplier_id});
+                    self.invoice_supplier = spl.id+"";
+                    self.invoice_bank = ""+res.data.mhpayapbank;
+                    self.invoice_date = moment(res.data.mhpayapdate).format('L');
+                    this.fetchDetailData(res.data.mhpayapno);
+                })
+            },
+            fetchDetailData(invoice_no){
+                Axios.get('/admin-api/payap/details/'+invoice_no)
+                .then((res) => {
+                    this.invoice_aps = [];
+                    for(let i=0;i<res.data.length;i++){
+                        res.data[i].payamount = res.data[i].mdpayapinvoicepayamount;
+                        res.data[i].mapcardtdate = res.data[i].mdpayapinvoicedate;
+                        res.data[i].mapcardtotalinv = res.data[i].mdpayapinvoicetotal;
+                        res.data[i].mapcardoutstanding = res.data[i].mdpayapinvoiceoutstanding;
+                        res.data[i].mapcardtransno = res.data[i].mdpayaptransno;
+                        this.invoice_aps.push(res.data[i]);
+                    }
+                });
+            },
             fetchSuppliers(){
                 Axios.get('/admin-api/msupplier/datalist').then((res) => {
                     this.suppliers = res.data;
@@ -432,6 +458,43 @@
                     });
                 });
             },
+            updateInvoice(){
+                let invoice_data = {
+                    invoice_auto : this.invoice_auto,
+                    invoice_supplier : this.invoice_supplier,
+                    invoice_bank : this.invoice_bank,
+                    invoice_date: this.invoice_date,
+                    invoice_ref_no: this.invoice_ref_no,
+                    invoice_check_no: this.invoice_check_no,
+                    total_pay: this.total_pay_amount,
+                    total_invoice: this.total_invoice,
+                    over_pay: this.lebih_bayar,
+                    discount: 0,
+                    aps: this.invoice_aps
+                }
+                $('#'+this.loading_id).modal('toggle');
+                console.log(invoice_data);
+                Axios.put('/admin-api/payap/'+this.editinvoiceid,invoice_data)
+                .then((res) => {
+                    $('#'+this.loading_id).modal('toggle');
+                    swal({
+                      title: "Input Berhasil!",
+                      type: "success",
+                      timer: 1000
+                    });
+                    this.resetInvoice();
+                    this.fetchAps();
+                })
+                .catch((err) => {
+                    $('#'+this.loading_id).modal('toggle');
+                    swal({
+                      title: "Oops!",
+                      text: "Transaksi gagal, periksa kembali input",
+                      type: "error",
+                      timer: 1000
+                    });
+                });
+            },
             dismissModal(){
                 $('#'+this.modal_id).modal('toggle');
                 this.selected_aps = "-";
@@ -494,6 +557,13 @@
             this.fetchSuppliers();
             this.fetchAps();
             this.fetchBanks();
+            if(this.mode == "edit"){
+              this.$parent.$on('edit-selected',(id) => {
+                  console.log(id+"edit");
+                this.editinvoiceid = id;
+                this.fetchInvoiceData(id);
+              });
+            }
         }
     }
 

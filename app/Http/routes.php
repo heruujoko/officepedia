@@ -283,6 +283,7 @@ Route::group(['prefix'=>'admin-nano','middleware' => ['auth','tenantdb']],functi
   Route::get('ap/{id}','Api\APController@show');
   Route::get('coadata','Api\MCOAController@datalist');
   Route::resource('payap','Api\PayAPController');
+  Route::get('payap/details/{invoice_no}','Api\PayAPController@details');
 
   Route::controllers([
     '/'=>'ApiController'
