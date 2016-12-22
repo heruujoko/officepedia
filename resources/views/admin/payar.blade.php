@@ -206,14 +206,14 @@
 <script src="{{ url('/js/payar.js') }}"></script>
 <script src="{{ url('/js/bootstrap-datepicker.min.js') }}"></script>
 <script>
-	function editmpayap(id){
+	function editmpayar(id){
 		$('#forminput').hide();
 		$('#formview').hide();
 		$('#formedit').show();
 		window.location.href="#formedit";
 		payapp.$emit('edit-selected',id);
 	}
-	function viewmpayap(id){
+	function viewmpayar(id){
 		$('#forminput').hide();
 		$('#formedit').hide();
 		$('#formview').show();

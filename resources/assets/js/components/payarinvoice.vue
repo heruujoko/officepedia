@@ -107,7 +107,7 @@
                   <td v-priceformatlabel="num_format">{{ item.marcardoutstanding }}</td>
                   <td v-priceformatlabel="num_format">{{ item.payamount }}</td>
                   <td>0</td>
-                  <td v-if="notview"><a v-on:click="editAps(item.id)"><span style="color:lightblue">Edit</span></a> <a v-on:click="removeAps(item.id)"><span style="color:red">Hapus</span></a></td>
+                  <td v-if="notview"><a v-on:click="editArs(item.id)"><span style="color:lightblue">Edit</span></a> <a v-on:click="removeArs(item.id)"><span style="color:red">Hapus</span></a></td>
                 </tr>
               </tbody>
             </table>
@@ -318,25 +318,25 @@
         methods:{
             fetchInvoiceData(id){
                 let self = this;
-                Axios.get('/admin-api/payap/'+id)
+                Axios.get('/admin-api/payar/'+id)
                 .then((res) => {
-                    let spl = _.find(this.suppliers, { id: res.data.supplier_id});
-                    self.invoice_supplier = spl.id+"";
-                    self.invoice_bank = ""+res.data.mhpayapbank;
-                    self.invoice_date = moment(res.data.mhpayapdate).format('L');
-                    this.fetchDetailData(res.data.mhpayapno);
+                    let cust = _.find(this.customers, { id: res.data.customer_id});
+                    self.invoice_customer = cust.id+"";
+                    self.invoice_bank = ""+res.data.mhpayarbank;
+                    self.invoice_date = moment(res.data.mhpayardate).format('L');
+                    this.fetchDetailData(res.data.mhpayarno);
                 })
             },
             fetchDetailData(invoice_no){
-                Axios.get('/admin-api/payap/details/'+invoice_no)
+                Axios.get('/admin-api/payar/details/'+invoice_no)
                 .then((res) => {
                     this.invoice_ars = [];
                     for(let i=0;i<res.data.length;i++){
-                        res.data[i].payamount = res.data[i].mdpayapinvoicepayamount;
-                        res.data[i].mapcardtdate = res.data[i].mdpayapinvoicedate;
-                        res.data[i].mapcardtotalinv = res.data[i].mdpayapinvoicetotal;
-                        res.data[i].mapcardoutstanding = res.data[i].mdpayapinvoiceoutstanding;
-                        res.data[i].mapcardtransno = res.data[i].mdpayaptransno;
+                        res.data[i].payamount = res.data[i].mdpayarinvoicepayamount;
+                        res.data[i].marcarddate = res.data[i].mdpayarinvoicedate;
+                        res.data[i].marcardtotalinv = res.data[i].mdpayarinvoicetotal;
+                        res.data[i].marcardoutstanding = res.data[i].mdpayarinvoiceoutstanding;
+                        res.data[i].marcardtransno = res.data[i].mdpayartransno;
                         this.invoice_ars.push(res.data[i]);
                     }
                 });
@@ -411,7 +411,7 @@
                 Vue.set(this.invoice_ars,this.edit_index,editedArs);
                 this.dismissModal();
             },
-            removeAps(idx){
+            removeArs(idx){
                 let ap = _.find(this.invoice_ars,  {id: parseInt(idx)});
                 this.invoice_ars = this.invoice_ars.filter( (a) => {
                     return a.id !== idx

@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use App\MHPayAR;
+use App\MDPayAR;
 use App\MCustomer;
 use Auth;
 use Datatables;
