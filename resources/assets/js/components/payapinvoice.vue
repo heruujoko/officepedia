@@ -347,7 +347,7 @@
                 });
             },
             fetchAps(){
-                Axios.get('/admin-api/apdata').then((res) => {
+                Axios.get('/admin-api/apdata?spl=').then((res) => {
                     this.aps = res.data;
                 });
             },
@@ -420,7 +420,6 @@
             resetDetail(){
                 this.detail_pay = 0;
             },
-            toInsertMode(){},
             saveInvoice(){
                 let invoice_data = {
                     invoice_auto : this.invoice_auto,
@@ -447,6 +446,8 @@
                     });
                     this.resetInvoice();
                     this.fetchAps();
+                    $('.tableapi').DataTable().ajax.reload();
+                    window.location.href="#formtable";
                 })
                 .catch((err) => {
                     $('#'+this.loading_id).modal('toggle');
@@ -484,6 +485,8 @@
                     });
                     this.resetInvoice();
                     this.fetchAps();
+                    $('.tableapi').DataTable().ajax.reload();
+                    window.location.href="#formtable";
                 })
                 .catch((err) => {
                     $('#'+this.loading_id).modal('toggle');
@@ -543,6 +546,14 @@
                 } else {
                     return true;
                 }
+            },
+            toInsertMode(){
+                this.resetDetail();
+                this.resetInvoice();
+                $('#forminput').show();
+        		$('#formview').hide();
+        		$('#formedit').hide();
+                window.location.href = '#forminput';
             }
         },
         watch:{
@@ -560,6 +571,15 @@
             if(this.mode == "edit"){
               this.$parent.$on('edit-selected',(id) => {
                   console.log(id+"edit");
+                this.editinvoiceid = id;
+                this.fetchInvoiceData(id);
+              });
+            }
+            if(this.mode == "view"){
+              this.$parent.$on('edit-selected',(id) => {
+                  console.log(id+"view");
+                this.disable_supplier = true;
+                this.disable_bank = true;
                 this.editinvoiceid = id;
                 this.fetchInvoiceData(id);
               });

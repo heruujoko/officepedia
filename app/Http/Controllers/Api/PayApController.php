@@ -70,4 +70,16 @@ class PayApController extends Controller
         }
     }
 
+    public function destroy($id){
+        $ap = MHPayAP::on(Auth::user()->db_name)->where('id',$id)->first();
+        $transaction = $ap->delete_transaction();
+        if($transaction == "ok"){
+            return response()->json($transaction);
+        } else if($transaction == "empty") {
+            return response()->json($transaction,400);
+        } else {
+            return response()->json($transaction,500);
+        }
+    }
+
 }

@@ -211,7 +211,7 @@ class MHPayAP extends Model
                 $new_ap->save();
             }
 
-            //voided details belum ???
+            //voided details
             $voided_details = MDPayAP::on(Auth::user()->db_name)->where('mhpayapno',$header->mhpayapno)->where('void',1)->get();
             foreach($voided_details as $v){
                 $old_ap = MAPCard::on(Auth::user()->db_name)->where('id',$v->id)->first();
@@ -239,14 +239,61 @@ class MHPayAP extends Model
                 $new_ap->mapcardeventtime = Carbon::now();
                 $new_ap->void = 0;
                 $new_ap->save();
-                
+
             }
 
             DB::connection(Auth::user()->db_name)->commit();
             return 'ok';
         } catch(\Exception $e){
             DB::connection(Auth::user()->db_name)->rollBack();
-            var_dump($e);
+            return "err";
+        }
+    }
+
+    public function delete_transaction(){
+        DB::connection(Auth::user()->db_name)->beginTransaction();
+        try{
+
+            $this->void = 1;
+            $this->save();
+
+            $details = MDPayAP::on(Auth::user()->db_name)->where('mhpayapno',$this->mhpayapno)->get();
+
+            foreach ($details as $d) {
+                $d->void = 1;
+                $d->save();
+
+                $old_ap = MAPCard::on(Auth::user()->db_name)->where('id',$d->id)->first();
+
+                $detail = MDPayAp::on(Auth::user()->db_name)->where('mhpayapno',$this->mhpayapno)->where('mdpayaptransno',$d->mdpayaptransno)->first();
+
+                $last_pay = $detail->mdpayapinvoicepayamount;
+
+                // cancel AP
+                $new_ap = new MAPCard;
+                $new_ap->setConnection(Auth::user()->db_name);
+                $new_ap->mapcardsupplierid = $this->mhpayapsupplierno;
+                $new_ap->mapcardsuppliername = $this->mhpayapsuppliername;
+                $new_ap->mapcardtdate = Carbon::now();
+                $new_ap->mapcardtransno = $old_ap->mapcardtransno;
+                $new_ap->mapcardpayno = $this->mhpayapno;
+                $new_ap->mapcardremark = "Pembatalan Hutang Dagang oleh ".Auth::user()->name."/".Auth::user()->id;
+                $new_ap->mapcardduedate = $old_ap->mapcardduedate;
+                $new_ap->mapcardtotalinv = $old_ap->mapcardtotalinv;
+                $new_ap->mapcardpayamount = 0;
+                $new_ap->mapcardoutstanding = $old_ap->mapcardoutstanding + $last_pay;
+                $new_ap->mapcardusername = Auth::user()->name;
+                $new_ap->mapcarduserid = Auth::user()->id;
+                $new_ap->mapcardeventdate = Carbon::now();
+                $new_ap->mapcardeventtime = Carbon::now();
+                $new_ap->void = 0;
+                $new_ap->save();
+            }
+
+            DB::connection(Auth::user()->db_name)->commit();
+            return 'ok';
+        } catch(\Exception $e){
+            DB::connection(Auth::user()->db_name)->rollBack();
             return "err";
         }
     }

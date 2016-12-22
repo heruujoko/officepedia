@@ -90,6 +90,33 @@
                     </div>
                 </article>
             </div>
+            <div class="row">
+				<!-- NEW WIDGET START -->
+				<article class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+					<!-- Widget ID (each widget will need unique ID)-->
+					<div id="formview" style="display:none;" class="forminput jarviswidget jarviswidget-color-darken" id="wid-id-0" data-widget-editbutton="false" data-widget-colorbutton="false" data-widget-deletebutton="false">
+						<header>
+							<span class="widget-icon"> <i class="fa fa-table"></i> </span>
+							<h2>{{ $section }}</h2>
+						</header>
+						<!-- widget div-->
+						<div>
+					 		<!-- widget edit box -->
+							<div class="jarviswidget-editbox">
+								<!-- This area used as dropdown edit box -->
+							</div>
+							<!-- end widget edit box -->
+							<h3 style="font-weight: bold; color: #1883B8;font-size: 19px;">Mode : VIEW</h3>
+							<!-- widget content -->
+							<div class="widget-body no-padding">
+							    <div class="container">
+										<invoice mode="view"></invoice>
+							    </div>
+	 					  </div>
+	 				  </div>
+                    </div>
+                </article>
+            </div>
 			<div class="row">
 				<!-- NEW WIDGET START -->
 				<article class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
@@ -222,25 +249,25 @@
         {
             text: 'CSV',
             action: function(){
-              window.location.href = "{{ url('/admin-nano/purchaseinvoice/export/csv') }}"
+              window.location.href = "{{ url('/admin-nano/payap/export/csv') }}"
             }
         },
         {
             text: 'Excel',
             action: function(){
-              window.location.href = "{{ url('/admin-nano/purchaseinvoice/export/excel') }}"
+              window.location.href = "{{ url('/admin-nano/payap/export/excel') }}"
             }
         },
         {
             text: 'PDF',
             action: function(){
-              window.location.href = "{{ url('/admin-nano/purchaseinvoice/export/pdf') }}"
+              window.location.href = "{{ url('/admin-nano/payap/export/pdf') }}"
             }
         },
         {
             extend: 'print',
             exportOptions: {
-                columns: [1,2,3,4,5,6,7,8,9] //setting kolom mana yg mau di print
+                columns: [1,2,3,4,5,6,7] //setting kolom mana yg mau di print
             }
 
         },
@@ -290,7 +317,7 @@
         if (isconfirm) {
           $.ajax({
             type: "DELETE",
-            url: API_URL+"/purchaseinvoice/"+id,
+            url: API_URL+"/payap/"+id,
             success: function(response){
               console.log(response);
               table.ajax.reload();

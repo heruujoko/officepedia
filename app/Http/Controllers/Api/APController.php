@@ -65,7 +65,11 @@ class APController extends Controller
                 $dt['aging'] = Carbon::parse($dt->mapcardtdate)->diffInDays(Carbon::now());
                 $dt['footer'] = false;
                 $total_inv += $dt->mapcardtotalinv;
-                $total_outstanding += $dt->mapcardoutstanding;
+                if($dt->mapcardpayamount > 0){
+                    $total_outstanding -= $dt->mapcardpayamount;
+                } else {
+                    $total_outstanding += $dt->mapcardoutstanding;
+                }
                 array_push($reports,$dt);
             }
 
@@ -100,7 +104,7 @@ class APController extends Controller
         foreach ($apgroup as $grp) {
             $ap = MAPCard::on(Auth::user()->db_name)->where('mapcardtransno',$grp->mapcardtransno)->get()->last();
             if($ap->mapcardoutstanding > 0){
-                array_push($apdata,$ap);    
+                array_push($apdata,$ap);
             }
 
         }

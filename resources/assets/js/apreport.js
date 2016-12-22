@@ -163,8 +163,17 @@ const apreportapp = new Vue({
             let sums = 0;
             if(this.aps.length > 0){
                 for(var i=0;i<this.aps.length;i++){
-                    if(this.aps[i].mapcardoutstanding != undefined){
+                    // if(this.aps[i].mapcardoutstanding != undefined){
+                    //     sums += this.aps[i].mapcardoutstanding;
+                    // }
+                    if((this.aps[i].mapcardpayamount > 0) && this.aps[i].mapcardpayamount != undefined){
+                        console.log(" - "+this.aps[i].mapcardpayamount);
+                        sums -= this.aps[i].mapcardpayamount;
+                    } else if((this.aps[i].mapcardpayamount <= 0) && this.aps[i].mapcardpayamount != undefined) {
+                        console.log(" + "+this.aps[i].mapcardoutstanding);
                         sums += this.aps[i].mapcardoutstanding;
+                    } else {
+                        console.log('else');
                     }
                 }
             }
