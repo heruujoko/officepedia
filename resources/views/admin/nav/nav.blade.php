@@ -98,6 +98,11 @@
           <a href="{{URL::to('/')}}/admin-nano/salesinvoice">Transaksi Penjualan</a>
         </li>
       @endif
+      @if($active == 'payar')
+        <li class="active"><a href="{{ url('admin-nano/payar') }}">Pembayaran Piutang Dagang</a></li>
+      @else
+        <li><a href="{{ url('admin-nano/payar') }}">Pembayaran Piutang Dagang</a></li>
+      @endif
       @if($active == 'customer')
         <li class="active">
           <a href="{{URL::to('/')}}/admin-nano/pelanggan">Master Customer</a>

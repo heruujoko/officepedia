@@ -72,13 +72,13 @@ class MHPayAP extends Model
                 $header->mhpayapno = $request->no;
             }
 
-            $header = MHPayAp::on(Auth::user()->db_name)->where('id',$header->id)->first();
+            $header = MHPayAP::on(Auth::user()->db_name)->where('id',$header->id)->first();
 
             foreach($request->aps as $ap){
 
                 $old_ap = MAPCard::on(Auth::user()->db_name)->where('id',$ap['id'])->first();
 
-                $detail = new MDPayAp;
+                $detail = new MDPayAP;
                 $detail->setConnection(Auth::user()->db_name);
                 $detail->mhpayapno = $header->mhpayapno;
                 $detail->mdpayaptransno = $old_ap->mapcardtransno;
@@ -153,7 +153,7 @@ class MHPayAP extends Model
 
                 $old_ap = MAPCard::on(Auth::user()->db_name)->where('id',$ap['id'])->first();
 
-                $detail = MDPayAp::on(Auth::user()->db_name)->where('mhpayapno',$header->mhpayapno)->where('mdpayaptransno',$ap['mdpayaptransno'])->first();
+                $detail = MDPayAP::on(Auth::user()->db_name)->where('mhpayapno',$header->mhpayapno)->where('mdpayaptransno',$ap['mdpayaptransno'])->first();
 
                 $last_pay = $detail->mdpayapinvoicepayamount;
 
@@ -216,7 +216,7 @@ class MHPayAP extends Model
             foreach($voided_details as $v){
                 $old_ap = MAPCard::on(Auth::user()->db_name)->where('id',$v->id)->first();
 
-                $detail = MDPayAp::on(Auth::user()->db_name)->where('mhpayapno',$header->mhpayapno)->where('mdpayaptransno',$v->mdpayaptransno)->first();
+                $detail = MDPayAP::on(Auth::user()->db_name)->where('mhpayapno',$header->mhpayapno)->where('mdpayaptransno',$v->mdpayaptransno)->first();
 
                 $last_pay = $detail->mdpayapinvoicepayamount;
 
@@ -265,7 +265,7 @@ class MHPayAP extends Model
 
                 $old_ap = MAPCard::on(Auth::user()->db_name)->where('id',$d->id)->first();
 
-                $detail = MDPayAp::on(Auth::user()->db_name)->where('mhpayapno',$this->mhpayapno)->where('mdpayaptransno',$d->mdpayaptransno)->first();
+                $detail = MDPayAP::on(Auth::user()->db_name)->where('mhpayapno',$this->mhpayapno)->where('mdpayaptransno',$d->mdpayaptransno)->first();
 
                 $last_pay = $detail->mdpayapinvoicepayamount;
 
