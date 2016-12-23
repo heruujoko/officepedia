@@ -280,7 +280,7 @@
 
                     processing: false,
                 serverSide: false,
-                ajax: '{{URL::to('/')}}/admin-api/payap',
+                ajax: '{{URL::to('/')}}/admin-api/payar',
                 columns: [
                 {data: 'action', name:'action', searchable: false, orderable: false},
                 {data: 'no', no: 'no' },

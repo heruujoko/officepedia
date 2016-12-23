@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use Auth;
 use App\MConfig;
-use App\MHPayAp;
+use App\MHPayAP;
 use PDF;
 use Excel;
 
@@ -30,7 +30,7 @@ class PayApController extends Controller
           $data['thousands_sep'] = ",";
         }
 
-        $data['pays'] = MHPayAp::on(Auth::user()->db_name)->get();
+        $data['pays'] = MHPayAP::on(Auth::user()->db_name)->get();
         foreach($data['pays'] as $pap){
             $pap['outstanding'] = ($pap->mhpayapsubtotal - $pap->mhpayappayamount);
         }
@@ -39,7 +39,7 @@ class PayApController extends Controller
     }
 
     public function payap_excel(){
-        $data['pays'] = MHPayAp::on(Auth::user()->db_name)->get();
+        $data['pays'] = MHPayAP::on(Auth::user()->db_name)->get();
         foreach($data['pays'] as $pap){
             $pap['outstanding'] = ($pap->mhpayapsubtotal - $pap->mhpayappayamount);
         }
@@ -62,7 +62,7 @@ class PayApController extends Controller
     }
 
     public function payap_csv(){
-        $data['pays'] = MHPayAp::on(Auth::user()->db_name)->get();
+        $data['pays'] = MHPayAP::on(Auth::user()->db_name)->get();
         foreach($data['pays'] as $pap){
             $pap['outstanding'] = ($pap->mhpayapsubtotal - $pap->mhpayappayamount);
         }
