@@ -63,6 +63,10 @@ Vue.directive('priceformatsatuan',{
     typingTimerSatuan = setTimeout(() => {
         let formatted = numeral(numeral().unformat($(el).val())).format(binding.value);
         $(el).val(formatted);
+        if($(el).is(':focus')){
+            $(el).select();
+        }
+
     }, doneTypingInterval);
   },
 });

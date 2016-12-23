@@ -138,6 +138,16 @@ Route::group(['prefix'=>'admin-nano','middleware' => ['auth','tenantdb']],functi
 
   Route::get('purchasequotation','PurchasequotationController@index');
 
+  Route::get('payap','PayApController@payap');
+  Route::get('payap/export/csv','PayApController@payap_csv');
+  Route::get('payap/export/excel','PayApController@payap_excel');
+  Route::get('payap/export/pdf','PayApController@payap_pdf');
+
+  Route::get('payar','PayArController@payar');
+  Route::get('payar/export/csv','PayArController@payar_csv');
+  Route::get('payar/export/excel','PayArController@payar_excel');
+  Route::get('payar/export/pdf','PayArController@payar_pdf');
+
   Route::get('muser','MUserController@index');
   Route::get('muser/export/csv','MUserController@csv');
   Route::get('muser/export/excel','MUserController@excel');
@@ -276,6 +286,17 @@ Route::group(['prefix'=>'admin-nano','middleware' => ['auth','tenantdb']],functi
   Route::get('purchasereport','Api\PurchaseController@purchasereport');
   Route::get('apreport','Api\APController@apreport');
   Route::get('cogshistory','Api\COGSHistoryController@index');
+
+  Route::get('apdata','Api\APController@apdata');
+  Route::get('ap/{id}','Api\APController@show');
+  Route::get('coadata','Api\MCOAController@datalist');
+  Route::resource('payap','Api\PayApController');
+  Route::get('payap/details/{invoice_no}','Api\PayApController@details');
+
+  Route::get('ardata','Api\ARController@ardata');
+  Route::get('ar/{id}','Api\ARController@show');
+  Route::resource('payar','Api\PayArController');
+  Route::get('payar/details/{invoice_no}','Api\PayArController@details');
 
   Route::controllers([
     '/'=>'ApiController'

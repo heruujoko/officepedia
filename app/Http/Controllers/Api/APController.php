@@ -9,6 +9,7 @@ use App\Http\Controllers\Controller;
 use App\MAPCard;
 use Carbon\Carbon;
 use Auth;
+use DB;
 
 class APController extends Controller
 {
@@ -64,7 +65,11 @@ class APController extends Controller
                 $dt['aging'] = Carbon::parse($dt->mapcardtdate)->diffInDays(Carbon::now());
                 $dt['footer'] = false;
                 $total_inv += $dt->mapcardtotalinv;
-                $total_outstanding += $dt->mapcardoutstanding;
+                if($dt->mapcardpayamount > 0){
+                    $total_outstanding -= $dt->mapcardpayamount;
+                } else {
+                    $total_outstanding += $dt->mapcardoutstanding;
+                }
                 array_push($reports,$dt);
             }
 
@@ -78,5 +83,33 @@ class APController extends Controller
         }
 
         return response()->json($reports);
+    }
+
+    public function show($id){
+        $ap_query = MAPCard::on(Auth::user()->db_name)->where('id',$id)->first();
+    }
+
+    public function apdata(Request $request){
+
+        $ap_query = MAPCard::on(Auth::user()->db_name)->having('mapcardoutstanding','>',0);
+
+        if($request->has('spl')){
+            $ap_query->where('mapcardsupplierid',$request->spl);
+        }
+
+        $apgroup = $ap_query->groupBy('mapcardtransno')->get();
+
+        $apdata = [];
+
+        foreach ($apgroup as $grp) {
+            $ap = MAPCard::on(Auth::user()->db_name)->where('mapcardtransno',$grp->mapcardtransno)->get()->last();
+            if($ap->mapcardoutstanding > 0){
+                array_push($apdata,$ap);
+            }
+
+        }
+
+        return response()->json($apdata);
+
     }
 }

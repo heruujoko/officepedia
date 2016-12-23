@@ -25,13 +25,39 @@ class COGSHistoryController extends Controller
             $history_query->whereDate('created_at','<=',Carbon::parse($request->end));
         }
 
-        $histories = $history_query->get();
+        $histories = $history_query->groupBy('hpphistorygoodsid')->get();
+
+        $history_data = [];
 
         foreach($histories as $h){
-            $h['goodsname'] = MGoods::on(Auth::user()->db_name)->where('mgoodscode',$h->hpphistorygoodsid)->first()->mgoodsname;
+            $header = [
+                'data' => 'header',
+                'hpphistorygoodsid' => $h->hpphistorygoodsid,
+                'name' => $h->goods()->mgoodsname
+            ];
+            array_push($history_data,$header);
+            $childs_q = HPPHistory::on(Auth::user()->db_name)->where('hpphistorygoodsid',$h->hpphistorygoodsid);
+            if($request->has('end')){
+                $childs_q->whereDate('created_at','<=',Carbon::parse($request->end));
+            }
+            $childs = $childs_q->get();
+            foreach($childs as $ch){
+                $ch['data'] = 'data';
+                array_push($history_data,$ch);
+            }
+
+            $footer = [
+                'data' => 'footer',
+                'hpphistorygoodsid' => $h->hpphistorygoodsid,
+                'name' => $h->goods()->mgoodsname,
+                'hpphistoryqty' => $childs->last()->hpphistoryqty,
+                'hpphistorycogs' => $childs->last()->hpphistorycogs
+            ];
+            array_push($history_data,$footer);
+
         }
 
-        return response()->json($histories);
+        return response()->json($history_data);
 
     }
 }

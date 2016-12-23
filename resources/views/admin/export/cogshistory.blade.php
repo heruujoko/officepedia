@@ -89,14 +89,34 @@
             </thead>
             <tbody>
                 @foreach($histories as $h)
+                    @if($h['data'] == 'header')
                     <tr>
-                        <td>{{ $h->hpphistorygoodsid }}</td>
-                        <td>{{ $h['goodsname']}}</td>
-                        <td style="text-align:right">{{ number_format($h->hpphistorypurchase,$decimals,$dec_point,$thousands_sep) }}</td>
+                        <td>{{ $h['hpphistorygoodsid'] }}</td>
+                        <td>{{ $h['name'] }}</td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    @elseif($h['data'] == 'data')
+                    <tr>
+                        <td></td>
+                        <td></td>
+                        <td>{{ $h->hpphistorypurchase }}</td>
                         <td>{{ $h->hpphistoryqty }}</td>
-                        <td style="text-align:right">{{ number_format($h->hpphistorycogs,$decimals,$dec_point,$thousands_sep) }}</td>
+                        <td>{{ number_format($h->hpphistorycogs,$decimals,$dec_point,$thousands_sep) }}</td>
                         <td>{{ $h->hpphistoryremarks }}</td>
                     </tr>
+                    @elseif($h['data'] == 'footer')
+                    <tr>
+                        <td style="font-weight:bold">TOTAL</td>
+                        <td style="font-weight:bold"></td>
+                        <td style="font-weight:bold"></td>
+                        <td style="font-weight:bold">{{ $h['hpphistoryqty'] }}</td>
+                        <td style="font-weight:bold">{{ number_format($h['hpphistorycogs'],$decimals,$dec_point,$thousands_sep) }}</td>
+                        <td style="font-weight:bold"></td>
+                    </tr>
+                    @endif
                 @endforeach
             </tbody>
         </table>

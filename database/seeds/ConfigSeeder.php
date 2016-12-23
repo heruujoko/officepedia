@@ -58,6 +58,18 @@ class ConfigSeeder extends Seeder
           'msysprefixbankrecon' => 'REC',
           'msysprefixbankreconcount' => 0,
           'msysprefixbankreconlastcount' => '000000',
+          'msysprefixpayap' => 'PAP',
+          'msysprefixpayapcount' => 0,
+          'msysprefixpayaplastcount' => '000000',
+          'msysprefixpayar' => 'PAR',
+          'msysprefixpayarcount' => 0,
+          'msysprefixpayarlastcount' => '000000',
+          'msysprefixpurchasequotation' => 'PQU',
+          'msysprefixpurchasequotationcount' => 0,
+          'msysprefixinvoicequotationlastcount' => '000000',
+          'msysprefixinvoicequotation' => 'IQU',
+          'msysprefixinvoicequotationcount' => 0,
+          'msysprefixinvoicequotationlastcount' => '000000',
         ]);
     }
 }

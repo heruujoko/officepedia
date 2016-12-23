@@ -74,6 +74,27 @@ const apreportapp = new Vue({
         invoice_date_end: moment().format('L')
     },
     methods:{
+        fetchConfig(){
+            var self = this;
+            Axios.get('/admin-api/mconfig')
+                .then(function(res){
+                    let separator = res.data.msysnumseparator
+                    let decimals = res.data.msysgenrounddec
+                    console.log(separator +" "+decimals);
+                    if(separator == ',' && decimals == 2){
+                        self.num_format = "0,0.00"
+                    } else if(separator == ',' && decimals == 0){
+                        self.num_format = "0,0"
+                    } else if(separator == '.' && decimals == 2){
+                        self.num_format = "0.0,00"
+                    } else {
+                        self.num_format = "0.0"
+                    }
+                })
+                .catch(function(err){
+                    console.log(err);
+                });
+        },
         fetchBranches(){
 
         },
@@ -142,8 +163,17 @@ const apreportapp = new Vue({
             let sums = 0;
             if(this.aps.length > 0){
                 for(var i=0;i<this.aps.length;i++){
-                    if(this.aps[i].mapcardoutstanding != undefined){
+                    // if(this.aps[i].mapcardoutstanding != undefined){
+                    //     sums += this.aps[i].mapcardoutstanding;
+                    // }
+                    if((this.aps[i].mapcardpayamount > 0) && this.aps[i].mapcardpayamount != undefined){
+                        console.log(" - "+this.aps[i].mapcardpayamount);
+                        sums -= this.aps[i].mapcardpayamount;
+                    } else if((this.aps[i].mapcardpayamount <= 0) && this.aps[i].mapcardpayamount != undefined) {
+                        console.log(" + "+this.aps[i].mapcardoutstanding);
                         sums += this.aps[i].mapcardoutstanding;
+                    } else {
+                        console.log('else');
                     }
                 }
             }
@@ -152,6 +182,7 @@ const apreportapp = new Vue({
     },
     created(){
         $('#loading_modal').modal('toggle');
+        this.fetchConfig();
         this.fetchBranches();
         this.fetchSuppliers();
         this.fetchAps();

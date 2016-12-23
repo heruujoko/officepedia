@@ -595,8 +595,8 @@
 				<script src="{{ url('/js/datatable/Buttons-1.2.2/js/buttons.print.js') }}"></script>
 				<script src="{{ url('/js/datatable/Buttons-1.2.2/js/buttons.colVis.js') }}"></script>
 				<script src="{{ url('/js/datatable/Buttons-1.2.2/js/buttons.flash.js') }}"></script>
-				<script src="{{ url('/js/datatable/pdfmake-0.1.18/build/pdfmake.js') }}"></script>
-				<script src="{{ url('/js/datatable/pdfmake-0.1.18/build/vfs_fonts.js') }}"></script>
+				<!-- <script src="{{ url('/js/datatable/pdfmake-0.1.18/build/pdfmake.js') }}"></script>
+				<script src="{{ url('/js/datatable/pdfmake-0.1.18/build/vfs_fonts.js') }}"></script> -->
 
 	    	<script src="{{URL::to('/')}}/master/1/dist/sweetalert.min.js"></script>
 	    	<script src="{{URL::to('/')}}/master/script.js" type="text/javascript" charset="utf-8" async defer></script>

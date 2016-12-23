@@ -12,6 +12,7 @@
               <select v-bind:disabled="disable_customer" v-selecttwo="pelanggan_label" v-model="invoice_customer">
                 <option v-for="c in customers" :value="c.id">{{ c.mcustomername }}</option>
               </select>
+              <label v-if="customer_alert" style="color:rgb(212, 103, 82)!important">Customer tidak bisa kosong</label>
             </div>
           </div>
           <div class="form-group">
@@ -314,10 +315,15 @@
         invoice_no:"",
         invoice_auto: true,
         lock_sell_price: false,
-        disable_customer: false
+        disable_customer: false,
+        set_alert:false
       }
     },
     computed:{
+        customer_alert(){
+            console.log(typeof(this.invoice_customer) == 'object');
+            return (this.set_alert == true) && (typeof(this.invoice_customer) == 'object');
+        },
       invoice_grandtotal(){
         return numeral(this.invoice_subtotal + this.invoice_tax).format(this.num_format);
       },
@@ -376,12 +382,13 @@
                 this.disable_customer = true;
             } else {
                 if(this.mode == 'insert'){
+                    this.set_alert = true;
                     swal({
                       title: "Oops!",
                       text: "Customer belum dipilih",
                       type: "error",
                       timer: 1000
-                    });    
+                    });
                 }
             }
         },
@@ -634,6 +641,9 @@
         }
         this.unit = 1;
         this.detail_total = (numeral().unformat(this.sell_price) * parseInt(this.detail_qty) * parseInt(this.unit)) - parseInt(this.rp);
+        if(this.percentage != 0){
+            this.countRp();
+        }
       },
       countRp(){
         this.sell_price = numeral().unformat(this.sell_price);

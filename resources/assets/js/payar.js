@@ -1,12 +1,11 @@
 import Vue from 'vue/dist/vue.js'
 import Axios from 'axios'
-import Invoice from './components/invoicecomponent.vue'
+import Invoice from './components/payarinvoice.vue'
+
+Vue.config.devtools = true
 
 var typingTimerSatuan;
 var doneTypingInterval = 1000;
-var typingTimerDiskon;
-
-Vue.config.devtools = true
 
 Vue.directive('selecttwo',{
   inserted(el,binding,vnode){
@@ -23,6 +22,24 @@ Vue.directive('selecttwo',{
         vnode.context[modelName] = evt.target.value;
     });
   }
+});
+
+Vue.directive('priceformatsatuan',{
+  inserted(el,binding){
+    let formatted = numeral($(el).val()).format(binding.value);
+    $(el).val(formatted);
+  },
+  update(el,binding){
+    clearTimeout(typingTimerSatuan);
+    typingTimerSatuan = setTimeout(() => {
+        let formatted = numeral(numeral().unformat($(el).val())).format(binding.value);
+        $(el).val(formatted);
+        if($(el).is(':focus')){
+            $(el).select();
+        }
+
+    }, doneTypingInterval);
+  },
 });
 
 Vue.directive('dpicker',{
@@ -53,39 +70,17 @@ Vue.directive('priceformat',{
   },
 });
 
-Vue.directive('priceformatsatuan',{
+Vue.directive('priceformatlabel',{
   inserted(el,binding){
-    let formatted = numeral($(el).val()).format(binding.value);
-    $(el).val(formatted);
+    let num = $(el).context.textContent;
+    $(el).html(numeral(num).format(binding.value))
   },
   update(el,binding){
-    console.log('clear time');
-    clearTimeout(typingTimerSatuan);
-    typingTimerSatuan = setTimeout(() => {
-        console.log('done time');
-        let formatted = numeral(numeral().unformat($(el).val())).format(binding.value);
-        $(el).val(formatted);
-        if($(el).is(':focus')){
-            $(el).select();
-        }
-    }, doneTypingInterval);
   },
-});
-
-Vue.directive('priceformatdiskon',{
-  inserted(el,binding){
-    let formatted = numeral($(el).val()).format(binding.value);
-    $(el).val(formatted);
-  },
-  update(el,binding){
-    clearTimeout(typingTimerDiskon);
-    typingTimerDiskon = setTimeout(() => {
-        if($(el).val() != ''){
-            let formatted = numeral(numeral().unformat($(el).val())).format(binding.value);
-            $(el).val(formatted);
-        }
-    }, doneTypingInterval);
-  },
+  componentUpdated(el,binding){
+    let num = numeral().unformat($(el).context.textContent);
+    $(el).html(numeral(num).format(binding.value))
+  }
 });
 
 Vue.directive('priceformatlabel',{
@@ -101,15 +96,15 @@ Vue.directive('priceformatlabel',{
   }
 });
 
-const invoiceapp = new Vue({
-  el: '#main',
-  components: {
-    invoice: Invoice
-  },
-  created(){
-    console.log('invoice app ready');
-  }
-});
+const payapp = new Vue({
+    el: '#main',
+    components: {
+      invoice: Invoice
+    },
+    created(){
+      console.log('pay ar app ready');
+    }
+})
 
 //add vue to globals
-window.invoiceapp = invoiceapp;
+window.payapp = payapp;
