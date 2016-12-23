@@ -4,7 +4,7 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class MDPayAp extends Model
+class MDPayAP extends Model
 {
     protected $table = 'mdpayap';
 }
