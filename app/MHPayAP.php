@@ -263,8 +263,8 @@ class MHPayAP extends Model
                 $d->void = 1;
                 $d->save();
 
-                $old_ap = MAPCard::on(Auth::user()->db_name)->where('id',$d->id)->first();
-
+                // $old_ap = MAPCard::on(Auth::user()->db_name)->where('id',$d->id)->first();
+                $old_ap = MAPCard::on(Auth::user()->db_name)->where('mapcardpayno',$this->mhpayapno)->where('mapcardtransno',$d->mdpayaptransno)->orderBy('created_at', 'desc')->first();
                 $detail = MDPayAP::on(Auth::user()->db_name)->where('mhpayapno',$this->mhpayapno)->where('mdpayaptransno',$d->mdpayaptransno)->first();
 
                 $last_pay = $detail->mdpayapinvoicepayamount;

@@ -56,4 +56,28 @@ class PayArController extends Controller
             return response()->json($transaction,500);
         }
     }
+
+    public function update($id,Request $request){
+        $ar = MHPayAR::on(Auth::user()->db_name)->where('id',$id)->first();
+        $transaction = $ar->update_transaction($request);
+        if($transaction == "ok"){
+            return response()->json($transaction);
+        } else if($transaction == "empty") {
+            return response()->json($transaction,400);
+        } else {
+            return response()->json($transaction,500);
+        }
+    }
+
+    public function destroy($id){
+        $ar = MHPayAR::on(Auth::user()->db_name)->where('id',$id)->first();
+        $transaction = $ar->delete_transaction();
+        if($transaction == "ok"){
+            return response()->json($transaction);
+        } else if($transaction == "empty") {
+            return response()->json($transaction,400);
+        } else {
+            return response()->json($transaction,500);
+        }
+    }
 }
