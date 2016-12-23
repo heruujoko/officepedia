@@ -81,8 +81,53 @@ class PurchasequotationController extends Controller
 
 	}
 	 public function store(Request $request){
-       dd($request);
+        $quotation = new MHPurchasequotation($request->all());
+        $quotation->setConnection(Auth::user()->db_name);
+        $quotation->mhpurchasequotationdeliveryno = $request->mhpurchasequotationdeliveryno;
+        $quotation->mhpurchasequotationorderyno = $request->mhpurchasequotationorderyno;
+        $quotation->mhpurchasequotationdate = Carbon::parse($request->mhpurchasequotationdate);
+        $quotation->mhpurchasequotationduedate = Carbon::parse($request->mhpurchasequotationduedate);
+        $quotation->mhpurchasequotationsubtotal = $request->mhpurchasequotationsubtotal;
+        $quotation->mhpurchasequotationtaxtotal = $request->mhpurchasequotationtaxtotal;
+        $quotation->mhpurchasequotationdiscounttotal = $request->mhpurchasequotationdiscounttotal;
+        $quotation->mhpurchasequotationgrandtotal = $request->mhpurchasequotationsubtotal + $request->mhpurchasequotationtaxtotal;
+        $quotation->mhpurchasequotationothertotal = 0;
+        $quotation->mhpurchasequotationwithppn = 0;
+        $quotation->void = 0;
+        $quotation->save();
+        if ($request->autogen == true) {
+            $quotation->autogenproc();
+        }
+        else{
+        $quotation->mhpurchasequotationno = $request->no;
+        }
+
+        $quotation->save();
+        $header = MHPurchasequotation::on(Auth::user()->db_name)->where('id',$quotation->id)->first();
+        foreach($request->goods as $g){
+          $detail = new MDPurchasequotation;
+          $detail->setConnection(Auth::user()->db_name);
+          $detail->mhpurchaquotationseno = $header->mhpurchasequotationno;
+          $detail->mdpurchasequotationsupplierid = $g['goods']['mgoodssuppliercode'];
+          $detail->mdpurchasequotationsuppliername = $g['goods']['mgoodssuppliername'];
+          $detail->mdpurchasequotationdate = $header->mhpurchasequotationdate;
+          $detail->mdpurchasequotationgoodsid = $g['goods']['mgoodscode'];
+          $detail->mdpurchasequotationgoodsname = $g['goods']['mgoodsname'];
+          $detail->mdpurchasequotationgoodsunit3conv = $g['goods']['mgoodsunit3conv'];
+          $detail->mdpurchasequotationgoodsunit3label = $g['goods']['mgoodsunit3'];
+          $detail->mdpurchasequotationgoodsunit2conv = $g['goods']['mgoodsunit2conv'];
+          $detail->mdpurchasequotationgoodsunit2label = $g['goods']['mgoodsunit2'];
+          $detail->mdpurchasequotationgoodsunit1label = $g['goods']['mgoodsunit'];
+          $detail->mdpurchasequotationgoodsprice = $g['goods']['mgoodspriceout'];
+          $detail->mdpurchasequotationgoodsgrossamount = $g['subtotal'];
+          $detail->mdpurchasequotationgoodsdiscount = $g['disc'];
+          $detail->mdpurchasequotationgoodsidwhouse = $g['warehouse'];
+          $detail->mdpurchasequotationremarks = $g['remark'];
+          $detail->save();
+        }
+        return response()->json($quotation);
     }
+
 	public function show(){
 
 	}

@@ -14,7 +14,7 @@ class CreateMdpurchaseQuatationTable extends Migration
     {
         Schema::create('mdpurchasequotation', function (Blueprint $table) {
             $table->increments('id');
-             $table->string('mhpurchaquotationseno');
+            $table->string('mhpurchaquotationseno');
             $table->string('mdpurchasequotationsupplierid');
             $table->string('mdpurchasequotationsuppliername');
             $table->date('mdpurchasequotationdate');
