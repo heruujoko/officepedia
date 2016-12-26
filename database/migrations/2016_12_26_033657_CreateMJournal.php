@@ -13,6 +13,7 @@ class CreateMJournal extends Migration
     public function up()
     {
         Schema::create('mjournal',function(Blueprint $table){
+            $table->increments('id');
             $table->date('mjournaldate');
             $table->string('mjournaltransno');
             $table->string('mjournaltranstype');

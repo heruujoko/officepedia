@@ -15,6 +15,7 @@ use App\MStockCard;
 use App\MAPCard;
 use App\MCOGS;
 use App\HPPHistory;
+use App\MJournal;
 
 class MHPurchase extends Model
 {
@@ -232,6 +233,10 @@ class MHPurchase extends Model
             $ap->mapcardeventdate = Carbon::now();
             $ap->mapcardeventtime = Carbon::now();
             $ap->save();
+
+            $conf = MConfig::on(Auth::user()->db_name)->where('id',1)->first();
+            $coa = $conf->msyspayapaccount;
+            MJournal::record_journal($header->mhpurchaseno,'Pembelian',$coa,$header->mhpurchasegrandtotal,0,"");
 
             DB::connection(Auth::user()->db_name)->commit();
             return 'ok';
@@ -548,11 +553,14 @@ class MHPurchase extends Model
                 $stock_card->save();
             }
 
+            $journal = MJournal::on(Auth::user()->db_name)->where('mjournaltransno',$trans_header->mhpurchaseno)->where('mjournaltranstype','Pembelian')->first();
+            $journal->mjournaldebit = $trans_header->mhpurchasegrandtotal;
+            $journal->save();
+
             DB::connection(Auth::user()->db_name)->commit();
             return 'ok';
         } catch(\Exception $e){
             DB::connection(Auth::user()->db_name)->rollBack();
-            var_dump($e);
             return 'err';
         }
     }
@@ -634,6 +642,10 @@ class MHPurchase extends Model
                 $ap = MAPCard::on(Auth::user()->db_name)->where('mapcardtransno',$detail->mhpurchaseno)->first();
                 $ap->void = 1;
                 $ap->save();
+
+                $journal = MJournal::on(Auth::user()->db_name)->where('mjournaltransno',$header->mhpurchaseno)->where('mjournaltranstype','Pembelian')->first();
+                $journal->delete();
+
                 DB::connection(Auth::user()->db_name)->commit();
                 return 'ok';
             }

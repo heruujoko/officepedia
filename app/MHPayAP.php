@@ -10,6 +10,7 @@ use Carbon\Carbon;
 use Auth;
 use DB;
 use App\Helper\DBHelper;
+use App\MJournal;
 
 class MHPayAP extends Model
 {

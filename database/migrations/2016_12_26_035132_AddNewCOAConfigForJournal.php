@@ -14,7 +14,7 @@ class AddNewCOAConfigForJournal extends Migration
     {
         Schema::table('mconfig',function(Blueprint $table){
             $table->string('msyspayapaccount')->after('msysaccretainedearning');
-            $table->string('msyspayaraccount')->after('msysjornaldebit');
+            $table->string('msyspayaraccount')->after('msyspayapaccount');
         });
     }
 
