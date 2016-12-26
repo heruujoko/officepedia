@@ -139,39 +139,11 @@ class MHPurchase extends Model
                 $stock_card->mstockcardeventdate = Carbon::now();
                 $stock_card->mstockcardeventtime = Carbon::now();
                 $stock_card->edited = 0;
-                // $stock_card->mstockcardunit3 = $mgoods->mgoodscurrentunit3;
-                // $stock_card->mstockcardunit3conv = $mgoods->mgoodscurrentunit3conv;
-                // $stock_card->mstockcardunit3label = $mgoods->mgoodscurrentunit3label;
-                // $stock_card->mstockcardunit2 = $mgoods->mgoodscurrentunit2;
-                // $stock_card->mstockcardunit2conv = $mgoods->mgoodscurrentunit2conv;
-                // $stock_card->mstockcardunit2label = $mgoods->mgoodscurrentunit2label;
-                // $stock_card->mstockcardunit1 = $mgoods->mgoodscurrentunit1;
-                // $stock_card->mstockcardunit1conv = $mgoods->mgoodscurrentunit1conv;
-                // $stock_card->mstockcardunit1label = $mgoods->mgoodscurrentunit1label;
-                // in conversion
-                // $stock_card->mstockcardinunit3 = $g['detail_goods_unit3'];
-                // $stock_card->mstockcardinunit3conv = $g['detail_goods_unit3_conv'];
-                // $stock_card->mstockcardinunit3label = $g['detail_goods_unit3_label'];
-                // $stock_card->mstockcardinunit2 = $g['detail_goods_unit2'];
-                // $stock_card->mstockcardinunit2conv = $g['detail_goods_unit2_conv'];
-                // $stock_card->mstockcardinunit2label = $g['detail_goods_unit2_label'];
-                // $stock_card->mstockcardinunit1 = $g['detail_goods_unit1'];
-                // $stock_card->mstockcardinunit1conv = $g['detail_goods_unit1_conv'];
-                // $stock_card->mstockcardinunit1label = $g['detail_goods_unit1_label'];
                 $stock_card->save();
 
                 // update goods
                 $last_stock = $mgoods->mgoodsstock;
                 $mgoods->mgoodsstock += $g['usage'];
-                // $mgoods->mgoodscurrentunit3 += $g['detail_goods_unit3'];
-                // $mgoods->mgoodscurrentunit3conv = $g['detail_goods_unit3_conv'];
-                // $mgoods->mgoodscurrentunit3label = $g['detail_goods_unit3_label'];
-                // $mgoods->mgoodscurrentunit2 += $g['detail_goods_unit2'];
-                // $mgoods->mgoodscurrentunit2conv = $g['detail_goods_unit2_conv'];
-                // $mgoods->mgoodscurrentunit2label = $g['detail_goods_unit2_label'];
-                // $mgoods->mgoodscurrentunit1 += $g['detail_goods_unit1'];
-                // $mgoods->mgoodscurrentunit1conv = $g['detail_goods_unit1_conv'];
-                // $mgoods->mgoodscurrentunit1label = $g['detail_goods_unit1_label'];
                 $mgoods->save();
 
                 // update stock reference untuk deleting
@@ -644,7 +616,8 @@ class MHPurchase extends Model
                 $ap->save();
 
                 $journal = MJournal::on(Auth::user()->db_name)->where('mjournaltransno',$header->mhpurchaseno)->where('mjournaltranstype','Pembelian')->first();
-                $journal->delete();
+                $journal->void = 1;
+                $journal->save();
 
                 DB::connection(Auth::user()->db_name)->commit();
                 return 'ok';

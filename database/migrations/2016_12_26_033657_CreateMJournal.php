@@ -22,6 +22,7 @@ class CreateMJournal extends Migration
             $table->double('mjournaldebit');
             $table->double('mjournalcredit');
             $table->text('mjournalremark');
+            $table->boolean('void')->default(0);
             $table->timestamps();
         });
     }
