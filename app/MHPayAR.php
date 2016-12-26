@@ -10,6 +10,7 @@ use Carbon\Carbon;
 use Auth;
 use DB;
 use App\Helper\DBHelper;
+use App\MCOA;
 
 class MHPayAR extends Model
 {
@@ -73,6 +74,9 @@ class MHPayAR extends Model
           }
 
           $header = MHPayAR::on(Auth::user()->db_name)->where('id',$header->id)->first();
+          $conf = MConfig::on(Auth::user()->db_name)->where('id',1)->first();
+          $coa = $conf->msyspayaraccount;
+          $coa_bank = MCOA::on(Auth::user()->db_name)->where('id',$header->mhpayarbank)->first()->mcoacode;
 
           foreach($request->ars as $ar){
 
@@ -114,6 +118,12 @@ class MHPayAR extends Model
 
               $detail->mdpayar_arref = $new_ar->id;
               $detail->save();
+
+              $last_journal = MJournal::on(Auth::user()->db_name)->where('mjournaltransno',$detail->mdpayartransno)->where('mjournaltranstype','Penjualan')->first();
+              $debit = $detail->mdpayarinvoicepayamount;
+              $credit = ($last_journal->mjournalcredit - $detail->mdpayarinvoicepayamount);
+              MJournal::record_journal($header->mhpayarno,'Pembayaran Piutang',$coa,0,$credit,"");
+              MJournal::record_journal($header->mhpayarno,'Pembayaran Piutang',$coa_bank,$debit,0,"");
           }
 
           DB::connection(Auth::user()->db_name)->commit();
@@ -150,14 +160,15 @@ class MHPayAR extends Model
                 $d->save();
             }
 
-            foreach ($request->ars as $ar) {
+            $conf = MConfig::on(Auth::user()->db_name)->where('id',1)->first();
+            $coa = $conf->msyspayaraccount;
+            $coa_bank = MCOA::on(Auth::user()->db_name)->where('id',$header->mhpayarbank)->first()->mcoacode;
 
-                $old_ar = MARCard::on(Auth::user()->db_name)->where('id',$ar['id'])->first();
+            foreach ($request->ars as $ar) {
+                $old_ar = MARCard::on(Auth::user()->db_name)->where('id',$ar['mdpayar_arref'])->first();
 
                 $detail = MDPayAR::on(Auth::user()->db_name)->where('mhpayarno',$header->mhpayarno)->where('mdpayartransno',$ar['mdpayartransno'])->first();
-
                 $last_pay = $detail->mdpayarinvoicepayamount;
-
                 $detail->mhpayarno = $header->mhpayarno;
                 $detail->mdpayartransno = $old_ar->marcardtransno;
                 $detail->mdpayarinvoicetotal = $ar['marcardtotalinv'];
@@ -210,12 +221,23 @@ class MHPayAR extends Model
                 $new_ar->marcardusereventtime = Carbon::now();
                 $new_ar->void = 0;
                 $new_ar->save();
+
+                $last_journal = MJournal::on(Auth::user()->db_name)->where('mjournaltransno',$detail->mdpayartransno)->where('mjournaltranstype','Penjualan')->first();
+
+                $last_details_journal = MJournal::on(Auth::user()->db_name)->where('mjournaltransno',$detail->mhpayarno)->where('mjournaltranstype','Pembayaran Piutang')->get();
+
+                $debit = $detail->mdpayarinvoicepayamount;
+                $credit = ($last_journal->mjournalcredit - $detail->mdpayarinvoicepayamount);
+                $last_details_journal[0]->mjournalcredit = $credit;
+                $last_details_journal[0]->save();
+                $last_details_journal[1]->mjournaldebit = $debit;
+                $last_details_journal[1]->save();
             }
 
             //voided details
             $voided_details = MDPayAR::on(Auth::user()->db_name)->where('mhpayarno',$header->mhpayarno)->where('void',1)->get();
             foreach($voided_details as $v){
-                $old_ap = MARCard::on(Auth::user()->db_name)->where('id',$v->id)->first();
+                $old_ap = MARCard::on(Auth::user()->db_name)->where('id',$v->mdpayar_arref)->first();
 
                 $detail = MDPayAR::on(Auth::user()->db_name)->where('mhpayarno',$header->mhpayarno)->where('mdpayartransno',$v->mdpayartransno)->first();
 
@@ -290,13 +312,19 @@ class MHPayAR extends Model
                 $new_ar->marcardusereventtime = Carbon::now();
                 $new_ar->void = 0;
                 $new_ar->save();
+
+                $last_details_journal = MJournal::on(Auth::user()->db_name)->where('mjournaltransno',$detail->mhpayarno)->where('mjournaltranstype','Pembayaran Piutang')->get();
+
+                $last_details_journal[0]->void = 1;
+                $last_details_journal[0]->save();
+                $last_details_journal[1]->void = 1;
+                $last_details_journal[1]->save();
             }
 
             DB::connection(Auth::user()->db_name)->commit();
             return 'ok';
         } catch(\Exception $e){
             DB::connection(Auth::user()->db_name)->rollBack();
-            var_dump($e);
             return "err";
         }
     }

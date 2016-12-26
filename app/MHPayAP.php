@@ -167,7 +167,7 @@ class MHPayAP extends Model
 
             foreach ($request->aps as $ap) {
 
-                $old_ap = MAPCard::on(Auth::user()->db_name)->where('id',$ap['id'])->first();
+                $old_ap = MAPCard::on(Auth::user()->db_name)->where('id',$ap['mdpayap_apref'])->first();
 
                 $detail = MDPayAP::on(Auth::user()->db_name)->where('mhpayapno',$header->mhpayapno)->where('mdpayaptransno',$ap['mdpayaptransno'])->first();
 
@@ -241,7 +241,7 @@ class MHPayAP extends Model
             //voided details
             $voided_details = MDPayAP::on(Auth::user()->db_name)->where('mhpayapno',$header->mhpayapno)->where('void',1)->get();
             foreach($voided_details as $v){
-                $old_ap = MAPCard::on(Auth::user()->db_name)->where('id',$v->id)->first();
+                $old_ap = MAPCard::on(Auth::user()->db_name)->where('id',$v->mdpayap_apref)->first();
 
                 $detail = MDPayAP::on(Auth::user()->db_name)->where('mhpayapno',$header->mhpayapno)->where('mdpayaptransno',$v->mdpayaptransno)->first();
 

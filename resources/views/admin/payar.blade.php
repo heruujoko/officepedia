@@ -317,7 +317,7 @@
         if (isconfirm) {
           $.ajax({
             type: "DELETE",
-            url: API_URL+"/payap/"+id,
+            url: API_URL+"/payar/"+id,
             success: function(response){
               console.log(response);
               table.ajax.reload();
