@@ -11,6 +11,7 @@ use Auth;
 use DB;
 use App\Helper\DBHelper;
 use App\MJournal;
+use App\MCOA;
 
 class MHPayAP extends Model
 {
@@ -74,6 +75,9 @@ class MHPayAP extends Model
             }
 
             $header = MHPayAP::on(Auth::user()->db_name)->where('id',$header->id)->first();
+            $conf = MConfig::on(Auth::user()->db_name)->where('id',1)->first();
+            $coa = $conf->msyspayapaccount;
+            $coa_bank = MCOA::on(Auth::user()->db_name)->where('id',$header->mhpayapbank)->first()->mcoacode;
 
             foreach($request->aps as $ap){
 
@@ -115,6 +119,13 @@ class MHPayAP extends Model
 
                 $detail->mdpayap_apref = $new_ap->id;
                 $detail->save();
+
+                $last_journal = MJournal::on(Auth::user()->db_name)->where('mjournaltransno',$detail->mdpayaptransno)->where('mjournaltranstype','Pembelian')->first();
+                $debit = $last_journal->mjournaldebit - $detail->mdpayapinvoicepayamount;
+                $credit = $detail->mdpayapinvoicepayamount;
+                MJournal::record_journal($header->mhpayapno,'Pembayaran Hutang',$coa,$debit,0,"");
+                MJournal::record_journal($header->mhpayapno,'Pembayaran Hutang',$coa_bank,0,$credit,"");
+
             }
 
             DB::connection(Auth::user()->db_name)->commit();
@@ -149,6 +160,10 @@ class MHPayAP extends Model
                 $d->void = 1;
                 $d->save();
             }
+
+            $conf = MConfig::on(Auth::user()->db_name)->where('id',1)->first();
+            $coa = $conf->msyspayapaccount;
+            $coa_bank = MCOA::on(Auth::user()->db_name)->where('id',$header->mhpayapbank)->first()->mcoacode;
 
             foreach ($request->aps as $ap) {
 
@@ -210,6 +225,17 @@ class MHPayAP extends Model
                 $new_ap->mapcardeventtime = Carbon::now();
                 $new_ap->void = 0;
                 $new_ap->save();
+
+                $last_journal = MJournal::on(Auth::user()->db_name)->where('mjournaltransno',$detail->mdpayaptransno)->where('mjournaltranstype','Pembelian')->first();
+
+                $last_details_journal = MJournal::on(Auth::user()->db_name)->where('mjournaltransno',$detail->mhpayapno)->where('mjournaltranstype','Pembayaran Hutang')->get();
+
+                $debit = $last_journal->mjournaldebit - $detail->mdpayapinvoicepayamount;
+                $credit = $detail->mdpayapinvoicepayamount;
+                $last_details_journal[0]->mjournaldebit = $debit;
+                $last_details_journal[0]->save();
+                $last_details_journal[1]->mjournalcredit = $credit;
+                $last_details_journal[1]->save();
             }
 
             //voided details
@@ -240,7 +266,6 @@ class MHPayAP extends Model
                 $new_ap->mapcardeventtime = Carbon::now();
                 $new_ap->void = 0;
                 $new_ap->save();
-
             }
 
             DB::connection(Auth::user()->db_name)->commit();
@@ -289,6 +314,13 @@ class MHPayAP extends Model
                 $new_ap->mapcardeventtime = Carbon::now();
                 $new_ap->void = 0;
                 $new_ap->save();
+
+                $last_details_journal = MJournal::on(Auth::user()->db_name)->where('mjournaltransno',$detail->mhpayapno)->where('mjournaltranstype','Pembayaran Hutang')->get();
+
+                $last_details_journal[0]->void = 1;
+                $last_details_journal[0]->save();
+                $last_details_journal[1]->void = 1;
+                $last_details_journal[1]->save();
             }
 
             DB::connection(Auth::user()->db_name)->commit();
