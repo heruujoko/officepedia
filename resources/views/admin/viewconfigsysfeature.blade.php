@@ -67,7 +67,7 @@
                         <div id="menu1" class="tab-pane fade in active">
                           <div class="form form-horizontal" style="margin-top:21px;">
                             <div class="col-md-12">
-                            
+
 
                               <div style="height: 21px;" class="form-group">
                                   <label class="col-md-3 control-label"><b>Penawaran Penjualan </b>  &nbsp  :</label>
@@ -134,10 +134,10 @@
 
 
 
-                            
-                              
-                              
-                             
+
+
+
+
                               <div class="form-group">
                                 <label class="col-md-3 control-label"><b>Footnote Invoice</b> (<font color="red">*</font>) &nbsp  :</label>
                           			<div class="col-md-7">
@@ -199,10 +199,10 @@
                                     </div>
                                   </div>
                               </div>
-                            
-                             
-                              
-                             
+
+
+
+
                               <div class="form-group">
                                 <label class="col-md-3 control-label"><b>Default Credit Limit</b> (<font color="red">*</font>) &nbsp  :</label>
                           			<div class="col-md-7">
@@ -222,14 +222,14 @@
                                   </div>
                               </div>
 
-                              
+
                             </div>
                           </div>
                         </div>
                         <div id="menu2" class="tab-pane">
                           <div class="form form-horizontal" style="margin-top:21px;">
                             <div class="col-md-12">
-                             
+
 
                               <div style="height: 21px;" class="form-group">
                                   <label class="col-md-3 control-label"><b>Permintaan Pembelian </b>  &nbsp  :</label>
@@ -283,9 +283,9 @@
                                   </div>
                               </div>
 
-                              
-                             
-                            
+
+
+
                               <div class="form-group">
                                 <label class="col-md-3 control-label"><b>Foot Note Invoice</b> (<font color="red">*</font>) &nbsp  :</label>
                           			<div class="col-md-7">
@@ -412,13 +412,33 @@
                                   </select>
                           			</div>
                               </div>
+                              <div class="form-group">
+                                <label class="col-md-3 control-label"><b>Pelunasan Hutang - Pilihan Akun</b> &nbsp  :</label>
+                          			<div class="col-md-4">
+                                  <select id="edit-msyspayapaccount" name="msyspayapaccount" class="form-control select2-bold">
+                                    @foreach($mcoa as $c)
+                                      <option value="{{ $c->mcoacode }}">{{ $c->mcoacode }} {{ $c->mcoaname }}</option>
+                                    @endforeach
+                                  </select>
+                          			</div>
+                              </div>
+                              <div class="form-group">
+                                <label class="col-md-3 control-label"><b>Pelunasan Piutang - Pilihan Akun</b> &nbsp  :</label>
+                          			<div class="col-md-4">
+                                  <select id="edit-msyspayaraccount" name="msyspayaraccount" class="form-control select2-bold">
+                                    @foreach($mcoa as $c)
+                                      <option value="{{ $c->mcoacode }}">{{ $c->mcoacode }} {{ $c->mcoaname }}</option>
+                                    @endforeach
+                                  </select>
+                          			</div>
+                              </div>
                             </div>
                           </div>
                         </div>
                         <div id="menu4" class="tab-pane">
                           <div class="form form-horizontal" style="margin-top:21px;">
                             <div class="col-md-12">
-                              
+
 
                               <div style="height: 21px;" class="form-group">
                                   <label class="col-md-3 control-label"><b>Kas Bank Boleh Minus </b>  &nbsp  :</label>
@@ -441,7 +461,7 @@
                         <div id="menu5" class="tab-pane">
                           <div class="form form-horizontal" style="margin-top:21px;">
                             <div class="col-md-12">
-                              
+
 
                               <div style="height: 21px;" class="form-group">
                                   <label class="col-md-3 control-label"><b>Multi Gudang </b>  &nbsp  :</label>
@@ -506,10 +526,10 @@
                                     </div>
                                   </div>
                               </div>
-                             
-                             
-                              
-                             
+
+
+
+
                             </div>
                           </div>
                         </div>

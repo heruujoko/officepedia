@@ -24,140 +24,140 @@ function fetch_feature(){
     url: API_URL+"/mconfig",
     success: function(response){
       console.log(response);
-     
+
       if(response.msysinvquotation == true){
         $('#edit-msysinvquotation').attr('checked',true);
       } else {
-        
+
          $('#edit-msysinvquotation').removeAttr('checked');
       }
       if(response.msysinvproformainvoice == true){
         $('#edit-msysinvproformainvoice').attr('checked',true);
       } else {
-        
+
          $('#edit-msysinvproformainvoice').removeAttr('checked');
       }
       if(response.msysinvsellinginvoice == true){
         $('#edit-msysinvsellinginvoice').attr('checked',true);
       } else {
-        
+
          $('#edit-msysinvsellinginvoice').removeAttr('checked');
       }
       if(response.msysinvlocksellingprice == true){
         $('#edit-msysinvlocksellingprice').attr('checked',true);
       } else {
-        
+
          $('#edit-msysinvlocksellingprice').removeAttr('checked');
       }
       if(response.msysinvcreditlimit == true){
         $('#edit-msysinvcreditlimit').attr('checked',true);
       } else {
-        
+
          $('#edit-msysinvcreditlimit').removeAttr('checked');
       }
       if(response.msysinvspbelowcog == true){
         $('#edit-msysinvspbelowcog').attr('checked',true);
       } else {
-        
+
          $('#edit-msysinvspbelowcog').removeAttr('checked');
       }
       if(response.msysinvprintinvmorethanonce == true){
         $('#edit-msysinvprintinvmorethanonce').attr('checked',true);
       } else {
-        
+
          $('#edit-msysinvprintinvmorethanonce').removeAttr('checked');
       }
       if(response.msysinvprintdomorethanonce == true){
         $('#edit-msysinvprintdomorethanonce').attr('checked',true);
       } else {
-        
+
          $('#edit-msysinvprintdomorethanonce').removeAttr('checked');
       }
       if(response.msysinvprintordmorethanonce == true){
         $('#edit-msysinvprintordmorethanonce').attr('checked',true);
       } else {
-        
+
          $('#edit-msysinvprintordmorethanonce').removeAttr('checked');
       }
-      
+
        if(response.msysinvlptdirectprinting == true){
         $('#edit-msysinvlptdirectprinting').attr('checked',true);
       } else {
-        
+
          $('#edit-msysinvlptdirectprinting').removeAttr('checked');
       }
-      
+
       if(response.msyspurchorder == true){
         $('#edit-msyspurchorder').attr('checked',true);
       } else {
-        
+
          $('#edit-msyspurchorder').removeAttr('checked');
       }
       if(response.msyspurchinvoice == true){
         $('#edit-msyspurchinvoice').attr('checked',true);
       } else {
-        
+
          $('#edit-msyspurchinvoice').removeAttr('checked');
       }
       if(response.msyspurchcreditlimit == true){
         $('#edit-msyspurchcreditlimit').attr('checked',true);
       } else {
-        
+
          $('#edit-msyspurchcreditlimit').removeAttr('checked');
       }
       if(response.msysinventmultiwarehouse == true){
         $('#edit-msysinventmultiwarehouse').attr('checked',true);
       } else {
-        
+
          $('#edit-msysinventmultiwarehouse').removeAttr('checked');
       }
       if(response.msysinventmultiuom == true){
         $('#edit-msysinventmultiuom').attr('checked',true);
       } else {
-        
+
          $('#edit-msysinventmultiuom').removeAttr('checked');
       }
       if(response.msysinventuseserial == true){
         $('#edit-msysinventuseserial').attr('checked',true);
       } else {
-        
+
          $('#edit-msysinventuseserial').removeAttr('checked');
       }
       if(response.msysbankminus == true){
         $('#edit-msysbankminus').attr('checked',true);
       } else {
-        
+
          $('#edit-msysbankminus').removeAttr('checked');
       }
 
       if(response.msysinventallowminus == true){
         $('#edit-msysinventallowminus').attr('checked',true);
       } else {
-        
+
          $('#edit-msysinventallowminus').removeAttr('checked');
       }
       if(response.msysinventslabprice == true){
         $('#edit-msysinventslabprice').attr('checked',true);
       } else {
-        
+
          $('#edit-msysinventslabprice').removeAttr('checked');
       }
-      
-    
-      
+
+
+
        if(response.msyspurchrequest == true){
         $('#edit-msyspurchrequest').attr('checked',true);
       } else {
-        
+
          $('#edit-msyspurchrequest').removeAttr('checked');
       }
-      
-      
-   
+
+
+
       $('#edit-msysinvinvfootnote').val(response.msysinvinvfootnote);
       $('#edit-msysinvsellingfootnote').val(response.msysinvsellingfootnote);
       $('#edit-msysinvdefaultcreditlimit').val(response.msysinvdefaultcreditlimit);
-      
+
       $('#edit-msyspurchinvfootnote').val(response.msyspurchinvfootnote);
       $('#edit-msyspurchorderfootnote').val(response.msyspurchorderfootnote);
 
@@ -172,10 +172,8 @@ function fetch_feature(){
       $('#edit-msysaccar').val(response.msysaccar).change();
       $('#edit-msysaccpaidcapital').val(response.msysaccpaidcapital).change();
       $('#edit-msysaccretainedearning').val(response.msysaccretainedearning).change();
-
-
-      
-
+      $('#edit-msyspayaraccount').val(response.msyspayaraccount).change();
+      $('#edit-msyspayapaccount').val(response.msyspayapaccount).change();
     }
   });
 }
@@ -217,6 +215,8 @@ function update_feature(){
       msysaccar: $('#edit-msysaccar').val(),
       msysaccpaidcapital: $('#edit-msysaccpaidcapital').val(),
       msysaccretainedearning: $('#edit-msysaccretainedearning').val(),
+      msyspayapaccount: $('#edit-msyspayapaccount').val(),
+      msyspayaraccount: $('#edit-msyspayaraccount').val(),
 
       msysbankminus: $('#edit-msysbankminus').is(":checked"),
 

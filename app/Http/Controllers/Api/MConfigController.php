@@ -91,6 +91,8 @@ class MConfigController extends Controller
       $mconfig->msysaccar = $request->msysaccar;
       $mconfig->msysaccpaidcapital = $request->msysaccpaidcapital;
       $mconfig->msysaccretainedearning = $request->msysaccretainedearning;
+      $mconfig->msyspayapaccount = $request->msyspayapaccount;
+      $mconfig->msyspayaraccount = $request->msyspayaraccount;
 
       $mconfig->msysbankminus = $this->convertBoolean($request->msysbankminus);
 
