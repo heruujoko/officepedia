@@ -91,7 +91,7 @@ class APController extends Controller
 
     public function apdata(Request $request){
 
-        $ap_query = MAPCard::on(Auth::user()->db_name)->having('mapcardoutstanding','>',0);
+        $ap_query = MAPCard::on(Auth::user()->db_name)->where('void',0)->having('mapcardoutstanding','>',0);
 
         if($request->has('spl')){
             $ap_query->where('mapcardsupplierid',$request->spl);

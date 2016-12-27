@@ -77,7 +77,8 @@ class MHPayAP extends Model
             $header = MHPayAP::on(Auth::user()->db_name)->where('id',$header->id)->first();
             $conf = MConfig::on(Auth::user()->db_name)->where('id',1)->first();
             $coa = $conf->msyspayapaccount;
-            $coa_bank = MCOA::on(Auth::user()->db_name)->where('id',$header->mhpayapbank)->first()->mcoacode;
+            $coa_ap = MCOA::on(Auth::user()->db_name)->where('mcoacode',$coa)->first();
+            $coa_bank = MCOA::on(Auth::user()->db_name)->where('id',$header->mhpayapbank)->first();
 
             foreach($request->aps as $ap){
 
@@ -120,12 +121,13 @@ class MHPayAP extends Model
                 $detail->mdpayap_apref = $new_ap->id;
                 $detail->save();
 
-                $last_journal = MJournal::on(Auth::user()->db_name)->where('mjournaltransno',$detail->mdpayaptransno)->where('mjournaltranstype','Pembelian')->first();
-                $debit = $last_journal->mjournaldebit - $detail->mdpayapinvoicepayamount;
-                $credit = $detail->mdpayapinvoicepayamount;
-                MJournal::record_journal($header->mhpayapno,'Pembayaran Hutang',$coa,$debit,0,"");
-                MJournal::record_journal($header->mhpayapno,'Pembayaran Hutang',$coa_bank,0,$credit,"");
+                // update journal
+                MJournal::record_journal($header->mhpayapno,'Pembayaran Hutang',$coa,$detail->mdpayapinvoicepayamount,0,"");
+                MJournal::record_journal($header->mhpayapno,'Pembayaran Hutang',$coa_bank->mcoacode,0,$detail->mdpayapinvoicepayamount,"");
 
+                // update coa saldo
+                $coa_bank->update_saldo('-',$detail->mdpayapinvoicepayamount);
+                $coa_ap->update_saldo('-',$detail->mdpayapinvoicepayamount);
             }
 
             DB::connection(Auth::user()->db_name)->commit();
@@ -163,79 +165,133 @@ class MHPayAP extends Model
 
             $conf = MConfig::on(Auth::user()->db_name)->where('id',1)->first();
             $coa = $conf->msyspayapaccount;
-            $coa_bank = MCOA::on(Auth::user()->db_name)->where('id',$header->mhpayapbank)->first()->mcoacode;
+            $coa_ap = MCOA::on(Auth::user()->db_name)->where('mcoacode',$coa)->first();
+            $coa_bank = MCOA::on(Auth::user()->db_name)->where('id',$header->mhpayapbank)->first();
 
             foreach ($request->aps as $ap) {
+                if(array_key_exists('mdpayaptransno',$ap)){
+                    $detail = MDPayAP::on(Auth::user()->db_name)->where('mhpayapno',$header->mhpayapno)->where('mdpayaptransno',$ap['mdpayaptransno'])->first();
+                    $old_ap = MAPCard::on(Auth::user()->db_name)->where('id',$ap['mdpayap_apref'])->first();
+                    $last_pay = $detail->mdpayapinvoicepayamount;
 
-                $old_ap = MAPCard::on(Auth::user()->db_name)->where('id',$ap['mdpayap_apref'])->first();
+                    $detail->mhpayapno = $header->mhpayapno;
+                    $detail->mdpayaptransno = $old_ap->mapcardtransno;
+                    $detail->mdpayapinvoicetotal = $ap['mapcardtotalinv'];
+                    $detail->mdpayapinvoicedate = $header->mhpayapdate;
+                    $detail->mdpayapinvoiceoutstanding = $ap['mapcardoutstanding'];
+                    $detail->mdpayapinvoicepayamount = $ap['payamount'];
+                    $detail->mdpayapinvoicediscount = 0;
+                    $detail->mdpayapuserid = Auth::user()->id;
+                    $detail->mdpayapusername = Auth::user()->name;
+                    $detail->mdpayapeventdate = Carbon::now();
+                    $detail->mdpayapeventtime = Carbon::now();
+                    $detail->void = 0;
+                    $detail->save();
 
-                $detail = MDPayAP::on(Auth::user()->db_name)->where('mhpayapno',$header->mhpayapno)->where('mdpayaptransno',$ap['mdpayaptransno'])->first();
+                    // reset AP
+                    $new_ap = new MAPCard;
+                    $new_ap->setConnection(Auth::user()->db_name);
+                    $new_ap->mapcardsupplierid = $header->mhpayapsupplierno;
+                    $new_ap->mapcardsuppliername = $header->mhpayapsuppliername;
+                    $new_ap->mapcardtdate = Carbon::now();
+                    $new_ap->mapcardtransno = $old_ap->mapcardtransno;
+                    $new_ap->mapcardpayno = $header->mhpayapno;
+                    $new_ap->mapcardremark = "Revisi Hutang Dagang oleh ".Auth::user()->name."/".Auth::user()->id;
+                    $new_ap->mapcardduedate = $old_ap->mapcardduedate;
+                    $new_ap->mapcardtotalinv = $old_ap->mapcardtotalinv;
+                    $new_ap->mapcardpayamount = 0;
+                    $new_ap->mapcardoutstanding = $old_ap->mapcardoutstanding + $last_pay;
+                    $new_ap->mapcardusername = Auth::user()->name;
+                    $new_ap->mapcarduserid = Auth::user()->id;
+                    $new_ap->mapcardeventdate = Carbon::now();
+                    $new_ap->mapcardeventtime = Carbon::now();
+                    $new_ap->void = 0;
+                    $new_ap->save();
 
-                $last_pay = $detail->mdpayapinvoicepayamount;
+                    $new_ap = new MAPCard;
+                    $new_ap->setConnection(Auth::user()->db_name);
+                    $new_ap->mapcardsupplierid = $header->mhpayapsupplierno;
+                    $new_ap->mapcardsuppliername = $header->mhpayapsuppliername;
+                    $new_ap->mapcardtdate = Carbon::now();
+                    $new_ap->mapcardtransno = $old_ap->mapcardtransno;
+                    $new_ap->mapcardpayno = $header->mhpayapno;
+                    $new_ap->mapcardremark = "Revisi Hutang Dagang oleh ".Auth::user()->name."/".Auth::user()->id;
+                    $new_ap->mapcardduedate = $old_ap->mapcardduedate;
+                    $new_ap->mapcardtotalinv = $old_ap->mapcardtotalinv;
+                    $new_ap->mapcardpayamount = $ap['payamount'];
+                    $new_ap->mapcardoutstanding = $old_ap->mapcardoutstanding - $ap['payamount'];
+                    $new_ap->mapcardusername = Auth::user()->name;
+                    $new_ap->mapcarduserid = Auth::user()->id;
+                    $new_ap->mapcardeventdate = Carbon::now();
+                    $new_ap->mapcardeventtime = Carbon::now();
+                    $new_ap->void = 0;
+                    $new_ap->save();
 
-                $detail->mhpayapno = $header->mhpayapno;
-                $detail->mdpayaptransno = $old_ap->mapcardtransno;
-                $detail->mdpayapinvoicetotal = $ap['mapcardtotalinv'];
-                $detail->mdpayapinvoicedate = $header->mhpayapdate;
-                $detail->mdpayapinvoiceoutstanding = $ap['mapcardoutstanding'];
-                $detail->mdpayapinvoicepayamount = $ap['payamount'];
-                $detail->mdpayapinvoicediscount = 0;
-                $detail->mdpayapuserid = Auth::user()->id;
-                $detail->mdpayapusername = Auth::user()->name;
-                $detail->mdpayapeventdate = Carbon::now();
-                $detail->mdpayapeventtime = Carbon::now();
-                $detail->void = 0;
-                $detail->save();
+                    $last_journal = MJournal::on(Auth::user()->db_name)->where('mjournaltransno',$detail->mdpayaptransno)->where('mjournaltranstype','Pembelian')->first();
 
-                // reset AP
-                $new_ap = new MAPCard;
-                $new_ap->setConnection(Auth::user()->db_name);
-                $new_ap->mapcardsupplierid = $header->mhpayapsupplierno;
-                $new_ap->mapcardsuppliername = $header->mhpayapsuppliername;
-                $new_ap->mapcardtdate = Carbon::now();
-                $new_ap->mapcardtransno = $old_ap->mapcardtransno;
-                $new_ap->mapcardpayno = $header->mhpayapno;
-                $new_ap->mapcardremark = "Revisi Hutang Dagang oleh ".Auth::user()->name."/".Auth::user()->id;
-                $new_ap->mapcardduedate = $old_ap->mapcardduedate;
-                $new_ap->mapcardtotalinv = $old_ap->mapcardtotalinv;
-                $new_ap->mapcardpayamount = 0;
-                $new_ap->mapcardoutstanding = $old_ap->mapcardoutstanding + $last_pay;
-                $new_ap->mapcardusername = Auth::user()->name;
-                $new_ap->mapcarduserid = Auth::user()->id;
-                $new_ap->mapcardeventdate = Carbon::now();
-                $new_ap->mapcardeventtime = Carbon::now();
-                $new_ap->void = 0;
-                $new_ap->save();
+                    $last_details_journal = MJournal::on(Auth::user()->db_name)->where('mjournaltransno',$detail->mhpayapno)->where('mjournaltranstype','Pembayaran Hutang')->get();
 
-                $new_ap = new MAPCard;
-                $new_ap->setConnection(Auth::user()->db_name);
-                $new_ap->mapcardsupplierid = $header->mhpayapsupplierno;
-                $new_ap->mapcardsuppliername = $header->mhpayapsuppliername;
-                $new_ap->mapcardtdate = Carbon::now();
-                $new_ap->mapcardtransno = $old_ap->mapcardtransno;
-                $new_ap->mapcardpayno = $header->mhpayapno;
-                $new_ap->mapcardremark = "Revisi Hutang Dagang oleh ".Auth::user()->name."/".Auth::user()->id;
-                $new_ap->mapcardduedate = $old_ap->mapcardduedate;
-                $new_ap->mapcardtotalinv = $old_ap->mapcardtotalinv;
-                $new_ap->mapcardpayamount = $ap['payamount'];
-                $new_ap->mapcardoutstanding = $old_ap->mapcardoutstanding - $ap['payamount'];
-                $new_ap->mapcardusername = Auth::user()->name;
-                $new_ap->mapcarduserid = Auth::user()->id;
-                $new_ap->mapcardeventdate = Carbon::now();
-                $new_ap->mapcardeventtime = Carbon::now();
-                $new_ap->void = 0;
-                $new_ap->save();
+                    // reset coa saldo
+                    $coa_ap->update_saldo('+',$last_details_journal[0]->mjournaldebit);
+                    $coa_bank->update_saldo('+',$last_details_journal[0]->mjournaldebit);
 
-                $last_journal = MJournal::on(Auth::user()->db_name)->where('mjournaltransno',$detail->mdpayaptransno)->where('mjournaltranstype','Pembelian')->first();
+                    $last_details_journal[0]->mjournaldebit = $detail->mdpayapinvoicepayamount;
+                    $last_details_journal[0]->save();
+                    $last_details_journal[1]->mjournalcredit = $detail->mdpayapinvoicepayamount;
+                    $last_details_journal[1]->save();
 
-                $last_details_journal = MJournal::on(Auth::user()->db_name)->where('mjournaltransno',$detail->mhpayapno)->where('mjournaltranstype','Pembayaran Hutang')->get();
+                    //update coa saldo
+                    $coa_ap->update_saldo('-',$detail->mdpayapinvoicepayamount);
+                    $coa_bank->update_saldo('-',$detail->mdpayapinvoicepayamount);
+                } else {
+                    // is a new detail
+                    $old_ap = MAPCard::on(Auth::user()->db_name)->where('id',$ap['id'])->first();
 
-                $debit = $last_journal->mjournaldebit - $detail->mdpayapinvoicepayamount;
-                $credit = $detail->mdpayapinvoicepayamount;
-                $last_details_journal[0]->mjournaldebit = $debit;
-                $last_details_journal[0]->save();
-                $last_details_journal[1]->mjournalcredit = $credit;
-                $last_details_journal[1]->save();
+                    $detail = new MDPayAP;
+                    $detail->setConnection(Auth::user()->db_name);
+                    $detail->mhpayapno = $header->mhpayapno;
+                    $detail->mdpayaptransno = $old_ap->mapcardtransno;
+                    $detail->mdpayapinvoicetotal = $ap['mapcardtotalinv'];
+                    $detail->mdpayapinvoicedate = $header->mhpayapdate;
+                    $detail->mdpayapinvoiceoutstanding = $ap['mapcardoutstanding'];
+                    $detail->mdpayapinvoicepayamount = $ap['payamount'];
+                    $detail->mdpayapinvoicediscount = 0;
+                    $detail->mdpayapuserid = Auth::user()->id;
+                    $detail->mdpayapusername = Auth::user()->name;
+                    $detail->mdpayapeventdate = Carbon::now();
+                    $detail->mdpayapeventtime = Carbon::now();
+                    $detail->save();
+
+                    $new_ap = new MAPCard;
+                    $new_ap->setConnection(Auth::user()->db_name);
+                    $new_ap->mapcardsupplierid = $header->mhpayapsupplierno;
+                    $new_ap->mapcardsuppliername = $header->mhpayapsuppliername;
+                    $new_ap->mapcardtdate = Carbon::now();
+                    $new_ap->mapcardtransno = $old_ap->mapcardtransno;
+                    $new_ap->mapcardpayno = $header->mhpayapno;
+                    $new_ap->mapcardremark = "Pembayaran Hutang Dagang oleh ".Auth::user()->name."/".Auth::user()->id;
+                    $new_ap->mapcardduedate = $old_ap->mapcardduedate;
+                    $new_ap->mapcardtotalinv = $old_ap->mapcardtotalinv;
+                    $new_ap->mapcardpayamount = $ap['payamount'];
+                    $new_ap->mapcardoutstanding = $old_ap->mapcardoutstanding - $ap['payamount'];
+                    $new_ap->mapcardusername = Auth::user()->name;
+                    $new_ap->mapcarduserid = Auth::user()->id;
+                    $new_ap->mapcardeventdate = Carbon::now();
+                    $new_ap->mapcardeventtime = Carbon::now();
+                    $new_ap->void = 0;
+                    $new_ap->save();
+
+                    $detail->mdpayap_apref = $new_ap->id;
+                    $detail->save();
+
+                    // update journal
+                    MJournal::record_journal($header->mhpayapno,'Pembayaran Hutang',$coa,$detail->mdpayapinvoicepayamount,0,"");
+                    MJournal::record_journal($header->mhpayapno,'Pembayaran Hutang',$coa_bank->mcoacode,0,$detail->mdpayapinvoicepayamount,"");
+
+                    // update coa saldo
+                    $coa_bank->update_saldo('-',$detail->mdpayapinvoicepayamount);
+                    $coa_ap->update_saldo('-',$detail->mdpayapinvoicepayamount);
+                }
             }
 
             //voided details
@@ -272,6 +328,7 @@ class MHPayAP extends Model
             return 'ok';
         } catch(\Exception $e){
             DB::connection(Auth::user()->db_name)->rollBack();
+            var_dump($e);
             return "err";
         }
     }
@@ -282,6 +339,11 @@ class MHPayAP extends Model
 
             $this->void = 1;
             $this->save();
+
+            $conf = MConfig::on(Auth::user()->db_name)->where('id',1)->first();
+            $coa = $conf->msyspayapaccount;
+            $coa_ap = MCOA::on(Auth::user()->db_name)->where('mcoacode',$coa)->first();
+            $coa_bank = MCOA::on(Auth::user()->db_name)->where('id',$this->mhpayapbank)->first();
 
             $details = MDPayAP::on(Auth::user()->db_name)->where('mhpayapno',$this->mhpayapno)->get();
 
@@ -316,6 +378,9 @@ class MHPayAP extends Model
                 $new_ap->save();
 
                 $last_details_journal = MJournal::on(Auth::user()->db_name)->where('mjournaltransno',$detail->mhpayapno)->where('mjournaltranstype','Pembayaran Hutang')->get();
+
+                $coa_ap->update_saldo("+",$detail->mdpayapinvoicepayamount);
+                $coa_bank->update_saldo("+",$detail->mdpayapinvoicepayamount);
 
                 $last_details_journal[0]->void = 1;
                 $last_details_journal[0]->save();

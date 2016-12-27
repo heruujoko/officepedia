@@ -13,7 +13,7 @@ class ARController extends Controller
 {
     public function ardata(Request $request){
 
-        $ap_query = MARCard::on(Auth::user()->db_name)->having('marcardoutstanding','>',0);
+        $ap_query = MARCard::on(Auth::user()->db_name)->where('void',0)->having('marcardoutstanding','>',0);
 
         if($request->has('spl')){
             $ap_query->where('marcardsupplierid',$request->spl);

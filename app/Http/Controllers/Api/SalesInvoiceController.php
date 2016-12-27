@@ -109,7 +109,7 @@ class SalesInvoiceController extends Controller
     }
 
     public function details($inv){
-      $details = MDInvoice::on(Auth::user()->db_name)->where('mhinvoiceno',$inv)->get();
+      $details = MDInvoice::on(Auth::user()->db_name)->where('mhinvoiceno',$inv)->where('void',0)->get();
       return response()->json($details);
     }
 

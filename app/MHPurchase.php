@@ -16,6 +16,7 @@ use App\MAPCard;
 use App\MCOGS;
 use App\HPPHistory;
 use App\MJournal;
+use App\MCOA;
 
 class MHPurchase extends Model
 {
@@ -208,7 +209,11 @@ class MHPurchase extends Model
 
             $conf = MConfig::on(Auth::user()->db_name)->where('id',1)->first();
             $coa = $conf->msyspayapaccount;
+            $coa_purchase = MCOA::on(Auth::user()->db_name)->where('mcoacode',$coa)->first();
             MJournal::record_journal($header->mhpurchaseno,'Pembelian',$coa,$header->mhpurchasegrandtotal,0,"");
+
+            // update coa saldo
+            $coa_purchase->update_saldo("+",$header->mhpurchasegrandtotal);
 
             DB::connection(Auth::user()->db_name)->commit();
             return 'ok';
@@ -225,6 +230,13 @@ class MHPurchase extends Model
             // update header data
 
             $trans_header = MHPurchase::on(Auth::user()->db_name)->where('id',$id)->first();
+
+            $conf = MConfig::on(Auth::user()->db_name)->where('id',1)->first();
+            $coa = $conf->msyspayapaccount;
+            $coa_ap = MCOA::on(Auth::user()->db_name)->where('mcoacode',$coa)->first();
+
+            $coa_ap->update_saldo("-",$trans_header->mhpurchasegrandtotal);
+
             $trans_header->mhpurchasedeliveryno = $request->do;
             $trans_header->mhpurchaseorderyno = $request->order;
             $trans_header->mhpurchasedate = Carbon::parse($request->date);
@@ -288,7 +300,7 @@ class MHPurchase extends Model
                     $invoice_detail->mdpurchasegoodsidwhouse = $g['warehouse'];
                     $invoice_detail->mdpurchasebuyprice = $g['buy_price'];
                     $invoice_detail->mdpurchasetax = $g['tax'];
-                    $invoice_detail->mdpurchaseremarks = $g['remark'];
+                    $invoice_detail->mdpurchaseremarks = '';
                     $invoice_detail->void = 0;
                     $invoice_detail->save();
 
@@ -465,7 +477,7 @@ class MHPurchase extends Model
                     } else {
                         // update cogs
                         $goods_cogs->mcogsgoodstotalqty = $mgoods->mgoodsstock;
-                        $cogs_num = (($last_stock * $goods_cogs->mcogslastcogs) + $invoice_detail->mdpurchasegoodsgrossamount ) / $mgoods->mgoodsstock;
+                        $cogs_num = (($last_stock * $goods_cogs->mcogslastcogs) + $detail->mdpurchasegoodsgrossamount ) / $mgoods->mgoodsstock;
                         $goods_cogs->mcogslastcogs = $cogs_num;
                         $goods_cogs->mcogsremarks = "";
                         $goods_cogs->save();
@@ -476,7 +488,7 @@ class MHPurchase extends Model
                     $h = new HPPHistory;
                     $h->setConnection(Auth::user()->db_name);
                     $h->hpphistorygoodsid = $mgoods->mgoodscode;
-                    $h->hpphistorypurchase = $invoice_detail->mdpurchasegoodsgrossamount;
+                    $h->hpphistorypurchase = $detail->mdpurchasegoodsgrossamount;
                     $h->hpphistoryqty = $detail->mdpurchasegoodsqty;
                     $h->hpphistorycogs = $current_cogs;
                     $h->hpphistoryremarks = "";
@@ -513,7 +525,7 @@ class MHPurchase extends Model
                 $stock_card->mstockcarddate = Carbon::parse($request->date);
                 $stock_card->mstockcardtranstype = $request->type;
                 $stock_card->mstockcardtransno = $trans_header->mhpurchaseno;
-                $stock_card->mstockcardremark = "Editing Transaksi Hapus item".$request->type." oleh ".Auth::user()->name."/".Auth::user()->id." ".$g['remark'];;
+                $stock_card->mstockcardremark = "Editing Transaksi Hapus item".$request->type." oleh ".Auth::user()->name."/".Auth::user()->id." ";;
                 $stock_card->mstockcardstockin =  0;
                 $stock_card->mstockcardstockout = $v->mdpurchasegoodsqty;
                 $stock_card->mstockcardstocktotal = $mgoods->mgoodsstock - $v->mdpurchasegoodsqty;
@@ -529,10 +541,13 @@ class MHPurchase extends Model
             $journal->mjournaldebit = $trans_header->mhpurchasegrandtotal;
             $journal->save();
 
+            $coa_ap->update_saldo("+",$trans_header->mhpurchasegrandtotal);
+
             DB::connection(Auth::user()->db_name)->commit();
             return 'ok';
         } catch(\Exception $e){
             DB::connection(Auth::user()->db_name)->rollBack();
+            var_dump($e);
             return 'err';
         }
     }
@@ -541,8 +556,6 @@ class MHPurchase extends Model
         DB::connection(Auth::user()->db_name)->beginTransaction();
         try{
             $header = MHPurchase::on(Auth::user()->db_name)->where('id',$id)->first();
-            $header->void = 1;
-            $header->save();
 
             $details = MDPurchase::on(Auth::user()->db_name)->where('mhpurchaseno',$header->mhpurchaseno)->get();
 
@@ -619,12 +632,24 @@ class MHPurchase extends Model
                 $journal->void = 1;
                 $journal->save();
 
-                DB::connection(Auth::user()->db_name)->commit();
-                return 'ok';
+                $header->void = 1;
+                $header->save();
+
             }
+            $conf = MConfig::on(Auth::user()->db_name)->where('id',1)->first();
+            $coa = $conf->msyspayapaccount;
+            $coa_ap = MCOA::on(Auth::user()->db_name)->where('mcoacode',$coa)->first();
+
+            $coa_ap->update_saldo("-",$header->mhpurchasegrandtotal);
+
+            DB::connection(Auth::user()->db_name)->commit();
+            return 'ok';
+
+            $coa_ap->update_saldo("-",$detail->mdpurchasegoodsgrossamount);
 
         } catch(\Exception $e){
             DB::connection(Auth::user()->db_name)->rollBack();
+            var_dump($e);
             return 'err';
         }
     }

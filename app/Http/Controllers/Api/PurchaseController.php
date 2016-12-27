@@ -95,7 +95,7 @@ class PurchaseController extends Controller
     }
 
     public function details($inv){
-        $details = MDPurchase::on(Auth::user()->db_name)->where('mhpurchaseno',$inv)->get();
+        $details = MDPurchase::on(Auth::user()->db_name)->where('mhpurchaseno',$inv)->where('void',0)->get();
         return response()->json($details);
     }
 

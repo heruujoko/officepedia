@@ -61,4 +61,16 @@ class MCOA extends \LaravelArdent\Ardent\Ardent
       $p = explode(".",$parent_code);
       return $p[0].".".$string_count;
     }
+
+    public function update_saldo($updatetype,$amount){
+        if($updatetype == "+"){
+            $this->saldo += $amount;
+            $this->save();
+        } else if($updatetype == "-"){
+            $this->saldo -= $amount;
+            $this->save();
+        } else {
+
+        }
+    }
 }
