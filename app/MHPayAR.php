@@ -76,7 +76,8 @@ class MHPayAR extends Model
           $header = MHPayAR::on(Auth::user()->db_name)->where('id',$header->id)->first();
           $conf = MConfig::on(Auth::user()->db_name)->where('id',1)->first();
           $coa = $conf->msyspayaraccount;
-          $coa_bank = MCOA::on(Auth::user()->db_name)->where('id',$header->mhpayarbank)->first()->mcoacode;
+          $coa_ar = MCOA::on(Auth::user()->db_name)->where('mcoacode',$coa)->first();
+          $coa_bank = MCOA::on(Auth::user()->db_name)->where('id',$header->mhpayarbank)->first();
 
           foreach($request->ars as $ar){
 
@@ -118,13 +119,15 @@ class MHPayAR extends Model
 
               $detail->mdpayar_arref = $new_ar->id;
               $detail->save();
-
-              $last_journal = MJournal::on(Auth::user()->db_name)->where('mjournaltransno',$detail->mdpayartransno)->where('mjournaltranstype','Penjualan')->first();
-              $debit = $detail->mdpayarinvoicepayamount;
-              $credit = ($last_journal->mjournalcredit - $detail->mdpayarinvoicepayamount);
-              MJournal::record_journal($header->mhpayarno,'Pembayaran Piutang',$coa,0,$credit,"");
-              MJournal::record_journal($header->mhpayarno,'Pembayaran Piutang',$coa_bank,$debit,0,"");
           }
+
+          /* update journal */
+          MJournal::record_journal($header->mhpayarno,'Pembayaran Piutang',$coa,0,$header->mhpayarpayamount,"");
+          MJournal::record_journal($header->mhpayarno,'Pembayaran Piutang',$coa_bank->mcoacode,$header->mhpayarpayamount,0,"");
+
+          /* update coa saldo */
+          $coa_ar->update_saldo("-",$header->mhpayarpayamount);
+          $coa_bank->update_saldo("+",$header->mhpayarpayamount);
 
           DB::connection(Auth::user()->db_name)->commit();
           return "ok";
@@ -140,6 +143,16 @@ class MHPayAR extends Model
         try{
 
             $header = MHPayAR::on(Auth::user()->db_name)->where('id',$this->id)->first();
+
+            $conf = MConfig::on(Auth::user()->db_name)->where('id',1)->first();
+            $coa = $conf->msyspayaraccount;
+            $coa_ar = MCOA::on(Auth::user()->db_name)->where('mcoacode',$coa)->first();
+            $coa_bank = MCOA::on(Auth::user()->db_name)->where('id',$header->mhpayarbank)->first();
+
+            /* revert coa saldo */
+            $coa_ar->update_saldo('+',$header->mhpayarpayamount);
+            $coa_bank->update_saldo('-',$header->mhpayarpayamount);
+
             $header->mhpayarcustomerno = MCustomer::on(Auth::user()->db_name)->where('id',$request->invoice_customer)->first()->mcustomerid;
             $header->mhpayarcustomername = MCustomer::on(Auth::user()->db_name)->where('id',$request->invoice_customer)->first()->mcustomername;
             $header->mhpayardate = Carbon::parse($request->invoice_date);
@@ -160,78 +173,106 @@ class MHPayAR extends Model
                 $d->save();
             }
 
-            $conf = MConfig::on(Auth::user()->db_name)->where('id',1)->first();
-            $coa = $conf->msyspayaraccount;
-            $coa_bank = MCOA::on(Auth::user()->db_name)->where('id',$header->mhpayarbank)->first()->mcoacode;
-
             foreach ($request->ars as $ar) {
-                $old_ar = MARCard::on(Auth::user()->db_name)->where('id',$ar['mdpayar_arref'])->first();
 
-                $detail = MDPayAR::on(Auth::user()->db_name)->where('mhpayarno',$header->mhpayarno)->where('mdpayartransno',$ar['mdpayartransno'])->first();
-                $last_pay = $detail->mdpayarinvoicepayamount;
-                $detail->mhpayarno = $header->mhpayarno;
-                $detail->mdpayartransno = $old_ar->marcardtransno;
-                $detail->mdpayarinvoicetotal = $ar['marcardtotalinv'];
-                $detail->mdpayarinvoicedate = $header->mhpayardate;
-                $detail->mdpayarinvoiceoutstanding = $ar['marcardoutstanding'];
-                $detail->mdpayarinvoicepayamount = $ar['payamount'];
-                $detail->mdpayarinvoicediscount = 0;
-                $detail->mdpayaruserid = Auth::user()->id;
-                $detail->mdpayarusername = Auth::user()->name;
-                $detail->mdpayareventdate = Carbon::now();
-                $detail->mdpayareventtime = Carbon::now();
-                $detail->void = 0;
-                $detail->save();
+                if(array_key_exists('mdpayartransno',$ar)){
+                    $old_ar = MARCard::on(Auth::user()->db_name)->where('id',$ar['mdpayar_arref'])->first();
 
-                // reset AR
-                $new_ar = new MARCard;
-                $new_ar->setConnection(Auth::user()->db_name);
-                $new_ar->marcardcustomerid = $header->mhpayarcustomerno;
-                $new_ar->marcardcustomername = $header->mhpayarcustomername;
-                $new_ar->marcarddate = Carbon::now();
-                $new_ar->marcardtransno = $old_ar->marcardtransno;
-                $new_ar->marcardpayno = $header->mhpayarno;
-                $new_ar->marcardremark = "Revisi Piutang Dagang oleh ".Auth::user()->name."/".Auth::user()->id;
-                $new_ar->marcardduedate = $old_ar->marcardduedate;
-                $new_ar->marcardtotalinv = $old_ar->marcardtotalinv;
-                $new_ar->marcardpayamount = 0;
-                $new_ar->marcardoutstanding = $old_ar->marcardoutstanding + $last_pay;
-                $new_ar->marcardusername = Auth::user()->name;
-                $new_ar->marcarduserid = Auth::user()->id;
-                $new_ar->marcardusereventdate = Carbon::now();
-                $new_ar->marcardusereventtime = Carbon::now();
-                $new_ar->void = 0;
-                $new_ar->save();
+                    $detail = MDPayAR::on(Auth::user()->db_name)->where('mhpayarno',$header->mhpayarno)->where('mdpayartransno',$ar['mdpayartransno'])->first();
+                    $last_pay = $detail->mdpayarinvoicepayamount;
+                    $detail->mhpayarno = $header->mhpayarno;
+                    $detail->mdpayartransno = $old_ar->marcardtransno;
+                    $detail->mdpayarinvoicetotal = $ar['marcardtotalinv'];
+                    $detail->mdpayarinvoicedate = $header->mhpayardate;
+                    $detail->mdpayarinvoiceoutstanding = $ar['marcardoutstanding'];
+                    $detail->mdpayarinvoicepayamount = $ar['payamount'];
+                    $detail->mdpayarinvoicediscount = 0;
+                    $detail->mdpayaruserid = Auth::user()->id;
+                    $detail->mdpayarusername = Auth::user()->name;
+                    $detail->mdpayareventdate = Carbon::now();
+                    $detail->mdpayareventtime = Carbon::now();
+                    $detail->void = 0;
+                    $detail->save();
 
-                $new_ar = new MARCard;
-                $new_ar->setConnection(Auth::user()->db_name);
-                $new_ar->marcardcustomerid = $header->mhpayarcustomerno;
-                $new_ar->marcardcustomername = $header->mhpayarcustomername;
-                $new_ar->marcarddate = Carbon::now();
-                $new_ar->marcardtransno = $old_ar->marcardtransno;
-                $new_ar->marcardpayno = $header->mhpayarno;
-                $new_ar->marcardremark = "Revisi Piutang Dagang oleh ".Auth::user()->name."/".Auth::user()->id;
-                $new_ar->marcardduedate = $old_ar->marcardduedate;
-                $new_ar->marcardtotalinv = $old_ar->marcardtotalinv;
-                $new_ar->marcardpayamount = $ar['payamount'];
-                $new_ar->marcardoutstanding = $old_ar->marcardoutstanding - $ar['payamount'];
-                $new_ar->marcardusername = Auth::user()->name;
-                $new_ar->marcarduserid = Auth::user()->id;
-                $new_ar->marcardusereventdate = Carbon::now();
-                $new_ar->marcardusereventtime = Carbon::now();
-                $new_ar->void = 0;
-                $new_ar->save();
+                    // reset AR
+                    $new_ar = new MARCard;
+                    $new_ar->setConnection(Auth::user()->db_name);
+                    $new_ar->marcardcustomerid = $header->mhpayarcustomerno;
+                    $new_ar->marcardcustomername = $header->mhpayarcustomername;
+                    $new_ar->marcarddate = Carbon::now();
+                    $new_ar->marcardtransno = $old_ar->marcardtransno;
+                    $new_ar->marcardpayno = $header->mhpayarno;
+                    $new_ar->marcardremark = "Revisi Piutang Dagang oleh ".Auth::user()->name."/".Auth::user()->id;
+                    $new_ar->marcardduedate = $old_ar->marcardduedate;
+                    $new_ar->marcardtotalinv = $old_ar->marcardtotalinv;
+                    $new_ar->marcardpayamount = 0;
+                    $new_ar->marcardoutstanding = $old_ar->marcardoutstanding + $last_pay;
+                    $new_ar->marcardusername = Auth::user()->name;
+                    $new_ar->marcarduserid = Auth::user()->id;
+                    $new_ar->marcardusereventdate = Carbon::now();
+                    $new_ar->marcardusereventtime = Carbon::now();
+                    $new_ar->void = 0;
+                    $new_ar->save();
 
-                $last_journal = MJournal::on(Auth::user()->db_name)->where('mjournaltransno',$detail->mdpayartransno)->where('mjournaltranstype','Penjualan')->first();
+                    $new_ar = new MARCard;
+                    $new_ar->setConnection(Auth::user()->db_name);
+                    $new_ar->marcardcustomerid = $header->mhpayarcustomerno;
+                    $new_ar->marcardcustomername = $header->mhpayarcustomername;
+                    $new_ar->marcarddate = Carbon::now();
+                    $new_ar->marcardtransno = $old_ar->marcardtransno;
+                    $new_ar->marcardpayno = $header->mhpayarno;
+                    $new_ar->marcardremark = "Revisi Piutang Dagang oleh ".Auth::user()->name."/".Auth::user()->id;
+                    $new_ar->marcardduedate = $old_ar->marcardduedate;
+                    $new_ar->marcardtotalinv = $old_ar->marcardtotalinv;
+                    $new_ar->marcardpayamount = $ar['payamount'];
+                    $new_ar->marcardoutstanding = $old_ar->marcardoutstanding - $ar['payamount'];
+                    $new_ar->marcardusername = Auth::user()->name;
+                    $new_ar->marcarduserid = Auth::user()->id;
+                    $new_ar->marcardusereventdate = Carbon::now();
+                    $new_ar->marcardusereventtime = Carbon::now();
+                    $new_ar->void = 0;
+                    $new_ar->save();
+                } else {
+                    /* is a new item */
+                    $old_ar = MARCard::on(Auth::user()->db_name)->where('id',$ar['id'])->first();
 
-                $last_details_journal = MJournal::on(Auth::user()->db_name)->where('mjournaltransno',$detail->mhpayarno)->where('mjournaltranstype','Pembayaran Piutang')->get();
+                    $detail = new MDPayAR;
+                    $detail->setConnection(Auth::user()->db_name);
+                    $detail->mhpayarno = $header->mhpayarno;
+                    $detail->mdpayartransno = $old_ar->marcardtransno;
+                    $detail->mdpayarinvoicetotal = $ar['marcardtotalinv'];
+                    $detail->mdpayarinvoicedate = $header->mhpayardate;
+                    $detail->mdpayarinvoiceoutstanding = $ar['marcardoutstanding'];
+                    $detail->mdpayarinvoicepayamount = $ar['payamount'];
+                    $detail->mdpayarinvoicediscount = 0;
+                    $detail->mdpayaruserid = Auth::user()->id;
+                    $detail->mdpayarusername = Auth::user()->name;
+                    $detail->mdpayareventdate = Carbon::now();
+                    $detail->mdpayareventtime = Carbon::now();
+                    $detail->save();
 
-                $debit = $detail->mdpayarinvoicepayamount;
-                $credit = ($last_journal->mjournalcredit - $detail->mdpayarinvoicepayamount);
-                $last_details_journal[0]->mjournalcredit = $credit;
-                $last_details_journal[0]->save();
-                $last_details_journal[1]->mjournaldebit = $debit;
-                $last_details_journal[1]->save();
+                    $new_ar = new MARCard;
+                    $new_ar->setConnection(Auth::user()->db_name);
+                    $new_ar->marcardcustomerid = $header->mhpayarcustomerno;
+                    $new_ar->marcardcustomername = $header->mhpayarcustomername;
+                    $new_ar->marcarddate = Carbon::now();
+                    $new_ar->marcardtransno = $old_ar->marcardtransno;
+                    $new_ar->marcardpayno = $header->mhpayarno;
+                    $new_ar->marcardremark = "Pembayaran Hutang Dagang oleh ".Auth::user()->name."/".Auth::user()->id;
+                    $new_ar->marcardduedate = $old_ar->marcardduedate;
+                    $new_ar->marcardtotalinv = $old_ar->marcardtotalinv;
+                    $new_ar->marcardpayamount = $ar['payamount'];
+                    $new_ar->marcardoutstanding = $old_ar->marcardoutstanding - $ar['payamount'];
+                    $new_ar->marcardusername = Auth::user()->name;
+                    $new_ar->marcarduserid = Auth::user()->id;
+                    $new_ar->marcardusereventdate = Carbon::now();
+                    $new_ar->marcardusereventtime = Carbon::now();
+                    $new_ar->void = 0;
+                    $new_ar->save();
+
+                    $detail->mdpayar_arref = $new_ar->id;
+                    $detail->save();
+                }
             }
 
             //voided details
@@ -265,6 +306,16 @@ class MHPayAR extends Model
 
             }
 
+            $last_details_journal = MJournal::on(Auth::user()->db_name)->where('mjournaltransno',$header->mhpayarno)->where('mjournaltranstype','Pembayaran Piutang')->get();
+
+            $last_details_journal[0]->mjournalcredit = $header->mhpayarpayamount;
+            $last_details_journal[0]->save();
+            $last_details_journal[1]->mjournaldebit = $header->mhpayarpayamount;
+            $last_details_journal[1]->save();
+
+            $coa_ar->update_saldo('-',$header->mhpayarpayamount);
+            $coa_bank->update_saldo('+',$header->mhpayarpayamount);
+
             DB::connection(Auth::user()->db_name)->commit();
             return 'ok';
         } catch(\Exception $e){
@@ -276,6 +327,15 @@ class MHPayAR extends Model
     public function delete_transaction(){
         DB::connection(Auth::user()->db_name)->beginTransaction();
         try{
+
+            $conf = MConfig::on(Auth::user()->db_name)->where('id',1)->first();
+            $coa = $conf->msyspayaraccount;
+            $coa_ar = MCOA::on(Auth::user()->db_name)->where('mcoacode',$coa)->first();
+            $coa_bank = MCOA::on(Auth::user()->db_name)->where('id',$this->mhpayarbank)->first();
+
+            /* revert coa saldo */
+            $coa_ar->update_saldo('+',$this->mhpayarpayamount);
+            $coa_bank->update_saldo('-',$this->mhpayarpayamount);
 
             $this->void = 1;
             $this->save();
@@ -312,14 +372,14 @@ class MHPayAR extends Model
                 $new_ar->marcardusereventtime = Carbon::now();
                 $new_ar->void = 0;
                 $new_ar->save();
-
-                $last_details_journal = MJournal::on(Auth::user()->db_name)->where('mjournaltransno',$detail->mhpayarno)->where('mjournaltranstype','Pembayaran Piutang')->get();
-
-                $last_details_journal[0]->void = 1;
-                $last_details_journal[0]->save();
-                $last_details_journal[1]->void = 1;
-                $last_details_journal[1]->save();
             }
+
+            $last_details_journal = MJournal::on(Auth::user()->db_name)->where('mjournaltransno',$this->mhpayarno)->where('mjournaltranstype','Pembayaran Piutang')->get();
+
+            $last_details_journal[0]->void = 1;
+            $last_details_journal[0]->save();
+            $last_details_journal[1]->void = 1;
+            $last_details_journal[1]->save();
 
             DB::connection(Auth::user()->db_name)->commit();
             return 'ok';

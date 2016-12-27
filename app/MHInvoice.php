@@ -14,6 +14,7 @@ use App\MARCard;
 use DB;
 use Exception;
 use App\MJournal;
+use App\MCOA;
 
 class MHInvoice extends Model
 {
@@ -179,7 +180,13 @@ class MHInvoice extends Model
 
         $conf = MConfig::on(Auth::user()->db_name)->where('id',1)->first();
         $coa = $conf->msyspayaraccount;
+        $coa_ar = MCOA::on(Auth::user()->db_name)->where('mcoacode',$coa)->first();
+
+        /* update journal record with type penjualan and the grandtotal in credit side */
         MJournal::record_journal($header->mhinvoiceno,'Penjualan',$coa,0,$header->mhinvoicegrandtotal,"");
+
+        /* update coa saldo as much as the invoice grand total */
+        $coa_ar->update_saldo("+",$header->mhinvoicegrandtotal);
 
         DB::connection(Auth::user()->db_name)->commit();
         return 'ok';
@@ -191,7 +198,15 @@ class MHInvoice extends Model
     }
 
     public function update_transaction($request){
-      $allow_minus = MConfig::on(Auth::user()->db_name)->where('id',1)->first()->msysinventallowminus;
+      $conf = MConfig::on(Auth::user()->db_name)->where('id',1)->first();
+      $allow_minus = $conf->msysinventallowminus;
+      $conf = MConfig::on(Auth::user()->db_name)->where('id',1)->first();
+      $coa = $conf->msyspayaraccount;
+      $coa_ar = MCOA::on(Auth::user()->db_name)->where('mcoacode',$coa)->first();
+
+      /* revert back saldo */
+      $coa_ar->update_saldo("-",$this->mhinvoicegrandtotal);
+
       DB::connection(Auth::user()->db_name)->beginTransaction();
       try{
         //insert header
@@ -467,6 +482,8 @@ class MHInvoice extends Model
         $journal->mjournalcredit = $invoice_header->mhinvoicegrandtotal;
         $journal->save();
 
+        $coa_ar->update_saldo("+",$this->mhinvoicegrandtotal);
+
         DB::connection(Auth::user()->db_name)->commit();
         return 'ok';
       } catch(Exception $e){
@@ -528,10 +545,17 @@ class MHInvoice extends Model
                 $journal = MJournal::on(Auth::user()->db_name)->where('mjournaltransno',$header->mhinvoiceno)->where('mjournaltranstype','Penjualan')->first();
                 $journal->void = 1;
                 $journal->save();
-
-                DB::connection(Auth::user()->db_name)->commit();
-                return 'ok';
             }
+
+            $conf = MConfig::on(Auth::user()->db_name)->where('id',1)->first();
+            $coa = $conf->msyspayaraccount;
+            $coa_ar = MCOA::on(Auth::user()->db_name)->where('mcoacode',$coa)->first();
+
+            /* revert back saldo */
+            $coa_ar->update_saldo("-",$header->mhinvoicegrandtotal);
+
+            DB::connection(Auth::user()->db_name)->commit();
+            return 'ok';
 
         } catch(\Exception $e){
             DB::connection(Auth::user()->db_name)->rollBack();

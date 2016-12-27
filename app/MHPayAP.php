@@ -120,15 +120,15 @@ class MHPayAP extends Model
 
                 $detail->mdpayap_apref = $new_ap->id;
                 $detail->save();
-
-                // update journal
-                MJournal::record_journal($header->mhpayapno,'Pembayaran Hutang',$coa,$detail->mdpayapinvoicepayamount,0,"");
-                MJournal::record_journal($header->mhpayapno,'Pembayaran Hutang',$coa_bank->mcoacode,0,$detail->mdpayapinvoicepayamount,"");
-
-                // update coa saldo
-                $coa_bank->update_saldo('-',$detail->mdpayapinvoicepayamount);
-                $coa_ap->update_saldo('-',$detail->mdpayapinvoicepayamount);
             }
+
+            // update journal
+            MJournal::record_journal($header->mhpayapno,'Pembayaran Hutang',$coa,$header->mhpayappayamount,0,"");
+            MJournal::record_journal($header->mhpayapno,'Pembayaran Hutang',$coa_bank->mcoacode,0,$header->mhpayappayamount,"");
+
+            // update coa saldo
+            $coa_bank->update_saldo('-',$header->mhpayappayamount);
+            $coa_ap->update_saldo('-',$header->mhpayappayamount);
 
             DB::connection(Auth::user()->db_name)->commit();
             return 'ok';
@@ -142,7 +142,17 @@ class MHPayAP extends Model
         DB::connection(Auth::user()->db_name)->beginTransaction();
         try{
 
+            $conf = MConfig::on(Auth::user()->db_name)->where('id',1)->first();
+            $coa = $conf->msyspayapaccount;
+            $coa_ap = MCOA::on(Auth::user()->db_name)->where('mcoacode',$coa)->first();
+            $coa_bank = MCOA::on(Auth::user()->db_name)->where('id',$header->mhpayapbank)->first();
+
             $header = MHPayAP::on(Auth::user()->db_name)->where('id',$this->id)->first();
+
+            // reset coa saldo
+            $coa_ap->update_saldo('+',$header->mhpayappayamount);
+            $coa_bank->update_saldo('+',$header->mhpayappayamount);
+
             $header->mhpayapsupplierno = MSupplier::on(Auth::user()->db_name)->where('id',$request->invoice_supplier)->first()->msupplierid;
             $header->mhpayapsuppliername = MSupplier::on(Auth::user()->db_name)->where('id',$request->invoice_supplier)->first()->msuppliername;
             $header->mhpayapdate = Carbon::parse($request->invoice_date);
@@ -162,11 +172,6 @@ class MHPayAP extends Model
                 $d->void = 1;
                 $d->save();
             }
-
-            $conf = MConfig::on(Auth::user()->db_name)->where('id',1)->first();
-            $coa = $conf->msyspayapaccount;
-            $coa_ap = MCOA::on(Auth::user()->db_name)->where('mcoacode',$coa)->first();
-            $coa_bank = MCOA::on(Auth::user()->db_name)->where('id',$header->mhpayapbank)->first();
 
             foreach ($request->aps as $ap) {
                 if(array_key_exists('mdpayaptransno',$ap)){
@@ -227,22 +232,6 @@ class MHPayAP extends Model
                     $new_ap->void = 0;
                     $new_ap->save();
 
-                    $last_journal = MJournal::on(Auth::user()->db_name)->where('mjournaltransno',$detail->mdpayaptransno)->where('mjournaltranstype','Pembelian')->first();
-
-                    $last_details_journal = MJournal::on(Auth::user()->db_name)->where('mjournaltransno',$detail->mhpayapno)->where('mjournaltranstype','Pembayaran Hutang')->get();
-
-                    // reset coa saldo
-                    $coa_ap->update_saldo('+',$last_details_journal[0]->mjournaldebit);
-                    $coa_bank->update_saldo('+',$last_details_journal[0]->mjournaldebit);
-
-                    $last_details_journal[0]->mjournaldebit = $detail->mdpayapinvoicepayamount;
-                    $last_details_journal[0]->save();
-                    $last_details_journal[1]->mjournalcredit = $detail->mdpayapinvoicepayamount;
-                    $last_details_journal[1]->save();
-
-                    //update coa saldo
-                    $coa_ap->update_saldo('-',$detail->mdpayapinvoicepayamount);
-                    $coa_bank->update_saldo('-',$detail->mdpayapinvoicepayamount);
                 } else {
                     // is a new detail
                     $old_ap = MAPCard::on(Auth::user()->db_name)->where('id',$ap['id'])->first();
@@ -283,14 +272,6 @@ class MHPayAP extends Model
 
                     $detail->mdpayap_apref = $new_ap->id;
                     $detail->save();
-
-                    // update journal
-                    MJournal::record_journal($header->mhpayapno,'Pembayaran Hutang',$coa,$detail->mdpayapinvoicepayamount,0,"");
-                    MJournal::record_journal($header->mhpayapno,'Pembayaran Hutang',$coa_bank->mcoacode,0,$detail->mdpayapinvoicepayamount,"");
-
-                    // update coa saldo
-                    $coa_bank->update_saldo('-',$detail->mdpayapinvoicepayamount);
-                    $coa_ap->update_saldo('-',$detail->mdpayapinvoicepayamount);
                 }
             }
 
@@ -324,6 +305,17 @@ class MHPayAP extends Model
                 $new_ap->save();
             }
 
+            // update journal
+            $last_details_journal = MJournal::on(Auth::user()->db_name)->where('mjournaltransno',$header->mhpayapno)->where('mjournaltranstype','Pembayaran Hutang')->get();
+            $last_details_journal[0]->mjournaldebit = $header->mhpayappayamount;
+            $last_details_journal[0]->save();
+            $last_details_journal[1]->mjournalcredit = $header->mhpayappayamount;
+            $last_details_journal[1]->save();
+
+            // reset coa saldo
+            $coa_ap->update_saldo('-',$header->mhpayappayamount);
+            $coa_bank->update_saldo('-',$header->mhpayappayamount);
+
             DB::connection(Auth::user()->db_name)->commit();
             return 'ok';
         } catch(\Exception $e){
@@ -344,6 +336,16 @@ class MHPayAP extends Model
             $coa = $conf->msyspayapaccount;
             $coa_ap = MCOA::on(Auth::user()->db_name)->where('mcoacode',$coa)->first();
             $coa_bank = MCOA::on(Auth::user()->db_name)->where('id',$this->mhpayapbank)->first();
+
+            $last_details_journal = MJournal::on(Auth::user()->db_name)->where('mjournaltransno',$header->mhpayapno)->where('mjournaltranstype','Pembayaran Hutang')->get();
+
+            $coa_ap->update_saldo("+",$header->mhpayappayamount);
+            $coa_bank->update_saldo("+",$header->mhpayappayamount);
+
+            $last_details_journal[0]->void = 1;
+            $last_details_journal[0]->save();
+            $last_details_journal[1]->void = 1;
+            $last_details_journal[1]->save();
 
             $details = MDPayAP::on(Auth::user()->db_name)->where('mhpayapno',$this->mhpayapno)->get();
 
@@ -376,16 +378,6 @@ class MHPayAP extends Model
                 $new_ap->mapcardeventtime = Carbon::now();
                 $new_ap->void = 0;
                 $new_ap->save();
-
-                $last_details_journal = MJournal::on(Auth::user()->db_name)->where('mjournaltransno',$detail->mhpayapno)->where('mjournaltranstype','Pembayaran Hutang')->get();
-
-                $coa_ap->update_saldo("+",$detail->mdpayapinvoicepayamount);
-                $coa_bank->update_saldo("+",$detail->mdpayapinvoicepayamount);
-
-                $last_details_journal[0]->void = 1;
-                $last_details_journal[0]->save();
-                $last_details_journal[1]->void = 1;
-                $last_details_journal[1]->save();
             }
 
             DB::connection(Auth::user()->db_name)->commit();
