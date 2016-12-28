@@ -213,6 +213,12 @@ Route::group(['prefix'=>'admin-nano','middleware' => ['auth','tenantdb']],functi
   Route::get('reports/cogshistory/export/excel','COGSHistoryController@cogshistory_excel');
   Route::get('reports/cogshistory/export/csv','COGSHistoryController@cogshistory_csv');
 
+  Route::get('reports/journal','JournalController@journal');
+  Route::get('reports/journal/export/print','JournalController@journal_print');
+  Route::get('reports/journal/export/pdf','JournalController@journal_pdf');
+  Route::get('reports/journal/export/excel','JournalController@journal_excel');
+  Route::get('reports/journal/export/csv','JournalController@journal_csv');
+
   Route::controllers([
     '/'=>'AdminController'
   ]);
@@ -297,6 +303,8 @@ Route::group(['prefix'=>'admin-nano','middleware' => ['auth','tenantdb']],functi
   Route::get('ar/{id}','Api\ARController@show');
   Route::resource('payar','Api\PayArController');
   Route::get('payar/details/{invoice_no}','Api\PayArController@details');
+
+  Route::get('journal','Api\JournalController@journal');
 
   Route::controllers([
     '/'=>'ApiController'
