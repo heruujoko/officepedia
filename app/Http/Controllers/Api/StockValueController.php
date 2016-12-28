@@ -89,13 +89,15 @@ class StockValueController extends Controller
 
             $stck = $stck_q->orderBy('created_at','desc')->first();
 
-            if($stck->mstockcardtranstype == 'Pembelian'){
-                $stck['stock'] = $stck->mstockcardstockin + $stck->mstockcardstocktotal;
-            } else {
-                $stck['stock'] = $stck->mstockcardstockout + $stck->mstockcardstocktotal;
-            }
+            // if($stck->mstockcardtranstype == 'Pembelian'){
+            //     $stck['stock'] = $stck->mstockcardstockin + $stck->mstockcardstocktotal;
+            // } else {
+            //     $stck['stock'] = $stck->mstockcardstockout - $stck->mstockcardstocktotal;
+            // }
+
             $good = MGoods::on(Auth::user()->db_name)->where('mgoodscode',$stck->mstockcardgoodsid)->first();
-            $stck['verbs'] = UnitHelper::label($good,$stck['stock']);
+            $stck['stock'] = $good->mgoodsstock;
+            $stck['verbs'] = UnitHelper::label($good,$good->mgoodsstock);
             $stck['cogs'] = MCOGS::on(Auth::user()->db_name)->where('mcogsgoodscode',$stck->mstockcardgoodsid)->first()->mcogslastcogs;
             array_push($stocks,$stck);
         }
