@@ -83,6 +83,27 @@ const cogshistoryapp = new Vue({
         }
     },
     methods:{
+        fetchConfig(){
+            var self = this;
+            Axios.get('/admin-api/mconfig')
+                .then(function(res){
+                    let separator = res.data.msysnumseparator
+                    let decimals = res.data.msysgenrounddec
+                    console.log(separator +" "+decimals);
+                    if(separator == ',' && decimals == 2){
+                        self.num_format = "0,0.00"
+                    } else if(separator == ',' && decimals == 0){
+                        self.num_format = "0,0"
+                    } else if(separator == '.' && decimals == 2){
+                        self.num_format = "0.0,00"
+                    } else {
+                        self.num_format = "0.0"
+                    }
+                })
+                .catch(function(err){
+                    console.log(err);
+                });
+        },
         fetchGoods(){
           Axios.get('/admin-api/barang/datalist')
           .then((res) => {
@@ -111,6 +132,7 @@ const cogshistoryapp = new Vue({
         }
     },
     created(){
+        this.fetchConfig();
         this.fetchGoods();
         this.fetchHistories();
     }
