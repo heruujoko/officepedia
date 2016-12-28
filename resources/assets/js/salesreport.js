@@ -142,6 +142,7 @@ const stockreport = new Vue({
                 });
         },
         fetchSales(){
+            $('#loading_modal').modal('toggle');
             var self = this;
             Axios.get('/admin-api/salesreport?wh='+this.selected_warehouse+'&goods='+this.selected_goods+'&start='+this.invoice_date_start+'&end='+this.invoice_date_end)
                 .then(function(res){
@@ -195,29 +196,7 @@ const stockreport = new Vue({
             window.open('/admin-nano/reports/salesreport/export/csv?wh='+this.selected_warehouse+'&goods='+this.selected_goods+'&start='+this.invoice_date_start+'&end='+this.invoice_date_end,'_blank');
         }
     },
-    watch:{
-        selected_goods(){
-            $('#loading_modal').modal('toggle');
-            this.fetchSales();
-        },
-        selected_warehouse(){
-            $('#loading_modal').modal('toggle');
-            this.fetchSales();
-        },
-        selected_sorts(){
-            this.sortData();
-        },
-        invoice_date_start(){
-            $('#loading_modal').modal('toggle');
-            this.fetchSales();
-        },
-        invoice_date_end(){
-            $('#loading_modal').modal('toggle');
-            this.fetchSales();
-        }
-    },
     created(){
-        $('#loading_modal').modal('toggle');
         this.fetchConfig();
         this.fetchSales();
         this.fetchWarehouses();

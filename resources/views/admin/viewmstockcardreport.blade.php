@@ -86,6 +86,9 @@
                                             </div>
                                             <br>
                                            <div class="row">
+                                               <div class="col-md-3">
+                                                   <button class="dt-button pull-left" v-on:click="fetchStocks">Filter</button>
+                                               </div>
                                                 <div class="col-md-3 col-md-offset-9">
                                                     <button class="dt-button pull-right" v-on:click="printTable">Print</button>
                                                     <button class="dt-button pull-right" v-on:click="pdfTable">PDF</button>
@@ -163,7 +166,7 @@
                                     <th v-if="stock.footer == true" class="tbl-footer">@{{ stock.mstockcardtransno }}</th>
                                     <th v-if="stock.footer == true" class="tbl-footer">@{{ stock.gudang }}</th>
                                     <th v-if="stock.footer == true" class="tbl-footer">Umum</th>
-                                    <th v-if="stock.footer == true" class="tbl-footer">@{{ stock.mstockcardremark }}</th>
+                                    <th v-if="stock.footer == true" class="tbl-footer"></th>
 								</tr>
 								</tbody>
 							</table>

@@ -88,6 +88,9 @@
                                             </div>
                                             <br>
                                             <div class="row">
+                                                <div class="col-md-3">
+                                                    <button class="dt-button pull-left" v-on:click="fetchSales">Filter</button>
+                                                </div>
                                                 <div class="col-md-3 col-md-offset-9">
                                                     <button class="dt-button pull-right" v-on:click="printTable">Print</button>
                                                     <button class="dt-button pull-right" v-on:click="pdfTable">PDF</button>

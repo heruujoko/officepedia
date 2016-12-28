@@ -90,6 +90,7 @@ const cogshistoryapp = new Vue({
           });
         },
         fetchHistories(){
+          $('#loading_modal').modal('toggle');
           Axios.get('/admin-api/cogshistory?goods='+this.selected_goods+"&end="+this.invoice_date_end)
           .then((res) => {
             $('#loading_modal').modal('toggle');
@@ -109,18 +110,7 @@ const cogshistoryapp = new Vue({
             window.open('/admin-nano/reports/cogshistory/export/csv?goods='+this.selected_goods+"&end="+this.invoice_date_end);
         }
     },
-    watch:{
-        selected_goods(){
-            $('#loading_modal').modal('toggle');
-            this.fetchHistories();
-        },
-        invoice_date_end(){
-            $('#loading_modal').modal('toggle');
-            this.fetchHistories();
-        }
-    },
     created(){
-        $('#loading_modal').modal('toggle');
         this.fetchGoods();
         this.fetchHistories();
     }

@@ -83,7 +83,10 @@
                                             </div>
                                             <br>
                                             <div class="row">
-                                                <div class="col-md-3 col-md-offset-9">
+                                                <div class="col-md-3">
+                                                    <button class="dt-button pull-left" v-on:click="fetchArs">Filter</button>
+                                                </div>
+                                                <div class="col-md-3 col-md-offset-6">
                                                     <button class="dt-button pull-right" v-on:click="printTable">Print</button>
                                                     <button class="dt-button pull-right" v-on:click="pdfTable">PDF</button>
                                                     <button class="dt-button pull-right" v-on:click="excelTable">Excel</button>

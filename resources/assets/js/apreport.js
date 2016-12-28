@@ -104,6 +104,7 @@ const apreportapp = new Vue({
             });
         },
         fetchAps(){
+            $('#loading_modal').modal('toggle');
             Axios.get('/admin-api/apreport?br='+this.selected_branch+'&spl='+this.selected_supplier+"&end="+this.invoice_date_end).then((res) => {
                 $('#loading_modal').modal('toggle');
                 this.aps = res.data;
@@ -120,20 +121,6 @@ const apreportapp = new Vue({
         },
         csvTable(){
             window.open('/admin-nano/reports/apreport/export/csv?br='+this.selected_branch+'&spl='+this.selected_supplier);
-        }
-    },
-    watch:{
-        selected_supplier(){
-            $('#loading_modal').modal('toggle');
-            this.fetchAps();
-        },
-        selected_branch(){
-            $('#loading_modal').modal('toggle');
-            this.fetchAps();
-        },
-        invoice_date_end(){
-            $('#loading_modal').modal('toggle');
-            this.fetchAps();
         }
     },
     computed:{
@@ -181,7 +168,6 @@ const apreportapp = new Vue({
         }
     },
     created(){
-        $('#loading_modal').modal('toggle');
         this.fetchConfig();
         this.fetchBranches();
         this.fetchSuppliers();
