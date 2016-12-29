@@ -219,6 +219,12 @@ Route::group(['prefix'=>'admin-nano','middleware' => ['auth','tenantdb']],functi
   Route::get('reports/journal/export/excel','JournalController@journal_excel');
   Route::get('reports/journal/export/csv','JournalController@journal_csv');
 
+  Route::get('reports/ledger','LedgerController@ledger');
+  Route::get('reports/ledger/export/print','LedgerController@ledger_print');
+  Route::get('reports/ledger/export/pdf','LedgerController@ledger_pdf');
+  Route::get('reports/ledger/export/excel','LedgerController@ledger_excel');
+  Route::get('reports/ledger/export/csv','LedgerController@ledger_csv');
+
   Route::controllers([
     '/'=>'AdminController'
   ]);
@@ -305,6 +311,8 @@ Route::group(['prefix'=>'admin-nano','middleware' => ['auth','tenantdb']],functi
   Route::get('payar/details/{invoice_no}','Api\PayArController@details');
 
   Route::get('journal','Api\JournalController@journal');
+  Route::get('coaledger','Api\MCOAController@datalistledger');
+  Route::get('ledgers','Api\LedgerController@ledgers');
 
   Route::controllers([
     '/'=>'ApiController'

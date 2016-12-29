@@ -183,7 +183,7 @@ class MHInvoice extends Model
         $coa_ar = MCOA::on(Auth::user()->db_name)->where('mcoacode',$coa)->first();
 
         /* update journal record with type penjualan and the grandtotal in credit side */
-        MJournal::record_journal($header->mhinvoiceno,'Penjualan',$coa,0,$header->mhinvoicegrandtotal,"");
+        MJournal::record_journal($header->mhinvoiceno,'Penjualan',$coa,$header->mhinvoicegrandtotal,0,"");
 
         /* update coa saldo as much as the invoice grand total */
         $coa_ar->update_saldo("+",$header->mhinvoicegrandtotal);
@@ -479,7 +479,7 @@ class MHInvoice extends Model
         }
 
         $journal = MJournal::on(Auth::user()->db_name)->where('mjournaltransno',$invoice_header->mhinvoiceno)->where('mjournaltranstype','Penjualan')->first();
-        $journal->mjournalcredit = $invoice_header->mhinvoicegrandtotal;
+        $journal->mjournaldebit = $invoice_header->mhinvoicegrandtotal;
         $journal->save();
 
         $coa_ar->update_saldo("+",$this->mhinvoicegrandtotal);
