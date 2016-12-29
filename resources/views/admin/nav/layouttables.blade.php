@@ -60,6 +60,9 @@
 		<link rel="apple-touch-startup-image" href="img/splash/iphone.png" media="screen and (max-device-width: 320px)">
 		<style media="screen">
 
+        body {
+            zoom :0.9 !important;
+        }
 
 	.phone-number .col-xs-3::after{
 	content: "-";
@@ -206,9 +209,6 @@
 }
 </style>
 	<script type="text/javascript">
-    function zoom() {
-    document.body.style.zoom = "90%"
-    }
 	</script>
 
 	</head>
@@ -257,7 +257,7 @@
 		* 'fixed-page-footer' - Fixes footer
 		* 'container'         - boxed layout mode (non-responsive: will not work with fixed-navigation & fixed-ribbon)
 	-->
-	<body onload="zoom()" class="">
+	<body onload="" style="zoom:90% !important">
 
 		<!-- HEADER -->
 		<header id="header">
@@ -626,7 +626,6 @@
     		// DO NOT REMOVE : GLOBAL FUNCTIONS!
 
     		$(document).ready(function() {
-
 					$('.select2').select2({
 						width: "100%",
 					});
@@ -735,7 +734,6 @@
     			/* END TABLETOOLS */
 
     		})
-
     		</script>
 
     		<!-- Your GOOGLE ANALYTICS CODE Below -->

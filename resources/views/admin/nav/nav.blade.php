@@ -256,6 +256,11 @@
       @else
         <li><a href="{{ url('admin-nano/reports/journal') }}">Jurnal</a></li>
       @endif
+      @if($active == 'ledger')
+        <li class="active"><a href="{{ url('admin-nano/reports/ledger') }}">Buku Besar</a></li>
+      @else
+        <li><a href="{{ url('admin-nano/reports/ledger') }}">Buku Besar</a></li>
+      @endif
     </ul>
   </li>
 </ul>
