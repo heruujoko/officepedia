@@ -1,4 +1,4 @@
-`   1`<!DOCTYPE html>
+<!DOCTYPE html>
 <html>
     <head>
         <meta charset="utf-8">
@@ -6,6 +6,7 @@
         <style>
         table th {
             font-size: 11px;
+            text-align: left;
         }
         table td {
             font-size: 8px;
@@ -64,6 +65,9 @@
             font-size: 9px;
             display: block;
         }
+        .tbl-footer {
+            background-image: -webkit-linear-gradient(top,#f2f2f2 0,#fafafa 100%);
+        }
         </style>
     </head>
     <body>
@@ -77,25 +81,36 @@
         <br>
         <table class="table" id="tableapi" style="width:100%">
             <thead>
-                <tr>
+                <tr class="tbl-footer">
                     <th>Tanggal</th>
-                    <th>No Transaksi</th>
-                    <th>Tipe</th>
                     <th>Akun</th>
+                    <th>Tipe Transaksi</th>
                     <th>Debet</th>
-                    <th>Credit</th>
+                    <th>Kredit</th>
                 </tr>
             </thead>
             <tbody>
-                @foreach($journals as $j)
-                <tr>
-                    <td>{{ $j->mjournaldate }}</td>
-                    <td>{{ $j->mjournaltransno }}</td>
-                    <td>{{ $j->mjournaltranstype }}</td>
-                    <td>{{ $j['akun']->mcoacode }} - {{ $j['akun']->mcoaname }}</td>
-                    <td>{{ number_format($j->mjournaldebit,$decimals,$dec_point,$thousands_sep) }}</td>
-                    <td>{{ number_format($j->mjournalcredit,$decimals,$dec_point,$thousands_sep) }}</td>
-                </tr>
+                @foreach($ledgers as $l)
+                    @if($l['data'] == true)
+                        <tr>
+                            <td>{{ $l->mjournaldate }}</td>
+                            <td>{{ $l['akun']->mcoaname }}</td>
+                            <td>{{ $l->mjournaltranstype }}</td>
+                            <td>{{ number_format($l->mjournaldebit,$decimals,$dec_point,$thousands_sep) }}</td>
+                            <td>{{ number_format($l->mjournalcredit,$decimals,$dec_point,$thousands_sep) }}</td>
+                        </tr>
+                    @elseif ($l['data'] == false && $l['summary'] == false)
+                        <tr class="tbl-footer">
+                            <td colspan="3" rowspan="2">Saldo</td>
+                            <td>{{ number_format($l['debit'],$decimals,$dec_point,$thousands_sep) }}</td>
+                            <td>{{ number_format($l['credit'],$decimals,$dec_point,$thousands_sep) }}</td>
+                        </tr>
+                    @else
+                    <tr class="tbl-footer">
+                        <td>{{ number_format($l['debit'],$decimals,$dec_point,$thousands_sep) }}</td>
+                        <td>{{ number_format($l['credit'],$decimals,$dec_point,$thousands_sep) }}</td>
+                    </tr>
+                    @endif
                 @endforeach
             </tbody>
             <thead>
