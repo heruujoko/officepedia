@@ -29,6 +29,7 @@ elixir(mix => {
     mix.webpack('payar.js');
     mix.webpack('purchasequotation.js');
     mix.webpack('journalreport.js');
+    mix.webpack('ledgerreport.js');
     // mix.scripts([
     //     '/public/app.min.js','/public/app.config.js','/public/select2.min.js'
     // ],'public/js/app.mixed.js');
