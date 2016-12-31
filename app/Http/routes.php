@@ -137,6 +137,10 @@ Route::group(['prefix'=>'admin-nano','middleware' => ['auth','tenantdb']],functi
   Route::get('purchaseinvoice/export/pdf','PurchaseController@pdf');
 
   Route::get('purchasequotation','PurchasequotationController@index');
+  Route::get('purchasequotation/export/csv','PurchasequotationController@csv');
+  Route::get('purchasequotation/export/excel','PurchasequotationController@excel');
+  Route::get('purchasequotation/export/pdf','PurchasequotationController@pdf');
+  Route::get('purchasequotation/export/print2/{id}','PurchasequotationController@print2');
 
   Route::get('payap','PayApController@payap');
   Route::get('payap/export/csv','PayApController@payap_csv');

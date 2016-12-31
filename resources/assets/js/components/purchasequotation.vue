@@ -281,7 +281,7 @@ r<template>
         props: ['mode'],
         data(){
           return {
-            editinvoiceid:0,
+            editquotationid:0,
             warehouses: [],
             suppliers: [],
             goods: [],
@@ -913,22 +913,26 @@ r<template>
           this.detail_goods = {};
       },
       fetchInvoiceData(id){
+         
           let self = this;
           this.resetDetail();
           this.resetInvoice();
-          Axios.get('/admin-api/purchaseinvoice/'+id)
+          Axios.get('/admin-api/purchasequotation/'+id)
           .then((res) => {
             let data = res.data;
             this.invoice_date = moment(data.mhpurchasedate).format('L');
             //find suppliers
-            let spl = _.find(this.suppliers, { msupplierid: data.mhpurchasesupplierid});
+            
+            let spl = _.find(this.suppliers, { msupplierid: data.mhpurchasequotationsupplierid});
+            
             self.invoice_supplier = spl.id+"";
-            this.fetchDetailData(data.mhpurchaseno);
-            this.invoice_subtotal = parseInt(res.data.mhpurchasesubtotal) - parseInt(res.data.mhpurchasediscounttotal);
-            this.invoice_disc = res.data.mhpurchasediscounttotal;
-            this.invoice_tax = res.data.mhpurchasetaxtotal;
-            this.invoice_do = res.data.mhpurchasedeliveryno;
-            this.invoice_order = res.data.mhpurchaseorderyno;
+            
+            this.fetchDetailData(data.mhpurchasequotationno);
+            this.invoice_subtotal = parseInt(res.data.mhpurchasequotationothertotal) - parseInt(res.data.mhpurchasequotationdiscounttotal);
+            this.invoice_disc = res.data.mhpurchasequotationdiscounttotal;
+            this.invoice_tax = res.data.mhpurchasequotationtaxtotal;
+            this.invoice_do = res.data.mhpurchasequotationdeliveryno;
+            this.invoice_order = res.data.mhpurchasequotationorderyno;
           });
       },
       fetchDetailData(inv){
@@ -1007,7 +1011,7 @@ r<template>
           type: this.invoice_type
         }
         console.log(invoice_data);
-        Axios.put('/admin-api/purchaseinvoice/'+this.editinvoiceid,invoice_data)
+        Axios.put('/admin-api/purchasequotation/'+this.editquotationid,invoice_data)
         .then((res) => {
           if(this.mode == 'edit'){
               $('#edit_loading_modal').modal('toggle');
@@ -1052,13 +1056,14 @@ r<template>
         this.fetchWareHouses();
         if(this.mode == "edit"){
           this.$parent.$on('edit-selected',(id) => {
-            this.editinvoiceid = id;
+            this.editquotationid = id;
             this.fetchInvoiceData(id);
           });
         }
         if(this.mode == "view"){
           this.$parent.$on('edit-selected',(id) => {
-            this.editinvoiceid = id;
+            
+            this.editquotationid = id;
             this.fetchInvoiceData(id);
             this.disableSupplier();
           });
