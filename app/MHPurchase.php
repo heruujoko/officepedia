@@ -210,7 +210,9 @@ class MHPurchase extends Model
             $conf = MConfig::on(Auth::user()->db_name)->where('id',1)->first();
             $coa = $conf->msyspayapaccount;
             $coa_purchase = MCOA::on(Auth::user()->db_name)->where('mcoacode',$coa)->first();
-            MJournal::record_journal($header->mhpurchaseno,'Pembelian',$coa,$header->mhpurchasegrandtotal,0,"");
+
+            // pembelian jurnal nya di kredit karena utang
+            MJournal::record_journal($header->mhpurchaseno,'Pembelian',$coa,0,$header->mhpurchasegrandtotal,"");
 
             // update coa saldo
             $coa_purchase->update_saldo("+",$header->mhpurchasegrandtotal);
@@ -538,7 +540,7 @@ class MHPurchase extends Model
             }
 
             $journal = MJournal::on(Auth::user()->db_name)->where('mjournaltransno',$trans_header->mhpurchaseno)->where('mjournaltranstype','Pembelian')->first();
-            $journal->mjournaldebit = $trans_header->mhpurchasegrandtotal;
+            $journal->mjournalcredit = $trans_header->mhpurchasegrandtotal;
             $journal->save();
 
             $coa_ap->update_saldo("+",$trans_header->mhpurchasegrandtotal);

@@ -14,7 +14,7 @@ class ConfigSeeder extends Seeder
     {
         MConfig::create([
           'msyscompname' => 'Sample Company',
-          'msysgenrounddec' => 2,
+          'msysgenrounddec' => 0,
           'msysnumseparator' => ',',
           'msysprefixgoods' => 'BRG',
           'msysprefixgoodscount' => 0,
@@ -70,6 +70,8 @@ class ConfigSeeder extends Seeder
           'msysprefixinvoicequotation' => 'IQU',
           'msysprefixinvoicequotationcount' => 0,
           'msysprefixinvoicequotationlastcount' => '000000',
+          'msyspayapaccount' => '2101.03',
+          'msyspayaraccount' => '1103.02'
         ]);
     }
 }

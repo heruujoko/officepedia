@@ -103,6 +103,7 @@ const stockcardreport = new Vue({
     },
 	methods: {
 		fetchStocks(){
+            $('#loading_modal').modal('toggle');
 			var self = this;
 			Axios.get('/admin-api/mstockcardreport?start='+this.invoice_date_start+'&end='+this.invoice_date_end+'&mstockcardgoodsid='+this.mstockcardgoodsid+'&mstockcardwhouse='+this.mstockcardwhouse).then(function(res){
 				$('#loading_modal').modal('toggle');
@@ -150,26 +151,7 @@ const stockcardreport = new Vue({
             window.open('/admin-nano/reports/stockreport/export/csv?wh='+this.mstockcardwhouse+'&goods='+this.mstockcardgoodsid+'&start='+this.invoice_date_start+'&end='+this.invoice_date_end,'_blank');
         }
 	},
-	watch:{
-		invoice_date_start(){
-            $('#loading_modal').modal('toggle');
-            this.fetchStocks();
-        },
-        invoice_date_end(){
-            $('#loading_modal').modal('toggle');
-            this.fetchStocks();
-        },
-        mstockcardgoodsid(){
-        	$('#loading_modal').modal('toggle');
-            this.fetchStocks();
-        },
-        mstockcardwhouse(){
-        	$('#loading_modal').modal('toggle');
-            this.fetchStocks();
-        }
-	},
 	created(){
-		$('#loading_modal').modal('toggle');
 		this.fetchStocks();
 		this.fetchWarehouse();
 		this.fetchGoods();

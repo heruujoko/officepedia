@@ -159,6 +159,7 @@ const arreport = new Vue({
                 });
         },
         fetchArs(){
+            $('#loading_modal').modal('toggle');
             var self = this;
             Axios.get('/admin-api/arreport?start='+this.invoice_date_start+'&end='+this.invoice_date_end+'&cust='+this.selected_customer)
             .then(function(res){
@@ -200,24 +201,11 @@ const arreport = new Vue({
         }
     },
     watch:{
-        invoice_date_start(){
-            $('#loading_modal').modal('toggle');
-            this.fetchArs();
-        },
-        invoice_date_end(){
-            $('#loading_modal').modal('toggle');
-            this.fetchArs();
-        },
-        selected_customer(){
-            $('#loading_modal').modal('toggle');
-            this.fetchArs();
-        },
         selected_sort(){
             this.sortData();
         }
     },
     created(){
-        $('#loading_modal').modal('toggle');
         this.fetchConfig();
         this.fetchCustomers();
         this.fetchArs();

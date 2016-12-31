@@ -149,6 +149,7 @@ const purchasereportapp = new Vue({
 			});
         },
         fetchPurchases(){
+            $('#loading_modal').modal('toggle');
             var self = this;
 			Axios.get('/admin-api/purchasereport?goods='+this.selected_goods+'&wh='+this.selected_warehouse+'&spl='+this.selected_supplier+"&start="+this.invoice_date_start+"&end="+this.invoice_date_end).then(function(res){
                 $('#loading_modal').modal('toggle');
@@ -159,34 +160,7 @@ const purchasereportapp = new Vue({
 			})
         }
     },
-    watch:{
-        selected_goods(){
-            $('#loading_modal').modal('toggle');
-            this.fetchPurchases();
-        },
-        selected_supplier(){
-            $('#loading_modal').modal('toggle');
-            this.fetchPurchases();
-        },
-        selected_warehouse(){
-            $('#loading_modal').modal('toggle');
-            this.fetchPurchases();
-        },
-        selected_branch(){
-            $('#loading_modal').modal('toggle');
-            this.fetchPurchases();
-        },
-        invoice_date_end(){
-            $('#loading_modal').modal('toggle');
-            this.fetchPurchases();
-        },
-        invoice_date_start(){
-            $('#loading_modal').modal('toggle');
-            this.fetchPurchases();
-        }
-    },
     created(){
-        $('#loading_modal').modal('toggle');
         this.fetchBranches();
         this.fetchSuppliers();
         this.fetchGoods();

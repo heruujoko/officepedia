@@ -154,6 +154,7 @@ const stockvaluereport = new Vue({
 			});
 		},
         fetchStockValues(){
+            $('#loading_modal').modal('toggle');
             var self = this;
 			Axios.get('/admin-api/stockvalues?goods='+this.selected_goods+"&spl="+this.selected_supplier+"&end="+this.invoice_date_end).then(function(res){
 				$('#loading_modal').modal('toggle');
@@ -185,30 +186,8 @@ const stockvaluereport = new Vue({
             window.open('/admin-nano/reports/stockvalue/export/csv?goods='+this.selected_goods+"&spl="+this.selected_supplier+"&end="+this.invoice_date_end);
         }
     },
-    watch:{
-        selected_supplier(){
-            $('#loading_modal').modal('toggle');
-            this.fetchStockValues();
-        },
-        selected_goods(){
-            $('#loading_modal').modal('toggle');
-            this.fetchStockValues();
-        },
-        selected_warehouse(){
-            $('#loading_modal').modal('toggle');
-            this.fetchStockValues();
-        },
-        selected_branch(){
-            $('#loading_modal').modal('toggle');
-            this.fetchStockValues();
-        },
-        invoice_date_end(){
-            $('#loading_modal').modal('toggle');
-            this.fetchStockValues();
-        }
-    },
     created(){
-        $('#loading_modal').modal('toggle');
+        // $('#loading_modal').modal('toggle');
         this.fetchConfig();
         this.fetchSuppliers();
         this.fetchGoods();

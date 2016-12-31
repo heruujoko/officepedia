@@ -152,6 +152,7 @@ const invoicereport = new Vue({
                 });
         },
         fetchInvoices(){
+            $('#loading_modal').modal('toggle');
             var self = this;
             Axios.get('/admin-api/invoicereport?br='+this.selected_branch+"&wh="+this.selected_warehouse+"&goods="+this.selected_goods+'&start='+this.invoice_date_start+'&end='+this.invoice_date_end)
             .then(function(res){
@@ -199,26 +200,7 @@ const invoicereport = new Vue({
             window.open('/admin-nano/reports/invoicereport/export/csv?wh='+this.selected_warehouse+'&goods='+this.selected_goods+'&start='+this.invoice_date_start+'&end='+this.invoice_date_end,'_blank');
         }
     },
-    watch:{
-        selected_goods(){
-            $('#loading_modal').modal('toggle');
-            this.fetchInvoices();
-        },
-        selected_warehouse(){
-            $('#loading_modal').modal('toggle');
-            this.fetchInvoices();
-        },
-        invoice_date_start(){
-            $('#loading_modal').modal('toggle');
-            this.fetchInvoices();
-        },
-        invoice_date_end(){
-            $('#loading_modal').modal('toggle');
-            this.fetchInvoices();
-        }
-    },
     created(){
-        $('#loading_modal').modal('toggle');
         this.fetchConfig();
         this.fetchInvoices();
         this.fetchWarehouses();
