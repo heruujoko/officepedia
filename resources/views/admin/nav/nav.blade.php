@@ -69,6 +69,11 @@
         @else
           <li><a href="{{ url('admin-nano/purchaseinvoice') }}">Pembelian</a></li>
         @endif
+        @if($active == 'purchasequotation')
+          <li class="active"><a href="{{ url('admin-nano/purchasequotation') }}">Penawaran Pembelian</a></li>
+        @else
+          <li><a href="{{ url('admin-nano/purchasequotation') }}">Penawaran Pembelian</a></li>
+        @endif
         @if($active == 'payap')
           <li class="active"><a href="{{ url('admin-nano/payap') }}">Pembayaran Hutang Dagang</a></li>
         @else
