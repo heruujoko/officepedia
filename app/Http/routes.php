@@ -304,8 +304,10 @@ Route::group(['prefix'=>'admin-nano','middleware' => ['auth','tenantdb']],functi
   Route::get('cogshistory','Api\COGSHistoryController@index');
 
   Route::get('apdata','Api\APController@apdata');
+  Route::get('apsupplier/{id}','Api\APController@apsupplier');
   Route::get('ap/{id}','Api\APController@show');
   Route::get('coadata','Api\MCOAController@datalist');
+  Route::get('coadata/{parentcode}','Api\MCOAController@datalistaccount');
   Route::resource('payap','Api\PayApController');
   Route::get('payap/details/{invoice_no}','Api\PayApController@details');
 

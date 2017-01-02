@@ -149,6 +149,7 @@
     		</div>
     	</div>
     </div>
+
     <div v-bind:id="modal_id" class="modal" style="top: 15%;" tabindex="-1" role="dialog" data-keyboard="false" data-backdrop="static">
         <div class="modal-dialog">
             <div class="modal-content">

@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use App\MAPCard;
+use App\MSupplier;
 use Carbon\Carbon;
 use Auth;
 use DB;
@@ -111,5 +112,22 @@ class APController extends Controller
 
         return response()->json($apdata);
 
+    }
+
+    public function apsupplier($supplier_id){
+        $spl = MSupplier::on(Auth::user()->db_name)->where('id',$supplier_id)->first();
+        $group_supplier_ap = MAPCard::on(Auth::user()->db_name)->where('mapcardsupplierid',$spl->msupplierid)->groupBy('mapcardtransno')->get();
+
+        foreach($group_supplier_ap as $ap){
+            $aps = MAPCard::on(Auth::user()->db_name)->where('mapcardtransno',$ap->mapcardtransno)->get();
+            $paid =0;
+            foreach($aps as $detail){
+                $paid += $detail->mapcardpayamount;
+            }
+            $ap['paid_total'] = $paid;
+            $ap['outstanding_total'] = $ap->mapcardtotalinv - $paid;
+        }
+
+        return response()->json($group_supplier_ap);
     }
 }
