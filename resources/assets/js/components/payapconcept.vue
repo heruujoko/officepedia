@@ -187,10 +187,13 @@
                         <button v-on:click="dismissModal" type="button" class="btn btn-default" data-dismiss="modal">
                               Cancel
                         </button>
-                        <button v-if="detail_state == 'insert'" type="button" class="btn btn-primary" @click="AddPaymentDetail">
+                        <button type="button" class="btn btn-default" @click="clearPaymentDetail">
+                              Hapus
+                        </button>
+                        <button v-if="detail_state == 'insert'" type="button" class="btn btn-primary" @click="addPaymentDetail">
                               Lanjut
                         </button>
-                        <button v-if="detail_state == 'edit'" type="button" class="btn btn-primary" >
+                        <button v-if="detail_state == 'edit'" type="button" class="btn btn-primary" @click="updatePaymentDetail">
                               Simpan
                         </button>
                     </div>
@@ -388,7 +391,7 @@
                 this.detail_bank_pay = 0
                 $('#'+this.modal_id).modal('toggle');
             },
-            AddPaymentDetail(){
+            addPaymentDetail(){
                 let payment = this.detail_ap;
                 payment['payments'] = {
                     cash: {
@@ -405,6 +408,44 @@
                 aps.checked = true;
                 aps.payamount = parseInt(this.detail_cash_pay) + parseInt(this.detail_bank_pay)
                 this.invoice_aps.push(payment);
+                this.$set(this.aps,index,aps);
+                this.dismissModal()
+            },
+            updatePaymentDetail(){
+                let payment = this.detail_ap;
+                payment['payments'] = {
+                    cash: {
+                        coa: this.detail_cash_coa,
+                        amount: this.detail_cash_pay
+                    },
+                    bank: {
+                        coa: this.detail_bank_coa,
+                        amount: this.detail_bank_pay
+                    }
+                };
+                let aps = _.find(this.aps,{id: parseInt(this.detail_ap.id)});
+                let index = _.findIndex(this.aps,{ id: parseInt(this.detail_ap.id)});
+                aps.checked = true;
+                aps.payamount = parseInt(this.detail_cash_pay) + parseInt(this.detail_bank_pay)
+
+                let index_invoice_aps = _.findIndex(this.invoice_aps,{id: parseInt(this.detail_ap.id)});
+                this.invoice_aps[index_invoice_aps] = payment
+
+                this.$set(this.aps,index,aps);
+                this.dismissModal()
+
+            },
+            clearPaymentDetail(){
+                let index_invoice_aps = _.findIndex(this.invoice_aps,{id: parseInt(this.detail_ap.id)});
+                // remove at index_invoice_aps
+                this.invoice_aps.splice(index_invoice_aps,1);
+                console.log(this.detail_ap.id);
+                let aps = _.find(this.aps,{id: parseInt(this.detail_ap.id)});
+                let index = _.findIndex(this.aps,{ id: parseInt(this.detail_ap.id)});
+                console.log('aps');
+                console.log(aps);
+                aps.checked = false;
+                aps.payamount = 0;
                 this.$set(this.aps,index,aps);
                 this.dismissModal()
             },
