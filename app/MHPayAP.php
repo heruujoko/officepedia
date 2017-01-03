@@ -80,7 +80,7 @@ class MHPayAP extends Model
 
             foreach($request->aps as $ap){
 
-                $old_ap = MAPCard::on(Auth::user()->db_name)->where('id',$ap['id'])->first();
+                $old_ap = MAPCard::on(Auth::user()->db_name)->where('mapcardtransno',$ap['mapcardtransno'])->get()->last();
 
                 $detail = new MDPayAP;
                 $detail->setConnection(Auth::user()->db_name);
@@ -123,15 +123,33 @@ class MHPayAP extends Model
                 $detail->mdpayap_apref = $new_ap->id;
                 $detail->save();
 
-                $coa_cash = MCOA::on(Auth::user()->db_name)->where('mcoacode',$detail->mdpayapcashcoa)->first();
+                // if payment with cash
 
-                // update journal
-                MJournal::record_journal($header->mhpayapno,'Pembayaran Hutang',$coa,$header->mhpayappayamount,0,"");
-                MJournal::record_journal($header->mhpayapno,'Pembayaran Hutang',$detail->mdpayapcashcoa,0,$detail->mdpayapcashamount,"");
+                if($detail->mdpayapcashcoa != ""){
+                    $coa_cash = MCOA::on(Auth::user()->db_name)->where('mcoacode',$detail->mdpayapcashcoa)->first();
 
-                // update coa saldo
-                $coa_cash->update_saldo('-',$detail->mdpayapcashamount);
-                $coa_ap->update_saldo('-',$detail->mdpayapcashamount);
+                    // update journal
+                    MJournal::record_journal($header->mhpayapno,'Pembayaran Hutang',$coa,$detail->mdpayapcashamount,0,"",$detail->id,"");
+                    MJournal::record_journal($header->mhpayapno,'Pembayaran Hutang',$detail->mdpayapcashcoa,0,$detail->mdpayapcashamount,"",$detail->id,"");
+
+                    // update coa saldo
+                    $coa_cash->update_saldo('-',$detail->mdpayapcashamount);
+                    $coa_ap->update_saldo('-',$detail->mdpayapcashamount);
+                }
+
+                // if payment with bank
+
+                if($detail->mdpayapbankcoa != ""){
+                    $coa_bank = MCOA::on(Auth::user()->db_name)->where('mcoacode',$detail->mdpayapbankcoa)->first();
+
+                    // update journal
+                    MJournal::record_journal($header->mhpayapno,'Pembayaran Hutang',$coa,$detail->mdpayapbankamount,0,"",$detail->id,"");
+                    MJournal::record_journal($header->mhpayapno,'Pembayaran Hutang',$detail->mdpayapbankcoa,0,$detail->mdpayapbankamount,"",$detail->id,"");
+
+                    // update coa saldo
+                    $coa_bank->update_saldo('-',$detail->mdpayapbankamount);
+                    $coa_ap->update_saldo('-',$detail->mdpayapbankamount);
+                }
 
             }
 
@@ -139,7 +157,6 @@ class MHPayAP extends Model
             return 'ok';
         } catch(\Exception $e){
             DB::connection(Auth::user()->db_name)->rollBack();
-            dd($e);
             return "err";
         }
     }
@@ -151,18 +168,11 @@ class MHPayAP extends Model
             $conf = MConfig::on(Auth::user()->db_name)->where('id',1)->first();
             $coa = $conf->msyspayapaccount;
             $coa_ap = MCOA::on(Auth::user()->db_name)->where('mcoacode',$coa)->first();
-            $coa_bank = MCOA::on(Auth::user()->db_name)->where('id',$header->mhpayapbank)->first();
-
             $header = MHPayAP::on(Auth::user()->db_name)->where('id',$this->id)->first();
-
-            // reset coa saldo
-            $coa_ap->update_saldo('+',$header->mhpayappayamount);
-            $coa_bank->update_saldo('+',$header->mhpayappayamount);
 
             $header->mhpayapsupplierno = MSupplier::on(Auth::user()->db_name)->where('id',$request->invoice_supplier)->first()->msupplierid;
             $header->mhpayapsuppliername = MSupplier::on(Auth::user()->db_name)->where('id',$request->invoice_supplier)->first()->msuppliername;
             $header->mhpayapdate = Carbon::parse($request->invoice_date);
-            $header->mhpayapbank = $request->invoice_bank;
             $header->mhpayaprefno = $request->invoice_ref_no;
             $header->mhpayapcheckno = $request->invoice_check_no;
             $header->mhpayappayamount = $request->total_pay;
@@ -181,9 +191,18 @@ class MHPayAP extends Model
 
             foreach ($request->aps as $ap) {
                 if(array_key_exists('mdpayaptransno',$ap)){
+
                     $detail = MDPayAP::on(Auth::user()->db_name)->where('mhpayapno',$header->mhpayapno)->where('mdpayaptransno',$ap['mdpayaptransno'])->first();
                     $old_ap = MAPCard::on(Auth::user()->db_name)->where('id',$ap['mdpayap_apref'])->first();
                     $last_pay = $detail->mdpayapinvoicepayamount;
+
+                    // reset coa saldo
+                    $coa_cash = MCOA::on(Auth::user()->db_name)->where('mcoacode',$detail->mdpayapcashcoa)->first();
+                    $coa_ap->update_saldo('+',$detail->mdpayapcashamount);
+                    $coa_cash->update_saldo('+',$detail->mdpayapcashamount);
+                    $coa_bank = MCOA::on(Auth::user()->db_name)->where('mcoacode',$detail->mdpayapbankcoa)->first();
+                    $coa_ap->update_saldo('+',$detail->mdpayapbankamount);
+                    $coa_bank->update_saldo('+',$detail->mdpayapbankamount);
 
                     $detail->mhpayapno = $header->mhpayapno;
                     $detail->mdpayaptransno = $old_ap->mapcardtransno;
@@ -196,6 +215,12 @@ class MHPayAP extends Model
                     $detail->mdpayapusername = Auth::user()->name;
                     $detail->mdpayapeventdate = Carbon::now();
                     $detail->mdpayapeventtime = Carbon::now();
+
+                    $detail->mdpayapcashcoa = $ap['payments']['cash']['coa'];
+                    $detail->mdpayapcashamount = $ap['payments']['cash']['amount'];
+                    $detail->mdpayapbankcoa = $ap['payments']['bank']['coa'];
+                    $detail->mdpayapbankamount = $ap['payments']['bank']['amount'];
+
                     $detail->void = 0;
                     $detail->save();
 
@@ -238,6 +263,32 @@ class MHPayAP extends Model
                     $new_ap->void = 0;
                     $new_ap->save();
 
+                    // update journal
+                    $this_transaction_journal = MJournal::on(Auth::user()->db_name)->where('mdpayap_ref',$detail->id)->get();
+                    // there will be 4 records
+
+                    // the first two is for cash payment
+                    $this_transaction_journal[0]->mjournaldebit = $detail->mdpayapcashamount;
+                    $this_transaction_journal[1]->mjournalcredit = $detail->mdpayapcashamount;
+                    $this_transaction_journal[1]->mjournalcoa = $detail->mdpayapcashcoa;
+                    $this_transaction_journal[0]->save();
+                    $this_transaction_journal[1]->save();
+
+                    // the next two is for bank payment
+                    $this_transaction_journal[2]->mjournaldebit = $detail->mdpayapbankamount;
+                    $this_transaction_journal[3]->mjournalcredit = $detail->mdpayapbankamount;
+                    $this_transaction_journal[3]->mjournalcoa = $detail->mdpayapbankcoa;
+                    $this_transaction_journal[2]->save();
+                    $this_transaction_journal[3]->save();
+
+                    // update coa saldo
+                    $coa_cash = MCOA::on(Auth::user()->db_name)->where('mcoacode',$detail->mdpayapcashcoa)->first();
+                    $coa_ap->update_saldo('-',$detail->mdpayapcashamount);
+                    $coa_cash->update_saldo('-',$detail->mdpayapcashamount);
+                    $coa_bank = MCOA::on(Auth::user()->db_name)->where('mcoacode',$detail->mdpayapbankcoa)->first();
+                    $coa_ap->update_saldo('-',$detail->mdpayapbankamount);
+                    $coa_bank->update_saldo('-',$detail->mdpayapbankamount);
+
                 } else {
                     // is a new detail
                     $old_ap = MAPCard::on(Auth::user()->db_name)->where('id',$ap['id'])->first();
@@ -255,6 +306,10 @@ class MHPayAP extends Model
                     $detail->mdpayapusername = Auth::user()->name;
                     $detail->mdpayapeventdate = Carbon::now();
                     $detail->mdpayapeventtime = Carbon::now();
+                    $detail->mdpayapcashcoa = $ap['payments']['cash']['coa'];
+                    $detail->mdpayapcashamount = $ap['payments']['cash']['amount'];
+                    $detail->mdpayapbankcoa = $ap['payments']['bank']['coa'];
+                    $detail->mdpayapbankamount = $ap['payments']['bank']['amount'];
                     $detail->save();
 
                     $new_ap = new MAPCard;
@@ -278,6 +333,34 @@ class MHPayAP extends Model
 
                     $detail->mdpayap_apref = $new_ap->id;
                     $detail->save();
+
+                    // if payment with cash
+
+                    if($detail->mdpayapcashcoa != ""){
+                        $coa_cash = MCOA::on(Auth::user()->db_name)->where('mcoacode',$detail->mdpayapcashcoa)->first();
+
+                        // update journal
+                        MJournal::record_journal($header->mhpayapno,'Pembayaran Hutang',$coa,$detail->mdpayapcashamount,0,"",$detail->id,"");
+                        MJournal::record_journal($header->mhpayapno,'Pembayaran Hutang',$detail->mdpayapcashcoa,0,$detail->mdpayapcashamount,"",$detail->id,"");
+
+                        // update coa saldo
+                        $coa_cash->update_saldo('-',$detail->mdpayapcashamount);
+                        $coa_ap->update_saldo('-',$detail->mdpayapcashamount);
+                    }
+
+                    // if payment with bank
+
+                    if($detail->mdpayapbankcoa != ""){
+                        $coa_bank = MCOA::on(Auth::user()->db_name)->where('mcoacode',$detail->mdpayapbankcoa)->first();
+
+                        // update journal
+                        MJournal::record_journal($header->mhpayapno,'Pembayaran Hutang',$coa,$detail->mdpayapbankamount,0,"",$detail->id,"");
+                        MJournal::record_journal($header->mhpayapno,'Pembayaran Hutang',$detail->mdpayapbankcoa,0,$detail->mdpayapbankamount,"",$detail->id,"");
+
+                        // update coa saldo
+                        $coa_bank->update_saldo('-',$detail->mdpayapbankamount);
+                        $coa_ap->update_saldo('-',$detail->mdpayapbankamount);
+                    }
                 }
             }
 
@@ -289,6 +372,23 @@ class MHPayAP extends Model
                 $detail = MDPayAP::on(Auth::user()->db_name)->where('mhpayapno',$header->mhpayapno)->where('mdpayaptransno',$v->mdpayaptransno)->first();
 
                 $last_pay = $detail->mdpayapinvoicepayamount;
+
+                // reset coa saldo
+                $coa_cash = MCOA::on(Auth::user()->db_name)->where('mcoacode',$detail->mdpayapcashcoa)->first();
+                $coa_ap->update_saldo('+',$detail->$detail->mdpayapcashamount);
+                $coa_cash->update_saldo('+',$detail->$detail->mdpayapcashamount);
+
+                $coa_bank = MCOA::on(Auth::user()->db_name)->where('mcoacode',$detail->mdpayapbankcoa)->first();
+                $coa_ap->update_saldo('+',$detail->$detail->mdpayapbankamount);
+                $coa_bank->update_saldo('+',$detail->$detail->mdpayapbankamount);
+
+                // update journal
+                $this_transaction_journal = MJournal::on(Auth::user()->db_name)->where('mdpayap_ref',$detail->id)->get();
+                // there will be 4 records
+                foreach ($this_transaction_journal as $journal) {
+                    $journal->void = 1;
+                    $journal->save();
+                }
 
                 // reset AP
                 $new_ap = new MAPCard;
@@ -311,22 +411,11 @@ class MHPayAP extends Model
                 $new_ap->save();
             }
 
-            // update journal
-            $last_details_journal = MJournal::on(Auth::user()->db_name)->where('mjournaltransno',$header->mhpayapno)->where('mjournaltranstype','Pembayaran Hutang')->get();
-            $last_details_journal[0]->mjournaldebit = $header->mhpayappayamount;
-            $last_details_journal[0]->save();
-            $last_details_journal[1]->mjournalcredit = $header->mhpayappayamount;
-            $last_details_journal[1]->save();
-
-            // reset coa saldo
-            $coa_ap->update_saldo('-',$header->mhpayappayamount);
-            $coa_bank->update_saldo('-',$header->mhpayappayamount);
-
             DB::connection(Auth::user()->db_name)->commit();
             return 'ok';
         } catch(\Exception $e){
             DB::connection(Auth::user()->db_name)->rollBack();
-            var_dump($e);
+            dd($e);
             return "err";
         }
     }

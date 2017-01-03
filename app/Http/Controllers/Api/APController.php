@@ -117,7 +117,7 @@ class APController extends Controller
     public function apsupplier($supplier_id){
         $spl = MSupplier::on(Auth::user()->db_name)->where('id',$supplier_id)->first();
         $group_supplier_ap = MAPCard::on(Auth::user()->db_name)->where('mapcardsupplierid',$spl->msupplierid)->groupBy('mapcardtransno')->get();
-
+        $supplier_per_ap = [];
         foreach($group_supplier_ap as $ap){
             $aps = MAPCard::on(Auth::user()->db_name)->where('mapcardtransno',$ap->mapcardtransno)->get();
             $paid =0;
@@ -126,8 +126,11 @@ class APController extends Controller
             }
             $ap['paid_total'] = $paid;
             $ap['outstanding_total'] = $ap->mapcardtotalinv - $paid;
+
+            array_push($supplier_per_ap,$ap);
+
         }
 
-        return response()->json($group_supplier_ap);
+        return response()->json($supplier_per_ap);
     }
 }

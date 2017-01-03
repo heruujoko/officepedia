@@ -158,7 +158,7 @@
                                       <div class="form-group">
                                         <label class="col-md-2 control-label">Bayar</label>
                                         <div class="col-md-8">
-                                          <input class="form-control" type="text" v-model="detail_cash_pay" v-priceformatsatuan="num_format" style="text-align:right">
+                                          <input class="form-control" type="text" v-model="detail_cash_pay" v-priceformatcash="num_format" style="text-align:right">
                                         </div>
                                       </div>
                                   </div>
@@ -169,14 +169,22 @@
                           <br>
                           <div class="row">
                               <div class="col-md-12">
-                                  <div class="form-group">
-                                    <label class="col-md-2 control-label">Akun</label>
-                                    <div class="col-md-8">
-                                      <select id="select_cash" v-selecttwo="coa_label" v-model="detail_bank_coa">
-                                        <option></option>
-                                        <option v-for="ca in banks" :value="ca.mcoacode">{{ ca.mcoacode }} - {{ ca.mcoaname }}</option>
-                                      </select>
-                                    </div>
+                                  <div class="form form-horizontal">
+                                      <div class="form-group">
+                                        <label class="col-md-2 control-label">Akun</label>
+                                        <div class="col-md-8">
+                                          <select v-bind:id="select_bank_id" v-selecttwo="coa_label" v-model="detail_bank_coa">
+                                            <option></option>
+                                            <option v-for="ca in banks" :value="ca.mcoacode">{{ ca.mcoacode }} - {{ ca.mcoaname }}</option>
+                                          </select>
+                                        </div>
+                                      </div>
+                                      <div class="form-group">
+                                        <label class="col-md-2 control-label">Bayar</label>
+                                        <div class="col-md-8">
+                                          <input class="form-control" type="text" v-model="detail_bank_pay" v-priceformatbank="num_format" style="text-align:right">
+                                        </div>
+                                      </div>
                                   </div>
                               </div>
                           </div>
@@ -266,6 +274,9 @@
             select_cash_id(){
                 return this.mode+"_select_cash";
             },
+            select_bank_id(){
+                return this.mode+"_select_bank";
+            },
             coa_label(){
                 return "Pilih Akun";
             },
@@ -349,10 +360,14 @@
                         res.data[i].checked = false;
                     }
                     this.aps = res.data;
-                    $('#'+this.loading_id).modal('toggle');
+                    if(this.mode == "insert"){
+                        $('#'+this.loading_id).modal('toggle');
+                    }
                 })
                 .catch(() => {
-                    $('#'+this.loading_id).modal('toggle');
+                    if(this.mode == "insert"){
+                        $('#'+this.loading_id).modal('toggle');
+                    }
                 });
             },
             openDialog(id){
@@ -363,21 +378,26 @@
                 $('#'+this.modal_id).modal('toggle');
             },
             editDialog(id){
+                console.log("open "+id);
                 let ap = _.find(this.invoice_aps,{id: parseInt(id)});
                 this.detail_ap = ap;
                 $('#'+this.modal_id).modal('toggle');
                 console.log(this.detail_ap.payments.cash.coa);
                 this.detail_cash_coa = this.detail_ap.payments.cash.coa;
-                console.log("nih");
-                console.log(this.detail_cash_coa);
+                this.detail_bank_coa = this.detail_ap.payments.bank.coa;
                 this.detail_cash_pay = ap.payments.cash.amount;
+                this.detail_bank_pay = ap.payments.bank.amount;
                 this.detail_state = "edit"
                 $('#'+this.select_cash_id).val(this.detail_cash_coa);
                 $('#'+this.select_cash_id).trigger('change');
+                $('#'+this.select_bank_id).val(this.detail_bank_coa);
+                $('#'+this.select_bank_id).trigger('change');
             },
             validateChekedItem(id){
                 let ap = _.find(this.aps,{id: parseInt(id)});
-                if(ap.checked){
+                console.log(ap);
+                console.log('cheked '+ap.checked);
+                if(ap.checked == true){
                     this.editDialog(id);
                 } else {
                     this.openDialog(id);
@@ -449,7 +469,6 @@
                 this.$set(this.aps,index,aps);
                 this.dismissModal()
             },
-            updateInvoice(){},
             saveInvoice(){
                 // save header and detail to api
 
@@ -486,18 +505,119 @@
                       timer: 1000
                     });
                 })
-            }
+            },
+            fetchInvoiceData(id){
+                Axios.get('/admin-api/payap/'+id)
+                .then((res) => {
+                    this.invoice_date = res.data.mhpayapdate
+                    this.invoice_ref_no = res.data.mhpayaprefno
+                    this.invoice_check_no = res.data.mhpayapcheckno
+
+                    let supplier_id = _.find(this.suppliers,{msupplierid: res.data.mhpayapsupplierno}).id;
+                    this.invoice_supplier = supplier_id
+                    this.fetchDetailData(res.data.mhpayapno);
+                })
+                .catch((res) => {
+                    console.log('err');
+                })
+            },
+            fetchDetailData(invoice_no){
+                Axios.get('/admin-api/payap/details/'+invoice_no)
+                .then((res) => {
+                    this.invoice_aps = [];
+                    for(let i=0;i<res.data.length;i++){
+                        res.data[i].payamount = res.data[i].mdpayapinvoicepayamount;
+                        res.data[i].mapcardtdate = res.data[i].mdpayapinvoicedate;
+                        res.data[i].mapcardtotalinv = res.data[i].mdpayapinvoicetotal;
+                        res.data[i].mapcardoutstanding = res.data[i].mdpayapinvoiceoutstanding;
+                        res.data[i].mapcardtransno = res.data[i].mdpayaptransno;
+                        res.data[i].payments = {
+                            cash: {
+                                amount: res.data[i].mdpayapcashamount,
+                                coa: res.data[i].mdpayapcashcoa
+                            },
+                            bank: {
+                                amount: res.data[i].mdpayapbankamount,
+                                coa: res.data[i].mdpayapbankcoa
+                            }
+                        };
+                        this.invoice_aps.push(res.data[i]);
+                        let ap;
+                        if(this.aps.length < 1){
+                            setTimeout(() => {
+                                ap = _.find(this.aps,{ mapcardtransno: res.data[i].mapcardtransno});
+                                let index = _.findIndex(this.aps,{ mapcardtransno: res.data[i].mapcardtransno});
+                                ap.checked = true;
+                                ap.id = res.data[i].id;
+                                ap.payamount = res.data[i].payamount;
+                                this.$set(this.aps,index,ap);
+                                $('#'+this.loading_id).modal('toggle');
+                            },1000);
+                        } else {
+                            ap = _.find(this.aps,{ mapcardtransno: res.data[i].mapcardtransno});
+                            let index = _.findIndex(this.aps,{ mapcardtransno: res.data[i].mapcardtransno});
+                            ap.checked = true;
+                            ap.id = res.data[i].id;
+                            ap.payamount = res.data[i].payamount;
+                            this.$set(this.aps,index,ap);
+                            $('#'+this.loading_id).modal('toggle');
+                        }
+                    }
+                });
+            },
+            updateInvoice(){
+                // update header and detail to api
+
+                let invoice = {
+                    invoice_auto: this.invoice_auto,
+                    invoice_supplier: this.invoice_supplier,
+                    invoice_date: this.invoice_date,
+                    invoice_ref_no: this.invoice_ref_no,
+                    invoice_check_no: this.invoice_check_no,
+                    total_pay: this.total_pay_amount,
+                    discount: 0,
+                    total_invoice: this.total_invoice,
+                    aps: this.invoice_aps
+                };
+
+                console.log(invoice);
+
+                $('#'+this.loading_id).modal('toggle');
+                Axios.put('/admin-api/payap/'+this.editinvoiceid,invoice)
+                .then((res) => {
+                    $('#'+this.loading_id).modal('toggle');
+                })
+                .catch((res) => {
+                    $('#'+this.loading_id).modal('toggle');
+                    swal({
+                      title: "Oops!",
+                      text: "Transaksi gagal, periksa kembali input",
+                      type: "error",
+                      timer: 1000
+                    });
+                })
+            },
         },
         watch:{
             invoice_supplier(){
-                $('#'+this.loading_id).modal('toggle');
+                if(this.mode == "insert"){
+                    $('#'+this.loading_id).modal('toggle');
+                }
                 this.fetchSupplierAP()
             }
         },
-        mounted(){
+        created(){
             this.fetchCash()
             this.fetchBanks()
             this.fetchSuppliers()
+            if(this.mode == "edit"){
+                this.$parent.$on('edit-selected',(id) => {
+                console.log(id+"edit");
+                this.editinvoiceid = id;
+                $('#'+this.loading_id).modal('toggle');
+                this.fetchInvoiceData(id);
+              });
+            }
         }
     }
 </script>
