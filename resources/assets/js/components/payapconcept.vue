@@ -92,7 +92,7 @@
                       <td>{{ item.mapcardtdate }}</td>
                       <td>{{ item.mapcardduedate }}</td>
                       <td v-priceformatlabel="num_format">{{ item.mapcardtotalinv }}</td>
-                      <td v-priceformatlabel="num_format">{{ item.paid }}</td>
+                      <td v-priceformatlabel="num_format">{{ item.paid_total }}</td>
                       <td v-priceformatlabel="num_format">{{ item.outstanding_total }}</td>
                       <td v-priceformatlabel="num_format">{{ item.payamount }}</td>
                     </tr>
@@ -396,17 +396,18 @@
                 payment['payments'] = {
                     cash: {
                         coa: this.detail_cash_coa,
-                        amount: this.detail_cash_pay
+                        amount: numeral().unformat(this.detail_cash_pay)
                     },
                     bank: {
                         coa: this.detail_bank_coa,
-                        amount: this.detail_bank_pay
+                        amount: numeral().unformat(this.detail_bank_pay)
                     }
                 };
+                console.log(payment.payments);
                 let aps = _.find(this.aps,{id: parseInt(this.detail_ap.id)});
                 let index = _.findIndex(this.aps,{ id: parseInt(this.detail_ap.id)});
                 aps.checked = true;
-                aps.payamount = parseInt(this.detail_cash_pay) + parseInt(this.detail_bank_pay)
+                aps.payamount = payment.payments.cash.amount + payment.payments.bank.amount
                 this.invoice_aps.push(payment);
                 this.$set(this.aps,index,aps);
                 this.dismissModal()
@@ -416,17 +417,17 @@
                 payment['payments'] = {
                     cash: {
                         coa: this.detail_cash_coa,
-                        amount: this.detail_cash_pay
+                        amount: numeral().unformat(this.detail_cash_pay)
                     },
                     bank: {
                         coa: this.detail_bank_coa,
-                        amount: this.detail_bank_pay
+                        amount: numeral().unformat(this.detail_bank_pay)
                     }
                 };
                 let aps = _.find(this.aps,{id: parseInt(this.detail_ap.id)});
                 let index = _.findIndex(this.aps,{ id: parseInt(this.detail_ap.id)});
                 aps.checked = true;
-                aps.payamount = parseInt(this.detail_cash_pay) + parseInt(this.detail_bank_pay)
+                aps.payamount = payment.payments.cash.amount + payment.payments.bank.amount
 
                 let index_invoice_aps = _.findIndex(this.invoice_aps,{id: parseInt(this.detail_ap.id)});
                 this.invoice_aps[index_invoice_aps] = payment
@@ -439,18 +440,53 @@
                 let index_invoice_aps = _.findIndex(this.invoice_aps,{id: parseInt(this.detail_ap.id)});
                 // remove at index_invoice_aps
                 this.invoice_aps.splice(index_invoice_aps,1);
-                console.log(this.detail_ap.id);
+
                 let aps = _.find(this.aps,{id: parseInt(this.detail_ap.id)});
                 let index = _.findIndex(this.aps,{ id: parseInt(this.detail_ap.id)});
-                console.log('aps');
-                console.log(aps);
+
                 aps.checked = false;
                 aps.payamount = 0;
                 this.$set(this.aps,index,aps);
                 this.dismissModal()
             },
             updateInvoice(){},
-            saveInvoice(){}
+            saveInvoice(){
+                // save header and detail to api
+
+                let invoice = {
+                    invoice_auto: this.invoice_auto,
+                    invoice_supplier: this.invoice_supplier,
+                    invoice_date: this.invoice_date,
+                    invoice_ref_no: this.invoice_ref_no,
+                    invoice_check_no: this.invoice_check_no,
+                    total_pay: this.total_pay_amount,
+                    discount: 0,
+                    total_invoice: this.total_invoice,
+                    aps: this.invoice_aps
+                };
+
+                console.log(invoice);
+
+                $('#'+this.loading_id).modal('toggle');
+                Axios.post('/admin-api/payap',invoice)
+                .then((res) => {
+                    $('#'+this.loading_id).modal('toggle');
+                    swal({
+                      title: "Input Berhasil!",
+                      type: "success",
+                      timer: 1000
+                    });
+                }).
+                catch((res) => {
+                    $('#'+this.loading_id).modal('toggle');
+                    swal({
+                      title: "Oops!",
+                      text: "Transaksi gagal, periksa kembali input",
+                      type: "error",
+                      timer: 1000
+                    });
+                })
+            }
         },
         watch:{
             invoice_supplier(){
