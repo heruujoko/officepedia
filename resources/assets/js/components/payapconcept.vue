@@ -552,6 +552,7 @@
                                 ap.payamount = res.data[i].payamount;
                                 this.$set(this.aps,index,ap);
                                 $('#'+this.loading_id).modal('toggle');
+                                this.$forceUpdate();
                             },1000);
                         } else {
                             ap = _.find(this.aps,{ mapcardtransno: res.data[i].mapcardtransno});
@@ -561,6 +562,7 @@
                             ap.payamount = res.data[i].payamount;
                             this.$set(this.aps,index,ap);
                             $('#'+this.loading_id).modal('toggle');
+                            this.$forceUpdate();
                         }
                     }
                 });
@@ -597,6 +599,12 @@
                     });
                 })
             },
+            resetChecked(){
+                for(let i=0;i<this.aps.length;i++){
+                    this.aps[i].checked = false;
+                }
+                console.log('reset checked');
+            }
         },
         watch:{
             invoice_supplier(){
@@ -613,6 +621,7 @@
             if(this.mode == "edit"){
                 this.$parent.$on('edit-selected',(id) => {
                 console.log(id+"edit");
+                this.resetChecked();
                 this.editinvoiceid = id;
                 $('#'+this.loading_id).modal('toggle');
                 this.fetchInvoiceData(id);
