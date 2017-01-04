@@ -288,6 +288,7 @@ Route::group(['prefix'=>'admin-nano','middleware' => ['auth','tenantdb']],functi
   Route::resource('purchaseinvoice','Api\PurchaseController');
   Route::resource('muser','Api\MUserController');
   Route::resource('purchasequotation','Api\PurchasequotationController');
+  Route::resource('purchasequotation/details/{inv}','Api\PurchasequotationController@details');
 
   Route::get('mstockcardreport','Api\MStockcardreportController@filter');
 

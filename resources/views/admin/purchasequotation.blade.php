@@ -335,8 +335,7 @@
         confirmButtonText: "Iya, Hapus!",
         cancelButtonText: "Tidak, Batal!",
         closeOnConfirm: false,
-        closeOnCancel: false,
-        timer: 1500
+        closeOnCancel: false
       },
       function(isconfirm){
         if (isconfirm) {

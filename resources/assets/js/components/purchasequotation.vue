@@ -1,4 +1,4 @@
-r<template>
+<template>
   <div>
     <div class="row" v-show="mode != 'insert'" v-on:click="toInsertMode">
         <button class="btn btn-default pull-right" style="margin-right:4%">Kembali</button>
@@ -920,10 +920,11 @@ r<template>
           Axios.get('/admin-api/purchasequotation/'+id)
           .then((res) => {
             let data = res.data;
-            this.invoice_date = moment(data.mhpurchasedate).format('L');
+
+            this.invoice_date = moment(data.mhpurchasequotationdate).format('L');
             //find suppliers
             
-            let spl = _.find(this.suppliers, { msupplierid: data.mhpurchasequotationsupplierid});
+            let spl = _.find(this.suppliers, { msupplierid: res.data.mhpurchasequotationsupplierid});
             
             self.invoice_supplier = spl.id+"";
             
@@ -936,31 +937,31 @@ r<template>
           });
       },
       fetchDetailData(inv){
-        Axios.get('/admin-api/purchaseinvoice/details/'+inv)
+        Axios.get('/admin-api/purchasequotation/details/'+inv)
         .then((res) => {
             console.log(res.data);
           for(var i=0;i<res.data.length;i++){
             var item = {
-              id: _.find(this.goods,{ mgoodscode: res.data[i].mdpurchasegoodsid}).id,
+              id: _.find(this.goods,{ mgoodscode: res.data[i].mdpurchasequotationgoodsid}).id,
               subtotal: 0,
-              disc: res.data[i].mdpurchasegoodsdiscount,
-              goods: _.find(this.goods,{ mgoodscode: res.data[i].mdpurchasegoodsid}),
+              disc: res.data[i].mdpurchasequotationgoodsdiscount,
+              goods: _.find(this.goods,{ mgoodscode: res.data[i].mdpurchasequotationgoodsid}),
             //   tax: res.data[i].mdpurchasegoodstax,
                 tax: 0,
               warehouse: 0,
               saved_unit: res.data[i].saved_unit+""
             };
-
+            
             // converted units
-            item.detail_goods_unit3 = res.data[i].mdpurchasegoodsunit3;
-            item.detail_goods_unit3_conv = res.data[i].mdpurchasegoodsunit3conv;
-            item.detail_goods_unit3_label = res.data[i].mdpurchasegoodsunit3label;
-            item.detail_goods_unit2 = res.data[i].mdpurchasegoodsunit2;
-            item.detail_goods_unit2_conv = res.data[i].mdpurchasegoodsunit2conv;
-            item.detail_goods_unit2_label = res.data[i].mdpurchasegoodsunit2label;
-            item.detail_goods_unit1 = res.data[i].mdpurchasegoodsunit1;
-            item.detail_goods_unit1_conv = res.data[i].mdpurchasegoodsunit1conv;
-            item.detail_goods_unit1_label = res.data[i].mdpurchasegoodsunit1label;
+            item.detail_goods_unit3 = res.data[i].mdpurchasequotationgoodsunit3;
+            item.detail_goods_unit3_conv = res.data[i].mdpurchasequotationgoodsunit3conv;
+            item.detail_goods_unit3_label = res.data[i].mdpurchasequotationgoodsunit3label;
+            item.detail_goods_unit2 = res.data[i].mdpurchasequotationgoodsunit2;
+            item.detail_goods_unit2_conv = res.data[i].mdpurchasequotationgoodsunit2conv;
+            item.detail_goods_unit2_label = res.data[i].mdpurchasequotationgoodsunit2label;
+            item.detail_goods_unit1 = res.data[i].mdpurchasequotationgoodsunit1;
+            item.detail_goods_unit1_conv = res.data[i].mdpurchasequotationgoodsunit1conv;
+            item.detail_goods_unit1_label = res.data[i].mdpurchasequotationgoodsunit1label;
 
             let usage_label = ""
             if(item.detail_goods_unit3 != 0){
@@ -974,12 +975,12 @@ r<template>
             }
 
             item.usage_label = usage_label;
-            item.buy_price = res.data[i].mdpurchasebuyprice;
+            item.buy_price = res.data[i].mdpurchasequotationbuyprice;
 
-            item.usage = res.data[i].mdpurchasegoodsqty;
-            item.goods.mgoodsname = res.data[i].mdpurchasegoodsname;
-            item.goods.mgoodscode = res.data[i].mdpurchasegoodsid;
-            item.goods.mgoodspriceout = this.goodsPrice(res.data[i].mdpurchasegoodsid);
+            item.usage = res.data[i].mdpurchasequotationgoodsqty;
+            item.goods.mgoodsname = res.data[i].mdpurchasequotationgoodsname;
+            item.goods.mgoodscode = res.data[i].mdpurchasequotationgoodsid;
+            item.goods.mgoodspriceout = this.goodsPrice(res.data[i].mdpurchasequotationgoodsid);
             item.subtotal = parseInt(item.goods.mgoodspricein) * parseInt(item.usage);
             this.invoice_goods.push(item);
             // this.invoice_subtotal += item.subtotal;
@@ -1000,16 +1001,20 @@ r<template>
             $('#insert_loading_modal').modal('toggle');
         }
         let invoice_data = {
-          date: this.invoice_date,
-          duedate: this.invoice_due_date,
-          subtotal: this.invoice_subtotal,
-          discount: this.invoice_disc,
-          tax: this.invoice_tax,
-          goods: this.invoice_goods,
-          msupplierid: this.selected_supplier.msupplierid,
-          msuppliername: this.selected_supplier.msuppliername,
-          type: this.invoice_type
-        }
+              deliveryno: this.invoice_do,
+              orderyno: this.invoice_order,
+              date: this.invoice_date,
+              duedate: this.invoice_due_date,
+              subtotal: this.invoice_subtotal,
+              discounttotal: this.invoice_disc,
+              taxtotal: this.invoice_tax,
+              goods: this.invoice_goods,
+              supplierid: this.selected_supplier.msupplierid,
+              suppliername: this.selected_supplier.msuppliername,
+              type: this.invoice_type,
+              no: this.invoice_no,
+              autogen: this.invoice_auto
+            }
         console.log(invoice_data);
         Axios.put('/admin-api/purchasequotation/'+this.editquotationid,invoice_data)
         .then((res) => {
