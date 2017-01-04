@@ -76,19 +76,21 @@
     </table>
     {{--  --}}
     <div class="cust">
+   
        <table border="1">
            <tr>
            <th style="background: gray; color: black;">Description</th>
            <th style="background: gray; color: black;">Taxed</th>
            <th style="background: gray; color: black;">Amount</th>
            </tr>
+             @foreach($mdquotation as $a)
            <tr>
-               <td>{{ $mdquotation->mdpurchasequotationgoodsname }}</td>
+               <td>{{ $a->mdpurchasequotationgoodsname }}</td>
                <td>{{ $quotation->mhpurchasequotationtaxtotal }}</td>
-               <td>{{ $mdquotation->mdpurchasequotationgoodsqty }}</td>
-             
+               <td>{{ $a->mdpurchasequotationgoodsqty }}</td>
+        
            </tr>
-
+            @endforeach
        </table>
        <table class="balance">
                 <tr>

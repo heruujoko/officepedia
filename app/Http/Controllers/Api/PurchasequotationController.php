@@ -23,7 +23,9 @@ class PurchasequotationController extends Controller
         $config = MConfig::on(Auth::user()->db_name)->where('id',1)->first();
         $this->round = $config->msysgenrounddec;
         $this->separator = $config->msysnumseparator;
+        $mdquotation = MHPurchasequotation::on(Auth::user()->db_name)->where('void', '0')->orderby('created_at','desc')->get();
         $mquotation = MHPurchasequotation::on(Auth::user()->db_name)->where('void', '0')->orderby('created_at','desc')->get();
+       
         return Datatables::of($mquotation)->addColumn('action', function($quotation){
         return '<center><div class="button">
               <a class="btn btn-info btn-xs dropdown-toggle fa fa-eye" onclick="viewquotation('.$quotation->id.')"> <font style="">Lihat</font></a>
@@ -80,6 +82,10 @@ class PurchasequotationController extends Controller
         ->make(true);
 
 	}
+    public function details($inv){
+        $details = MDPurchasequotation::on(Auth::user()->db_name)->where('mhpurchaquotationseno',$inv)->where('void',0)->get();
+        return response()->json($details);
+    }
 	 public function store(Request $request){
         $quotation = new MHPurchasequotation($request->all());
         $quotation->setConnection(Auth::user()->db_name);
@@ -134,20 +140,20 @@ class PurchasequotationController extends Controller
 	}
 
 	public function update($id,Request $request){
-  
+     
         $quotation = MHPurchasequotation::on(Auth::user()->db_name)->where('id',$id)->first();
-        $quotation->mhpurchasequotationdeliveryno = $request->mhpurchasequotationdeliveryno;
-        $quotation->mhpurchasequotationorderyno = $request->mhpurchasequotationorderyno;
-        $quotation->mhpurchasequotationdate = Carbon::parse($request->mhpurchasequotationdate);
-        $quotation->mhpurchasequotationduedate = Carbon::parse($request->mhpurchasequotationduedate);
-        $quotation->mhpurchasequotationsubtotal = $request->mhpurchasequotationsubtotal;
-        $quotation->mhpurchasequotationtaxtotal = $request->mhpurchasequotationtaxtotal;
-        $quotation->mhpurchasequotationdiscounttotal = $request->mhpurchasequotationdiscounttotal;
-        $quotation->mhpurchasequotationgrandtotal = $request->mhpurchasequotationsubtotal + $request->mhpurchasequotationtaxtotal;
+        $quotation->mhpurchasequotationdeliveryno = $request->deliveryno;
+        $quotation->mhpurchasequotationorderyno = $request->orderyno;
+        $quotation->mhpurchasequotationdate = Carbon::parse($request->date);
+        $quotation->mhpurchasequotationduedate = Carbon::parse($request->duedate);
+        $quotation->mhpurchasequotationsubtotal = $request->subtotal;
+        $quotation->mhpurchasequotationtaxtotal = $request->taxtotal;
+        $quotation->mhpurchasequotationdiscounttotal = $request->discounttotal;
+        $quotation->mhpurchasequotationgrandtotal = $request->subtotal + $request->taxtotal;
         $quotation->mhpurchasequotationothertotal = 0;
         $quotation->mhpurchasequotationwithppn = 0;
         $quotation->void = 0;
-        $quotation->save();
+       
         if ($request->autogen == true) {
             $quotation->autogenproc();
         }
@@ -156,9 +162,13 @@ class PurchasequotationController extends Controller
         }
 
         $quotation->save();
+
         $header = MHPurchasequotation::on(Auth::user()->db_name)->where('id',$quotation->id)->first();
+        $headers = MDPurchasequotation::on(Auth::user()->db_name)->where('mhpurchaquotationseno',$quotation->mhpurchasequotationno)->delete();
+
         foreach($request->goods as $g){
-          $detail = MHPurchasequotation::on(Auth::user()->db_name)->where('id',$id)->first();
+
+          $detail = new MDPurchasequotation;
           $detail->setConnection(Auth::user()->db_name);
           $detail->mhpurchaquotationseno = $header->mhpurchasequotationno;
           $detail->mdpurchasequotationsupplierid = $g['goods']['mgoodssuppliercode'];
@@ -175,15 +185,16 @@ class PurchasequotationController extends Controller
           $detail->mdpurchasequotationgoodsgrossamount = $g['subtotal'];
           $detail->mdpurchasequotationgoodsdiscount = $g['disc'];
           $detail->mdpurchasequotationgoodsidwhouse = $g['warehouse'];
-          $detail->mdpurchasequotationremarks = $g['remark'];
+          $detail->mdpurchasequotationremarks = $g['goods']['mgoodsremark'];
           $detail->save();
         }
+
         return response()->json($quotation);
 	}
 	public function destroy($id){
     $mbrand = MHPurchasequotation::on(Auth::user()->db_name)->where('id',$id)->first();
     $mbrand->void = 1;
     $mbrand->save();
-    return response()->json();
+    return response()->json($mbrand,200);
 	}
 }
