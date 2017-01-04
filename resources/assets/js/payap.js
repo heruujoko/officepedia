@@ -1,10 +1,14 @@
 import Vue from 'vue/dist/vue.js'
 import Axios from 'axios'
-import Invoice from './components/payapinvoice.vue'
+import Invoice from './components/payapconcept.vue'
+import ElementUI from 'element-ui'
+
+Vue.use(ElementUI);
 
 Vue.config.devtools = true
 
-var typingTimerSatuan;
+var typingTimerCash;
+var typingTimerBank;
 var doneTypingInterval = 1000;
 
 Vue.directive('selecttwo',{
@@ -24,14 +28,32 @@ Vue.directive('selecttwo',{
   }
 });
 
-Vue.directive('priceformatsatuan',{
+Vue.directive('priceformatcash',{
   inserted(el,binding){
     let formatted = numeral($(el).val()).format(binding.value);
     $(el).val(formatted);
   },
   update(el,binding){
-    clearTimeout(typingTimerSatuan);
-    typingTimerSatuan = setTimeout(() => {
+    clearTimeout(typingTimerCash);
+    typingTimerCash = setTimeout(() => {
+        let formatted = numeral(numeral().unformat($(el).val())).format(binding.value);
+        $(el).val(formatted);
+        if($(el).is(':focus')){
+            $(el).select();
+        }
+
+    }, doneTypingInterval);
+  },
+});
+
+Vue.directive('priceformatbank',{
+  inserted(el,binding){
+    let formatted = numeral($(el).val()).format(binding.value);
+    $(el).val(formatted);
+  },
+  update(el,binding){
+    clearTimeout(typingTimerBank);
+    typingTimerBank = setTimeout(() => {
         let formatted = numeral(numeral().unformat($(el).val())).format(binding.value);
         $(el).val(formatted);
         if($(el).is(':focus')){
@@ -68,19 +90,6 @@ Vue.directive('priceformat',{
     let formatted = numeral($(el).val()).format(binding.value);
     $(el).val(formatted);
   },
-});
-
-Vue.directive('priceformatlabel',{
-  inserted(el,binding){
-    let num = $(el).context.textContent;
-    $(el).html(numeral(num).format(binding.value))
-  },
-  update(el,binding){
-  },
-  componentUpdated(el,binding){
-    let num = numeral().unformat($(el).context.textContent);
-    $(el).html(numeral(num).format(binding.value))
-  }
 });
 
 Vue.directive('priceformatlabel',{

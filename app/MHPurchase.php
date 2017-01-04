@@ -207,16 +207,6 @@ class MHPurchase extends Model
             $ap->mapcardeventtime = Carbon::now();
             $ap->save();
 
-            $conf = MConfig::on(Auth::user()->db_name)->where('id',1)->first();
-            $coa = $conf->msyspayapaccount;
-            $coa_purchase = MCOA::on(Auth::user()->db_name)->where('mcoacode',$coa)->first();
-
-            // pembelian jurnal nya di kredit karena utang
-            MJournal::record_journal($header->mhpurchaseno,'Pembelian',$coa,0,$header->mhpurchasegrandtotal,"");
-
-            // update coa saldo
-            $coa_purchase->update_saldo("+",$header->mhpurchasegrandtotal);
-
             DB::connection(Auth::user()->db_name)->commit();
             return 'ok';
         } catch (\Exception $e){
@@ -539,17 +529,16 @@ class MHPurchase extends Model
                 $stock_card->save();
             }
 
-            $journal = MJournal::on(Auth::user()->db_name)->where('mjournaltransno',$trans_header->mhpurchaseno)->where('mjournaltranstype','Pembelian')->first();
-            $journal->mjournalcredit = $trans_header->mhpurchasegrandtotal;
-            $journal->save();
-
-            $coa_ap->update_saldo("+",$trans_header->mhpurchasegrandtotal);
+            // $journal = MJournal::on(Auth::user()->db_name)->where('mjournaltransno',$trans_header->mhpurchaseno)->where('mjournaltranstype','Pembelian')->first();
+            // $journal->mjournalcredit = $trans_header->mhpurchasegrandtotal;
+            // $journal->save();
+            //
+            // $coa_ap->update_saldo("+",$trans_header->mhpurchasegrandtotal);
 
             DB::connection(Auth::user()->db_name)->commit();
             return 'ok';
         } catch(\Exception $e){
             DB::connection(Auth::user()->db_name)->rollBack();
-            var_dump($e);
             return 'err';
         }
     }
@@ -630,9 +619,9 @@ class MHPurchase extends Model
                 $ap->void = 1;
                 $ap->save();
 
-                $journal = MJournal::on(Auth::user()->db_name)->where('mjournaltransno',$header->mhpurchaseno)->where('mjournaltranstype','Pembelian')->first();
-                $journal->void = 1;
-                $journal->save();
+                // $journal = MJournal::on(Auth::user()->db_name)->where('mjournaltransno',$header->mhpurchaseno)->where('mjournaltranstype','Pembelian')->first();
+                // $journal->void = 1;
+                // $journal->save();
 
                 $header->void = 1;
                 $header->save();

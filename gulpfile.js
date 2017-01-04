@@ -14,8 +14,11 @@ require('laravel-elixir-vue');
  */
 
 elixir(mix => {
+<<<<<<< HEAD
 
 
+=======
+>>>>>>> 6372a4d94a63efc7baa6adadb6a3d2f576e9f9d9
     // mix.webpack('salesinvoice.js');
     // mix.webpack('purchaseinvoice.js');
     // mix.webpack('stockcardreport.js');
@@ -27,10 +30,17 @@ elixir(mix => {
     // mix.webpack('purchasereport.js');
     // mix.webpack('apreport.js');
     // mix.webpack('cogshistory.js');
+<<<<<<< HEAD
     // mix.webpack('payap.js');
     // mix.webpack('payar.js');
 
     mix.webpack('purchasequotation.js');
+=======
+    mix.webpack('payap.js');
+    // mix.webpack('payar.js');
+    //
+    // mix.webpack('purchasequotation.js');
+>>>>>>> 6372a4d94a63efc7baa6adadb6a3d2f576e9f9d9
     // mix.webpack('journalreport.js');
     // mix.webpack('ledgerreport.js');
     // mix.scripts([
