@@ -25,7 +25,7 @@ class PurchasequotationController extends Controller
         $this->separator = $config->msysnumseparator;
         $mdquotation = MHPurchasequotation::on(Auth::user()->db_name)->where('void', '0')->orderby('created_at','desc')->get();
         $mquotation = MHPurchasequotation::on(Auth::user()->db_name)->where('void', '0')->orderby('created_at','desc')->get();
-       
+
         return Datatables::of($mquotation)->addColumn('action', function($quotation){
         return '<center><div class="button">
               <a class="btn btn-info btn-xs dropdown-toggle fa fa-eye" onclick="viewquotation('.$quotation->id.')"> <font style="">Lihat</font></a>
@@ -140,7 +140,7 @@ class PurchasequotationController extends Controller
 	}
 
 	public function update($id,Request $request){
-     
+
         $quotation = MHPurchasequotation::on(Auth::user()->db_name)->where('id',$id)->first();
         $quotation->mhpurchasequotationdeliveryno = $request->deliveryno;
         $quotation->mhpurchasequotationorderyno = $request->orderyno;
@@ -153,7 +153,7 @@ class PurchasequotationController extends Controller
         $quotation->mhpurchasequotationothertotal = 0;
         $quotation->mhpurchasequotationwithppn = 0;
         $quotation->void = 0;
-       
+
         if ($request->autogen == true) {
             $quotation->autogenproc();
         }

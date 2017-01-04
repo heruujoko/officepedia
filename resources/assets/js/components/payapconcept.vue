@@ -75,7 +75,7 @@
                 <table id="insertdetailtable" class="table table-bordered">
                   <thead>
                     <tr>
-                      <th v-if="notview" style="width:5%;"></th>
+                      <th style="width:5%;"></th>
                       <th style="width:10%;">No Faktur</th>
                       <th style="width:10%;">Tanggal</th>
                       <th style="width:10%;">Due Date</th>
@@ -636,7 +636,7 @@
                                 ap.payamount = res.data[i].payamount;
                                 this.$set(this.aps,index,ap);
                                 this.$forceUpdate();
-                            }    
+                            }
                         }
                     }
                 })
