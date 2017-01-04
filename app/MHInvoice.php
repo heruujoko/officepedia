@@ -178,20 +178,11 @@ class MHInvoice extends Model
         $ar->marcardusereventtime = Carbon::now();
         $ar->save();
 
-        $conf = MConfig::on(Auth::user()->db_name)->where('id',1)->first();
-        $coa = $conf->msyspayaraccount;
-        $coa_ar = MCOA::on(Auth::user()->db_name)->where('mcoacode',$coa)->first();
-
-        /* update journal record with type penjualan and the grandtotal in credit side */
-        MJournal::record_journal($header->mhinvoiceno,'Penjualan',$coa,$header->mhinvoicegrandtotal,0,"");
-
-        /* update coa saldo as much as the invoice grand total */
-        $coa_ar->update_saldo("+",$header->mhinvoicegrandtotal);
-
         DB::connection(Auth::user()->db_name)->commit();
         return 'ok';
       } catch(Exception $e){
         DB::connection(Auth::user()->db_name)->rollBack();
+        dd($e);
         return 'err';
       }
 
@@ -478,12 +469,6 @@ class MHInvoice extends Model
             // $mgoods->save();
         }
 
-        $journal = MJournal::on(Auth::user()->db_name)->where('mjournaltransno',$invoice_header->mhinvoiceno)->where('mjournaltranstype','Penjualan')->first();
-        $journal->mjournaldebit = $invoice_header->mhinvoicegrandtotal;
-        $journal->save();
-
-        $coa_ar->update_saldo("+",$this->mhinvoicegrandtotal);
-
         DB::connection(Auth::user()->db_name)->commit();
         return 'ok';
       } catch(Exception $e){
@@ -541,18 +526,7 @@ class MHInvoice extends Model
                 $ar = MARCard::on(Auth::user()->db_name)->where('marcardtransno',$header->mhinvoiceno)->first();
                 $ar->void = 1;
                 $ar->save();
-
-                $journal = MJournal::on(Auth::user()->db_name)->where('mjournaltransno',$header->mhinvoiceno)->where('mjournaltranstype','Penjualan')->first();
-                $journal->void = 1;
-                $journal->save();
             }
-
-            $conf = MConfig::on(Auth::user()->db_name)->where('id',1)->first();
-            $coa = $conf->msyspayaraccount;
-            $coa_ar = MCOA::on(Auth::user()->db_name)->where('mcoacode',$coa)->first();
-
-            /* revert back saldo */
-            $coa_ar->update_saldo("-",$header->mhinvoicegrandtotal);
 
             DB::connection(Auth::user()->db_name)->commit();
             return 'ok';

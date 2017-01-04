@@ -33,7 +33,6 @@
   "homepage": "https://github.com/heruujoko/officepedia#readme",
   "description": "",
   "dependencies": {
-    "element-ui": "^1.1.2",
     "laravel-elixir": "^6.0.0-14",
     "laravel-elixir-vue": "^0.1.8",
     "moment": "^2.16.0",

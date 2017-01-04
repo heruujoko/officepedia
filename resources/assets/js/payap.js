@@ -1,9 +1,6 @@
 import Vue from 'vue/dist/vue.js'
 import Axios from 'axios'
 import Invoice from './components/payapconcept.vue'
-import ElementUI from 'element-ui'
-
-Vue.use(ElementUI);
 
 Vue.config.devtools = true
 

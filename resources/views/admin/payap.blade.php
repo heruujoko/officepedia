@@ -218,7 +218,7 @@
 		$('#formedit').hide();
 		$('#formview').show();
 		window.location.href="#formview";
-		payapp.$emit('edit-selected',id);
+		payapp.$emit('view-selected',id);
 	}
   $(document).ready(function(){
     $('#disableforminput').prop('checked',true);
