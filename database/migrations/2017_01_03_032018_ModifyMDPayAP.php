@@ -16,6 +16,7 @@ class ModifyMDPayAP extends Migration
             $table->string('mdpayapcashcoa');
             $table->double('mdpayapcashamount');
             $table->string('mdpayapbankcoa');
+            $table->string('mdpayapbankbankname');
             $table->double('mdpayapbankamount');
         });
     }

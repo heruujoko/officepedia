@@ -126,7 +126,7 @@ class APController extends Controller
             }
             $ap['paid_total'] = $paid;
             $ap['outstanding_total'] = $ap->mapcardtotalinv - $paid;
-            
+
             array_push($supplier_per_ap,$ap);
 
         }

@@ -10,7 +10,7 @@
               <div class="form-group">
                 <label class="col-md-2 control-label">Supplier</label>
                 <div class="col-md-8">
-                  <select id="select_supplier" v-bind:disabled="disable_supplier" v-selecttwo="supplier_label" v-model="invoice_supplier">
+                  <select v-bind:id="select_supplier" v-bind:disabled="disable_supplier" v-selecttwo="supplier_label" v-model="invoice_supplier">
                     <option></option>
                     <option v-for="sp in suppliers" :value="sp.id">{{ sp.msuppliername }}</option>
                   </select>
@@ -75,7 +75,7 @@
                 <table id="insertdetailtable" class="table table-bordered">
                   <thead>
                     <tr>
-                      <th v-if="notview" style="width:5%;"></th>
+                      <th style="width:5%;"></th>
                       <th style="width:10%;">No Faktur</th>
                       <th style="width:10%;">Tanggal</th>
                       <th style="width:10%;">Due Date</th>
@@ -180,6 +180,12 @@
                                         </div>
                                       </div>
                                       <div class="form-group">
+                                        <label class="col-md-2 control-label">Nama Bank</label>
+                                        <div class="col-md-8">
+                                          <input type="text" class="form-control" v-model="detail_bank_bank_name">
+                                        </div>
+                                      </div>
+                                      <div class="form-group">
                                         <label class="col-md-2 control-label">Bayar</label>
                                         <div class="col-md-8">
                                           <input class="form-control" type="text" v-model="detail_bank_pay" v-priceformatbank="num_format" style="text-align:right">
@@ -190,12 +196,26 @@
                           </div>
                       </div>
                   </div>
+                  <br>
+                  <div class="row well">
+                      <div class="col-md-6">
+                          <p>Supplier : {{ detail_ap.mapcardsuppliername }}</p>
+                          <p>Tanggal : {{ detail_ap.mapcardtdate }}</p>
+                          <p>Jatuh Tempo : {{ detail_ap.mapcardduedate }}</p>
+                      </div>
+                      <div class="col-md-6">
+                          <p>Terhutang : {{ numeral(detail_ap.outstanding_total).format(num_format) }} </p>
+                          <p>Terbayar : {{ numeral(detail_ap.paid_total).format(num_format) }}</p>
+                          <p>Total Transaksi : {{ numeral(detail_ap.mapcardtotalinv).format(num_format) }}</p>
+                      </div>
+                  </div>
               </div>
               <div class="modal-footer">
+                    <div class="row">
                         <button v-on:click="dismissModal" type="button" class="btn btn-default" data-dismiss="modal">
                               Cancel
                         </button>
-                        <button type="button" class="btn btn-default" @click="clearPaymentDetail">
+                        <button v-if="detail_ap.checked" type="button" class="btn btn-default" @click="clearPaymentDetail">
                               Hapus
                         </button>
                         <button v-if="detail_state == 'insert'" type="button" class="btn btn-primary" @click="addPaymentDetail">
@@ -205,6 +225,7 @@
                               Simpan
                         </button>
                     </div>
+                </div>
                 </div>
             </div>
         </div>
@@ -235,6 +256,7 @@
         props:['mode'],
         data(){
             return {
+                numeral: numeral,
                 editinvoiceid:0,
                 invoice_auto:true,
                 invoice_no:"",
@@ -256,6 +278,7 @@
                 detail_cash_coa:"",
                 detail_cash_pay:0,
                 detail_bank_coa:"",
+                detail_bank_bank_name:"",
                 detail_bank_pay:0,
                 selected_aps:"",
                 ap_remark:"",
@@ -268,8 +291,14 @@
             }
         },
         computed:{
+            notview(){
+                return this.mode != "view";
+            },
             loading_id(){
                 return this.mode+"_loading_modal";
+            },
+            select_supplier(){
+                return this.mode+"_select_supplier";
             },
             select_cash_id(){
                 return this.mode+"_select_cash";
@@ -330,7 +359,38 @@
         },
         methods:{
             toInsertMode(){
-
+                this.resetInvoice();
+                $('#forminput').show();
+        		$('#formview').hide();
+        		$('#formedit').hide();
+        		window.location.href="#forminput";
+            },
+            resetInvoice(){
+                this.editinvoiceid=0
+                this.invoice_auto=true
+                this.invoice_no=""
+                this.invoice_supplier={}
+                this.invoice_bank={}
+                this.invoice_check_no=""
+                this.invoice_ref_no=""
+                this.invoice_date=moment().format('L')
+                this.invoice_pay_amount=0
+                this.invoice_aps=[]
+                this.disable_supplier= false
+                this.supplier_alert= false
+                this.disable_bank= false
+                this.bank_alert= false
+                this.detail_ap={}
+                this.detail_state=""
+                this.detail_pay=0
+                this.detail_cash_coa=""
+                this.detail_cash_pay=0
+                this.detail_bank_coa=""
+                this.detail_bank_pay=0
+                this.selected_aps=""
+                this.ap_remark=""
+                this.edit_index=0
+                this.aps=[]
             },
             transaksi_label(){},
             fetchSuppliers(){
@@ -381,12 +441,14 @@
                 console.log("open "+id);
                 let ap = _.find(this.invoice_aps,{id: parseInt(id)});
                 this.detail_ap = ap;
+                this.detail_ap.checked = true;
                 $('#'+this.modal_id).modal('toggle');
                 console.log(this.detail_ap.payments.cash.coa);
                 this.detail_cash_coa = this.detail_ap.payments.cash.coa;
                 this.detail_bank_coa = this.detail_ap.payments.bank.coa;
                 this.detail_cash_pay = ap.payments.cash.amount;
                 this.detail_bank_pay = ap.payments.bank.amount;
+                this.detail_bank_bank_name = ap.payments.bank.bank_name;
                 this.detail_state = "edit"
                 $('#'+this.select_cash_id).val(this.detail_cash_coa);
                 $('#'+this.select_cash_id).trigger('change');
@@ -420,6 +482,7 @@
                     },
                     bank: {
                         coa: this.detail_bank_coa,
+                        bank_name: this.detail_bank_bank_name,
                         amount: numeral().unformat(this.detail_bank_pay)
                     }
                 };
@@ -441,6 +504,7 @@
                     },
                     bank: {
                         coa: this.detail_bank_coa,
+                        bank_name: this.detail_bank_bank_name,
                         amount: numeral().unformat(this.detail_bank_pay)
                     }
                 };
@@ -460,7 +524,6 @@
                 let index_invoice_aps = _.findIndex(this.invoice_aps,{id: parseInt(this.detail_ap.id)});
                 // remove at index_invoice_aps
                 this.invoice_aps.splice(index_invoice_aps,1);
-
                 let aps = _.find(this.aps,{id: parseInt(this.detail_ap.id)});
                 let index = _.findIndex(this.aps,{ id: parseInt(this.detail_ap.id)});
 
@@ -468,6 +531,12 @@
                 aps.payamount = 0;
                 this.$set(this.aps,index,aps);
                 this.dismissModal()
+                this.detail_ap = {}
+                this.detail_cash_pay = 0;
+                this.detail_cash_coa = "";
+                this.detail_bank_pay = 0;
+                this.detail_bank_coa = "";
+                this.detail_bank_bank_name = "";
             },
             saveInvoice(){
                 // save header and detail to api
@@ -495,6 +564,8 @@
                       type: "success",
                       timer: 1000
                     });
+                    $('.tableapi').DataTable().ajax.reload();
+                    window.location.href="#formtable";
                 }).
                 catch((res) => {
                     $('#'+this.loading_id).modal('toggle');
@@ -515,6 +586,7 @@
 
                     let supplier_id = _.find(this.suppliers,{msupplierid: res.data.mhpayapsupplierno}).id;
                     this.invoice_supplier = supplier_id
+                    console.log('firts');
                     this.fetchDetailData(res.data.mhpayapno);
                 })
                 .catch((res) => {
@@ -524,47 +596,52 @@
             fetchDetailData(invoice_no){
                 Axios.get('/admin-api/payap/details/'+invoice_no)
                 .then((res) => {
+                    $('#'+this.loading_id).modal('toggle');
                     this.invoice_aps = [];
                     for(let i=0;i<res.data.length;i++){
-                        res.data[i].payamount = res.data[i].mdpayapinvoicepayamount;
-                        res.data[i].mapcardtdate = res.data[i].mdpayapinvoicedate;
-                        res.data[i].mapcardtotalinv = res.data[i].mdpayapinvoicetotal;
-                        res.data[i].mapcardoutstanding = res.data[i].mdpayapinvoiceoutstanding;
-                        res.data[i].mapcardtransno = res.data[i].mdpayaptransno;
-                        res.data[i].payments = {
-                            cash: {
-                                amount: res.data[i].mdpayapcashamount,
-                                coa: res.data[i].mdpayapcashcoa
-                            },
-                            bank: {
-                                amount: res.data[i].mdpayapbankamount,
-                                coa: res.data[i].mdpayapbankcoa
-                            }
-                        };
-                        this.invoice_aps.push(res.data[i]);
-                        let ap;
-                        if(this.aps.length < 1){
-                            setTimeout(() => {
+                        if(res.data[i].void == 0){
+                            res.data[i].payamount = res.data[i].mdpayapinvoicepayamount;
+                            res.data[i].mapcardtdate = res.data[i].mdpayapinvoicedate;
+                            res.data[i].mapcardtotalinv = res.data[i].mdpayapinvoicetotal;
+                            res.data[i].mapcardoutstanding = res.data[i].mdpayapinvoiceoutstanding;
+                            res.data[i].mapcardtransno = res.data[i].mdpayaptransno;
+                            res.data[i].payments = {
+                                cash: {
+                                    amount: res.data[i].mdpayapcashamount,
+                                    coa: res.data[i].mdpayapcashcoa
+                                },
+                                bank: {
+                                    amount: res.data[i].mdpayapbankamount,
+                                    bank_name: res.data[i].mdpayapbankbankname,
+                                    coa: res.data[i].mdpayapbankcoa
+                                }
+                            };
+                            this.invoice_aps.push(res.data[i]);
+                            let ap;
+                            if(this.aps.length < 1){
+                                setTimeout(() => {
+                                    ap = _.find(this.aps,{ mapcardtransno: res.data[i].mapcardtransno});
+                                    let index = _.findIndex(this.aps,{ mapcardtransno: res.data[i].mapcardtransno});
+                                    ap.checked = true;
+                                    ap.id = res.data[i].id;
+                                    ap.payamount = res.data[i].payamount;
+                                    this.$set(this.aps,index,ap);
+
+                                },1000);
+                            } else {
                                 ap = _.find(this.aps,{ mapcardtransno: res.data[i].mapcardtransno});
                                 let index = _.findIndex(this.aps,{ mapcardtransno: res.data[i].mapcardtransno});
                                 ap.checked = true;
                                 ap.id = res.data[i].id;
                                 ap.payamount = res.data[i].payamount;
                                 this.$set(this.aps,index,ap);
-                                $('#'+this.loading_id).modal('toggle');
                                 this.$forceUpdate();
-                            },1000);
-                        } else {
-                            ap = _.find(this.aps,{ mapcardtransno: res.data[i].mapcardtransno});
-                            let index = _.findIndex(this.aps,{ mapcardtransno: res.data[i].mapcardtransno});
-                            ap.checked = true;
-                            ap.id = res.data[i].id;
-                            ap.payamount = res.data[i].payamount;
-                            this.$set(this.aps,index,ap);
-                            $('#'+this.loading_id).modal('toggle');
-                            this.$forceUpdate();
+                            }
                         }
                     }
+                })
+                .catch((res) => {
+                    $('#'+this.loading_id).modal('toggle');
                 });
             },
             updateInvoice(){
@@ -588,6 +665,13 @@
                 Axios.put('/admin-api/payap/'+this.editinvoiceid,invoice)
                 .then((res) => {
                     $('#'+this.loading_id).modal('toggle');
+                    swal({
+                      title: "Update Berhasil!",
+                      type: "success",
+                      timer: 1000
+                    });
+                    $('.tableapi').DataTable().ajax.reload();
+                    window.location.href="#formtable";
                 })
                 .catch((res) => {
                     $('#'+this.loading_id).modal('toggle');
@@ -625,6 +709,15 @@
                 this.editinvoiceid = id;
                 $('#'+this.loading_id).modal('toggle');
                 this.fetchInvoiceData(id);
+              });
+            }
+            if(this.mode == "view"){
+                this.$parent.$on('view-selected',(id) => {
+                    console.log(id+" view");
+                    this.resetChecked();
+                    this.editinvoiceid = id;
+                    $('#'+this.loading_id).modal('toggle');
+                    this.fetchInvoiceData(id);
               });
             }
         }

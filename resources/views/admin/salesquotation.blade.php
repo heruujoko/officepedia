@@ -36,7 +36,7 @@
 		<!-- widget grid -->
 		<section id="widget-grid" class="">
 			<!-- row -->
-			<div class="row">
+            <div class="row">
 				<!-- NEW WIDGET START -->
 				<article class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
 					<!-- Widget ID (each widget will need unique ID)-->
@@ -52,22 +52,23 @@
 								<!-- This area used as dropdown edit box -->
 							</div>
 							<!-- end widget edit box -->
-							<h3 style="font-weight: bold; color: #1883B8;font-size: 19px;">Mode : INSERT</h3>
+							<h3 style="font-weight: bold; color: #1883B8;font-size: 19px;">Mode : Insert</h3>
 							<!-- widget content -->
 							<div class="widget-body no-padding">
 							    <div class="container">
-										<invoice mode="insert"></invoice>
+										<quotation mode="insert"></quotation>
 							    </div>
 	 					  </div>
 	 				  </div>
                     </div>
                 </article>
             </div>
+
             <div class="row">
 				<!-- NEW WIDGET START -->
 				<article class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
 					<!-- Widget ID (each widget will need unique ID)-->
-					<div id="formedit" style="display:none;" class="forminput jarviswidget jarviswidget-color-darken" id="wid-id-0" data-widget-editbutton="false" data-widget-colorbutton="false" data-widget-deletebutton="false">
+					<div id="formedit" class="forminput jarviswidget jarviswidget-color-darken" id="wid-id-0" data-widget-editbutton="false" data-widget-colorbutton="false" data-widget-deletebutton="false">
 						<header>
 							<span class="widget-icon"> <i class="fa fa-table"></i> </span>
 							<h2>{{ $section }}</h2>
@@ -83,18 +84,19 @@
 							<!-- widget content -->
 							<div class="widget-body no-padding">
 							    <div class="container">
-										<invoice mode="edit"></invoice>
+										<quotation mode="edit"></quotation>
 							    </div>
 	 					  </div>
 	 				  </div>
                     </div>
                 </article>
             </div>
+
             <div class="row">
 				<!-- NEW WIDGET START -->
 				<article class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
 					<!-- Widget ID (each widget will need unique ID)-->
-					<div id="formview" style="display:none;" class="forminput jarviswidget jarviswidget-color-darken" id="wid-id-0" data-widget-editbutton="false" data-widget-colorbutton="false" data-widget-deletebutton="false">
+					<div id="formaltview" class="forminput jarviswidget jarviswidget-color-darken" id="wid-id-0" data-widget-editbutton="false" data-widget-colorbutton="false" data-widget-deletebutton="false">
 						<header>
 							<span class="widget-icon"> <i class="fa fa-table"></i> </span>
 							<h2>{{ $section }}</h2>
@@ -110,13 +112,15 @@
 							<!-- widget content -->
 							<div class="widget-body no-padding">
 							    <div class="container">
-										<invoice mode="view"></invoice>
+										<quotation mode="view"></quotation>
 							    </div>
 	 					  </div>
 	 				  </div>
                     </div>
                 </article>
             </div>
+			
+           
 			<div class="row">
 				<!-- NEW WIDGET START -->
 				<article class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
@@ -124,7 +128,7 @@
 					<div id="formtable" class="forminput jarviswidget jarviswidget-color-darken" id="wid-id-0" data-widget-editbutton="false" data-widget-colorbutton="false" data-widget-deletebutton="false">
 						<header>
 							<span class="widget-icon"> <i class="fa fa-table"></i> </span>
-							<h2>{{ $section }}</h2>
+							<h2>Master {{ $section }}</h2>
 						</header>
 						<!-- widget div-->
 						<div>
@@ -148,31 +152,42 @@
 													<th class="hasinput" style="width:9%">
 														<input type="text" class="form-control" placeholder="Filter Nomor Invoice" />
 													</th>
-			                    <th class="hasinput" style="width:9%">
-														<input type="text" class="form-control" placeholder="Filter Supplier" />
+			                   						 <th class="hasinput" style="width:9%">
+														<input type="text" class="form-control" placeholder="Filter Customer" />
 													</th>
-													<th class="hasinput" style="width:9%">
+													<th class="hasinput" style="width:5%">
 														<input type="text" class="form-control" placeholder="Filter Tanggal" />
 													</th>
-													<th class="hasinput" style="width:9%">
-														<input type="text" class="form-control" placeholder="Filter Pembayaran" />
+													<th class="hasinput" style="width:5%">
+														<input type="text" class="form-control" placeholder="Filter Jatuh Tempo" />
 													</th>
-													<th class="hasinput" style="width:9%">
-														<input type="text" class="form-control" placeholder="Filter Outstanding" />
+													<th class="hasinput" style="width:5%">
+														<input type="text" class="form-control" placeholder="Filter Subtotal" />
 													</th>
-													<th class="hasinput" style="width:9%">
-														<input type="text" class="form-control" placeholder="Filter Remarks" />
+													<th class="hasinput" style="width:6%">
+														<input type="text" class="form-control" placeholder="Filter Pajak" />
+													</th>
+													<th class="hasinput" style="width:6%">
+														<input type="text" class="form-control" placeholder="Filter Diskon" />
+													</th>
+													<th class="hasinput" style="width:6%">
+														<input type="text" class="form-control" placeholder="Filter Total" />
 													</th>
 												</tr>
 												<tr>
 													<th data-hide="action"><center>Aksi</center></th>
-			                    <th data-hide="no"><center>No</center></th>
-			                    <th data-hide="mhinvoiceno"><center>Nomor Invoice</center></th>
-													<th data-hide="mhinvoicecustomername"><center>Nama Supplier</center></th>
-													<th data-hide="mhinvoicedate"><center>Tanggal</center></th>
-													<th data-hide="mhinvoiceduedate"><center>Pembayaran</center></th>
-													<th data-hide="mhinvoicesubtotal"><center>Outstanding</center></th>
-													<th data-hide="mhinvoicetaxtotal"><center>Remarks</center></th>
+			                    					<th data-hide="no"><center>No</center></th>
+			                    					<th data-hide="mhsalesquotationno"><center>Nomor Invoice</center></th>
+													<th data-hide="mhsalesquotationsupplierid"><center>Customer</center></th>
+													<th data-hide="mhsalesquotationdate"><center>Tanggal</center></th>
+													<th data-hide="mhsalesquotationduedate"><center>Jatuh Tempo</center></th>
+													<th data-hide="mhsalesquotationsubtotal"><center>Sub Total</center></th>
+													<th data-hide="mhsalesquotationtaxtotal"><center>Pajak</center></th>
+													<th data-hide="mhsalesquotationdiscounttotal"><center>Diskon</center></th>
+													<th data-hide="mhsalesquotationgrandtotal"><center>Total</center></th>
+
+
+											
 												</tr>
 											</thead>
 											<tbody>
@@ -203,27 +218,32 @@
 
 @section('js')
 <script src="{{ url('/js/numeral.min.js') }}"></script>
-<script src="{{ url('/js/payap.js') }}"></script>
+<script src="{{ url('/js/salesquotation.js') }}"></script>
 <script src="{{ url('/js/bootstrap-datepicker.min.js') }}"></script>
 <script>
-	function editmpayap(id){
+	function editquotation(id){
 		$('#forminput').hide();
-		$('#formview').hide();
+		$('#formaltview').hide();
 		$('#formedit').show();
 		window.location.href="#formedit";
-		payapp.$emit('edit-selected',id);
+		quotationapp.$emit('edit-selected',id);
 	}
-	function viewmpayap(id){
+	function viewquotation(id){
 		$('#forminput').hide();
 		$('#formedit').hide();
-		$('#formview').show();
+		$('#formaltview').show();
 		window.location.href="#formview";
-		payapp.$emit('view-selected',id);
+		quotationapp.$emit('edit-selected',id);
+
+	}
+	function print2(id){
+		window.location.href = "{{ url('/admin-nano/salesquotation/export/print2') }}/"+id;
 	}
   $(document).ready(function(){
     $('#disableforminput').prop('checked',true);
     $('#insert-mcustomerid').prop('disabled',true);
 		$('#formedit').hide();
+		$('#formaltview').hide();
   });
   var table;
   $(function(){
@@ -239,35 +259,35 @@
             "sLengthMenu": "Show _MENU_ Entries",
             "sInfo": "Showing ( _START_ to _END_ ) to _TOTAL_ Entries"
         },
-        "aoColumnDefs": [{ "bVisible": false, "aTargets": [5,6,7] }],
+        "aoColumnDefs": [{ "bVisible": false, "aTargets": [5,6,7,8] }],
         buttons: [ {
             extend: 'copyHtml5',
             exportOptions: {
-                columns: [1,2,3,4,5,6,7]
+                columns: [1,2,3,4,5,6,7,8,9]
             }
         },
         {
             text: 'CSV',
             action: function(){
-              window.location.href = "{{ url('/admin-nano/payap/export/csv') }}"
+              window.location.href = "{{ url('/admin-nano/salesquotation/export/csv') }}"
             }
         },
         {
             text: 'Excel',
             action: function(){
-              window.location.href = "{{ url('/admin-nano/payap/export/excel') }}"
+              window.location.href = "{{ url('/admin-nano/salesquotation/export/excel') }}"
             }
         },
         {
             text: 'PDF',
             action: function(){
-              window.location.href = "{{ url('/admin-nano/payap/export/pdf') }}"
+              window.location.href = "{{ url('/admin-nano/salesquotation/export/pdf') }}"
             }
         },
         {
             extend: 'print',
             exportOptions: {
-                columns: [1,2,3,4,5,6,7] //setting kolom mana yg mau di print
+                columns: [1,2,3,4,5,6,7,8,9] //setting kolom mana yg mau di print
             }
 
         },
@@ -280,16 +300,21 @@
 
                     processing: false,
                 serverSide: false,
-                ajax: '{{URL::to('/')}}/admin-api/payap',
+                ajax: '{{URL::to('/')}}/admin-api/salesquotation',
                 columns: [
                 {data: 'action', name:'action', searchable: false, orderable: false},
                 {data: 'no', no: 'no' },
-								{data: 'mhpayapno', mhpayapno: 'mhpayapno' },
-								{data: 'mhpayapsuppliername', mhpayapsuppliername: 'mhpayapsuppliername' },
-								{data: 'mhpayapdate', mhpayapdate: 'mhpayapdate' },
-								{data: 'mhpayappayamount', mhpayappayamount: 'mhpayappayamount' },
-								{data: 'outstanding', outstanding: 'outstanding' },
-								{data: 'mhpayapremarks', mhpayapremarks: 'mhpayapremarks' }
+								{data: 'mhsalesquotationno', mhsalesquotationno: 'mhsalesquotationno' },
+								
+								{data: 'mhsalesquotationsupplierid', mhsalesquotationsupplierid: 'mhsalesquotationsupplierid' },
+							
+								{data: 'mhsalesquotationdate', mhsalesquotationdate: 'mhsalesquotationdate' },
+								{data: 'mhsalesquotationduedate', mhsalesquotationduedate: 'mhsalesquotationduedate' },
+								{data: 'mhsalesquotationsubtotal', mhsalesquotationsubtotal: 'mhsalesquotationsubtotal' },
+								{data: 'mhsalesquotationtaxtotal', mhsalesquotationtaxtotal: 'mhsalesquotationtaxtotal' },
+								{data: 'mhsalesquotationdiscounttotal', mhsalesquotationdiscounttotal: 'mhsalesquotationdiscounttotal' },
+								{data: 'mhsalesquotationgrandtotal', mhsalesquotationgrandtotal: 'mhsalesquotationgrandtotal' }
+								
                 ]
               }).on('xhr.dt',function(){
 								$('#loading_modal').modal('hide');
@@ -310,14 +335,13 @@
         confirmButtonText: "Iya, Hapus!",
         cancelButtonText: "Tidak, Batal!",
         closeOnConfirm: false,
-        closeOnCancel: false,
-        timer: 1500
+        closeOnCancel: false
       },
       function(isconfirm){
         if (isconfirm) {
           $.ajax({
             type: "DELETE",
-            url: API_URL+"/payap/"+id,
+            url: API_URL+"/salesquotation/"+id,
             success: function(response){
               console.log(response);
               table.ajax.reload();

@@ -29,7 +29,13 @@ elixir(mix => {
     // mix.webpack('payap.js');
     // mix.webpack('payar.js');
 
-    mix.webpack('purchasequotation.js');
+    // mix.webpack('purchasequotation.js');
+    mix.webpack('salesquotation.js');
+    // mix.webpack('payap.js');
+    // mix.webpack('payar.js');
+    //
+    // mix.webpack('purchasequotation.js');
+
     // mix.webpack('payap.js');
     // mix.webpack('payar.js');
     //
