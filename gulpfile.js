@@ -25,12 +25,10 @@ elixir(mix => {
     // mix.webpack('purchasereport.js');
     // mix.webpack('apreport.js');
     // mix.webpack('cogshistory.js');
-    // mix.webpack('payap.js');
-    // mix.webpack('payar.js');
 
-    mix.webpack('purchasequotation.js');
-    mix.webpack('payap.js');
-    // mix.webpack('payar.js');
+    // mix.webpack('purchasequotation.js');
+    // mix.webpack('payap.js');
+    mix.webpack('payar.js');
     //
     // mix.webpack('purchasequotation.js');
     // mix.webpack('journalreport.js');
