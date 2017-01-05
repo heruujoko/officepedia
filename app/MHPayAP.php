@@ -196,17 +196,18 @@ class MHPayAP extends Model
                     $detail = MDPayAP::on(Auth::user()->db_name)->where('mhpayapno',$header->mhpayapno)->where('mdpayaptransno',$ap['mdpayaptransno'])->first();
                     $old_ap = MAPCard::on(Auth::user()->db_name)->where('id',$ap['mdpayap_apref'])->first();
                     $last_pay = $detail->mdpayapinvoicepayamount;
-
-                    // reset coa saldo
-                    $coa_cash = MCOA::on(Auth::user()->db_name)->where('mcoacode',$detail->mdpayapcashcoa)->first();
-                    if($coa_cash != null){
-                        $coa_ap->update_saldo('+',$detail->mdpayapcashamount);
-                        $coa_cash->update_saldo('+',$detail->mdpayapcashamount);
-                    }
-                    $coa_bank = MCOA::on(Auth::user()->db_name)->where('mcoacode',$detail->mdpayapbankcoa)->first();
-                    if($coa_bank != null){
-                        $coa_ap->update_saldo('+',$detail->mdpayapbankamount);
-                        $coa_bank->update_saldo('+',$detail->mdpayapbankamount);
+                    if($ap['payamount'] != $old_ap->mapcardpayamount){
+                        // reset coa saldo
+                        $coa_cash = MCOA::on(Auth::user()->db_name)->where('mcoacode',$detail->mdpayapcashcoa)->first();
+                        if($coa_cash != null){
+                            $coa_ap->update_saldo('+',$detail->mdpayapcashamount);
+                            $coa_cash->update_saldo('+',$detail->mdpayapcashamount);
+                        }
+                        $coa_bank = MCOA::on(Auth::user()->db_name)->where('mcoacode',$detail->mdpayapbankcoa)->first();
+                        if($coa_bank != null){
+                            $coa_ap->update_saldo('+',$detail->mdpayapbankamount);
+                            $coa_bank->update_saldo('+',$detail->mdpayapbankamount);
+                        }
                     }
 
                     $detail->mhpayapno = $header->mhpayapno;
@@ -306,7 +307,7 @@ class MHPayAP extends Model
                             $coa_bank->update_saldo('-',$detail->mdpayapbankamount);
                         }
                     }
-                    
+
                 } else {
                     // is a new detail
                     $detail = new MDPayAP;
