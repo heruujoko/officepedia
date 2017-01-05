@@ -508,8 +508,15 @@
                         amount: numeral().unformat(this.detail_bank_pay)
                     }
                 };
-                let aps = _.find(this.aps,{id: parseInt(this.detail_ap.id)});
-                let index = _.findIndex(this.aps,{ id: parseInt(this.detail_ap.id)});
+                let aps
+                let index
+                if(this.mode == "edit"){
+                     aps = _.find(this.aps,{id: parseInt(this.detail_ap.ars_id)});
+                     index = _.findIndex(this.ars,{ id: parseInt(this.detail_ap.aps_id)});
+                } else {
+                    aps = _.find(this.aps,{id: parseInt(this.detail_ap.id)});
+                    index = _.findIndex(this.aps,{ id: parseInt(this.detail_ap.id)});
+                }
                 aps.checked = true;
                 aps.payamount = payment.payments.cash.amount + payment.payments.bank.amount
 
@@ -623,7 +630,7 @@
                                     ap = _.find(this.aps,{ mapcardtransno: res.data[i].mapcardtransno});
                                     let index = _.findIndex(this.aps,{ mapcardtransno: res.data[i].mapcardtransno});
                                     ap.checked = true;
-                                    ap.id = res.data[i].id;
+                                    res.data[i].aps_id = ap.id
                                     ap.payamount = res.data[i].payamount;
                                     this.$set(this.aps,index,ap);
 
@@ -632,7 +639,7 @@
                                 ap = _.find(this.aps,{ mapcardtransno: res.data[i].mapcardtransno});
                                 let index = _.findIndex(this.aps,{ mapcardtransno: res.data[i].mapcardtransno});
                                 ap.checked = true;
-                                ap.id = res.data[i].id;
+                                res.data[i].aps_id = ap.id
                                 ap.payamount = res.data[i].payamount;
                                 this.$set(this.aps,index,ap);
                                 this.$forceUpdate();

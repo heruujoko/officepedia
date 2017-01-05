@@ -439,7 +439,7 @@
             },
             editDialog(id){
                 console.log("open "+id);
-                let ap = _.find(this.invoice_ars,{id: parseInt(id)});
+                let ap = _.find(this.invoice_ars,{ars_id: parseInt(id)});
                 this.detail_ar = ap;
                 this.detail_ar.checked = true;
                 $('#'+this.modal_id).modal('toggle');
@@ -508,11 +508,19 @@
                         amount: numeral().unformat(this.detail_bank_pay)
                     }
                 };
-                let ars = _.find(this.ars,{id: parseInt(this.detail_ar.id)});
-                let index = _.findIndex(this.ars,{ id: parseInt(this.detail_ar.id)});
+                let ars
+                let index
+                if(this.mode == "edit"){
+                     ars = _.find(this.ars,{id: parseInt(this.detail_ar.ars_id)});
+                     index = _.findIndex(this.ars,{ id: parseInt(this.detail_ar.ars_id)});
+                } else {
+                    ars = _.find(this.ars,{id: parseInt(this.detail_ar.id)});
+                    index = _.findIndex(this.ars,{ id: parseInt(this.detail_ar.id)});
+                }
                 ars.checked = true;
                 ars.payamount = payment.payments.cash.amount + payment.payments.bank.amount
-
+                payment.payamount = ars.payamount
+                console.log(payment.payments.cash.amount);
                 let index_invoice_ars = _.findIndex(this.invoice_ars,{id: parseInt(this.detail_ar.id)});
                 this.invoice_ars[index_invoice_ars] = payment
 
@@ -578,70 +586,77 @@
                 })
             },
             fetchInvoiceData(id){
-                Axios.get('/admin-api/payap/'+id)
+                Axios.get('/admin-api/payar/'+id)
                 .then((res) => {
-                    this.invoice_date = res.data.mhpayapdate
-                    this.invoice_ref_no = res.data.mhpayaprefno
-                    this.invoice_check_no = res.data.mhpayapcheckno
+                    this.invoice_date = res.data.mhpayardate
+                    this.invoice_ref_no = res.data.mhpayarrefno
+                    this.invoice_check_no = res.data.mhpayarcheckno
 
-                    let supplier_id = _.find(this.suppliers,{msupplierid: res.data.mhpayarsupplierno}).id;
-                    this.invoice_supplier = supplier_id
+                    let customer_id = _.find(this.customers,{mcustomerid: res.data.mhpayarcustomerno}).id;
+                    this.invoice_customer = customer_id
                     console.log('firts');
-                    this.fetchDetailData(res.data.mhpayapno);
+                    this.fetchDetailData(res.data.mhpayarno);
                 })
                 .catch((res) => {
-                    console.log('err');
+                    console.log('errx');
+                    console.log(res);
                 })
             },
             fetchDetailData(invoice_no){
+                console.log('detail');
                 Axios.get('/admin-api/payar/details/'+invoice_no)
                 .then((res) => {
                     $('#'+this.loading_id).modal('toggle');
                     this.invoice_ars = [];
                     for(let i=0;i<res.data.length;i++){
                         if(res.data[i].void == 0){
-                            res.data[i].payamount = res.data[i].mdpayapinvoicepayamount;
-                            res.data[i].mapcardtdate = res.data[i].mdpayapinvoicedate;
-                            res.data[i].mapcardtotalinv = res.data[i].mdpayapinvoicetotal;
-                            res.data[i].mapcardoutstanding = res.data[i].mdpayapinvoiceoutstanding;
-                            res.data[i].mapcardtransno = res.data[i].mdpayaptransno;
+                            res.data[i].payamount = res.data[i].mdpayarinvoicepayamount;
+                            res.data[i].marcarddate = res.data[i].mdpayarinvoicedate;
+                            res.data[i].marcardtotalinv = res.data[i].mdpayarinvoicetotal;
+                            res.data[i].marcardoutstanding = res.data[i].mdpayarinvoiceoutstanding;
+                            res.data[i].marcardtransno = res.data[i].mdpayartransno;
                             res.data[i].payments = {
                                 cash: {
-                                    amount: res.data[i].mdpayapcashamount,
-                                    coa: res.data[i].mdpayapcashcoa
+                                    amount: res.data[i].mdpayarcashamount,
+                                    coa: res.data[i].mdpayarcashcoa
                                 },
                                 bank: {
-                                    amount: res.data[i].mdpayapbankamount,
-                                    bank_name: res.data[i].mdpayapbankbankname,
-                                    coa: res.data[i].mdpayapbankcoa
+                                    amount: res.data[i].mdpayarbankamount,
+                                    bank_name: res.data[i].mdpayarbankbankname,
+                                    coa: res.data[i].mdpayarbankcoa
                                 }
                             };
-                            this.invoice_ars.push(res.data[i]);
-                            let ap;
+
+                            let ar;
                             if(this.ars.length < 1){
                                 setTimeout(() => {
-                                    ap = _.find(this.ars,{ mapcardtransno: res.data[i].mapcardtransno});
-                                    let index = _.findIndex(this.ars,{ mapcardtransno: res.data[i].mapcardtransno});
-                                    ap.checked = true;
-                                    ap.id = res.data[i].id;
-                                    ap.payamount = res.data[i].payamount;
-                                    this.$set(this.ars,index,ap);
+                                    ar = _.find(this.ars,{ marcardtransno: res.data[i].marcardtransno});
+                                    let index = _.findIndex(this.ars,{ marcardtransno: res.data[i].marcardtransno});
+                                    console.log(index);
+                                    console.log(res.data[i].marcardtransno);
+                                    ar.checked = true;
+                                    res.data[i].ars_id = ar.id
+                                    ar.payamount = res.data[i].payamount;
+                                    this.$set(this.ars,index,ar);
 
                                 },1000);
                             } else {
-                                ap = _.find(this.ars,{ mapcardtransno: res.data[i].mapcardtransno});
-                                let index = _.findIndex(this.ars,{ mapcardtransno: res.data[i].mapcardtransno});
-                                ap.checked = true;
-                                ap.id = res.data[i].id;
-                                ap.payamount = res.data[i].payamount;
-                                this.$set(this.ars,index,ap);
+                                ar = _.find(this.ars,{ marcardtransno: res.data[i].marcardtransno});
+                                let index = _.findIndex(this.ars,{ marcardtransno: res.data[i].marcardtransno});
+                                ar.checked = true;
+                                res.data[i].ars_id = ar.id
+                                ar.payamount = res.data[i].payamount;
+                                this.$set(this.ars,index,ar);
                                 this.$forceUpdate();
                             }
+                            this.invoice_ars.push(res.data[i]);
                         }
                     }
                 })
                 .catch((res) => {
                     $('#'+this.loading_id).modal('toggle');
+                    console.log('err detail');
+                    console.log(res);
                 });
             },
             updateInvoice(){
@@ -662,7 +677,7 @@
                 console.log(invoice);
 
                 $('#'+this.loading_id).modal('toggle');
-                Axios.put('/admin-api/payap/'+this.editinvoiceid,invoice)
+                Axios.put('/admin-api/payar/'+this.editinvoiceid,invoice)
                 .then((res) => {
                     $('#'+this.loading_id).modal('toggle');
                     swal({
