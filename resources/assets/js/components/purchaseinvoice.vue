@@ -432,6 +432,7 @@
                 if(this.mode == 'insert'){
                     $('#selected_supplier').trigger('select2:open');
                     this.set_alert = true;
+                    this.resetInvoice();
                     swal({
                       title: "Oops!",
                       text: "Supplier belum dipilih",
