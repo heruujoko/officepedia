@@ -131,6 +131,13 @@ Route::group(['prefix'=>'admin-nano','middleware' => ['auth','tenantdb']],functi
   Route::get('salesinvoice/export/excel','SalesInvoiceController@excel');
   Route::get('salesinvoice/export/pdf','SalesInvoiceController@pdf');
 
+  Route::get('salesquotation','SalesquotationController@index');
+  Route::get('salesquotation/export/csv','SalesquotationController@csv');
+  Route::get('salesquotation/export/excel','SalesquotationController@excel');
+  Route::get('salesquotation/export/pdf','SalesquotationController@pdf');
+  Route::get('salesquotation/export/print2/{id}','SalesquotationController@print2');
+
+
   Route::get('purchaseinvoice','PurchaseController@index');
   Route::get('purchaseinvoice/export/csv','PurchaseController@csv');
   Route::get('purchaseinvoice/export/excel','PurchaseController@excel');
@@ -284,6 +291,10 @@ Route::group(['prefix'=>'admin-nano','middleware' => ['auth','tenantdb']],functi
   Route::resource('mwarehouse','Api\MWarehouseController');
   Route::get('salesinvoice/details/{inv}','Api\SalesInvoiceController@details');
   Route::resource('salesinvoice','Api\SalesInvoiceController');
+
+  Route::get('salesquotation/details/{inv}','Api\SalesquotationController@details');
+  Route::resource('salesquotation','Api\SalesquotationController');
+  
   Route::get('purchaseinvoice/details/{inv}','Api\PurchaseController@details');
   Route::resource('purchaseinvoice','Api\PurchaseController');
   Route::resource('muser','Api\MUserController');
