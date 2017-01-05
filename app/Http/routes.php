@@ -313,6 +313,7 @@ Route::group(['prefix'=>'admin-nano','middleware' => ['auth','tenantdb']],functi
   Route::get('payap/details/{invoice_no}','Api\PayApController@details');
 
   Route::get('ardata','Api\ARController@ardata');
+  Route::get('arcustomer/{id}','Api\ARController@arcustomer');
   Route::get('ar/{id}','Api\ARController@show');
   Route::resource('payar','Api\PayArController');
   Route::get('payar/details/{invoice_no}','Api\PayArController@details');

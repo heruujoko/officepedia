@@ -1,11 +1,48 @@
 import Vue from 'vue/dist/vue.js'
 import Axios from 'axios'
-import Invoice from './components/payarinvoice.vue'
+import Invoice from './components/payarconcept.vue'
 
 Vue.config.devtools = true
 
-var typingTimerSatuan;
+var typingTimerCash;
+var typingTimerBank;
 var doneTypingInterval = 1000;
+
+Vue.directive('priceformatcash',{
+  inserted(el,binding){
+    let formatted = numeral($(el).val()).format(binding.value);
+    $(el).val(formatted);
+  },
+  update(el,binding){
+    clearTimeout(typingTimerCash);
+    typingTimerCash = setTimeout(() => {
+        let formatted = numeral(numeral().unformat($(el).val())).format(binding.value);
+        $(el).val(formatted);
+        if($(el).is(':focus')){
+            $(el).select();
+        }
+
+    }, doneTypingInterval);
+  },
+});
+
+Vue.directive('priceformatbank',{
+  inserted(el,binding){
+    let formatted = numeral($(el).val()).format(binding.value);
+    $(el).val(formatted);
+  },
+  update(el,binding){
+    clearTimeout(typingTimerBank);
+    typingTimerBank = setTimeout(() => {
+        let formatted = numeral(numeral().unformat($(el).val())).format(binding.value);
+        $(el).val(formatted);
+        if($(el).is(':focus')){
+            $(el).select();
+        }
+
+    }, doneTypingInterval);
+  },
+});
 
 Vue.directive('selecttwo',{
   inserted(el,binding,vnode){
@@ -22,24 +59,6 @@ Vue.directive('selecttwo',{
         vnode.context[modelName] = evt.target.value;
     });
   }
-});
-
-Vue.directive('priceformatsatuan',{
-  inserted(el,binding){
-    let formatted = numeral($(el).val()).format(binding.value);
-    $(el).val(formatted);
-  },
-  update(el,binding){
-    clearTimeout(typingTimerSatuan);
-    typingTimerSatuan = setTimeout(() => {
-        let formatted = numeral(numeral().unformat($(el).val())).format(binding.value);
-        $(el).val(formatted);
-        if($(el).is(':focus')){
-            $(el).select();
-        }
-
-    }, doneTypingInterval);
-  },
 });
 
 Vue.directive('dpicker',{
