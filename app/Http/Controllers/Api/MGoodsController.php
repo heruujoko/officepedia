@@ -148,14 +148,14 @@ class MGoodsController extends Controller
           ];
           $e = array('errorInfo' => $errorInfo);
           $MGoods->revert_creation();
-          return response()->json($e,400);
+          return response()->json($e,401);
         }
       }
       else{
         return response()->json('',400);
       }
       }catch(Exception $e){
-        return response()->json($e,400);
+        return response()->json($e,402);
 			}
 
 	}
