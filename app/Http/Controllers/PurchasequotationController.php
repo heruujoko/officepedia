@@ -22,7 +22,7 @@ class PurchasequotationController extends Controller
 {
     public function index(){
         $data['config'] = MConfig::on(Auth::user()->db_name)->first();
-        $data['active'] = 'purchaseinvoice';
+        $data['active'] = 'purchasequotation';
         $data['section'] = 'Transaksi Pembelian';
         return view('admin.purchasequotation',$data);
     }

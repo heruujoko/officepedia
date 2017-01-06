@@ -70,7 +70,7 @@
           <li><a href="{{ url('admin-nano/purchaseinvoice') }}">Pembelian</a></li>
         @endif
         @if($active == 'purchasequotation')
-          <li class="active"><a href="{{ url('admin-nano/purchasequotation') }}">Penawaran Pembelian</a></li>
+          <li class="active"><a href="{{ url('admin-nano/purchasequotation') }}">Purchase Order</a></li>
         @else
           <li><a href="{{ url('admin-nano/purchasequotation') }}">Penawaran Pembelian</a></li>
         @endif
@@ -102,6 +102,11 @@
         <li>
           <a href="{{URL::to('/')}}/admin-nano/salesinvoice">Transaksi Penjualan</a>
         </li>
+      @endif
+      @if($active == 'invoicequotation')
+        <li class="active"><a href="{{ url('admin-nano/invoicequotation') }}">Penawaran Pembelian</a></li>
+      @else
+        <li><a href="{{ url('admin-nano/purchasequotation') }}">Penawaran Pembelian</a></li>
       @endif
       @if($active == 'payar')
         <li class="active"><a href="{{ url('admin-nano/payar') }}">Pembayaran Piutang Dagang</a></li>

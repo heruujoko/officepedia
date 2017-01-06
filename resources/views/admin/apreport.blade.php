@@ -125,6 +125,7 @@
                                                                 <th>Tgl Invoice</th>
                                                                 <th>Tgl Jatuh Tempo</th>
                                                                 <th>Nilai Pembelian</th>
+                                                                <th>Nilai Bayar</th>
                                                                 <th>Outstanding</th>
                                                                 <th>Aging</th>
                                                             </tr>
@@ -137,6 +138,7 @@
                                                                 <td v-if="ap.footer == false"><span v-if="ap.data == true">@{{ ap.mapcardtdate }}</span></td>
                                                                 <td v-if="ap.footer == false"><span v-if="ap.data == true">@{{ ap.mapcardduedate }}</span></td>
                                                                 <td v-if="ap.footer == false" style="text-align:right"><span v-priceformatlabel="num_format" v-if="ap.data == true">@{{ ap.mapcardtotalinv }}</span></td>
+                                                                <td v-if="ap.footer == false" style="text-align:right"><span v-priceformatlabel="num_format" v-if="ap.data == true">@{{ ap.mapcardpayamount }}</span></td>
                                                                 <td v-if="ap.footer == false" style="text-align:right"><span v-priceformatlabel="num_format" v-if="ap.data == true">@{{ ap.mapcardoutstanding }}</span></td>
                                                                 <td v-if="ap.footer == false"><span v-if="ap.data == true">@{{ ap.aging }}</span></td>
                                                                 <!--  footer -->
@@ -146,6 +148,7 @@
                                                                 <td class="tbl-footer" v-if="ap.footer == true"><span></span></td>
                                                                 <td class="tbl-footer" v-if="ap.footer == true"><span></span></td>
                                                                 <td class="tbl-footer" v-if="ap.footer == true" style="text-align:right"><span v-priceformatlabel="num_format">@{{ ap.total_inv }}</span></td>
+                                                                <td class="tbl-footer" v-if="ap.footer == true"><span></span></td>
                                                                 <td class="tbl-footer" v-if="ap.footer == true" style="text-align:right"><span v-priceformatlabel="num_format">@{{ ap.total_outstanding }}</span></td>
                                                                 <td class="tbl-footer" v-if="ap.footer == true"><span></span></td>
                                                             </tr>
@@ -154,6 +157,7 @@
                                                             <tr>
                                                                 <th colspan="5">Grand Total</th>
                                                                 <th v-priceformatlabel="num_format" style="text-align:right">@{{ total_invs }}</th>
+                                                                <th></th>
                                                                 <th v-priceformatlabel="num_format" style="text-align:right">@{{ total_outs }}</th>
                                                                 <th></th>
                                                             </tr>
