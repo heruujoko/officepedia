@@ -28,6 +28,7 @@ class CreateTableMhsalesquotation extends Migration
             $table->double('mhsalesquotationothertotal');
             $table->boolean('mhsalesquotationwithppn')->default(0);
             $table->text('mhsalesquotationremark');
+            $table->boolean('quotationed');
             $table->boolean('void')->default(0);
             $table->timestamps();
         });
