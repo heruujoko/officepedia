@@ -574,6 +574,7 @@
                     });
                     $('.tableapi').DataTable().ajax.reload();
                     window.location.href="#formtable";
+                    this.toInsertMode()
                 }).
                 catch((res) => {
                     $('#'+this.loading_id).modal('toggle');
@@ -583,6 +584,7 @@
                       type: "error",
                       timer: 1000
                     });
+                    this.toInsertMode()
                 })
             },
             fetchInvoiceData(id){
@@ -687,6 +689,7 @@
                     });
                     $('.tableapi').DataTable().ajax.reload();
                     window.location.href="#formtable";
+                    this.toInsertMode()
                 })
                 .catch((res) => {
                     $('#'+this.loading_id).modal('toggle');
@@ -696,6 +699,7 @@
                       type: "error",
                       timer: 1000
                     });
+                    this.toInsertMode()
                 })
             },
             resetChecked(){

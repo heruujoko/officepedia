@@ -511,7 +511,7 @@
                 let aps
                 let index
                 if(this.mode == "edit"){
-                     aps = _.find(this.aps,{id: parseInt(this.detail_ap.ars_id)});
+                     aps = _.find(this.aps,{id: parseInt(this.detail_ap.aps_id)});
                      index = _.findIndex(this.ars,{ id: parseInt(this.detail_ap.aps_id)});
                 } else {
                     aps = _.find(this.aps,{id: parseInt(this.detail_ap.id)});
@@ -573,6 +573,7 @@
                     });
                     $('.tableapi').DataTable().ajax.reload();
                     window.location.href="#formtable";
+                    this.toInsertMode()
                 }).
                 catch((res) => {
                     $('#'+this.loading_id).modal('toggle');
@@ -582,6 +583,7 @@
                       type: "error",
                       timer: 1000
                     });
+                    this.toInsertMode()
                 })
             },
             fetchInvoiceData(id){
@@ -679,6 +681,7 @@
                     });
                     $('.tableapi').DataTable().ajax.reload();
                     window.location.href="#formtable";
+                    this.toInsertMode()
                 })
                 .catch((res) => {
                     $('#'+this.loading_id).modal('toggle');
@@ -688,6 +691,7 @@
                       type: "error",
                       timer: 1000
                     });
+                    this.toInsertMode()
                 })
             },
             resetChecked(){
