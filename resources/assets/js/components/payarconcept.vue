@@ -10,11 +10,11 @@
               <div class="form-group">
                 <label class="col-md-2 control-label">Supplier</label>
                 <div class="col-md-8">
-                  <select v-bind:id="select_supplier" v-bind:disabled="disable_supplier" v-selecttwo="supplier_label" v-model="invoice_supplier">
+                  <select v-bind:id="select_customer" v-bind:disabled="disable_customer" v-selecttwo="customer_label" v-model="invoice_customer">
                     <option></option>
-                    <option v-for="sp in suppliers" :value="sp.id">{{ sp.msuppliername }}</option>
+                    <option v-for="cus in customers" :value="cus.id">{{ cus.mcustomername }}</option>
                   </select>
-                  <label v-if="supplier_alert" style="color:rgb(212, 103, 82)!important">Supplier tidak bisa kosong</label>
+                  <label v-if="customer_alert" style="color:rgb(212, 103, 82)!important">Supplier tidak bisa kosong</label>
                 </div>
               </div>
               <div class="form-group">
@@ -86,12 +86,12 @@
                     </tr>
                   </thead>
                   <tbody>
-                    <tr v-for="item in aps">
+                    <tr v-for="item in ars">
                       <td><input v-on:click="validateChekedItem(item.id)" :checked="item.checked" type="checkbox" class="form-control" style="height:15px;margin-top:-2px;" ></td>
-                      <td>{{ item.mapcardtransno }}</td>
-                      <td>{{ item.mapcardtdate }}</td>
-                      <td>{{ item.mapcardduedate }}</td>
-                      <td v-priceformatlabel="num_format">{{ item.mapcardtotalinv }}</td>
+                      <td>{{ item.marcardtransno }}</td>
+                      <td>{{ item.marcarddate }}</td>
+                      <td>{{ item.marcardduedate }}</td>
+                      <td v-priceformatlabel="num_format">{{ item.marcardtotalinv }}</td>
                       <td v-priceformatlabel="num_format">{{ item.paid_total }}</td>
                       <td v-priceformatlabel="num_format">{{ item.outstanding_total }}</td>
                       <td v-priceformatlabel="num_format">{{ item.payamount }}</td>
@@ -199,14 +199,14 @@
                   <br>
                   <div class="row well">
                       <div class="col-md-6">
-                          <p>Supplier : {{ detail_ap.mapcardsuppliername }}</p>
-                          <p>Tanggal : {{ detail_ap.mapcardtdate }}</p>
-                          <p>Jatuh Tempo : {{ detail_ap.mapcardduedate }}</p>
+                          <p>Customer : {{ detail_ar.marcardcustomername }}</p>
+                          <p>Tanggal : {{ detail_ar.marcarddate }}</p>
+                          <p>Jatuh Tempo : {{ detail_ar.marcardduedate }}</p>
                       </div>
                       <div class="col-md-6">
-                          <p>Terhutang : {{ numeral(detail_ap.outstanding_total).format(num_format) }} </p>
-                          <p>Terbayar : {{ numeral(detail_ap.paid_total).format(num_format) }}</p>
-                          <p>Total Transaksi : {{ numeral(detail_ap.mapcardtotalinv).format(num_format) }}</p>
+                          <p>Terhutang : {{ numeral(detail_ar.outstanding_total).format(num_format) }} </p>
+                          <p>Terbayar : {{ numeral(detail_ar.paid_total).format(num_format) }}</p>
+                          <p>Total Transaksi : {{ numeral(detail_ar.marcardtotalinv).format(num_format) }}</p>
                       </div>
                   </div>
               </div>
@@ -215,7 +215,7 @@
                         <button v-on:click="dismissModal" type="button" class="btn btn-default" data-dismiss="modal">
                               Cancel
                         </button>
-                        <button v-if="detail_ap.checked" type="button" class="btn btn-default" @click="clearPaymentDetail">
+                        <button v-if="detail_ar.checked" type="button" class="btn btn-default" @click="clearPaymentDetail">
                               Hapus
                         </button>
                         <button v-if="detail_state == 'insert'" type="button" class="btn btn-primary" @click="addPaymentDetail">
@@ -260,19 +260,19 @@
                 editinvoiceid:0,
                 invoice_auto:true,
                 invoice_no:"",
-                invoice_supplier:{},
+                invoice_customer:{},
                 invoice_bank:{},
                 invoice_check_no:"",
                 invoice_ref_no:"",
                 invoice_date:moment().format('L'),
                 invoice_pay_amount:0,
-                invoice_type:"Pembarayan Hutang",
-                invoice_aps:[],
-                disable_supplier: false,
-                supplier_alert: false,
+                invoice_type:"Pembarayan Piutang",
+                invoice_ars:[],
+                disable_customer: false,
+                customer_alert: false,
                 disable_bank: false,
                 bank_alert: false,
-                detail_ap:{},
+                detail_ar:{},
                 detail_state:"",
                 detail_pay:0,
                 detail_cash_coa:"",
@@ -280,11 +280,11 @@
                 detail_bank_coa:"",
                 detail_bank_bank_name:"",
                 detail_bank_pay:0,
-                selected_aps:"",
-                ap_remark:"",
+                selected_ars:"",
+                ar_remark:"",
                 edit_index:0,
-                aps:[],
-                suppliers:[],
+                ars:[],
+                customers:[],
                 banks:[],
                 cash:[],
                 num_format:"0,0"
@@ -297,8 +297,8 @@
             loading_id(){
                 return this.mode+"_loading_modal";
             },
-            select_supplier(){
-                return this.mode+"_select_supplier";
+            select_customer(){
+                return this.mode+"_select_customer";
             },
             select_cash_id(){
                 return this.mode+"_select_cash";
@@ -324,26 +324,26 @@
             htab2_id(){
               return "#"+this.mode+"_tab2";
             },
-            supplier_label(){
-                return "Pilih Supplier"
+            customer_label(){
+                return "Pilih Customer"
             },
             notview(){
                 return this.mode != "view";
             },
             total_invoice(){
                 let amount=0;
-                for(let i=0;i<this.aps.length;i++){
-                    if(this.aps[i].checked){
-                        amount += parseInt(this.aps[i].outstanding_total);
+                for(let i=0;i<this.ars.length;i++){
+                    if(this.ars[i].checked){
+                        amount += parseInt(this.ars[i].outstanding_total);
                     }
                 }
                 return amount;
             },
             total_pay_amount(){
                 let amount=0;
-                for(let i=0;i<this.aps.length;i++){
-                    if(this.aps[i].checked){
-                        amount += parseInt(this.aps[i].payamount);
+                for(let i=0;i<this.ars.length;i++){
+                    if(this.ars[i].checked){
+                        amount += parseInt(this.ars[i].payamount);
                     }
                 }
                 return amount;
@@ -375,27 +375,27 @@
                 this.invoice_ref_no=""
                 this.invoice_date=moment().format('L')
                 this.invoice_pay_amount=0
-                this.invoice_aps=[]
-                this.disable_supplier= false
-                this.supplier_alert= false
+                this.invoice_ars=[]
+                this.disable_customer= false
+                this.customer_alert= false
                 this.disable_bank= false
                 this.bank_alert= false
-                this.detail_ap={}
+                this.detail_ar={}
                 this.detail_state=""
                 this.detail_pay=0
                 this.detail_cash_coa=""
                 this.detail_cash_pay=0
                 this.detail_bank_coa=""
                 this.detail_bank_pay=0
-                this.selected_aps=""
-                this.ap_remark=""
+                this.selected_ars=""
+                this.ar_remark=""
                 this.edit_index=0
-                this.aps=[]
+                this.ars=[]
             },
             transaksi_label(){},
-            fetchSuppliers(){
-                Axios.get('/admin-api/msupplier/datalist').then((res) => {
-                    this.suppliers = res.data;
+            fetchCustomers(){
+                Axios.get('/admin-api/pelanggan/datalist').then((res) => {
+                    this.customers = res.data;
                 }).catch(() => {
 
                 });
@@ -414,12 +414,12 @@
 
                 });
             },
-            fetchSupplierAP(){
-                Axios.get('/admin-api/apsupplier/'+this.invoice_supplier).then((res) => {
+            fetchCustomerAR(){
+                Axios.get('/admin-api/arcustomer/'+this.invoice_customer).then((res) => {
                     for(let i=0;i<res.data.length;i++){
                         res.data[i].checked = false;
                     }
-                    this.aps = res.data;
+                    this.ars = res.data;
                     if(this.mode == "insert"){
                         $('#'+this.loading_id).modal('toggle');
                     }
@@ -431,21 +431,21 @@
                 });
             },
             openDialog(id){
-                let ap = _.find(this.aps,{id: parseInt(id)});
-                let index = _.findIndex(this.aps,{id: parseInt(id)});
-                this.detail_ap = ap;
+                let ap = _.find(this.ars,{id: parseInt(id)});
+                let index = _.findIndex(this.ars,{id: parseInt(id)});
+                this.detail_ar = ap;
                 this.detail_state = "insert"
                 $('#'+this.modal_id).modal('toggle');
             },
             editDialog(id){
                 console.log("open "+id);
-                let ap = _.find(this.invoice_aps,{id: parseInt(id)});
-                this.detail_ap = ap;
-                this.detail_ap.checked = true;
+                let ap = _.find(this.invoice_ars,{ars_id: parseInt(id)});
+                this.detail_ar = ap;
+                this.detail_ar.checked = true;
                 $('#'+this.modal_id).modal('toggle');
-                console.log(this.detail_ap.payments.cash.coa);
-                this.detail_cash_coa = this.detail_ap.payments.cash.coa;
-                this.detail_bank_coa = this.detail_ap.payments.bank.coa;
+                console.log(this.detail_ar.payments.cash.coa);
+                this.detail_cash_coa = this.detail_ar.payments.cash.coa;
+                this.detail_bank_coa = this.detail_ar.payments.bank.coa;
                 this.detail_cash_pay = ap.payments.cash.amount;
                 this.detail_bank_pay = ap.payments.bank.amount;
                 this.detail_bank_bank_name = ap.payments.bank.bank_name;
@@ -456,7 +456,7 @@
                 $('#'+this.select_bank_id).trigger('change');
             },
             validateChekedItem(id){
-                let ap = _.find(this.aps,{id: parseInt(id)});
+                let ap = _.find(this.ars,{id: parseInt(id)});
                 console.log(ap);
                 console.log('cheked '+ap.checked);
                 if(ap.checked == true){
@@ -466,7 +466,7 @@
                 }
             },
             dismissModal(){
-                this.detail_ap = {}
+                this.detail_ar = {}
                 this.detail_cash_coa = ""
                 this.detail_cash_pay = 0
                 this.detail_bank_coa = ""
@@ -474,7 +474,7 @@
                 $('#'+this.modal_id).modal('toggle');
             },
             addPaymentDetail(){
-                let payment = this.detail_ap;
+                let payment = this.detail_ar;
                 payment['payments'] = {
                     cash: {
                         coa: this.detail_cash_coa,
@@ -487,16 +487,16 @@
                     }
                 };
                 console.log(payment.payments);
-                let aps = _.find(this.aps,{id: parseInt(this.detail_ap.id)});
-                let index = _.findIndex(this.aps,{ id: parseInt(this.detail_ap.id)});
-                aps.checked = true;
-                aps.payamount = payment.payments.cash.amount + payment.payments.bank.amount
-                this.invoice_aps.push(payment);
-                this.$set(this.aps,index,aps);
+                let ars = _.find(this.ars,{id: parseInt(this.detail_ar.id)});
+                let index = _.findIndex(this.ars,{ id: parseInt(this.detail_ar.id)});
+                ars.checked = true;
+                ars.payamount = payment.payments.cash.amount + payment.payments.bank.amount
+                this.invoice_ars.push(payment);
+                this.$set(this.ars,index,ars);
                 this.dismissModal()
             },
             updatePaymentDetail(){
-                let payment = this.detail_ap;
+                let payment = this.detail_ar;
                 payment['payments'] = {
                     cash: {
                         coa: this.detail_cash_coa,
@@ -508,37 +508,38 @@
                         amount: numeral().unformat(this.detail_bank_pay)
                     }
                 };
-                let aps
+                let ars
                 let index
                 if(this.mode == "edit"){
-                     aps = _.find(this.aps,{id: parseInt(this.detail_ap.aps_id)});
-                     index = _.findIndex(this.ars,{ id: parseInt(this.detail_ap.aps_id)});
+                     ars = _.find(this.ars,{id: parseInt(this.detail_ar.ars_id)});
+                     index = _.findIndex(this.ars,{ id: parseInt(this.detail_ar.ars_id)});
                 } else {
-                    aps = _.find(this.aps,{id: parseInt(this.detail_ap.id)});
-                    index = _.findIndex(this.aps,{ id: parseInt(this.detail_ap.id)});
+                    ars = _.find(this.ars,{id: parseInt(this.detail_ar.id)});
+                    index = _.findIndex(this.ars,{ id: parseInt(this.detail_ar.id)});
                 }
-                aps.checked = true;
-                aps.payamount = payment.payments.cash.amount + payment.payments.bank.amount
+                ars.checked = true;
+                ars.payamount = payment.payments.cash.amount + payment.payments.bank.amount
+                payment.payamount = ars.payamount
+                console.log(payment.payments.cash.amount);
+                let index_invoice_ars = _.findIndex(this.invoice_ars,{id: parseInt(this.detail_ar.id)});
+                this.invoice_ars[index_invoice_ars] = payment
 
-                let index_invoice_aps = _.findIndex(this.invoice_aps,{id: parseInt(this.detail_ap.id)});
-                this.invoice_aps[index_invoice_aps] = payment
-
-                this.$set(this.aps,index,aps);
+                this.$set(this.ars,index,ars);
                 this.dismissModal()
 
             },
             clearPaymentDetail(){
-                let index_invoice_aps = _.findIndex(this.invoice_aps,{id: parseInt(this.detail_ap.id)});
-                // remove at index_invoice_aps
-                this.invoice_aps.splice(index_invoice_aps,1);
-                let aps = _.find(this.aps,{id: parseInt(this.detail_ap.id)});
-                let index = _.findIndex(this.aps,{ id: parseInt(this.detail_ap.id)});
+                let index_invoice_ars = _.findIndex(this.invoice_ars,{id: parseInt(this.detail_ar.id)});
+                // remove at index_invoice_ars
+                this.invoice_ars.splice(index_invoice_ars,1);
+                let ars = _.find(this.ars,{id: parseInt(this.detail_ar.id)});
+                let index = _.findIndex(this.ars,{ id: parseInt(this.detail_ar.id)});
 
-                aps.checked = false;
-                aps.payamount = 0;
-                this.$set(this.aps,index,aps);
+                ars.checked = false;
+                ars.payamount = 0;
+                this.$set(this.ars,index,ars);
                 this.dismissModal()
-                this.detail_ap = {}
+                this.detail_ar = {}
                 this.detail_cash_pay = 0;
                 this.detail_cash_coa = "";
                 this.detail_bank_pay = 0;
@@ -550,20 +551,20 @@
 
                 let invoice = {
                     invoice_auto: this.invoice_auto,
-                    invoice_supplier: this.invoice_supplier,
+                    invoice_customer: this.invoice_customer,
                     invoice_date: this.invoice_date,
                     invoice_ref_no: this.invoice_ref_no,
                     invoice_check_no: this.invoice_check_no,
                     total_pay: this.total_pay_amount,
                     discount: 0,
                     total_invoice: this.total_invoice,
-                    aps: this.invoice_aps
+                    ars: this.invoice_ars
                 };
 
                 console.log(invoice);
 
                 $('#'+this.loading_id).modal('toggle');
-                Axios.post('/admin-api/payap',invoice)
+                Axios.post('/admin-api/payar',invoice)
                 .then((res) => {
                     $('#'+this.loading_id).modal('toggle');
                     swal({
@@ -587,70 +588,77 @@
                 })
             },
             fetchInvoiceData(id){
-                Axios.get('/admin-api/payap/'+id)
+                Axios.get('/admin-api/payar/'+id)
                 .then((res) => {
-                    this.invoice_date = res.data.mhpayapdate
-                    this.invoice_ref_no = res.data.mhpayaprefno
-                    this.invoice_check_no = res.data.mhpayapcheckno
+                    this.invoice_date = res.data.mhpayardate
+                    this.invoice_ref_no = res.data.mhpayarrefno
+                    this.invoice_check_no = res.data.mhpayarcheckno
 
-                    let supplier_id = _.find(this.suppliers,{msupplierid: res.data.mhpayapsupplierno}).id;
-                    this.invoice_supplier = supplier_id
+                    let customer_id = _.find(this.customers,{mcustomerid: res.data.mhpayarcustomerno}).id;
+                    this.invoice_customer = customer_id
                     console.log('firts');
-                    this.fetchDetailData(res.data.mhpayapno);
+                    this.fetchDetailData(res.data.mhpayarno);
                 })
                 .catch((res) => {
-                    console.log('err');
+                    console.log('errx');
+                    console.log(res);
                 })
             },
             fetchDetailData(invoice_no){
-                Axios.get('/admin-api/payap/details/'+invoice_no)
+                console.log('detail');
+                Axios.get('/admin-api/payar/details/'+invoice_no)
                 .then((res) => {
                     $('#'+this.loading_id).modal('toggle');
-                    this.invoice_aps = [];
+                    this.invoice_ars = [];
                     for(let i=0;i<res.data.length;i++){
                         if(res.data[i].void == 0){
-                            res.data[i].payamount = res.data[i].mdpayapinvoicepayamount;
-                            res.data[i].mapcardtdate = res.data[i].mdpayapinvoicedate;
-                            res.data[i].mapcardtotalinv = res.data[i].mdpayapinvoicetotal;
-                            res.data[i].mapcardoutstanding = res.data[i].mdpayapinvoiceoutstanding;
-                            res.data[i].mapcardtransno = res.data[i].mdpayaptransno;
+                            res.data[i].payamount = res.data[i].mdpayarinvoicepayamount;
+                            res.data[i].marcarddate = res.data[i].mdpayarinvoicedate;
+                            res.data[i].marcardtotalinv = res.data[i].mdpayarinvoicetotal;
+                            res.data[i].marcardoutstanding = res.data[i].mdpayarinvoiceoutstanding;
+                            res.data[i].marcardtransno = res.data[i].mdpayartransno;
                             res.data[i].payments = {
                                 cash: {
-                                    amount: res.data[i].mdpayapcashamount,
-                                    coa: res.data[i].mdpayapcashcoa
+                                    amount: res.data[i].mdpayarcashamount,
+                                    coa: res.data[i].mdpayarcashcoa
                                 },
                                 bank: {
-                                    amount: res.data[i].mdpayapbankamount,
-                                    bank_name: res.data[i].mdpayapbankbankname,
-                                    coa: res.data[i].mdpayapbankcoa
+                                    amount: res.data[i].mdpayarbankamount,
+                                    bank_name: res.data[i].mdpayarbankbankname,
+                                    coa: res.data[i].mdpayarbankcoa
                                 }
                             };
-                            this.invoice_aps.push(res.data[i]);
-                            let ap;
-                            if(this.aps.length < 1){
+
+                            let ar;
+                            if(this.ars.length < 1){
                                 setTimeout(() => {
-                                    ap = _.find(this.aps,{ mapcardtransno: res.data[i].mapcardtransno});
-                                    let index = _.findIndex(this.aps,{ mapcardtransno: res.data[i].mapcardtransno});
-                                    ap.checked = true;
-                                    res.data[i].aps_id = ap.id
-                                    ap.payamount = res.data[i].payamount;
-                                    this.$set(this.aps,index,ap);
+                                    ar = _.find(this.ars,{ marcardtransno: res.data[i].marcardtransno});
+                                    let index = _.findIndex(this.ars,{ marcardtransno: res.data[i].marcardtransno});
+                                    console.log(index);
+                                    console.log(res.data[i].marcardtransno);
+                                    ar.checked = true;
+                                    res.data[i].ars_id = ar.id
+                                    ar.payamount = res.data[i].payamount;
+                                    this.$set(this.ars,index,ar);
 
                                 },1000);
                             } else {
-                                ap = _.find(this.aps,{ mapcardtransno: res.data[i].mapcardtransno});
-                                let index = _.findIndex(this.aps,{ mapcardtransno: res.data[i].mapcardtransno});
-                                ap.checked = true;
-                                res.data[i].aps_id = ap.id
-                                ap.payamount = res.data[i].payamount;
-                                this.$set(this.aps,index,ap);
+                                ar = _.find(this.ars,{ marcardtransno: res.data[i].marcardtransno});
+                                let index = _.findIndex(this.ars,{ marcardtransno: res.data[i].marcardtransno});
+                                ar.checked = true;
+                                res.data[i].ars_id = ar.id
+                                ar.payamount = res.data[i].payamount;
+                                this.$set(this.ars,index,ar);
                                 this.$forceUpdate();
                             }
+                            this.invoice_ars.push(res.data[i]);
                         }
                     }
                 })
                 .catch((res) => {
                     $('#'+this.loading_id).modal('toggle');
+                    console.log('err detail');
+                    console.log(res);
                 });
             },
             updateInvoice(){
@@ -658,20 +666,20 @@
 
                 let invoice = {
                     invoice_auto: this.invoice_auto,
-                    invoice_supplier: this.invoice_supplier,
+                    invoice_customer: this.invoice_customer,
                     invoice_date: this.invoice_date,
                     invoice_ref_no: this.invoice_ref_no,
                     invoice_check_no: this.invoice_check_no,
                     total_pay: this.total_pay_amount,
                     discount: 0,
                     total_invoice: this.total_invoice,
-                    aps: this.invoice_aps
+                    ars: this.invoice_ars
                 };
 
                 console.log(invoice);
 
                 $('#'+this.loading_id).modal('toggle');
-                Axios.put('/admin-api/payap/'+this.editinvoiceid,invoice)
+                Axios.put('/admin-api/payar/'+this.editinvoiceid,invoice)
                 .then((res) => {
                     $('#'+this.loading_id).modal('toggle');
                     swal({
@@ -695,24 +703,24 @@
                 })
             },
             resetChecked(){
-                for(let i=0;i<this.aps.length;i++){
-                    this.aps[i].checked = false;
+                for(let i=0;i<this.ars.length;i++){
+                    this.ars[i].checked = false;
                 }
                 console.log('reset checked');
             }
         },
         watch:{
-            invoice_supplier(){
+            invoice_customer(){
                 if(this.mode == "insert"){
                     $('#'+this.loading_id).modal('toggle');
                 }
-                this.fetchSupplierAP()
+                this.fetchCustomerAR()
             }
         },
         created(){
             this.fetchCash()
             this.fetchBanks()
-            this.fetchSuppliers()
+            this.fetchCustomers()
             if(this.mode == "edit"){
                 this.$parent.$on('edit-selected',(id) => {
                 console.log(id+"edit");

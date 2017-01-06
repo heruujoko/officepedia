@@ -11,7 +11,7 @@ class ApiProtectionTest extends TestCase
      *
      * @return void
      */
-    public function testExample()
+    public function testAPISecure()
     {
         $this->get('/admin-api/mconfig')->seeStatusCode(403);
     }

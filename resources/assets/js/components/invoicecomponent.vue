@@ -383,6 +383,7 @@
             } else {
                 if(this.mode == 'insert'){
                     this.set_alert = true;
+                    this.resetInvoice();
                     swal({
                       title: "Oops!",
                       text: "Customer belum dipilih",
