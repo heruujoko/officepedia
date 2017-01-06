@@ -291,6 +291,8 @@ class SalesController extends Controller
             array_push($ar_detail_data,['customerid' => $cust,'customername' => $details[$idx]->marcardcustomername,'footer' => false]);
             foreach($details as $dt){
                 $dt['outstanding_prc'] = number_format($dt->marcardoutstanding,$data['decimals'],$data['dec_point'],$data['thousands_sep']);
+                $dt['total_prc'] = number_format($dt->marcardtotalinv,$data['decimals'],$data['dec_point'],$data['thousands_sep']);
+                $dt['pay_prc'] = number_format($dt->marcardpayamount,$data['decimals'],$data['dec_point'],$data['thousands_sep']);
                 $dt['aging'] = Carbon::now()->diffInDays(Carbon::parse($dt->marcarddate));
                 $dt['trans_count'] = count(MDInvoice::on(Auth::user()->db_name)->where('mhinvoiceno',$dt->marcardtransno)->get());
                 $total_inv += $dt->marcardtotalinv;

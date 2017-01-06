@@ -125,6 +125,7 @@
                                                                 <th>Tgl Invoice</th>
                                                                 <th>Tgl Jatuh Tempo</th>
                                                                 <th>Nilai Nota</th>
+                                                                <th>Nilai Bayar</th>
                                                                 <th>Outstanding</th>
                                                                 <th>Aging</th>
                                                             </tr>
@@ -136,7 +137,8 @@
                                                                 <td v-if="ar.footer == false">@{{ ar.marcardtransno }}</td>
                                                                 <td v-if="ar.footer == false">@{{ ar.marcarddate }}</td>
                                                                 <td v-if="ar.footer == false">@{{ ar.marcardduedate }}</td>
-                                                                <td v-if="ar.footer == false" style="text-align:right">@{{ ar.outstanding_prc }}</td>
+                                                                <td v-if="ar.footer == false" style="text-align:right">@{{ ar.total_prc }}</td>
+                                                                <td v-if="ar.footer == false" style="text-align:right">@{{ ar.pay_prc }}</td>
                                                                 <td v-if="ar.footer == false" style="text-align:right">@{{ ar.outstanding_prc }}</td>
                                                                 <td v-if="ar.footer == false">@{{ ar.aging }}</td>
                                                                 <!--  footer -->
@@ -145,6 +147,7 @@
                                                                 <td v-if="ar.footer == true" class="tbl-footer"></td>
                                                                 <td v-if="ar.footer == true" class="tbl-footer"></td>
                                                                 <td v-if="ar.footer == true" class="tbl-footer" style="text-align:right" v-priceformatlabel="num_format">@{{ ar.total_inv }}</td>
+                                                                <td v-if="ar.footer == true" class="tbl-footer"></td>
                                                                 <td v-if="ar.footer == true" class="tbl-footer" style="text-align:right" v-priceformatlabel="num_format">@{{ ar.total_outstanding }}</td>
                                                                 <td v-if="ar.footer == true" class="tbl-footer"></td>
                                                             </tr>
@@ -155,7 +158,8 @@
                                                                 <th></th>
                                                                 <th></th>
                                                                 <th></th>
-                                                                <th style="text-align:right" v-priceformatlabel="num_format" >@{{ outstanding_total }}</th>
+                                                                <th></th>
+                                                                <th></th>
                                                                 <th style="text-align:right" v-priceformatlabel="num_format" >@{{ outstanding_total }}</th>
                                                                 <th></th>
                                                             </tr>

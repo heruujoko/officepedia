@@ -14,7 +14,6 @@ require('laravel-elixir-vue');
  */
 
 elixir(mix => {
-
     mix.webpack('salesinvoice.js');
     mix.webpack('purchaseinvoice.js');
     mix.webpack('stockcardreport.js');
@@ -26,13 +25,11 @@ elixir(mix => {
     mix.webpack('purchasereport.js');
     mix.webpack('apreport.js');
     mix.webpack('cogshistory.js');
-
     mix.webpack('purchasequotation.js');
     mix.webpack('payap.js');
     mix.webpack('payar.js');
     mix.webpack('salesquotation.js');
     mix.webpack('purchasequotation.js');
-    
     mix.webpack('journalreport.js');
     mix.webpack('ledgerreport.js');
     // mix.scripts([
