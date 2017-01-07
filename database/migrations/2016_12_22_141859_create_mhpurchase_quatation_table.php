@@ -28,6 +28,7 @@ class CreateMhpurchaseQuatationTable extends Migration
             $table->double('mhpurchasequotationothertotal');
             $table->boolean('mhpurchasequotationwithppn')->default(0);
             $table->text('mhpurchasequotationremark');
+            $table->boolean('quotationed');
             $table->boolean('void')->default(0);
             $table->timestamps();
         });

@@ -42,6 +42,7 @@ class CreateMdpurchaseQuatationTable extends Migration
 
             $table->integer('stock_ref');
             $table->integer('cogs_ref');
+            $table->boolean('quotationed');
             
             $table->boolean('void')->default(0);
             $table->timestamps();
