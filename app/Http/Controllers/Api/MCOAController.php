@@ -112,6 +112,11 @@ class MCOAController extends Controller
         return response()->json($mcoa);
     }
 
+    public function alldatalist(){
+        $mcoa = MCOA::on(Auth::user()->db_name)->get();
+        return response()->json($mcoa);
+    }
+
     public function datalistaccount($parentcode){
         $mcoa = MCOA::on(Auth::user()->db_name)->where('mcoaparentcode',$parentcode)->get();
         return response()->json($mcoa);

@@ -71,7 +71,10 @@ class ConfigSeeder extends Seeder
           'msysprefixinvoicequotationcount' => 0,
           'msysprefixinvoicequotationlastcount' => '000000',
           'msyspayapaccount' => '2101.03',
-          'msyspayaraccount' => '1103.02'
+          'msyspayaraccount' => '1103.02',
+          'msysprefixjournal' => 'JUR',
+          'msysprefixjournalcount' => 0,
+          'msysprefixjournallastcount' => '000000'
         ]);
     }
 }
