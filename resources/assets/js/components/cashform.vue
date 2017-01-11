@@ -1,5 +1,8 @@
 <template>
     <div>
+        <div class="row" v-show="mode != 'insert'" v-on:click="toInsertMode">
+            <button class="btn btn-default pull-right" style="margin-right:4%">Kembali</button>
+        </div>    
         <br>
         <div class="row form form-horizontal">
             <div class="col-md-6">
@@ -18,7 +21,7 @@
                 <div class="form-group">
                   <label class="col-md-2 control-label">No Jurnal</label>
                   <div class="col-md-10">
-                    <input type="text" placeholder="Autogenerate" class="form-control" disabled="">
+                    <input type="text" placeholder="Autogenerate" class="form-control" disabled="" v-model="transaction_no">
                   </div>
                 </div>
             </div>
@@ -51,6 +54,7 @@
             </div>
             <div class="col-md-6">
                 <button v-if="mode == 'insert'" class="btn btn-primary pull-right" v-on:click="saveTransaction">Proses</button>
+                <button v-if="mode == 'edit'" class="btn btn-primary pull-right" v-on:click="updateTransaction">Update</button>
             </div>
         </div>
         <br>
@@ -150,8 +154,10 @@
         props:['mode','cashtype'],
         data(){
             return {
+                edittransactionid:"",
                 cashbankaccounts:[],
                 accounts:[],
+                transaction_no:"",
                 from_account:"",
                 transaction_date: moment().format('L'),
                 selected_detail_code:"",
@@ -267,6 +273,7 @@
                     });
                     this.from_alert = true
                 } else {
+                    this.transaction_detail.amount = numeral().unformat(this.transaction_detail.amount)
                     this.transaction_items.push(this.transaction_detail)
                     this.disable_from = true
                 }
@@ -274,6 +281,7 @@
             },
             updateTransactionItem(){
                 let index = _.findIndex(this.transaction_items,{id: this.transaction_detail.id})
+                this.transaction_detail.amount = numeral().unformat(this.transaction_detail.amount)
                 this.$set(this.transaction_items,index,this.transaction_detail)
                 this.dismissModal()
             },
@@ -312,13 +320,102 @@
                     this.resetTransaction()
                 });
             },
+            fetchTransaction(journalid){
+                let action_url = ""
+                if(this.cashtype == "income"){
+                    action_url = "/admin-api/cashbank/income/"
+                }
+                $("#"+this.loading_id).modal('toggle')
+                this.edittransactionid = journalid
+                Axios.get(action_url+journalid)
+                .then((res) => {
+                    console.log(res.data);
+                    this.from_account = res.data.mjournalcoa
+                    $("#"+this.from_account_id).val(res.data.mjournalcoa)
+                    $("#"+this.from_account_id).trigger('change')
+                    this.transaction_no = res.data.mjournalid
+                    this.transaction_date = moment(res.data.mjournaldate).format('L')
+                    this.fetchTransactionDetail(journalid)
+                })
+                .catch((err) => {
+
+                });
+            },
+            fetchTransactionDetail(journalid){
+                this.transaction_items = []
+                let action_url = ""
+                if(this.cashtype == "income"){
+                    action_url = "/admin-api/cashbank/detailincome/"
+                }
+
+                Axios.get(action_url+journalid)
+                .then((res) => {
+                    console.log(res.data);
+                    for(let i=0;i<res.data.length;i++){
+                        let obj = {
+                            amount:res.data[i].mjournalcredit,
+                            date: moment(res.data[i].mjournaldate).format('L'),
+                            description: res.data[i].mjournalremark,
+                            id:res.data[i].id,
+                            mcoacode:res.data[i].mjournalcoa,
+                            mcoaname:_.find(this.accounts,{mcoacode: res.data[i].mjournalcoa }).mcoaname
+                        }
+                        this.transaction_items.push(obj)
+                    }
+                    $("#"+this.loading_id).modal('toggle')
+                })
+                .catch((err) => {
+                    $("#"+this.loading_id).modal('toggle')
+                });
+            },
+            updateTransaction(){
+                $("#"+this.loading_id).modal('toggle')
+
+                let transaction_data = {
+                    date: this.transaction_date,
+                    from_account: this.transaction_from_account,
+                    to_accounts: this.transaction_items
+                }
+
+                console.log(transaction_data);
+
+                let action_url = ""
+                if(this.cashtype == "income"){
+                    action_url = "/admin-api/cashbank/income/"
+                }
+
+                Axios.put(action_url+this.edittransactionid,transaction_data)
+                .then((res) => {
+                    $("#"+this.loading_id).modal('toggle')
+                    swal({
+                      title: "Success!",
+                      text: "Transaksi Berhasil",
+                      type: "success",
+                      timer: 1000
+                    });
+                    this.toInsertMode()
+                })
+                .catch((err) => {
+                    console.log(err);
+                    swal({
+                      title: "Oops!",
+                      text: "Transaksi Gagal",
+                      type: "error",
+                      timer: 1000
+                    });
+                    this.toInsertMode()
+                    $("#"+this.loading_id).modal('toggle')
+                });
+            },
             resetTransaction(){
-                this.from_account="",
-                this.transaction_date= moment().format('L'),
-                this.selected_detail_code="",
-                this.detail_state="",
-                this.transaction_from_account={},
-                this.transaction_items=[],
+                this.transaction_no = ""
+                this.edittransactionid = ""
+                this.from_account=""
+                this.transaction_date= moment().format('L')
+                this.selected_detail_code=""
+                this.detail_state=""
+                this.transaction_from_account={}
+                this.transaction_items=[]
                 this.transaction_detail = {
                     id: "",
                     mcoacode:"",
@@ -334,6 +431,13 @@
 
                 $("#"+this.from_account_id).val('')
                 $("#"+this.from_account_id).trigger('change')
+            },
+            toInsertMode(){
+                this.resetTransaction();
+                $('#forminput').show();
+        		$('#formview').hide();
+        		$('#formedit').hide();
+        		window.location.href="#forminput";
             }
         },
         watch: {
@@ -345,7 +449,6 @@
             },
             from_account(){
                 this.transaction_from_account = _.find(this.accounts,{mcoacode: this.from_account})
-                console.log('asas');
                 if(this.from_account != ""){
                     this.from_alert = false
                 }
@@ -362,6 +465,12 @@
         mounted(){
             this.fetchBanks()
             this.fetchAllAccounts()
+            if(this.mode == 'edit'){
+                this.$parent.$on('edit-selected',(journalid) => {
+                  this.editinvoiceid = journalid;
+                  this.fetchTransaction(journalid);
+                });
+            }
         }
     }
 </script>

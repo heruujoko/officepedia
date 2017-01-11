@@ -83,7 +83,7 @@
 							<!-- widget content -->
 							<div class="widget-body no-padding">
 							    <div class="container">
-
+                                    <cashform mode="edit" cashtype="income"></cashform>
 							    </div>
 	 					  </div>
 	 				  </div>
@@ -157,12 +157,6 @@
 													<th class="hasinput" style="width:9%">
 														<input type="text" class="form-control" placeholder="Filter Pembayaran" />
 													</th>
-													<th class="hasinput" style="width:9%">
-														<input type="text" class="form-control" placeholder="Filter Outstanding" />
-													</th>
-													<th class="hasinput" style="width:9%">
-														<input type="text" class="form-control" placeholder="Filter Remarks" />
-													</th>
 												</tr>
 												<tr>
 													<th data-hide="action"><center>Aksi</center></th>
@@ -171,8 +165,6 @@
 													<th data-hide="mhinvoicecustomername"><center>Nama Supplier</center></th>
 													<th data-hide="mhinvoicedate"><center>Tanggal</center></th>
 													<th data-hide="mhinvoiceduedate"><center>Pembayaran</center></th>
-													<th data-hide="mhinvoicesubtotal"><center>Outstanding</center></th>
-													<th data-hide="mhinvoicetaxtotal"><center>Remarks</center></th>
 												</tr>
 											</thead>
 											<tbody>
@@ -206,19 +198,19 @@
 <script src="{{ url('/js/cashincome.js') }}"></script>
 <script src="{{ url('/js/bootstrap-datepicker.min.js') }}"></script>
 <script>
-	function editmpayap(id){
+	function editincome(id){
 		$('#forminput').hide();
 		$('#formview').hide();
 		$('#formedit').show();
 		window.location.href="#formedit";
-		payapp.$emit('edit-selected',id);
+		cashincome.$emit('edit-selected',id);
 	}
-	function viewmpayap(id){
+	function viewincome(id){
 		$('#forminput').hide();
 		$('#formedit').hide();
 		$('#formview').show();
 		window.location.href="#formview";
-		payapp.$emit('view-selected',id);
+		cashincome.$emit('view-selected',id);
 	}
   $(document).ready(function(){
     $('#disableforminput').prop('checked',true);
@@ -239,35 +231,35 @@
             "sLengthMenu": "Show _MENU_ Entries",
             "sInfo": "Showing ( _START_ to _END_ ) to _TOTAL_ Entries"
         },
-        "aoColumnDefs": [{ "bVisible": false, "aTargets": [5,6,7] }],
+        "aoColumnDefs": [{ "bVisible": false, "aTargets": [] }],
         buttons: [ {
             extend: 'copyHtml5',
             exportOptions: {
-                columns: [1,2,3,4,5,6,7]
+                columns: [1,2,3,4,5]
             }
         },
         {
             text: 'CSV',
             action: function(){
-              window.location.href = "{{ url('/admin-nano/payap/export/csv') }}"
+              window.location.href = "{{ url('/admin-nano/cashbank/income/export/csv') }}"
             }
         },
         {
             text: 'Excel',
             action: function(){
-              window.location.href = "{{ url('/admin-nano/payap/export/excel') }}"
+              window.location.href = "{{ url('/admin-nano/cashbank/income/export/excel') }}"
             }
         },
         {
             text: 'PDF',
             action: function(){
-              window.location.href = "{{ url('/admin-nano/payap/export/pdf') }}"
+              window.location.href = "{{ url('/admin-nano/cashbank/income/export/pdf') }}"
             }
         },
         {
             extend: 'print',
             exportOptions: {
-                columns: [1,2,3,4,5,6,7] //setting kolom mana yg mau di print
+                columns: [1,2,3,4] //setting kolom mana yg mau di print
             }
 
         },
@@ -280,16 +272,14 @@
 
                     processing: false,
                 serverSide: false,
-                ajax: '{{URL::to('/')}}/admin-api/payap',
+                ajax: '{{URL::to('/')}}/admin-api/journal/group/pemasukan',
                 columns: [
                 {data: 'action', name:'action', searchable: false, orderable: false},
                 {data: 'no', no: 'no' },
-								{data: 'mhpayapno', mhpayapno: 'mhpayapno' },
-								{data: 'mhpayapsuppliername', mhpayapsuppliername: 'mhpayapsuppliername' },
-								{data: 'mhpayapdate', mhpayapdate: 'mhpayapdate' },
-								{data: 'mhpayappayamount', mhpayappayamount: 'mhpayappayamount' },
-								{data: 'outstanding', outstanding: 'outstanding' },
-								{data: 'mhpayapremarks', mhpayapremarks: 'mhpayapremarks' }
+								{data: 'mjournalid', mjournalid: 'mjournalid' },
+								{data: 'mjournaltranstype', mjournaltranstype: 'mjournaltranstype' },
+								{data: 'credits', credits: 'credits' },
+								{data: 'debits', debits: 'debits' }
                 ]
               }).on('xhr.dt',function(){
 								$('#loading_modal').modal('hide');
@@ -317,7 +307,7 @@
         if (isconfirm) {
           $.ajax({
             type: "DELETE",
-            url: API_URL+"/payap/"+id,
+            url: API_URL+"/cashbank/income/"+id,
             success: function(response){
               console.log(response);
               table.ajax.reload();
