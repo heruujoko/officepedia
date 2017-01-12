@@ -11,7 +11,7 @@
                   <div class="col-md-10">
                       <select v-bind:id="from_account_id" v-selecttwo="account_label" v-model="from_account" class="col-md-10 form-control" v-bind:disabled="disable_from">
                           <option></option>
-                          <option v-if="cashtype == 'income'" v-for="cb in accounts" :value="cb.mcoacode">{{ cb.mcoaname }}</option>
+                          <option v-if="cashtype == 'income' || cashtype == 'transfer'" v-for="cb in accounts" :value="cb.mcoacode">{{ cb.mcoaname }}</option>
                           <option v-if="cashtype == 'outcome'" v-for="cb in cashbankaccounts" :value="cb.mcoacode">{{ cb.mcoaname }}</option>
                       </select>
                       <label v-if="from_alert" style="color:rgb(212, 103, 82)!important">Akun ini tidak bisa kosong</label>
@@ -48,7 +48,7 @@
                   <div class="col-md-12">
                       <select v-bind:disabled="!notview" v-bind:id="to_account_id" v-selecttwo="account_label" v-model="selected_detail_code" class="col-md-8 form-control">
                           <option></option>
-                          <option v-if="cashtype == 'outcome'" v-for="cb in accounts" :value="cb.mcoacode">{{ cb.mcoaname }}</option>
+                          <option v-if="cashtype == 'outcome' || cashtype == 'transfer'" v-for="cb in accounts" :value="cb.mcoacode">{{ cb.mcoaname }}</option>
                           <option v-if="cashtype == 'income'" v-for="cb in cashbankaccounts" :value="cb.mcoacode">{{ cb.mcoaname }}</option>
                       </select>
                   </div>
@@ -112,7 +112,7 @@
                                     <select v-bind:id="detail_account_id" v-bind:disabled="disable_detail_account_id" v-selecttwo="account_label" v-model="detail_coa" class="form-control">
                                         <option></option>
                                         <option v-if="cashtype == 'income'" v-for="cb in cashbankaccounts" :value="cb.mcoacode">{{ cb.mcoaname }}</option>
-                                        <option v-if="cashtype == 'outcome'" v-for="cb in accounts" :value="cb.mcoacode">{{ cb.mcoaname }}</option>
+                                        <option v-if="cashtype == 'outcome' || cashtype == 'transfer'" v-for="cb in accounts" :value="cb.mcoacode">{{ cb.mcoaname }}</option>
                                     </select>
                                 </div>
                             </div>
@@ -245,6 +245,7 @@
                 this.transaction_detail.mcoaname = to_acc.mcoaname
                 this.transaction_detail.date = this.transaction_date
                 this.transaction_detail.id = to_acc.id
+                console.log(to_acc.mcoacode);
                 $("#"+this.modal_id).modal('toggle')
                 $("#"+this.detail_account_id).val(to_acc.mcoacode)
                 $("#"+this.detail_account_id).trigger('change')
@@ -314,6 +315,9 @@
                 if(this.cashtype == "outcome"){
                     action_url = "/admin-api/cashbank/outcome"
                 }
+                if(this.cashtype == "transfer"){
+                    action_url = "/admin-api/cashbank/transfer"
+                }
 
                 Axios.post(action_url,transaction_data)
                 .then((res) => {
@@ -344,6 +348,10 @@
                 if(this.cashtype == "outcome"){
                     action_url = "/admin-api/cashbank/outcome/"
                 }
+                if(this.cashtype == "transfer"){
+                    action_url = "/admin-api/cashbank/transfer/"
+                }
+
                 $("#"+this.loading_id).modal('toggle')
                 this.edittransactionid = journalid
                 Axios.get(action_url+journalid)
@@ -369,6 +377,9 @@
                 if(this.cashtype == "outcome"){
                     action_url = "/admin-api/cashbank/detailoutcome/"
                 }
+                if(this.cashtype == "transfer"){
+                    action_url = "/admin-api/cashbank/detailtransfer/"
+                }
 
                 Axios.get(action_url+journalid)
                 .then((res) => {
@@ -383,7 +394,7 @@
                             mcoaname:_.find(this.accounts,{mcoacode: res.data[i].mjournalcoa }).mcoaname
                         }
 
-                        if(this.cashtype == "outcome"){
+                        if(this.cashtype == "outcome" || this.cashtype == "transfer"){
                             obj.amount = res.data[i].mjournaldebit
                         }
 
@@ -412,6 +423,9 @@
                 }
                 if(this.cashtype == "outcome"){
                     action_url = "/admin-api/cashbank/outcome/"
+                }
+                if(this.cashtype == "transfer"){
+                    action_url = "/admin-api/cashbank/transfer/"
                 }
 
                 Axios.put(action_url+this.edittransactionid,transaction_data)
