@@ -65,7 +65,15 @@
         <a href="{{ url('/admin-nano/cashbank/income') }}">Penerimaan Kas / Bank</a>
       </li>
       @endif
-      <li><a href="">Pengeluaran Kas / Bank</a></li>
+      @if($active == 'cashbankoutcome')
+        <li class="active">
+          <a href="{{ url('/admin-nano/cashbank/outcome') }}">Pengeluaran Kas / Bank</a>
+        </li>
+      @else
+      <li>
+        <a href="{{ url('/admin-nano/cashbank/outcome') }}">Pengeluaran Kas / Bank</a>
+      </li>
+      @endif
       <li><a href="">Rekonsal Kas / Bank</a></li>
     </ul>
   </li>

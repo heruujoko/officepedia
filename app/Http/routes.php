@@ -55,6 +55,7 @@ Route::group(['prefix'=>'admin-nano','middleware' => ['auth','tenantdb']],functi
   Route::get('cashbank/bank/export/pdf','CashBankListController@pdf_bank');
 
   Route::get('cashbank/income','CashBankIncomeController@index');
+  Route::get('cashbank/outcome','CashBankOutcomeController@index');
 
   Route::resource('mprefix','MPrefixController');
 
@@ -279,6 +280,9 @@ Route::group(['prefix'=>'admin-nano','middleware' => ['auth','tenantdb']],functi
 
   Route::resource('cashbank/income','Api\CashBankIncomeController');
   Route::get('cashbank/detailincome/{journalid}','Api\CashBankIncomeController@details');
+
+  Route::resource('cashbank/outcome','Api\CashBankOutcomeController');
+  Route::get('cashbank/detailoutcome/{journalid}','Api\CashBankOutcomeController@details');
 
   Route::resource('mcategorycustomer','Api\MCategorycustomerController');
   Route::resource('mcategorysupplier','Api\MCategorysupplierController');

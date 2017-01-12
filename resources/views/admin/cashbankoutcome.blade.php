@@ -56,7 +56,7 @@
 							<!-- widget content -->
 							<div class="widget-body no-padding">
 							    <div class="container">
-                                    <cashform mode="insert" cashtype="income"></cashform>
+                                    <cashform mode="insert" cashtype="outcome"></cashform>
 							    </div>
 	 					  </div>
 	 				  </div>
@@ -83,7 +83,7 @@
 							<!-- widget content -->
 							<div class="widget-body no-padding">
 							    <div class="container">
-                                    <cashform mode="edit" cashtype="income"></cashform>
+                                    <cashform mode="edit" cashtype="outcome"></cashform>
 							    </div>
 	 					  </div>
 	 				  </div>
@@ -110,7 +110,7 @@
 							<!-- widget content -->
 							<div class="widget-body no-padding">
 							    <div class="container">
-                                    <cashform mode="view" cashtype="income"></cashform>
+                                    <cashform mode="view" cashtype="outcome"></cashform>
 							    </div>
 	 					  </div>
 	 				  </div>
@@ -272,7 +272,7 @@
 
                     processing: false,
                 serverSide: false,
-                ajax: '{{URL::to('/')}}/admin-api/journal/group/pemasukan',
+                ajax: '{{URL::to('/')}}/admin-api/journal/group/pengeluaran',
                 columns: [
                 {data: 'action', name:'action', searchable: false, orderable: false},
                 {data: 'no', no: 'no' },

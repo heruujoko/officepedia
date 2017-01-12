@@ -2,7 +2,7 @@
     <div>
         <div class="row" v-show="mode != 'insert'" v-on:click="toInsertMode">
             <button class="btn btn-default pull-right" style="margin-right:4%">Kembali</button>
-        </div>    
+        </div>
         <br>
         <div class="row form form-horizontal">
             <div class="col-md-6">
@@ -11,7 +11,8 @@
                   <div class="col-md-10">
                       <select v-bind:id="from_account_id" v-selecttwo="account_label" v-model="from_account" class="col-md-10 form-control" v-bind:disabled="disable_from">
                           <option></option>
-                          <option v-for="cb in accounts" :value="cb.mcoacode">{{ cb.mcoaname }}</option>
+                          <option v-if="cashtype == 'income'" v-for="cb in accounts" :value="cb.mcoacode">{{ cb.mcoaname }}</option>
+                          <option v-if="cashtype == 'outcome'" v-for="cb in cashbankaccounts" :value="cb.mcoacode">{{ cb.mcoaname }}</option>
                       </select>
                       <label v-if="from_alert" style="color:rgb(212, 103, 82)!important">Akun ini tidak bisa kosong</label>
                   </div>
@@ -35,7 +36,7 @@
                 <div class="form-group">
                   <label class="col-md-2 control-label">Tanggal</label>
                   <div class="col-md-10">
-                    <input type="text" v-dpicker class="col-md-8 form-control" v-model="transaction_date">
+                    <input type="text" v-dpicker class="col-md-8 form-control" v-model="transaction_date" v-bind:disabled="!notview">
                   </div>
                 </div>
             </div>
@@ -45,9 +46,10 @@
             <div class="col-md-6">
                 <div class="form-group">
                   <div class="col-md-12">
-                      <select v-bind:id="to_account_id" v-selecttwo="account_label" v-model="selected_detail_code" class="col-md-8 form-control">
+                      <select v-bind:disabled="!notview" v-bind:id="to_account_id" v-selecttwo="account_label" v-model="selected_detail_code" class="col-md-8 form-control">
                           <option></option>
-                          <option v-for="cb in cashbankaccounts" :value="cb.mcoacode">{{ cb.mcoaname }}</option>
+                          <option v-if="cashtype == 'outcome'" v-for="cb in accounts" :value="cb.mcoacode">{{ cb.mcoaname }}</option>
+                          <option v-if="cashtype == 'income'" v-for="cb in cashbankaccounts" :value="cb.mcoacode">{{ cb.mcoaname }}</option>
                       </select>
                   </div>
                 </div>
@@ -109,7 +111,8 @@
                                 <div class="col-md-8">
                                     <select v-bind:id="detail_account_id" v-bind:disabled="disable_detail_account_id" v-selecttwo="account_label" v-model="detail_coa" class="form-control">
                                         <option></option>
-                                        <option v-for="cb in cashbankaccounts" :value="cb.mcoacode">{{ cb.mcoaname }}</option>
+                                        <option v-if="cashtype == 'income'" v-for="cb in cashbankaccounts" :value="cb.mcoacode">{{ cb.mcoaname }}</option>
+                                        <option v-if="cashtype == 'outcome'" v-for="cb in accounts" :value="cb.mcoacode">{{ cb.mcoaname }}</option>
                                     </select>
                                 </div>
                             </div>
@@ -207,12 +210,18 @@
         },
         methods: {
             fetchBanks(){
-                Axios.get('/admin-api/coadata').then((res) => {
+
+                let url = '/admin-api/coadata'
+
+                Axios.get(url).then((res) => {
                     this.cashbankaccounts = res.data;
                 });
             },
             fetchAllAccounts(){
-                Axios.get('/admin-api/coadata/all').then((res) => {
+
+                let url = '/admin-api/coadata/all'
+
+                Axios.get(url).then((res) => {
                     this.accounts = res.data;
                 });
             },
@@ -254,12 +263,15 @@
                 this.transaction_detail.amount = edit_acc.amount
                 this.transaction_detail.description = edit_acc.description
                 this.transaction_detail.id = edit_acc.id
+                console.log(edit_acc.mcoacode);
                 $("#"+this.modal_id).modal('toggle')
                 $("#"+this.detail_account_id).val(edit_acc.mcoacode)
                 $("#"+this.detail_account_id).trigger('change')
                 this.disable_detail_account_id = false
                 setTimeout(function () {
                     $('#'+this.amount_id).focus().select();
+                    $("#"+this.detail_account_id).val(edit_acc.mcoacode)
+                    $("#"+this.detail_account_id).trigger('change')
                 }, 20);
             },
             addToTransaction(){
@@ -299,6 +311,9 @@
                 if(this.cashtype == "income"){
                     action_url = "/admin-api/cashbank/income"
                 }
+                if(this.cashtype == "outcome"){
+                    action_url = "/admin-api/cashbank/outcome"
+                }
 
                 Axios.post(action_url,transaction_data)
                 .then((res) => {
@@ -308,6 +323,7 @@
                       type: "success",
                       timer: 1000
                     });
+                    $('.tableapi').DataTable().ajax.reload();
                     this.resetTransaction()
                 })
                 .catch((err) => {
@@ -324,6 +340,9 @@
                 let action_url = ""
                 if(this.cashtype == "income"){
                     action_url = "/admin-api/cashbank/income/"
+                }
+                if(this.cashtype == "outcome"){
+                    action_url = "/admin-api/cashbank/outcome/"
                 }
                 $("#"+this.loading_id).modal('toggle')
                 this.edittransactionid = journalid
@@ -347,6 +366,9 @@
                 if(this.cashtype == "income"){
                     action_url = "/admin-api/cashbank/detailincome/"
                 }
+                if(this.cashtype == "outcome"){
+                    action_url = "/admin-api/cashbank/detailoutcome/"
+                }
 
                 Axios.get(action_url+journalid)
                 .then((res) => {
@@ -360,6 +382,11 @@
                             mcoacode:res.data[i].mjournalcoa,
                             mcoaname:_.find(this.accounts,{mcoacode: res.data[i].mjournalcoa }).mcoaname
                         }
+
+                        if(this.cashtype == "outcome"){
+                            obj.amount = res.data[i].mjournaldebit
+                        }
+
                         this.transaction_items.push(obj)
                     }
                     $("#"+this.loading_id).modal('toggle')
@@ -383,6 +410,9 @@
                 if(this.cashtype == "income"){
                     action_url = "/admin-api/cashbank/income/"
                 }
+                if(this.cashtype == "outcome"){
+                    action_url = "/admin-api/cashbank/outcome/"
+                }
 
                 Axios.put(action_url+this.edittransactionid,transaction_data)
                 .then((res) => {
@@ -393,6 +423,7 @@
                       type: "success",
                       timer: 1000
                     });
+                    $('.tableapi').DataTable().ajax.reload();
                     this.toInsertMode()
                 })
                 .catch((err) => {
@@ -467,6 +498,13 @@
             this.fetchAllAccounts()
             if(this.mode == 'edit'){
                 this.$parent.$on('edit-selected',(journalid) => {
+                  this.editinvoiceid = journalid;
+                  this.fetchTransaction(journalid);
+                });
+            }
+            if(this.mode == 'view'){
+                this.$parent.$on('view-selected',(journalid) => {
+                    this.disable_from = true
                   this.editinvoiceid = journalid;
                   this.fetchTransaction(journalid);
                 });
