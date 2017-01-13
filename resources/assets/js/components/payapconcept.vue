@@ -180,16 +180,16 @@
                                         </div>
                                       </div>
                                       <div class="form-group">
-                                        <label class="col-md-2 control-label">Nama Bank</label>
-                                        <div class="col-md-8">
-                                          <input type="text" class="form-control" v-model="detail_bank_bank_name">
-                                        </div>
-                                      </div>
-                                      <div class="form-group">
                                         <label class="col-md-2 control-label">Bayar</label>
                                         <div class="col-md-8">
                                           <input class="form-control" type="text" v-model="detail_bank_pay" v-priceformatbank="num_format" style="text-align:right">
                                         </div>
+                                      </div>
+                                      <div class="form-group">
+                                          <label class="col-md-2 control-label">Keterangan</label>
+                                          <div class="col-md-8">
+                                              <input type="text" class="form-control" v-model="detail_bank_bank_name">
+                                          </div>
                                       </div>
                                   </div>
                               </div>
@@ -592,7 +592,7 @@
                     this.invoice_date = res.data.mhpayapdate
                     this.invoice_ref_no = res.data.mhpayaprefno
                     this.invoice_check_no = res.data.mhpayapcheckno
-
+                    this.invoice_no = res.data.mhpayapno
                     let supplier_id = _.find(this.suppliers,{msupplierid: res.data.mhpayapsupplierno}).id;
                     this.invoice_supplier = supplier_id
                     console.log('firts');
