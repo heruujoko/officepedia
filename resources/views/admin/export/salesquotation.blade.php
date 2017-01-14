@@ -2,25 +2,52 @@
 <html>
 <head>
 <style>
-    .header-status{
-    position: absolute;
-    top: 0%;
-    right: 10%;
-    }
-     .header-status2{
+    table th {
+            font-size: 11px;
+        }
+        .tds {
+            font-size: 10px;
+            text-align: center;
+        }
+        table>td {
+            font-size: 11px;
+          
+        }
+        
+        table {
+            background-color: transparent;
+        }
+        table {
+            border-collapse: collapse;
+            border-spacing: 0;
+        }
+        *, :after, :before {
+            -webkit-box-sizing: border-box;
+            -moz-box-sizing: border-box;
+            box-sizing: border-box;
+        }
+        tr {
+            display: table-row;
+            vertical-align: inherit;
+            border-color: inherit;
+        }
+        .table>tbody>tr>td, .table>tbody>tr>th, .table>tfoot>tr>td, .table>tfoot>tr>th, .table>thead>tr>td, .table>thead>tr>th {
+            padding: 8px;
+            line-height: 1.42857143;
+            vertical-align: top;
+            border-top: 1px solid #ddd;
+        }
+        td, th {
+            padding: 0;
+        }
+        td, th {
+            display: table-cell;
+            vertical-align: inherit;
+        }
+    .header-topright{
     position: absolute;
     top: 5%;
-    right: 10%;
-    }
-     .header-status3{
-    position: absolute;
-    top: 10%;
-    right: 10%;
-    }
-     .header-status4{
-    position: absolute;
-    top: 15%;
-    right: 10%;
+    right: 0%;
     }
     .cust{
         padding-top: 90px;
@@ -39,26 +66,51 @@
       
     }
     .balance{
-        margin-left: 175px;
+        margin-left: 225px;
+
+    }
+    .footer{
+        font-size: 11px;
     }
 
-
-</style>	
+</style>    
 </head>
 <body>
 <div>
- 	<h2>{{ $config->msyscompname }}</h2><br>
- 	<label class="filter-status">{{ $config->msyscity }}, {{ $config->msyszipcode }}</label><br>
- 	<label class="filter-status">Website: {{ $config->msyscompwebsite }}</label><br>
- 	<label class="filter-status">Phone: {{ $config->msyscompphone }}</label><br>
- 	<label class="filter-status">Fax: {{ $config->msyscompfax }}</label>
- 	<label class="filter-status">Supplier: {{ $quotation->mhpurchasequotationsupplierid }}</label><br><br>
+    {{-- TOP LEFT --}}
+    <h3>{{ $config->msyscompname }}</h3><br>
+    <table border="">
+        <tr>
+            <th style=""></th>
+        </tr>
+        <tr>
+            <td>
+               {{ $config->msyscity }}, {{ $config->msyszipcode }}<br>
+                Website: {{ $config->msyscompwebsite }}<br>
+                Phone: {{ $config->msyscompphone }}<br>
+                Fax: {{ $config->msyscompfax }}<br>
+                Supplier: {{ $quotation[0]['mhsalesquotationsupplierid'] }}<br>
+            </td>
+        </tr>
+    </table>
+    </div>
+
     {{-- TOP RIGHT --}}
-    <div class="">
- 	<label class="header-status">Date: {{ $quotation->mhpurchasequotationdate }}</label>
- 	<label class="header-status2">Quote: {{ $quotation->mhpurchasequotationno }}</label>
- 	<label class="header-status3">Customer ID: {{ $quotation->mhpurchasequotationsupplierid }}</label>
- 	<label class="header-status4">Valid Until: {{ $quotation->mhsalesquotationduedate }}</label>
+    <div class="header-topright">
+    <table border="">
+        <tr>
+            <th style=""></th>
+        </tr>
+        <tr>
+            <td> 
+                <h3>Penawaran Pembelian</h3>
+                Date: {{ $quotation[0]['mhsalesquotationdate'] }}<br>
+                Quote: {{ $quotation[0]['mhsalesquotationno'] }}<br>
+                Customer ID: {{ $quotation[0]['mhsalesquotationsupplierid'] }}<br>
+               Valid Until: {{ $quotation[0]['mhsalesquotationduedate'] }}<br>
+            </td>
+        </tr>
+    </table>
     </div>
     {{-- Customer --}}
     <table border="">
@@ -73,53 +125,87 @@
                 Phone: {{ $supplier->msupplierphone }}<br>
             </td>
         </tr>
+    
+
     </table>
     {{--  --}}
     <div class="cust">
    
-       <table border="1">
+       <table class="table">
            <tr>
-           <th style="background: gray; color: black;">Description</th>
-           <th style="background: gray; color: black;">Taxed</th>
-           <th style="background: gray; color: black;">Amount</th>
+           <th style="background: gray; color: black;">Kode</th>
+           <th style="background: gray; color: black;">Nama</th>
+           <th style="background: gray; color: black;">Harga Beli</th>
+           <th style="background: gray; color: black;">QTY</th>
+           <th style="background: gray; color: black;">Jumlah Satuan</th>
+           <th style="background: gray; color: black;">Diskon</th>
+           <th style="background: gray; color: black;">Jumlah</th>
            </tr>
              @foreach($mdquotation as $a)
            <tr>
-               <td>{{ $a->mdsalesquotationgoodsname }}</td>
-               <td>{{ $quotation->mhsalesquotationtaxtotal }}</td>
-               <td>{{ $a->mdsalesquotationgoodsqty }}</td>
-        
+               <td class="tds">{{ $a->mdsalesquotationgoodsid }}</td>
+               <td class="tds">{{ $a->mdsalesquotationgoodsname }}</td>
+               <td class="tds">{{ $a->mdsalesquotationbuyprice }}</td>
+               <td class="tds">{{ $a->mdsalesquotationgoodsqty }}</td>
+               <td class="tds">{{ $a->mdsalesquotationgoodsunit1 }}</td>
+               <td class="tds">{{ $a->mdsalesquotationgoodsdiscount }}</td>
+               <td class="tds">{{ $quotation[0]['mhsalesquotationsubtotal'] }}</td>
+                
            </tr>
+           <tr>
+               <td></td>
+               <td></td>
+               <td></td>
+               <td></td>
+               <td></td>
+               <td></td>
+               <td></td>
+           </tr>
+          
+           
             @endforeach
        </table>
        <table class="balance">
                 <tr>
-                    <th><span contenteditable>Subtotal :</span></th>
-                    <td><span data-prefix>IDR</span><span>{{ $quotation->mhsalesquotationsubtotal }}</span></td>
+                    <th><span contenteditable>Total Item :</span></th>
+                    <td><span data-prefix></span><span>{{ count($quotation[0]['mhsalesquotationsupplierid']) }}</span></td>
                 </tr>
                 <tr>
-                    <th><span contenteditable>Taxable :</span></th>
-                    <td><span data-prefix>IDR</span><span contenteditable>{{ $quotation->mhsalesquotationtaxtotal }}</span></td>
+                    <th><span contenteditable>Sub Total :</span></th>
+                    <td><span data-prefix>IDR </span><span contenteditable>-{{ $quotation[0]['mhsalesquotationtaxtotal'] }}</span></td>
                 </tr>
                 <tr>
-                    <th><span contenteditable>Total Due :</span></th>
-                    <td><span data-prefix>IDR</span><span>{{ $quotation->mhsalesquotationgrandtotal }}</span></td>
+                    <th><span contenteditable>Discount :</span></th>
+                    <td><span data-prefix>IDR </span><span>{{ $quotation[0]['mhsalesquotationdiscounttotal'] }}</span></td>
+                </tr>
+                 <tr>
+                    <th><span contenteditable>PPN 10% :</span></th>
+                    <td><span data-prefix>IDR </span><span>{{ $quotation[0]['mhsalesquotationtaxtotal'] }}</span></td>
+                </tr>
+                 <tr>
+                    <th><span contenteditable>Total :</span></th>
+                    <td><span data-prefix>IDR </span><span>{{ $quotation[0]['mhsalesquotationgrandtotal']}}</span></td>
                 </tr>
             </table>
     </div>
-    <table border="1">
+     <table class="table">
+        <tr>
+            <td>
+                <pre>Customer Acceptance(sign below)</pre><br><br>
+            
+            -------------------------------------<br>
+            Print Name
+            </td>
+        </tr>
+    </table>
+    <table class="table">
         <tr>
             <th style="background: gray; color: black;">TERMS AND CONDITIONS</th>
         </tr>
         <tr>
         <td>
-            1. Customer will be billed after indicating acceptance of this quote<br>
-            2. Payment wil be due prio to delivery of service and goods<br>
-            3. Please fax or mail the signed price quote to the address above<br>
-            <pre>Customer Acceptance(sign below)</pre><br><br>
-            <b>{{ $config->msyscompname }}</b><br>
-            -------------------------------------<br>
-            Print Name
+           {{ $config->msyspurchinvfootnote }}
+           
 
         </td>
         </tr>
@@ -129,6 +215,10 @@
      <h6>If you have any question about this price quote, please contact</h6><br>
      <b>Thank You For Your Business!</b>
  </center>
+ <div class="footer">
+     <p>Dicetak oleh: {{ Auth::user()->name }}</p>
+     <p>Tanggal Cektak: {{ $carbon }}</p>
+ </div>
 </body>
 </html>
 

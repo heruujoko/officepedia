@@ -236,8 +236,8 @@
 		quotationapp.$emit('edit-selected',id);
 
 	}
-	function print2(id){
-		window.location.href = "{{ url('/admin-nano/purchasequotation/export/print2') }}/"+id;
+	function print2(mhpurchasequotationno){
+		window.location.href = "{{ url('/admin-nano/purchasequotation/export/print2') }}/"+mhpurchasequotationno;
 	}
   $(document).ready(function(){
     $('#disableforminput').prop('checked',true);

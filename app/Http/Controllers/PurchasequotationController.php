@@ -16,6 +16,8 @@ use App\MSupplier;
 
 Use Auth;
 
+use Carbon\Carbon;
+
 use PDF;
 use Excel;
 class PurchasequotationController extends Controller
@@ -96,11 +98,12 @@ class PurchasequotationController extends Controller
     })->export('csv');
     }
 
-    public function print2(){
+    public function print2($mhpurchasequotationno){
+      $data['carbon'] = carbon::now();
     	$data['config'] = MConfig::on(Auth::user()->db_name)->first();
-    	$data['quotation'] = MHPurchasequotation::on(Auth::user()->db_name)->first();
-        $data['mdquotation'] = MDPurchasequotation::on(Auth::user()->db_name)->where('void',0)->get();
-        $data['supplier'] = MSupplier::on(Auth::user()->db_name)->first();
+    	$data['quotation'] = MHPurchasequotation::on(Auth::user()->db_name)->where('void',0)->where('mhpurchasequotationno',$mhpurchasequotationno)->get();
+      $data['mdquotation'] = MDPurchasequotation::on(Auth::user()->db_name)->where('mhpurchaquotationseno',$mhpurchasequotationno)->get();
+      $data['supplier'] = MSupplier::on(Auth::user()->db_name)->first();
 		$pdf = PDF::loadview('admin/export/purchasequotation',$data);
 		return $pdf->setPaper('a4', 'potrait')->stream('Master Purchase Quotation.pdf');
     }
