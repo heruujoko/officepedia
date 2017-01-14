@@ -54,6 +54,10 @@ Route::group(['prefix'=>'admin-nano','middleware' => ['auth','tenantdb']],functi
   Route::get('cashbank/bank/export/excel','CashBankListController@excel_bank');
   Route::get('cashbank/bank/export/pdf','CashBankListController@pdf_bank');
 
+  Route::get('cashbank/income','CashBankIncomeController@index');
+  Route::get('cashbank/outcome','CashBankOutcomeController@index');
+  Route::get('cashbank/transfer','CashBankTransferController@index');
+
   Route::resource('mprefix','MPrefixController');
 
   Route::get('barang','MGoodsController@index');
@@ -274,6 +278,16 @@ Route::group(['prefix'=>'admin-nano','middleware' => ['auth','tenantdb']],functi
   Route::put('cashbank/bank/{id}','Api\CashBankListController@update_bank');
   Route::get('cashbank/total/{code}','Api\CashBankListController@total');
   Route::get('cashbank/grandtotal','Api\CashBankListController@grand_total');
+
+  Route::resource('cashbank/income','Api\CashBankIncomeController');
+  Route::get('cashbank/detailincome/{journalid}','Api\CashBankIncomeController@details');
+
+  Route::resource('cashbank/outcome','Api\CashBankOutcomeController');
+  Route::get('cashbank/detailoutcome/{journalid}','Api\CashBankOutcomeController@details');
+
+    Route::resource('cashbank/transfer','Api\CashBankTransferController');
+    Route::get('cashbank/detailtransfer/{journalid}','Api\CashBankTransferController@details');
+
   Route::resource('mcategorycustomer','Api\MCategorycustomerController');
   Route::resource('mcategorysupplier','Api\MCategorysupplierController');
   Route::resource('mcategorygoods','Api\MCategorygoodsController');
@@ -294,7 +308,7 @@ Route::group(['prefix'=>'admin-nano','middleware' => ['auth','tenantdb']],functi
 
   Route::get('salesquotation/details/{inv}','Api\SalesquotationController@details');
   Route::resource('salesquotation','Api\SalesquotationController');
-  
+
   Route::get('purchaseinvoice/details/{inv}','Api\PurchaseController@details');
   Route::resource('purchaseinvoice','Api\PurchaseController');
   Route::resource('muser','Api\MUserController');
@@ -319,6 +333,7 @@ Route::group(['prefix'=>'admin-nano','middleware' => ['auth','tenantdb']],functi
   Route::get('apsupplier/{id}','Api\APController@apsupplier');
   Route::get('ap/{id}','Api\APController@show');
   Route::get('coadata','Api\MCOAController@datalist');
+  Route::get('coadata/all','Api\MCOAController@alldatalist');
   Route::get('coadata/{parentcode}','Api\MCOAController@datalistaccount');
   Route::resource('payap','Api\PayApController');
   Route::get('payap/details/{invoice_no}','Api\PayApController@details');
@@ -330,6 +345,7 @@ Route::group(['prefix'=>'admin-nano','middleware' => ['auth','tenantdb']],functi
   Route::get('payar/details/{invoice_no}','Api\PayArController@details');
 
   Route::get('journal','Api\JournalController@journal');
+  Route::get('journal/group/{type}','Api\JournalController@group_journal');
   Route::get('coaledger','Api\MCOAController@datalistledger');
   Route::get('ledgers','Api\LedgerController@ledgers');
 

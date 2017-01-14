@@ -56,8 +56,33 @@
         <a href="{{ url('/admin-nano/cashbank/list') }}">Daftar Kas / Bank</a>
       </li>
       @endif
-      <li><a href="">Penerimaan Kas / Bank</a></li>
-      <li><a href="">Pengeluaran Kas / Bank</a></li>
+      @if($active == 'cashbankincome')
+        <li class="active">
+          <a href="{{ url('/admin-nano/cashbank/income') }}">Penerimaan Kas / Bank</a>
+        </li>
+      @else
+      <li>
+        <a href="{{ url('/admin-nano/cashbank/income') }}">Penerimaan Kas / Bank</a>
+      </li>
+      @endif
+      @if($active == 'cashbankoutcome')
+        <li class="active">
+          <a href="{{ url('/admin-nano/cashbank/outcome') }}">Pengeluaran Kas / Bank</a>
+        </li>
+      @else
+      <li>
+        <a href="{{ url('/admin-nano/cashbank/outcome') }}">Pengeluaran Kas / Bank</a>
+      </li>
+      @endif
+          @if($active == 'cashbanktransfer')
+              <li class="active">
+                  <a href="{{ url('/admin-nano/cashbank/transfer') }}">Transfer Kas / Bank</a>
+              </li>
+          @else
+              <li>
+                  <a href="{{ url('/admin-nano/cashbank/transfer') }}">Transfer Kas / Bank</a>
+              </li>
+          @endif
       <li><a href="">Rekonsal Kas / Bank</a></li>
     </ul>
   </li>

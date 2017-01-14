@@ -8,7 +8,7 @@ use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use App\MHPayAR;
 use App\MDPayAR;
-use App\MCustomer;
+use App\MCUSTOMER;
 use Auth;
 use Datatables;
 

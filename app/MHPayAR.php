@@ -5,7 +5,7 @@ namespace App;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
 use App\MConfig;
-use App\MCustomer;
+use App\MCUSTOMER;
 use Carbon\Carbon;
 use Auth;
 use DB;
@@ -53,8 +53,8 @@ class MHPayAR extends Model
           $header = new MHPayAR;
           $header->setConnection(Auth::user()->db_name);
           $header->mhpayarno = "";
-          $header->mhpayarcustomerno = MCustomer::on(Auth::user()->db_name)->where('id',$request->invoice_customer)->first()->mcustomerid;
-          $header->mhpayarcustomername = MCustomer::on(Auth::user()->db_name)->where('id',$request->invoice_customer)->first()->mcustomername;
+          $header->mhpayarcustomerno = MCUSTOMER::on(Auth::user()->db_name)->where('id',$request->invoice_customer)->first()->mcustomerid;
+          $header->mhpayarcustomername = MCUSTOMER::on(Auth::user()->db_name)->where('id',$request->invoice_customer)->first()->mcustomername;
           $header->mhpayardate = Carbon::parse($request->invoice_date);
           $header->mhpayarrefno = $request->invoice_ref_no;
           $header->mhpayarcheckno = $request->invoice_check_no;
@@ -170,8 +170,8 @@ class MHPayAR extends Model
             /* revert coa saldo */
             $coa_ar->update_saldo('+',$header->mhpayarpayamount);
 
-            $header->mhpayarcustomerno = MCustomer::on(Auth::user()->db_name)->where('id',$request->invoice_customer)->first()->mcustomerid;
-            $header->mhpayarcustomername = MCustomer::on(Auth::user()->db_name)->where('id',$request->invoice_customer)->first()->mcustomername;
+            $header->mhpayarcustomerno = MCUSTOMER::on(Auth::user()->db_name)->where('id',$request->invoice_customer)->first()->mcustomerid;
+            $header->mhpayarcustomername = MCUSTOMER::on(Auth::user()->db_name)->where('id',$request->invoice_customer)->first()->mcustomername;
             $header->mhpayardate = Carbon::parse($request->invoice_date);
             $header->mhpayarrefno = $request->invoice_ref_no;
             $header->mhpayarcheckno = $request->invoice_check_no;

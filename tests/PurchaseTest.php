@@ -14,7 +14,7 @@ class PurchaseTest extends TestCase
      *
      * @return void
      */
-    use DatabaseTransactions; 
+    use DatabaseTransactions;
     private function createGoods(){
         // using be method will authenticate the test as a user
         $this->be(factory(App\User::class)->create());
@@ -37,6 +37,6 @@ class PurchaseTest extends TestCase
     }
 
     public function testPurchase(){
-
+        var_dump($this->user);
     }
 }
