@@ -64,16 +64,20 @@ class CashBankIncomeController extends Controller
             $form_details = [];
             $journalID = "";
             foreach ($transactions as $tx) {
-                var_dump($tx->id);
                 $journal = MJournal::on(Auth::user()->db_name)->where('id',$tx->id)->first();
                 $journal->void = 1;
                 $journal->save();
                 $journalID = $journal->mjournalid;
-                array_push($current_details,$tx->id);
+
+                $coa_id = MCOA::on(Auth::user()->db_name)->where('mcoacode',$tx->mjournalcoa)->first()->id;
+
+                array_push($current_details,$coa_id);
             }
             foreach ($request->to_accounts as $toa) {
                 array_push($form_details,$toa['id']);
             }
+            var_dump("form_details ");
+            var_dump($form_details);
             foreach($transactions as $t){
                 $this->t = $t;
                 $journalremark = "";
@@ -83,10 +87,11 @@ class CashBankIncomeController extends Controller
                     var_dump('second');
                     // reset saldo first
                     $coa = MCOA::on(Auth::user()->db_name)->where('mcoacode',$t->mjournalcoa)->first();
+                    $this->coa = $coa;
                     $coa->update_saldo('-',$t->mjournalcredit);
                     $x_journal = array_map(function($acc){
 
-                        if($acc['id'] == $this->t->id){
+                        if($acc['id'] == $this->coa->id){
                             array_push($this->new_journal,$acc);
                             return $acc;
                         }
@@ -111,6 +116,7 @@ class CashBankIncomeController extends Controller
                         $debit_journal->mjournalremark = $journal->mjournalremark;
                         $debit_journal->save();
                     } else {
+                        var_dump("ke else");
                         $journal = MJournal::on(Auth::user()->db_name)->where('id',($this->t->id-1))->first();
                         $journal->void =1;
                         $journal->save();
@@ -151,6 +157,8 @@ class CashBankIncomeController extends Controller
 
             // new details
             foreach($form_details as $form_detail_id){
+                var_dump($current_details);
+                var_dump($form_detail_id);
                 $from_coa = MCOA::on(Auth::user()->db_name)->where('mcoacode',$request->from_account['mcoacode'])->first();
                 if(!in_array($form_detail_id,$current_details)){
 
@@ -184,6 +192,7 @@ class CashBankIncomeController extends Controller
             return response()->json('ok');
         } catch(\Exception $e){
             DB::connection(Auth::user()->db_name)->rollBack();
+            dd($e);
             return response()->json('err',400);
         }
     }

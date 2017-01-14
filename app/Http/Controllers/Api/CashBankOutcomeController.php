@@ -68,7 +68,9 @@ class CashBankOutcomeController extends Controller
                 $journal->void = 1;
                 $journal->save();
                 $journalID = $journal->mjournalid;
-                array_push($current_details,$tx->id);
+
+                $coa_id = MCOA::on(Auth::user()->db_name)->where('mcoacode',$tx->mjournalcoa)->first()->id;
+                array_push($current_details,$coa_id);
             }
             var_dump($current_details);
             foreach ($request->to_accounts as $toa) {
@@ -83,10 +85,11 @@ class CashBankOutcomeController extends Controller
                     var_dump('second');
                     // reset saldo first
                     $coa = MCOA::on(Auth::user()->db_name)->where('mcoacode',$t->mjournalcoa)->first();
+                    $this->coa = $coa;
                     $coa->update_saldo('-',$t->mjournalcredit);
                     $x_journal = array_map(function($acc){
 
-                        if($acc['id'] == $this->t->id){
+                        if($acc['id'] == $this->coa->id){
                             array_push($this->new_journal,$acc);
                             return $acc;
                         }

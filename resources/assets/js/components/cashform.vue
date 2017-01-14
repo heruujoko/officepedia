@@ -385,11 +385,14 @@
                 .then((res) => {
                     console.log(res.data);
                     for(let i=0;i<res.data.length;i++){
+
+                        let coa_id = _.find(this.accounts,{ mcoacode: res.data[i].mjournalcoa }).id
+
                         let obj = {
                             amount:res.data[i].mjournalcredit,
                             date: moment(res.data[i].mjournaldate).format('L'),
                             description: res.data[i].mjournalremark,
-                            id:res.data[i].id,
+                            id:coa_id,
                             mcoacode:res.data[i].mjournalcoa,
                             mcoaname:_.find(this.accounts,{mcoacode: res.data[i].mjournalcoa }).mcoaname
                         }
