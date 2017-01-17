@@ -140,31 +140,35 @@
 										<table id="tableapi" class="tableapi table table-bordered" width="100%">
 											<thead>
 												<tr>
-			                    <th class="hasinput" style="width:10%">
+													<th class="hasinput" style="width:15%">
 													</th>
 													<th class="hasinput" style="width:5%">
 														<input type="text" class="form-control" placeholder="Filter No" />
 													</th>
 													<th class="hasinput" style="width:9%">
-														<input type="text" class="form-control" placeholder="Filter Nomor Invoice" />
-													</th>
-			                    <th class="hasinput" style="width:9%">
-														<input type="text" class="form-control" placeholder="Filter Supplier" />
+														<input type="text" class="form-control" placeholder="Filter Nomor Transaksi" />
 													</th>
 													<th class="hasinput" style="width:9%">
-														<input type="text" class="form-control" placeholder="Filter Tanggal" />
+														<input type="text" class="form-control" placeholder="Filter Tipe" />
+													</th>
+													<th class="hasinput" style="width:20%">
+														<input type="text" class="form-control" placeholder="Filter Akun" />
 													</th>
 													<th class="hasinput" style="width:9%">
-														<input type="text" class="form-control" placeholder="Filter Pembayaran" />
+														<input type="text" class="form-control" placeholder="Filter Debit" />
+													</th>
+													<th class="hasinput" style="width:9%">
+														<input type="text" class="form-control" placeholder="Filter Credit" />
 													</th>
 												</tr>
 												<tr>
 													<th data-hide="action"><center>Aksi</center></th>
-			                    <th data-hide="no"><center>No</center></th>
-			                    <th data-hide="mhinvoiceno"><center>Nomor Invoice</center></th>
-													<th data-hide="mhinvoicecustomername"><center>Nama Supplier</center></th>
-													<th data-hide="mhinvoicedate"><center>Tanggal</center></th>
-													<th data-hide="mhinvoiceduedate"><center>Pembayaran</center></th>
+													<th data-hide="no"><center>No</center></th>
+													<th data-hide="mjournalid"><center>Nomor Transaksi</center></th>
+													<th data-hide="mjournaltranstype"><center>Tipe</center></th>
+													<th data-hide="accounttrace"><center>Akun</center></th>
+													<th data-hide="debits"><center>Debet</center></th>
+													<th data-hide="credits"><center>Kredit</center></th>
 												</tr>
 											</thead>
 											<tbody>
@@ -278,6 +282,7 @@
                 {data: 'no', no: 'no' },
 								{data: 'mjournalid', mjournalid: 'mjournalid' },
 								{data: 'mjournaltranstype', mjournaltranstype: 'mjournaltranstype' },
+								{data: 'accounttrace', accounttrace: 'accounttrace' },
 								{data: 'credits', credits: 'credits' },
 								{data: 'debits', debits: 'debits' }
                 ]
@@ -371,5 +376,9 @@
     .pricelabel {
       text-align: right;
     }
+	table.dataTable tbody td {
+		vertical-align: middle;
+		text-align: center;
+	}
   </style>
 @stop
