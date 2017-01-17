@@ -15,7 +15,7 @@ class CreateMgoodsTable extends Migration
         Schema::create('mgoods', function (Blueprint $table) {
             $table->increments('id');
             $table->string('mgoodscode');
-            $table->string('mgoodsbarcode');
+            $table->string('mgoodsbarcode')->nullable();
             $table->string('mgoodsname');
             $table->string('mgoodsalias');
             $table->string('mgoodsremark');
