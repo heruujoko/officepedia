@@ -22,6 +22,8 @@ Route::group(['prefix'=>'admin-nano','middleware' => ['auth','tenantdb']],functi
   Route::get('mcoaparent','MCOAParentController@index');
   Route::resource('mcoa','MCOAController');
 
+  Route::resource('generaljournal','GeneralJournalController');
+
   Route::get('pelanggan','MCustomerController@index');
   Route::get('pelanggan/export/csv','MCustomerController@csv');
   Route::get('pelanggan/export/excel','MCustomerController@excel');
