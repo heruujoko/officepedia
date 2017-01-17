@@ -280,12 +280,15 @@ Route::group(['prefix'=>'admin-nano','middleware' => ['auth','tenantdb']],functi
   Route::get('cashbank/grandtotal','Api\CashBankListController@grand_total');
 
   Route::resource('cashbank/income','Api\CashBankIncomeController');
+  Route::get('cashbank/income/header/{id}','Api\CashBankIncomeController@header');
   Route::get('cashbank/detailincome/{journalid}','Api\CashBankIncomeController@details');
 
   Route::resource('cashbank/outcome','Api\CashBankOutcomeController');
+    Route::get('cashbank/outcome/header/{id}','Api\CashBankIncomeController@header');
   Route::get('cashbank/detailoutcome/{journalid}','Api\CashBankOutcomeController@details');
 
     Route::resource('cashbank/transfer','Api\CashBankTransferController');
+    Route::get('cashbank/transfer/header/{id}','Api\CashBankIncomeController@header');
     Route::get('cashbank/detailtransfer/{journalid}','Api\CashBankTransferController@details');
 
   Route::resource('mcategorycustomer','Api\MCategorycustomerController');

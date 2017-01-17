@@ -26,6 +26,11 @@ class CashBankTransferController extends Controller
         return response()->json($grp);
     }
 
+    public function header($id){
+        $grp = MJournal::on(Auth::user()->db_name)->where('mjournalid',$id)->get()->last();
+        return response()->json($grp);
+    }
+
     public function details($id){
         $dtls = MJournal::on(Auth::user()->db_name)->where('mjournalid',$id)->where('void',0)->where('mjournaldebit','!=',"")->get();
         return response()->json($dtls);
@@ -36,8 +41,9 @@ class CashBankTransferController extends Controller
             DB::connection(Auth::user()->db_name)->beginTransaction();
             $from_coa = MCOA::on(Auth::user()->db_name)->where('mcoacode',$request->from_account['mcoacode'])->first();
             foreach($request->to_accounts as $to_acc){
-                    MJournal::record_journal("","Transfer",$request->from_account['mcoacode'],0,$to_acc['amount'],"","","");
+
                     MJournal::record_journal("","Transfer",$to_acc['mcoacode'],$to_acc['amount'],0,"","","");
+                    MJournal::record_journal("","Transfer",$request->from_account['mcoacode'],0,$to_acc['amount'],"","","");
 
                     $to_coa = MCOA::on(Auth::user()->db_name)->where('mcoacode',$to_acc['mcoacode'])->first();
 
@@ -82,13 +88,12 @@ class CashBankTransferController extends Controller
                 $this->new_journal = [];
                 // credit side
                 if($t->mjournaldebit != ""){
-                    var_dump('second');
+                    var_dump('first');
                     // reset saldo first
                     $coa = MCOA::on(Auth::user()->db_name)->where('mcoacode',$t->mjournalcoa)->first();
                     $this->coa = $coa;
-                    $coa->update_saldo('-',$t->mjournalcredit);
+                    $coa->update_saldo('-',$t->mjournaldebit);
                     $x_journal = array_map(function($acc){
-
                         if($acc['id'] == $this->coa->id){
                             array_push($this->new_journal,$acc);
                             return $acc;
@@ -104,24 +109,24 @@ class CashBankTransferController extends Controller
                         $journal->void = 0;
                         $journal->save();
                         $coa = MCOA::on(Auth::user()->db_name)->where('mcoacode',$journal->mjournalcoa)->first();
-                        $coa->update_saldo('+',$t->mjournalcredit);
+                        $coa->update_saldo('+',$t->mjournaldebit);
 
-                        // update the debit
-                        var_dump($credit_id);
+                        // update the credit
+                        $credit_id = $this->t->id + 1;
                         $credit_journal = MJournal::on(Auth::user()->db_name)->where('id',$credit_id)->first();
                         $credit_journal->mjournalcredit = $journal->mjournaldebit;
                         $credit_journal->mjournalremark = $journal->mjournalremark;
                         $credit_journal->save();
                     } else {
-                        $journal = MJournal::on(Auth::user()->db_name)->where('id',($this->t->id-1))->first();
+                        $journal = MJournal::on(Auth::user()->db_name)->where('id',($this->t->id+1))->first();
                         $journal->void =1;
                         $journal->save();
                     }
                 }
 
-                // debit side
+                // credit side
                 if($t->mjournalcredit != ""){
-                    var_dump('first');
+                    var_dump('second');
                     // reset saldo first
                     $coa = MCOA::on(Auth::user()->db_name)->where('mcoacode',$t->mjournalcoa)->first();
                     $coa->update_saldo('+',$t->mjournalcredit);
@@ -131,7 +136,6 @@ class CashBankTransferController extends Controller
                     $journal->mjournaldate = Carbon::parse($request->date);
                     $journal->void = 0;
                     $journal->save();
-                    $credit_id = $journal->id;
 
                     $coa = MCOA::on(Auth::user()->db_name)->where('mcoacode',$journal->mjournalcoa)->first();
                     $coa->update_saldo('-',$t->mjournalcredit);
@@ -164,8 +168,8 @@ class CashBankTransferController extends Controller
                         }
                     }
 
-                    MJournal::record_journal("","Transfer",$request->from_account['mcoacode'],0,$to_acc['amount'],"","","");
                     MJournal::record_journal("","Transfer",$to_acc['mcoacode'],$to_acc['amount'],0,"","","");
+                    MJournal::record_journal("","Transfer",$request->from_account['mcoacode'],0,$to_acc['amount'],"","","");
 
                     $to_coa = MCOA::on(Auth::user()->db_name)->where('mcoacode',$to_acc['mcoacode'])->first();
 
@@ -186,6 +190,7 @@ class CashBankTransferController extends Controller
             return response()->json('ok');
         } catch(\Exception $e){
             DB::connection(Auth::user()->db_name)->rollBack();
+            dd($e);
             return response()->json('err',400);
         }
     }
