@@ -353,6 +353,7 @@ Route::group(['prefix'=>'admin-nano','middleware' => ['auth','tenantdb']],functi
   Route::get('journal/group/{type}','Api\JournalController@group_journal');
   Route::get('coaledger','Api\MCOAController@datalistledger');
   Route::get('ledgers','Api\LedgerController@ledgers');
+  Route::resource('generaljournal','Api\GeneralJournalController');
 
   Route::controllers([
     '/'=>'ApiController'

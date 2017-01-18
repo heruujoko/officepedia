@@ -8,7 +8,7 @@
                 <div class="form-group">
                     <label class="col-md-2 control-label">Tanggal</label>
                     <div class="col-md-10">
-                        <input type="text" v-dpicker class="form-control" v-model="transaction_date">
+                        <input v-bind:disabled="!notview" type="text" v-dpicker class="form-control" v-model="transaction_date">
                     </div>
                 </div>
             </div>
@@ -139,6 +139,7 @@
         props: ['mode'],
         data(){
             return{
+                editinvoiceid: 0,
                 transaction_no: "",
                 transaction_date: moment().format('L'),
                 transaction_items: [],
@@ -199,7 +200,11 @@
         },
         methods:{
           toInsertMode(){
-
+              this.resetTransaction();
+              $('#forminput').show();
+              $('#formview').hide();
+              $('#formedit').hide();
+              window.location.href="#forminput";
           },
           dismissModal(){
               $("#"+this.modal_id).modal('toggle');
@@ -246,7 +251,61 @@
                 this.transaction_items.push(this.transaction_detail)
                 this.dismissModal()
           },
-          editItem(key){
+            saveTransaction(){
+                if(this.total_credit != this.total_debit){
+                    swal({
+                        title: "Oops!",
+                        text: "Total debit & kredit tidak seimbang",
+                        type: "error",
+                        timer: 1000
+                    });
+                } else {
+                    let journal_data = {
+                        date: this.transaction_date,
+                        items: this.transaction_items
+                    }
+
+                    Axios.post('/admin-api/generaljournal',journal_data)
+                    .then( res => {
+                        swal({
+                                title: "Success!",
+                                text: "Transaksi berhasil",
+                                type: "success",
+                                timer: 1000
+                        });
+                    })
+                    .catch(err => {
+                        swal({
+                                title: "Oops!",
+                                text: "Transaksi gagal",
+                                type: "error",
+                                timer: 1000
+                        });
+                    })
+                }
+            },
+            resetTransaction(){
+                this.editinvoiceid = 0
+                this.transaction_no = ""
+                this.transaction_date = moment().format('L')
+                this.transaction_items = []
+                this.transaction_detail = {
+                        amount:0,
+                        debit:0,
+                        credit:0,
+                        type:"debit",
+                        date:"",
+                        mcoacode:"",
+                        mcoaname:"",
+                        general_journal_detail_id:""
+                };
+                this.detail_account =""
+                this.accounts = []
+                this.selected_detail_code = ""
+                this.disable_detail_account =  true
+                this.detail_state = ""
+            },
+            editItem(key){
               this.disable_detail_account = false
               this.detail_state = "edit"
               let item = _.find(this.transaction_items,{general_journal_detail_id: key})
@@ -258,16 +317,6 @@
               this.transaction_detail.type = item.type
               this.transaction_detail.date = item.date
               this.transaction_detail.general_journal_detail_id = item.general_journal_detail_id
-          },
-          saveTransaction(){
-              if(this.total_credit != this.total_debit){
-                  swal({
-                      title: "Oops!",
-                      text: "Total debit & kredit tidak seimbang",
-                      type: "error",
-                      timer: 1000
-                  });
-              }
           },
           updateTransactionItem(){
               let index = _.findIndex(this.transaction_items,{general_journal_detail_id: this.transaction_detail.general_journal_detail_id})
@@ -290,6 +339,73 @@
           },
           updateTransaction(){
 
+              if(this.total_credit != this.total_debit){
+                  swal({
+                      title: "Oops!",
+                      text: "Total debit & kredit tidak seimbang",
+                      type: "error",
+                      timer: 1000
+                  });
+              } else {
+                  let data = {
+                      date: this.transaction_date,
+                      items: this.transaction_items
+                  }
+
+                  Axios.put('/admin-api/generaljournal/'+this.editinvoiceid,data)
+                  .then( res => {
+                          swal({
+                                  title: "Success!",
+                                  text: "Transaksi berhasil",
+                                  type: "success",
+                                  timer: 1000
+                          });
+                          $('.tableapi').DataTable().ajax.reload();
+                          this.toInsertMode()
+                  }).catch(err => {
+                          swal({
+                                  title: "Oops!",
+                                  text: "Transaksi gagal",
+                                  type: "error",
+                                  timer: 1000
+                          });
+                          this.toInsertMode()
+                  });
+              }
+          },
+          fetchTransaction(journalid){
+              Axios.get('/admin-api/generaljournal/'+journalid)
+              .then( res => {
+                this.transaction_items = []
+                this.transaction_no = res.data[0].mjournalid;
+                this.transaction_date = moment(res.data[0].mjournaldate).format('L');
+
+                for(let i=0;i<res.data.length;i++){
+                    let item_data = {
+                        credit: res.data[i].mjournalcredit,
+                        date: res.data[i].mjournaldate,
+                        debit: res.data[i].mjournaldebit,
+                        general_journal_detail_id: res.data[i].general_journal_detail_id,
+                        id: res.data[i].id,
+                        mcoacode: res.data[i].mjournalcoa
+                    }
+
+                    if(item_data.credit != 0){
+                        item_data.amount = item_data.credit;
+                        item_data.type = "credit"
+                    } else {
+                        item_data.amount = item_data.debit;
+                        item_data.type = "debit"
+                    }
+
+                    item_data.mcoaname = _.find(this.accounts,{mcoacode: item_data.mcoacode}).mcoaname
+
+                    this.transaction_items.push(item_data)
+                }
+
+              }).catch( err => {
+
+              });
           },
           fetchConfig(){
             Axios.get('/admin-api/mconfig')
@@ -322,6 +438,20 @@
         created(){
             this.fetchConfig()
             this.fetchAccounts()
+            if(this.mode == 'edit'){
+                this.$parent.$on('edit-selected',(journalid) => {
+                    this.editinvoiceid = journalid;
+                this.fetchTransaction(journalid);
+                });
+            }
+
+            if(this.mode == 'view'){
+                this.$parent.$on('view-selected',(journalid) => {
+                    this.editinvoiceid = journalid;
+                this.fetchTransaction(journalid);
+            });
+            }
+
         }
     }
 </script>

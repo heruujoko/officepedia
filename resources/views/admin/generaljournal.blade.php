@@ -83,7 +83,7 @@
                                 <!-- widget content -->
                                 <div class="widget-body no-padding">
                                     <div class="container">
-                                        <cashform mode="edit" cashtype="income"></cashform>
+                                        <generaljournal mode="edit"></generaljournal>
                                     </div>
                                 </div>
                             </div>
@@ -110,7 +110,7 @@
                                 <!-- widget content -->
                                 <div class="widget-body no-padding">
                                     <div class="container">
-                                        <cashform mode="view" cashtype="income"></cashform>
+                                        <generaljournal mode="view"></generaljournal>
                                     </div>
                                 </div>
                             </div>
@@ -207,14 +207,14 @@
             $('#formview').hide();
             $('#formedit').show();
             window.location.href="#formedit";
-            cashincome.$emit('edit-selected',id);
+            gjournal.$emit('edit-selected',id);
         }
         function viewincome(id){
             $('#forminput').hide();
             $('#formedit').hide();
             $('#formview').show();
             window.location.href="#formview";
-            cashincome.$emit('view-selected',id);
+            gjournal.$emit('view-selected',id);
         }
         $(document).ready(function(){
             $('#disableforminput').prop('checked',true);
@@ -276,7 +276,7 @@
 
                         processing: false,
                         serverSide: false,
-                        ajax: '{{URL::to('/')}}/admin-api/journal/group/pemasukan',
+                        ajax: '{{URL::to('/')}}/admin-api/journal/group/umum',
                         columns: [
                             {data: 'action', name:'action', searchable: false, orderable: false},
                             {data: 'no', no: 'no' },
@@ -312,7 +312,7 @@
                         if (isconfirm) {
                             $.ajax({
                                 type: "DELETE",
-                                url: API_URL+"/cashbank/income/"+id,
+                                url: API_URL+"/generaljournal/"+id,
                                 success: function(response){
                                     console.log(response);
                                     table.ajax.reload();

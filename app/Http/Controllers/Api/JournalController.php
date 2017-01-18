@@ -31,6 +31,11 @@ class JournalController extends Controller
     }
 
     public function group_journal($type){
+
+        if($type == 'umum'){
+            $type = "Jurnal Umum";
+        }
+
         $grp = MJournal::on(Auth::user()->db_name)->where('void',0)->where('mjournaltranstype',$type)->groupBy('mjournalid')
         ->selectRaw('*,sum(mjournalcredit) as total_credit, sum(mjournaldebit) as total_debit')
         ->get();
@@ -45,7 +50,7 @@ class JournalController extends Controller
         }
 
         return Datatables::of($grp)->addColumn('action', function($j){
-            $this->journals = MJournal::on(Auth::user()->db_name)->where('mjournalid',$j->mjournalid)->get();
+            $this->journals = MJournal::on(Auth::user()->db_name)->where('mjournalid',$j->mjournalid)->where('void',0)->get();
           return '<center><div class="button">
             <a class="btn btn-info btn-xs dropdown-toggle fa fa-eye" onclick="viewincome(\''.$j->mjournalid.'\')"> <font style="">Lihat</font></a>
             <a class="btn btn-primary btn-xs dropdown-toggle fa fa-pencil" onclick="editincome(\''.$j->mjournalid.'\')"> <font style="font-family: arial;">Ubah &nbsp</font></a>
