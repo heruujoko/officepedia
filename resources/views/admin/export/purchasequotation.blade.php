@@ -45,9 +45,9 @@
             vertical-align: inherit;
         }
     .header-topright{
-    position: absolute;
-    top: 0%;
-    right: 0%;
+    position: fixed;
+    top: 1%;
+    left: 73%;
     }
     .cust{
         padding-top: 50px;
@@ -59,14 +59,14 @@
     }
 
     .cust>table>th {
-        height: 50px;
+        height: 30px;
     }
 
     .cust>table>td {
       
     }
     .balance{
-        margin-left: 300px;
+        margin-left: 320px;
 
     }
     .footer{
@@ -78,6 +78,10 @@
     .global-css{
          font-family: "Trebuchet MS", "Lucida Grande", "Lucida Sans Unicode", "Lucida Sans", Tahoma, sans-serif;
          font-size: 10px;
+    }
+    .thnoborder{
+        border-style:hidden;
+
     }
 </style>	
 </head>
@@ -103,11 +107,11 @@
 
     {{-- TOP RIGHT --}}
     <div class="header-topright">
-    <table border="">
+    <table border="" cellpadding="5" cellpadding="5">
         <tr>
             <th style=""></th>
         </tr>
-        <tr>
+       {{--  <tr>
             <td> 
                 <h3 style="color: #9ACADE">Penawaran Pembelian</h3>
                 DATE:  {{ $quotation[0]['mhpurchasequotationdate'] }}<br>
@@ -115,6 +119,22 @@
                 CUSTOMER ID:  {{ $quotation[0]['mhpurchasequotationsupplierid'] }}<br>
                 VALID UNTIL:  {{ $quotation[0]['mhpurchasequotationduedate'] }}<br>
             </td>
+        </tr> --}}
+        <tr>
+            <th style="text-align: right;" class="thnoborder">DATE: </td>
+            <td>{{ $quotation[0]['mhpurchasequotationdate'] }}</td>
+        </tr>
+        <tr>
+            <th style="text-align: right;" class="thnoborder">QUOTE: </td>
+            <td>{{ $quotation[0]['mhpurchasequotationno'] }}</td>
+        </tr>
+        <tr>
+            <th style="text-align: right;" class="thnoborder">CUSTOMER ID:</td>
+            <td>{{ $quotation[0]['mhpurchasequotationsupplierid'] }}</td>
+        </tr>
+        <tr>
+            <th style="text-align: right;" class="thnoborder">VALID UNTIL: </td>
+            <td>{{ $quotation[0]['mhpurchasequotationduedate'] }}</td>
         </tr>
     </table>
     </div>
@@ -160,7 +180,10 @@
                <td class="tds">{{ number_format($a->mdpurchasequotationbuyprice * $a->mdpurchasequotationgoodsqty - $a->mdpurchasequotationgoodsdiscount,$decimals,$dec_point,$thousands_sep) }}</td>
                 
            </tr>
-           <tr>
+         
+       
+            @endforeach
+              <tr>
                <td></td>
                <td></td>
                <td></td>
@@ -170,8 +193,146 @@
                <td></td>
            </tr>
           
-       
-            @endforeach
+            <tr>
+               <td></td>
+               <td></td>
+               <td></td>
+               <td></td>
+               <td></td>
+               <td></td>
+               <td></td>
+           </tr>
+          
+            <tr>
+               <td></td>
+               <td></td>
+               <td></td>
+               <td></td>
+               <td></td>
+               <td></td>
+               <td></td>
+           </tr>
+          
+            <tr>
+               <td></td>
+               <td></td>
+               <td></td>
+               <td></td>
+               <td></td>
+               <td></td>
+               <td></td>
+           </tr>
+          
+            <tr>
+               <td></td>
+               <td></td>
+               <td></td>
+               <td></td>
+               <td></td>
+               <td></td>
+               <td></td>
+           </tr>
+          
+            <tr>
+               <td></td>
+               <td></td>
+               <td></td>
+               <td></td>
+               <td></td>
+               <td></td>
+               <td></td>
+           </tr>
+          
+            <tr>
+               <td></td>
+               <td></td>
+               <td></td>
+               <td></td>
+               <td></td>
+               <td></td>
+               <td></td>
+           </tr>
+          
+            <tr>
+               <td></td>
+               <td></td>
+               <td></td>
+               <td></td>
+               <td></td>
+               <td></td>
+               <td></td>
+           </tr>
+          
+            <tr>
+               <td></td>
+               <td></td>
+               <td></td>
+               <td></td>
+               <td></td>
+               <td></td>
+               <td></td>
+           </tr>
+          
+            <tr>
+               <td></td>
+               <td></td>
+               <td></td>
+               <td></td>
+               <td></td>
+               <td></td>
+               <td></td>
+           </tr>
+          
+            <tr>
+               <td></td>
+               <td></td>
+               <td></td>
+               <td></td>
+               <td></td>
+               <td></td>
+               <td></td>
+           </tr>
+          
+            <tr>
+               <td></td>
+               <td></td>
+               <td></td>
+               <td></td>
+               <td></td>
+               <td></td>
+               <td></td>
+           </tr>
+          
+            <tr>
+               <td></td>
+               <td></td>
+               <td></td>
+               <td></td>
+               <td></td>
+               <td></td>
+               <td></td>
+           </tr>
+          
+            <tr>
+               <td></td>
+               <td></td>
+               <td></td>
+               <td></td>
+               <td></td>
+               <td></td>
+               <td></td>
+           </tr>
+          
+            <tr>
+               <td></td>
+               <td></td>
+               <td></td>
+               <td></td>
+               <td></td>
+               <td></td>
+               <td></td>
+           </tr>
+          
             
        </table>
        <table class="balance">
