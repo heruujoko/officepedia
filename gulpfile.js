@@ -28,8 +28,6 @@ elixir(mix => {
 
     mix.webpack('purchasequotation.js');
 
-    // mix.webpack('purchasequotation.js');
-
     // mix.webpack('payap.js');
     // mix.webpack('payar.js');
     // mix.webpack('salesquotation.js');
