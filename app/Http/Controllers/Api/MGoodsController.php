@@ -112,7 +112,8 @@ class MGoodsController extends Controller
       $MGoods = "";
 			try{
 
-    $validate = MGoods::on(Auth::user()->db_name)->where('mgoodsname',$request->mgoodsname)->orWhere('mgoodsbarcode',$request->mgoodsbarcode)->where('void',0)->first();
+//    $validate = MGoods::on(Auth::user()->db_name)->where('mgoodsname',$request->mgoodsname)->orWhere('mgoodsbarcode',$request->mgoodsbarcode)->where('void',0)->first();
+        $validate = MGoods::on(Auth::user()->db_name)->where('mgoodsname',$request->mgoodsname)->where('void',0)->first();
         if ($validate == null) {
         $MGoods = new MGoods($request->all());
         $MGoods->setConnection(Auth::user()->db_name);

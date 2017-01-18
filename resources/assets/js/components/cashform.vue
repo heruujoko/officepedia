@@ -343,13 +343,13 @@
             fetchTransaction(journalid){
                 let action_url = ""
                 if(this.cashtype == "income"){
-                    action_url = "/admin-api/cashbank/income/"
+                    action_url = "/admin-api/cashbank/income/header/"
                 }
                 if(this.cashtype == "outcome"){
-                    action_url = "/admin-api/cashbank/outcome/"
+                    action_url = "/admin-api/cashbank/outcome/header/"
                 }
                 if(this.cashtype == "transfer"){
-                    action_url = "/admin-api/cashbank/transfer/"
+                    action_url = "/admin-api/cashbank/transfer/header/"
                 }
 
                 $("#"+this.loading_id).modal('toggle')
@@ -385,11 +385,14 @@
                 .then((res) => {
                     console.log(res.data);
                     for(let i=0;i<res.data.length;i++){
+
+                        let coa_id = _.find(this.accounts,{ mcoacode: res.data[i].mjournalcoa }).id
+
                         let obj = {
-                            amount:res.data[i].mjournalcredit,
+                            amount:res.data[i].mjournaldebit,
                             date: moment(res.data[i].mjournaldate).format('L'),
                             description: res.data[i].mjournalremark,
-                            id:res.data[i].id,
+                            id:coa_id,
                             mcoacode:res.data[i].mjournalcoa,
                             mcoaname:_.find(this.accounts,{mcoacode: res.data[i].mjournalcoa }).mcoaname
                         }

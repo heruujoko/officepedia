@@ -56,7 +56,7 @@
                                 <!-- widget content -->
                                 <div class="widget-body no-padding">
                                     <div class="container">
-                                        <cashform mode="insert" cashtype="transfer"></cashform>
+                                        <generaljournal mode="insert"></generaljournal>
                                     </div>
                                 </div>
                             </div>
@@ -83,7 +83,7 @@
                                 <!-- widget content -->
                                 <div class="widget-body no-padding">
                                     <div class="container">
-                                        <cashform mode="edit" cashtype="transfer"></cashform>
+                                        <generaljournal mode="edit"></generaljournal>
                                     </div>
                                 </div>
                             </div>
@@ -110,7 +110,7 @@
                                 <!-- widget content -->
                                 <div class="widget-body no-padding">
                                     <div class="container">
-                                        <cashform mode="view" cashtype="transfer"></cashform>
+                                        <generaljournal mode="view"></generaljournal>
                                     </div>
                                 </div>
                             </div>
@@ -199,7 +199,7 @@
 
 @section('js')
     <script src="{{ url('/js/numeral.min.js') }}"></script>
-    <script src="{{ url('/js/cashincome.js') }}"></script>
+    <script src="{{ url('/js/generaljournal.js') }}"></script>
     <script src="{{ url('/js/bootstrap-datepicker.min.js') }}"></script>
     <script>
         function editincome(id){
@@ -207,14 +207,14 @@
             $('#formview').hide();
             $('#formedit').show();
             window.location.href="#formedit";
-            cashincome.$emit('edit-selected',id);
+            gjournal.$emit('edit-selected',id);
         }
         function viewincome(id){
             $('#forminput').hide();
             $('#formedit').hide();
             $('#formview').show();
             window.location.href="#formview";
-            cashincome.$emit('view-selected',id);
+            gjournal.$emit('view-selected',id);
         }
         $(document).ready(function(){
             $('#disableforminput').prop('checked',true);
@@ -245,19 +245,19 @@
                             {
                                 text: 'CSV',
                                 action: function(){
-                                    window.location.href = "{{ url('/admin-nano/cashbank/transfer/export/csv') }}"
+                                    window.location.href = "{{ url('/admin-nano/cashbank/income/export/csv') }}"
                                 }
                             },
                             {
                                 text: 'Excel',
                                 action: function(){
-                                    window.location.href = "{{ url('/admin-nano/cashbank/transfer/export/excel') }}"
+                                    window.location.href = "{{ url('/admin-nano/cashbank/income/export/excel') }}"
                                 }
                             },
                             {
                                 text: 'PDF',
                                 action: function(){
-                                    window.location.href = "{{ url('/admin-nano/cashbank/transfer/export/pdf') }}"
+                                    window.location.href = "{{ url('/admin-nano/cashbank/income/export/pdf') }}"
                                 }
                             },
                             {
@@ -276,15 +276,15 @@
 
                         processing: false,
                         serverSide: false,
-                        ajax: '{{URL::to('/')}}/admin-api/journal/group/transfer',
+                        ajax: '{{URL::to('/')}}/admin-api/journal/group/umum',
                         columns: [
                             {data: 'action', name:'action', searchable: false, orderable: false},
                             {data: 'no', no: 'no' },
                             {data: 'mjournalid', mjournalid: 'mjournalid' },
                             {data: 'mjournaltranstype', mjournaltranstype: 'mjournaltranstype' },
                             {data: 'accounttrace', accounttrace: 'accounttrace' },
-                            {data: 'credits', credits: 'credits' },
-                            {data: 'debits', debits: 'debits' }
+                            {data: 'debits', debits: 'debits' },
+                            {data: 'credits', credits: 'credits' }
                         ]
                     }).on('xhr.dt',function(){
                         $('#loading_modal').modal('hide');
@@ -312,7 +312,7 @@
                         if (isconfirm) {
                             $.ajax({
                                 type: "DELETE",
-                                url: API_URL+"/cashbank/transfer/"+id,
+                                url: API_URL+"/generaljournal/"+id,
                                 success: function(response){
                                     console.log(response);
                                     table.ajax.reload();

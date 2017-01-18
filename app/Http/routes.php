@@ -22,6 +22,8 @@ Route::group(['prefix'=>'admin-nano','middleware' => ['auth','tenantdb']],functi
   Route::get('mcoaparent','MCOAParentController@index');
   Route::resource('mcoa','MCOAController');
 
+  Route::resource('generaljournal','GeneralJournalController');
+
   Route::get('pelanggan','MCustomerController@index');
   Route::get('pelanggan/export/csv','MCustomerController@csv');
   Route::get('pelanggan/export/excel','MCustomerController@excel');
@@ -280,12 +282,15 @@ Route::group(['prefix'=>'admin-nano','middleware' => ['auth','tenantdb']],functi
   Route::get('cashbank/grandtotal','Api\CashBankListController@grand_total');
 
   Route::resource('cashbank/income','Api\CashBankIncomeController');
+  Route::get('cashbank/income/header/{id}','Api\CashBankIncomeController@header');
   Route::get('cashbank/detailincome/{journalid}','Api\CashBankIncomeController@details');
 
   Route::resource('cashbank/outcome','Api\CashBankOutcomeController');
+    Route::get('cashbank/outcome/header/{id}','Api\CashBankIncomeController@header');
   Route::get('cashbank/detailoutcome/{journalid}','Api\CashBankOutcomeController@details');
 
     Route::resource('cashbank/transfer','Api\CashBankTransferController');
+    Route::get('cashbank/transfer/header/{id}','Api\CashBankIncomeController@header');
     Route::get('cashbank/detailtransfer/{journalid}','Api\CashBankTransferController@details');
 
   Route::resource('mcategorycustomer','Api\MCategorycustomerController');
@@ -348,6 +353,7 @@ Route::group(['prefix'=>'admin-nano','middleware' => ['auth','tenantdb']],functi
   Route::get('journal/group/{type}','Api\JournalController@group_journal');
   Route::get('coaledger','Api\MCOAController@datalistledger');
   Route::get('ledgers','Api\LedgerController@ledgers');
+  Route::resource('generaljournal','Api\GeneralJournalController');
 
   Route::controllers([
     '/'=>'ApiController'
