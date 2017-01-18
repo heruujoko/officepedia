@@ -12,7 +12,8 @@ use App\MConfig;
 use Auth;
 use Datatables;
 use Carbon\Carbon;
-
+use App\Helper\UnitHelper;
+use App\MGoods;
 
 
 class PurchasequotationController extends Controller
@@ -84,6 +85,11 @@ class PurchasequotationController extends Controller
 	}
     public function details($inv){
         $details = MDPurchasequotation::on(Auth::user()->db_name)->where('mhpurchaquotationseno',$inv)->where('void',0)->get();
+
+        foreach($details as $a){
+          $goods = MGoods::on(Auth::user()->db_name)->where('mgoodscode',$a->mdpurchasequotationgoodsid)->first();
+          $a['usage_label'] = UnitHelper::label($goods,$a->mdpurchasequotationgoodsqty);
+        }
         return response()->json($details);
     }
 	 public function store(Request $request){
@@ -119,6 +125,8 @@ class PurchasequotationController extends Controller
           $detail->mdpurchasequotationdate = $header->mhpurchasequotationdate;
           $detail->mdpurchasequotationgoodsid = $g['goods']['mgoodscode'];
           $detail->mdpurchasequotationgoodsname = $g['goods']['mgoodsname'];
+          $detail->mdpurchasequotationbuyprice = $g['buy_price'];
+          $detail->mdpurchasequotationgoodsqty = $g['usage'];
           $detail->mdpurchasequotationgoodsunit3conv = $g['goods']['mgoodsunit3conv'];
           $detail->mdpurchasequotationgoodsunit3label = $g['goods']['mgoodsunit3'];
           $detail->mdpurchasequotationgoodsunit2conv = $g['goods']['mgoodsunit2conv'];
@@ -129,6 +137,7 @@ class PurchasequotationController extends Controller
           $detail->mdpurchasequotationgoodsdiscount = $g['disc'];
           $detail->mdpurchasequotationgoodsidwhouse = $g['warehouse'];
           $detail->mdpurchasequotationremarks = $g['remark'];
+          
           $detail->save();
         }
         return response()->json($quotation);
@@ -176,6 +185,7 @@ class PurchasequotationController extends Controller
           $detail->mdpurchasequotationdate = $header->mhpurchasequotationdate;
           $detail->mdpurchasequotationgoodsid = $g['goods']['mgoodscode'];
           $detail->mdpurchasequotationgoodsname = $g['goods']['mgoodsname'];
+          $detail->mdpurchasequotationbuyprice = $g['buy_price'];
           $detail->mdpurchasequotationgoodsunit3conv = $g['goods']['mgoodsunit3conv'];
           $detail->mdpurchasequotationgoodsunit3label = $g['goods']['mgoodsunit3'];
           $detail->mdpurchasequotationgoodsunit2conv = $g['goods']['mgoodsunit2conv'];
@@ -186,6 +196,7 @@ class PurchasequotationController extends Controller
           $detail->mdpurchasequotationgoodsdiscount = $g['disc'];
           $detail->mdpurchasequotationgoodsidwhouse = $g['warehouse'];
           $detail->mdpurchasequotationremarks = $g['goods']['mgoodsremark'];
+
           $detail->save();
         }
 

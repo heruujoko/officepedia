@@ -962,7 +962,7 @@
             item.detail_goods_unit1 = res.data[i].mdpurchasequotationgoodsunit1;
             item.detail_goods_unit1_conv = res.data[i].mdpurchasequotationgoodsunit1conv;
             item.detail_goods_unit1_label = res.data[i].mdpurchasequotationgoodsunit1label;
-
+            console.log(res);
             let usage_label = ""
             if(item.detail_goods_unit3 != 0){
                 usage_label += item.detail_goods_unit3 +" "+item.detail_goods_unit3_label;

@@ -104,7 +104,24 @@ class PurchasequotationController extends Controller
     	$data['quotation'] = MHPurchasequotation::on(Auth::user()->db_name)->where('void',0)->where('mhpurchasequotationno',$mhpurchasequotationno)->get();
       $data['mdquotation'] = MDPurchasequotation::on(Auth::user()->db_name)->where('mhpurchaquotationseno',$mhpurchasequotationno)->get();
       $data['supplier'] = MSupplier::on(Auth::user()->db_name)->first();
+    $data['subtotal'] = 0;
+    $data['discount'] = 0;
+    $data['totalitem'] = 0;
+    foreach($data['mdquotation'] as $a){
+      $data['subtotal']+=$a->mdpurchasequotationbuyprice * $a->mdpurchasequotationgoodsqty - $a->mdpurchasequotationgoodsdiscount;
+      $data['discount']+=$a->mdpurchasequotationgoodsdiscount;
+      $data['totalitem']+=1;
+    }
+      $config = MConfig::on(Auth::user()->db_name)->where('id',1)->first();
+        $data['decimals'] = $config->msysgenrounddec;
+        $data['dec_point'] = $config->msysnumseparator;
+        if($data['dec_point'] == ","){
+          $data['thousands_sep'] = ".";
+        } else {
+          $data['thousands_sep'] = ",";
+        }
+
 		$pdf = PDF::loadview('admin/export/purchasequotation',$data);
-		return $pdf->setPaper('a4', 'potrait')->stream('Master Purchase Quotation.pdf');
+		return $pdf->setPaper('a4', 'potrait')->stream('Master purchase Quotation.pdf');
     }
 }

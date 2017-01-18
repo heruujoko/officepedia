@@ -116,6 +116,7 @@ class SalesquotationController extends Controller
           $detail->mdsalesquotationdate = $header->mhsalesquotationdate;
           $detail->mdsalesquotationgoodsid = $g['goods']['mgoodscode'];
           $detail->mdsalesquotationgoodsname = $g['goods']['mgoodsname'];
+          $detail->mdsalesquotationbuyprice = $g['buy_price'];
           $detail->mdsalesquotationgoodsunit3conv = $g['goods']['mgoodsunit3conv'];
           $detail->mdsalesquotationgoodsunit3label = $g['goods']['mgoodsunit3'];
           $detail->mdsalesquotationgoodsunit2conv = $g['goods']['mgoodsunit2conv'];
@@ -173,6 +174,7 @@ class SalesquotationController extends Controller
           $detail->mdsalesquotationdate = $header->mhsalesquotationdate;
           $detail->mdsalesquotationgoodsid = $g['goods']['mgoodscode'];
           $detail->mdsalesquotationgoodsname = $g['goods']['mgoodsname'];
+          $detail->mdsalesquotationbuyprice = $g['buy_price'];
           $detail->mdsalesquotationgoodsunit3conv = $g['goods']['mgoodsunit3conv'];
           $detail->mdsalesquotationgoodsunit3label = $g['goods']['mgoodsunit3'];
           $detail->mdsalesquotationgoodsunit2conv = $g['goods']['mgoodsunit2conv'];

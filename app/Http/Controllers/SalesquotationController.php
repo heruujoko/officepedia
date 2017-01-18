@@ -99,11 +99,27 @@ class SalesquotationController extends Controller
     }
 
     public function print2($mhsalesquotationno){
-      $data['carbon'] = Carbon::now();
-    	$data['config'] = MConfig::on(Auth::user()->db_name)->first();
-    	$data['quotation'] = MHSalesquotation::on(Auth::user()->db_name)->where('void',0)->where('mhsalesquotationno',$mhsalesquotationno)->get();
+      $data['carbon'] = carbon::now();
+      $data['config'] = MConfig::on(Auth::user()->db_name)->first();
+      $data['quotation'] = MHSalesquotation::on(Auth::user()->db_name)->where('void',0)->where('mhsalesquotationno',$mhsalesquotationno)->get();
       $data['mdquotation'] = MDSalesquotation::on(Auth::user()->db_name)->where('mhsalesotationseno',$mhsalesquotationno)->get();
       $data['supplier'] = MSupplier::on(Auth::user()->db_name)->first();
+    $data['subtotal'] = 0;
+    $data['discount'] = 0;
+    $data['totalitem'] = 0;
+    foreach($data['mdquotation'] as $a){
+      $data['subtotal']+=$a->mdsalesquotationbuyprice * $a->mdsalesgoodsqty - $a->mdsalesgoodsdiscount;
+      $data['discount']+=$a->mdsalesgoodsdiscount;
+      $data['totalitem']+=1;
+    }
+      $config = MConfig::on(Auth::user()->db_name)->where('id',1)->first();
+        $data['decimals'] = $config->msysgenrounddec;
+        $data['dec_point'] = $config->msysnumseparator;
+        if($data['dec_point'] == ","){
+          $data['thousands_sep'] = ".";
+        } else {
+          $data['thousands_sep'] = ",";
+        }
 		$pdf = PDF::loadview('admin/export/salesquotation',$data);
 		return $pdf->setPaper('a4', 'potrait')->stream('Master Sales Quotation.pdf');
     }
