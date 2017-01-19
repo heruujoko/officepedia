@@ -45,10 +45,12 @@
         <br>
         <div class="row">
             <div class="col-md-12">
-                <table class="table table-bordered" id="tableapi">
+                <div v-for="journal in journals">
+                <h5>Jurnal ID : {{ journal.journalid }}</h5>
+                <table style="table-layout: fixed;" class="table table-bordered" id="tableapi">
                     <thead>
                         <tr>
-                            <th>Tanggal</th>
+                            <th style="width: 10%">Tanggal</th>
                             <th>Akun</th>
                             <th>Tipe Transaksi</th>
                             <th>Debet</th>
@@ -56,21 +58,27 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr v-for="j in journals">
-                            <td class="tbl-footer" v-if="j.data == false && j.summary == false" colspan="3" rowspan="2">Saldo</td>
-                            <td v-if="j.data == true">{{ j.mjournaldate }}</td>
-                            <td v-if="j.data == true">{{ j.akun.mcoaname }}</td>
-                            <td v-if="j.data == true">{{ j.mjournaltranstype }}</td>
-                            <td v-if="j.data == true" style="text-align:right" v-priceformatlabel="num_format">{{ j.mjournaldebit}}</td>
-                            <td v-if="j.data == true" style="text-align:right" v-priceformatlabel="num_format">{{ j.mjournalcredit }}</td>
-                            <td class="tbl-footer" v-if="j.data == false" style="text-align:right" v-priceformatlabel="num_format">{{ j.debit}}</td>
-                            <td class="tbl-footer" v-if="j.data == false" style="text-align:right" v-priceformatlabel="num_format">{{ j.credit }}</td>
+                        <tr v-for="tr in journal.transactions">
+                            <td>{{ tr.mjournaldate }}</td>
+                            <td>{{ tr.mjournalcoa }}</td>
+                            <td>{{ tr.mjournaltranstype }}</td>
+                            <td v-priceformatlabel="num_format" style="text-align: right">{{ tr.mjournaldebit }}</td>
+                            <td v-priceformatlabel="num_format" style="text-align: right">{{ tr.mjournalcredit }}</td>
                         </tr>
                     </tbody>
                     <thead>
-
+                        <tr>
+                            <td colspan="3" rowspan="2" style="text-align: center;vertical-align: middle">TOTAL</td>
+                            <td v-priceformatlabel="num_format" style="text-align: right">{{ lodash.sumBy(journal.transactions , (jt) => { return jt.mjournaldebit } )}}</td>
+                            <td v-priceformatlabel="num_format" style="text-align: right">{{ lodash.sumBy(journal.transactions , (jt) => { return jt.mjournalcredit } )}}</td>
+                        </tr>
+                        <tr>
+                            <td v-priceformatlabel="num_format" style="text-align: right">{{ lodash.sumBy(journal.transactions , (jt) => { return jt.mjournaldebit } )}}</td>
+                            <td v-priceformatlabel="num_format" style="text-align: right">{{ lodash.sumBy(journal.transactions , (jt) => { return jt.mjournalcredit } )}}</td>
+                        </tr>
                     </thead>
                 </table>
+                </div>
             </div>
         </div>
         <br>
@@ -80,6 +88,7 @@
 <script>
     import moment from 'moment'
     import Axios from 'axios'
+    import _ from 'lodash'
     export default {
         props:['username'],
         data(){
@@ -90,7 +99,8 @@
                 company_name:"",
                 report_print_date:moment().format('L'),
                 report_date_end: moment().format('L'),
-                report_bank:"",
+                report_bank:"Semua",
+                lodash : _
             }
         },
         computed:{
@@ -122,7 +132,12 @@
                 });
             },
             fetchJournals(){
-                Axios.get('/admin-api/ledgers?end='+this.report_date_end+"&bank="+this.report_bank).then((res) => {
+                let bank_code = "Semua";
+                console.log(this.report_bank == "Semua")
+                if(this.report_bank != "Semua"){
+                    bank_code = _.find(this.banks,{id: parseInt(this.report_bank)}).mcoacode
+                }
+                Axios.get('/admin-api/ledgers?end='+this.report_date_end+"&bank="+bank_code).then((res) => {
                     this.journals = res.data;
                 });
             },

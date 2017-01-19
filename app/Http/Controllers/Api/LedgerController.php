@@ -17,7 +17,7 @@ class LedgerController extends Controller
         $ledger_query = MJournal::on(Auth::user()->db_name);
         $coa ="";
         if($request->has('bank') && $request->bank != 'Semua'){
-            $coa = MCOA::on(Auth::user()->db_name)->where('id',$request->bank)->first()->mcoacode;
+            $coa = MCOA::on(Auth::user()->db_name)->where('mcoacode',$request->bank)->first()->mcoacode;
         }
         if($request->has('start')){
             $ledger_query->whereDate('mjournaldate','>=',Carbon::parse($request->start));
@@ -33,54 +33,26 @@ class LedgerController extends Controller
 
         $ledgers = [];
 
-        $ledger_group = $ledger_query->groupBy('mjournalcoa')->orderBy('created_at','asc')->get();
+        $ledger_group = $ledger_query->groupBy('mjournalid')->orderBy('created_at','asc')->where('void',0)->get();
 
-        foreach($ledger_group as $grp){
-            $group_data_query = MJournal::on(Auth::user()->db_name)->where('mjournalcoa',$grp->mjournalcoa);
-            $debit = 0;
-            $credit = 0;
-            if($request->has('start')){
-                $group_data_query->whereDate('mjournaldate','>=',Carbon::parse($request->start));
+        foreach($ledger_group as $l){
+            $ledgers_per_journalid = [];
+            $jt_query = MJournal::on(Auth::user()->db_name)->where('mjournalid',$l->mjournalid)->where('void',0);
+            if($request->has('bank') && $request->bank != 'Semua'){
+                $jt_query->where('mjournalcoa',$request->bank);
             }
             if($request->has('end')){
-                $group_data_query->whereDate('mjournaldate','<=',Carbon::parse($request->end));
+                $ledger_query->whereDate('mjournaldate','<=',Carbon::parse($request->end));
             }
-            $group_data = $group_data_query->get();
-            foreach($group_data as $data){
-                $data['data'] = true;
-                $data['summary'] = false;
-                $data['akun'] = MCOA::on(Auth::user()->db_name)->where('mcoacode',$data->mjournalcoa)->first();
-
-
-                $debit += $data->mjournaldebit;
-                $credit += $data->mjournalcredit;
-
-
+            $journal_transactions = $jt_query->get();
+            foreach ($journal_transactions as $jt){
+                array_push($ledgers_per_journalid,$jt);
+            }
+            $data['transactions'] = $ledgers_per_journalid;
+            $data['journalid'] = $ledgers_per_journalid[0]->mjournalid;
+            if(sizeof($data['transactions']) > 0){
                 array_push($ledgers,$data);
             }
-            $saldo = [
-                'data' => false,
-                'summary' => false,
-                'debit' => $debit,
-                'credit' => $credit
-            ];
-            array_push($ledgers,$saldo);
-            if($debit > $credit){
-                $summary = [
-                    'data' => false,
-                    'summary' => true,
-                    'debit' => $debit - $credit,
-                    'credit' => 0
-                ];
-            } else {
-                $summary = [
-                    'data' => false,
-                    'summary' => true,
-                    'debit' => 0,
-                    'credit' => $credit - $debit
-                ];
-            }
-            array_push($ledgers,$summary);
         }
 
         return response()->json($ledgers);
