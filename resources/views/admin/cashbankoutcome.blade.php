@@ -283,8 +283,8 @@
 								{data: 'mjournalid', mjournalid: 'mjournalid' },
 								{data: 'mjournaltranstype', mjournaltranstype: 'mjournaltranstype' },
 								{data: 'accounttrace', accounttrace: 'accounttrace' },
-								{data: 'credits', credits: 'credits' },
-								{data: 'debits', debits: 'debits' }
+								{data: 'debits', debits: 'debits' },
+								{data: 'credits', credits: 'credits' }
                 ]
               }).on('xhr.dt',function(){
 								$('#loading_modal').modal('hide');

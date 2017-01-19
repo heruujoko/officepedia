@@ -184,7 +184,7 @@ class CashBankOutcomeController extends Controller
                     }
                 }
             }
-
+            MJournal::add_prefix();
             DB::connection(Auth::user()->db_name)->commit();
             return response()->json('ok');
         } catch(\Exception $e){

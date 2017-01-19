@@ -50,7 +50,7 @@
                     <tbody>
                         <tr v-for="j in journals">
                             <td>{{ j.mjournaldate }}</td>
-                            <td>{{ j.mjournaltransno }}</td>
+                            <td>{{ j.mjournalid }}</td>
                             <td>{{ j.mjournaltranstype }}</td>
                             <td v-if="j.mjournaldebit != 0">{{ j.akun.mcoacode }} - {{ j.akun.mcoaname }}</td>
                             <td v-if="j.mjournalcredit != 0" style="text-align: center">{{ j.akun.mcoacode }} - {{ j.akun.mcoaname }}</td>
