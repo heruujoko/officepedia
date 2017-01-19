@@ -60,12 +60,17 @@ class APController extends Controller
 
             $total_inv = 0;
             $total_outstanding = 0;
-
+            $last_inv = "";
             foreach ($dtl as $dt) {
                 $dt['data'] = true;
                 $dt['aging'] = Carbon::parse($dt->mapcardtdate)->diffInDays(Carbon::now());
                 $dt['footer'] = false;
-                $total_inv += $dt->mapcardtotalinv;
+
+                if($dt->mapcardtransno != $last_inv){
+                    $total_inv += $dt->mapcardtotalinv;
+                    $last_inv = $dt->mapcardtransno;
+                }
+
                 if($dt->mapcardpayamount > 0){
                     $total_outstanding -= $dt->mapcardpayamount;
                 } else {
