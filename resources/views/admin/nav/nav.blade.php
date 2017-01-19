@@ -36,6 +36,15 @@
         <a href="{{URL::to('/')}}/admin-nano/mcoa">Master Akun</a>
       </li>
       @endif
+      @if($active == 'generaljournal')
+        <li class="active">
+          <a href="{{URL::to('/')}}/admin-nano/generaljournal">Jurnal Umum</a>
+        </li>
+      @else
+        <li>
+        <a href="{{URL::to('/')}}/admin-nano/generaljournal">Jurnal Umum</a>
+        </li>
+      @endif
       @if($active == 'categoryfixedassets')
         <li class="active"><a href="{{ url('admin-nano/mcategoryfixedassets') }}">Master Kategori Aset Tetap</a></li>
       @else

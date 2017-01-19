@@ -53,7 +53,7 @@ class GeneralJournalController extends Controller
     }
 
     public function show($id){
-        $j = MJournal::on(Auth::user()->db_name)->where('mjournalid',$id)->get();
+        $j = MJournal::on(Auth::user()->db_name)->where('mjournalid',$id)->where('void',0)->get();
         return response()->json($j);
     }
 
