@@ -51,7 +51,6 @@ class CashBankIncomeController extends Controller
                     $to_coa->update_saldo('+',$to_acc['amount']);
             }
             MJournal::add_prefix();
-
             DB::connection(Auth::user()->db_name)->commit();
             return response()->json('ok');
         } catch(\Exception $e){

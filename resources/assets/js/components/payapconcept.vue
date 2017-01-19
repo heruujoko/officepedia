@@ -517,13 +517,14 @@
                     aps = _.find(this.aps,{id: parseInt(this.detail_ap.id)});
                     index = _.findIndex(this.aps,{ id: parseInt(this.detail_ap.id)});
                 }
+                payment['payamount'] = aps.payamount;
                 aps.checked = true;
                 aps.payamount = payment.payments.cash.amount + payment.payments.bank.amount
 
                 let index_invoice_aps = _.findIndex(this.invoice_aps,{id: parseInt(this.detail_ap.id)});
                 this.invoice_aps[index_invoice_aps] = payment
-
                 this.$set(this.aps,index,aps);
+                this.$set(this.invoice_aps,index_invoice_aps,payment);
                 this.dismissModal()
 
             },
@@ -633,7 +634,7 @@
                                     let index = _.findIndex(this.aps,{ mapcardtransno: res.data[i].mapcardtransno});
                                     ap.checked = true;
                                     res.data[i].aps_id = ap.id
-                                    ap.payamount = res.data[i].payamount;
+                                    ap.payamount = res.data[i].mdpayapcashamount;
                                     this.$set(this.aps,index,ap);
 
                                 },1000);
