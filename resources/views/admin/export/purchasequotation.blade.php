@@ -36,6 +36,11 @@
             line-height: 1.42857143;
             vertical-align: top;
             border-top: 1px solid #ddd;
+            height: 1%;
+        }
+        .table>tbody tr:nth-child(even) {
+        background: #f0f0f2;
+
         }
         td, th {
             padding: 0;
@@ -44,6 +49,17 @@
             display: table-cell;
             vertical-align: inherit;
         }
+        .table>tfoot {
+          text-align: right;
+        }
+        .table>tfoot tr:last-child {
+          background: #f0f0f2;
+        }
+       .bb td, .bb th {
+     border-bottom: 1px solid black !important;
+
+    }
+
     .header-topright{
     position: fixed;
     top: 1%;
@@ -96,10 +112,10 @@
         <tr>
             <td>
                {{ $config->msyscity }}, {{ $config->msyszipcode }}<br>
-                Website: {{ $config->msyscompwebsite }}<br>
-                Phone: {{ $config->msyscompphone }}<br>
+                Website : {{ $config->msyscompwebsite }}<br>
+                Phone : {{ $config->msyscompphone }}<br>
                 Fax: {{ $config->msyscompfax }}<br>
-                Supplier: {{ $quotation[0]['mhpurchasequotationsupplierid'] }}<br>
+                Supplier : {{ $quotation[0]['mhpurchasequotationsupplierid'] }}<br>
             </td>
         </tr>
     </table>
@@ -107,33 +123,26 @@
 
     {{-- TOP RIGHT --}}
     <div class="header-topright">
+     <h3 style="color: #217293">Pesanan Pembelian</h3>
     <table border="" cellpadding="5" cellpadding="5">
         <tr>
             <th style=""></th>
         </tr>
-       {{--  <tr>
-            <td> 
-                <h3 style="color: #9ACADE">Penawaran Pembelian</h3>
-                DATE:  {{ $quotation[0]['mhpurchasequotationdate'] }}<br>
-                QUOTE:  {{ $quotation[0]['mhpurchasequotationno'] }}<br>
-                CUSTOMER ID:  {{ $quotation[0]['mhpurchasequotationsupplierid'] }}<br>
-                VALID UNTIL:  {{ $quotation[0]['mhpurchasequotationduedate'] }}<br>
-            </td>
-        </tr> --}}
+      
         <tr>
-            <th style="text-align: right;" class="thnoborder">DATE: </td>
+            <th style="text-align: right;" class="thnoborder">DATE : </td>
             <td>{{ $quotation[0]['mhpurchasequotationdate'] }}</td>
         </tr>
         <tr>
-            <th style="text-align: right;" class="thnoborder">QUOTE: </td>
+            <th style="text-align: right;" class="thnoborder">QUOTE : </td>
             <td>{{ $quotation[0]['mhpurchasequotationno'] }}</td>
         </tr>
         <tr>
-            <th style="text-align: right;" class="thnoborder">CUSTOMER ID:</td>
+            <th style="text-align: right;" class="thnoborder">CUSTOMER ID :</td>
             <td>{{ $quotation[0]['mhpurchasequotationsupplierid'] }}</td>
         </tr>
         <tr>
-            <th style="text-align: right;" class="thnoborder">VALID UNTIL: </td>
+            <th style="text-align: right;" class="thnoborder">VALID UNTIL : </td>
             <td>{{ $quotation[0]['mhpurchasequotationduedate'] }}</td>
         </tr>
     </table>
@@ -145,10 +154,10 @@
         </tr>
         <tr>
             <td>
-                Name: {{ $supplier->msuppliername }}<br>
-                Address: {{ $supplier->msupplieraddress }}<br>
-                City,ST,ZIP: {{ $supplier->msuppliercity }}, {{ $supplier->msupplierprovince }}, {{ $supplier->msupplierzipcode }}<br>
-                Phone: {{ $supplier->msupplierphone }}<br>
+                Name : {{ $supplier->msuppliername }}<br>
+                Address : {{ $supplier->msupplieraddress }}<br>
+                City,ST,ZIP : {{ $supplier->msuppliercity }}, {{ $supplier->msupplierprovince }}, {{ $supplier->msupplierzipcode }}<br>
+                Phone : {{ $supplier->msupplierphone }}<br>
             </td>
         </tr>
     
@@ -158,6 +167,7 @@
     <div class="cust">
    
        <table class="table">
+       <thead>
            <tr>
            <th style="background: #089DDD; color: white;">Kode</th>
            <th style="background: #089DDD; color: white;">Nama</th>
@@ -167,7 +177,8 @@
            <th style="background: #089DDD; color: white;">Diskon</th>
            <th style="background: #089DDD; color: white;">Jumlah</th>
            </tr>
-         
+         </thead>
+         <tbody>
              @foreach($mdquotation as $a)
            
            <tr>
@@ -180,7 +191,6 @@
                <td class="tds">{{ number_format($a->mdpurchasequotationbuyprice * $a->mdpurchasequotationgoodsqty - $a->mdpurchasequotationgoodsdiscount,$decimals,$dec_point,$thousands_sep) }}</td>
                 
            </tr>
-         
        
             @endforeach
               <tr>
@@ -213,6 +223,21 @@
                <td></td>
            </tr>
           
+           
+          
+            <tr>
+               <td></td>
+               <td></td>
+               <td></td>
+               <td></td>
+               <td></td>
+               <td></td>
+               <td></td>
+           </tr>
+          
+        
+          
+       
             <tr>
                <td></td>
                <td></td>
@@ -252,114 +277,37 @@
                <td></td>
                <td></td>
            </tr>
-          
-            <tr>
-               <td></td>
-               <td></td>
-               <td></td>
-               <td></td>
-               <td></td>
-               <td></td>
-               <td></td>
-           </tr>
-          
-            <tr>
-               <td></td>
-               <td></td>
-               <td></td>
-               <td></td>
-               <td></td>
-               <td></td>
-               <td></td>
-           </tr>
-          
-            <tr>
-               <td></td>
-               <td></td>
-               <td></td>
-               <td></td>
-               <td></td>
-               <td></td>
-               <td></td>
-           </tr>
-          
-            <tr>
-               <td></td>
-               <td></td>
-               <td></td>
-               <td></td>
-               <td></td>
-               <td></td>
-               <td></td>
-           </tr>
-          
-            <tr>
-               <td></td>
-               <td></td>
-               <td></td>
-               <td></td>
-               <td></td>
-               <td></td>
-               <td></td>
-           </tr>
-          
-            <tr>
-               <td></td>
-               <td></td>
-               <td></td>
-               <td></td>
-               <td></td>
-               <td></td>
-               <td></td>
-           </tr>
-          
-            <tr>
-               <td></td>
-               <td></td>
-               <td></td>
-               <td></td>
-               <td></td>
-               <td></td>
-               <td></td>
-           </tr>
-          
-            <tr>
-               <td></td>
-               <td></td>
-               <td></td>
-               <td></td>
-               <td></td>
-               <td></td>
-               <td></td>
-           </tr>
-          
-            
-       </table>
-       <table class="balance">
-                <tr>
-                    <th><span contenteditable>Total Item :</span></th>
+          <tfoot>
+             <tr>
+                    <td colspan="6"><span contenteditable>Total Item :</span></td>
                     <td><span data-prefix></span><span>{{ $totalitem }}</span></td>
                 </tr>
 
                 <tr>
-                    <th><span contenteditable>Sub Total :</span></th>
+                    <td colspan="6"><span contenteditable>Sub Total :</span></td>
                     <td><span data-prefix>IDR </span><span contenteditable>{{ number_format($subtotal,$decimals,$dec_point,$thousands_sep) }}</span></td>
                 </tr>
                 <tr>
-                    <th><span contenteditable>Discount :</span></th>
+                    <td colspan="6"><span contenteditable>Discount :</span></td>
                     <td><span data-prefix>IDR </span><span>{{ number_format($discount,$decimals,$dec_point,$thousands_sep) }}</span></td>
                 </tr>
-                 <tr>
-                    <th><span contenteditable>PPN 10% :</span></th>
+                 <tr class="bb">
+                    <td colspan="6"><span contenteditable>PPN 10% :</span></td>
                     <td><span data-prefix>IDR </span><span>{{ number_format($quotation[0]['mhpurchasequotationtaxtotal'],$decimals,$dec_point,$thousands_sep) }}</span></td>
                 </tr>
                  <tr>
-                    <th><span contenteditable>Total :</span></th>
+                    <td colspan="6"><span contenteditable>Total :</span></td>
                     <td><span data-prefix>IDR </span><span>{{ number_format($quotation[0]['mhpurchasequotationgrandtotal'],$decimals,$dec_point,$thousands_sep)}}</span></td>
                 </tr>
-            </table>
+          </tfoot>
+              </tbody>
+       
+       </table>
+      
     </div>
-     <table class="table">
+    <br>
+    <br>
+     <table class="tables">
         <tr>
             <td>
                 <pre>Customer Acceptance(sign below)</pre><br><br>
