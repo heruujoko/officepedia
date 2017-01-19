@@ -29,7 +29,7 @@ class APController extends Controller
             $header_query->whereDate('mapcardtdate','<=',Carbon::parse($request->end));
         }
 
-        $headers = $header_query->groupBy('mapcardsupplierid')->orderBy('created_at')->get();
+        $headers = $header_query->groupBy('mapcardsupplierid')->orderBy('created_at')->where('void',0)->get();
         $dates = [];
         foreach($headers as $hd){
             array_push($dates,array('mapcardsupplierid' => $hd->mapcardsupplierid,'mapcardsuppliername' => $hd->mapcardsuppliername));
@@ -43,7 +43,7 @@ class APController extends Controller
                 'mapcardsuppliername' => $d['mapcardsuppliername'],
             );
             array_push($reports,$h);
-            $dtl_query = MAPCard::on(Auth::user()->db_name)->where('mapcardsupplierid',$d['mapcardsupplierid'])->orderBy('created_at');
+            $dtl_query = MAPCard::on(Auth::user()->db_name)->where('mapcardsupplierid',$d['mapcardsupplierid'])->orderBy('created_at')->where('void',0);
             if($request->has('br')){
 
             }
@@ -116,10 +116,10 @@ class APController extends Controller
 
     public function apsupplier($supplier_id){
         $spl = MSupplier::on(Auth::user()->db_name)->where('id',$supplier_id)->first();
-        $group_supplier_ap = MAPCard::on(Auth::user()->db_name)->where('mapcardsupplierid',$spl->msupplierid)->groupBy('mapcardtransno')->get();
+        $group_supplier_ap = MAPCard::on(Auth::user()->db_name)->where('mapcardsupplierid',$spl->msupplierid)->groupBy('mapcardtransno')->where('void',0)->get();
         $supplier_per_ap = [];
         foreach($group_supplier_ap as $ap){
-            $aps = MAPCard::on(Auth::user()->db_name)->where('mapcardtransno',$ap->mapcardtransno)->get();
+            $aps = MAPCard::on(Auth::user()->db_name)->where('mapcardtransno',$ap->mapcardtransno)->where('void',0)->get();
             $paid =0;
             foreach($aps as $detail){
                 $paid += $detail->mapcardpayamount;

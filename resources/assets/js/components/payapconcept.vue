@@ -439,7 +439,7 @@
             },
             editDialog(id){
                 console.log("open "+id);
-                let ap = _.find(this.invoice_aps,{id: parseInt(id)});
+                let ap = _.find(this.invoice_aps,{aps_id: parseInt(id)});
                 this.detail_ap = ap;
                 this.detail_ap.checked = true;
                 $('#'+this.modal_id).modal('toggle');
@@ -517,12 +517,13 @@
                     aps = _.find(this.aps,{id: parseInt(this.detail_ap.id)});
                     index = _.findIndex(this.aps,{ id: parseInt(this.detail_ap.id)});
                 }
-                payment['payamount'] = aps.payamount;
                 aps.checked = true;
                 aps.payamount = payment.payments.cash.amount + payment.payments.bank.amount
-
+                payment['payamount'] = aps.payamount;
                 let index_invoice_aps = _.findIndex(this.invoice_aps,{id: parseInt(this.detail_ap.id)});
-                this.invoice_aps[index_invoice_aps] = payment
+//                this.invoice_aps[index_invoice_aps] = payment
+                console.log("---------------")
+                console.log(payment.payamount)
                 this.$set(this.aps,index,aps);
                 this.$set(this.invoice_aps,index_invoice_aps,payment);
                 this.dismissModal()

@@ -253,7 +253,7 @@ class MHPayAP extends Model
                         $new_ap->mapcardeventdate = Carbon::now();
                         $new_ap->mapcardeventtime = Carbon::now();
                         $new_ap->void = 0;
-                        $new_ap->save();
+//                        $new_ap->save();
 
                         $new_ap = new MAPCard;
                         $new_ap->setConnection(Auth::user()->db_name);
@@ -262,17 +262,23 @@ class MHPayAP extends Model
                         $new_ap->mapcardtdate = Carbon::now();
                         $new_ap->mapcardtransno = $old_ap->mapcardtransno;
                         $new_ap->mapcardpayno = $header->mhpayapno;
+                        $new_ap->mapcardtranstype ="Pembayaran Hutang Dagang";
                         $new_ap->mapcardremark = "Revisi Hutang Dagang oleh ".Auth::user()->name."/".Auth::user()->id;
                         $new_ap->mapcardduedate = $old_ap->mapcardduedate;
                         $new_ap->mapcardtotalinv = $old_ap->mapcardtotalinv;
                         $new_ap->mapcardpayamount = $ap['payamount'];
-                        $new_ap->mapcardoutstanding = $old_ap->mapcardoutstanding - $ap['payamount'];
+                        $new_ap->mapcardoutstanding = ($old_ap->mapcardoutstanding + $last_pay) - $ap['payamount'];
                         $new_ap->mapcardusername = Auth::user()->name;
                         $new_ap->mapcarduserid = Auth::user()->id;
                         $new_ap->mapcardeventdate = Carbon::now();
                         $new_ap->mapcardeventtime = Carbon::now();
                         $new_ap->void = 0;
                         $new_ap->save();
+                        $detail->mdpayap_ref = $new_ap->id;
+
+                        $oldmapcard = MAPCard::on(Auth::user()->db_name)->where('id',$detail->mdpayap_apref)->first();
+                        $oldmapcard->void = 1;
+                        $oldmapcard->save();
 
                         // update journal
                         $this_transaction_journal = MJournal::on(Auth::user()->db_name)->where('mdpayap_ref',$detail->id)->get();
