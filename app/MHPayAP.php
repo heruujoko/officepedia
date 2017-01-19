@@ -109,6 +109,7 @@ class MHPayAP extends Model
                 $new_ap->mapcardtdate = Carbon::now();
                 $new_ap->mapcardtransno = $old_ap->mapcardtransno;
                 $new_ap->mapcardpayno = $header->mhpayapno;
+                $new_ap->mapcardtranstype = "Pembayaran Hutang Dagang";
                 $new_ap->mapcardremark = "Pembayaran Hutang Dagang oleh ".Auth::user()->name."/".Auth::user()->id;
                 $new_ap->mapcardduedate = $old_ap->mapcardduedate;
                 $new_ap->mapcardtotalinv = $old_ap->mapcardtotalinv;
