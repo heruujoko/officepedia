@@ -274,12 +274,11 @@ class MHPayAR extends Model
                         $new_ar->marcardusereventtime = Carbon::now();
                         $new_ar->void = 0;
                         $new_ar->save();
-                        $detail->mdpayar_arref = $new_ar->id;
 
                         $oldmarcard = MARCard::on(Auth::user()->db_name)->where('id',$detail->mdpayar_arref)->first();
                         $oldmarcard->void = 1;
                         $oldmarcard->save();
-
+                        $detail->mdpayar_arref = $new_ar->id;
                         // update journal
                         $this_transaction_journal = MJournal::on(Auth::user()->db_name)->where('mdpayar_ref',$detail->id)->get();
                         var_dump(count($this_transaction_journal));
