@@ -14,6 +14,7 @@
                           <option v-if="cashtype == 'income' || cashtype == 'transfer'" v-for="cb in accounts" :value="cb.mcoacode">{{ cb.mcoaname }}</option>
                           <option v-if="cashtype == 'outcome'" v-for="cb in cashbankaccounts" :value="cb.mcoacode">{{ cb.mcoaname }}</option>
                       </select>
+                      <label style="color: #0288D1">Kredit</label><br>
                       <label v-if="from_alert" style="color:rgb(212, 103, 82)!important">Akun ini tidak bisa kosong</label>
                   </div>
                 </div>
@@ -51,6 +52,7 @@
                           <option v-if="cashtype == 'outcome' || cashtype == 'transfer'" v-for="cb in accounts" :value="cb.mcoacode">{{ cb.mcoaname }}</option>
                           <option v-if="cashtype == 'income'" v-for="cb in cashbankaccounts" :value="cb.mcoacode">{{ cb.mcoaname }}</option>
                       </select>
+                      <label style="color: #0288D1">Debit</label><br>
                   </div>
                 </div>
             </div>
@@ -245,14 +247,30 @@
                 this.transaction_detail.mcoaname = to_acc.mcoaname
                 this.transaction_detail.date = this.transaction_date
                 this.transaction_detail.id = to_acc.id
-                console.log(to_acc.mcoacode);
-                $("#"+this.modal_id).modal('toggle')
-                $("#"+this.detail_account_id).val(to_acc.mcoacode)
-                $("#"+this.detail_account_id).trigger('change')
-                this.disable_detail_account_id = true
-                setTimeout(function () {
-                    $('#'+this.amount_id).select();
-                }, 20);
+                let already_added = false;
+                this.transaction_items.map( item => {
+                  if(item.mcoacode == this.transaction_detail.mcoacode){
+                    already_added = true
+                  }
+                })
+
+                if(already_added){
+                    swal({
+                        title: "Oops!",
+                        text: "Akun sudah di tambahkan",
+                        type: "error",
+                        timer: 1000
+                    });
+                } else {
+                    console.log(to_acc.mcoacode);
+                    $("#"+this.modal_id).modal('toggle')
+                    $("#"+this.detail_account_id).val(to_acc.mcoacode)
+                    $("#"+this.detail_account_id).trigger('change')
+                    this.disable_detail_account_id = true
+                    setTimeout(function () {
+                        $('#'+this.amount_id).select();
+                    }, 20);
+                }
             },
             editItem(idx){
                 this.detail_state = "edit"
@@ -276,7 +294,6 @@
                 }, 20);
             },
             addToTransaction(){
-
                 if(this.from_account == ""){
                     swal({
                       title: "Oops!",
