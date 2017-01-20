@@ -16,10 +16,10 @@ class CreateMDPayAP extends Migration
             $table->increments('id');
             $table->string('mhpayapno');
             $table->date('mdpayapinvoicedate');
-            $table->double('mdpayapinvoicetotal');
-            $table->double('mdpayapinvoiceoutstanding');
-            $table->double('mdpayapinvoicepayamount');
-            $table->double('mdpayapinvoicediscount');
+            $table->double('mdpayapinvoicetotal',16,2);
+            $table->double('mdpayapinvoiceoutstanding',16,2);
+            $table->double('mdpayapinvoicepayamount',16,2);
+            $table->double('mdpayapinvoicediscount',16,2);
             $table->string('mdpayapuserid');
             $table->string('mdpayapusername');
             $table->datetime('mdpayapeventdate');

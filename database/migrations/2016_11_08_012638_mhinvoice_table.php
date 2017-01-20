@@ -19,10 +19,10 @@ class MhinvoiceTable extends Migration
           $table->string('mhinvoicecustomername');
           $table->date('mhinvoicedate');
           $table->date('mhinvoiceduedate');
-          $table->double('mhinvoicesubtotal');
-          $table->double('mhinvoicetaxtotal');
-          $table->double('mhinvoicediscounttotal')->nullable();
-          $table->double('mhinvoicegrandtotal');
+          $table->double('mhinvoicesubtotal',16,2);
+          $table->double('mhinvoicetaxtotal',16,2);
+          $table->double('mhinvoicediscounttotal',16,2)->nullable();
+          $table->double('mhinvoicegrandtotal',16,2);
           $table->boolean('mhinvoicewithppn');
           $table->text('mhinvoiceremark')->nullable();
           $table->boolean('void')->default(0);

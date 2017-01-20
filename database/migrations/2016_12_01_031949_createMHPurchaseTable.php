@@ -21,11 +21,11 @@ class CreateMHPurchaseTable extends Migration
             $table->string('mhpurchasesuppliername');
             $table->date('mhpurchasedate');
             $table->date('mhpurchaseduedate');
-            $table->double('mhpurchasesubtotal');
-            $table->double('mhpurchasetaxtotal');
-            $table->double('mhpurchasediscounttotal');
-            $table->double('mhpurchasegrandtotal');
-            $table->double('mhpurchaseothertotal');
+            $table->double('mhpurchasesubtotal',16,2);
+            $table->double('mhpurchasetaxtotal',16,2);
+            $table->double('mhpurchasediscounttotal',16,2);
+            $table->double('mhpurchasegrandtotal',16,2);
+            $table->double('mhpurchaseothertotal',16,2);
             $table->boolean('mhpurchasewithppn')->default(0);
             $table->text('mhpurchaseremark');
             $table->boolean('void')->default(0);

@@ -13,7 +13,7 @@ class UpdatePriceoutMgoods extends Migration
     public function up()
     {
         Schema::table('mgoods',function(Blueprint $table){
-          $table->float('mgoodspriceout')->after('mgoodsminimummin');
+          $table->double('mgoodspriceout',16,2)->after('mgoodsminimummin');
         });
     }
 

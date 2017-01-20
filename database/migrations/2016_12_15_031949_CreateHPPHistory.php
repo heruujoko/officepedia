@@ -15,9 +15,9 @@ class CreateHPPHistory extends Migration
         Schema::create('hpphistory',function(Blueprint $table){
             $table->increments('id');
             $table->string('hpphistorygoodsid');
-            $table->double('hpphistorypurchase');
-            $table->double('hpphistoryqty');
-            $table->double('hpphistorycogs');
+            $table->double('hpphistorypurchase',16,2);
+            $table->double('hpphistoryqty',16,2);
+            $table->double('hpphistorycogs',16,2);
             $table->text('hpphistoryremarks')->nullable();
             $table->boolean('void')->default(0);
             $table->timestamps();

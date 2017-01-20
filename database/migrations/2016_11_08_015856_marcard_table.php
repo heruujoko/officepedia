@@ -21,8 +21,8 @@ class MarcardTable extends Migration
           $table->string('marcardtransno');
           $table->text('marcardremark');
           $table->date('marcardduedate');
-          $table->double('marcardtotalinv');
-          $table->double('marcardpayamount');
+          $table->double('marcardtotalinv',16,2);
+          $table->double('marcardpayamount',16,2);
           $table->double('marcardoutstanding');
           $table->integer('marcarduserid');
           $table->string('marcardusername');

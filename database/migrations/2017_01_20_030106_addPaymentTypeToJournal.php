@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class AddBuyPriceMDPurchase extends Migration
+class AddPaymentTypeToJournal extends Migration
 {
     /**
      * Run the migrations.
@@ -12,8 +12,8 @@ class AddBuyPriceMDPurchase extends Migration
      */
     public function up()
     {
-        Schema::table('mdpurchase',function(Blueprint $table){
-            $table->double('mdpurchasebuyprice',16,2)->after('mdpurchasegoodsunit1label');
+        Schema::table('mjournal',function(Blueprint $table){
+            $table->string('paymenttype')->after('mjournalcredit');
         });
     }
 

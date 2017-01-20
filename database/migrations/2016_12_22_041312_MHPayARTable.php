@@ -21,10 +21,10 @@ class MHPayARTable extends Migration
             $table->string('mhpayarbank');
             $table->string('mhpayarrefno');
             $table->string('mhpayarcheckno');
-            $table->double('mhpayarpayamount');
-            $table->double('mhpayarsubtotal');
-            $table->double('mhpayardiscounttotal');
-            $table->double('mhpayargrandtotal');
+            $table->double('mhpayarpayamount',16,2);
+            $table->double('mhpayarsubtotal',16,2);
+            $table->double('mhpayardiscounttotal',16,2);
+            $table->double('mhpayargrandtotal',16,2);
             $table->text('mhpayarremarks')->default('');
             $table->boolean('void')->default(0);
             $table->timestamps();

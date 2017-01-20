@@ -17,10 +17,10 @@ class MDPayARTable extends Migration
             $table->string('mhpayarno');
             $table->string('mdpayartransno');
             $table->date('mdpayarinvoicedate');
-            $table->double('mdpayarinvoicetotal');
-            $table->double('mdpayarinvoiceoutstanding');
-            $table->double('mdpayarinvoicepayamount');
-            $table->double('mdpayarinvoicediscount');
+            $table->double('mdpayarinvoicetotal',16,2);
+            $table->double('mdpayarinvoiceoutstanding',16,2);
+            $table->double('mdpayarinvoicepayamount',16,2);
+            $table->double('mdpayarinvoicediscount',16,2);
             $table->string('mdpayaruserid');
             $table->string('mdpayarusername');
             $table->datetime('mdpayareventdate');

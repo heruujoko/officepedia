@@ -23,8 +23,8 @@ class CreateMgoodsTable extends Migration
             $table->string('mgoodsunit2');
             $table->string('mgoodsunit3');
             $table->boolean('mgoodsactive');
-            $table->double('mgoodspricein');
-            $table->double('mgoodspriceout')->unique();
+            $table->double('mgoodspricein',16,2);
+            $table->double('mgoodspriceout',16,2)->unique();
             $table->string('mgoodstype');
             $table->string('mgoodsbrand');
             $table->string('mgoodsgroup1');

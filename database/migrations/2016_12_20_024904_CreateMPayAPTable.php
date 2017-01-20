@@ -22,8 +22,8 @@ class CreateMPayAPTable extends Migration
             $table->string('mhpayaprefno');
             $table->string('mhpayapcheckno');
             $table->double('mhpayappayamount');
-            $table->double('mhpayapsubtotal');
-            $table->double('mhpayapdiscounttotal');
+            $table->double('mhpayapsubtotal',16,2);
+            $table->double('mhpayapdiscounttotal',16,2);
             $table->double('mhpayapgrandtotal');
             $table->text('mhpayapremarks')->default('');
             $table->boolean('void')->default(0);
