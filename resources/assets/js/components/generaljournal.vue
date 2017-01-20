@@ -3,6 +3,7 @@
         <div class="row" v-show="mode != 'insert'" v-on:click="toInsertMode">
             <button class="btn btn-default pull-right" style="margin-right:4%">Kembali</button>
         </div>
+        <br>
         <div class="row form form-horizontal">
             <div class="col-md-6">
                 <div class="form-group">
@@ -273,6 +274,8 @@
                                 type: "success",
                                 timer: 1000
                         });
+                        $('.tableapi').DataTable().ajax.reload();
+                        this.resetTransaction()
                     })
                     .catch(err => {
                         swal({
@@ -281,6 +284,8 @@
                                 type: "error",
                                 timer: 1000
                         });
+                        $('.tableapi').DataTable().ajax.reload();
+                        this.resetTransaction()
                     })
                 }
             },
