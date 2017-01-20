@@ -148,12 +148,31 @@ class GeneralJournalController extends Controller
             return response()->json('ok');
         } catch(\Exception $e){
             DB::connection(Auth::user()->db_name)->rollBack();
-            dd($e);
             return response()->json('err',400);
         }
     }
 
     public function destroy($id){
-
+        try{
+            DB::connection(Auth::user()->db_name)->beginTransaction();
+            $voided_details = MJournal::on(Auth::user()->db_name)->where('mjournalid',$id)->get();
+            var_dump($voided_details);
+            foreach ($voided_details as $v){
+                $v->void = 1;
+                $v->save();
+                $coa = MCOA::on(Auth::user()->db_nam)->where('mcoacode',$v->mjournalcoa)->first();
+                if($v->mjournaldebit != 0){
+                    $coa->update_saldo("-",$v->mjournaldebit);
+                } else {
+                    $coa->update_saldo("+",$v->mjournalcredit);
+                }
+            }
+            DB::connection(Auth::user()->db_name)->commit();
+            return response()->json('ok');
+        } catch(\Exception $e){
+            DB::connection(Auth::user()->db_name)->rollBack();
+            dd($e);
+            return response()->json('err',400);
+        }
     }
 }
