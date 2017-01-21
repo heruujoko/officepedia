@@ -33,10 +33,10 @@
         }
         .table>tbody>tr>td, .table>tbody>tr>th, .table>tfoot>tr>td, .table>tfoot>tr>th, .table>thead>tr>td, .table>thead>tr>th {
             padding: 8px;
-            line-height: 1.42857143;
+            line-height: 10px;
             vertical-align: top;
             border-top: 1px solid #ddd;
-            height: 1%;
+            height: 8px;
         }
         .table>tbody tr:nth-child(even) {
         background: #f0f0f2;
@@ -66,7 +66,7 @@
     left: 73%;
     }
     .cust{
-        padding-top: 50px;
+        padding-top: 10px;
     }
    
 
@@ -277,6 +277,58 @@
                <td></td>
                <td></td>
            </tr>
+
+           <tr>
+               <td></td>
+               <td></td>
+               <td></td>
+               <td></td>
+               <td></td>
+               <td></td>
+               <td></td>
+           </tr>
+
+           <tr>
+               <td></td>
+               <td></td>
+               <td></td>
+               <td></td>
+               <td></td>
+               <td></td>
+               <td></td>
+           </tr>
+
+           <tr>
+               <td></td>
+               <td></td>
+               <td></td>
+               <td></td>
+               <td></td>
+               <td></td>
+               <td></td>
+           </tr>
+
+           <tr>
+               <td></td>
+               <td></td>
+               <td></td>
+               <td></td>
+               <td></td>
+               <td></td>
+               <td></td>
+           </tr>
+
+           <tr>
+               <td></td>
+               <td></td>
+               <td></td>
+               <td></td>
+               <td></td>
+               <td></td>
+               <td></td>
+           </tr>
+
+
           <tfoot>
              <tr>
                     <td colspan="6"><span contenteditable>Total Item :</span></td>
