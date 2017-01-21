@@ -17,7 +17,7 @@ class CreateMCOGS extends Migration
             $table->string('mcogsgoodscode');
             $table->string('mcogsgoodsname');
             $table->integer('mcogsgoodstotalqty');
-            $table->double('mcogslastcogs');
+            $table->double('mcogslastcogs',16,2);
             $table->text('mcogsremarks');
             $table->boolean('void')->default(0);
             $table->timestamps();

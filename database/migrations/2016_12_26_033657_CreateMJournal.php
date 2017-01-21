@@ -19,8 +19,8 @@ class CreateMJournal extends Migration
             $table->string('mjournaltranstype');
             $table->string('mjournalcoa');
             $table->string('mjournalbranch');
-            $table->double('mjournaldebit');
-            $table->double('mjournalcredit');
+            $table->double('mjournaldebit',16,2);
+            $table->double('mjournalcredit',16,2);
             $table->text('mjournalremark');
             $table->boolean('void')->default(0);
             $table->timestamps();

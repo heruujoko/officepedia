@@ -107,6 +107,7 @@ class MHPayAR extends Model
               $new_ar->marcardcustomername = $header->mhpayarcustomername;
               $new_ar->marcarddate = Carbon::now();
               $new_ar->marcardtransno = $old_ar->marcardtransno;
+              $new_ar->marcardtranstype = "Pembayaran Piutang Dagang";
               $new_ar->marcardpayno = $header->mhpayarno;
               $new_ar->marcardremark = "Pembayaran Piutang Dagang oleh ".Auth::user()->name."/".Auth::user()->id;
               $new_ar->marcardduedate = $old_ar->marcardduedate;
@@ -127,8 +128,8 @@ class MHPayAR extends Model
               if($detail->mdpayarcashcoa != ""){
                   $coa_cash = MCOA::on(Auth::user()->db_name)->where('mcoacode',$detail->mdpayarcashcoa)->first();
                   // update journal
-                  MJournal::record_journal($header->mhpayarno,'Pembayaran Piutang',$coa,0,$detail->mdpayarcashamount,"","",$detail->id);
-                  MJournal::record_journal($header->mhpayarno,'Pembayaran Piutang',$detail->mdpayarcashcoa,$detail->mdpayarcashamount,0,"","",$detail->id);
+                  MJournal::record_journal_cash($header->mhpayarno,'Pembayaran Piutang',$detail->mdpayarcashcoa,$detail->mdpayarcashamount,0,"","",$detail->id);
+                  MJournal::record_journal_cash($header->mhpayarno,'Pembayaran Piutang',$coa,0,$detail->mdpayarcashamount,"","",$detail->id);
 
                   // update coa saldo
                   $coa_cash->update_saldo('+',$detail->mdpayarcashamount);
@@ -139,15 +140,15 @@ class MHPayAR extends Model
               if($detail->mdpayarbankcoa != ""){
                   $coa_bank = MCOA::on(Auth::user()->db_name)->where('mcoacode',$detail->mdpayarbankcoa)->first();
                   // update journal
-                  MJournal::record_journal($header->mhpayarno,'Pembayaran Piutang',$coa,0,$detail->mdpayarbankamount,"","",$detail->id);
-                  MJournal::record_journal($header->mhpayarno,'Pembayaran Piutang',$detail->mdpayarbankcoa,$detail->mdpayarbankamount,0,"","",$detail->id);
+                  MJournal::record_journal_bank($header->mhpayarno,'Pembayaran Piutang',$detail->mdpayarbankcoa,$detail->mdpayarbankamount,0,"","",$detail->id);
+                  MJournal::record_journal_bank($header->mhpayarno,'Pembayaran Piutang',$coa,0,$detail->mdpayarbankamount,"","",$detail->id);
 
                   // update coa saldo
                   $coa_bank->update_saldo('+',$detail->mdpayarbankamount);
                   $coa_ar->update_saldo('-',$detail->mdpayarbankamount);
               }
           }
-
+          MJournal::add_prefix();
           DB::connection(Auth::user()->db_name)->commit();
           return "ok";
       } catch(\Exception $e){
@@ -251,7 +252,7 @@ class MHPayAR extends Model
                         $new_ar->marcardusereventdate = Carbon::now();
                         $new_ar->marcardusereventtime = Carbon::now();
                         $new_ar->void = 0;
-                        $new_ar->save();
+//                        $new_ar->save();
 
                         $reset_outstanding = $new_ar->marcardoutstanding;
 
@@ -274,16 +275,20 @@ class MHPayAR extends Model
                         $new_ar->void = 0;
                         $new_ar->save();
 
+                        $oldmarcard = MARCard::on(Auth::user()->db_name)->where('id',$detail->mdpayar_arref)->first();
+                        $oldmarcard->void = 1;
+                        $oldmarcard->save();
+                        $detail->mdpayar_arref = $new_ar->id;
                         // update journal
                         $this_transaction_journal = MJournal::on(Auth::user()->db_name)->where('mdpayar_ref',$detail->id)->get();
                         var_dump(count($this_transaction_journal));
                         // there will be 4 records
 
                         // the first two is for cash payment
-                        if(isset($this_transaction_journal[0]) && isset($this_transaction_journal[1])){
-                            $this_transaction_journal[0]->mjournalcredit = $detail->mdpayarcashamount;
-                            $this_transaction_journal[1]->mjournaldebit = $detail->mdpayarcashamount;
-                            $this_transaction_journal[1]->mjournalcoa = $detail->mdpayarcashcoa;
+                        if(($this_transaction_journal[0]->paymenttype == "cash") && ($this_transaction_journal[1]->paymenttype == "cash")){
+                            $this_transaction_journal[0]->mjournaldebit = $detail->mdpayarcashamount;
+                            $this_transaction_journal[1]->mjournalcredit = $detail->mdpayarcashamount;
+                            $this_transaction_journal[0]->mjournalcoa = $detail->mdpayarcashcoa;
                             $this_transaction_journal[0]->save();
                             $this_transaction_journal[1]->save();
                             // update coa saldo
@@ -292,12 +297,12 @@ class MHPayAR extends Model
                         }
 
                         // the next two is for bank payment
-                        if(isset($this_transaction_journal[2]) && isset($this_transaction_journal[3])){
-                            $this_transaction_journal[2]->mjournalcredit = $detail->mdpayarbankamount;
-                            $this_transaction_journal[3]->mjournaldebit = $detail->mdpayarbankamount;
-                            $this_transaction_journal[3]->mjournalcoa = $detail->mdpayarbankcoa;
-                            $this_transaction_journal[2]->save();
-                            $this_transaction_journal[3]->save();
+                        if(($this_transaction_journal[0]->paymenttype == "bank") && ($this_transaction_journal[1]->paymenttype == "bank")){
+                            $this_transaction_journal[0]->mjournaldebit = $detail->mdpayarbankamount;
+                            $this_transaction_journal[1]->mjournalcredit = $detail->mdpayarbankamount;
+                            $this_transaction_journal[0]->mjournalcoa = $detail->mdpayarbankcoa;
+                            $this_transaction_journal[0]->save();
+                            $this_transaction_journal[1]->save();
                             // update coa saldo
                             $coa_bank->update_saldo('+',$detail->mdpayarbankamount);
                             $coa_ar->update_saldo('-',$detail->mdpayarbankamount);
@@ -336,6 +341,7 @@ class MHPayAR extends Model
                     $new_ar->marcardcustomername = $header->mhpayarcustomername;
                     $new_ar->marcarddate = Carbon::now();
                     $new_ar->marcardtransno = $old_ar->marcardtransno;
+                    $new_ar->marcardtranstype = "Pembayaran Piutang Dagang";
                     $new_ar->marcardpayno = $header->mhpayarno;
                     $new_ar->marcardremark = "Pembayaran Hutang Dagang oleh ".Auth::user()->name."/".Auth::user()->id;
                     $new_ar->marcardduedate = $old_ar->marcardduedate;
@@ -358,8 +364,8 @@ class MHPayAR extends Model
                         $coa_cash = MCOA::on(Auth::user()->db_name)->where('mcoacode',$detail->mdpayarcashcoa)->first();
 
                         // update journal
-                        MJournal::record_journal($header->mhpayarno,'Pembayaran Piutang',$coa,0,$detail->mdpayarcashamount,"","",$detail->id);
-                        MJournal::record_journal($header->mhpayarno,'Pembayaran Piutang',$detail->mdpayarcashcoa,$detail->mdpayarcashamount,0,"","",$detail->id);
+                        MJournal::record_journal_cash($header->mhpayarno,'Pembayaran Piutang',$detail->mdpayarcashcoa,$detail->mdpayarcashamount,0,"","",$detail->id);
+                        MJournal::record_journal_cash($header->mhpayarno,'Pembayaran Piutang',$coa,0,$detail->mdpayarcashamount,"","",$detail->id);
 
                         // update coa saldo
                         $coa_cash->update_saldo('+',$detail->mdpayarcashamount);
@@ -372,8 +378,8 @@ class MHPayAR extends Model
                         $coa_bank = MCOA::on(Auth::user()->db_name)->where('mcoacode',$detail->mdpayarbankcoa)->first();
 
                         // update journal
-                        MJournal::record_journal($header->mhpayarno,'Pembayaran Piutang',$coa,0,$detail->mdpayarbankamount,"","",$detail->id);
-                        MJournal::record_journal($header->mhpayarno,'Pembayaran Piutang',$detail->mdpayarbankcoa,$detail->mdpayarbankamount,0,"","",$detail->id);
+                        MJournal::record_journal_bank($header->mhpayarno,'Pembayaran Piutang',$coa,0,$detail->mdpayarbankamount,"","",$detail->id);
+                        MJournal::record_journal_bank($header->mhpayarno,'Pembayaran Piutang',$detail->mdpayarbankcoa,$detail->mdpayarbankamount,0,"","",$detail->id);
 
                         // update coa saldo
                         $coa_bank->update_saldo('+',$detail->mdpayarbankamount);

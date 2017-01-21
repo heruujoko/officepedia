@@ -43,6 +43,39 @@ class MJournal extends Model
         $journal->mjournalremark = $remark;
         $journal->mdpayap_ref = $md_ap;
         $journal->mdpayar_ref = $md_ar;
+        $journal->paymenttype = "system";
+        $journal->save();
+    }
+
+    public static function record_journal_cash($transaction,$type,$coa,$debit,$credit,$remark,$md_ap,$md_ar){
+        $journal = new MJournal;
+        $journal->setConnection(Auth::user()->db_name);
+        $journal->mjournaldate = Carbon::now();
+        $journal->mjournaltransno = $transaction;
+        $journal->mjournaltranstype = $type;
+        $journal->mjournalcoa = $coa;
+        $journal->mjournaldebit = $debit;
+        $journal->mjournalcredit = $credit;
+        $journal->mjournalremark = $remark;
+        $journal->mdpayap_ref = $md_ap;
+        $journal->mdpayar_ref = $md_ar;
+        $journal->paymenttype = "cash";
+        $journal->save();
+    }
+
+    public static function record_journal_bank($transaction,$type,$coa,$debit,$credit,$remark,$md_ap,$md_ar){
+        $journal = new MJournal;
+        $journal->setConnection(Auth::user()->db_name);
+        $journal->mjournaldate = Carbon::now();
+        $journal->mjournaltransno = $transaction;
+        $journal->mjournaltranstype = $type;
+        $journal->mjournalcoa = $coa;
+        $journal->mjournaldebit = $debit;
+        $journal->mjournalcredit = $credit;
+        $journal->mjournalremark = $remark;
+        $journal->mdpayap_ref = $md_ap;
+        $journal->mdpayar_ref = $md_ar;
+        $journal->paymenttype = "bank";
         $journal->save();
     }
 }

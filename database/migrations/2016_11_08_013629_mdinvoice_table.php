@@ -21,9 +21,9 @@ class MdinvoiceTable extends Migration
           $table->string('mdinvoicegoodsid')->nullable();
           $table->string('mdinvoicegoodsname')->nullable();
           $table->integer('mdinvoicegoodsqty');
-          $table->double('mdinvoicegoodsprice');
-          $table->double('mdinvoicegoodsgrossamount');
-          $table->double('mdinvoicegoodsdiscount');
+          $table->double('mdinvoicegoodsprice',16,2);
+          $table->double('mdinvoicegoodsgrossamount',16,2);
+          $table->double('mdinvoicegoodsdiscount',16,2);
           $table->boolean('mdinvoicegoodstax');
           $table->integer('mdinvoicegoodsidwhouse');
           $table->text('mdinvoiceremarks')->nullable();

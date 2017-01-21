@@ -21,11 +21,11 @@ class CreateMhpurchaseQuatationTable extends Migration
             $table->string('mhpurchasequotationsuppliername');
             $table->date('mhpurchasequotationdate');
             $table->date('mhpurchasequotationduedate');
-            $table->double('mhpurchasequotationsubtotal');
-            $table->double('mhpurchasequotationtaxtotal');
-            $table->double('mhpurchasequotationdiscounttotal');
-            $table->double('mhpurchasequotationgrandtotal');
-            $table->double('mhpurchasequotationothertotal');
+            $table->double('mhpurchasequotationsubtotal',16,2);
+            $table->double('mhpurchasequotationtaxtotal',16,2);
+            $table->double('mhpurchasequotationdiscounttotal',16,2);
+            $table->double('mhpurchasequotationgrandtotal',16,2);
+            $table->double('mhpurchasequotationothertotal',16,2);
             $table->boolean('mhpurchasequotationwithppn')->default(0);
             $table->text('mhpurchasequotationremark');
             $table->boolean('quotationed');

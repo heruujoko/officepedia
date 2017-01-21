@@ -137,10 +137,12 @@ const apreportapp = new Vue({
         },
         total_invs(){
             let sums = 0;
+            let last_inv = "";
             if(this.aps.length > 0){
                 for(var i=0;i<this.aps.length;i++){
-                    if(this.aps[i].mapcardtotalinv != undefined){
+                    if(this.aps[i].mapcardtotalinv != undefined && this.aps[i].mapcardtransno != last_inv){
                         sums += this.aps[i].mapcardtotalinv;
+                        last_inv = this.aps[i].mapcardtransno;
                     }
                 }
             }

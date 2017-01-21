@@ -22,8 +22,8 @@ class CreateMAPCardTable extends Migration
             $table->text('mapcardremark');
             $table->date('mapcardduedate');
             $table->double('mapcardtotalinv');
-            $table->double('mapcardpayamount');
-            $table->double('mapcardoutstanding');
+            $table->double('mapcardpayamount',16,2);
+            $table->double('mapcardoutstanding',16,2);
             $table->integer('mapcarduserid');
             $table->string('mapcardusername');
             $table->timestamp('mapcardeventdate');

@@ -30,8 +30,8 @@ class CreateMDPurchaseTable extends Migration
             $table->integer('mdpurchasegoodsunit1conv');
             $table->string('mdpurchasegoodsunit1label');
             $table->integer('mdpurchasegoodsqty');
-            $table->double('mdpurchasegoodsprice');
-            $table->double('mdpurchasegoodsgrossamount');
+            $table->double('mdpurchasegoodsprice',16,2);
+            $table->double('mdpurchasegoodsgrossamount',16,2);
             $table->double('mdpurchasegoodsdiscount');
             $table->integer('mdpurchasegoodsidwhouse');
             $table->text('mdpurchaseremarks');

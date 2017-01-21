@@ -14,10 +14,10 @@ class ModifyMDPayAP extends Migration
     {
         Schema::table('mdpayap',function(Blueprint $table){
             $table->string('mdpayapcashcoa');
-            $table->double('mdpayapcashamount');
+            $table->double('mdpayapcashamount',16,2);
             $table->string('mdpayapbankcoa');
             $table->string('mdpayapbankbankname');
-            $table->double('mdpayapbankamount');
+            $table->double('mdpayapbankamount',16,2);
         });
     }
 

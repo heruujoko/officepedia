@@ -30,11 +30,11 @@ class CreateMdpurchaseQuatationTable extends Migration
             $table->integer('mdpurchasequotationgoodsunit1conv');
             $table->string('mdpurchasequotationgoodsunit1label');
 
-            $table->double('mdpurchasequotationbuyprice');
+            $table->double('mdpurchasequotationbuyprice',16,2);
             
             $table->integer('mdpurchasequotationgoodsqty');
-            $table->double('mdpurchasequotationgoodsprice');
-            $table->double('mdpurchasequotationgoodsgrossamount');
+            $table->double('mdpurchasequotationgoodsprice',16,2);
+            $table->double('mdpurchasequotationgoodsgrossamount',16,2);
             $table->double('mdpurchasequotationgoodsdiscount');
             $table->integer('mdpurchasequotationgoodsidwhouse');
             $table->text('mdpurchasequotationremarks');
