@@ -9,6 +9,7 @@ use App\Http\Controllers\Controller;
 use App\MBRANCH;
 use Datatables;
 use Exception;
+use Auth;
 
 class MBranchController extends Controller
 {
@@ -16,7 +17,7 @@ class MBranchController extends Controller
 
 	public function index(){
 		$this->iteration = 0;
-        $mbranch = MBRANCH::where('void', '0')->orderby('created_at','desc')->get();
+        $mbranch = MBRANCH::on(Auth::user()->db_name)->where('void', '0')->orderby('created_at','desc')->get();
         return Datatables::of($mbranch)->addColumn('action', function($mbranch){
 
           return '<center><div class="button">
@@ -31,17 +32,26 @@ class MBranchController extends Controller
         ->make(true);
 	}
 	public function show($id){
-		$mbranch = MBRANCH::find($id);
+		$mbranch = MBRANCH::on(Auth::user()->db_name)->where('id',$id)->first();
       	return response()->json($mbranch);
 	}
 
     public function store(Request $request){
 			try{
-				$mbranch = MBRANCH::create($request->all());
+				$mbranch = new MBRANCH;
+				$mbranch->setConnection(Auth::user()->db_name);
+				$mbranch->mbranchcode = $request->mbranchcode;
+				$mbranch->mbranchname = $request->mbranchname;
+				$mbranch->phone = $request->phone;
+				$mbranch->city = $request->city;
+				$mbranch->person_in_charge = $request->person_in_charge;
+				$mbranch->information = $request->information;
+				$mbranch->defaultwarehouse = $request->defaultwarehouse;
 				$mbranch->void = 0;
 				$mbranch->save();
 				return response()->json($mbranch);
 			} catch(Exception $e){
+				dd($e);
 				return response()->json($e,400);
 			}
 

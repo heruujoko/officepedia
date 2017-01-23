@@ -4,6 +4,7 @@ use DB;
 use App;
 use Artisan;
 use Auth;
+use App\MUser;
 
 class DBHelper {
 
@@ -41,6 +42,16 @@ class DBHelper {
     Artisan::call('migrate',['--database' => $connections['db_'.$tenantDB]['database'],'--force' => true]);
     Auth::attempt(['email' => $user->email,'password' => $user->password]);
     Artisan::call('db:seed');
+
+    $muser = new MUser;
+    $muser->musername = $user->name;
+    $muser->muserpass = $user->password;
+    $muser->musercategory = "";
+    $muser->void = 0;
+    $muser->defaultbranch = 1;
+    $muser->roleid = 1;
+    $muser->save();
+    
     Auth::logout();
   }
 

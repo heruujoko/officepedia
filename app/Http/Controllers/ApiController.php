@@ -66,24 +66,20 @@ class ApiController extends Controller
     }
 
     public function getEditcabang($id){
-    	try{
-    		$data = MBRANCH::find($id);
-    		$statuscode = 200;
-    		$response = [ "mbranch" => [
-    		'id' => (int) $id,
-    		'mbranchcode' => $data->mbranchcode,
-    		'mbranchname' => $data->mbranchname,
-    		'address' => $data->address,
-    		'phone' => $data->phone,
-    		'city' => $data->city,
-    		'person_in_charge' => $data->person_in_charge,
-    		'information' => $data->information,
+    	$data = MBRANCH::on(Auth::user()->db_name)->where('id',$id)->first();
+    	$statuscode = 200;
+    	$response = [ "mbranch" => [
+    	'id' => (int) $id,
+    	'mbranchcode' => $data->mbranchcode,
+    	'mbranchname' => $data->mbranchname,
+    	'address' => $data->address,
+    	'phone' => $data->phone,
+    	'city' => $data->city,
+    	'person_in_charge' => $data->person_in_charge,
+    	'information' => $data->information,
+        ] ];
+        return response()->json($data);
 
-            ] ];
-     }
-        finally{
-        return Response::json($response, $statuscode);
-        }
     }
 
     public function postEditcabang(Request $request, $id){

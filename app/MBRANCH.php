@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Builder;
 class MBRANCH extends Model
 {
     protected $table = 'mbranch';
-    protected $fillable = ['mbranchcode','mbranchname','address','phone','city','person_in_charge','information','void'];
+    protected $fillable = ['mbranchcode','mbranchname','address','phone','city','person_in_charge','information','void','defaultwarehouse'];
 
     protected static function boot(){
       parent::boot();

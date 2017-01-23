@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Builder;
 class Mwarehouse extends Model
 {
 	protected $table = 'mwarehouse';
-	protected $fillable = ['mwarehousename','mwarehouseremark'];
+	protected $fillable = ['mwarehousename','mwarehouseremark','mwarehousebranchid'];
 	protected static function boot(){
 		parent::boot();
 		static::addGlobalScope('actives', function(Builder $builder) {
