@@ -17,6 +17,9 @@ use DB;
 //Addons
 Use Alert;
 use App;
+use App\MWarehouse;
+use Auth;
+
 class AdminController extends Controller
 {
 	public function getIndex(){
@@ -27,6 +30,7 @@ class AdminController extends Controller
 
 	public function getCabang(){
 		$a = DB::table('mbranch')->orderby('created_at','desc')->where('void', '0')->get();
+		$data['whouses'] = MWarehouse::on(Auth::user()->db_name)->get();
 		$data['a']=$a;
 		$data['active'] = 'cabang';
 		return view('admin/viewcabang', $data);
@@ -103,14 +107,11 @@ class AdminController extends Controller
 		// }
 	public function getDelcabang($id){
 
-			$data = MBRANCH::find($id);
-			DB::table('mbranch')->where('id',$id)->update(['void' => '1']);
+		$branch = MBRANCH::on(Auth::user()->db_name)->where('id',$id)->first();
+		$branch->void = 1;
+		$branch->save();
+		return redirect('admin-nano/cabang#main');
 
-
-			return redirect('admin-nano/cabang#main');
-
-
-	return redirect('admin-nano/cabang');
 	}
 
 

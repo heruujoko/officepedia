@@ -27,7 +27,8 @@ function insertmwarehouse(){
       var data = {
         mwarehousename: $('#insert-mwarehousename').val(),
         mwarehouseremark: $('#insert-mwarehouseremark').val(),
-      }
+        mwarehousebranchid: $('#insert-branch').val()
+      };
       console.log(data);
       $.ajax({
         type: "POST",
@@ -83,6 +84,8 @@ function editmwarehouse(id){
       $('#mwarehouseid').val(response.id);
       $('#edit-mwarehousename').val(response.mwarehousename);
       $('#edit-mwarehouseremark').val(response.mwarehouseremark);
+      $('#edit-branch').val(response.mwarehousebranchid);
+      $('#edit-branch').trigger('change');
       $('#forminput').hide();
       $('#formview').hide();
       $('#formedit').show();
@@ -100,6 +103,7 @@ function updatemwarehouse(){
     var data = {
         mwarehousename: $('#edit-mwarehousename').val(),
         mwarehouseremark: $('#edit-mwarehouseremark').val(),
+        mwarehousebranchid: $('#edit-branch').val()
   }
 
    $.ajax({

@@ -33,9 +33,10 @@ function insertmbranch(){
         phone: $('#insert-phone').val(),
         city: $('#insert-city').val(),
         person_in_charge: $('#insert-person_in_charge').val(),
-        information: $('#insert-information').val()
+        information: $('#insert-information').val(),
+        defaultwarehouse: $('#insert-warehouse').val()
+      };
 
-      }
       $.ajax({
         type: "POST",
         url: API_URL+"/cabang",
@@ -85,6 +86,8 @@ function insertmbranch(){
 			$('#information2').val(response.information);
 			$('#created_at2').val(response.created_at);
 			$('#updated_at2').val(response.updated_at);
+            $('#view-warehouse').val(response.defaultwarehouse);
+            $('#view-warehouse').trigger('update');
 			$('#forminput').hide();
 			$('#formedit').hide();
 			$('#formview').show();
@@ -98,6 +101,9 @@ function editmbranch(id){
 		url : API_URL+'/cabang/'+id,
 		type : 'GET',
 		success : function(response){
+
+            console.log(response);
+
 			$('#mbranchid').val(response.id);
 			$('#mbranchcode').val(response.mbranchcode);
 			$('#mbranchname').val(response.mbranchname);
@@ -106,12 +112,14 @@ function editmbranch(id){
 			$('#city').val(response.city);
 			$('#person_in_charge').val(response.person_in_charge);
 			$('#information').val(response.information);
+            $('#edit-warehouse').val(response.defaultwarehouse);
+            $('#edit-warehouse').trigger('update');
 			$('#forminput').hide();
 			$('#formview').hide();
 			$('#formedit').show();
-      setTimeout(function(){
-          $("#mbranchcode").focus();
-      },100);
+          setTimeout(function(){
+              $("#mbranchcode").focus();
+          },100);
       $('#mbranchname').focus();
 		},
 

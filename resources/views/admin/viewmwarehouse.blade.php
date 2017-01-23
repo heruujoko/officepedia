@@ -86,7 +86,7 @@
 										</div>
 									</div>
 								</div>
-              					<div style="height: 65px;" class="form-group">
+              					<div style="height: 21px;" class="form-group">
 									<label class="col-md-3 control-label"><b>Keterangan</b>  :</label>
 									<div class="col-md-7" style="margin-top:5px;">
 										<div class="icon-addon addon-md">
@@ -95,7 +95,16 @@
 										</div>
 									</div>
 								</div>
-
+								<div class="form-group">
+									<label class="col-md-3 control-label"><b>Cabang</b>  :</label>
+									<div class="col-md-7" style="margin-top:5px;">
+										<select id="insert-branch" class="select2 form-control">
+											@foreach($branches as $br)
+												<option value="{{ $br->mbranchcode }}">{{ $br->mbranchname }}</option>
+											@endforeach
+										</select>
+									</div>
+								</div>
 								<input type="hidden" name="void" value="0">
 								<center>
 									<div class="row">
@@ -154,13 +163,23 @@
 								</div>
 								
 
-              					<div style="height: 65px;" class="form-group">
+              					<div style="height: 21px;" class="form-group">
 									<label class="col-md-3 control-label"><b>Keterangan</b>  :</label>
 									<div class="col-md-7" style="margin-top:5px;">
 										<div class="icon-addon addon-md">
 											<input id="edit-mwarehouseremark" value="{{old('mwarehouseremark')}}" name="mwarehouseremark" class="form-control forminput" placeholder="Keterangan" type="text" data-parsley-required-message="Field Ini Tidak Boleh Kosong" @if (Session::has('autofocus')) autofocus @endif >
 											<label for="mgoodsgroup1" class="glyphicon glyphicon-info-sign" rel="tooltip" title="Keterangan"></label>
 										</div>
+									</div>
+								</div>
+								<div class="form-group">
+									<label class="col-md-3 control-label"><b>Cabang</b>  :</label>
+									<div class="col-md-7" style="margin-top:5px;">
+										<select id="edit-branch" class="select2 form-control">
+											@foreach($branches as $br)
+												<option value="{{ $br->mbranchcode }}">{{ $br->mbranchname }}</option>
+											@endforeach
+										</select>
 									</div>
 								</div>
 								<input type="hidden" name="void" value="0">
@@ -226,6 +245,17 @@
 										</div>
 									</div>
 								</div>
+
+								  <div class="form-group">
+									  <label class="col-md-3 control-label"><b>Cabang</b>  :</label>
+									  <div class="col-md-7" style="margin-top:5px;">
+										  <select id="view-branch" class="select2 form-control">
+											  @foreach($branches as $br)
+												  <option value="{{ $br->mbranchcode }}">{{ $br->mbranchname }}</option>
+											  @endforeach
+										  </select>
+									  </div>
+								  </div>
 
 								<center>
 									<div class="row">
