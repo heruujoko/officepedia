@@ -6,18 +6,16 @@
             font-size: 11px;
         }
         .tds {
-            font-size: 10px;
+            
             text-align: center;
+            height: 1px !important;
         }
         table>td {
             font-size: 11px;
           
         }
-        
         table {
-            background-color: transparent;
-        }
-        table {
+           background-color: transparent;
             border-collapse: collapse;
             border-spacing: 0;
         }
@@ -33,50 +31,45 @@
         }
         .table>tbody>tr>td, .table>tbody>tr>th, .table>tfoot>tr>td, .table>tfoot>tr>th, .table>thead>tr>td, .table>thead>tr>th {
             padding: 8px;
-            line-height: 10px;
+            line-height: 5px;
             vertical-align: top;
-            border-top: 1px solid #ddd;
-            height: 8px;
+           
+            height: 3px !important;
+            font-size: 9px !important;
         }
         .table>tbody tr:nth-child(even) {
         background: #f0f0f2;
-
-        }
-        td, th {
-            padding: 0;
         }
         td, th {
             display: table-cell;
             vertical-align: inherit;
+            padding: 0;
         }
         .table>tfoot {
           text-align: right;
+
         }
         .table>tfoot tr:last-child {
           background: #f0f0f2;
-        }
-       .bb td, .bb th {
-     border-bottom: 1px solid black !important;
 
-    }
+        }
+       
 
     .header-topright{
     position: fixed;
-    top: 1%;
-    left: 73%;
+    top: -2%;
+    left: 68%;
     }
     .cust{
         padding-top: 10px;
+        
     }
    
 
     .cust>table {
-        width: 100%;
+        width: 101%;
     }
 
-    .cust>table>th {
-        height: 30px;
-    }
 
     .cust>table>td {
       
@@ -98,6 +91,9 @@
     .thnoborder{
         border-style:hidden;
 
+    }
+    .signbelow{
+      padding-top: -130px;
     }
 </style>	
 </head>
@@ -122,6 +118,7 @@
     </div>
 
     {{-- TOP RIGHT --}}
+      
     <div class="header-topright">
      <h3 style="color: #217293">Pesanan Pembelian</h3>
     <table border="" cellpadding="5" cellpadding="5">
@@ -147,6 +144,8 @@
         </tr>
     </table>
     </div>
+
+    <br>
     {{-- Customer --}}
     <table border="">
         <tr>
@@ -329,6 +328,8 @@
            </tr>
 
 
+       
+              </tbody>
           <tfoot>
              <tr>
                     <td colspan="6"><span contenteditable>Total Item :</span></td>
@@ -352,13 +353,12 @@
                     <td><span data-prefix>IDR </span><span>{{ number_format($quotation[0]['mhpurchasequotationgrandtotal'],$decimals,$dec_point,$thousands_sep)}}</span></td>
                 </tr>
           </tfoot>
-              </tbody>
-       
        </table>
       
     </div>
     <br>
     <br>
+    <div class="signbelow">
      <table class="tables">
         <tr>
             <td>
@@ -369,7 +369,7 @@
             </td>
         </tr>
     </table>
-    <table class="table">
+    <table class="tables">
         <tr>
             <th style="background: #089DDD; color: white;">TERMS AND CONDITIONS</th>
         </tr>
@@ -383,6 +383,7 @@
         </tr>
         
     </table>
+    </div>
  <center>
      <h4>If you have any question about this price quote, please contact</h4><br>
      <b>Thank You For Your Business!</b>
