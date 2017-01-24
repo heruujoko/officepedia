@@ -229,27 +229,26 @@
                             {
                                 text: 'CSV',
                                 action: function(){
-                                    window.location.href = "{{ url('/admin-nano/cashbank/income/export/csv') }}"
+                                    window.location.href = "{{ url('/admin-nano/roles/export/csv') }}"
                                 }
                             },
                             {
                                 text: 'Excel',
                                 action: function(){
-                                    window.location.href = "{{ url('/admin-nano/cashbank/income/export/excel') }}"
+                                    window.location.href = "{{ url('/admin-nano/roles/export/excel') }}"
                                 }
                             },
                             {
                                 text: 'PDF',
                                 action: function(){
-                                    window.location.href = "{{ url('/admin-nano/cashbank/income/export/pdf') }}"
+                                    window.location.href = "{{ url('/admin-nano/roles/export/pdf') }}"
                                 }
                             },
                             {
-                                extend: 'print',
-                                exportOptions: {
-                                    columns: [1,2] //setting kolom mana yg mau di print
+                                text: 'Print',
+                                action: function(){
+                                    window.location.href = "{{ url('/admin-nano/roles/export/print') }}"
                                 }
-
                             },
                             {
                                 extend: 'colvis',

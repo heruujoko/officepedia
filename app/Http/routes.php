@@ -243,6 +243,10 @@ Route::group(['prefix'=>'admin-nano','middleware' => ['auth','tenantdb']],functi
   Route::get('reports/ledger/export/csv','LedgerController@ledger_csv');
 
   Route::get('roles','RoleController@index');
+  Route::get('roles/export/print','RoleController@roles_print');
+  Route::get('roles/export/pdf','RoleController@roles_pdf');
+  Route::get('roles/export/excel','RoleController@roles_excel');
+  Route::get('roles/export/csv','RoleController@roles_csv');
 
   Route::controllers([
     '/'=>'AdminController'
