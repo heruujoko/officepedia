@@ -56,7 +56,7 @@
                                 <!-- widget content -->
                                 <div class="widget-body no-padding">
                                     <div class="container">
-                                        <accessroles mode="insert"></accessroles>    
+                                        <accessroles mode="insert"></accessroles>
                                     </div>
                                 </div>
                             </div>
@@ -379,6 +379,12 @@
         table.dataTable tbody td {
             vertical-align: middle;
             text-align: center;
+        }
+        .center-text {
+            text-align: center;
+        }
+        .row-menu {
+            background-image: -webkit-linear-gradient(top,#f2f2f2 0,#fafafa 100%);
         }
     </style>
 @stop
