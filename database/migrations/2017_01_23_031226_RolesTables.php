@@ -186,6 +186,7 @@ class RolesTables extends Migration
             $table->boolean('R_journal')->default(0);
             $table->boolean('R_ledger')->default(0);
 
+            $table->boolean('void')->default(0);
             $table->timestamps();
         });
     }

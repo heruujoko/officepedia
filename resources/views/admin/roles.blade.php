@@ -83,7 +83,7 @@
                                 <!-- widget content -->
                                 <div class="widget-body no-padding">
                                     <div class="container">
-
+                                        <accessroles mode="edit"></accessroles>
                                     </div>
                                 </div>
                             </div>
@@ -110,7 +110,7 @@
                                 <!-- widget content -->
                                 <div class="widget-body no-padding">
                                     <div class="container">
-
+                                        <accessroles mode="view"></accessroles>    
                                     </div>
                                 </div>
                             </div>
@@ -145,30 +145,14 @@
                                                 <th class="hasinput" style="width:5%">
                                                     <input type="text" class="form-control" placeholder="Filter No" />
                                                 </th>
-                                                <th class="hasinput" style="width:9%">
-                                                    <input type="text" class="form-control" placeholder="Filter Nomor Transaksi" />
-                                                </th>
-                                                <th class="hasinput" style="width:9%">
-                                                    <input type="text" class="form-control" placeholder="Filter Tipe" />
-                                                </th>
-                                                <th class="hasinput" style="width:20%">
-                                                    <input type="text" class="form-control" placeholder="Filter Akun" />
-                                                </th>
-                                                <th class="hasinput" style="width:9%">
-                                                    <input type="text" class="form-control" placeholder="Filter Debit" />
-                                                </th>
-                                                <th class="hasinput" style="width:9%">
-                                                    <input type="text" class="form-control" placeholder="Filter Credit" />
+                                                <th class="hasinput" style="width:50%">
+                                                    <input type="text" class="form-control" placeholder="Filter Nama" />
                                                 </th>
                                             </tr>
                                             <tr>
                                                 <th data-hide="action"><center>Aksi</center></th>
                                                 <th data-hide="no"><center>No</center></th>
-                                                <th data-hide="mjournalid"><center>Nomor Transaksi</center></th>
-                                                <th data-hide="mjournaltranstype"><center>Tipe</center></th>
-                                                <th data-hide="accounttrace"><center>Akun</center></th>
-                                                <th data-hide="debits"><center>Debet</center></th>
-                                                <th data-hide="credits"><center>Kredit</center></th>
+                                                <th data-hide="mjournalid"><center>Nama</center></th>
                                             </tr>
                                             </thead>
                                             <tbody>
@@ -202,19 +186,19 @@
     <script src="{{ url('/js/roles.js') }}"></script>
     <script src="{{ url('/js/bootstrap-datepicker.min.js') }}"></script>
     <script>
-        function editincome(id){
+        function editrole(id){
             $('#forminput').hide();
             $('#formview').hide();
             $('#formedit').show();
             window.location.href="#formedit";
-            gjournal.$emit('edit-selected',id);
+            accessrole.$emit('edit-selected',id);
         }
-        function viewincome(id){
+        function viewrole(id){
             $('#forminput').hide();
             $('#formedit').hide();
             $('#formview').show();
             window.location.href="#formview";
-            gjournal.$emit('view-selected',id);
+            accessrole.$emit('view-selected',id);
         }
         $(document).ready(function(){
             $('#disableforminput').prop('checked',true);
@@ -239,7 +223,7 @@
                         buttons: [ {
                             extend: 'copyHtml5',
                             exportOptions: {
-                                columns: [1,2,3,4,5]
+                                columns: [1,2]
                             }
                         },
                             {
@@ -263,7 +247,7 @@
                             {
                                 extend: 'print',
                                 exportOptions: {
-                                    columns: [1,2,3,4] //setting kolom mana yg mau di print
+                                    columns: [1,2] //setting kolom mana yg mau di print
                                 }
 
                             },
@@ -276,15 +260,11 @@
 
                         processing: false,
                         serverSide: false,
-                        ajax: '{{URL::to('/')}}/admin-api/journal/group/umum',
+                        ajax: '{{URL::to('/')}}/admin-api/roles',
                         columns: [
                             {data: 'action', name:'action', searchable: false, orderable: false},
                             {data: 'no', no: 'no' },
-                            {data: 'mjournalid', mjournalid: 'mjournalid' },
-                            {data: 'mjournaltranstype', mjournaltranstype: 'mjournaltranstype' },
-                            {data: 'accounttrace', accounttrace: 'accounttrace' },
-                            {data: 'debits', debits: 'debits' },
-                            {data: 'credits', credits: 'credits' }
+                            {data: 'name', name: 'name' }
                         ]
                     }).on('xhr.dt',function(){
                         $('#loading_modal').modal('hide');
