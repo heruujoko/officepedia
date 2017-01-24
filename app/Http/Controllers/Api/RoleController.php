@@ -62,4 +62,11 @@ class RoleController extends Controller
 
         return response()->json($role);
     }
+
+    public function destroy($id){
+        $role = Role::on(Auth::user()->db_name)->where('id',$id)->where('void',0)->first();
+        $role->void = 1;
+        $role->save();
+        return response()->json();    
+    }
 }

@@ -110,7 +110,7 @@
                                 <!-- widget content -->
                                 <div class="widget-body no-padding">
                                     <div class="container">
-                                        <accessroles mode="view"></accessroles>    
+                                        <accessroles mode="view"></accessroles>
                                     </div>
                                 </div>
                             </div>
@@ -292,7 +292,7 @@
                         if (isconfirm) {
                             $.ajax({
                                 type: "DELETE",
-                                url: API_URL+"/generaljournal/"+id,
+                                url: API_URL+"/roles/"+id,
                                 success: function(response){
                                     console.log(response);
                                     table.ajax.reload();
