@@ -23,7 +23,8 @@ const changebranch = new Vue({
     data: {
         branch_label: "Pilih Cabang",
         selected_branch: "",
-        branches: []
+        branches: [],
+        default_done: false
     },
     methods:{
         fetchBranches(){
@@ -35,10 +36,17 @@ const changebranch = new Vue({
         fetchDefaultBranches(){
             Axios.get('/admin-api/profile/defaultbranch')
             .then(res => {
+                console.log('------');
+                console.log(res.data);
                 if(res.data != ""){
+                    console.log('fetchDefaultBranches');
+                    console.log(res.data);
                     this.selected_branch = res.data.id
                     $('#branch_switch').val(res.data.id);
                     $('#branch_switch').trigger('change');
+                    setTimeout(() => {
+                        this.default_done = true;
+                    },5000);
                 } else {
                     this.selected_branch = res.data
                 }
@@ -52,18 +60,19 @@ const changebranch = new Vue({
 
             Axios.post('/admin-api/profile/defaultbranch',data)
             .then(res => {
-                
+
             });
         }
     },
     watch: {
         selected_branch(){
-            if(this.selected_branch != ""){
+            if(this.default_done){
                 this.updateBranch();
             }
         }
     },
-    mounted(){
+    created(){
+        this.default_done = false;
         console.log('changebranch component');
         this.fetchBranches()
         this.fetchDefaultBranches()

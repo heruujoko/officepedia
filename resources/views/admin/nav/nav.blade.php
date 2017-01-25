@@ -242,6 +242,15 @@
           <a href="{{URL::to('/')}}/admin-nano/cabang">Cabang</a>
         </li>
       @endif
+      @if($active == 'roles')
+        <li class="active">
+          <a href="{{URL::to('/')}}/admin-nano/roles">Hak Akses</a>
+        </li>
+      @else
+        <li>
+          <a href="{{URL::to('/')}}/admin-nano/roles">Hak Akses</a>
+        </li>
+      @endif
       @if($active == 'muser')
         <li class="active">
           <a href="{{URL::to('/')}}/admin-nano/muser">Master User</a>
