@@ -736,7 +736,7 @@
 
     		})
     		</script>
-
+            <script src="{{ url('/js/changebranch.js') }}"></script>
     		<!-- Your GOOGLE ANALYTICS CODE Below -->
 
     	</body>

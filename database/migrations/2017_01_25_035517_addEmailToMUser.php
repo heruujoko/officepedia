@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class UserBranchTables extends Migration
+class AddEmailToMUser extends Migration
 {
     /**
      * Run the migrations.
@@ -12,11 +12,8 @@ class UserBranchTables extends Migration
      */
     public function up()
     {
-        Schema::create('userbranch',function(Blueprint $table){
-            $table->increments('id');
-            $table->integer('userid');
-            $table->string('branchid');
-            $table->timestamps();
+        Schema::table('muser',function(Blueprint $table){
+            $table->string('museremail')->unique(true);
         });
     }
 
@@ -27,6 +24,6 @@ class UserBranchTables extends Migration
      */
     public function down()
     {
-        Schema::drop('userbranch');
+        //
     }
 }

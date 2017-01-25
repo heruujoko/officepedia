@@ -1,3 +1,9 @@
+<div id="branchswitcher" style="padding:10px;">
+    <label for="" style="color:white;font-size: 12px;">Cabang</label>
+    <select v-model="selected_branch" v-selecttwo="branch_label" id="branch_switch">
+        <option v-for="branch in branches" :value="branch.id">@{{ branch.mbranchname}}</option>
+    </select>
+</div>
 <ul>
   @if($active == 'dashboard')
     <li class="active">

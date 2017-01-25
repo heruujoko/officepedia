@@ -86,11 +86,20 @@
 										</div>
 									</div>
 								</div>
+                                <div style="height: 21px;" class="form-group">
+									<label class="col-md-3 control-label"><b>Email User</b> (<font color="red">*</font>) &nbsp  :</label>
+									<div class="col-md-7">
+										<div class="icon-addon addon-md">
+											<input id="insert-museremail" value="{{old('musername')}}" name="museremail" class="form-control forminput" placeholder="Email User" type="text" required data-parsley-required-message="Field Ini Tidak Boleh Kosong" @if (Session::has('autofocus')) autofocus @endif >
+											<label for="mgoodsgroup1" class="glyphicon glyphicon-info-sign" rel="tooltip" title="Nama Kategori"></label>
+										</div>
+									</div>
+								</div>
 								<div style="height: 21px;" class="form-group">
 									<label class="col-md-3 control-label"><b>Password</b> (<font color="red">*</font>) &nbsp  :</label>
 									<div class="col-md-7">
 										<div class="icon-addon addon-md">
-											<input id="insert-muserpass" value="{{old('muserpass')}}" name="muserpass" class="form-control forminput" placeholder="Password" type="text" required data-parsley-required-message="Field Ini Tidak Boleh Kosong" @if (Session::has('autofocus')) autofocus @endif >
+											<input id="insert-muserpass" value="{{old('muserpass')}}" name="muserpass" class="form-control forminput" placeholder="Password" type="password" required data-parsley-required-message="Field Ini Tidak Boleh Kosong" @if (Session::has('autofocus')) autofocus @endif >
 											<label for="mgoodsgroup1" class="glyphicon glyphicon-info-sign" rel="tooltip" title="Nama Kategori"></label>
 										</div>
 									</div>
@@ -100,8 +109,23 @@
 									<label class="col-md-3 control-label"><b>Kategori User</b> &nbsp  :</label>
 									<div class="col-md-7">
 										<div class="icon-addon addon-md">
-											<input id="insert-musercategory" value="{{old('musercategory')}}" name="musercategory" class="form-control forminput" placeholder="Kategori User" type="text" @if (Session::has('autofocus')) autofocus @endif >
-											<label for="mgoodsgroup1" class="glyphicon glyphicon-search" rel="tooltip" title="Keterangan"></label>
+                                            <select id="insert-musercategory" name="musercategory" class="select2">
+                                                @foreach($roles as $r)
+                                                    <option value="{{ $r->id }}">{{ $r->name }}</option>
+                                                @endforeach
+                                            </select>
+										</div>
+									</div>
+								</div>
+                                <div class="form-group">
+									<label class="col-md-3 control-label"><b>Akses Cabang</b> &nbsp  :</label>
+									<div class="col-md-7">
+										<div class="icon-addon addon-md">
+                                            <select multiple id="insert-muserbranches" name="musercategory" class="select2">
+                                                @foreach($branches as $br)
+                                                    <option value="{{ $br->id }}">{{ $br->mbranchname }}</option>
+                                                @endforeach
+                                            </select>
 										</div>
 									</div>
 								</div>
@@ -151,7 +175,7 @@
 										border-color: #2F9ACF;
 									}
 								</style>
-                <input type="hidden" id="mfixedassetsid">
+                                <input type="hidden" id="mfixedassetsid">
 								<div style="height: 21px;" class="form-group">
 									<label class="col-md-3 control-label"><b>Nama User</b> (<font color="red">*</font>) &nbsp  :</label>
 									<div class="col-md-7">
@@ -161,11 +185,20 @@
 										</div>
 									</div>
 								</div>
+                                <div style="height: 21px;" class="form-group">
+									<label class="col-md-3 control-label"><b>Email User</b> (<font color="red">*</font>) &nbsp  :</label>
+									<div class="col-md-7">
+										<div class="icon-addon addon-md">
+											<input id="edit-museremail" value="{{old('musername')}}" name="museremail" class="form-control forminput" placeholder="Email User" type="text" required data-parsley-required-message="Field Ini Tidak Boleh Kosong" @if (Session::has('autofocus')) autofocus @endif >
+											<label for="mgoodsgroup1" class="glyphicon glyphicon-info-sign" rel="tooltip" title="Nama Kategori"></label>
+										</div>
+									</div>
+								</div>
 								<div style="height: 21px;" class="form-group">
 									<label class="col-md-3 control-label"><b>Password</b> (<font color="red">*</font>) &nbsp  :</label>
 									<div class="col-md-7">
 										<div class="icon-addon addon-md">
-											<input id="edit-muserpass" value="{{old('muserpass')}}" name="muserpass" class="form-control forminput" placeholder="Password" type="text" required data-parsley-required-message="Field Ini Tidak Boleh Kosong" @if (Session::has('autofocus')) autofocus @endif >
+											<input id="edit-muserpass" value="{{old('muserpass')}}" name="muserpass" class="form-control forminput" placeholder="Biarkan kosong untuk tidak merubah password" type="password" @if (Session::has('autofocus')) autofocus @endif >
 											<label for="mgoodsgroup1" class="glyphicon glyphicon-info-sign" rel="tooltip" title="Nama Kategori"></label>
 										</div>
 									</div>
@@ -174,9 +207,22 @@
 								<div class="form-group">
 									<label class="col-md-3 control-label"><b>Kategori User</b> &nbsp  :</label>
 									<div class="col-md-7">
+                                        <select id="edit-musercategory" name="musercategory" class="select2">
+                                            @foreach($roles as $r)
+                                                <option value="{{ $r->id }}">{{ $r->name }}</option>
+                                            @endforeach
+                                        </select>
+									</div>
+								</div>
+                                <div class="form-group">
+									<label class="col-md-3 control-label"><b>Akses Cabang</b> &nbsp  :</label>
+									<div class="col-md-7">
 										<div class="icon-addon addon-md">
-											<input id="edit-musercategory" value="{{old('musercategory')}}" name="musercategory" class="form-control forminput" placeholder="Kategori User" type="text" @if (Session::has('autofocus')) autofocus @endif >
-											<label for="mgoodsgroup1" class="glyphicon glyphicon-search" rel="tooltip" title="Keterangan"></label>
+                                            <select multiple id="edit-muserbranches" name="musercategory" class="select2">
+                                                @foreach($branches as $br)
+                                                    <option value="{{ $br->id }}">{{ $br->mbranchname }}</option>
+                                                @endforeach
+                                            </select>
 										</div>
 									</div>
 								</div>
@@ -302,7 +348,7 @@
 											<input type="text" class="form-control" placeholder="Filter Nama User" />
 										</th>
                     <th class="hasinput" style="width:9%">
-											<input type="text" class="form-control" placeholder="Filter Password" />
+											<input type="text" class="form-control" placeholder="Filter Email" />
 										</th>
 										<th class="hasinput" style="width:9%">
 											<input type="text" class="form-control" placeholder="Filter Kategori User" />
@@ -312,7 +358,7 @@
 										<th data-hide="action"><center>Aksi</center></th>
                     <th data-hide="no"><center>No</center></th>
                     <th data-hide="musername"><center>Nama User</center></th>
-										<th data-hide="muserpass"><center>Password</center></th>
+										<th data-hide="muserpass"><center>Email</center></th>
 										<th data-hide="musercategory"><center>Kategori User</center></th>
 									</tr>
 								</thead>
@@ -377,7 +423,7 @@
                               {data: 'action', name:'action', searchable: false, orderable: false},
                               {data: 'no', no: 'no' },
                               {data: 'musername', musername: 'musername'},
-                              {data: 'muserpass', muserpass: 'muserpass'},
+                              {data: 'museremail', museremail: 'museremail'},
 							  {data: 'musercategory', musercategory: 'musercategory'}
           										]
 									       });

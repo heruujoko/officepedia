@@ -362,6 +362,11 @@ Route::group(['prefix'=>'admin-nano','middleware' => ['auth','tenantdb']],functi
   Route::resource('generaljournal','Api\GeneralJournalController');
   Route::resource('roles','Api\RoleController');
 
+  Route::get('profile/branch','Api\ProfileController@mybranch');
+  Route::get('profile/defaultbranch','Api\ProfileController@default_branch');
+  Route::post('profile/defaultbranch','Api\ProfileController@update_default_branch');
+
+
   Route::controllers([
     '/'=>'ApiController'
   ]);
