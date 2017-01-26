@@ -57,13 +57,12 @@ const changebranch = new Vue({
 
             Axios.post('/admin-api/profile/defaultbranch',data)
             .then(res => {
-
+                this.fetchDefaultBranches()
             });
         }
     },
     watch: {
         selected_branch(){
-            this.fetchDefaultBranches()
             if(this.selected_branch != ""){
                 this.updateBranch();
             }
