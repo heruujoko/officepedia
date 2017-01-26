@@ -79,7 +79,12 @@
 
     }
     .footer{
-        font-size: 11px;
+    width: 600px;
+    position: fixed;
+    bottom: 0;
+    left: 33%;
+    margin-left: -300px;
+}
     }
     .top-left{
       
@@ -93,7 +98,17 @@
 
     }
     .signbelow{
-      padding-top: -130px;
+   
+    width: 350;
+    border: 2px solid black;
+    padding: 5px;
+
+    }
+    .footertos{
+       padding-top: -130px;
+    }
+    .tdborder{
+      border: 1px solid black;
     }
 </style>	
 </head>
@@ -101,17 +116,38 @@
 <div class="top-left">
     {{-- TOP LEFT --}}
  	<h3 style="color: #257293">{{ $config->msyscompname }}</h3>
-    <table border="">
+    <table border="" cellpadding="5" cellpadding="5">
         <tr>
             <th style=""></th>
         </tr>
         <tr>
+          <td>
+            {{ $config->msysstreet }}
+          </td>
+        </tr>
+        <tr>
             <td>
-               {{ $config->msyscity }}, {{ $config->msyszipcode }}<br>
-                Website : {{ $config->msyscompwebsite }}<br>
-                Phone : {{ $config->msyscompphone }}<br>
-                Fax: {{ $config->msyscompfax }}<br>
-                Supplier : {{ $quotation[0]['mhpurchasequotationsupplierid'] }}<br>
+               {{ $config->msyscity }}, {{ $config->msyszipcode }}
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Website : {{ $config->msyscompwebsite }}
+            </td>
+        </tr>
+         <tr>
+             <td>
+                Phone : {{ $config->msyscompphone }}
+            </td>
+          </tr>
+          <tr>
+            <td>
+                Fax: {{ $config->msyscompfax }}
+            </td>
+          </tr>
+          <tr>
+            <td>
+                Supplier : {{ $quotation[0]['mhpurchasequotationsupplierid'] }}
             </td>
         </tr>
     </table>
@@ -147,16 +183,28 @@
 
     <br>
     {{-- Customer --}}
-    <table border="">
+    <table border="" cellpadding="5" cellpadding="5">
         <tr>
-            <th style="background: #089DDD; color: white;">Customer</th>
+            <th style="background: #089DDD; color: white; width: 130px; text-align: left;">Customer</th>
         </tr>
         <tr>
             <td>
-                Name : {{ $supplier->msuppliername }}<br>
-                Address : {{ $supplier->msupplieraddress }}<br>
-                City,ST,ZIP : {{ $supplier->msuppliercity }}, {{ $supplier->msupplierprovince }}, {{ $supplier->msupplierzipcode }}<br>
-                Phone : {{ $supplier->msupplierphone }}<br>
+                Name : {{ $supplier->msuppliername }}
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Address : {{ $supplier->msupplieraddress }}
+            </td>
+        </tr>
+        <tr>
+            <td>
+                City,ST,ZIP : {{ $supplier->msuppliercity }}, {{ $supplier->msupplierprovince }}, {{ $supplier->msupplierzipcode }}
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Phone : {{ $supplier->msupplierphone }}
             </td>
         </tr>
     
@@ -266,6 +314,16 @@
                <td></td>
                <td></td>
            </tr>
+
+              <tr>
+               <td></td>
+               <td></td>
+               <td></td>
+               <td></td>
+               <td></td>
+               <td></td>
+               <td></td>
+           </tr>
           
             <tr>
                <td></td>
@@ -358,7 +416,19 @@
     </div>
     <br>
     <br>
+    <div class="footertos">
     <div class="signbelow">
+    <table class="tables">
+        <tr>
+            <th style="background: #089DDD; color: white; width: 350">TERMS AND CONDITIONS</th>
+        </tr>
+        <tr>
+        <td>
+           {!! $config->msyspurchinvfootnote !!}
+        </td>
+        </tr>
+        
+    </table>
      <table class="tables">
         <tr>
             <td>
@@ -369,23 +439,11 @@
             </td>
         </tr>
     </table>
-    <table class="tables">
-        <tr>
-            <th style="background: #089DDD; color: white;">TERMS AND CONDITIONS</th>
-        </tr>
-        <tr>
-        <td>
 
-           {!! $config->msyspurchinvfootnote !!}
-           
-
-        </td>
-        </tr>
-        
-    </table>
-    </div>
+   </div>
+   </div>
  <center>
-     <h4>If you have any question about this price quote, please contact</h4><br>
+     <h3>If you have any question about this price quote, please contact</h3><br>
      <b>Thank You For Your Business!</b>
  </center>
  <div class="footer">
