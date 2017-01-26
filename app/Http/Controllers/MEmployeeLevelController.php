@@ -13,9 +13,13 @@ use Auth;
 class MEmployeeLevelController extends Controller
 {
     public function index(){
-      $data['active'] = 'memployeelevel';
-      $data['section'] = 'Master Level Karyawan';
-      return view('admin.viewmemployeelevel',$data);
+        if(Auth::user()->has_role('R_employeelevel')){
+            $data['active'] = 'memployeelevel';
+            $data['section'] = 'Master Level Karyawan';
+            return view('admin.viewmemployeelevel',$data);
+        } else {
+            return redirect('/admin-nano/index');
+        }
     }
 
     public function csv(){

@@ -16,10 +16,15 @@ use Excel;
 class LedgerController extends Controller
 {
     public function ledger(){
-        $data['active'] = 'ledger';
-        $data['section'] = 'Buku Besar';
-        $data['config'] = MConfig::on(Auth::user()->db_name)->where('id',1)->first();
-        return view('admin.ledgerreport',$data);
+        if(Auth::user()->has_role('R_ledger')){
+            $data['active'] = 'ledger';
+            $data['section'] = 'Buku Besar';
+            $data['config'] = MConfig::on(Auth::user()->db_name)->where('id',1)->first();
+            return view('admin.ledgerreport',$data);
+        } else {
+            return redirect('/admin-nano/index');    
+        }
+
     }
 
     private function ledger_data($request){

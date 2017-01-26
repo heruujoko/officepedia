@@ -15,11 +15,16 @@ use Auth;
 class MEmployeeController extends Controller
 {
     public function index(){
-      $data['active'] = 'memployee';
-      $data['section'] = 'Master Karyawan';
-      $data['level'] = MEmployeeLevel::on(Auth::user()->db_name)->get();
-      $data['mcoa'] = MCOA::on(Auth::user()->db_name)->get();
-      return view('admin.viewmemployee',$data);
+
+        if(Auth::user()->has_role('R_employee')){
+            $data['active'] = 'memployee';
+            $data['section'] = 'Master Karyawan';
+            $data['level'] = MEmployeeLevel::on(Auth::user()->db_name)->get();
+            $data['mcoa'] = MCOA::on(Auth::user()->db_name)->get();
+            return view('admin.viewmemployee',$data);
+        } else {
+            return redirect('/admin-nano/index');
+        }
     }
 
     public function csv(){

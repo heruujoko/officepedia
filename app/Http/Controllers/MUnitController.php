@@ -16,9 +16,14 @@ class MUnitController extends Controller
   private $count;
 
   public function index(){
-    $data['section'] = 'Master Satuan';
-    $data['active'] = 'munit';
-    return view('admin/viewmunits',$data);
+
+      if(Auth::user()->has_role('R_units')){
+        $data['section'] = 'Master Satuan';
+        $data['active'] = 'munit';
+        return view('admin/viewmunits',$data);
+      } else {
+        return redirect('/admin-nano/index');        
+      }
   }
   public function csv(){
     $this->brand = MUnit::on(Auth::user()->db_name)->where('void',0)->get();

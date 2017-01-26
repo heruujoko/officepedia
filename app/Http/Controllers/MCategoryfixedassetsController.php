@@ -15,14 +15,18 @@ use App\Helper\DBHelper;
 class MCategoryfixedassetsController extends Controller
 {
     public function index(){
-      DBHelper::configureConnection(Auth::user()->db_alias);
-      	$data['mcoa'] = MCOA::on(Auth::user()->db_name)->get();
-    	$data['active'] = 'categoryfixedassets';
-		$data['section'] = 'Kategori Asset Tetap';
-    	$data['activetab'] = 1;
-		$data['MCategorygoods'] = MCategoryfixedassets::on(Auth::user()->db_name)->get();
-		$data['id'] = null;
-	    return view('admin/viewmcategoryfixedassets',$data);
+        if(Auth::user()->has_role('R_fixedasset')){
+            DBHelper::configureConnection(Auth::user()->db_alias);
+          	$data['mcoa'] = MCOA::on(Auth::user()->db_name)->get();
+        	$data['active'] = 'categoryfixedassets';
+    		$data['section'] = 'Kategori Asset Tetap';
+        	$data['activetab'] = 1;
+    		$data['MCategorygoods'] = MCategoryfixedassets::on(Auth::user()->db_name)->get();
+    		$data['id'] = null;
+    	    return view('admin/viewmcategoryfixedassets',$data);
+        } else {
+            return redirect('/admin-nano/index');
+        }
 	  }
 
 	public function csv(){

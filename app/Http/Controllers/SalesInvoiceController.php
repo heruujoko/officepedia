@@ -19,14 +19,19 @@ use App\MConfig;
 class SalesInvoiceController extends Controller
 {
     public function index(){
-      $data['active'] = 'salesinvoice';
-      $data['section'] = 'Transaksi Faktur Penjualan';
-      // $data['customers'] = MCUSTOMER::on(Auth::user()->db_name)->get();
-      // $data['goods'] = MGoods::on(Auth::user()->db_name)->get();
-      // $data['units'] = MUnit::on(Auth::user()->db_name)->get();
-      // $data['taxes'] = MTax::on(Auth::user()->db_name)->get();
-      // $data['whouses'] = MWarehouse::on(Auth::user()->db_name)->get();
-      return view('admin.salesinvoicevue',$data);
+
+        if(Auth::user()->has_role('R_sales')){
+            $data['active'] = 'salesinvoice';
+            $data['section'] = 'Transaksi Faktur Penjualan';
+            // $data['customers'] = MCUSTOMER::on(Auth::user()->db_name)->get();
+            // $data['goods'] = MGoods::on(Auth::user()->db_name)->get();
+            // $data['units'] = MUnit::on(Auth::user()->db_name)->get();
+            // $data['taxes'] = MTax::on(Auth::user()->db_name)->get();
+            // $data['whouses'] = MWarehouse::on(Auth::user()->db_name)->get();
+            return view('admin.salesinvoicevue',$data);
+        } else {
+            return redirect('/admin-nano/index');
+        }
     }
 
     public function csv(){

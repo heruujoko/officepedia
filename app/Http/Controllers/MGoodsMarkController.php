@@ -13,9 +13,15 @@ use App\Helper\DBHelper;
 class MGoodsMarkController extends Controller
 {
     public function index(){
-      $data['active'] = 'mgoodsmark';
-      $data['section'] = 'Kategori Merek Barang';
-      return view('admin/viewmgoodsmark',$data);
+
+        if(Auth::user()->has_role('R_brands')){
+            $data['active'] = 'mgoodsmark';
+            $data['section'] = 'Kategori Merek Barang';
+            return view('admin/viewmgoodsmark',$data);
+        } else {
+            return redirect('/admin-nano/index');
+        }
+
     }
 
     public function csv(){

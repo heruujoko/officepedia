@@ -13,19 +13,27 @@ use App\Helper\DBHelper;
 class MConfigController extends Controller
 {
     public function sysparam(){
-      DBHelper::configureConnection(Auth::user()->db_alias);
-      $data['config'] = MConfig::on(Auth::user()->db_name)->where('id',1)->first();
-      $data['active'] = 'sysparam';
-      $data['section'] = 'Parameter Sistem';
-      return view('admin.viewconfigsysparam',$data);
+        if(Auth::user()->has_role('R_config')){
+            DBHelper::configureConnection(Auth::user()->db_alias);
+            $data['config'] = MConfig::on(Auth::user()->db_name)->where('id',1)->first();
+            $data['active'] = 'sysparam';
+            $data['section'] = 'Parameter Sistem';
+            return view('admin.viewconfigsysparam',$data);
+        } else {
+            return redirect('/admin-nano/index');
+        }
     }
 
     public function sysfeature(){
-      DBHelper::configureConnection(Auth::user()->db_alias);
-      $data['config'] = MConfig::on(Auth::user()->db_name)->where('id',1)->first();
-      $data['active'] = 'sysfeature';
-      $data['section'] = 'Setting Fitur';
-      $data['mcoa'] = MCOA::on(Auth::user()->db_name)->get();
-      return view('admin.viewconfigsysfeature',$data);
+        if(Auth::user()->has_role('R_config')){
+            DBHelper::configureConnection(Auth::user()->db_alias);
+            $data['config'] = MConfig::on(Auth::user()->db_name)->where('id',1)->first();
+            $data['active'] = 'sysfeature';
+            $data['section'] = 'Setting Fitur';
+            $data['mcoa'] = MCOA::on(Auth::user()->db_name)->get();
+            return view('admin.viewconfigsysfeature',$data);
+        } else {
+            return redirect('/admin-nano/index');
+        }
     }
 }

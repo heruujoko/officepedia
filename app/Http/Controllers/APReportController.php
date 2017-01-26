@@ -14,10 +14,15 @@ use Excel;
 class APReportController extends Controller
 {
     public function apreport(Request $request){
-        $data['active'] = 'apreport';
-        $data['section'] = 'Laporan Hutang Dagang';
-        $data['config'] = MConfig::on(Auth::user()->db_name)->where('id',1)->first();
-        return view('admin.apreport',$data);
+
+        if(Auth::user()->has_role('R_apreport')){
+            $data['active'] = 'apreport';
+            $data['section'] = 'Laporan Hutang Dagang';
+            $data['config'] = MConfig::on(Auth::user()->db_name)->where('id',1)->first();
+            return view('admin.apreport',$data);
+        } else {
+            return redirect('/admin-nano/index');
+        }
     }
 
     public function apreport_print(Request $request){

@@ -18,13 +18,18 @@ class MSupplierController extends Controller
 	private $supplier = array();
 
 	public function index(){
-		$data['active'] = 'supplier';
-		$data['section'] = 'supplier';
-    $data['activetab'] = 1;
-		$data['mcoa'] = MCOA::all();
-    $data['categories'] = MCategorysupplier::on(Auth::user()->db_name)->get();
-		$data['id'] = null;
-	  return view('admin/viewmsupplier',$data);
+
+        if(Auth::user()->has_role('R_supplier')){
+            $data['active'] = 'supplier';
+    		$data['section'] = 'supplier';
+            $data['activetab'] = 1;
+    		$data['mcoa'] = MCOA::all();
+            $data['categories'] = MCategorysupplier::on(Auth::user()->db_name)->get();
+    		$data['id'] = null;
+    	    return view('admin/viewmsupplier',$data);
+        } else {
+            return redirect('/admin-nano/index');
+        }
 }
 	 public function store(){
 		$new_supplier = new MCust;

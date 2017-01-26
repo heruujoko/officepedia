@@ -29,11 +29,15 @@ class AdminController extends Controller
 	 }
 
 	public function getCabang(){
-		$a = DB::table('mbranch')->orderby('created_at','desc')->where('void', '0')->get();
-		$data['whouses'] = MWarehouse::on(Auth::user()->db_name)->get();
-		$data['a']=$a;
-		$data['active'] = 'cabang';
-		return view('admin/viewcabang', $data);
+        if(Auth::user()->has_role('R_branch')){
+            $a = DB::table('mbranch')->orderby('created_at','desc')->where('void', '0')->get();
+    		$data['whouses'] = MWarehouse::on(Auth::user()->db_name)->get();
+    		$data['a']=$a;
+    		$data['active'] = 'cabang';
+    		return view('admin/viewcabang', $data);
+        } else {
+            return redirect('/admin-nano/index');
+        }
 	}
 
 	public function getTambahcabang(){
@@ -122,7 +126,7 @@ class AdminController extends Controller
 	// }
 
 
-	
+
 
 	public function getPelanggan(){
 		// $a = PELANGGAN::all();

@@ -10,6 +10,7 @@ use Excel;
 use App\MCOA;
 use App\MConfig;
 use App\Helper\DBHelper;
+use Auth;
 
 class CashBankListController extends Controller
 {
@@ -17,15 +18,19 @@ class CashBankListController extends Controller
     private $data;
 
     public function index(){
-      $data['section'] = "Daftar Kas / Bank";
-      $data['active'] = "cashbank";
-      return view('admin.viewcashbanklist',$data);
+        if(Auth::user()->has_role('R_cashbank')){
+            $data['section'] = "Daftar Kas / Bank";
+            $data['active'] = "cashbank";
+            return view('admin.viewcashbanklist',$data);
+        } else {
+            return redirect('/admin-nano/index');
+        }
     }
 
     public function excel(){
-      $this->kas = MCOA::where('mcoaparentcode','1101.00')->get();
+      $this->kas = MCOA::on(Auth::user()->db_name)->where('mcoaparentcode','1101.00')->get();
       $this->count = 0;
-      $config = MConfig::find(1);
+      $config = MConfig::on(Auth::user()->db_name)->where('id',1)->first();
       $this->data['decimals'] = $config->msysgenrounddec;
       $this->data['dec_point'] = $config->msysnumseparator;
       if($this->data['dec_point'] == ","){
@@ -51,9 +56,9 @@ class CashBankListController extends Controller
     }
 
     public function csv(){
-      $this->kas = MCOA::where('mcoaparentcode','1101.00')->get();
+      $this->kas = MCOA::on(Auth::user()->db_name)->where('mcoaparentcode','1101.00')->get();
       $this->count = 0;
-      $config = MConfig::find(1);
+      $config = MConfig::on(Auth::user()->db_name)->where('id',1)->first();
       $this->data['decimals'] = $config->msysgenrounddec;
       $this->data['dec_point'] = $config->msysnumseparator;
       if($this->data['dec_point'] == ","){
@@ -78,8 +83,8 @@ class CashBankListController extends Controller
     }
 
     public function pdf(){
-      $data['kas'] = MCOA::where('mcoaparentcode','1101.00')->get();
-      $config = MConfig::find(1);
+      $data['kas'] = MCOA::on(Auth::user()->db_name)->where('mcoaparentcode','1101.00')->get();
+      $config = MConfig::on(Auth::user()->db_name)->where('id',1)->first();
       $data['decimals'] = $config->msysgenrounddec;
       $data['dec_point'] = $config->msysnumseparator;
       if($data['dec_point'] == ","){
@@ -92,9 +97,9 @@ class CashBankListController extends Controller
     }
 
     public function excel_bank(){
-      $this->kas = MCOA::where('mcoaparentcode','1102.00')->get();
+      $this->kas = MCOA::on(Auth::user()->db_name)->where('mcoaparentcode','1102.00')->get();
       $this->count = 0;
-      $config = MConfig::find(1);
+      $config = MConfig::on(Auth::user()->db_name)->where('id',1)->first();
       $this->data['decimals'] = $config->msysgenrounddec;
       $this->data['dec_point'] = $config->msysnumseparator;
       if($this->data['dec_point'] == ","){
@@ -120,9 +125,9 @@ class CashBankListController extends Controller
     }
 
     public function csv_bank(){
-      $this->kas = MCOA::where('mcoaparentcode','1102.00')->get();
+      $this->kas = MCOA::on(Auth::user()->db_name)->where('mcoaparentcode','1102.00')->get();
       $this->count = 0;
-      $config = MConfig::find(1);
+      $config = MConfig::on(Auth::user()->db_name)->where('id',1)->first();
       $this->data['decimals'] = $config->msysgenrounddec;
       $this->data['dec_point'] = $config->msysnumseparator;
       if($this->data['dec_point'] == ","){
@@ -147,8 +152,8 @@ class CashBankListController extends Controller
     }
 
     public function pdf_bank(){
-      $data['kas'] = MCOA::where('mcoaparentcode','1102.00')->get();
-      $config = MConfig::find(1);
+      $data['kas'] = MCOA::on(Auth::user()->db_name)->where('mcoaparentcode','1102.00')->get();
+      $config = MConfig::on(Auth::user()->db_name)->where('id',1)->first();
       $data['decimals'] = $config->msysgenrounddec;
       $data['dec_point'] = $config->msysnumseparator;
       if($data['dec_point'] == ","){

@@ -16,10 +16,15 @@ use Carbon\Carbon;
 class JournalController extends Controller
 {
     public function journal(){
-        $data['active'] = 'journal';
-        $data['section'] = 'Jurnal';
-        $data['config'] = MConfig::on(Auth::user()->db_name)->where('id',1)->first();
-        return view('admin.journalreport',$data);
+
+        if(Auth::user()->has_role('R_journal')){
+            $data['active'] = 'journal';
+            $data['section'] = 'Jurnal';
+            $data['config'] = MConfig::on(Auth::user()->db_name)->where('id',1)->first();
+            return view('admin.journalreport',$data);
+        } else {
+            return redirect('/admin-nano/index');
+        }
     }
 
     private function journal_data($request){

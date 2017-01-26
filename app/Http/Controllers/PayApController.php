@@ -14,10 +14,15 @@ use Excel;
 class PayApController extends Controller
 {
     public function payap(){
-        $data['config'] = MConfig::on(Auth::user()->db_name)->first();
-        $data['active'] = 'payap';
-        $data['section'] = 'Pembayaran Hutang Dagang';
-        return view('admin.payap',$data);
+
+        if(Auth::user()->has_role('R_payap')){
+            $data['config'] = MConfig::on(Auth::user()->db_name)->first();
+            $data['active'] = 'payap';
+            $data['section'] = 'Pembayaran Hutang Dagang';
+            return view('admin.payap',$data);
+        } else {
+            return redirect('/admin-nano/index');
+        }
     }
 
     public function payap_pdf(){

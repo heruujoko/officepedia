@@ -15,12 +15,17 @@ use App\Helper\DBHelper;
 class MCategorycustomerController extends Controller
 {
     public function index(){
-    	$data['active'] = 'categorycustomer';
-		$data['section'] = 'Kategori Pelanggan';
-    	$data['activetab'] = 1;
-		$data['MCategorycustomer'] = MCategorycustomer::on(Auth::user()->db_name)->get();
-		$data['id'] = null;
-	  	return view('admin/viewmcategorycustomer',$data);
+
+        if(Auth::user()->has_role('R_categorycustomer')){
+            $data['active'] = 'categorycustomer';
+    		$data['section'] = 'Kategori Pelanggan';
+        	$data['activetab'] = 1;
+    		$data['MCategorycustomer'] = MCategorycustomer::on(Auth::user()->db_name)->get();
+    		$data['id'] = null;
+    	  	return view('admin/viewmcategorycustomer',$data);
+        } else {
+            return redirect('/admin-nano/index');
+        }
 	}
 
 	public function csv(){

@@ -16,9 +16,14 @@ class MTaxController extends Controller
   private $count;
 
   public function index(){
-    $data['active'] = 'mtax';
-    $data['section'] = 'Master Pajak';
-    return view('admin/viewmtax',$data);
+
+      if(Auth::user()->has_role('R_tax')){
+          $data['active'] = 'mtax';
+          $data['section'] = 'Master Pajak';
+          return view('admin/viewmtax',$data);
+      } else {
+          return redirect('/admin-nano/index');
+      }
   }
 
   public function csv(){

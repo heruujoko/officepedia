@@ -21,10 +21,14 @@ use App\MGoods;
 class StockValueReportController extends Controller
 {
     public function stockvalue(){
-        $data['active'] = 'stockvalue';
-        $data['section'] = 'Nilai Persediaan';
-        $data['config'] = MConfig::on(Auth::user()->db_name)->where('id',1)->first();
-        return view('admin.stockvaluereport',$data);
+        if(Auth::user()->has_role('R_stockvaluereport')){
+            $data['active'] = 'stockvalue';
+            $data['section'] = 'Nilai Persediaan';
+            $data['config'] = MConfig::on(Auth::user()->db_name)->where('id',1)->first();
+            return view('admin.stockvaluereport',$data);
+        } else {
+            return redirect('/admin-nano/index');
+        }
     }
 
     public function stockvalue_print(Request $request){

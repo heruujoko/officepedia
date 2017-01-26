@@ -14,10 +14,15 @@ use Excel;
 class RoleController extends Controller
 {
     public function index(){
-        $data['section'] = "Hak Akses";
-        $data['active'] = "roles";
-        $data['config'] = MConfig::on(Auth::user()->db_name)->where('id',1)->first();
-        return view('admin.roles',$data);
+
+        if(Auth::user()->is_admin()){
+            $data['section'] = "Hak Akses";
+            $data['active'] = "roles";
+            $data['config'] = MConfig::on(Auth::user()->db_name)->where('id',1)->first();
+            return view('admin.roles',$data);
+        } else {
+            return redirect('/admin-nano/index');
+        }
     }
 
     public function roles_print(){

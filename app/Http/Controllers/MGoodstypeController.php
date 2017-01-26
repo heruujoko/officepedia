@@ -14,10 +14,15 @@ use App\Helper\DBHelper;
 class MGoodstypeController extends Controller
 {
   public function index(){
-    $data['section'] = 'Master Tipe Barang';
-    $data['active'] = 'mgoodstype';
-    $data['mgoodstype'] = MGoodstype::on(Auth::user()->db_name)->get();
-    return view('admin/viewmgoodstype',$data);
+
+      if(Auth::user()->has_role('R_goodstype')){
+          $data['section'] = 'Master Tipe Barang';
+          $data['active'] = 'mgoodstype';
+          $data['mgoodstype'] = MGoodstype::on(Auth::user()->db_name)->get();
+          return view('admin/viewmgoodstype',$data);
+      } else {
+          return redirect('/admin-nano/index');
+      }
   }
   private $count =0;
 

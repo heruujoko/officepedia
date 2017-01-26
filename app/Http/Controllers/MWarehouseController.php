@@ -14,13 +14,18 @@ use App\MBRANCH;
 class MWarehouseController extends Controller
 {
     public function index(){
-      $data['active'] = 'mwarehouse';
-      $data['section'] = 'Gudang';
-      $data['activetab'] = 1;
-      $data['branches'] = MBRANCH::on(Auth::user()->db_name)->get();
-      $data['mwarehouse'] = MWarehouse::on(Auth::user()->db_name)->get();
-      $data['id'] = null;
-      return view('admin/viewmwarehouse',$data);
+
+        if(Auth::user()->has_role('R_warehouse')){
+            $data['active'] = 'mwarehouse';
+            $data['section'] = 'Gudang';
+            $data['activetab'] = 1;
+            $data['branches'] = MBRANCH::on(Auth::user()->db_name)->get();
+            $data['mwarehouse'] = MWarehouse::on(Auth::user()->db_name)->get();
+            $data['id'] = null;
+            return view('admin/viewmwarehouse',$data);
+        } else {
+            return redirect('/admin-nano/index');
+        }
     }
 
   public function csv(){

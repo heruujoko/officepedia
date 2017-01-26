@@ -14,10 +14,15 @@ use Excel;
 class PayArController extends Controller
 {
     public function payar(){
-        $data['config'] = MConfig::on(Auth::user()->db_name)->first();
-        $data['active'] = 'payar';
-        $data['section'] = 'Pembayaran Piutang Dagang';
-        return view('admin.payar',$data);
+
+        if(Auth::user()->has_role('R_payar')){
+            $data['config'] = MConfig::on(Auth::user()->db_name)->first();
+            $data['active'] = 'payar';
+            $data['section'] = 'Pembayaran Piutang Dagang';
+            return view('admin.payar',$data);
+        } else {
+            return redirect('/admin-nano/index');
+        }
     }
 
     public function payar_pdf(){

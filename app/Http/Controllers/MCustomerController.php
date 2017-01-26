@@ -19,13 +19,18 @@ class MCustomerController extends Controller
 	private $customer = array();
 
 	public function index(){
-		$data['active'] = 'customer';
-		$data['section'] = 'customer';
-    	$data['activetab'] = 1;
-		$data['mcoa'] = MCOA::all();
-		$data['categories'] = MCategorycustomer::on(Auth::user()->db_name)->get();
-		$data['id'] = null;
-	  return view('admin/viewmcustomer',$data);
+
+        if(Auth::user()->has_role('R_customer')){
+            $data['active'] = 'customer';
+    		$data['section'] = 'customer';
+        	$data['activetab'] = 1;
+    		$data['mcoa'] = MCOA::all();
+    		$data['categories'] = MCategorycustomer::on(Auth::user()->db_name)->get();
+    		$data['id'] = null;
+    	    return view('admin/viewmcustomer',$data);
+        } else {
+            return redirect('/admin-nano/index');    
+        }
 	}
 
 	public function store(){

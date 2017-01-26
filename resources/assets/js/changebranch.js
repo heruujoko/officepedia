@@ -63,6 +63,7 @@ const changebranch = new Vue({
     },
     watch: {
         selected_branch(){
+            this.fetchDefaultBranches()
             if(this.selected_branch != ""){
                 this.updateBranch();
             }

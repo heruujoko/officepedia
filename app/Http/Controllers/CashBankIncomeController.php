@@ -11,9 +11,14 @@ use App\MConfig;
 class CashBankIncomeController extends Controller
 {
     public function index(){
-        $data['section'] = "Penerimaan Kas / Bank";
-        $data['active'] = "cashbankincome";
-        $data['config'] = MConfig::on(Auth::user()->db_name)->where('id',1)->first();
-        return view('admin.cashbankincome',$data);
+
+        if(Auth::user()->has_role('R_cashbankincome')){
+            $data['section'] = "Penerimaan Kas / Bank";
+            $data['active'] = "cashbankincome";
+            $data['config'] = MConfig::on(Auth::user()->db_name)->where('id',1)->first();
+            return view('admin.cashbankincome',$data);
+        } else {
+            return redirect('/admin-nano/index');
+        }
     }
 }

@@ -15,11 +15,16 @@ use App\Helper\DBHelper;
 class MGoodssubtypeController extends Controller
 {
     public function index(){
-    $data['section'] = 'Master Sub Tipe Barang';
-    $data['active'] = 'mgoodssubtype';
-    $data['mgoodstype'] = MGoodstype::on(Auth::user()->db_name)->get();
-    $data['mgoodssubtype'] = MGoodssubtype::on(Auth::user()->db_name)->get();
-    return view('admin/viewmgoodssubtype',$data);
+
+        if(Auth::user()->has_role('R_goodssubtype')){
+            $data['section'] = 'Master Sub Tipe Barang';
+            $data['active'] = 'mgoodssubtype';
+            $data['mgoodstype'] = MGoodstype::on(Auth::user()->db_name)->get();
+            $data['mgoodssubtype'] = MGoodssubtype::on(Auth::user()->db_name)->get();
+            return view('admin/viewmgoodssubtype',$data);
+        } else {
+            return redirect('/admin-nano/index');
+        }
   }
    private $count =0;
 

@@ -21,13 +21,18 @@ class MCOAController extends Controller
     private $data;
 
     public function index(){
-      $data['active'] = 'mcoa';
-      $data['section'] = 'MCOA';
-      DBHelper::configureConnection(Auth::user()->db_alias);
-      $data['parents'] = MCOAParent::on(Auth::user()->db_name)->get();
-      $data['gparents'] = MCOAGrandParent::on(Auth::user()->db_name)->get();
 
-      return view('admin/viewmcoa',$data);
+        if(Auth::user()->has_role('R_mcoa')){
+            $data['active'] = 'mcoa';
+            $data['section'] = 'MCOA';
+            DBHelper::configureConnection(Auth::user()->db_alias);
+            $data['parents'] = MCOAParent::on(Auth::user()->db_name)->get();
+            $data['gparents'] = MCOAGrandParent::on(Auth::user()->db_name)->get();
+
+            return view('admin/viewmcoa',$data);
+        } else {
+            return redirect('/admin-nano/index');
+        }
     }
 
     public function xprint(){

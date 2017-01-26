@@ -13,10 +13,15 @@ use Excel;
 class PurchaseController extends Controller
 {
     public function index(){
-        $data['config'] = MConfig::on(Auth::user()->db_name)->first();
-        $data['active'] = 'purchaseinvoice';
-        $data['section'] = 'Transaksi Pembelian';
-        return view('admin.purchaseinvoice',$data);
+
+        if(Auth::user()->has_role('R_purchase')){
+            $data['config'] = MConfig::on(Auth::user()->db_name)->first();
+            $data['active'] = 'purchaseinvoice';
+            $data['section'] = 'Transaksi Pembelian';
+            return view('admin.purchaseinvoice',$data);
+        } else {
+            return redirect('/admin-nano/index');
+        }
     }
 
     public function pdf(){

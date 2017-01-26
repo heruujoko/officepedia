@@ -14,13 +14,17 @@ use App\Helper\DBHelper;
 class MCategorysupplierController extends Controller
 {
     public function index(){
-      DBHelper::configureConnection(Auth::user()->db_alias);
-    	$data['active'] = 'categorysupllier';
-		$data['section'] = 'Kategori Supplier';
-    	$data['activetab'] = 1;
-		$data['MCategorysupplier'] = MCategorysupplier::on(Auth::user()->db_name)->get();
-		$data['id'] = null;
-	  return view('admin/viewmcategorysupplier',$data);
+        if(Auth::user()->has_role('R_categorysupplier')){
+            DBHelper::configureConnection(Auth::user()->db_alias);
+          	$data['active'] = 'categorysupllier';
+      		$data['section'] = 'Kategori Supplier';
+          	$data['activetab'] = 1;
+      		$data['MCategorysupplier'] = MCategorysupplier::on(Auth::user()->db_name)->get();
+      		$data['id'] = null;
+      	    return view('admin/viewmcategorysupplier',$data);
+        } else {
+            return redirect('/admin-nano/index');
+        }
 	}
 
 	public function csv(){

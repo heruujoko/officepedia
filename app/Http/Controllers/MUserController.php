@@ -16,15 +16,20 @@ use App\MBRANCH;
 class MUserController extends Controller
 {
     public function index(){
-      DBHelper::configureConnection(Auth::user()->db_alias);
-    	$data['active'] = 'muser';
-		$data['section'] = 'Master User';
-    	$data['activetab'] = 1;
-		$data['MCategorygoods'] = MUser::on(Auth::user()->db_name)->get();
-		$data['id'] = null;
-        $data['roles'] = Role::on(Auth::user()->db_name)->get();
-        $data['branches'] = MBRANCH::on(Auth::user()->db_name)->get();
-	    return view('admin/viewmuser',$data);
+
+        if(Auth::user()->has_role('R_user')){
+            DBHelper::configureConnection(Auth::user()->db_alias);
+        	$data['active'] = 'muser';
+    		$data['section'] = 'Master User';
+        	$data['activetab'] = 1;
+    		$data['MCategorygoods'] = MUser::on(Auth::user()->db_name)->get();
+    		$data['id'] = null;
+            $data['roles'] = Role::on(Auth::user()->db_name)->get();
+            $data['branches'] = MBRANCH::on(Auth::user()->db_name)->get();
+    	    return view('admin/viewmuser',$data);
+        } else {
+            return redirect('/admin-nano/index');
+        }
 	  }
 
 	public function csv(){

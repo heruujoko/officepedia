@@ -22,10 +22,15 @@ use App\MGoods;
 class ReportController extends Controller
 {
     public function salesreport(){
-        $data['config'] = MConfig::on(Auth::user()->db_name)->first();
-        $data['active'] = 'salesreports';
-        $data['section'] = 'Sales Report';
-        return view('admin.salesreport',$data);
+
+        if(Auth::user()->has_role('R_salesreport')){
+            $data['config'] = MConfig::on(Auth::user()->db_name)->first();
+            $data['active'] = 'salesreports';
+            $data['section'] = 'Sales Report';
+            return view('admin.salesreport',$data);
+        } else {
+            return redirect('/admin-nano/index');
+        }
     }
 
     public function salesreport_print(Request $request){
@@ -705,10 +710,15 @@ class ReportController extends Controller
 	}
 
     public function invoicereport(){
-        $data['config'] = MConfig::on(Auth::user()->db_name)->first();
-        $data['active'] = 'invoicereports';
-        $data['section'] = 'Invoice Report';
-        return view('admin.invoicereport',$data);
+
+        if(Auth::user()->has_role('R_salesinvoicereport')){
+            $data['config'] = MConfig::on(Auth::user()->db_name)->first();
+            $data['active'] = 'invoicereports';
+            $data['section'] = 'Invoice Report';
+            return view('admin.invoicereport',$data);
+        } else {
+            return redirect('/admin-nano/index');
+        }
     }
 
     public function invoicereport_print(Request $request){
@@ -1314,10 +1324,15 @@ class ReportController extends Controller
     }
 
     public function arreport(){
-        $data['config'] = MConfig::on(Auth::user()->db_name)->first();
-        $data['active'] = 'arreports';
-        $data['section'] = 'Laporan Piutang';
-        return view('admin.arreport',$data);
+
+        if(Auth::user()->has_role('R_arreport')){
+            $data['config'] = MConfig::on(Auth::user()->db_name)->first();
+            $data['active'] = 'arreports';
+            $data['section'] = 'Laporan Piutang';
+            return view('admin.arreport',$data);
+        } else {
+            return redirect('/admin-nano/index');
+        }
     }
 
     public function arreport_print(Request $request){
@@ -1948,10 +1963,15 @@ class ReportController extends Controller
     }
 
     public function arcustreport(){
-        $data['config'] = MConfig::on(Auth::user()->db_name)->first();
-        $data['active'] = 'arcustreport';
-        $data['section'] = 'AR Customer Report';
-        return view('admin.arcustreport',$data);
+
+        if(Auth::user()->has_role('R_arcustomerreport')){
+            $data['config'] = MConfig::on(Auth::user()->db_name)->first();
+            $data['active'] = 'arcustreport';
+            $data['section'] = 'AR Customer Report';
+            return view('admin.arcustreport',$data);
+        } else {
+            return redirect('/admin-nano/index');
+        }
     }
 
     public function arcustreport_print(Request $request){
