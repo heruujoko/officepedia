@@ -50,7 +50,7 @@
 
         }
         .table>tfoot tr:last-child {
-          background: #f0f0f2;
+          
 
         }
        
@@ -98,14 +98,14 @@
 
     }
     .signbelow{
-   
+    
     width: 350;
     border: 2px solid black;
     padding: 5px;
 
     }
     .footertos{
-       padding-top: -130px;
+       padding-top: -120px;
     }
     .tdborder{
       border: 1px solid black;
@@ -282,7 +282,16 @@
                <td></td>
            </tr>
           
-        
+         <tr>
+               <td></td>
+               <td></td>
+               <td></td>
+               <td></td>
+               <td></td>
+               <td></td>
+               <td></td>
+           </tr>
+          
           
        
             <tr>
@@ -408,7 +417,7 @@
                 </tr>
                  <tr>
                     <td colspan="6"><span contenteditable>Total :</span></td>
-                    <td><span data-prefix>IDR </span><span>{{ number_format($quotation[0]['mhpurchasequotationgrandtotal'],$decimals,$dec_point,$thousands_sep)}}</span></td>
+                    <td style="background: #f0f0f2; border-style: solid; border-width: 1px;"><span data-prefix>IDR </span><span>{{ number_format($quotation[0]['mhpurchasequotationgrandtotal'],$decimals,$dec_point,$thousands_sep)}}</span></td>
                 </tr>
           </tfoot>
        </table>
@@ -432,9 +441,12 @@
      <table class="tables">
         <tr>
             <td>
-                <pre>Customer Acceptance(sign below)</pre><br><br>
+                <pre>Customer Acceptance(sign below)</pre><br><br><br>
+            
+            
             
             -------------------------------------<br>
+
             Print Name
             </td>
         </tr>
