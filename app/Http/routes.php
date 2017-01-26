@@ -242,6 +242,12 @@ Route::group(['prefix'=>'admin-nano','middleware' => ['auth','tenantdb']],functi
   Route::get('reports/ledger/export/excel','LedgerController@ledger_excel');
   Route::get('reports/ledger/export/csv','LedgerController@ledger_csv');
 
+  Route::get('roles','RoleController@index');
+  Route::get('roles/export/print','RoleController@roles_print');
+  Route::get('roles/export/pdf','RoleController@roles_pdf');
+  Route::get('roles/export/excel','RoleController@roles_excel');
+  Route::get('roles/export/csv','RoleController@roles_csv');
+
   Route::controllers([
     '/'=>'AdminController'
   ]);
@@ -354,6 +360,12 @@ Route::group(['prefix'=>'admin-nano','middleware' => ['auth','tenantdb']],functi
   Route::get('coaledger','Api\MCOAController@datalistledger');
   Route::get('ledgers','Api\LedgerController@ledgers');
   Route::resource('generaljournal','Api\GeneralJournalController');
+  Route::resource('roles','Api\RoleController');
+
+  Route::get('profile/branch','Api\ProfileController@mybranch');
+  Route::get('profile/defaultbranch','Api\ProfileController@default_branch');
+  Route::post('profile/defaultbranch','Api\ProfileController@update_default_branch');
+
 
   Route::controllers([
     '/'=>'ApiController'

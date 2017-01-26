@@ -13,10 +13,12 @@ use Datatables;
 use DB;
 use Auth;
 use App\Helper\DBHelper;
+use App\User;
+use App\UserBranch;
 
 class MUserController extends Controller
 {
-  
+
   public function index(){
     $this->iteration = 0;
         $mbrand = MUser::on(Auth::user()->db_name)->where('void', '0')->orderby('created_at','desc')->get();
@@ -41,15 +43,44 @@ class MUserController extends Controller
 
   public function show($id){
     $mbrand = MUser::on(Auth::user()->db_name)->where('id',$id)->first();
-        return response()->json($mbrand);
+
+    $user = User::where('email',$mbrand->museremail)->first();
+
+    $mbrand['branches'] = UserBranch::on(Auth::user()->db_name)->where('userid',$user->id)->get();
+
+    return response()->json($mbrand);
   }
 
     public function store(Request $request){
       try{
+
+        $crypt = bcrypt($request->muserpass);
+
         $mbrand = new MUser($request->all());
         $mbrand->setConnection(Auth::user()->db_name);
         $mbrand->void = 0;
         $mbrand->save();
+        $mbrand->muserpass = $crypt;
+        $mbrand->save();
+
+        // save to main DB
+
+        $user = new User;
+        $user->name = $request->musername;
+        $user->email = $request->museremail;
+        $user->password = $crypt;
+        $user->db_alias = Auth::user()->db_alias;
+        $user->db_name = Auth::user()->db_name;
+        $user->save();
+
+        foreach($request->muserbranches as $branch_id){
+            $branchuser = new UserBranch;
+            $branchuser->setConnection(Auth::user()->db_name);
+            $branchuser->userid = $user->id;
+            $branchuser->branchid = $branch_id;
+            $branchuser->save();
+        }
+
         return response()->json($mbrand);
       } catch(Exception $e){
         return response()->json($e,400);
@@ -60,7 +91,33 @@ class MUserController extends Controller
   public function update(Request $request,$id){
     try{
       $mbrand = MUser::on(Auth::user()->db_name)->where('id',$id)->first();
-      $mbrand->update($request->all());
+      $user = User::where('email',$mbrand->museremail)->first();
+      $crypt = "";
+      if($request->muserpass != ""){
+        $crypt = bcrypt($request->muserpass);
+      }
+
+      $mbrand->update($request->except('muserpass'));
+      $user->name = $request->musername;
+      $user->email = $request->museremail;
+      if($request->muserpass != ""){
+        $user->password = $crypt;
+      }
+      $user->save();
+
+      $old_branch_role = UserBranch::on(Auth::user()->db_name)->where('userid',$user->id)->get();
+      foreach($old_branch_role as $r){
+          $r->delete();
+      }
+
+      foreach($request->muserbranches as $branch_id){
+          $branchuser = new UserBranch;
+          $branchuser->setConnection(Auth::user()->db_name);
+          $branchuser->userid = $user->id;
+          $branchuser->branchid = $branch_id;
+          $branchuser->save();
+      }
+
       return response()->json($mbrand);
     }catch(Exception $e){
       return response()->json($e,400);
@@ -70,6 +127,8 @@ class MUserController extends Controller
 
   public function destroy($id){
     $mbrand = MUser::on(Auth::user()->db_name)->where('id',$id)->first();
+    $user = User::where('email',$mbrand->museremail)->first();
+    $user->delete();
     $mbrand->void = 1;
     $mbrand->save();
     return response()->json();

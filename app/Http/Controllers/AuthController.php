@@ -23,7 +23,8 @@ class AuthController extends Controller
         'email' => $request->email,
         'password' => bcrypt($request->password),
         'db_alias' => '',
-        'db_name' => ''
+        'db_name' => '',
+        'defaultbranch' => 1
       ]);
       $db_name = uniqid();
       $newuser->db_alias = $db_name;

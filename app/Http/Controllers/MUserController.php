@@ -10,16 +10,20 @@ use Excel;
 use PDF;
 use Auth;
 use App\Helper\DBHelper;
+use App\Role;
+use App\MBRANCH;
 
 class MUserController extends Controller
 {
     public function index(){
       DBHelper::configureConnection(Auth::user()->db_alias);
     	$data['active'] = 'muser';
-		  $data['section'] = 'Master User';
+		$data['section'] = 'Master User';
     	$data['activetab'] = 1;
-		  $data['MCategorygoods'] = MUser::on(Auth::user()->db_name)->get();
-		  $data['id'] = null;
+		$data['MCategorygoods'] = MUser::on(Auth::user()->db_name)->get();
+		$data['id'] = null;
+        $data['roles'] = Role::on(Auth::user()->db_name)->get();
+        $data['branches'] = MBRANCH::on(Auth::user()->db_name)->get();
 	    return view('admin/viewmuser',$data);
 	  }
 

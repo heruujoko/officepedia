@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Builder;
 class MUser extends Model
 {
     protected $table = 'muser';
-    protected $fillable = ['musername','muserpass','musercategory'];
+    protected $fillable = ['musername','muserpass','musercategory','museremail'];
 
     protected static function boot(){
       parent::boot();

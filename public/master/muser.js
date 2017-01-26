@@ -14,8 +14,8 @@ function resetmuser(){
   $('#insert-musercategory').val('');
   $('#insert-wrapper').parsley().reset();
   $('#edit-wrapper').parsley().reset();
-  
-  
+
+
 }
 
 function insertmuser(){
@@ -24,8 +24,10 @@ function insertmuser(){
     if($('#insert-wrapper').parsley().isValid()){
       var data = {
         musername: $('#insert-musername').val(),
-         muserpass: $('#insert-muserpass').val(),
+        museremail: $('#insert-museremail').val(),
+        muserpass: $('#insert-muserpass').val(),
         musercategory: $('#insert-musercategory').val(),
+        muserbranches: $('#insert-muserbranches').val(),
       }
       console.log(data);
       $.ajax({
@@ -81,8 +83,20 @@ function editmuser(id){
     success : function(response){
       $('#mfixedassetsid').val(response.id);
       $('#edit-musername').val(response.musername);
-      $('#edit-muserpass').val(response.muserpass);
+      $('#edit-museremail').val(response.museremail);
+    //   $('#edit-muserpass').val(response.muserpass);
       $('#edit-musercategory').val(response.musercategory);
+      $('#edit-musercategory').trigger('change');
+
+      var branches = [];
+
+      for(var i=0;i<response.branches.length;i++){
+          branches.push(response.branches[i].branchid);
+      }
+      console.log(branches);
+      $("#edit-muserbranches").val(branches);
+      $("#edit-muserbranches").trigger('change');
+
       $('#forminput').hide();
       $('#formview').hide();
       $('#formedit').show();
@@ -101,6 +115,8 @@ function updatemuser(){
          musername: $('#edit-musername').val(),
          muserpass: $('#edit-muserpass').val(),
         musercategory: $('#edit-musercategory').val(),
+        museremail: $('#edit-museremail').val(),
+        muserbranches: $('#edit-muserbranches').val()
   }
 
    $.ajax({
@@ -132,4 +148,3 @@ function updatemuser(){
     }
 
   }
-
