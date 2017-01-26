@@ -127,13 +127,13 @@
               <li><a href="{{ url('admin-nano/purchaseinvoice') }}">Pembelian</a></li>
             @endif
         @endif
-        @if(Auth::user()->has_role('R_purchasequotation'))
+
             @if($active == 'purchasequotation')
               <li class="active"><a href="{{ url('admin-nano/purchasequotation') }}">Purchase Order</a></li>
             @else
               <li><a href="{{ url('admin-nano/purchasequotation') }}">Penawaran Pembelian</a></li>
             @endif
-        @endif
+
         @if(Auth::user()->has_role('R_payap'))
             @if($active == 'payap')
               <li class="active"><a href="{{ url('admin-nano/payap') }}">Pembayaran Hutang Dagang</a></li>
@@ -171,13 +171,13 @@
               </li>
             @endif
         @endif
-        @if(Auth::user()->has_role('R_invoicequotation'))
+
             @if($active == 'invoicequotation')
               <li class="active"><a href="{{ url('admin-nano/invoicequotation') }}">Penawaran Pembelian</a></li>
             @else
               <li><a href="{{ url('admin-nano/purchasequotation') }}">Penawaran Pembelian</a></li>
             @endif
-        @endif
+        
         @if(Auth::user()->has_role('R_payar'))
             @if($active == 'payar')
               <li class="active"><a href="{{ url('admin-nano/payar') }}">Pembayaran Piutang Dagang</a></li>
