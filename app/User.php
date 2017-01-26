@@ -3,6 +3,9 @@
 namespace App;
 
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Auth;
+use App\MUser;
+use App\Role;
 
 class User extends Authenticatable
 {
@@ -23,4 +26,24 @@ class User extends Authenticatable
     protected $hidden = [
         'password', 'remember_token',
     ];
+
+    public function is_admin(){
+        $role_id = MUser::on(Auth::user()->db_name)->where('museremail',$this->email)->first()->musercategory;
+
+        if($role_id == 1){
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public function has_role($column_name){
+        $role_id = MUser::on(Auth::user()->db_name)->where('museremail',$this->email)->first()->musercategory;
+        $role = Role::on(Auth::user()->db_name)->where('id',$role_id)->first();
+        if($role->{$column_name} == 1){
+            return 1;
+        } else {
+            return 0;
+        }
+    }
 }
