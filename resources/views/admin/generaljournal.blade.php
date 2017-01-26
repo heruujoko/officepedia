@@ -14,7 +14,7 @@
 		</span>
             <!-- breadcrumb -->
             <ol class="breadcrumb">
-                <li>Home</li><li>Pembelian</li><li>{{ $section }}</li>
+                <li>Home</li><li>Akutansi</li><li>{{ $section }}</li>
             </ol>
         </div>
         <!-- END RIBBON -->
@@ -24,7 +24,7 @@
                 <div class="col-xs-12 col-sm-7 col-md-7 col-lg-4">
                     <h1 class="page-title txt-color-blueDark">
                         <i class="fa fa-table fa-fw "></i>
-                        Pembelian
+                        Akutansi
 					<span>
 						{{ $section }}
 					</span>
@@ -36,6 +36,7 @@
             <!-- widget grid -->
             <section id="widget-grid" class="">
                 <!-- row -->
+                @if(Auth::user()->has_role('C_generaljournal'))
                 <div class="row">
                     <!-- NEW WIDGET START -->
                     <article class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
@@ -63,6 +64,7 @@
                         </div>
                     </article>
                 </div>
+                @endif
                 <div class="row">
                     <!-- NEW WIDGET START -->
                     <article class="col-xs-12 col-sm-12 col-md-12 col-lg-12">

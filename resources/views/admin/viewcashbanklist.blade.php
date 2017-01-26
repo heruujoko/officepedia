@@ -267,6 +267,96 @@
 <script>
 var tablekas;
 var tablebank;
+var button_kas = [
+        {
+            extend: 'copyHtml5',
+            exportOptions: {
+                    columns: [ 1,2]
+            }
+        },
+        {
+                text: 'CSV',
+                action: function(){
+                    window.location.href = "{{ url('admin-nano/cashbank/cash/export/csv') }}";
+                }
+        },
+        {
+                text: 'Excel',
+                action: function(){
+                    window.location.href = "{{ url('admin-nano/cashbank/cash/export/excel') }}";
+                }
+        },
+        {
+                text: 'PDF',
+                action: function(){
+                    window.location.href = "{{ url('admin-nano/cashbank/cash/export/pdf') }}";
+                }
+        },
+        {
+                extend: 'print',
+                exportOptions: {
+                        columns: [ 1, 2] //setting kolom mana yg mau di export
+                }
+
+        },
+        {
+            extend: 'colvis',
+            text: 'Show / Hide Columns',
+            columns: ':gt(1)'
+        }
+];
+var button_bank = [
+        {
+            extend: 'copyHtml5',
+            exportOptions: {
+                    columns: [ 1,2]
+            }
+        },
+        {
+                text: 'CSV',
+                action: function(){
+                    window.location.href = "{{ url('admin-nano/cashbank/bank/export/csv') }}";
+                }
+        },
+        {
+                text: 'Excel',
+                action: function(){
+                    window.location.href = "{{ url('admin-nano/cashbank/bank/export/excel') }}";
+                }
+        },
+        {
+                text: 'PDF',
+                action: function(){
+                    window.location.href = "{{ url('admin-nano/cashbank/bank/export/pdf') }}";
+                }
+        },
+        {
+                extend: 'print',
+                exportOptions: {
+                        columns: [ 1, 2] //setting kolom mana yg mau di export
+                }
+
+        },
+        {
+            extend: 'colvis',
+            text: 'Show / Hide Columns',
+            columns: ':gt(1)'
+        }
+];
+@if(Auth::user()->has_role('C_cashbank'))
+    button_kas.unshift({
+            text: 'Tambah Master Kas',
+            action: function(){
+                add_master_kas();
+            }
+    });
+    button_bank.unshift({
+            text: 'Tambah Master Bank',
+            action: function(){
+                add_master_bank();
+            }
+    });
+@endif
 $(function(){
 	tablekas = $('#tableapi')
 						.on('preXhr.dt',function(){
@@ -280,50 +370,7 @@ $(function(){
 									"sLengthMenu": "Show _MENU_ Entries",
 									"sInfo": "Showing ( _START_ to _END_ ) to _TOTAL_ Entries"
 								},
-						buttons: [
-								{
-										text: 'Tambah Master Kas',
-										action: function(){
-											add_master_kas();
-										}
-								},
-								{
-									extend: 'copyHtml5',
-									exportOptions: {
-											columns: [ 1,2]
-									}
-								},
-								{
-										text: 'CSV',
-										action: function(){
-											window.location.href = "{{ url('admin-nano/cashbank/cash/export/csv') }}";
-										}
-								},
-								{
-										text: 'Excel',
-										action: function(){
-											window.location.href = "{{ url('admin-nano/cashbank/cash/export/excel') }}";
-										}
-								},
-								{
-										text: 'PDF',
-										action: function(){
-											window.location.href = "{{ url('admin-nano/cashbank/cash/export/pdf') }}";
-										}
-								},
-								{
-										extend: 'print',
-										exportOptions: {
-												columns: [ 1, 2] //setting kolom mana yg mau di export
-										}
-
-								},
-								{
-									extend: 'colvis',
-									text: 'Show / Hide Columns',
-									columns: ':gt(1)'
-								}
-						],
+						buttons: button_kas,
 						processing: false,
 						serverSide: false,
 						ajax: '{{URL::to('/')}}/admin-api/cashbank/cash',
@@ -344,50 +391,7 @@ $(function(){
 									"sLengthMenu": "Show _MENU_ Entries",
 									"sInfo": "Showing ( _START_ to _END_ ) to _TOTAL_ Entries"
 								},
-						buttons: [
-								{
-										text: 'Tambah Master Bank',
-										action: function(){
-											add_master_bank();
-										}
-								},
-								{
-									extend: 'copyHtml5',
-									exportOptions: {
-											columns: [ 1,2]
-									}
-								},
-								{
-										text: 'CSV',
-										action: function(){
-											window.location.href = "{{ url('admin-nano/cashbank/bank/export/csv') }}";
-										}
-								},
-								{
-										text: 'Excel',
-										action: function(){
-											window.location.href = "{{ url('admin-nano/cashbank/bank/export/excel') }}";
-										}
-								},
-								{
-										text: 'PDF',
-										action: function(){
-											window.location.href = "{{ url('admin-nano/cashbank/bank/export/pdf') }}";
-										}
-								},
-								{
-										extend: 'print',
-										exportOptions: {
-												columns: [ 1, 2] //setting kolom mana yg mau di export
-										}
-
-								},
-								{
-									extend: 'colvis',
-									text: 'Show / Hide Columns',
-									columns: ':gt(1)'
-								}
-						],
+						buttons: button_bank,
 						processing: false,
 						serverSide: false,
 						ajax: '{{URL::to('/')}}/admin-api/cashbank/bank',

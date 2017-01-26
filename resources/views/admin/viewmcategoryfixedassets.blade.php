@@ -42,6 +42,7 @@
 			<!-- NEW WIDGET START -->
 			<article class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
 				<!-- Widget ID (each widget will need unique ID)-->
+                @if(Auth::user()->has_role('C_fixedasset'))
 				<div id="forminput" class="forminput jarviswidget jarviswidget-color-darken" id="wid-id-0" data-widget-editbutton="false" data-widget-colorbutton="false" data-widget-deletebutton="false">
 					<header>
 						<span class="widget-icon"> <i class="fa fa-table"></i> </span>
@@ -117,7 +118,7 @@
 										</div>
 									</div>
 								</div>
-								
+
 
 																</div>
 															</div>
@@ -226,6 +227,7 @@
 			</div>
 			<!-- end widget div -->
 		</div>
+        @endif
 		<!-- end widget -->
 		<div class="row">
 			<!-- NEW WIDGET START -->
@@ -296,7 +298,7 @@
 										</div>
 									</div>
 								</div>
-								
+
 
 																</div>
 															</div>
@@ -471,7 +473,7 @@
 										</div>
 									</div>
 								</div>
-								
+
 
 																</div>
 															</div>

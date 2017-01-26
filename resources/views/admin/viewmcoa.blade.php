@@ -977,6 +977,104 @@
 										$('#forminput').hide();
 									});
 			            var table;
+                        var table_btns = [];
+                        @if(Auth::user()->has_role('C_mcoa'))
+                            table_btns = [
+                                  {
+                                      text: 'Add Grand Parent',
+                                      action: function(){
+                                          addgparent();
+                                      }
+                                  },
+                                  {
+                                      text: 'Add Parent',
+                                      action: function(){
+                                          addparent();
+                                      }
+                                  },
+                                  {
+                                      text: 'Add Akun',
+                                      action: function(){
+                                          addakun();
+                                      }
+                                  },
+                                  {
+                                      extend: 'copyHtml5',
+                                      exportOptions: {
+                                          columns: [ 1,2,3,4,5]
+                                      }
+                                  },
+                                  {
+                                      text: 'CSV',
+                                      action: function(){
+                                          window.location.href = "{{ url('admin-nano/mcoa/export/csv') }}";
+                                      }
+                                  },
+                                  {
+                                      text: 'Excel',
+                                      action: function(){
+                                          window.location.href = "{{ url('admin-nano/mcoa/export/excel') }}";
+                                      }
+                                  },
+                                  {
+                                      text: 'PDF',
+                                      action: function(){
+                                          window.location.href = "{{ url('admin-nano/mcoa/export/pdf') }}";
+                                      }
+                                  },
+                                  {
+                                      extend: 'print',
+                                      exportOptions: {
+                                          columns: [ 1, 2, 3, 4,5] //setting kolom mana yg mau di export
+                                      }
+
+                                  },
+                                  {
+                                      extend: 'colvis',
+                                      text: 'Show / Hide Columns',
+                                      columns: ':gt(1)'
+                                  }
+                            ];
+                        @else
+                        table_btns = [
+                              {
+                                  extend: 'copyHtml5',
+                                  exportOptions: {
+                                      columns: [ 1,2,3,4,5]
+                                  }
+                              },
+                              {
+                                  text: 'CSV',
+                                  action: function(){
+                                      window.location.href = "{{ url('admin-nano/mcoa/export/csv') }}";
+                                  }
+                              },
+                              {
+                                  text: 'Excel',
+                                  action: function(){
+                                      window.location.href = "{{ url('admin-nano/mcoa/export/excel') }}";
+                                  }
+                              },
+                              {
+                                  text: 'PDF',
+                                  action: function(){
+                                      window.location.href = "{{ url('admin-nano/mcoa/export/pdf') }}";
+                                  }
+                              },
+                              {
+                                  extend: 'print',
+                                  exportOptions: {
+                                      columns: [ 1, 2, 3, 4,5] //setting kolom mana yg mau di export
+                                  }
+
+                              },
+                              {
+                                  extend: 'colvis',
+                                  text: 'Show / Hide Columns',
+                                  columns: ':gt(1)'
+                              }
+                        ];
+                        @endif
 			            $(function(){
 			                 table = $('.tableapi')
 											 .on('preXhr.dt',function(){
@@ -990,62 +1088,7 @@
 																		"sLengthMenu": "Show _MENU_ Entries",
 																		"sInfo": "Showing ( _START_ to _END_ ) to _TOTAL_ Entries"
                                   },
-                              buttons: [
-																{
-																		text: 'Add Grand Parent',
-																		action: function(){
-																			addgparent();
-																		}
-																},
-																{
-																		text: 'Add Parent',
-																		action: function(){
-																			addparent();
-																		}
-																},
-																{
-																		text: 'Add Akun',
-																		action: function(){
-																			addakun();
-																		}
-																},
-																{
-                                    extend: 'copyHtml5',
-                                    exportOptions: {
-                                        columns: [ 1,2,3,4,5]
-                                    }
-                                  },
-																	{
-                                      text: 'CSV',
-                                      action: function(){
-																				window.location.href = "{{ url('admin-nano/mcoa/export/csv') }}";
-																			}
-                                  },
-                                  {
-																			text: 'Excel',
-																			action: function(){
-																				window.location.href = "{{ url('admin-nano/mcoa/export/excel') }}";
-																			}
-                                  },
-                                  {
-																			text: 'PDF',
-																			action: function(){
-																				window.location.href = "{{ url('admin-nano/mcoa/export/pdf') }}";
-																			}
-                                  },
-                                  {
-                                      extend: 'print',
-                                      exportOptions: {
-                                          columns: [ 1, 2, 3, 4,5] //setting kolom mana yg mau di export
-                                      }
-
-                                  },
-																  {
-																	  extend: 'colvis',
-																	  text: 'Show / Hide Columns',
-																	  columns: ':gt(1)'
-																  }
-                              ],
+                                  buttons: table_btns,
 					       				      processing: false,
 										          serverSide: false,
 															iDisplayLength: 100,

@@ -39,23 +39,41 @@ class MCOAController extends Controller
       }
       return Datatables::of($mcoa)->addColumn('action', function($mcoa){
         if($mcoa->mcoacode){
-          return '<center><div class="button">
-          <a class="btn btn-info btn-xs dropdown-toggle fa fa-eye" onclick="viewmcoa('.$mcoa->id.')"> <font style="">Lihat</font></a>
-          <a class="btn btn-primary btn-xs dropdown-toggle fa fa-pencil" onclick="editmcoa('.$mcoa->id.')"> <font style="font-family: arial;">Ubah &nbsp</font></a>
-          <a class="btn btn-danger btn-xs dropdown-toggle fa fa-trash" onclick="popupdelete('.$mcoa->id.')">
-        <input type="hidden" name="id" value="@{{ task.id }}"> <font style="font-family: arial;">Hapus </font></a>     </div></center>';
+            $menus = "";
+            $menus .= '<center><div class="button">
+          <a class="btn btn-info btn-xs dropdown-toggle fa fa-eye" onclick="viewmcoa('.$mcoa->id.')"> <font style="">Lihat</font></a>';
+          if(Auth::user()->has_role('U_mcoa')){
+            $menus .= '<a class="btn btn-primary btn-xs dropdown-toggle fa fa-pencil" onclick="editmcoa('.$mcoa->id.')"> <font style="font-family: arial;">Ubah &nbsp</font></a>';
+          }
+          if(Auth::user()->has_role('D_mcoa')){
+              $menus .= '<a class="btn btn-danger btn-xs dropdown-toggle fa fa-trash" onclick="popupdelete('.$mcoa->id.')">
+            <input type="hidden" name="id" value="@{{ task.id }}"> <font style="font-family: arial;">Hapus </font></a>     </div></center>';
+          }
+          return $menus;
         } else if($mcoa->mcoaparentcode){
-          return '<center><div class="button">
-          <a class="btn btn-info btn-xs dropdown-toggle fa fa-eye" onclick="viewmcoaparent('.$mcoa->id.')"> <font style="">Lihat</font></a>
-          <a class="btn btn-primary btn-xs dropdown-toggle fa fa-pencil" onclick="editmcoaparent('.$mcoa->id.')"> <font style="font-family: arial;">Ubah &nbsp</font></a>
-          <a class="btn btn-danger btn-xs dropdown-toggle fa fa-trash" onclick="popupdeleteparent('.$mcoa->id.')">
-        <input type="hidden" name="id" value="@{{ task.id }}"> <font style="font-family: arial;">Hapus </font></a>     </div></center>';
+            $menus = "";
+            $menus .= '<center><div class="button">
+          <a class="btn btn-info btn-xs dropdown-toggle fa fa-eye" onclick="viewmcoaparent('.$mcoa->id.')"> <font style="">Lihat</font></a>';
+          if(Auth::user()->has_role('U_mcoa')){
+            $menus .= '<a class="btn btn-primary btn-xs dropdown-toggle fa fa-pencil" onclick="editmcoaparent('.$mcoa->id.')"> <font style="font-family: arial;">Ubah &nbsp</font></a>';
+          }
+          if(Auth::user()->has_role('D_mcoa')){
+              $menus .= '<a class="btn btn-danger btn-xs dropdown-toggle fa fa-trash" onclick="popupdelete('.$mcoa->id.')">
+            <input type="hidden" name="id" value="@{{ task.id }}"> <font style="font-family: arial;">Hapus </font></a>     </div></center>';
+          }
+          return $menus;
         } else {
-          return '<center><div class="button">
-          <a class="btn btn-info btn-xs dropdown-toggle fa fa-eye" onclick="viewmcoagp('.$mcoa->id.')"> <font style="">Lihat</font></a>
-          <a class="btn btn-primary btn-xs dropdown-toggle fa fa-pencil" onclick="editmcoagp('.$mcoa->id.')"> <font style="font-family: arial;">Ubah &nbsp</font></a>
-          <a class="btn btn-danger btn-xs dropdown-toggle fa fa-trash" onclick="popupdeletegp('.$mcoa->id.')">
-        <input type="hidden" name="id" value="@{{ task.id }}"> <font style="font-family: arial;">Hapus </font></a>     </div></center>';
+            $menus = "";
+            $menus .= '<center><div class="button">
+          <a class="btn btn-info btn-xs dropdown-toggle fa fa-eye" onclick="viewmcoagp('.$mcoa->id.')"> <font style="">Lihat</font></a>';
+          if(Auth::user()->has_role('U_mcoa')){
+            $menus .= '<a class="btn btn-primary btn-xs dropdown-toggle fa fa-pencil" onclick="editmcoagp('.$mcoa->id.')"> <font style="font-family: arial;">Ubah &nbsp</font></a>';
+          }
+          if(Auth::user()->has_role('D_mcoa')){
+              $menus .= '<a class="btn btn-danger btn-xs dropdown-toggle fa fa-trash" onclick="popupdelete('.$mcoa->id.')">
+            <input type="hidden" name="id" value="@{{ task.id }}"> <font style="font-family: arial;">Hapus </font></a>     </div></center>';
+          }
+          return $menus;
         }
 
     })->addColumn('no',function($mcoa){
