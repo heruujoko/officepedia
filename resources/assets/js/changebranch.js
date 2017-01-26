@@ -44,9 +44,6 @@ const changebranch = new Vue({
                     this.selected_branch = res.data.id
                     $('#branch_switch').val(res.data.id);
                     $('#branch_switch').trigger('change');
-                    setTimeout(() => {
-                        this.default_done = true;
-                    },5000);
                 } else {
                     this.selected_branch = res.data
                 }
@@ -66,7 +63,7 @@ const changebranch = new Vue({
     },
     watch: {
         selected_branch(){
-            if(this.default_done){
+            if(this.selected_branch != ""){
                 this.updateBranch();
             }
         }
