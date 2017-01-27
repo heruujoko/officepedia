@@ -36,6 +36,7 @@
       <!-- row -->
       <div class="row">
         <!-- NEW WIDGET START -->
+        @if(Auth::user()->has_role('C_goods'))
         <article class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
           <!-- Widget ID (each widget will need unique ID)-->
           <div id="forminput" class="forminput jarviswidget jarviswidget-color-darken" id="wid-id-0" data-widget-editbutton="false" data-widget-colorbutton="false" data-widget-deletebutton="false">
@@ -470,8 +471,8 @@
             </div>
           </div>
         </article>
+        @endif
       </div>
-
       <!-- row -->
       <div class="row">
         <!-- NEW WIDGET START -->

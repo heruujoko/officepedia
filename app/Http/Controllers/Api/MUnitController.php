@@ -18,12 +18,17 @@ class MUnitController extends Controller
         $this->iteration = 0;
         $munit = MUnit::on(Auth::user()->db_name)->where('void', '0')->orderby('created_at','desc')->get();
         return Datatables::of($munit)->addColumn('action', function($munit){
+            return $menus = '<center><div class="button">
+            <a class="btn btn-info btn-xs dropdown-toggle fa fa-eye" onclick="viewmunit('.$munit->id.')"> <font style="">Lihat</font></a>';
 
-          return '<center><div class="button">
-          <a class="btn btn-info btn-xs dropdown-toggle fa fa-eye" onclick="viewmunit('.$munit->id.')"> <font style="">Lihat</font></a>
-          <a class="btn btn-primary btn-xs dropdown-toggle fa fa-pencil" onclick="editmunit('.$munit->id.')"> <font style="font-family: arial;">Ubah &nbsp</font></a>
-          <a class="btn btn-danger btn-xs dropdown-toggle fa fa-trash" onclick="popupdelete('.$munit->id.')">
-        <input type="hidden" name="id" value="@{{ task.id }}"> <font style="font-family: arial;">Hapus </font></a>     </div></center>';
+            if(Auth::user()->has_role('U_units')){
+                $menus .= '<a class="btn btn-primary btn-xs dropdown-toggle fa fa-pencil" onclick="editmunit('.$munit->id.')"> <font style="font-family: arial;">Ubah &nbsp</font></a>';
+            }
+            if(Auth::user()->has_role('D_units')){
+                $menus .= '<a class="btn btn-danger btn-xs dropdown-toggle fa fa-trash" onclick="popupdelete('.$munit->id.')">
+              <input type="hidden" name="id" value="@{{ task.id }}"> <font style="font-family: arial;">Hapus </font></a>     </div></center>'; 
+            }
+          return $menus;
       })->addColumn('no',function($munit){
             $this->iteration++;
             return "<span>".$this->iteration."</span>";

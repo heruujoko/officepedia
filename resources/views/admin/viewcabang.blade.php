@@ -52,7 +52,7 @@
 
 		<!-- row -->
 		<!-- row -->
-
+        @if(Auth::user()->has_role('C_branch'))
 		<div class="row">
 
 
@@ -253,6 +253,7 @@
 
 		</div>
 		<!-- end widget -->
+        @endif
 		<div class="row">
 
 

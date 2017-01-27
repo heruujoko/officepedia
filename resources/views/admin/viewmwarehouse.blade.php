@@ -38,6 +38,7 @@
 	<section id="widget-grid" class="">
 		<!-- row -->
 		<!-- row -->
+        @if(Auth::user()->has_role('C_warehouse'))
 		<div class="row">
 			<!-- NEW WIDGET START -->
 			<article class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
@@ -122,6 +123,7 @@
 			</div>
 			<!-- end widget div -->
 		</div>
+        @endif
 		<!-- end widget -->
 		<div class="row">
 			<!-- NEW WIDGET START -->
@@ -161,7 +163,7 @@
 										</div>
 									</div>
 								</div>
-								
+
 
               					<div style="height: 21px;" class="form-group">
 									<label class="col-md-3 control-label"><b>Keterangan</b>  :</label>
@@ -234,7 +236,7 @@
 										</div>
 									</div>
 								</div>
-							
+
 
               					<div style="height: 65px;" class="form-group">
 									<label class="col-md-3 control-label"><b>Keterangan</b>  :</label>

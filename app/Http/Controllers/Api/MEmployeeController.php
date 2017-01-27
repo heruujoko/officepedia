@@ -18,12 +18,17 @@ class MEmployeeController extends Controller
       $this->iteration = 0;
           $mcategory = MEmployee::on(Auth::user()->db_name)->where('void', '0')->orderby('created_at','desc')->get();
           return Datatables::of($mcategory)->addColumn('action', function($memployee){
+              $menus = '<center><div class="button">
+              <a class="btn btn-info btn-xs dropdown-toggle fa fa-eye" onclick="viewmemployee('.$memployee->id.')"> <font style="">Lihat</font></a>';
 
-            return '<center><div class="button">
-            <a class="btn btn-info btn-xs dropdown-toggle fa fa-eye" onclick="viewmemployee('.$memployee->id.')"> <font style="">Lihat</font></a>
-            <a class="btn btn-primary btn-xs dropdown-toggle fa fa-pencil" onclick="editmemployee('.$memployee->id.')"> <font style="font-family: arial;">Ubah &nbsp</font></a>
-            <a class="btn btn-danger btn-xs dropdown-toggle fa fa-trash" onclick="popupdelete('.$memployee->id.')">
-          <input type="hidden" name="id" value="@{{ task.id }}"> <font style="font-family: arial;">Hapus </font></a>     </div></center>';
+              if(Auth::user()->has_role('U_employee')){
+                  $menus .= '<a class="btn btn-primary btn-xs dropdown-toggle fa fa-pencil" onclick="editmemployee('.$memployee->id.')"> <font style="font-family: arial;">Ubah &nbsp</font></a>';
+              }
+              if(Auth::user()->has_role('D_employee')){
+                    $menus .= '<a class="btn btn-danger btn-xs dropdown-toggle fa fa-trash" onclick="popupdelete('.$memployee->id.')">
+                  <input type="hidden" name="id" value="@{{ task.id }}"> <font style="font-family: arial;">Hapus </font></a>     </div></center>';
+              }
+            return $menus;
         })->addColumn('no',function($memployee){
           $this->iteration++;
           return "<span>".$this->iteration."</span>";
