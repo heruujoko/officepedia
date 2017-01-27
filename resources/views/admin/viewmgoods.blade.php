@@ -249,7 +249,7 @@
                                   <label class="control-label">Unit</label>
                                 </div>
                               </div>
-                              <div style="height: 21px;" class="form-group">
+                              <!-- <div style="height: 21px;" class="form-group">
                                   <label class="col-md-3 control-label"><b>Semua cabang </b>  &nbsp  :</label>
                                   <div class="col-md-9 col-sm-12">
                                     <div class="yesnoswitch">
@@ -260,7 +260,7 @@
                                         </label>
                                     </div>
                                   </div>
-                              </div>
+                              </div> -->
                               <div style="height: 21px;" class="form-group">
                                   <label class="col-md-3 control-label"><b>Unique Transaction </b>  &nbsp  :</label>
                                   <div class="col-md-9 col-sm-12">
@@ -688,7 +688,7 @@
                                   <label class="control-label">Unit</label>
                                 </div>
                               </div>
-                              <div style="height: 21px;" class="form-group">
+                              <!-- <div style="height: 21px;" class="form-group">
                                   <label class="col-md-3 control-label"><b>Semua cabang </b>  &nbsp  :</label>
                                   <div class="col-md-9 col-sm-12">
                                     <div class="yesnoswitch">
@@ -699,7 +699,7 @@
                                         </label>
                                     </div>
                                   </div>
-                              </div>
+                              </div> -->
                               <div style="height: 21px;" class="form-group">
                                   <label class="col-md-3 control-label"><b>Unique Transaction </b>  &nbsp  :</label>
                                   <div class="col-md-9 col-sm-12">
@@ -1127,7 +1127,7 @@
                                   <label class="control-label">Unit</label>
                                 </div>
                               </div>
-                              <div style="height: 21px;" class="form-group">
+                              <!-- <div style="height: 21px;" class="form-group">
                                   <label class="col-md-3 control-label"><b>Semua cabang </b>  &nbsp  :</label>
                                   <div class="col-md-9 col-sm-12">
                                     <div class="yesnoswitch">
@@ -1138,7 +1138,7 @@
                                         </label>
                                     </div>
                                   </div>
-                              </div>
+                              </div> -->
                               <div style="height: 21px;" class="form-group">
                                   <label class="col-md-3 control-label"><b>Unique Transaction </b>  &nbsp  :</label>
                                   <div class="col-md-9 col-sm-12">

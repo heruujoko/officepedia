@@ -8,7 +8,7 @@
           <div class="form form-horizontal" style="margin-top:20px">
             <div class="col-md-8">
               <div class="form-group">
-                <label class="col-md-2 control-label">Supplier</label>
+                <label class="col-md-2 control-label">Customer</label>
                 <div class="col-md-8">
                   <select v-bind:id="select_customer" v-bind:disabled="disable_customer" v-selecttwo="customer_label" v-model="invoice_customer">
                     <option></option>

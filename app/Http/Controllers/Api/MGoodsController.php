@@ -64,13 +64,13 @@ class MGoodsController extends Controller
             return "<span>".$MGoods->category()->category_name."</span>";
         })
         ->addColumn('brand',function($MGoods){
-            return "<span>".$MGoods->mark()."</span>";
+            return "<span>".$MGoods->mark()->category_name."</span>";
         })
         ->addColumn('type',function($MGoods){
-            return "<span>".$MGoods->types()."</span>";
+            return "<span>".$MGoods->types()->mgoodstypename."</span>";
         })
         ->addColumn('subtype',function($MGoods){
-            return "<span>".$MGoods->subtypes()."</span>";
+            return "<span>".$MGoods->subtypes()->mgoodssubtypename."</span>";
         })
         ->addColumn('supplier',function($MGoods){
             return "<span>".$MGoods->supplier()."</span>";
