@@ -64,7 +64,17 @@ function viewmuser(id){
     success : function(response){
       $('#view-musername').val(response.musername);
       $('#view-muserpass').val(response.muserpass);
+      $('#view-museremail').val(response.museremail);
       $('#view-musercategory').val(response.musercategory);
+      $('#view-musercategory').trigger('change');
+      var branches = [];
+
+      for(var i=0;i<response.branches.length;i++){
+          branches.push(response.branches[i].branchid);
+      }
+      console.log(branches);
+      $("#view-muserbranches").val(branches);
+      $("#view-muserbranches").trigger('change');
       $('#forminput').hide();
       $('#formedit').hide();
       $('#formview').show();

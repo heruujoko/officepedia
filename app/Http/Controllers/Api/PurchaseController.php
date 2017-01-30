@@ -23,11 +23,20 @@ class PurchaseController extends Controller
         $this->separator = $config->msysnumseparator;
         $minvoice = MHPurchase::on(Auth::user()->db_name)->where('void', '0')->orderby('created_at','desc')->get();
         return Datatables::of($minvoice)->addColumn('action', function($invoice){
-        return '<center><div class="button">
-              <a class="btn btn-info btn-xs dropdown-toggle fa fa-eye" onclick="viewinvoice('.$invoice->id.')"> <font style="">Lihat</font></a>
-              <a class="btn btn-primary btn-xs dropdown-toggle fa fa-pencil" onclick="editinvoice('.$invoice->id.')"> <font style="font-family: arial;">Ubah &nbsp</font></a>
-              <a class="btn btn-danger btn-xs dropdown-toggle fa fa-trash" onclick="popupdelete('.$invoice->id.')">
-            <input type="hidden" name="id" value="@{{ task.id }}"> <font style="font-family: arial;">Hapus </font></a>     </div></center>';
+
+            $menus = "";
+            $menus .= '<center><div class="button">
+                  <a class="btn btn-info btn-xs dropdown-toggle fa fa-eye" onclick="viewinvoice('.$invoice->id.')"> <font style="">Lihat</font></a>';
+
+            if(Auth::user()->has_role('U_purchase')){
+                $menus .= '<a class="btn btn-primary btn-xs dropdown-toggle fa fa-pencil" onclick="editinvoice('.$invoice->id.')"> <font style="font-family: arial;">Ubah &nbsp</font></a>';
+            }
+            if(Auth::user()->has_role('D_purchase')){
+                $menus .= '<a class="btn btn-danger btn-xs dropdown-toggle fa fa-trash" onclick="popupdelete('.$invoice->id.')">
+              <input type="hidden" name="id" value="@{{ task.id }}"> <font style="font-family: arial;">Hapus </font></a>     </div></center>';
+            }
+
+            return $menus;
         })->addColumn('no',function($invoice){
           $this->iteration++;
           return "<span>".$this->iteration."</span>";

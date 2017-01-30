@@ -38,6 +38,7 @@
 	<section id="widget-grid" class="">
 		<!-- row -->
 		<!-- row -->
+        @if(Auth::user()->has_role('C_categorycustomer'))
 		<div class="row">
 			<!-- NEW WIDGET START -->
 			<article class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
@@ -113,6 +114,7 @@
 			<!-- end widget div -->
 		</div>
 		<!-- end widget -->
+        @endif
 		<div class="row">
 			<!-- NEW WIDGET START -->
 			<article class="col-xs-12 col-sm-12 col-md-12 col-lg-12">

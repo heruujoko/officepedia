@@ -36,6 +36,7 @@
       <!-- row -->
       <div class="row">
         <!-- NEW WIDGET START -->
+        @if(Auth::user()->has_role('C_goods'))
         <article class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
           <!-- Widget ID (each widget will need unique ID)-->
           <div id="forminput" class="forminput jarviswidget jarviswidget-color-darken" id="wid-id-0" data-widget-editbutton="false" data-widget-colorbutton="false" data-widget-deletebutton="false">
@@ -248,7 +249,7 @@
                                   <label class="control-label">Unit</label>
                                 </div>
                               </div>
-                              <div style="height: 21px;" class="form-group">
+                              <!-- <div style="height: 21px;" class="form-group">
                                   <label class="col-md-3 control-label"><b>Semua cabang </b>  &nbsp  :</label>
                                   <div class="col-md-9 col-sm-12">
                                     <div class="yesnoswitch">
@@ -259,7 +260,7 @@
                                         </label>
                                     </div>
                                   </div>
-                              </div>
+                              </div> -->
                               <div style="height: 21px;" class="form-group">
                                   <label class="col-md-3 control-label"><b>Unique Transaction </b>  &nbsp  :</label>
                                   <div class="col-md-9 col-sm-12">
@@ -470,8 +471,8 @@
             </div>
           </div>
         </article>
+        @endif
       </div>
-
       <!-- row -->
       <div class="row">
         <!-- NEW WIDGET START -->
@@ -687,7 +688,7 @@
                                   <label class="control-label">Unit</label>
                                 </div>
                               </div>
-                              <div style="height: 21px;" class="form-group">
+                              <!-- <div style="height: 21px;" class="form-group">
                                   <label class="col-md-3 control-label"><b>Semua cabang </b>  &nbsp  :</label>
                                   <div class="col-md-9 col-sm-12">
                                     <div class="yesnoswitch">
@@ -698,7 +699,7 @@
                                         </label>
                                     </div>
                                   </div>
-                              </div>
+                              </div> -->
                               <div style="height: 21px;" class="form-group">
                                   <label class="col-md-3 control-label"><b>Unique Transaction </b>  &nbsp  :</label>
                                   <div class="col-md-9 col-sm-12">
@@ -1126,7 +1127,7 @@
                                   <label class="control-label">Unit</label>
                                 </div>
                               </div>
-                              <div style="height: 21px;" class="form-group">
+                              <!-- <div style="height: 21px;" class="form-group">
                                   <label class="col-md-3 control-label"><b>Semua cabang </b>  &nbsp  :</label>
                                   <div class="col-md-9 col-sm-12">
                                     <div class="yesnoswitch">
@@ -1137,7 +1138,7 @@
                                         </label>
                                     </div>
                                   </div>
-                              </div>
+                              </div> -->
                               <div style="height: 21px;" class="form-group">
                                   <label class="col-md-3 control-label"><b>Unique Transaction </b>  &nbsp  :</label>
                                   <div class="col-md-9 col-sm-12">

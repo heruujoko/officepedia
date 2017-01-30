@@ -38,6 +38,7 @@
 	<section id="widget-grid" class="">
 		<!-- row -->
 		<!-- row -->
+        @if(Auth::user()->has_role('C_user'))
 		<div class="row">
 			<!-- NEW WIDGET START -->
 			<article class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
@@ -146,6 +147,7 @@
 			</div>
 			<!-- end widget div -->
 		</div>
+        @endif
 		<!-- end widget -->
 		<div class="row">
 			<!-- NEW WIDGET START -->
@@ -203,7 +205,6 @@
 										</div>
 									</div>
 								</div>
-
 								<div class="form-group">
 									<label class="col-md-3 control-label"><b>Kategori User</b> &nbsp  :</label>
 									<div class="col-md-7">
@@ -278,22 +279,44 @@
 										</div>
 									</div>
 								</div>
+                                <div style="height: 21px;" class="form-group">
+									<label class="col-md-3 control-label"><b>Email User</b> (<font color="red">*</font>) &nbsp  :</label>
+									<div class="col-md-7">
+										<div class="icon-addon addon-md">
+											<input disabled id="view-museremail" value="{{old('musername')}}" name="museremail" class="form-control forminput" placeholder="Email User" type="text" required data-parsley-required-message="Field Ini Tidak Boleh Kosong" @if (Session::has('autofocus')) autofocus @endif >
+											<label for="mgoodsgroup1" class="glyphicon glyphicon-info-sign" rel="tooltip" title="Nama Kategori"></label>
+										</div>
+									</div>
+								</div>
 								<div style="height: 21px;" class="form-group">
 									<label class="col-md-3 control-label"><b>Password</b> (<font color="red">*</font>) &nbsp  :</label>
 									<div class="col-md-7">
 										<div class="icon-addon addon-md">
-											<input disabled id="view-muserpass" value="{{old('muserpass')}}" name="muserpass" class="form-control forminput" placeholder="Nama Kategori" type="text" required data-parsley-required-message="Field Ini Tidak Boleh Kosong" @if (Session::has('autofocus')) autofocus @endif >
+											<input disabled id="view-muserpass" value="{{old('muserpass')}}" name="muserpass" class="form-control forminput" placeholder="Nama Kategori" type="password" required data-parsley-required-message="Field Ini Tidak Boleh Kosong" @if (Session::has('autofocus')) autofocus @endif >
 											<label for="mgoodsgroup1" class="glyphicon glyphicon-info-sign" rel="tooltip" title="Password"></label>
 										</div>
 									</div>
 								</div>
 
-								<div class="form-group">
+                                <div class="form-group">
 									<label class="col-md-3 control-label"><b>Kategori User</b> &nbsp  :</label>
 									<div class="col-md-7">
+                                        <select id="view-musercategory" name="musercategory" class="select2">
+                                            @foreach($roles as $r)
+                                                <option value="{{ $r->id }}">{{ $r->name }}</option>
+                                            @endforeach
+                                        </select>
+									</div>
+								</div>
+                                <div class="form-group">
+									<label class="col-md-3 control-label"><b>Akses Cabang</b> &nbsp  :</label>
+									<div class="col-md-7">
 										<div class="icon-addon addon-md">
-											<input disabled id="view-musercategory" value="{{old('musercategory')}}" name="musercategory" class="form-control forminput" placeholder="Kategori User" type="text" @if (Session::has('autofocus')) autofocus @endif >
-											<label for="mgoodsgroup1" class="glyphicon glyphicon-search" rel="tooltip" title="Keterangan"></label>
+                                            <select multiple id="view-muserbranches" name="musercategory" class="select2">
+                                                @foreach($branches as $br)
+                                                    <option value="{{ $br->id }}">{{ $br->mbranchname }}</option>
+                                                @endforeach
+                                            </select>
 										</div>
 									</div>
 								</div>

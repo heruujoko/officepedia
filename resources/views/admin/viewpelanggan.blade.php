@@ -75,7 +75,7 @@
 
 		<!-- row -->
 		<!-- row -->
-
+        @if(Auth::user()->has_role('C_customer'))
 		<div class="row">
 
 
@@ -260,6 +260,7 @@
 
 		</div>
 		<!-- end widget -->
+        @endif
 		<div class="row">
 
 

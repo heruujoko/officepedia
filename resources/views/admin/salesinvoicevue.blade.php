@@ -34,6 +34,7 @@
 		<!-- widget grid -->
 		<section id="widget-grid" class="">
 			<!-- row -->
+            @if(Auth::user()->has_role('C_sales'))
 			<div class="row">
 				<!-- NEW WIDGET START -->
 				<article class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
@@ -61,7 +62,7 @@
           </div>
         </article>
       </div>
-
+      @endif
 			<div class="row">
 				<!-- NEW WIDGET START -->
 				<article class="col-xs-12 col-sm-12 col-md-12 col-lg-12">

@@ -34,6 +34,7 @@
 		<!-- widget grid -->
 		<section id="widget-grid" class="">
 			<!-- row -->
+            @if(Auth::user()->has_role('C_supplier'))
 			<div class="row">
 				<!-- NEW WIDGET START -->
 				<article class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
@@ -287,7 +288,7 @@
           </div>
         </article>
       </div>
-
+      @endif
       <div class="row">
 				<!-- NEW WIDGET START -->
 				<article class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
@@ -1043,7 +1044,7 @@
 								$('#loading_modal').modal('hide');
 							});
 
-         
+
 
 
       $(".table thead th input[type=text]").on( 'keyup change', function () {
