@@ -229,13 +229,13 @@
              @foreach($mdquotation as $a)
            
            <tr>
-               <td class="tds">{{ $a->mdpurchasequotationgoodsid }}</td>
-               <td class="tds">{{ $a->mdpurchasequotationgoodsname }}</td>
-               <td class="tds">{{ number_format($a->mdpurchasequotationbuyprice,$decimals,$dec_point,$thousands_sep) }}</td>
-               <td class="tds">{{ $a->mdpurchasequotationgoodsqty }}</td>
-               <td class="tds">{{ $a->mdpurchasequotationgoodsqty }}</td>
-               <td class="tds">{{ number_format($a->mdpurchasequotationgoodsdiscount,$decimals,$dec_point,$thousands_sep) }}</td>
-               <td class="tds">{{ number_format($a->mdpurchasequotationbuyprice * $a->mdpurchasequotationgoodsqty - $a->mdpurchasequotationgoodsdiscount,$decimals,$dec_point,$thousands_sep) }}</td>
+               <td style="text-align: left" class="tds">{{ $a->mdpurchasequotationgoodsid }}</td>
+               <td style="text-align: left" class="tds">{{ $a->mdpurchasequotationgoodsname }}</td>
+               <td style="text-align: right" class="tds">{{ number_format($a->mdpurchasequotationbuyprice,$decimals,$dec_point,$thousands_sep) }}</td>
+               <td style="text-align: right;" class="tds">{{ $a->mdpurchasequotationgoodsqty }}</td>
+               <td style="text-align: right" class="tds">{{ $a->mdpurchasequotationgoodsqty }}</td>
+               <td style="text-align: right" class="tds">{{ number_format($a->mdpurchasequotationgoodsdiscount,$decimals,$dec_point,$thousands_sep) }}</td>
+               <td style="text-align: right;" class="tds">{{ number_format($a->mdpurchasequotationbuyprice * $a->mdpurchasequotationgoodsqty - $a->mdpurchasequotationgoodsdiscount,$decimals,$dec_point,$thousands_sep) }}</td>
                 
            </tr>
        
@@ -458,10 +458,26 @@
      <h3>If you have any question about this price quote, please contact</h3><br>
      <b>Thank You For Your Business!</b>
  </center>
+
  <div class="footer">
      <p>Dicetak oleh: {{ Auth::user()->name }}</p>
      <p>Tanggal Cektak: {{ $carbon }}</p>
+
  </div>
+ <script type="text/php">
+        if ( isset($pdf) ) {
+            $x = 275;
+            $y = 820;
+            $text = "{PAGE_NUM} of {PAGE_COUNT}";
+            $font = $fontMetrics->get_font("helvetica", "bold");
+            $size = 8;
+            $color = array(0,0,0);
+            $word_space = 0.0;  //  default
+            $char_space = 0.0;  //  default
+            $angle = 0.0;   //  default
+            $pdf->page_text($x, $y, $text, $font, $size, $color, $word_space, $char_space, $angle);
+        }
+    </script>
 </body>
 </html>
 

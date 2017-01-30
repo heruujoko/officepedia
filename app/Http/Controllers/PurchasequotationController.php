@@ -113,13 +113,14 @@ class PurchasequotationController extends Controller
       $data['totalitem']+=1;
     }
       $config = MConfig::on(Auth::user()->db_name)->where('id',1)->first();
-        $data['decimals'] = $config->msysgenrounddec;
-        $data['dec_point'] = $config->msysnumseparator;
+      $data['decimals'] = $config->msysgenrounddec;
+      $data['dec_point'] = $config->msysnumseparator;
         if($data['dec_point'] == ","){
           $data['thousands_sep'] = ".";
-        } else {
+      } else {
           $data['thousands_sep'] = ",";
-        }
+      }
+    
 
 		$pdf = PDF::loadview('admin/export/purchasequotation',$data);
 		return $pdf->setPaper('a4', 'potrait')->stream('Master purchase Quotation.pdf');
