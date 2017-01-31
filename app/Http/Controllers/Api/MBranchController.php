@@ -64,7 +64,7 @@ class MBranchController extends Controller
 
 	public function update(Request $request,$id){
 		try{
-			$mbranch = MBRANCH::find($id);
+			$mbranch = MBRANCH::on(Auth::user()->db_name)->where('id',$id)->first();
 			$mbranch->update($request->all());
 			return response()->json($mbranch);
 		}catch(Exception $e){

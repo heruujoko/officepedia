@@ -223,6 +223,7 @@
 									<div class="col-md-7">
 										<div class="icon-addon addon-md">
 											<select id="insert-warehouse" class="select2 form-control">
+                                                <option value="">kosong</option>
 												@foreach($whouses as $wh)
 													<option value="{{ $wh->id }}">{{ $wh->mwarehousename }}</option>
 												@endforeach

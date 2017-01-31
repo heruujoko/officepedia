@@ -8,6 +8,8 @@ use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use App\MAPCard;
 use App\MSupplier;
+use App\MWarehouse;
+use App\MBRANCH;
 use Carbon\Carbon;
 use Auth;
 use DB;
@@ -123,19 +125,29 @@ class APController extends Controller
         $spl = MSupplier::on(Auth::user()->db_name)->where('id',$supplier_id)->first();
         $group_supplier_ap = MAPCard::on(Auth::user()->db_name)->where('mapcardsupplierid',$spl->msupplierid)->groupBy('mapcardtransno')->where('void',0)->get();
         $supplier_per_ap = [];
-        foreach($group_supplier_ap as $ap){
-            $aps = MAPCard::on(Auth::user()->db_name)->where('mapcardtransno',$ap->mapcardtransno)->where('void',0)->get();
-            $paid =0;
-            foreach($aps as $detail){
-                $paid += $detail->mapcardpayamount;
-            }
-            $ap['paid_total'] = $paid;
-            $ap['outstanding_total'] = $ap->mapcardtotalinv - $paid;
 
-            array_push($supplier_per_ap,$ap);
+        $branch = MBRANCH::on(Auth::user()->db_name)->where('id',Auth::user()->defaultbranch)->first();
+        $warehouses = MWarehouse::on(Auth::user()->db_name)->where('mwarehousebranchid',$branch->mbranchcode)->get()->toArray();
+        $warehouse_ids = array_map(function($w){
+            return $w['id'];
+        },$warehouses);
+        foreach($group_supplier_ap as $ap){
+            $aps = MAPCard::on(Auth::user()->db_name)->whereIn('mapcardwarehouseid',$warehouse_ids)->where('mapcardtransno',$ap->mapcardtransno)->where('void',0)->get();
+            $paid =0;
+            if(sizeof($aps) > 0 ){
+                foreach($aps as $detail){
+                    $paid += $detail->mapcardpayamount;
+                }
+                $ap['paid_total'] = $paid;
+                $ap['outstanding_total'] = $ap->mapcardtotalinv - $paid;
+
+                array_push($supplier_per_ap,$ap);
+            }
 
         }
 
+        // return response()->json($warehouse_ids);
         return response()->json($supplier_per_ap);
+
     }
 }
