@@ -119,6 +119,7 @@ class MHPayAP extends Model
                 $new_ap->mapcarduserid = Auth::user()->id;
                 $new_ap->mapcardeventdate = Carbon::now();
                 $new_ap->mapcardeventtime = Carbon::now();
+                $new_ap->mapcardwarehouseid = $old_ap->mapcardwarehouseid;
                 $new_ap->void = 0;
                 $new_ap->save();
 
@@ -272,6 +273,7 @@ class MHPayAP extends Model
                         $new_ap->mapcarduserid = Auth::user()->id;
                         $new_ap->mapcardeventdate = Carbon::now();
                         $new_ap->mapcardeventtime = Carbon::now();
+                        $new_ap->mapcardwarehouseid = $old_ap->mapcardwarehouseid;
                         $new_ap->void = 0;
                         $new_ap->save();
                         $detail->mdpayap_apref = $new_ap->id;
@@ -354,6 +356,7 @@ class MHPayAP extends Model
                     $new_ap->mapcarduserid = Auth::user()->id;
                     $new_ap->mapcardeventdate = Carbon::now();
                     $new_ap->mapcardeventtime = Carbon::now();
+                    $new_ap->mapcardwarehouseid = $old_ap->mapcardwarehouseid;
                     $new_ap->void = 0;
                     $new_ap->save();
 
