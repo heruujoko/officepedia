@@ -208,6 +208,11 @@
 <script src="{{ url('/js/payar.js') }}"></script>
 <script src="{{ url('/js/bootstrap-datepicker.min.js') }}"></script>
 <script>
+
+    function refreshPayment(){
+        payapp.$emit('refresh-pay');
+    }
+
 	function editmpayar(id){
 		$('#forminput').hide();
 		$('#formview').hide();

@@ -222,6 +222,9 @@
 		window.location.href="#formview";
 		payapp.$emit('view-selected',id);
 	}
+    function refreshPayment(){
+        payapp.$emit('refresh-pay');
+    }
   $(document).ready(function(){
     $('#disableforminput').prop('checked',true);
     $('#insert-mcustomerid').prop('disabled',true);

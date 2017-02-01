@@ -430,6 +430,22 @@
                     }
                 });
             },
+            fetchSupplierAPWithoutDialog(){
+                Axios.get('/admin-api/apsupplier/'+this.invoice_supplier).then((res) => {
+                    for(let i=0;i<res.data.length;i++){
+                        res.data[i].checked = false;
+                    }
+                    this.aps = res.data;
+                    if(this.mode == "insert"){
+                        // $('#'+this.loading_id).modal('toggle');
+                    }
+                })
+                .catch(() => {
+                    if(this.mode == "insert"){
+                        // $('#'+this.loading_id).modal('toggle');
+                    }
+                });
+            },
             openDialog(id){
                 let ap = _.find(this.aps,{id: parseInt(id)});
                 let index = _.findIndex(this.aps,{id: parseInt(id)});
@@ -715,6 +731,13 @@
             this.fetchCash()
             this.fetchBanks()
             this.fetchSuppliers()
+            this.$parent.$on('refresh-pay',() => {
+                if(typeof(this.invoice_supplier) != 'object'){
+                    this.fetchSupplierAPWithoutDialog();
+                    console.log('emitted2 '+this.invoice_supplier);
+                }
+            });
+
             if(this.mode == "edit"){
                 this.$parent.$on('edit-selected',(id) => {
                 console.log(id+"edit");

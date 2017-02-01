@@ -430,6 +430,22 @@
                     }
                 });
             },
+            fetchCustomerARWithoutDialog(){
+                Axios.get('/admin-api/arcustomer/'+this.invoice_customer).then((res) => {
+                    for(let i=0;i<res.data.length;i++){
+                        res.data[i].checked = false;
+                    }
+                    this.ars = res.data;
+                    if(this.mode == "insert"){
+                        // $('#'+this.loading_id).modal('toggle');
+                    }
+                })
+                .catch(() => {
+                    if(this.mode == "insert"){
+                        // $('#'+this.loading_id).modal('toggle');
+                    }
+                });
+            },
             openDialog(id){
                 let ap = _.find(this.ars,{id: parseInt(id)});
                 let index = _.findIndex(this.ars,{id: parseInt(id)});
@@ -721,6 +737,13 @@
             this.fetchCash()
             this.fetchBanks()
             this.fetchCustomers()
+
+            this.$parent.$on('refresh-pay',() => {
+                if(typeof(this.invoice_customer) != 'object'){
+                    this.fetchCustomerARWithoutDialog();
+                }
+            })
+
             if(this.mode == "edit"){
                 this.$parent.$on('edit-selected',(id) => {
                 console.log(id+"edit");
