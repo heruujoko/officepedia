@@ -110,6 +110,7 @@
     .tdborder{
       border: 1px solid black;
     }
+    
 </style>	
 </head>
 <body class="global-css">
@@ -121,33 +122,39 @@
             <th style=""></th>
         </tr>
         <tr>
+        <td style="text-align: right;"></td>  
           <td>
             {{ $config->msysstreet }}
           </td>
         </tr>
         <tr>
+        <td style="text-align: right;"></td>
             <td>
                {{ $config->msyscity }}, {{ $config->msyszipcode }}
             </td>
         </tr>
         <tr>
+        <td style="text-align: right;">Website :</td>
             <td>
-                Website : {{ $config->msyscompwebsite }}
+                 {{ $config->msyscompwebsite }}
             </td>
         </tr>
          <tr>
+         <td style="text-align: right;">Phone :</td>
              <td>
-                Phone : {{ $config->msyscompphone }}
+                 {{ $config->msyscompphone }}
             </td>
           </tr>
           <tr>
+          <td style="text-align: right;">Fax :</td>
             <td>
-                Fax: {{ $config->msyscompfax }}
+                 {{ $config->msyscompfax }}
             </td>
           </tr>
           <tr>
+          <td style="text-align: right;">Supplier :</td>
             <td>
-                Supplier : {{ $quotation[0]['mhpurchasequotationsupplierid'] }}
+                 {{ $quotation[0]['mhpurchasequotationsupplierid'] }}
             </td>
         </tr>
     </table>
@@ -155,56 +162,61 @@
 
     {{-- TOP RIGHT --}}
       
-    <div class="header-topright">
-     <h3 style="color: #217293">Pesanan Pembelian</h3>
+<div class="header-topright">
+     <h3 style="padding-top: 25px;" style="color: #217293">Pesanan Pembelian</h3>
     <table border="" cellpadding="5" cellpadding="5">
         <tr>
             <th style=""></th>
         </tr>
       
         <tr>
-            <th style="text-align: right;" class="thnoborder">DATE : </td>
-            <td>{{ $quotation[0]['mhpurchasequotationdate'] }}</td>
+            <th style="text-align: left;" class="thnoborder">DATE : </td>
+            <td style="border-style: solid; border-width: 1px; width: 85px; text-align: center;">{{ $quotation[0]['mhpurchasequotationdate'] }}</td>
         </tr>
         <tr>
-            <th style="text-align: right;" class="thnoborder">QUOTE : </td>
-            <td>{{ $quotation[0]['mhpurchasequotationno'] }}</td>
+            <th style="text-align: left;" class="thnoborder">QUOTE : </td>
+            <td style="border-style: solid; border-width: 1px; width: 85px; text-align: center;">{{ $quotation[0]['mhpurchasequotationno'] }}</td>
         </tr>
         <tr>
-            <th style="text-align: right;" class="thnoborder">CUSTOMER ID :</td>
-            <td>{{ $quotation[0]['mhpurchasequotationsupplierid'] }}</td>
+            <th style="text-align: left;" class="thnoborder">CUSTOMER ID :</td>
+            <td style="border-style: solid; border-width: 1px; width: 85px; text-align: center;">{{ $quotation[0]['mhpurchasequotationsupplierid'] }}</td>
         </tr>
         <tr>
-            <th style="text-align: right;" class="thnoborder">VALID UNTIL : </td>
-            <td>{{ $quotation[0]['mhpurchasequotationduedate'] }}</td>
+            <th style="text-align: left;" class="thnoborder">VALID UNTIL : </td>
+            <td style="border-style: solid; border-width: 1px; width: 85px; text-align: center;">{{ $quotation[0]['mhpurchasequotationduedate'] }}</td>
         </tr>
     </table>
-    </div>
+  </div>
 
     <br>
     {{-- Customer --}}
     <table border="" cellpadding="5" cellpadding="5">
-        <tr>
-            <th style="background: #089DDD; color: white; width: 130px; text-align: left;">Customer</th>
+      <tr>
+            <th style=""></th>
         </tr>
+    
         <tr>
+        <td style="text-align: right;">Name :</td>
             <td>
-                Name : {{ $supplier->msuppliername }}
+                 {{ $supplier->msuppliername }}
             </td>
         </tr>
         <tr>
+        <td style="text-align: right;">Address :</td>
             <td>
-                Address : {{ $supplier->msupplieraddress }}
+                 {{ $supplier->msupplieraddress }}
             </td>
         </tr>
         <tr>
+        <td style="text-align: right;"></td>
             <td>
-                City,ST,ZIP : {{ $supplier->msuppliercity }}, {{ $supplier->msupplierprovince }}, {{ $supplier->msupplierzipcode }}
+                 {{ $supplier->msuppliercity }}, {{ $supplier->msupplierprovince }}, {{ $supplier->msupplierzipcode }}
             </td>
         </tr>
         <tr>
+        <td style="text-align: right;">Phone :</td>
             <td>
-                Phone : {{ $supplier->msupplierphone }}
+                 {{ $supplier->msupplierphone }}
             </td>
         </tr>
     
@@ -464,11 +476,13 @@
      <p>Tanggal Cektak: {{ $carbon }}</p>
 
  </div>
+ <div class="footerpage">
  <script type="text/php">
         if ( isset($pdf) ) {
-            $x = 275;
-            $y = 820;
-            $text = "{PAGE_NUM} of {PAGE_COUNT}";
+            $x = 510;
+            $y = 830;
+         
+            $text = "Halaman ke {PAGE_NUM}"." "."dari {PAGE_COUNT}";
             $font = $fontMetrics->get_font("helvetica", "bold");
             $size = 8;
             $color = array(0,0,0);
@@ -478,6 +492,7 @@
             $pdf->page_text($x, $y, $text, $font, $size, $color, $word_space, $char_space, $angle);
         }
     </script>
+    </div>
 </body>
 </html>
 
