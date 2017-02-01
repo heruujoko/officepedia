@@ -9,6 +9,8 @@ use App\Http\Controllers\Controller;
 use App\MARCard;
 use Auth;
 use App\MCUSTOMER;
+use App\MBRANCH;
+use App\MWarehouse;
 
 class ARController extends Controller
 {
@@ -40,16 +42,26 @@ class ARController extends Controller
         $cust = MCUSTOMER::on(Auth::user()->db_name)->where('id',$customer_id)->first();
         $group_customer_ar = MARCard::on(Auth::user()->db_name)->where('marcardcustomerid',$cust->mcustomerid)->groupBy('marcardtransno')->get();
         $customer_per_ar = [];
-        foreach($group_customer_ar as $ar){
-            $ars = MARCard::on(Auth::user()->db_name)->where('marcardtransno',$ar->marcardtransno)->get();
-            $paid =0;
-            foreach($ars as $detail){
-                $paid += $detail->marcardpayamount;
-            }
-            $ar['paid_total'] = $paid;
-            $ar['outstanding_total'] = $ar->marcardtotalinv - $paid;
 
-            array_push($customer_per_ar,$ar);
+        $branch = MBRANCH::on(Auth::user()->db_name)->where('id',Auth::user()->defaultbranch)->first();
+        $warehouses = MWarehouse::on(Auth::user()->db_name)->where('mwarehousebranchid',$branch->mbranchcode)->get()->toArray();
+
+        $warehouse_ids = array_map(function($w){
+            return $w['id'];
+        },$warehouses);
+
+        foreach($group_customer_ar as $ar){
+            $ars = MARCard::on(Auth::user()->db_name)->whereIn('marcardwarehouseid',$warehouse_ids)->where('marcardtransno',$ar->marcardtransno)->get();
+            $paid =0;
+            if(sizeof($ars) > 0){
+                foreach($ars as $detail){
+                    $paid += $detail->marcardpayamount;
+                }
+                $ar['paid_total'] = $paid;
+                $ar['outstanding_total'] = $ar->marcardtotalinv - $paid;
+
+                array_push($customer_per_ar,$ar);    
+            }
 
         }
 

@@ -11,7 +11,8 @@ use App\MDPayAP;
 use Datatables;
 use Auth;
 use App\MSupplier;
-
+use App\MBRANCH;
+use App\MWarehouse;
 
 class PayApController extends Controller
 {
@@ -19,7 +20,23 @@ class PayApController extends Controller
     public function index(){
         $payapdata = MHPayAP::on(Auth::user()->db_name)->get();
         $this->iteration = 0;
-        return Datatables::of($payapdata)->addColumn('action', function($pap){
+
+        $branch = MBRANCH::on(Auth::user()->db_name)->where('id',Auth::user()->defaultbranch)->first();
+        $warehouses = MWarehouse::on(Auth::user()->db_name)->where('mwarehousebranchid',$branch->mbranchcode)->get()->toArray();
+
+        $warehouse_ids = array_map(function($w){
+            return $w['id'];
+        },$warehouses);
+
+        $payap_branch = collect();
+
+        foreach($payapdata as $ap){
+            if($ap->has_detail_in_warehouses($warehouse_ids)){
+                $payap_branch->push($ap);
+            }
+        }
+
+        return Datatables::of($payap_branch)->addColumn('action', function($pap){
             $menus = "";
             $menus .= '<center><div class="button">
             <a class="btn btn-info btn-xs dropdown-toggle fa fa-eye" onclick="viewmpayap('.$pap->id.')"> <font style="">Lihat</font></a>';

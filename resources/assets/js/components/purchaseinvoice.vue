@@ -484,8 +484,10 @@
           .then((res) => {
             this.warehouses = res.data;
             this.detail_warehouse = res.data[0].id;
-            $("#"+this.select_warehouse_id).val(res.data[0].id);
             $("#"+this.select_warehouse_id).trigger('change');
+            setTimeout(() => {
+                $("#"+this.select_warehouse_id).val(res.data[0].id).trigger('change');
+            },500);
           });
         },
         fetchGoods(){

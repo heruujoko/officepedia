@@ -12,6 +12,8 @@ use App\MConfig;
 use Auth;
 use Carbon\Carbon;
 use Datatables;
+use App\MBRANCH;
+use App\MWarehouse;
 
 class SalesInvoiceController extends Controller
 {
@@ -21,8 +23,23 @@ class SalesInvoiceController extends Controller
       $config = MConfig::on(Auth::user()->db_name)->where('id',1)->first();
       $this->round = $config->msysgenrounddec;
       $this->separator = $config->msysnumseparator;
+
+      $branch = MBRANCH::on(Auth::user()->db_name)->where('id',Auth::user()->defaultbranch)->first();
+      $warehouses = MWarehouse::on(Auth::user()->db_name)->where('mwarehousebranchid',$branch->mbranchcode)->get()->toArray();
+
+      $warehouse_ids = array_map(function($w){
+          return $w['id'];
+      },$warehouses);
+
       $minvoice = MHInvoice::on(Auth::user()->db_name)->where('void', '0')->orderby('created_at','desc')->get();
-      return Datatables::of($minvoice)->addColumn('action', function($invoice){
+      $branch_invoice = collect();
+      foreach($minvoice as $iv){
+          if($iv->has_item_in_warehouses($warehouse_ids)){
+              $branch_invoice->push($iv);
+          }
+      }
+
+      return Datatables::of($branch_invoice)->addColumn('action', function($invoice){
             $menus = '<center><div class="button">
                 <a class="btn btn-info btn-xs dropdown-toggle fa fa-eye" onclick="viewinvoice('.$invoice->id.')"> <font style="">Lihat</font></a>';
 
