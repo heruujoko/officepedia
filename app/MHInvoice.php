@@ -11,6 +11,7 @@ use Carbon\Carbon;
 use App\MCUSTOMER;
 use App\MStockCard;
 use App\MARCard;
+use App\MDInvoice;
 use DB;
 use Exception;
 use App\MJournal;
@@ -49,6 +50,11 @@ class MHInvoice extends Model
         return $e;
       }
 
+    }
+
+    public function has_item_in_warehouses($warehouse_ids){
+        $details = MDInvoice::on(Auth::user()->db_name)->where('mhinvoiceno',$this->mhinvoiceno)->whereIn('mdinvoicegoodsidwhouse',$warehouse_ids)->get()->toArray();
+        return (sizeof($details) > 0);
     }
 
     public static function start_transaction($request){
@@ -176,6 +182,7 @@ class MHInvoice extends Model
         $ar->marcardusername = Auth::user()->name;
         $ar->marcardusereventdate = Carbon::now();
         $ar->marcardusereventtime = Carbon::now();
+        $ar->marcardwarehouseid = $g['warehouse'];
         $ar->save();
 
         DB::connection(Auth::user()->db_name)->commit();
@@ -441,6 +448,7 @@ class MHInvoice extends Model
         $ar->marcardusername = Auth::user()->name;
         $ar->marcardusereventdate = Carbon::now();
         $ar->marcardusereventtime = Carbon::now();
+        $ar->marcardwarehouseid = $g['warehouse'];
         $ar->save();
 
         //voided details

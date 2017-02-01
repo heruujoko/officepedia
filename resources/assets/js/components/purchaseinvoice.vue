@@ -235,7 +235,7 @@
                   <div class="form-group">
                     <label class="control-label col-md-2">Gudang</label>
                     <div class="col-md-8">
-                      <select class="form-control" id="insert-detailwarehouses" v-selecttwo v-model="detail_warehouse">
+                      <select class="form-control" v-bind:id="select_warehouse_id" v-selecttwo v-model="detail_warehouse">
                         <option v-for="g in warehouses" :value="g.id">{{ g.mwarehousename }}</option>
                       </select>
                     </div>
@@ -360,6 +360,9 @@
           format_disc(){
             return numeral(this.invoice_disc).format(this.num_format);
           },
+          select_warehouse_id(){
+            return this.mode+"_select_warehouse"
+          },
           modal_id(){
             return this.mode+"_detail_modal";
           },
@@ -481,6 +484,10 @@
           .then((res) => {
             this.warehouses = res.data;
             this.detail_warehouse = res.data[0].id;
+            $("#"+this.select_warehouse_id).trigger('change');
+            setTimeout(() => {
+                $("#"+this.select_warehouse_id).val(res.data[0].id).trigger('change');
+            },500);
           });
         },
         fetchGoods(){
@@ -496,6 +503,7 @@
             }
         },
         canAddSingle(idx){
+            this.fetchWareHouses();
           var already = _.find(this.invoice_goods,{id: parseInt(idx)});
           if(already == undefined){
               if(this.mode == 'edit'){

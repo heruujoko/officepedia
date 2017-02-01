@@ -52,6 +52,11 @@ class MHPurchase extends Model
       }
     }
 
+    public function has_item_in_warehouses($warehouse_ids){
+        $details = MDPurchase::on(Auth::user()->db_name)->where('mhpurchaseno',$this->mhpurchaseno)->whereIn('mdpurchasegoodsidwhouse',$warehouse_ids)->get()->toArray();
+        return (sizeof($details) > 0);
+    }
+
     public static function start_transaction($request){
         DB::connection(Auth::user()->db_name)->beginTransaction();
         try{
@@ -205,6 +210,7 @@ class MHPurchase extends Model
             $ap->mapcardusername = Auth::user()->name;
             $ap->mapcardeventdate = Carbon::now();
             $ap->mapcardeventtime = Carbon::now();
+            $ap->mapcardwarehouseid = $g['warehouse'];
             $ap->save();
 
             DB::connection(Auth::user()->db_name)->commit();

@@ -11,6 +11,8 @@ use App\MDPayAR;
 use App\MCUSTOMER;
 use Auth;
 use Datatables;
+use App\MBRANCH;
+use App\MWarehouse;
 
 class PayArController extends Controller
 {
@@ -18,7 +20,23 @@ class PayArController extends Controller
     public function index(){
         $payardata = MHPayAR::on(Auth::user()->db_name)->get();
         $this->iteration = 0;
-        return Datatables::of($payardata)->addColumn('action', function($pap){
+
+        $branch = MBRANCH::on(Auth::user()->db_name)->where('id',Auth::user()->defaultbranch)->first();
+        $warehouses = MWarehouse::on(Auth::user()->db_name)->where('mwarehousebranchid',$branch->mbranchcode)->get()->toArray();
+
+        $warehouse_ids = array_map(function($w){
+            return $w['id'];
+        },$warehouses);
+
+        $payar_branch = collect();
+
+        foreach($payardata as $ar){
+            if($ar->has_detail_in_warehouses($warehouse_ids)){
+                $payar_branch->push($ar);
+            }
+        }
+
+        return Datatables::of($payar_branch)->addColumn('action', function($pap){
             $menus = '<center><div class="button">
             <a class="btn btn-info btn-xs dropdown-toggle fa fa-eye" onclick="viewmpayar('.$pap->id.')"> <font style="">Lihat</font></a>';
 

@@ -9,6 +9,8 @@ use App\Http\Controllers\Controller;
 use App\MHPurchase;
 use App\MDPurchase;
 use App\MConfig;
+use App\MBRANCH;
+use App\MWarehouse;
 use Auth;
 use Datatables;
 use Carbon\Carbon;
@@ -21,8 +23,21 @@ class PurchaseController extends Controller
         $config = MConfig::on(Auth::user()->db_name)->where('id',1)->first();
         $this->round = $config->msysgenrounddec;
         $this->separator = $config->msysnumseparator;
+        $branch = MBRANCH::on(Auth::user()->db_name)->where('id',Auth::user()->defaultbranch)->first();
+        $warehouses = MWarehouse::on(Auth::user()->db_name)->Where('mwarehousebranchid',$branch->mbranchcode)->get()->toArray();
+        $warehouse_ids = array_map(function($w){
+            return $w['id'];
+        },$warehouses);
         $minvoice = MHPurchase::on(Auth::user()->db_name)->where('void', '0')->orderby('created_at','desc')->get();
-        return Datatables::of($minvoice)->addColumn('action', function($invoice){
+        $invoice_in_branch = collect();
+
+        foreach($minvoice as $iv){
+            if($iv->has_item_in_warehouses($warehouse_ids)){
+                $invoice_in_branch->push($iv);
+            }
+        }
+
+        return Datatables::of($invoice_in_branch)->addColumn('action', function($invoice){
 
             $menus = "";
             $menus .= '<center><div class="button">

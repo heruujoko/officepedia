@@ -12,6 +12,7 @@ use DB;
 use App\Helper\DBHelper;
 use App\MJournal;
 use App\MCOA;
+use App\MDPayAP;
 
 class MHPayAP extends Model
 {
@@ -45,6 +46,11 @@ class MHPayAP extends Model
         var_dump($e);
         return $e;
       }
+    }
+
+    public function has_detail_in_warehouses($warehouse_ids){
+        $details = MDPayAP::on(Auth::user()->db_name)->where('mhpayapno',$this->mhpayapno)->whereIn('mdpayapwarehouseid',$warehouse_ids)->get()->toArray();
+        return (sizeof($details) > 0);
     }
 
     public static function start_transaction($request){
@@ -100,6 +106,7 @@ class MHPayAP extends Model
                 $detail->mdpayapbankcoa = $ap['payments']['bank']['coa'];
                 $detail->mdpayapbankamount = $ap['payments']['bank']['amount'];
                 $detail->mdpayapbankbankname = $ap['payments']['bank']['bank_name'];
+                $detail->mdpayapwarehouseid = $old_ap->mapcardwarehouseid;
                 $detail->save();
 
                 $new_ap = new MAPCard;
@@ -119,6 +126,7 @@ class MHPayAP extends Model
                 $new_ap->mapcarduserid = Auth::user()->id;
                 $new_ap->mapcardeventdate = Carbon::now();
                 $new_ap->mapcardeventtime = Carbon::now();
+                $new_ap->mapcardwarehouseid = $old_ap->mapcardwarehouseid;
                 $new_ap->void = 0;
                 $new_ap->save();
 
@@ -228,7 +236,7 @@ class MHPayAP extends Model
                     $detail->mdpayapbankcoa = $ap['payments']['bank']['coa'];
                     $detail->mdpayapbankamount = $ap['payments']['bank']['amount'];
                     $detail->mdpayapbankbankname = $ap['payments']['bank']['bank_name'];
-
+                    $detail->mdpayapwarehouseid = $old_ap->mapcardwarehouseid;
                     $detail->void = 0;
                     $detail->save();
 
@@ -272,6 +280,7 @@ class MHPayAP extends Model
                         $new_ap->mapcarduserid = Auth::user()->id;
                         $new_ap->mapcardeventdate = Carbon::now();
                         $new_ap->mapcardeventtime = Carbon::now();
+                        $new_ap->mapcardwarehouseid = $old_ap->mapcardwarehouseid;
                         $new_ap->void = 0;
                         $new_ap->save();
                         $detail->mdpayap_apref = $new_ap->id;
@@ -354,6 +363,7 @@ class MHPayAP extends Model
                     $new_ap->mapcarduserid = Auth::user()->id;
                     $new_ap->mapcardeventdate = Carbon::now();
                     $new_ap->mapcardeventtime = Carbon::now();
+                    $new_ap->mapcardwarehouseid = $old_ap->mapcardwarehouseid;
                     $new_ap->void = 0;
                     $new_ap->save();
 

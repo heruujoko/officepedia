@@ -13,6 +13,7 @@ use Datatables;
 use DB;
 use Auth;
 use App\Helper\DBHelper;
+use App\MBRANCH;
 
 class MWarehouseController extends Controller
 {
@@ -41,8 +42,10 @@ class MWarehouseController extends Controller
   }
 
   public function datalist(){
-      $warehouses = MWarehouse::on(Auth::user()->db_name)->where('void', '0')->orderby('created_at','desc')->get();
-      return response()->json($warehouses);
+    //   $warehouses = MWarehouse::on(Auth::user()->db_name)->where('void', '0')
+        $default_branch = MBRANCH::on(Auth::user()->db_name)->where('id',Auth::user()->defaultbranch)->first()->mbranchcode;
+        $warehouses = MWarehouse::on(Auth::user()->db_name)->where('void',0)->orderby('created_at','desc')->where('mwarehousebranchid',$default_branch)->get();
+        return response()->json($warehouses);
   }
 
   public function show($id){

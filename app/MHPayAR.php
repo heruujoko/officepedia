@@ -11,6 +11,7 @@ use Auth;
 use DB;
 use App\Helper\DBHelper;
 use App\MCOA;
+use App\MDPayAR;
 
 class MHPayAR extends Model
 {
@@ -44,6 +45,11 @@ class MHPayAR extends Model
         var_dump($e);
         return $e;
       }
+    }
+
+    public function has_detail_in_warehouses($warehouse_ids){
+        $details = MDPayAR::on(Auth::user()->db_name)->where('mhpayarno',$this->mhpayarno)->whereIn('mdpayarwarehouseid',$warehouse_ids)->get()->toArray();
+        return (sizeof($details) > 0);
     }
 
     public static function start_transaction($request){
@@ -99,6 +105,7 @@ class MHPayAR extends Model
               $detail->mdpayarbankcoa = $ar['payments']['bank']['coa'];
               $detail->mdpayarbankamount = $ar['payments']['bank']['amount'];
               $detail->mdpayarbankbankname = $ar['payments']['bank']['bank_name'];
+              $detail->mdpayarwarehouseid = $old_ar->marcardwarehouseid;
               $detail->save();
 
               $new_ar = new MARCard;
@@ -118,6 +125,7 @@ class MHPayAR extends Model
               $new_ar->marcarduserid = Auth::user()->id;
               $new_ar->marcardusereventdate = Carbon::now();
               $new_ar->marcardusereventtime = Carbon::now();
+              $new_ar->marcardwarehouseid = $old_ar->marcardwarehouseid;
               $new_ar->void = 0;
               $new_ar->save();
 
@@ -227,7 +235,7 @@ class MHPayAR extends Model
                     $detail->mdpayarbankcoa = $ar['payments']['bank']['coa'];
                     $detail->mdpayarbankamount = $ar['payments']['bank']['amount'];
                     $detail->mdpayarbankbankname = $ar['payments']['bank']['bank_name'];
-
+                    $detail->mdpayarwarehouseid = $old_ar->marcardwarehouseid;
                     $detail->void = 0;
                     $detail->save();
 
