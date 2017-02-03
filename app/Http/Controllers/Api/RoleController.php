@@ -20,11 +20,17 @@ class RoleController extends Controller
       $mtax = Role::on(Auth::user()->db_name)->where('void',0)->orderby('created_at','desc')->get();
       return Datatables::of($mtax)->addColumn('action', function($role){
 
-        return '<center><div class="button">
-        <a class="btn btn-info btn-xs dropdown-toggle fa fa-eye" onclick="viewrole('.$role->id.')"> <font style="">Lihat</font></a>
-        <a class="btn btn-primary btn-xs dropdown-toggle fa fa-pencil" onclick="editrole('.$role->id.')"> <font style="font-family: arial;">Ubah &nbsp</font></a>
-        <a class="btn btn-danger btn-xs dropdown-toggle fa fa-trash" onclick="popupdelete('.$role->id.')">
-      <input type="hidden" name="id" value="@{{ task.id }}"> <font style="font-family: arial;">Hapus </font></a>     </div></center>';
+          if($role->id == 1){
+              return '<center><div class="button">
+              <a class="btn btn-info btn-xs dropdown-toggle fa fa-eye" onclick="viewrole('.$role->id.')"> <font style="">Lihat</font></a>
+              <a class="btn btn-primary btn-xs dropdown-toggle fa fa-pencil" onclick="editrole('.$role->id.')"> <font style="font-family: arial;">Ubah &nbsp</font></a>';
+          } else {
+              return '<center><div class="button">
+              <a class="btn btn-info btn-xs dropdown-toggle fa fa-eye" onclick="viewrole('.$role->id.')"> <font style="">Lihat</font></a>
+              <a class="btn btn-primary btn-xs dropdown-toggle fa fa-pencil" onclick="editrole('.$role->id.')"> <font style="font-family: arial;">Ubah &nbsp</font></a>
+              <a class="btn btn-danger btn-xs dropdown-toggle fa fa-trash" onclick="popupdelete('.$role->id.')">
+            <input type="hidden" name="id" value="@{{ task.id }}"> <font style="font-family: arial;">Hapus </font></a>     </div></center>';
+          }
     })->addColumn('no',function($mtax){
           $this->iteration++;
           return "<span style=\"float:right\">".$this->iteration."</span>";
@@ -67,6 +73,6 @@ class RoleController extends Controller
         $role = Role::on(Auth::user()->db_name)->where('id',$id)->where('void',0)->first();
         $role->void = 1;
         $role->save();
-        return response()->json();    
+        return response()->json();
     }
 }
