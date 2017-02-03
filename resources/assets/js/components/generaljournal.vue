@@ -249,7 +249,27 @@
                 }
                 this.transaction_detail.date = this.transaction_date
                 this.transaction_detail.general_journal_detail_id = shortid.generate()
-                this.transaction_items.push(this.transaction_detail)
+
+                // force debit first
+                    if(this.transaction_items.length == 0){
+                        this.transaction_items.push(this.transaction_detail)
+                    } else {
+
+                        // jika sebelum nya credit
+                        let last_index = this.transaction_items.length -1;
+                        console.log(this.transaction_items[last_index].type);
+                        if(this.transaction_items[last_index].type == 'credit'){
+                            // taruh di paling awal
+                            if(this.transaction_detail.type == 'debit'){
+                                this.transaction_items.unshift(this.transaction_detail);
+                            } else {
+                                this.transaction_items.push(this.transaction_detail)
+                            }
+                        } else {
+                            this.transaction_items.push(this.transaction_detail)
+                        }
+
+                    }
                 this.dismissModal()
           },
             saveTransaction(){
