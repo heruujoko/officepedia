@@ -225,16 +225,16 @@
     {{--  --}}
     <div class="cust">
    
-       <table class="table">
+       <table style="" class="table">
        <thead>
            <tr>
-           <th style="background: #089DDD; color: white;">Kode</th>
-           <th style="background: #089DDD; color: white;">Nama</th>
-           <th style="background: #089DDD; color: white;">Harga Beli</th>
+           <th style="background: #089DDD; color: white;">KODE</th>
+           <th style="background: #089DDD; color: white;">NAMA</th>
+           <th style="background: #089DDD; color: white;">HARGA BELI</th>
            <th style="background: #089DDD; color: white;">QTY</th>
-           <th style="background: #089DDD; color: white;">Jumlah Satuan</th>
-           <th style="background: #089DDD; color: white;">Diskon</th>
-           <th style="background: #089DDD; color: white;">Jumlah</th>
+           <th style="background: #089DDD; color: white;">JUMLAH SATUAN</th>
+           <th style="background: #089DDD; color: white;">DISKON</th>
+           <th style="background: #089DDD; color: white;">JUMLAH</th>
            </tr>
          </thead>
          <tbody>
@@ -423,8 +423,8 @@
                     <td colspan="6"><span contenteditable>Discount :</span></td>
                     <td><span data-prefix>IDR </span><span>{{ number_format($discount,$decimals,$dec_point,$thousands_sep) }}</span></td>
                 </tr>
-                 <tr class="bb">
-                    <td colspan="6"><span contenteditable>PPN 10% :</span></td>
+                 <tr">
+                    <td style="outline: thin solid black;" colspan="6"><span contenteditable>PPN 10% :</span></td>
                     <td><span data-prefix>IDR </span><span>{{ number_format($quotation[0]['mhpurchasequotationtaxtotal'],$decimals,$dec_point,$thousands_sep) }}</span></td>
                 </tr>
                  <tr>
