@@ -6,13 +6,13 @@
             font-size: 11px;
         }
         .tds {
-            
+
             text-align: center;
             height: 1px !important;
         }
         table>td {
             font-size: 11px;
-          
+
         }
         table {
            background-color: transparent;
@@ -33,7 +33,7 @@
             padding: 8px;
             line-height: 5px;
             vertical-align: top;
-           
+
             height: 3px !important;
             font-size: 9px !important;
         }
@@ -50,10 +50,10 @@
 
         }
         .table>tfoot tr:last-child {
-          
+
 
         }
-       
+
 
     .header-topright{
     position: fixed;
@@ -62,9 +62,9 @@
     }
     .cust{
         padding-top: 10px;
-        
+
     }
-   
+
 
     .cust>table {
         width: 101%;
@@ -72,7 +72,7 @@
 
 
     .cust>table>td {
-      
+
     }
     .balance{
         margin-left: 320px;
@@ -87,7 +87,7 @@
 }
     }
     .top-left{
-      
+
     }
     .global-css{
          font-family: "Trebuchet MS", "Lucida Grande", "Lucida Sans Unicode", "Lucida Sans", Tahoma, sans-serif;
@@ -98,7 +98,7 @@
 
     }
     .signbelow{
-    
+
     width: 350;
     border: 2px solid black;
     padding: 5px;
@@ -110,8 +110,8 @@
     .tdborder{
       border: 1px solid black;
     }
-    
-</style>	
+
+</style>
 </head>
 <body class="global-css">
 <div class="top-left">
@@ -122,7 +122,7 @@
             <th style=""></th>
         </tr>
         <tr>
-        <td style="text-align: right;"></td>  
+        <td style="text-align: right;"></td>
           <td>
             {{ $config->msysstreet }}
           </td>
@@ -161,14 +161,14 @@
     </div>
 
     {{-- TOP RIGHT --}}
-      
+
 <div class="header-topright">
      <h3 style="padding-top: 25px;" style="color: #217293">Pesanan Pembelian</h3>
     <table border="" cellpadding="5" cellpadding="5">
         <tr>
             <th style=""></th>
         </tr>
-      
+
         <tr>
             <th style="text-align: left;" class="thnoborder">DATE : </td>
             <td style="border-style: solid; border-width: 1px; width: 85px; text-align: center;">{{ $quotation[0]['mhpurchasequotationdate'] }}</td>
@@ -194,7 +194,7 @@
       <tr>
             <th style=""></th>
         </tr>
-    
+
         <tr>
         <td style="text-align: right;">Name :</td>
             <td>
@@ -219,12 +219,12 @@
                  {{ $supplier->msupplierphone }}
             </td>
         </tr>
-    
+
 
     </table>
     {{--  --}}
     <div class="cust">
-   
+
        <table class="table">
        <thead>
            <tr>
@@ -239,7 +239,7 @@
          </thead>
          <tbody>
              @foreach($mdquotation as $a)
-           
+
            <tr>
                <td style="text-align: left" class="tds">{{ $a->mdpurchasequotationgoodsid }}</td>
                <td style="text-align: left" class="tds">{{ $a->mdpurchasequotationgoodsname }}</td>
@@ -248,9 +248,9 @@
                <td style="text-align: right" class="tds">{{ $a->mdpurchasequotationgoodsqty }}</td>
                <td style="text-align: right" class="tds">{{ number_format($a->mdpurchasequotationgoodsdiscount,$decimals,$dec_point,$thousands_sep) }}</td>
                <td style="text-align: right;" class="tds">{{ number_format($a->mdpurchasequotationbuyprice * $a->mdpurchasequotationgoodsqty - $a->mdpurchasequotationgoodsdiscount,$decimals,$dec_point,$thousands_sep) }}</td>
-                
+
            </tr>
-       
+
             @endforeach
               <tr>
                <td></td>
@@ -261,7 +261,7 @@
                <td></td>
                <td></td>
            </tr>
-          
+
             <tr>
                <td></td>
                <td></td>
@@ -271,7 +271,7 @@
                <td></td>
                <td></td>
            </tr>
-          
+
             <tr>
                <td></td>
                <td></td>
@@ -281,9 +281,9 @@
                <td></td>
                <td></td>
            </tr>
-          
-           
-          
+
+
+
             <tr>
                <td></td>
                <td></td>
@@ -293,7 +293,7 @@
                <td></td>
                <td></td>
            </tr>
-          
+
          <tr>
                <td></td>
                <td></td>
@@ -303,9 +303,9 @@
                <td></td>
                <td></td>
            </tr>
-          
-          
-       
+
+
+
             <tr>
                <td></td>
                <td></td>
@@ -315,7 +315,7 @@
                <td></td>
                <td></td>
            </tr>
-          
+
             <tr>
                <td></td>
                <td></td>
@@ -325,7 +325,7 @@
                <td></td>
                <td></td>
            </tr>
-          
+
             <tr>
                <td></td>
                <td></td>
@@ -345,7 +345,7 @@
                <td></td>
                <td></td>
            </tr>
-          
+
             <tr>
                <td></td>
                <td></td>
@@ -407,7 +407,7 @@
            </tr>
 
 
-       
+
               </tbody>
           <tfoot>
              <tr>
@@ -433,7 +433,7 @@
                 </tr>
           </tfoot>
        </table>
-      
+
     </div>
     <br>
     <br>
@@ -448,15 +448,15 @@
            {!! $config->msyspurchinvfootnote !!}
         </td>
         </tr>
-        
+
     </table>
      <table class="tables">
         <tr>
             <td>
                 <pre>Customer Acceptance(sign below)</pre><br><br><br>
-            
-            
-            
+
+
+
             -------------------------------------<br>
 
             Print Name
@@ -478,11 +478,24 @@
  </div>
  <div class="footerpage">
  <script type="text/php">
+         if ( isset($pdf) ) {
+             $x = 510;
+             $y = 815;
+
+             $text = "            Halaman ke {PAGE_NUM}";
+             $font = $fontMetrics->get_font("helvetica", "bold");
+             $size = 8;
+             $color = array(0,0,0);
+             $word_space = 0.0;  //  default
+             $char_space = 0.0;  //  default
+             $angle = 0.0;   //  default
+             $pdf->page_text($x, $y, $text, $font, $size, $color, $word_space, $char_space, $angle);
+         }
         if ( isset($pdf) ) {
             $x = 510;
             $y = 830;
-         
-            $text = "Halaman ke {PAGE_NUM}"." "."dari {PAGE_COUNT}";
+
+            $text = "                          dari {PAGE_COUNT}";
             $font = $fontMetrics->get_font("helvetica", "bold");
             $size = 8;
             $color = array(0,0,0);
@@ -495,5 +508,3 @@
     </div>
 </body>
 </html>
-
- 
