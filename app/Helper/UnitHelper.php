@@ -4,6 +4,17 @@ namespace App\Helper;
 
 class UnitHelper {
 
+    public static function singlelabel($mgoods,$qty){
+        $label1 = $mgoods->mgoodsunit;
+
+        $label_str = "";
+        if($qty == 0){
+            $label_str = "-";
+        } else {
+            return $qty." ".$label1;
+        }
+    }
+
     public static function label($mgoods,$qty){
         $conv3 = $mgoods->mgoodsunit3conv;
         $conv2 = $mgoods->mgoodsunit2conv;

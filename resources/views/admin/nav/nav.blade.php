@@ -1,8 +1,5 @@
 <div id="branchswitcher" style="padding:10px;">
-    <label for="" style="color:white;font-size: 12px;">Cabang</label>
-    <select v-model="selected_branch" v-selecttwo="branch_label" id="branch_switch">
-        <option v-for="branch in branches" :value="branch.id">@{{ branch.mbranchname}}</option>
-    </select>
+    <changer active="{{ $active }}"></changer>
 </div>
 <ul>
   @if($active == 'dashboard')
@@ -177,7 +174,7 @@
             @else
               <li><a href="{{ url('admin-nano/purchasequotation') }}">Penawaran Pembelian</a></li>
             @endif
-        
+
         @if(Auth::user()->has_role('R_payar'))
             @if($active == 'payar')
               <li class="active"><a href="{{ url('admin-nano/payar') }}">Pembayaran Piutang Dagang</a></li>

@@ -4,6 +4,8 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
+use App\MBRANCH;
+use Auth;
 
 class Mwarehouse extends Model
 {
@@ -15,5 +17,10 @@ class Mwarehouse extends Model
 					$builder->where('void', '=', 0);
 		});
 	}
+
+    public function cabang(){
+        $branch = MBRANCH::on(Auth::user()->db_name)->where('mbranchcode',$this->mwarehousebranchid)->first();
+        return $branch;
+    }
 
 }

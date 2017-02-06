@@ -137,8 +137,8 @@ class MHInvoice extends Model
           $stock_card->mstockcardremark = "Transaksi ".$request->type." untuk ".$customer->mcustomername." ".$g['remark'];
           $stock_card->mstockcardstockin = 0;
           $stock_card->mstockcardstockout = $g['usage'];
-        //   $stock_card->mstockcardstocktotal = $mgoods->mgoodsstock - $g['usage'];
-          $stock_card->mstockcardstocktotal = $mgoods->mgoodsstock;
+          $stock_card->mstockcardstocktotal = $mgoods->mgoodsstock - $g['usage'];
+        //   $stock_card->mstockcardstocktotal = $mgoods->mgoodsstock;
           $stock_card->mstockcardwhouse = $g['warehouse'];
           $stock_card->mstockcarduserid = Auth::user()->id;
           $stock_card->mstockcardusername = Auth::user()->name;
@@ -283,7 +283,7 @@ class MHInvoice extends Model
                 $stock_card->mstockcardremark = "Revisi Transaksi ".$request->type." oleh ".Auth::user()->name."/".Auth::user()->id." ".$g['remark'];
                 $stock_card->mstockcardstockin = $old_qty;
                 $stock_card->mstockcardstockout = 0;
-                $stock_card->mstockcardstocktotal = $mgoods->mgoodsstock;
+                $stock_card->mstockcardstocktotal = $mgoods->mgoodsstock += $old_qty;
                 $stock_card->mstockcardwhouse = $g['warehouse'];
                 $stock_card->mstockcarduserid = Auth::user()->id;
                 $stock_card->mstockcardusername = Auth::user()->name;
@@ -309,7 +309,7 @@ class MHInvoice extends Model
                 $stock_card->mstockcardremark = "Revisi Transaksi ".$request->type." oleh ".Auth::user()->name."/".Auth::user()->id." ".$g['remark'];
                 $stock_card->mstockcardstockin = 0;
                 $stock_card->mstockcardstockout = $g['usage'];
-                $stock_card->mstockcardstocktotal = $mgoods->mgoodsstock;
+                $stock_card->mstockcardstocktotal = $mgoods->mgoodsstock -= $g['usage'];
                 $stock_card->mstockcardwhouse = $g['warehouse'];
                 $stock_card->mstockcarduserid = Auth::user()->id;
                 $stock_card->mstockcardusername = Auth::user()->name;
@@ -319,7 +319,7 @@ class MHInvoice extends Model
                 $stock_card->void = 0;
                 $stock_card->save();
 
-                $mgoods->mgoodsstock -= $g['usage'];
+                // $mgoods->mgoodsstock -= $g['usage'];
                 $mgoods->save();
 
                 // update detail stock refs
@@ -515,7 +515,7 @@ class MHInvoice extends Model
                 $stock_card->mstockcardremark = "Pembatalan transaksi oleh ".Auth::user()->name."/".Auth::user()->id;
                 $stock_card->mstockcardstockout = 0;
                 $stock_card->mstockcardstockin = $stock_ref->mstockcardstockout;
-                $stock_card->mstockcardstocktotal = $mgoods->mgoodsstock;
+                $stock_card->mstockcardstocktotal = $mgoods->mgoodsstock += $stock_ref->mstockcardstockout;
                 $stock_card->mstockcardwhouse = $stock_ref->mstockcardwhouse;
                 $stock_card->mstockcarduserid = Auth::user()->id;
                 $stock_card->mstockcardusername = Auth::user()->name;
@@ -525,9 +525,9 @@ class MHInvoice extends Model
                 $stock_card->save();
 
                 // update goods stock
-                $last_stock = $mgoods->mgoodsstock;
-                $last_stock += $stock_card->mstockcardstockin;
-                $mgoods->mgoodsstock = $last_stock;
+                // $last_stock = $mgoods->mgoodsstock;
+                // $last_stock += $stock_card->mstockcardstockin;
+                // $mgoods->mgoodsstock = $last_stock;
                 $mgoods->save();
 
                 // void ar

@@ -97,6 +97,7 @@ class MHPurchase extends Model
 
                 $mgoods->mgoodspricein = $g['buy_price'];
                 $mgoods->save();
+                $last_stock = $mgoods->mgoodsstock;
 
                 $detail = new MDPurchase;
                 $detail->setConnection(Auth::user()->db_name);
@@ -138,7 +139,9 @@ class MHPurchase extends Model
                 $stock_card->mstockcardremark = "Transaksi ".$request->type." oleh ".Auth::user()->name."/".Auth::user()->id." ".$g['remark'];
                 $stock_card->mstockcardstockin = $g['usage'];
                 $stock_card->mstockcardstockout = 0;
-                $stock_card->mstockcardstocktotal = $mgoods->mgoodsstock;
+                // $stock_card->mstockcardstocktotal = $mgoods->mgoodsstock;
+                // this process also effects to $mgoods->mgoodsstock value;
+                $stock_card->mstockcardstocktotal = $mgoods->mgoodsstock += $g['usage'];
                 $stock_card->mstockcardwhouse = $g['warehouse'];
                 $stock_card->mstockcarduserid = Auth::user()->id;
                 $stock_card->mstockcardusername = Auth::user()->name;
@@ -146,10 +149,6 @@ class MHPurchase extends Model
                 $stock_card->mstockcardeventtime = Carbon::now();
                 $stock_card->edited = 0;
                 $stock_card->save();
-
-                // update goods
-                $last_stock = $mgoods->mgoodsstock;
-                $mgoods->mgoodsstock += $g['usage'];
                 $mgoods->save();
 
                 // update stock reference untuk deleting
@@ -315,7 +314,8 @@ class MHPurchase extends Model
                         $stock_card->mstockcardremark = "Revisi Transaksi ".$request->type." oleh ".Auth::user()->name."/".Auth::user()->id." ".$g['remark'];
                         $stock_card->mstockcardstockin = 0;
                         $stock_card->mstockcardstockout = $old_qty;
-                        $stock_card->mstockcardstocktotal = $mgoods->mgoodsstock;
+                        // $stock_card->mstockcardstocktotal = $mgoods->mgoodsstock;
+                        $stock_card->mstockcardstocktotal = $mgoods->mgoodsstock -= $old_qty;
                         $stock_card->mstockcardwhouse = $g['warehouse'];
                         $stock_card->mstockcarduserid = Auth::user()->id;
                         $stock_card->mstockcardusername = Auth::user()->name;
@@ -326,7 +326,7 @@ class MHPurchase extends Model
                         $stock_card->save();
 
                         if($old_qty != $g['usage']){
-                          $mgoods->mgoodsstock -= $last_stock->mstockcardstockin;
+                        //   $mgoods->mgoodsstock -= $last_stock->mstockcardstockin;
                         }
                         $mgoods->save();
 
@@ -364,7 +364,7 @@ class MHPurchase extends Model
                         $stock_card->mstockcardremark = "Revisi Transaksi ".$request->type." oleh ".Auth::user()->name."/".Auth::user()->id." ".$g['remark'];
                         $stock_card->mstockcardstockin = $g['usage'];
                         $stock_card->mstockcardstockout = 0;
-                        $stock_card->mstockcardstocktotal = $mgoods->mgoodsstock;
+                        $stock_card->mstockcardstocktotal = $mgoods->mgoodsstock += $g['usage'];
                         $stock_card->mstockcardwhouse = $g['warehouse'];
                         $stock_card->mstockcarduserid = Auth::user()->id;
                         $stock_card->mstockcardusername = Auth::user()->name;
@@ -375,7 +375,7 @@ class MHPurchase extends Model
                         $stock_card->save();
 
                         $last_stock = $mgoods->mgoodsstock;
-                        $mgoods->mgoodsstock += $g['usage'];
+                        // $mgoods->mgoodsstock += $g['usage'];
                         $mgoods->save();
 
                         $cogs_num = (($last_stock * $goods_cogs->mcogslastcogs) + $invoice_detail->mdpurchasegoodsgrossamount ) / $mgoods->mgoodsstock;

@@ -2,6 +2,7 @@ import Vue from 'vue/dist/vue.js'
 import Axios from 'axios'
 import moment from 'moment'
 import numeral from 'numeral'
+import _ from 'lodash';
 
 Vue.config.devtools = true
 
@@ -127,6 +128,17 @@ const stockcardreport = new Vue({
 				console.log(err);
 			});
 		},
+        updateWarehouse(){
+			var self = this;
+			Axios.get('/admin-api/mwarehouse/datalist').then(function(res){
+				self.warehouses = res.data;
+
+
+			})
+			.catch(function(err){
+				console.log(err);
+			});
+		},
 		fetchGoods(){
 			var self = this;
 			Axios.get('/admin-api/barang/datalist').then(function(res){
@@ -139,22 +151,27 @@ const stockcardreport = new Vue({
 			});
 		},
 		printTable(){
-            window.open('/admin-nano/reports/stockreport/export/print?wh='+this.mstockcardwhouse+'&goods='+this.mstockcardgoodsid+'&start='+this.invoice_date_start+'&end='+this.invoice_date_end,'_blank');
+            window.open('/admin-nano/reports/stockreport/export/print?wh='+this.mstockcardwhouse+'&goods='+this.mstockcardgoodsid+'&start='+this.invoice_date_start+'&end='+this.invoice_date_end+'&mstockcardwhouse='+this.mstockcardwhouse,'_blank');
         },
         pdfTable(){
-            window.open('/admin-nano/reports/stockreport/export/pdf?wh='+this.mstockcardwhouse+'&goods='+this.mstockcardgoodsid+'&start='+this.invoice_date_start+'&end='+this.invoice_date_end,'_blank');
+            window.open('/admin-nano/reports/stockreport/export/pdf?wh='+this.mstockcardwhouse+'&goods='+this.mstockcardgoodsid+'&start='+this.invoice_date_start+'&end='+this.invoice_date_end+'&mstockcardwhouse='+this.mstockcardwhouse,'_blank');
         },
         excelTable(){
-            window.open('/admin-nano/reports/stockreport/export/excel?wh='+this.mstockcardwhouse+'&goods='+this.mstockcardgoodsid+'&start='+this.invoice_date_start+'&end='+this.invoice_date_end,'_blank');
+            window.open('/admin-nano/reports/stockreport/export/excel?wh='+this.mstockcardwhouse+'&goods='+this.mstockcardgoodsid+'&start='+this.invoice_date_start+'&end='+this.invoice_date_end+'&mstockcardwhouse='+this.mstockcardwhouse,'_blank');
         },
         csvTable(){
-            window.open('/admin-nano/reports/stockreport/export/csv?wh='+this.mstockcardwhouse+'&goods='+this.mstockcardgoodsid+'&start='+this.invoice_date_start+'&end='+this.invoice_date_end,'_blank');
+            window.open('/admin-nano/reports/stockreport/export/csv?wh='+this.mstockcardwhouse+'&goods='+this.mstockcardgoodsid+'&start='+this.invoice_date_start+'&end='+this.invoice_date_end+'&mstockcardwhouse='+this.mstockcardwhouse,'_blank');
         }
 	},
 	created(){
 		this.fetchStocks();
 		this.fetchWarehouse();
 		this.fetchGoods();
+        this.$on('update-warehouses', () => {
+            this.updateWarehouse();
+        })
 	}
 
 });
+
+window.stockcardreport = stockcardreport;

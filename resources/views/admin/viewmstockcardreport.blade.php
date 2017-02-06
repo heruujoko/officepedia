@@ -61,12 +61,12 @@
                                         <div id="stockcardreport">
                                             <br>
                                             <div class="row">
-                                                <p class="col-md-1 report-label">Mulai</p>
+                                                <p class="col-md-1 report-label">Periode Awal</p>
                                                 <input v-dpicker v-model="invoice_date_start" type="text" class="small-date form-control" />
                                             </div>
                                             <br>
                                             <div class="row">
-                                                <p class="col-md-1 report-label">Selesai</p>
+                                                <p class="col-md-1 report-label">Periode Akhir</p>
                                                 <input v-dpicker v-model="invoice_date_end" type="text" class="small-date form-control" />
                                             </div>
                                             <br>
@@ -125,7 +125,6 @@
 								<tr>
 									<th>Kode Barang</th>
 									<th>Nama Barang</th>
-									<th>QTY Stock</th>
 									<th>Multi Satuan</th>
 									<th>Masuk</th>
 									<th>Keluar</th>
@@ -143,30 +142,23 @@
 								<tr v-for="stock in stocks">
 									<td v-if="stock.footer == false"><span v-if="stock.data == false">@{{ stock.mstockcardgoodsid }}</span></td>
                                     <td v-if="stock.footer == false"><span v-if="stock.data == false">@{{ stock.mstockcardgoodsname }}</span></td>
-                                    <td v-if="stock.footer == false"><span v-if="stock.data == true" v-numberformatlabel>@{{ stock.mstockcardstocktotal }}</span></td>
                                     <td v-if="stock.footer == false"><span v-if="stock.data == true">@{{ stock.verbs }}</span></td>
                                     <td v-if="stock.footer == false"><span v-if="stock.data == true" v-numberformatlabel>@{{ stock.mstockcardstockin }}</span></td>
                                     <td v-if="stock.footer == false"><span v-if="stock.data == true" v-numberformatlabel>@{{ stock.mstockcardstockout }}</span></td>
-                                    <td v-if="stock.footer == false"><span v-if="stock.data == true" v-numberformatlabel>@{{ (stock.mstockcardstocktotal +stock.mstockcardstockin - stock.mstockcardstockout) }}</span></td>
+                                    <td v-if="stock.footer == false"><span v-if="stock.data == true" v-numberformatlabel>@{{ (stock.mstockcardstocktotal) }}</span></td>
                                     <td v-if="stock.footer == false"><span v-if="stock.data == true">@{{ stock.mstockcarddate }}</span></td>
                                     <td v-if="stock.footer == false"><span v-if="stock.data == true">@{{ stock.mstockcardtranstype }}</span></td>
                                     <td v-if="stock.footer == false"><span v-if="stock.data == true">@{{ stock.mstockcardtransno }}</span></td>
                                     <td v-if="stock.footer == false"><span v-if="stock.data == true">@{{ stock.gudang }}</span></td>
-                                    <td v-if="stock.footer == false"><span v-if="stock.data == true">Umum</span></td>
+                                    <td v-if="stock.footer == false"><span v-if="stock.data == true">@{{ stock.cabang }}</span></td>
                                     <td v-if="stock.footer == false">@{{ stock.mstockcardremark }}</td>
                                     <!--  footer -->
                                     <th v-if="stock.footer == true" class="tbl-footer" colspan="2">Saldo</th>
-                                    <th v-if="stock.footer == true" class="tbl-footer" v-numberformatlabel>@{{ stock.mstockcardstocktotal }}</th>
                                     <th v-if="stock.footer == true" class="tbl-footer">@{{ stock.verbs }}</th>
                                     <th v-if="stock.footer == true" class="tbl-footer" v-numberformatlabel>@{{ stock.mstockcardstockin }}</th>
                                     <th v-if="stock.footer == true" class="tbl-footer" v-numberformatlabel>@{{ stock.mstockcardstockout }}</th>
-                                    <th v-if="stock.footer == true" class="tbl-footer" v-numberformatlabel>@{{ (stock.mstockcardstocktotal +stock.mstockcardstockin - stock.mstockcardstockout) }}</th>
-                                    <th v-if="stock.footer == true" class="tbl-footer">@{{ stock.mstockcarddate }}</th>
-                                    <th v-if="stock.footer == true" class="tbl-footer">@{{ stock.mstockcardtranstype }}</th>
-                                    <th v-if="stock.footer == true" class="tbl-footer">@{{ stock.mstockcardtransno }}</th>
-                                    <th v-if="stock.footer == true" class="tbl-footer">@{{ stock.gudang }}</th>
-                                    <th v-if="stock.footer == true" class="tbl-footer">Umum</th>
-                                    <th v-if="stock.footer == true" class="tbl-footer"></th>
+                                    <th v-if="stock.footer == true" class="tbl-footer" v-numberformatlabel>@{{ (stock.mstockcardstocktotal) }}</th>
+                                    <th v-if="stock.footer == true" class="tbl-footer" colspan="6"></th>
 								</tr>
 								</tbody>
 							</table>
@@ -265,6 +257,11 @@
 @stop
 @section('js')
 <script src="{{ url('/js/stockcardreport.js') }}"></script>
+<script>
+    function refreshWarehouses(){
+        stockcardreport.$emit('update-warehouses');
+    }
+</script>
 @stop
 @section('css')
     <style>
