@@ -120,7 +120,7 @@
                         <tr>
                             <th colspan="3">Saldo</th>
                             <th>{{ invoice_count_total }}</th>
-                            <th colspan="7">{{ sales_total }}</th>
+                            <th colspan="7"></th>
                             <th style="text-align:right" v-priceformatlabel="num_format" >{{ sales_total }}</th>
                             <th style="text-align:right" v-priceformatlabel="num_format" >{{ tax_total }}</th>
                             <th style="text-align:right" v-priceformatlabel="num_format" >{{ sales_total + tax_total - discount_total }}</th>
@@ -224,7 +224,7 @@
             expander(index,item){
                 if(!item.expanded){
                     $('#loading_modal').modal('toggle');
-                    Axios.get('/admin-api/salesreport/detail/'+item.mhinvoicedate)
+                    Axios.get('/admin-api/salesreport/detail/'+item.mhinvoicedate+"?wh="+this.selected_warehouse+"&goods="+this.selected_goods)
                     .then( res => {
                         item.expanded = true;
                         item.expand_length = res.data.length;
@@ -322,18 +322,20 @@
                 });
             },
             printTable(){
-                // window.open('/admin-nano/reports/salesreport/export/print?wh='+this.selected_warehouse+'&goods='+this.selected_goods+'&start='+this.invoice_date_start+'&end='+this.invoice_date_end,'_blank');
                 let data = base64.encode(JSON.stringify(this.sales));
-                window.open('/admin-nano/reports/salesreport/export/print?wh='+this.selected_warehouse+'&goods='+this.selected_goods+'&start='+this.invoice_date_start+'&end='+this.invoice_date_end+'&data='+data);
+                window.open('/admin-nano/reports/salesreport/export/print?wh='+this.selected_warehouse+'&goods='+this.selected_goods+'&start='+this.invoice_date_start+'&end='+this.invoice_date_end+'&data='+data,'_blank');
             },
             pdfTable(){
-                window.open('/admin-nano/reports/salesreport/export/pdf?wh='+this.selected_warehouse+'&goods='+this.selected_goods+'&start='+this.invoice_date_start+'&end='+this.invoice_date_end,'_blank');
+                let data = base64.encode(JSON.stringify(this.sales));
+                window.open('/admin-nano/reports/salesreport/export/pdf?wh='+this.selected_warehouse+'&goods='+this.selected_goods+'&start='+this.invoice_date_start+'&end='+this.invoice_date_end+'&data='+data,'_blank');
             },
             excelTable(){
-                window.open('/admin-nano/reports/salesreport/export/excel?wh='+this.selected_warehouse+'&goods='+this.selected_goods+'&start='+this.invoice_date_start+'&end='+this.invoice_date_end,'_blank');
+                let data = base64.encode(JSON.stringify(this.sales));
+                window.open('/admin-nano/reports/salesreport/export/excel?wh='+this.selected_warehouse+'&goods='+this.selected_goods+'&start='+this.invoice_date_start+'&end='+this.invoice_date_end+'&data='+data,'_blank');
             },
             csvTable(){
-                window.open('/admin-nano/reports/salesreport/export/csv?wh='+this.selected_warehouse+'&goods='+this.selected_goods+'&start='+this.invoice_date_start+'&end='+this.invoice_date_end,'_blank');
+                let data = base64.encode(JSON.stringify(this.sales));
+                window.open('/admin-nano/reports/salesreport/export/csv?wh='+this.selected_warehouse+'&goods='+this.selected_goods+'&start='+this.invoice_date_start+'&end='+this.invoice_date_end+'&data='+data,'_blank');
             }
         },
         created(){

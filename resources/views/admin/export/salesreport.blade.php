@@ -110,30 +110,44 @@
                             <td></td>
                         @endif
                         @if($sale->header == false)
-                            <td>{{ $sale->mhinvoicecustomerid }}</td>
-                            <td>{{ $sale->mhinvoicecustomername }}</td>
+                            <td>{{ $sale->mdcustomerid }}</td>
+                            <td>{{ $sale->mdcustomername }}</td>
+                            <td></td>
+                            <td>{{ $sale->mhinvoiceno }}</td>
+                            <td>{{ $sale->mdinvoicegoodsid }}</td>
+                            <td>{{ $sale->mdinvoicegoodsname }}</td>
+                            <td>{{ $sale->mdinvoicegoodsqty }}</td>
+                            <td style="text-align: right">{{ number_format($sale->mdinvoicegoodsprice,$decimals,$dec_point,$thousands_sep) }}</td>
+                            <td></td>
+                            <td style="text-align: right">{{ number_format($sale->mdinvoicegoodsdiscount,$decimals,$dec_point,$thousands_sep) }}</td>
                         @else
                             <td></td>
                             <td></td>
+                            <td>{{ $sale->numoftrans }}</td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
                         @endif
-                        <td>{{ $sale->numoftrans }}</td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td style="text-align:right"></td>
-                        <td style="text-align:right"></td>
-                        <td style="text-align:right"></td>
+                        <td style="text-align:right" >{{ number_format($sale->mhinvoicesubtotal_sum,$decimals,$dec_point,$thousands_sep) }}</td>
+                        <td style="text-align:right" >{{ number_format($sale->mhinvoicetaxtotal_sum,$decimals,$dec_point,$thousands_sep) }}</td>
+                        <td style="text-align:right" >{{ number_format($sale->mhinvoicegrandtotal_sum,$decimals,$dec_point,$thousands_sep) }}</td>
                         <td></td>
                     </tr>
                 @endforeach
             </tbody>
             <thead>
                 <tr>
-                    <td colspan="2">TOTAL</td>
+                    <td colspan="3">Saldo</td>
+                    <td>{{ $total_inv }}</td>
+                    <td colspan="7"></td>
+                    <td style="text-align:right">{{ number_format($total_sales,$decimals,$dec_point,$thousands_sep) }}</td>
+                    <td style="text-align:right">{{ number_format($total_tax,$decimals,$dec_point,$thousands_sep) }}</td>
+                    <td style="text-align:right">{{ number_format($total_grand,$decimals,$dec_point,$thousands_sep) }}</td>
+                    <td></td>
                 </tr>
             </thead>
         </table>

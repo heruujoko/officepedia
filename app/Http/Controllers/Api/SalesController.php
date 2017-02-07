@@ -19,7 +19,10 @@ class SalesController extends Controller
     public function index(Request $request){
         $sales = [];
         $headers=[];
-
+        $mhinvoicesubtotal_sum = 0;
+        $mhinvoicediscounttotal_sum = 0;
+        $mhinvoicetaxtotal_sum = 0;
+        $mhinvoicegrandtotal_sum = 0;
         /*
          * filter date header
          */
@@ -37,15 +40,30 @@ class SalesController extends Controller
                 array_push($headers,$d->mhinvoiceno);
             }
             $headers = array_unique($headers);
-            // $sales = $header_query->whereIn('mhinvoiceno',$headers)->get();
-            $sales = $header_query->whereIn('mhinvoiceno',$headers)->groupBy('mhinvoicedate')
-            ->selectRaw('*,sum(mhinvoicesubtotal) as mhinvoicesubtotal_sum,sum(mhinvoicediscounttotal) as mhinvoicediscounttotal_sum,sum(mhinvoicetaxtotal) as mhinvoicetaxtotal_sum,sum(mhinvoicegrandtotal) as mhinvoicegrandtotal_sum,count(mhinvoiceno) as numoftrans')
-            ->get();
+            $sales = $header_query->whereIn('mhinvoiceno',$headers)->groupBy('mhinvoicedate')->get();
             foreach($sales as $s){
 
-                $details = MDInvoice::on(Auth::user()->db_name)->where('mdinvoicedate',$s->mhinvoicedate)->get();
+                $details = MDInvoice::on(Auth::user()->db_name)
+                ->where('mdinvoicedate',$s->mhinvoicedate)
+                ->where('mdinvoicegoodsid',$request->goods)
+                ->where('mdinvoicegoodsidwhouse',$request->wh)
+                ->get();
                 $s['detail_count'] = count($details);
+                $s['numoftrans'] = count($details);
+                $s['header'] = true;
+                foreach($details as $dt){
 
+                        $mhinvoicesubtotal_sum += $dt->mdinvoicegoodsgrossamount;
+                        $mhinvoicediscounttotal_sum += $dt->mdinvoicegoodsdiscount;
+                        $mhinvoicetaxtotal_sum += $dt->mdinvoicegoodstax;
+                        $mhinvoicegrandtotal_sum += ($dt->mdinvoicegoodsgrossamount + $dt->mdinvoicegoodstax);
+
+                }
+
+                $s['mhinvoicesubtotal_sum'] = $mhinvoicesubtotal_sum;
+                $s['mhinvoicediscounttotal_sum'] = $mhinvoicediscounttotal_sum;
+                $s['mhinvoicetaxtotal_sum'] = $mhinvoicetaxtotal_sum;
+                $s['mhinvoicegrandtotal_sum'] = $mhinvoicegrandtotal_sum;
             }
 
         } else if($request->has('wh')){
@@ -54,31 +72,72 @@ class SalesController extends Controller
                 array_push($headers,$d->mhinvoiceno);
             }
             $headers = array_unique($headers);
-            // $sales = $header_query->whereIn('mhinvoiceno',$headers)->get();
-            $sales = $header_query->whereIn('mhinvoiceno',$headers)->groupBy('mhinvoicedate')
-            ->selectRaw('*,sum(mhinvoicesubtotal) as mhinvoicesubtotal_sum,sum(mhinvoicediscounttotal) as mhinvoicediscounttotal_sum,sum(mhinvoicetaxtotal) as mhinvoicetaxtotal_sum,sum(mhinvoicegrandtotal) as mhinvoicegrandtotal_sum,count(mhinvoiceno) as numoftrans')
-            ->get();
+            $sales = $header_query->whereIn('mhinvoiceno',$headers)->groupBy('mhinvoicedate')->get();
             foreach($sales as $s){
 
-                $details = MDInvoice::on(Auth::user()->db_name)->where('mdinvoicedate',$s->mhinvoicedate)->get();
+                $mhinvoicesubtotal_sum = 0;
+                $mhinvoicediscounttotal_sum = 0;
+                $mhinvoicetaxtotal_sum = 0;
+                $mhinvoicegrandtotal_sum = 0;
+
+                $details = MDInvoice::on(Auth::user()->db_name)
+                ->where('mdinvoicedate',$s->mhinvoicedate)
+                ->where('mdinvoicegoodsidwhouse',$request->wh)
+                ->get();
                 $s['detail_count'] = count($details);
+                $s['numoftrans'] = count($details);
+                $s['header'] = true;
+                foreach($details as $dt){
+
+                        $mhinvoicesubtotal_sum += $dt->mdinvoicegoodsgrossamount;
+                        $mhinvoicediscounttotal_sum += $dt->mdinvoicegoodsdiscount;
+                        $mhinvoicetaxtotal_sum += $dt->mdinvoicegoodstax;
+                        $mhinvoicegrandtotal_sum += ($dt->mdinvoicegoodsgrossamount + $dt->mdinvoicegoodstax);
+
+                }
+
+                $s['mhinvoicesubtotal_sum'] = $mhinvoicesubtotal_sum;
+                $s['mhinvoicediscounttotal_sum'] = $mhinvoicediscounttotal_sum;
+                $s['mhinvoicetaxtotal_sum'] = $mhinvoicetaxtotal_sum;
+                $s['mhinvoicegrandtotal_sum'] = $mhinvoicegrandtotal_sum;
 
             }
         }else if($request->has('goods')){
-            $details = MDInvoice::on(Auth::user()->db_name)->where('mdinvoicegoodsid',$request->goods)->get();
+            $details = MDInvoice::on(Auth::user()->db_name)->where('mdinvoicegoodsid',$request->goods)
+            ->whereDate('mdinvoicedate','>=',Carbon::parse($request->start))
+            ->whereDate('mdinvoicedate','<=',Carbon::parse($request->end))
+            ->get();
             foreach ($details as $d) {
                 array_push($headers,$d->mhinvoiceno);
             }
             $headers = array_unique($headers);
-            // $sales = $header_query->whereIn('mhinvoiceno',$headers)->get();
-            $sales = $header_query->whereIn('mhinvoiceno',$headers)->groupBy('mhinvoicedate')
-            ->selectRaw('*,sum(mhinvoicesubtotal) as mhinvoicesubtotal_sum,sum(mhinvoicediscounttotal) as mhinvoicediscounttotal_sum,sum(mhinvoicetaxtotal) as mhinvoicetaxtotal_sum,sum(mhinvoicegrandtotal) as mhinvoicegrandtotal_sum,count(mhinvoiceno) as numoftrans')
-            ->get();
+            $sales = $header_query->whereIn('mhinvoiceno',$headers)->groupBy('mhinvoicedate')->get();
             foreach($sales as $s){
+                $mhinvoicesubtotal_sum = 0;
+                $mhinvoicediscounttotal_sum = 0;
+                $mhinvoicetaxtotal_sum = 0;
+                $mhinvoicegrandtotal_sum = 0;
 
-                $details = MDInvoice::on(Auth::user()->db_name)->where('mdinvoicedate',$s->mhinvoicedate)->get();
+                $details = MDInvoice::on(Auth::user()->db_name)
+                ->where('mdinvoicedate',$s->mhinvoicedate)
+                ->where('mdinvoicegoodsid',$request->goods)
+                ->get();
                 $s['detail_count'] = count($details);
+                $s['numoftrans'] = count($details);
+                $s['header'] = true;
+                foreach($details as $dt){
 
+                        $mhinvoicesubtotal_sum += $dt->mdinvoicegoodsgrossamount;
+                        $mhinvoicediscounttotal_sum += $dt->mdinvoicegoodsdiscount;
+                        $mhinvoicetaxtotal_sum += $dt->mdinvoicegoodstax;
+                        $mhinvoicegrandtotal_sum += ($dt->mdinvoicegoodsgrossamount + $dt->mdinvoicegoodstax);
+
+                }
+
+                $s['mhinvoicesubtotal_sum'] = $mhinvoicesubtotal_sum;
+                $s['mhinvoicediscounttotal_sum'] = $mhinvoicediscounttotal_sum;
+                $s['mhinvoicetaxtotal_sum'] = $mhinvoicetaxtotal_sum;
+                $s['mhinvoicegrandtotal_sum'] = $mhinvoicegrandtotal_sum;
             }
         } else {
             $sales = $header_query->groupBy('mhinvoicedate')
@@ -96,15 +155,19 @@ class SalesController extends Controller
         return response()->json($sales);
     }
 
-    public function invoice_detail($invoice_date){
-        $details = MDInvoice::on(Auth::user()->db_name)->whereDate('created_at','=',Carbon::parse($invoice_date))->where('void',0)->orderBy('mhinvoiceno','asc')->get();
+    public function invoice_detail(Request $request,$invoice_date){
+        $detail_query = MDInvoice::on(Auth::user()->db_name)->whereDate('created_at','=',Carbon::parse($invoice_date))->where('void',0)->orderBy('mhinvoiceno','asc');
+        if($request->has('goods')){
+            $detail_query->where('mdinvoicegoodsid',$request->goods);
+        }
+        $details = $detail_query->get();
         foreach ($details as $d) {
             $md = MDInvoice::on(Auth::user()->db_name)->where('mhinvoiceno',$d->mhinvoiceno)->where('void',0)->get();
             $d['header'] = false;
             $d['numoftrans'] = count($md);
             $d['mhinvoicesubtotal_sum'] = $d->mdinvoicegoodsgrossamount;
-            $d['mhinvoicegrandtotal_sum'] = $d->mdinvoicegoodsgrossamount;
             $d['mhinvoicetaxtotal_sum'] = $d->mdinvoicegoodstax;
+            $d['mhinvoicegrandtotal_sum'] = $d->mdinvoicegoodsgrossamount + $d->mdinvoicegoodstax;
         }
         return response()->json($details);
     }
