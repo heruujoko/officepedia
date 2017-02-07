@@ -2531,8 +2531,8 @@ class ReportController extends Controller
         if($request->has('end')){
                 $query->whereDate('mstockcarddate','<=',Carbon::parse($request->end));
             }
-        if($request->has('goods')){
-                $query->where('mstockcardgoodsid',$request->goods);
+        if($request->has('mstockcardgoodsid')){
+                $query->where('mstockcardgoodsid',$request->mstockcardgoodsid);
         }
         if ($request->has('mstockcardwhouse')) {
             $query->where('mstockcardwhouse',$request->mstockcardwhouse);
@@ -2553,7 +2553,9 @@ class ReportController extends Controller
 
         foreach ($headers as $dtl) {
             $grp_h = array(
+                'blank' => false,
                 'data' => 'header',
+                'footer' => false,
                 'mstockcardgoodsid' => $dtl['mstockcardgoodsid'],
                 'mstockcardgoodsname' => $dtl['mstockcardgoodsname'],
             );
@@ -2571,14 +2573,22 @@ class ReportController extends Controller
             }
 
             $grp = $grp_query->get();
-
             foreach ($grp as $g) {
 
                 $mgoods = MGoods::on(Auth::user()->db_name)->where('mgoodscode',$g->mstockcardgoodsid)->first();
 
                 $g['data'] = 'data';
-                $g['verbs'] = UnitHelper::label($mgoods,$g->mstockcardstocktotal);
+                $g['blank'] = false;
+                $g['footer'] = false;
+                if($g->mstockcardstockin != 0){
+                    $g['verbs'] = UnitHelper::label($mgoods,$g->mstockcardstockin);
+                } else {
+                    $g['verbs'] = UnitHelper::label($mgoods,$g->mstockcardstockout);
+                }
+
                 $g['gudang'] = $g->gudang()->mwarehousename;
+                $g['cabang'] = $g->gudang()->cabang()->mbranchname;
+                $g['single'] = UnitHelper::singlelabel($mgoods,$g->mstockcardstocktotal);
                 array_push($stocks,$g);
             }
 
@@ -2589,7 +2599,6 @@ class ReportController extends Controller
                 'data' => false,
                 'footer' => false
             );
-            array_push($stocks,$blank);
 
             $footer = array(
                 'data' => 'footer',
@@ -2600,7 +2609,7 @@ class ReportController extends Controller
                 'mstockcardstocktotal' => $last_stock->mstockcardstocktotal,
                 'mstockcardstockin' => $last_stock->mstockcardstockin,
                 'mstockcardstockout' => $last_stock->mstockcardstockout,
-                'verbs' => $last_stock['verbs'],
+                'verbs' => UnitHelper::label($mgoods,$last_stock->mstockcardstocktotal),
                 'mstockcarddate' => $last_stock->mstockcarddate,
                 'mstockcardtranstype' => $last_stock->mstockcardtranstype,
                 'mstockcardtransno' => $last_stock->mstockcardtransno,
@@ -2608,9 +2617,13 @@ class ReportController extends Controller
                 'mstockcardremark' => $last_stock->mstockcardremark
             );
 
+            $footer['footer'] = true;
+            $footer['data'] = 'footer';
             array_push($stocks,$footer);
+            array_push($stocks,$blank);
 
         }
+
         $data['stocks'] = $stocks;
         $config = MConfig::on(Auth::user()->db_name)->where('id',1)->first();
         $data['company'] = $config->msyscompname;
@@ -2644,8 +2657,8 @@ class ReportController extends Controller
         if($request->has('end')){
                 $query->whereDate('mstockcarddate','<=',Carbon::parse($request->end));
             }
-        if($request->has('goods')){
-                $query->where('mstockcardgoodsid',$request->goods);
+        if($request->has('mstockcardgoodsid')){
+                $query->where('mstockcardgoodsid',$request->mstockcardgoodsid);
         }
         if ($request->has('mstockcardwhouse')) {
             $query->where('mstockcardwhouse',$request->mstockcardwhouse);
@@ -2666,7 +2679,9 @@ class ReportController extends Controller
 
         foreach ($headers as $dtl) {
             $grp_h = array(
+                'blank' => false,
                 'data' => 'header',
+                'footer' => false,
                 'mstockcardgoodsid' => $dtl['mstockcardgoodsid'],
                 'mstockcardgoodsname' => $dtl['mstockcardgoodsname'],
             );
@@ -2684,14 +2699,22 @@ class ReportController extends Controller
             }
 
             $grp = $grp_query->get();
-
             foreach ($grp as $g) {
 
                 $mgoods = MGoods::on(Auth::user()->db_name)->where('mgoodscode',$g->mstockcardgoodsid)->first();
 
                 $g['data'] = 'data';
-                $g['verbs'] = UnitHelper::label($mgoods,$g->mstockcardstocktotal);
+                $g['blank'] = false;
+                $g['footer'] = false;
+                if($g->mstockcardstockin != 0){
+                    $g['verbs'] = UnitHelper::label($mgoods,$g->mstockcardstockin);
+                } else {
+                    $g['verbs'] = UnitHelper::label($mgoods,$g->mstockcardstockout);
+                }
+
                 $g['gudang'] = $g->gudang()->mwarehousename;
+                $g['cabang'] = $g->gudang()->cabang()->mbranchname;
+                $g['single'] = UnitHelper::singlelabel($mgoods,$g->mstockcardstocktotal);
                 array_push($stocks,$g);
             }
 
@@ -2702,7 +2725,6 @@ class ReportController extends Controller
                 'data' => false,
                 'footer' => false
             );
-            array_push($stocks,$blank);
 
             $footer = array(
                 'data' => 'footer',
@@ -2713,7 +2735,7 @@ class ReportController extends Controller
                 'mstockcardstocktotal' => $last_stock->mstockcardstocktotal,
                 'mstockcardstockin' => $last_stock->mstockcardstockin,
                 'mstockcardstockout' => $last_stock->mstockcardstockout,
-                'verbs' => $last_stock['verbs'],
+                'verbs' => UnitHelper::label($mgoods,$last_stock->mstockcardstocktotal),
                 'mstockcarddate' => $last_stock->mstockcarddate,
                 'mstockcardtranstype' => $last_stock->mstockcardtranstype,
                 'mstockcardtransno' => $last_stock->mstockcardtransno,
@@ -2721,7 +2743,10 @@ class ReportController extends Controller
                 'mstockcardremark' => $last_stock->mstockcardremark
             );
 
+            $footer['footer'] = true;
+            $footer['data'] = 'footer';
             array_push($stocks,$footer);
+            array_push($stocks,$blank);
 
         }
         $data['stocks'] = $stocks;
@@ -2751,8 +2776,8 @@ class ReportController extends Controller
         if($request->has('end')){
                 $query->whereDate('mstockcarddate','<=',Carbon::parse($request->end));
             }
-        if($request->has('goods')){
-                $query->where('mstockcardgoodsid',$request->goods);
+        if($request->has('mstockcardgoodsid')){
+                $query->where('mstockcardgoodsid',$request->mstockcardgoodsid);
         }
         if ($request->has('mstockcardwhouse')) {
             $query->where('mstockcardwhouse',$request->mstockcardwhouse);
@@ -2773,7 +2798,9 @@ class ReportController extends Controller
 
         foreach ($headers as $dtl) {
             $grp_h = array(
+                'blank' => false,
                 'data' => 'header',
+                'footer' => false,
                 'mstockcardgoodsid' => $dtl['mstockcardgoodsid'],
                 'mstockcardgoodsname' => $dtl['mstockcardgoodsname'],
             );
@@ -2791,14 +2818,22 @@ class ReportController extends Controller
             }
 
             $grp = $grp_query->get();
-
             foreach ($grp as $g) {
 
                 $mgoods = MGoods::on(Auth::user()->db_name)->where('mgoodscode',$g->mstockcardgoodsid)->first();
 
                 $g['data'] = 'data';
-                $g['verbs'] = UnitHelper::label($mgoods,$g->mstockcardstocktotal);
+                $g['blank'] = false;
+                $g['footer'] = false;
+                if($g->mstockcardstockin != 0){
+                    $g['verbs'] = UnitHelper::label($mgoods,$g->mstockcardstockin);
+                } else {
+                    $g['verbs'] = UnitHelper::label($mgoods,$g->mstockcardstockout);
+                }
+
                 $g['gudang'] = $g->gudang()->mwarehousename;
+                $g['cabang'] = $g->gudang()->cabang()->mbranchname;
+                $g['single'] = UnitHelper::singlelabel($mgoods,$g->mstockcardstocktotal);
                 array_push($stocks,$g);
             }
 
@@ -2809,7 +2844,6 @@ class ReportController extends Controller
                 'data' => false,
                 'footer' => false
             );
-            array_push($stocks,$blank);
 
             $footer = array(
                 'data' => 'footer',
@@ -2820,7 +2854,7 @@ class ReportController extends Controller
                 'mstockcardstocktotal' => $last_stock->mstockcardstocktotal,
                 'mstockcardstockin' => $last_stock->mstockcardstockin,
                 'mstockcardstockout' => $last_stock->mstockcardstockout,
-                'verbs' => $last_stock['verbs'],
+                'verbs' => UnitHelper::label($mgoods,$last_stock->mstockcardstocktotal),
                 'mstockcarddate' => $last_stock->mstockcarddate,
                 'mstockcardtranstype' => $last_stock->mstockcardtranstype,
                 'mstockcardtransno' => $last_stock->mstockcardtransno,
@@ -2828,9 +2862,13 @@ class ReportController extends Controller
                 'mstockcardremark' => $last_stock->mstockcardremark
             );
 
+            $footer['footer'] = true;
+            $footer['data'] = 'footer';
             array_push($stocks,$footer);
+            array_push($stocks,$blank);
 
         }
+
         $this->data['stocks'] = $stocks;
         $config = MConfig::on(Auth::user()->db_name)->where('id',1)->first();
         $this->data['company'] = $config->msyscompname;
@@ -2911,7 +2949,7 @@ class ReportController extends Controller
 
                 $this->count+=2;
                 $sheet->row($this->count,array(
-                    'Kode Barang','Nama Barang','QTY Stock','Multi Satuan','Masuk','Keluar','Saldo','Tgl Trans','Tipe Trans','No Trans','Gudang','Cabang','Keterangan'
+                    'Kode Barang','Nama Barang','Multi Satuan','Masuk','Keluar','Saldo','Tgl Trans','Tipe Trans','No Trans','Gudang','Cabang','Keterangan'
                 ));
 
                 foreach ($this->data['stocks'] as $st) {
@@ -2936,11 +2974,10 @@ class ReportController extends Controller
                         $sheet->row($this->count,array(
                             '',
                             '',
-                            $st->mstockcardstocktotal,
                             $st['verbs'],
                             $st->mstockcardstockin,
                             $st->mstockcardstockout,
-                            ($st->mstockcardstocktotal +$st->mstockcardstockin - $st->mstockcardstockout),
+                            ($st->mstockcardstocktotal),
                             $st->mstockcarddate,
                             $st->mstockcardtranstype,
                             $st->mstockcardtransno,
@@ -2952,11 +2989,10 @@ class ReportController extends Controller
                         $sheet->row($this->count,array(
                             'Saldo',
                             '',
-                            $st['mstockcardstocktotal'],
                             $st['verbs'],
                             $st['mstockcardstockin'],
                             $st['mstockcardstockout'],
-                            ($st['mstockcardstocktotal'] +$st['mstockcardstockin'] - $st['mstockcardstockout']),
+                            ($st['mstockcardstocktotal']),
                             $st['mstockcarddate'],
                             $st['mstockcardtranstype'],
                             $st['mstockcardtransno'],
@@ -2996,8 +3032,8 @@ class ReportController extends Controller
         if($request->has('end')){
                 $query->whereDate('mstockcarddate','<=',Carbon::parse($request->end));
             }
-        if($request->has('goods')){
-                $query->where('mstockcardgoodsid',$request->goods);
+        if($request->has('mstockcardgoodsid')){
+                $query->where('mstockcardgoodsid',$request->mstockcardgoodsid);
         }
         if ($request->has('mstockcardwhouse')) {
             $query->where('mstockcardwhouse',$request->mstockcardwhouse);
@@ -3018,7 +3054,9 @@ class ReportController extends Controller
 
         foreach ($headers as $dtl) {
             $grp_h = array(
+                'blank' => false,
                 'data' => 'header',
+                'footer' => false,
                 'mstockcardgoodsid' => $dtl['mstockcardgoodsid'],
                 'mstockcardgoodsname' => $dtl['mstockcardgoodsname'],
             );
@@ -3036,14 +3074,22 @@ class ReportController extends Controller
             }
 
             $grp = $grp_query->get();
-
             foreach ($grp as $g) {
 
                 $mgoods = MGoods::on(Auth::user()->db_name)->where('mgoodscode',$g->mstockcardgoodsid)->first();
 
                 $g['data'] = 'data';
-                $g['verbs'] = UnitHelper::label($mgoods,$g->mstockcardstocktotal);
+                $g['blank'] = false;
+                $g['footer'] = false;
+                if($g->mstockcardstockin != 0){
+                    $g['verbs'] = UnitHelper::label($mgoods,$g->mstockcardstockin);
+                } else {
+                    $g['verbs'] = UnitHelper::label($mgoods,$g->mstockcardstockout);
+                }
+
                 $g['gudang'] = $g->gudang()->mwarehousename;
+                $g['cabang'] = $g->gudang()->cabang()->mbranchname;
+                $g['single'] = UnitHelper::singlelabel($mgoods,$g->mstockcardstocktotal);
                 array_push($stocks,$g);
             }
 
@@ -3054,7 +3100,6 @@ class ReportController extends Controller
                 'data' => false,
                 'footer' => false
             );
-            array_push($stocks,$blank);
 
             $footer = array(
                 'data' => 'footer',
@@ -3065,7 +3110,7 @@ class ReportController extends Controller
                 'mstockcardstocktotal' => $last_stock->mstockcardstocktotal,
                 'mstockcardstockin' => $last_stock->mstockcardstockin,
                 'mstockcardstockout' => $last_stock->mstockcardstockout,
-                'verbs' => $last_stock['verbs'],
+                'verbs' => UnitHelper::label($mgoods,$last_stock->mstockcardstocktotal),
                 'mstockcarddate' => $last_stock->mstockcarddate,
                 'mstockcardtranstype' => $last_stock->mstockcardtranstype,
                 'mstockcardtransno' => $last_stock->mstockcardtransno,
@@ -3073,9 +3118,13 @@ class ReportController extends Controller
                 'mstockcardremark' => $last_stock->mstockcardremark
             );
 
+            $footer['footer'] = true;
+            $footer['data'] = 'footer';
             array_push($stocks,$footer);
+            array_push($stocks,$blank);
 
         }
+
         $this->data['stocks'] = $stocks;
         $config = MConfig::on(Auth::user()->db_name)->where('id',1)->first();
         $this->data['company'] = $config->msyscompname;
@@ -3156,7 +3205,7 @@ class ReportController extends Controller
 
                 $this->count+=2;
                 $sheet->row($this->count,array(
-                    'Kode Barang','Nama Barang','QTY Stock','Multi Satuan','Masuk','Keluar','Saldo','Tgl Trans','Tipe Trans','No Trans','Gudang','Cabang','Keterangan'
+                    'Kode Barang','Nama Barang','Multi Satuan','Masuk','Keluar','Saldo','Tgl Trans','Tipe Trans','No Trans','Gudang','Cabang','Keterangan'
                 ));
 
                 foreach ($this->data['stocks'] as $st) {
@@ -3181,11 +3230,10 @@ class ReportController extends Controller
                         $sheet->row($this->count,array(
                             '',
                             '',
-                            $st->mstockcardstocktotal,
                             $st['verbs'],
                             $st->mstockcardstockin,
                             $st->mstockcardstockout,
-                            ($st->mstockcardstocktotal +$st->mstockcardstockin - $st->mstockcardstockout),
+                            ($st->mstockcardstocktotal),
                             $st->mstockcarddate,
                             $st->mstockcardtranstype,
                             $st->mstockcardtransno,
@@ -3197,11 +3245,10 @@ class ReportController extends Controller
                         $sheet->row($this->count,array(
                             'Saldo',
                             '',
-                            $st['mstockcardstocktotal'],
                             $st['verbs'],
                             $st['mstockcardstockin'],
                             $st['mstockcardstockout'],
-                            ($st['mstockcardstocktotal'] +$st['mstockcardstockin'] - $st['mstockcardstockout']),
+                            ($st['mstockcardstocktotal']),
                             $st['mstockcarddate'],
                             $st['mstockcardtranstype'],
                             $st['mstockcardtransno'],

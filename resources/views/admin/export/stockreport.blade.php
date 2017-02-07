@@ -68,6 +68,13 @@
         .tbl-footer {
             background-image: -webkit-linear-gradient(top,#f2f2f2 0,#fafafa 100%);
         }
+        .bold {
+            font-weight: bold;
+            font-size: 11px;
+        }
+        .grey{
+            background-color: #ddd;
+        }
         </style>
     </head>
     <body>
@@ -83,20 +90,19 @@
         <br>
         <table class="table" id="tableapi">
             <thead>
-                <tr>
-                    <th>Kode Barang</th>
-                    <th>Nama Barang</th>
-                    <th>QTY Stock</th>
-                    <th>Multi Satuan</th>
-                    <th>Masuk</th>
-                    <th>Keluar</th>
-                    <th>Saldo</th>
-                    <th>Tgl Trans</th>
-                    <th>Tipe Transaksi</th>
-                    <th>No Transaksi</th>
-                    <th>Gudang</th>
-                    <th>Cabang</th>
-                    <th>Keterangan</th>
+                <tr class="grey">
+                    <td class="bold">Kode Barang</td>
+                    <td class="bold">Nama Barang</td>
+                    <td class="bold">Multi Satuan</td>
+                    <td class="bold">Masuk</td>
+                    <td class="bold">Keluar</td>
+                    <td class="bold">Saldo</td>
+                    <td class="bold">Tgl Trans</td>
+                    <td class="bold">Tipe Transaksi</td>
+                    <td class="bold">No Transaksi</td>
+                    <td class="bold">Gudang</td>
+                    <td class="bold">Cabang</td>
+                    <td class="bold">Keterangan</td>
                 </tr>
             </thead>
             <tbody>
@@ -121,11 +127,10 @@
                     <tr>
                         <td></td>
                         <td></td>
-                        <td>{{ number_format($st->mstockcardstocktotal,0,'.',',') }}</td>
                         <td>{{ $st['verbs'] }}</td>
                         <td>{{ number_format($st->mstockcardstockin,0,'.',',') }}</td>
                         <td>{{ number_format($st->mstockcardstockout,0,'.',',') }}</td>
-                        <td>{{ number_format(($st->mstockcardstocktotal +$st->mstockcardstockin - $st->mstockcardstockout),0,'.',',') }}</td>
+                        <td>{{ number_format(($st->mstockcardstocktotal),0,'.',',') }}</td>
                         <td>{{ $st->mstockcarddate }}</td>
                         <td>{{ $st->mstockcardtranstype }}</td>
                         <td>{{ $st->mstockcardtransno }}</td>
@@ -134,20 +139,19 @@
                         <td></td>
                     </tr>
                     @elseif($st['data'] == 'footer')
-                    <tr>
-                        <th>Saldo</th>
-                        <th></th>
-                        <th>{{ number_format($st['mstockcardstocktotal'],0,'.',',') }}</th>
-                        <th>{{ $st['verbs'] }}</th>
-                        <th>{{ number_format($st['mstockcardstockin'],0,'.',',') }}</th>
-                        <th>{{ number_format($st['mstockcardstockout'],0,'.',',') }}</th>
-                        <th>{{ number_format(($st['mstockcardstocktotal'] +$st['mstockcardstockin'] - $st['mstockcardstockout']),0,'.',',') }}</th>
-                        <th>{{ $st['mstockcarddate'] }}</th>
-                        <th>{{ $st['mstockcardtranstype'] }}</th>
-                        <th>{{ $st['mstockcardtransno'] }}</th>
-                        <th>{{ $st['gudang'] }}</th>
-                        <th> Umum </th>
-                        <th></th>
+                    <tr class="grey">
+                        <td class="bold">Saldo</td>
+                        <td class="bold"></td>
+                        <td class="bold">{{ $st['verbs'] }}</td>
+                        <td class="bold"></td>
+                        <td class="bold"></td>
+                        <td class="bold">{{ number_format(($st['mstockcardstocktotal']),0,'.',',') }}</td>
+                        <td class="bold"></td>
+                        <td class="bold"></td>
+                        <td class="bold"></td>
+                        <td class="bold"></td>
+                        <td class="bold"></td>
+                        <td class="bold"></td>
                     </tr>
                     @else
                     <tr>
