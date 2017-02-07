@@ -97,13 +97,14 @@ class SalesController extends Controller
     }
 
     public function invoice_detail($invoice_date){
-        $details = MHInvoice::on(Auth::user()->db_name)->whereDate('mhinvoicedate','=',Carbon::parse($invoice_date))->where('void',0)->get();
+        $details = MDInvoice::on(Auth::user()->db_name)->whereDate('created_at','=',Carbon::parse($invoice_date))->where('void',0)->orderBy('mhinvoiceno','asc')->get();
         foreach ($details as $d) {
             $md = MDInvoice::on(Auth::user()->db_name)->where('mhinvoiceno',$d->mhinvoiceno)->where('void',0)->get();
             $d['header'] = false;
             $d['numoftrans'] = count($md);
-            $d['mhinvoicesubtotal_sum'] = $d->mhinvoicesubtotal;
-            $d['mhinvoicetaxtotal_sum'] = $d->mhinvoicetaxtotal;
+            $d['mhinvoicesubtotal_sum'] = $d->mdinvoicegoodsgrossamount;
+            $d['mhinvoicegrandtotal_sum'] = $d->mdinvoicegoodsgrossamount;
+            $d['mhinvoicetaxtotal_sum'] = $d->mdinvoicegoodstax;
         }
         return response()->json($details);
     }

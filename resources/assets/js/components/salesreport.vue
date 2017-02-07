@@ -79,7 +79,7 @@
                             <th>Jumlah Invoice</th>
                             <th>No Invoice</th>
                             <th>Kode Barang</th>
-                            <th>Nama Barang</th>
+                            <th width="7%">Nama Barang</th>
                             <th>Quantity</th>
                             <th>Harga Satuan</th>
                             <th>Free Goods</th>
@@ -100,16 +100,16 @@
                                     {{ sale.mhinvoicedate }}
                                 </span>
                             </td>
-                            <td><span v-if="!sale.header">{{ sale.mhinvoicecustomerid }}<span></td>
-                            <td><span v-if="!sale.header">{{ sale.mhinvoicecustomername }}<span></td>
-                            <td>{{ sale.numoftrans }}</td>
+                            <td><span v-if="!sale.header">{{ sale.mdcustomerid }}<span></td>
+                            <td><span v-if="!sale.header">{{ sale.mdcustomername }}<span></td>
+                            <td><span v-if="sale.header">{{ sale.numoftrans }}</span></td>
                             <td><span v-if="!sale.header">{{ sale.mhinvoiceno }}<span></td>
+                            <td><span v-if="!sale.header">{{ sale.mdinvoicegoodsid }}<span></td>
+                            <td><span v-if="!sale.header">{{ sale.mdinvoicegoodsname }}<span></td>
+                            <td><span v-if="!sale.header">{{ sale.mdinvoicegoodsqty }}<span></td>
+                            <td style="text-align:right"><span v-if="!sale.header" v-priceformatlabel="num_format">{{ sale.mdinvoicegoodsprice }}<span></td>
                             <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
+                            <td style="text-align:right"><span v-if="!sale.header" v-priceformatlabel="num_format">{{ sale.mdinvoicegoodsdiscount }}<span></td>
                             <td style="text-align:right" v-priceformatlabel="num_format" >{{ sale.mhinvoicesubtotal_sum }}</td>
                             <td style="text-align:right" v-priceformatlabel="num_format" >{{ sale.mhinvoicetaxtotal_sum }}</td>
                             <td style="text-align:right" v-priceformatlabel="num_format" >{{ sale.mhinvoicegrandtotal_sum }}</td>
@@ -138,6 +138,7 @@
     import _ from 'lodash'
     import moment from 'moment'
     import numeral from 'numeral'
+    import base64 from 'base-64'
 
     export default {
         props: ['username'],
@@ -283,7 +284,7 @@
                         }
                         self.sales = res.data;
                         if(self.expand_all == true){
-                            self.expandAll()    
+                            self.expandAll()
                         }
                         $('#loading_modal').modal('toggle');
                     })
@@ -321,7 +322,9 @@
                 });
             },
             printTable(){
-                window.open('/admin-nano/reports/salesreport/export/print?wh='+this.selected_warehouse+'&goods='+this.selected_goods+'&start='+this.invoice_date_start+'&end='+this.invoice_date_end,'_blank');
+                // window.open('/admin-nano/reports/salesreport/export/print?wh='+this.selected_warehouse+'&goods='+this.selected_goods+'&start='+this.invoice_date_start+'&end='+this.invoice_date_end,'_blank');
+                let data = base64.encode(JSON.stringify(this.sales));
+                window.open('/admin-nano/reports/salesreport/export/print?wh='+this.selected_warehouse+'&goods='+this.selected_goods+'&start='+this.invoice_date_start+'&end='+this.invoice_date_end+'&data='+data);
             },
             pdfTable(){
                 window.open('/admin-nano/reports/salesreport/export/pdf?wh='+this.selected_warehouse+'&goods='+this.selected_goods+'&start='+this.invoice_date_start+'&end='+this.invoice_date_end,'_blank');

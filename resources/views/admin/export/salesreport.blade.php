@@ -64,6 +64,10 @@
             font-size: 9px;
             display: block;
         }
+        .bold {
+            font-weight: bold;
+            font-size: 11px;
+        }
         </style>
     </head>
     <body>
@@ -80,48 +84,56 @@
         <table class="table" id="tableapi">
             <thead>
                 <tr>
-                    <th>Customer</th>
-                    <th>Tgl Invoice</th>
-                    <th>Jumlah Invoice</th>
-                    <th>Penjualan</th>
-                    <th>Bonus Barang</th>
-                    <th>Discount</th>
-                    <th>Subtotal</th>
-                    <th>PPN</th>
-                    <th>Total</th>
-                    <th>Retur</th>
-                    <th>Total - Retur</th>
+                    <td class="bold" width="10%">Tgl Transaksi</td>
+                    <td class="bold">Kode Customer</td>
+                    <td class="bold">Customer</td>
+                    <td class="bold">Jumlah Invoice</td>
+                    <td class="bold">No Invoice</td>
+                    <td class="bold">Kode Barang</td>
+                    <td class="bold">Nama Barang</td>
+                    <td class="bold">Quantity</td>
+                    <td class="bold">Harga Satuan</td>
+                    <td class="bold">Free Goods</td>
+                    <td class="bold">Discount</td>
+                    <td class="bold">Subtotal</td>
+                    <td class="bold">PPN</td>
+                    <td class="bold">Total</td>
+                    <td class="bold">Keterangan</td>
                 </tr>
             </thead>
             <tbody>
                 @foreach($sales as $sale)
                     <tr>
-                        <td>{{ $sale->mhinvoicecustomername }}</td>
-                        <td>{{ $sale->mhinvoicedate }}</td>
-                        <td>{{ $sale->detail_count }}</td>
-                        <td style="text-align:right" v-priceformatlabel="num_format" >{{ number_format($sale->mhinvoicesubtotal + $sale->mhinvoicediscounttotal,$decimals,$dec_point,$thousands_sep) }}</td>
-                        <td style="text-align:right" v-priceformatlabel="num_format">0</td>
-                        <td style="text-align:right" v-priceformatlabel="num_format" >{{ number_format($sale->mhinvoicediscounttotal,$decimals,$dec_point,$thousands_sep) }}</td>
-                        <td style="text-align:right" v-priceformatlabel="num_format" >{{ number_format($sale->mhinvoicesubtotal,$decimals,$dec_point,$thousands_sep) }}</td>
-                        <td style="text-align:right" v-priceformatlabel="num_format" >{{ number_format($sale->mhinvoicetaxtotal,$decimals,$dec_point,$thousands_sep) }}</td>
-                        <td style="text-align:right" v-priceformatlabel="num_format" >{{ number_format($sale->mhinvoicegrandtotal,$decimals,$dec_point,$thousands_sep) }}</td>
-                        <td style="text-align:right">0</td>
-                        <td style="text-align:right" v-priceformatlabel="num_format" >{{ number_format($sale->mhinvoicegrandtotal,$decimals,$dec_point,$thousands_sep) }}</td>
+                        @if($sale->header == true)
+                            <td>{{ $sale->mhinvoicedate }}</td>
+                        @else
+                            <td></td>
+                        @endif
+                        @if($sale->header == false)
+                            <td>{{ $sale->mhinvoicecustomerid }}</td>
+                            <td>{{ $sale->mhinvoicecustomername }}</td>
+                        @else
+                            <td></td>
+                            <td></td>
+                        @endif
+                        <td>{{ $sale->numoftrans }}</td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td style="text-align:right"></td>
+                        <td style="text-align:right"></td>
+                        <td style="text-align:right"></td>
+                        <td></td>
                     </tr>
                 @endforeach
             </tbody>
             <thead>
                 <tr>
-                    <th colspan="2">TOTAL</th>
-                    <th>{{ $invoice_count_total }}</th>
-                    <th style="text-align:right" v-priceformatlabel="num_format" >{{ $sales_total }}</th>
-                    <th style="text-align:right" v-priceformatlabel="num_format" >0</th>
-                    <th style="text-align:right" v-priceformatlabel="num_format" >{{ $discount_total }}</th>
-                    <th style="text-align:right" v-priceformatlabel="num_format" >{{ $sales_total }}</th>
-                    <th style="text-align:right" v-priceformatlabel="num_format" >{{ $tax_total }}</th>
-                    <th style="text-align:right" v-priceformatlabel="num_format" >{{ $sales_total + $tax_total - $discount_total }}</th>
-                    <th style="text-align:right" v-priceformatlabel="num_format" >0</th>
-                    <th style="text-align:right" v-priceformatlabel="num_format" >{{ $sales_total + $tax_total - $discount_total }}</th>
+                    <td colspan="2">TOTAL</td>
                 </tr>
             </thead>
         </table>

@@ -35,127 +35,136 @@ class ReportController extends Controller
 
     public function salesreport_print(Request $request){
 
-        $sales = [];
-        $headers=[];
+        $data = $request->data;
+        $data = base64_decode($data);
 
-        /*
-         * filter date header
-         */
-        $header_query = MHInvoice::on(Auth::user()->db_name);
-        if($request->has('start')){
-            $header_query->whereDate('mhinvoicedate','>=',Carbon::parse($request->start));
-        }
-        if($request->has('end')){
-            $header_query->whereDate('mhinvoicedate','<=',Carbon::parse($request->end));
-        }
+        $decoded_data = json_decode($data);
 
-        if($request->has('goods') && $request->has('wh')){
-            $details = MDInvoice::on(Auth::user()->db_name)->where('mdinvoicegoodsid',$request->goods)->where('mdinvoicegoodsidwhouse',$request->wh)->get();
-            foreach ($details as $d) {
-                array_push($headers,$d->mhinvoiceno);
-            }
-            $headers = array_unique($headers);
-            // $sales = $header_query->whereIn('mhinvoiceno',$headers)->get();
-            $sales = $header_query->whereIn('mhinvoiceno',$headers)->groupBy('mhinvoicedate')
-            ->selectRaw('*,sum(mhinvoicesubtotal) as mhinvoicesubtotal_sum,sum(mhinvoicediscounttotal) as mhinvoicediscounttotal_sum,sum(mhinvoicetaxtotal) as mhinvoicetaxtotal_sum,sum(mhinvoicegrandtotal) as mhinvoicegrandtotal_sum')
-            ->get();
-            foreach($sales as $s){
-
-                $details = MDInvoice::on(Auth::user()->db_name)->where('mdinvoicedate',$s->mhinvoicedate)->get();
-                $s['detail_count'] = count($details);
-
-            }
-
-        } else if($request->has('wh')){
-            $details = MDInvoice::on(Auth::user()->db_name)->where('mdinvoicegoodsidwhouse',$request->wh)->get();
-            foreach ($details as $d) {
-                array_push($headers,$d->mhinvoiceno);
-            }
-            $headers = array_unique($headers);
-            // $sales = $header_query->whereIn('mhinvoiceno',$headers)->get();
-            $sales = $header_query->whereIn('mhinvoiceno',$headers)->groupBy('mhinvoicedate')
-            ->selectRaw('*,sum(mhinvoicesubtotal) as mhinvoicesubtotal_sum,sum(mhinvoicediscounttotal) as mhinvoicediscounttotal_sum,sum(mhinvoicetaxtotal) as mhinvoicetaxtotal_sum,sum(mhinvoicegrandtotal) as mhinvoicegrandtotal_sum')
-            ->get();
-            foreach($sales as $s){
-
-                $details = MDInvoice::on(Auth::user()->db_name)->where('mdinvoicedate',$s->mhinvoicedate)->get();
-                $s['detail_count'] = count($details);
-
-            }
-        }else if($request->has('goods')){
-            $details = MDInvoice::on(Auth::user()->db_name)->where('mdinvoicegoodsid',$request->goods)->get();
-            foreach ($details as $d) {
-                array_push($headers,$d->mhinvoiceno);
-            }
-            $headers = array_unique($headers);
-            // $sales = $header_query->whereIn('mhinvoiceno',$headers)->get();
-            $sales = $header_query->whereIn('mhinvoiceno',$headers)->groupBy('mhinvoicedate')
-            ->selectRaw('*,sum(mhinvoicesubtotal) as mhinvoicesubtotal_sum,sum(mhinvoicediscounttotal) as mhinvoicediscounttotal_sum,sum(mhinvoicetaxtotal) as mhinvoicetaxtotal_sum,sum(mhinvoicegrandtotal) as mhinvoicegrandtotal_sum')
-            ->get();
-            foreach($sales as $s){
-
-                $details = MDInvoice::on(Auth::user()->db_name)->where('mdinvoicedate',$s->mhinvoicedate)->get();
-                $s['detail_count'] = count($details);
-
-            }
-        } else {
-            $sales = $header_query->groupBy('mhinvoicedate')
-            ->selectRaw('*,sum(mhinvoicesubtotal) as mhinvoicesubtotal_sum,sum(mhinvoicediscounttotal) as mhinvoicediscounttotal_sum,sum(mhinvoicetaxtotal) as mhinvoicetaxtotal_sum,sum(mhinvoicegrandtotal) as mhinvoicegrandtotal_sum')
-            ->get();
-
-            foreach($sales as $s){
-
-                $details = MDInvoice::on(Auth::user()->db_name)->where('mdinvoicedate',$s->mhinvoicedate)->get();
-                $s['detail_count'] = count($details);
-
-            }
-        }
-
-        $invoice_count =0;
-        $sales_total =0;
-        $discount_total =0;
-        $tax_total =0;
-        $grandtotal_total =0;
-        foreach ($sales as $sl) {
-            $invoice_count += $sl['detail_count'];
-            $sales_total += $sl->mhinvoicesubtotal_sum;
-            $discount_total += $sl->mhinvoicediscounttotal_sum;
-            $tax_total += $sl->mhinvoicetaxtotal_sum;
-            $grandtotal_total += $sl->mhinvoicegrandtotal_sum;
-        }
-
-        $config = MConfig::on(Auth::user()->db_name)->where('id',1)->first();
-        $data['decimals'] = $config->msysgenrounddec;
-        $data['dec_point'] = $config->msysnumseparator;
-        if($data['dec_point'] == ","){
-          $data['thousands_sep'] = ".";
-        } else {
-          $data['thousands_sep'] = ",";
-        }
-
-        $data['invoice_count_total'] = number_format($invoice_count,$data['decimals'],$data['dec_point'],$data['thousands_sep']);
-        $data['sales_total'] = number_format($sales_total,$data['decimals'],$data['dec_point'],$data['thousands_sep']);
-        $data['discount_total'] = number_format($discount_total,$data['decimals'],$data['dec_point'],$data['thousands_sep']);
-        $data['tax_total'] = number_format($tax_total,$data['decimals'],$data['dec_point'],$data['thousands_sep']);
-        $data['grandtotal_total'] = number_format($grandtotal_total,$data['decimals'],$data['dec_point'],$data['thousands_sep']);
-
-        $data['sales'] = $sales;
-        $data['company'] = $config->msyscompname;
-        $data['start'] = Carbon::parse($request->start)->formatLocalized('%d %B %Y');
-        $data['end'] = Carbon::parse($request->end)->formatLocalized('%d %B %Y');
+        // $sales = [];
+        // $headers=[];
+        //
+        // /*
+        //  * filter date header
+        //  */
+        // $header_query = MHInvoice::on(Auth::user()->db_name);
+        // if($request->has('start')){
+        //     $header_query->whereDate('mhinvoicedate','>=',Carbon::parse($request->start));
+        // }
+        // if($request->has('end')){
+        //     $header_query->whereDate('mhinvoicedate','<=',Carbon::parse($request->end));
+        // }
+        //
+        // if($request->has('goods') && $request->has('wh')){
+        //     $details = MDInvoice::on(Auth::user()->db_name)->where('mdinvoicegoodsid',$request->goods)->where('mdinvoicegoodsidwhouse',$request->wh)->get();
+        //     foreach ($details as $d) {
+        //         array_push($headers,$d->mhinvoiceno);
+        //     }
+        //     $headers = array_unique($headers);
+        //     // $sales = $header_query->whereIn('mhinvoiceno',$headers)->get();
+        //     $sales = $header_query->whereIn('mhinvoiceno',$headers)->groupBy('mhinvoicedate')
+        //     ->selectRaw('*,sum(mhinvoicesubtotal) as mhinvoicesubtotal_sum,sum(mhinvoicediscounttotal) as mhinvoicediscounttotal_sum,sum(mhinvoicetaxtotal) as mhinvoicetaxtotal_sum,sum(mhinvoicegrandtotal) as mhinvoicegrandtotal_sum')
+        //     ->get();
+        //     foreach($sales as $s){
+        //
+        //         $details = MDInvoice::on(Auth::user()->db_name)->where('mdinvoicedate',$s->mhinvoicedate)->get();
+        //         $s['detail_count'] = count($details);
+        //
+        //     }
+        //
+        // } else if($request->has('wh')){
+        //     $details = MDInvoice::on(Auth::user()->db_name)->where('mdinvoicegoodsidwhouse',$request->wh)->get();
+        //     foreach ($details as $d) {
+        //         array_push($headers,$d->mhinvoiceno);
+        //     }
+        //     $headers = array_unique($headers);
+        //     // $sales = $header_query->whereIn('mhinvoiceno',$headers)->get();
+        //     $sales = $header_query->whereIn('mhinvoiceno',$headers)->groupBy('mhinvoicedate')
+        //     ->selectRaw('*,sum(mhinvoicesubtotal) as mhinvoicesubtotal_sum,sum(mhinvoicediscounttotal) as mhinvoicediscounttotal_sum,sum(mhinvoicetaxtotal) as mhinvoicetaxtotal_sum,sum(mhinvoicegrandtotal) as mhinvoicegrandtotal_sum')
+        //     ->get();
+        //     foreach($sales as $s){
+        //
+        //         $details = MDInvoice::on(Auth::user()->db_name)->where('mdinvoicedate',$s->mhinvoicedate)->get();
+        //         $s['detail_count'] = count($details);
+        //
+        //     }
+        // }else if($request->has('goods')){
+        //     $details = MDInvoice::on(Auth::user()->db_name)->where('mdinvoicegoodsid',$request->goods)->get();
+        //     foreach ($details as $d) {
+        //         array_push($headers,$d->mhinvoiceno);
+        //     }
+        //     $headers = array_unique($headers);
+        //     // $sales = $header_query->whereIn('mhinvoiceno',$headers)->get();
+        //     $sales = $header_query->whereIn('mhinvoiceno',$headers)->groupBy('mhinvoicedate')
+        //     ->selectRaw('*,sum(mhinvoicesubtotal) as mhinvoicesubtotal_sum,sum(mhinvoicediscounttotal) as mhinvoicediscounttotal_sum,sum(mhinvoicetaxtotal) as mhinvoicetaxtotal_sum,sum(mhinvoicegrandtotal) as mhinvoicegrandtotal_sum')
+        //     ->get();
+        //     foreach($sales as $s){
+        //
+        //         $details = MDInvoice::on(Auth::user()->db_name)->where('mdinvoicedate',$s->mhinvoicedate)->get();
+        //         $s['detail_count'] = count($details);
+        //
+        //     }
+        // } else {
+        //     $sales = $header_query->groupBy('mhinvoicedate')
+        //     ->selectRaw('*,sum(mhinvoicesubtotal) as mhinvoicesubtotal_sum,sum(mhinvoicediscounttotal) as mhinvoicediscounttotal_sum,sum(mhinvoicetaxtotal) as mhinvoicetaxtotal_sum,sum(mhinvoicegrandtotal) as mhinvoicegrandtotal_sum')
+        //     ->get();
+        //
+        //     foreach($sales as $s){
+        //
+        //         $details = MDInvoice::on(Auth::user()->db_name)->where('mdinvoicedate',$s->mhinvoicedate)->get();
+        //         $s['detail_count'] = count($details);
+        //
+        //     }
+        // }
+        //
+        // $invoice_count =0;
+        // $sales_total =0;
+        // $discount_total =0;
+        // $tax_total =0;
+        // $grandtotal_total =0;
+        // foreach ($sales as $sl) {
+        //     $invoice_count += $sl['detail_count'];
+        //     $sales_total += $sl->mhinvoicesubtotal_sum;
+        //     $discount_total += $sl->mhinvoicediscounttotal_sum;
+        //     $tax_total += $sl->mhinvoicetaxtotal_sum;
+        //     $grandtotal_total += $sl->mhinvoicegrandtotal_sum;
+        // }
+        //
+        // $config = MConfig::on(Auth::user()->db_name)->where('id',1)->first();
+        // $data['decimals'] = $config->msysgenrounddec;
+        // $data['dec_point'] = $config->msysnumseparator;
+        // if($data['dec_point'] == ","){
+        //   $data['thousands_sep'] = ".";
+        // } else {
+        //   $data['thousands_sep'] = ",";
+        // }
+        //
+        // $data['invoice_count_total'] = number_format($invoice_count,$data['decimals'],$data['dec_point'],$data['thousands_sep']);
+        // $data['sales_total'] = number_format($sales_total,$data['decimals'],$data['dec_point'],$data['thousands_sep']);
+        // $data['discount_total'] = number_format($discount_total,$data['decimals'],$data['dec_point'],$data['thousands_sep']);
+        // $data['tax_total'] = number_format($tax_total,$data['decimals'],$data['dec_point'],$data['thousands_sep']);
+        // $data['grandtotal_total'] = number_format($grandtotal_total,$data['decimals'],$data['dec_point'],$data['thousands_sep']);
+        //
+        // $data['sales'] = $sales;
+        // $data['company'] = $config->msyscompname;
+        // $data['start'] = Carbon::parse($request->start)->formatLocalized('%d %B %Y');
+        // $data['end'] = Carbon::parse($request->end)->formatLocalized('%d %B %Y');
         if($request->wh != ''){
-            $data['wh'] = MWarehouse::on(Auth::user()->db_name)->where('id',$request->wh)->first()->mwarehousename;
+            $param['wh'] = MWarehouse::on(Auth::user()->db_name)->where('id',$request->wh)->first()->mwarehousename;
         } else {
-            $data['wh'] = "Semua";
+            $param['wh'] = "Semua";
         }
 
         if($request->goods != ''){
-            $data['goods'] = $request->goods;
+            $param['goods'] = $request->goods;
         } else {
-            $data['goods'] = "Semua";
+            $param['goods'] = "Semua";
         }
-
-        return view('admin/export/salesreport',$data);
+        $config = MConfig::on(Auth::user()->db_name)->where('id',1)->first();
+        $param['sales'] = $decoded_data;
+        $param['company'] = $config->msyscompname;
+        $param['start'] = Carbon::parse($request->start)->formatLocalized('%d %B %Y');
+        $param['end'] = Carbon::parse($request->end)->formatLocalized('%d %B %Y');
+        return view('admin/export/salesreport',$param);
     }
 
     public function salesreport_pdf(Request $request){
