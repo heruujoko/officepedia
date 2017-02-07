@@ -31,6 +31,10 @@
                 <option v-for="sort in sorts" :value="sort.id">{{ sort.label }}</option>
             </select>
         </div>
+        <div class="row">
+            <p class="col-md-1 report-label">Expand All</p>
+            <input type="checkbox" v-model="expand_all"/>
+        </div>
         <br>
         <div class="row">
             <div class="col-md-3">
@@ -139,7 +143,7 @@
         props: ['username'],
         data(){
             return {
-                expand_all: true,
+                expand_all: false,
                 print_date: moment().format('L'),
                 compname: "",
                 num_format: "0,0.00",
@@ -210,7 +214,7 @@
             tax_total(){
                 return _.sumBy(this.sales, (iv) => {
                     if(iv.header == true){
-                        return iv.mhinvoicetaxtotal_sum;    
+                        return iv.mhinvoicetaxtotal_sum;
                     }
                 })
             }
@@ -238,6 +242,14 @@
                     item.expand_length = 0;
                 }
             },
+            expandAll(){
+                for(let i=0;i<this.sales.length;i++){
+                    console.log('expand');
+                    if(this.sales[i].header == true){
+                        this.expander(i,this.sales[i]);
+                    }
+                }
+            },
             fetchConfig(){
                 var self = this;
                 Axios.get('/admin-api/mconfig')
@@ -254,7 +266,7 @@
                         } else {
                             self.num_format = "0.0"
                         }
-                        this.compname = res.data.msyscompname;
+                        self.compname = res.data.msyscompname;
                     })
                     .catch(function(err){
                         console.log(err);
@@ -270,6 +282,9 @@
                             res.data[i].expanded = false;
                         }
                         self.sales = res.data;
+                        if(self.expand_all == true){
+                            self.expandAll()    
+                        }
                         $('#loading_modal').modal('toggle');
                     })
                     .catch(function(err){
