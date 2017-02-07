@@ -2,12 +2,12 @@
     <div>
         <br>
         <div class="row">
-            <p class="col-md-1 report-label">Mulai</p>
+            <p class="col-md-1 report-label">Periode Awal</p>
             <input v-dpicker v-model="invoice_date_start" type="text" class="small-date form-control" />
         </div>
         <br>
         <div class="row">
-            <p class="col-md-1 report-label">Selesai</p>
+            <p class="col-md-1 report-label">Periode Akhir</p>
             <input v-dpicker v-model="invoice_date_end" type="text" class="small-date form-control" />
         </div>
         <br>
@@ -69,51 +69,58 @@
                 <table class="table table-bordered" id="tableapi">
                     <thead>
                         <tr>
-                            <th>Tgl Invoice</th>
+                            <th width="7%">Tgl Transaksi</th>
+                            <th>Kode Customer</th>
+                            <th>Customer</th>
                             <th>Jumlah Invoice</th>
-                            <th>Penjualan</th>
-                            <th>Bonus Barang</th>
+                            <th>No Invoice</th>
+                            <th>Kode Barang</th>
+                            <th>Nama Barang</th>
+                            <th>Quantity</th>
+                            <th>Harga Satuan</th>
+                            <th>Free Goods</th>
                             <th>Discount</th>
                             <th>Subtotal</th>
                             <th>PPN</th>
                             <th>Total</th>
-                            <th>Retur</th>
-                            <th>Total - Retur</th>
+                            <th>Keterangan</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr v-for="sale in sales">
+                        <tr v-for="(sale,index) in sales">
                             <td>
-                                <span>
-                                    <input type="checkbox" :checked="expand_all"/>
+                                <span v-if="sale.header == true">
+                                    <input type="checkbox" :checked="sale.expanded" @click="expander(index,sale)"/>
                                 </span>
-                                <span style="float: right">
+                                <span style="float: right" v-if="sale.header == true">
                                     {{ sale.mhinvoicedate }}
                                 </span>
                             </td>
+                            <td><span v-if="!sale.header">{{ sale.mhinvoicecustomerid }}<span></td>
+                            <td><span v-if="!sale.header">{{ sale.mhinvoicecustomername }}<span></td>
                             <td>{{ sale.numoftrans }}</td>
-                            <td style="text-align:right" v-priceformatlabel="num_format" >{{ sale.mhinvoicesubtotal_sum }}</td>
-                            <td style="text-align:right" v-priceformatlabel="num_format">0</td>
-                            <td style="text-align:right" v-priceformatlabel="num_format" >{{ sale.mhinvoicediscounttotal_sum }}</td>
+                            <td><span v-if="!sale.header">{{ sale.mhinvoiceno }}<span></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
                             <td style="text-align:right" v-priceformatlabel="num_format" >{{ sale.mhinvoicesubtotal_sum }}</td>
                             <td style="text-align:right" v-priceformatlabel="num_format" >{{ sale.mhinvoicetaxtotal_sum }}</td>
                             <td style="text-align:right" v-priceformatlabel="num_format" >{{ sale.mhinvoicegrandtotal_sum }}</td>
-                            <td style="text-align:right" v-priceformatlabel="num_format">0</td>
-                            <td style="text-align:right" v-priceformatlabel="num_format" >{{ sale.mhinvoicegrandtotal_sum }}</td>
+                            <td></td>
                         </tr>
                     </tbody>
                     <thead>
                         <tr>
-                            <th>TOTAL</th>
+                            <th colspan="3">Saldo</th>
                             <th>{{ invoice_count_total }}</th>
-                            <th style="text-align:right" v-priceformatlabel="num_format" >{{ sales_total }}</th>
-                            <th style="text-align:right" v-priceformatlabel="num_format" >{{ free_total }}</th>
-                            <th style="text-align:right" v-priceformatlabel="num_format" >{{ discount_total }}</th>
+                            <th colspan="7">{{ sales_total }}</th>
                             <th style="text-align:right" v-priceformatlabel="num_format" >{{ sales_total }}</th>
                             <th style="text-align:right" v-priceformatlabel="num_format" >{{ tax_total }}</th>
                             <th style="text-align:right" v-priceformatlabel="num_format" >{{ sales_total + tax_total - discount_total }}</th>
-                            <th style="text-align:right" v-priceformatlabel="num_format" >0</th>
-                            <th style="text-align:right" v-priceformatlabel="num_format" >{{ sales_total + tax_total - discount_total }}</th>
+                            <th></th>
                         </tr>
                     </thead>
                 </table>
@@ -177,13 +184,19 @@
                 }
             },
             invoice_count_total(){
-                return _.sumBy(this.sales, (iv) => {
-                    return iv.numoftrans;
-                })
+                let sum = 0;
+                for(let i=0;i<this.sales.length;i++){
+                    if(this.sales[i].header == true){
+                        sum += this.sales[i].numoftrans;
+                    }
+                }
+                return sum;
             },
             sales_total(){
                 return _.sumBy(this.sales, (iv) => {
-                    return iv.mhinvoicesubtotal_sum;
+                    if(iv.header == true){
+                        return iv.mhinvoicesubtotal_sum;
+                    }
                 })
             },
             free_total(){
@@ -196,56 +209,35 @@
             },
             tax_total(){
                 return _.sumBy(this.sales, (iv) => {
-                    return iv.mhinvoicetaxtotal_sum;
-                })
-            }
-        },
-        computed:{
-            label_warehouse(){
-                let self = this;
-                if(this.selected_warehouse != ""){
-                    return _.find(this.warehouses,(wh) => {
-                        return wh.id == self.selected_warehouse;
-                    }).mwarehousename;
-                } else {
-                    return "Semua"
-                }
-            },
-            label_goods(){
-                let self = this;
-                if(this.selected_goods != ""){
-                    return _.find(this.goods,(wh) => {
-                        return wh.mgoodscode == self.selected_goods;
-                    }).mgoodsname;
-                } else {
-                    return "Semua"
-                }
-            },
-            invoice_count_total(){
-                return _.sumBy(this.sales, (iv) => {
-                    return iv.numoftrans;
-                })
-            },
-            sales_total(){
-                return _.sumBy(this.sales, (iv) => {
-                    return iv.mhinvoicesubtotal_sum;
-                })
-            },
-            free_total(){
-                return 0;
-            },
-            discount_total(){
-                return _.sumBy(this.sales, (iv) => {
-                    return iv.mhinvoicediscounttotal_sum;
-                })
-            },
-            tax_total(){
-                return _.sumBy(this.sales, (iv) => {
-                    return iv.mhinvoicetaxtotal_sum;
+                    if(iv.header == true){
+                        return iv.mhinvoicetaxtotal_sum;    
+                    }
                 })
             }
         },
         methods:{
+            expander(index,item){
+                if(!item.expanded){
+                    $('#loading_modal').modal('toggle');
+                    Axios.get('/admin-api/salesreport/detail/'+item.mhinvoicedate)
+                    .then( res => {
+                        item.expanded = true;
+                        item.expand_length = res.data.length;
+                        for(let i=1;i<=res.data.length;i++){
+                            console.log(res.data[i-1]);
+                            this.sales.splice(index+i,0,res.data[i-1]);
+                        }
+                        $('#loading_modal').modal('toggle');
+                    })
+                    .catch(err => {
+
+                    })
+                } else {
+                    this.sales.splice(index+1,item.expand_length);
+                    item.expanded = false;
+                    item.expand_length = 0;
+                }
+            },
             fetchConfig(){
                 var self = this;
                 Axios.get('/admin-api/mconfig')
@@ -274,6 +266,9 @@
                 Axios.get('/admin-api/salesreport?wh='+this.selected_warehouse+'&goods='+this.selected_goods+'&start='+this.invoice_date_start+'&end='+this.invoice_date_end)
                     .then(function(res){
                         console.log(res.data);
+                        for(let i=0;i<res.data.length;i++){
+                            res.data[i].expanded = false;
+                        }
                         self.sales = res.data;
                         $('#loading_modal').modal('toggle');
                     })

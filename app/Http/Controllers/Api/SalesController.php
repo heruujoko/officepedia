@@ -89,11 +89,23 @@ class SalesController extends Controller
 
                 $details = MDInvoice::on(Auth::user()->db_name)->where('mdinvoicedate',$s->mhinvoicedate)->get();
                 $s['detail_count'] = count($details);
-
+                $s['header'] = true;
             }
         }
 
         return response()->json($sales);
+    }
+
+    public function invoice_detail($invoice_date){
+        $details = MHInvoice::on(Auth::user()->db_name)->whereDate('mhinvoicedate','=',Carbon::parse($invoice_date))->where('void',0)->get();
+        foreach ($details as $d) {
+            $md = MDInvoice::on(Auth::user()->db_name)->where('mhinvoiceno',$d->mhinvoiceno)->where('void',0)->get();
+            $d['header'] = false;
+            $d['numoftrans'] = count($md);
+            $d['mhinvoicesubtotal_sum'] = $d->mhinvoicesubtotal;
+            $d['mhinvoicetaxtotal_sum'] = $d->mhinvoicetaxtotal;
+        }
+        return response()->json($details);
     }
 
     public function invoices(Request $request){

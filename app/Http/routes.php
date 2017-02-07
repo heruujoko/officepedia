@@ -332,6 +332,7 @@ Route::group(['prefix'=>'admin-nano','middleware' => ['auth','tenantdb']],functi
   Route::get('mstockcardreport/mwarehouse','Api\MStockcardreportController@mwarehouse');
 
   Route::get('salesreport','Api\SalesController@index');
+  Route::get('salesreport/detail/{invoice_no}','Api\SalesController@invoice_detail');
   Route::get('invoicereport','Api\SalesController@invoices');
   Route::get('arreport','Api\SalesController@ar');
   Route::get('arcustreport','Api\SalesController@arcust');
