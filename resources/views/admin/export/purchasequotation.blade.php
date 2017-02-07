@@ -110,6 +110,10 @@
     .tdborder{
       border: 1px solid black;
     }
+    .col-border{
+      border-left: 1px solid #000;
+      border-right: 1px solid #000;
+    }
 
 </style>
 </head>
@@ -224,186 +228,168 @@
     </table>
     {{--  --}}
     <div class="cust">
-
-       <table class="table">
+      <table class="table">
        <thead>
            <tr>
-           <th style="background: #089DDD; color: white;">Kode</th>
-           <th style="background: #089DDD; color: white;">Nama</th>
-           <th style="background: #089DDD; color: white;">Harga Beli</th>
-           <th style="background: #089DDD; color: white;">QTY</th>
-           <th style="background: #089DDD; color: white;">Jumlah Satuan</th>
-           <th style="background: #089DDD; color: white;">Diskon</th>
-           <th style="background: #089DDD; color: white;">Jumlah</th>
+           <th class="col-border" style="background: #089DDD; color: white;">KODE</th>
+           <th class="col-border" style="background: #089DDD; color: white;">NAMA</th>
+           <th class="col-border" style="background: #089DDD; color: white;">HARGA BELI</th>
+           <th class="col-border" style="background: #089DDD; color: white;">QTY</th>
+           <th class="col-border" style="background: #089DDD; color: white;">JUMLAH SATUAN</th>
+           <th class="col-border" style="background: #089DDD; color: white;">DISKON</th>
+           <th class="col-border" style="background: #089DDD; color: white;">JUMLAH</th>
            </tr>
          </thead>
          <tbody>
              @foreach($mdquotation as $a)
 
            <tr>
-               <td style="text-align: left" class="tds">{{ $a->mdpurchasequotationgoodsid }}</td>
-               <td style="text-align: left" class="tds">{{ $a->mdpurchasequotationgoodsname }}</td>
-               <td style="text-align: right" class="tds">{{ number_format($a->mdpurchasequotationbuyprice,$decimals,$dec_point,$thousands_sep) }}</td>
-               <td style="text-align: right;" class="tds">{{ $a->mdpurchasequotationgoodsqty }}</td>
-               <td style="text-align: right" class="tds">{{ $a->mdpurchasequotationgoodsqty }}</td>
-               <td style="text-align: right" class="tds">{{ number_format($a->mdpurchasequotationgoodsdiscount,$decimals,$dec_point,$thousands_sep) }}</td>
-               <td style="text-align: right;" class="tds">{{ number_format($a->mdpurchasequotationbuyprice * $a->mdpurchasequotationgoodsqty - $a->mdpurchasequotationgoodsdiscount,$decimals,$dec_point,$thousands_sep) }}</td>
+               <td class="col-border" style="text-align: left" class="tds">{{ $a->mdpurchasequotationgoodsid }}</td>
+               <td class="col-border" style="text-align: left" class="tds">{{ $a->mdpurchasequotationgoodsname }}</td>
+               <td class="col-border" style="text-align: right" class="tds">{{ number_format($a->mdpurchasequotationbuyprice,$decimals,$dec_point,$thousands_sep) }}</td>
+               <td class="col-border" style="text-align: right;" class="tds">{{ $a->mdpurchasequotationgoodsqty }}</td>
+               <td class="col-border" style="text-align: right" class="tds">{{ $a->mdpurchasequotationgoodsqty }}</td>
+               <td class="col-border" style="text-align: right" class="tds">{{ number_format($a->mdpurchasequotationgoodsdiscount,$decimals,$dec_point,$thousands_sep) }}</td>
+               <td class="col-border" style="text-align: right;" class="tds">{{ number_format($a->mdpurchasequotationbuyprice * $a->mdpurchasequotationgoodsqty - $a->mdpurchasequotationgoodsdiscount,$decimals,$dec_point,$thousands_sep) }}</td>
 
            </tr>
 
             @endforeach
-              <tr>
-               <td></td>
-               <td></td>
-               <td></td>
-               <td></td>
-               <td></td>
-               <td></td>
-               <td></td>
-           </tr>
-
             <tr>
-               <td></td>
-               <td></td>
-               <td></td>
-               <td></td>
-               <td></td>
-               <td></td>
-               <td></td>
-           </tr>
-
-            <tr>
-               <td></td>
-               <td></td>
-               <td></td>
-               <td></td>
-               <td></td>
-               <td></td>
-               <td></td>
-           </tr>
-
-
-
-            <tr>
-               <td></td>
-               <td></td>
-               <td></td>
-               <td></td>
-               <td></td>
-               <td></td>
-               <td></td>
-           </tr>
-
-         <tr>
-               <td></td>
-               <td></td>
-               <td></td>
-               <td></td>
-               <td></td>
-               <td></td>
-               <td></td>
-           </tr>
-
-
-
-            <tr>
-               <td></td>
-               <td></td>
-               <td></td>
-               <td></td>
-               <td></td>
-               <td></td>
-               <td></td>
-           </tr>
-
-            <tr>
-               <td></td>
-               <td></td>
-               <td></td>
-               <td></td>
-               <td></td>
-               <td></td>
-               <td></td>
-           </tr>
-
-            <tr>
-               <td></td>
-               <td></td>
-               <td></td>
-               <td></td>
-               <td></td>
-               <td></td>
-               <td></td>
-           </tr>
-
-              <tr>
-               <td></td>
-               <td></td>
-               <td></td>
-               <td></td>
-               <td></td>
-               <td></td>
-               <td></td>
-           </tr>
-
-            <tr>
-               <td></td>
-               <td></td>
-               <td></td>
-               <td></td>
-               <td></td>
-               <td></td>
-               <td></td>
+               <td class="col-border"></td>
+               <td class="col-border"></td>
+               <td class="col-border"></td>
+               <td class="col-border"></td>
+               <td class="col-border"></td>
+               <td class="col-border"></td>
+               <td class="col-border"></td>
            </tr>
 
            <tr>
-               <td></td>
-               <td></td>
-               <td></td>
-               <td></td>
-               <td></td>
-               <td></td>
-               <td></td>
+               <td class="col-border"></td>
+               <td class="col-border"></td>
+               <td class="col-border"></td>
+               <td class="col-border"></td>
+               <td class="col-border"></td>
+               <td class="col-border"></td>
+               <td class="col-border"></td>
            </tr>
-
            <tr>
-               <td></td>
-               <td></td>
-               <td></td>
-               <td></td>
-               <td></td>
-               <td></td>
-               <td></td>
+               <td class="col-border"></td>
+               <td class="col-border"></td>
+               <td class="col-border"></td>
+               <td class="col-border"></td>
+               <td class="col-border"></td>
+               <td class="col-border"></td>
+               <td class="col-border"></td>
            </tr>
-
            <tr>
-               <td></td>
-               <td></td>
-               <td></td>
-               <td></td>
-               <td></td>
-               <td></td>
-               <td></td>
+               <td class="col-border"></td>
+               <td class="col-border"></td>
+               <td class="col-border"></td>
+               <td class="col-border"></td>
+               <td class="col-border"></td>
+               <td class="col-border"></td>
+               <td class="col-border"></td>
            </tr>
-
            <tr>
-               <td></td>
-               <td></td>
-               <td></td>
-               <td></td>
-               <td></td>
-               <td></td>
-               <td></td>
+               <td class="col-border"></td>
+               <td class="col-border"></td>
+               <td class="col-border"></td>
+               <td class="col-border"></td>
+               <td class="col-border"></td>
+               <td class="col-border"></td>
+               <td class="col-border"></td>
            </tr>
-
            <tr>
-               <td></td>
-               <td></td>
-               <td></td>
-               <td></td>
-               <td></td>
-               <td></td>
-               <td></td>
+               <td class="col-border"></td>
+               <td class="col-border"></td>
+               <td class="col-border"></td>
+               <td class="col-border"></td>
+               <td class="col-border"></td>
+               <td class="col-border"></td>
+               <td class="col-border"></td>
+           </tr>
+           <tr>
+               <td class="col-border"></td>
+               <td class="col-border"></td>
+               <td class="col-border"></td>
+               <td class="col-border"></td>
+               <td class="col-border"></td>
+               <td class="col-border"></td>
+               <td class="col-border"></td>
+           </tr>
+           <tr>
+               <td class="col-border"></td>
+               <td class="col-border"></td>
+               <td class="col-border"></td>
+               <td class="col-border"></td>
+               <td class="col-border"></td>
+               <td class="col-border"></td>
+               <td class="col-border"></td>
+           </tr>
+           <tr>
+               <td class="col-border"></td>
+               <td class="col-border"></td>
+               <td class="col-border"></td>
+               <td class="col-border"></td>
+               <td class="col-border"></td>
+               <td class="col-border"></td>
+               <td class="col-border"></td>
+           </tr>
+           <tr>
+               <td class="col-border"></td>
+               <td class="col-border"></td>
+               <td class="col-border"></td>
+               <td class="col-border"></td>
+               <td class="col-border"></td>
+               <td class="col-border"></td>
+               <td class="col-border"></td>
+           </tr>
+           <tr>
+               <td class="col-border"></td>
+               <td class="col-border"></td>
+               <td class="col-border"></td>
+               <td class="col-border"></td>
+               <td class="col-border"></td>
+               <td class="col-border"></td>
+               <td class="col-border"></td>
+           </tr>
+           <tr>
+               <td class="col-border"></td>
+               <td class="col-border"></td>
+               <td class="col-border"></td>
+               <td class="col-border"></td>
+               <td class="col-border"></td>
+               <td class="col-border"></td>
+               <td class="col-border"></td>
+           </tr>
+           <tr>
+               <td class="col-border"></td>
+               <td class="col-border"></td>
+               <td class="col-border"></td>
+               <td class="col-border"></td>
+               <td class="col-border"></td>
+               <td class="col-border"></td>
+               <td class="col-border"></td>
+           </tr>
+           <tr>
+               <td class="col-border"></td>
+               <td class="col-border"></td>
+               <td class="col-border"></td>
+               <td class="col-border"></td>
+               <td class="col-border"></td>
+               <td class="col-border"></td>
+               <td class="col-border"></td>
+           </tr>
+           <tr>
+               <td style="border-bottom: solid; border-width: 1px;" class="col-border"></td>
+               <td style="border-bottom: solid; border-width: 1px;" class="col-border"></td>
+               <td style="border-bottom: solid; border-width: 1px;" class="col-border"></td>
+               <td style="border-bottom: solid; border-width: 1px;" class="col-border"></td>
+               <td style="border-bottom: solid; border-width: 1px;" class="col-border"></td>
+               <td style="border-bottom: solid; border-width: 1px;" class="col-border"></td>
+               <td style="border-bottom: solid; border-width: 1px;" class="col-border"></td>
            </tr>
 
 
@@ -411,25 +397,30 @@
               </tbody>
           <tfoot>
              <tr>
-                    <td colspan="6"><span contenteditable>Total Item :</span></td>
+                    <td colspan="5"></td>
+                    <td style="text-align: left;"><span contenteditable>Total Item :</span></td>
                     <td><span data-prefix></span><span>{{ $totalitem }}</span></td>
                 </tr>
 
                 <tr>
-                    <td colspan="6"><span contenteditable>Sub Total :</span></td>
-                    <td><span data-prefix>IDR </span><span contenteditable>{{ number_format($subtotal,$decimals,$dec_point,$thousands_sep) }}</span></td>
+                    <td colspan="5"></td>
+                    <td style="text-align: left;"><span contenteditable>Sub Total :</span></td>
+                    <td><span data-prefix><b>IDR</b> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span contenteditable>{{ number_format($subtotal,$decimals,$dec_point,$thousands_sep) }}</span></td>
                 </tr>
                 <tr>
-                    <td colspan="6"><span contenteditable>Discount :</span></td>
-                    <td><span data-prefix>IDR </span><span>{{ number_format($discount,$decimals,$dec_point,$thousands_sep) }}</span></td>
-                </tr>
-                 <tr class="bb">
-                    <td colspan="6"><span contenteditable>PPN 10% :</span></td>
-                    <td><span data-prefix>IDR </span><span>{{ number_format($quotation[0]['mhpurchasequotationtaxtotal'],$decimals,$dec_point,$thousands_sep) }}</span></td>
+                    <td colspan="5"></td>
+                    <td style="text-align: left;"><span contenteditable>Discount :</span></td>
+                    <td><span data-prefix><b>IDR</b> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span>{{ number_format($discount,$decimals,$dec_point,$thousands_sep) }}</span></td>
                 </tr>
                  <tr>
-                    <td colspan="6"><span contenteditable>Total :</span></td>
-                    <td style="background: #f0f0f2; border-style: solid; border-width: 1px;"><span data-prefix>IDR </span><span>{{ number_format($quotation[0]['mhpurchasequotationgrandtotal'],$decimals,$dec_point,$thousands_sep)}}</span></td>
+                    <td colspan="5"></td>
+                    <td style="border-bottom: 4px solid black; text-align: left;"><span contenteditable>PPN 10% :</span></td>
+                    <td style="border-bottom: 4px solid black;"><span data-prefix><b>IDR</b> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span>{{ number_format($quotation[0]['mhpurchasequotationtaxtotal'],$decimals,$dec_point,$thousands_sep) }}</span></td>
+                </tr>
+                 <tr>
+                    <td colspan="5"></td>
+                    <td style="text-align: left;"><span contenteditable>Total :</span></td>
+                    <td style="background: #f0f0f2; border-style: solid; border-width: 1px;"><span data-prefix><b>IDR</b> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span>{{ number_format($quotation[0]['mhpurchasequotationgrandtotal'],$decimals,$dec_point,$thousands_sep)}}</span></td>
                 </tr>
           </tfoot>
        </table>
