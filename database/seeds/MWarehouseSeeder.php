@@ -11,10 +11,11 @@ class MWarehouseSeeder extends Seeder
      */
     public function run()
     {
-     
+
       MWarehouse::create([
          'mwarehousename' => 'Gudang Utama',
          'mwarehouseremark' => '',
+         'mwarehousebranchid' => 'BRN000001',
          'void' => 0
       ]);
 

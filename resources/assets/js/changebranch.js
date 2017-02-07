@@ -65,6 +65,10 @@ const changebranch = new Vue({
         selected_branch(){
             if(this.selected_branch != ""){
                 this.updateBranch();
+                setTimeout(function(){
+                    $('.tableapi').DataTable().ajax.reload();
+                    refreshPayment();
+                },500);
             }
         }
     },

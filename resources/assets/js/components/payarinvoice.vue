@@ -569,6 +569,11 @@
             this.fetchCustomers();
             this.fetchArs();
             this.fetchBanks();
+
+            this.$parent.$on('refresh-pay',() => {
+                
+            });
+
             if(this.mode == "edit"){
               this.$parent.$on('edit-selected',(id) => {
                   console.log(id+"edit");
