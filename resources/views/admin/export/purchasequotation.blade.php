@@ -49,10 +49,6 @@
           text-align: right;
 
         }
-        .table>tfoot tr:last-child {
-
-
-        }
 
 
     .header-topright{
@@ -99,7 +95,7 @@
     }
     .signbelow{
 
-    width: 350;
+    width: 330;
     border: 2px solid black;
     padding: 5px;
 
@@ -120,7 +116,7 @@
 <body class="global-css">
 <div class="top-left">
     {{-- TOP LEFT --}}
- 	<h3 style="color: #257293">{{ $config->msyscompname }}</h3>
+ 	<h2 style="color: #257293">{{ $config->msyscompname }}</h2>
     <table border="" cellpadding="5" cellpadding="5">
         <tr>
             <th style=""></th>
@@ -167,26 +163,26 @@
     {{-- TOP RIGHT --}}
 
 <div class="header-topright">
-     <h3 style="padding-top: 25px;" style="color: #217293">Pesanan Pembelian</h3>
+     <h2 style="padding-top: 25px;" style="color: #217293">Pesanan Pembelian</h2>
     <table border="" cellpadding="5" cellpadding="5">
         <tr>
             <th style=""></th>
         </tr>
 
         <tr>
-            <th style="text-align: left;" class="thnoborder">DATE : </td>
+            <th style="text-align: left;" class="thnoborder">DATE &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: </td>
             <td style="border-style: solid; border-width: 1px; width: 85px; text-align: center;">{{ $quotation[0]['mhpurchasequotationdate'] }}</td>
         </tr>
         <tr>
-            <th style="text-align: left;" class="thnoborder">QUOTE : </td>
+            <th style="text-align: left;" class="thnoborder">QUOTE&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: </td>
             <td style="border-style: solid; border-width: 1px; width: 85px; text-align: center;">{{ $quotation[0]['mhpurchasequotationno'] }}</td>
         </tr>
         <tr>
-            <th style="text-align: left;" class="thnoborder">CUSTOMER ID :</td>
+            <th style="text-align: left;" class="thnoborder">CUSTOMER ID&nbsp;&nbsp;:</td>
             <td style="border-style: solid; border-width: 1px; width: 85px; text-align: center;">{{ $quotation[0]['mhpurchasequotationsupplierid'] }}</td>
         </tr>
         <tr>
-            <th style="text-align: left;" class="thnoborder">VALID UNTIL : </td>
+            <th style="text-align: left;" class="thnoborder">VALID UNTIL &nbsp;&nbsp;&nbsp;&nbsp;: </td>
             <td style="border-style: solid; border-width: 1px; width: 85px; text-align: center;">{{ $quotation[0]['mhpurchasequotationduedate'] }}</td>
         </tr>
     </table>
@@ -432,7 +428,7 @@
     <div class="signbelow">
     <table class="tables">
         <tr>
-            <th style="background: #089DDD; color: white; width: 350">TERMS AND CONDITIONS</th>
+            <th style="background: #089DDD; color: white; width: 330">TERMS AND CONDITIONS</th>
         </tr>
         <tr>
         <td>
@@ -463,8 +459,8 @@
  </center>
 
  <div class="footer">
-     <p>Dicetak oleh: {{ Auth::user()->name }}</p>
-     <p>Tanggal Cektak: {{ $carbon }}</p>
+     <p style="font-family: helvetica; font-weight: bold;">Dicetak oleh: {{ Auth::user()->name }}</p>
+     <p style="font-family: helvetica; font-weight: bold;">Tanggal Cektak: {{ $carbon }}</p>
 
  </div>
  <div class="footerpage">
