@@ -64,6 +64,10 @@
             font-size: 9px;
             display: block;
         }
+        .bold{
+            font-weight: bold;
+            font-size: 12px;
+        }
         </style>
     </head>
     <body>
@@ -80,62 +84,93 @@
         <table class="table" id="tableapi" style="width:100%">
             <thead>
                 <tr>
-                    <th>Kode Customer</th>
-                    <th>Nama Customer</th>
-                    <th>No Invoice</th>
-                    <th>Tgl Invoice</th>
-                    <th>Tgl Jatuh Tempo</th>
-                    <th>Nilai Nota</th>
-                    <th>Outstanding</th>
-                    <th>Aging</th>
+                    <td class="bold">Kode Customer</td>
+                    <td class="bold">Nama Customer</td>
+                    <td class="bold">Total Nota</td>
+                    <td class="bold">No Invoice</td>
+                    <td class="bold">Nilai Invoice</td>
+                    <td class="bold">Outstanding</td>
+                    <td class="bold">Tgl Invoice</td>
+                    <td class="bold">Tgl Jatuh Tempo</td>
+                    <td class="bold">Aging</td>
+                    <td class="bold">1 - 7 Hari</td>
+                    <td class="bold">7 - 14 Hari</td>
+                    <td class="bold">14 - 21 Hari</td>
+                    <td class="bold">21 - 30 Hari</td>
+                    <td class="bold">> 1 Bulan</td>
                 </tr>
             </thead>
             <tbody>
                 @foreach($ars as $ar)
-                    @if($ar['header'])
+                    @if($ar->header == true)
+                        <tr>
+                            <td>{{ $ar->marcardcustomerid }}</td>
+                            <td>{{ $ar->marcardcustomername }}</td>
+                            <td>{{ $ar->numoftrans }}</td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td>{{ number_format($ar->{'1w'},$decimals,$dec_point,$thousands_sep) }}</td>
+                            <td>{{ number_format($ar->{'2w'},$decimals,$dec_point,$thousands_sep) }}</td>
+                            <td>{{ number_format($ar->{'3w'},$decimals,$dec_point,$thousands_sep) }}</td>
+                            <td>{{ number_format($ar->{'4w'},$decimals,$dec_point,$thousands_sep) }}</td>
+                            <td>{{ number_format($ar->{'1m'},$decimals,$dec_point,$thousands_sep) }}</td>
+                        </tr>
+                    @elseif($ar->data == true)
                     <tr>
-                        <td>{{ $ar['customerid'] }}</td>
-                        <td>{{ $ar['customername'] }}</td>
                         <td></td>
                         <td></td>
                         <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                    </tr>
-                    @elseif($ar['footer'])
-                    <tr>
-                        <th colspan="2">Total</th>
-                        <th></th>
-                        <th></th>
-                        <th></th>
-                        <th style="text-align:right">{{ $ar['total_inv'] }}</th>
-                        <th style="text-align:right">{{ $ar['total_outstanding'] }}</th>
-                        <th></th>
+                        <td>{{ $ar->marcardtransno }}</td>
+                        <td>{{ number_format($ar->marcardtotalinv,$decimals,$dec_point,$thousands_sep) }}</td>
+                        <td>{{ number_format($ar->marcardoutstanding,$decimals,$dec_point,$thousands_sep) }}</td>
+                        <td>{{ $ar->marcarddate }}</td>
+                        <td>{{ $ar->marcardduedate }}</td>
+                        <td>{{ $ar->aging }}</td>
+                        <td>{{ number_format($ar->{'1w'},$decimals,$dec_point,$thousands_sep) }}</td>
+                        <td>{{ number_format($ar->{'2w'},$decimals,$dec_point,$thousands_sep) }}</td>
+                        <td>{{ number_format($ar->{'3w'},$decimals,$dec_point,$thousands_sep) }}</td>
+                        <td>{{ number_format($ar->{'4w'},$decimals,$dec_point,$thousands_sep) }}</td>
+                        <td>{{ number_format($ar->{'1m'},$decimals,$dec_point,$thousands_sep) }}</td>
                     </tr>
                     @else
                     <tr>
                         <td></td>
                         <td></td>
-                        <td>{{ $ar->marcardtransno }}</td>
-                        <td>{{ $ar->marcarddate }}</td>
-                        <td>{{ $ar->marcardduedate }}</td>
-                        <td style="text-align:right">{{ $ar['outstanding_prc'] }}</td>
-                        <td style="text-align:right">{{ $ar['outstanding_prc'] }}</td>
-                        <td>{{ $ar['aging'] }}</td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
                     </tr>
                     @endif
                 @endforeach
             </tbody>
             <thead>
                 <tr>
-                    <th colspan="2">Grand Total</th>
-                    <th></th>
-                    <th></th>
-                    <th></th>
-                    <th style="text-align:right" >{{ $marcardoutstanding_total }}</th>
-                    <th style="text-align:right" >{{ $marcardoutstanding_total }}</th>
-                    <th></th>
+                    <td colspan="2"></td>
+                    <td></td>
+                    <td></td>
+                    <td>{{ number_format($total_inv,$decimals,$dec_point,$thousands_sep) }}</td>
+                    <td>{{ number_format($total_outs,$decimals,$dec_point,$thousands_sep) }}</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td>{{ number_format($total_1w,$decimals,$dec_point,$thousands_sep) }}</td>
+                    <td>{{ number_format($total_2w,$decimals,$dec_point,$thousands_sep) }}</td>
+                    <td>{{ number_format($total_3w,$decimals,$dec_point,$thousands_sep) }}</td>
+                    <td>{{ number_format($total_4w,$decimals,$dec_point,$thousands_sep) }}</td>
+                    <td>{{ number_format($total_1m,$decimals,$dec_point,$thousands_sep) }}</td>
                 </tr>
             </thead>
         </table>
