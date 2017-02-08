@@ -11,7 +11,8 @@ use App\MHInvoice;
 use App\MDInvoice;
 use App\MConfig;
 use App\MARCard;
-
+use App\MWarehouse;
+use App\MBRANCH;
 use Carbon\Carbon;
 
 class SalesController extends Controller
@@ -324,76 +325,128 @@ class SalesController extends Controller
 
     public function arcust(Request $request){
 
-        /*
-         * price config
-         */
-        $config = MConfig::on(Auth::user()->db_name)->where('id',1)->first();
-        $data['decimals'] = $config->msysgenrounddec;
-        $data['thousands_sep'] = $config->msysnumseparator;
-        if($data['thousands_sep'] == ","){
-          $data['dec_point'] = ".";
-        } else {
-          $data['dec_point'] = ",";
-        }
+        $active_branch = MBRANCH::on(Auth::user()->db_name)->where('id',Auth::user()->defaultbranch)->first();
 
-        $header_query = MARCard::on(Auth::user()->db_name);
+        // get all warehouses in branch
+        $warehouses = MWarehouse::on(Auth::user()->db_name)->where('mwarehousebranchid',$active_branch->mbranchcode)->get();
+        $warehouse_ids = array_map(function($w){
+            return $w['id'];
+        },$warehouses->toArray());
+
+        $header_query = MARCard::on(Auth::user()->db_name)->where('void',0)->whereIn('marcardwarehouseid',$warehouse_ids);
+
         if($request->has('cust')){
             $header_query->where('marcardcustomerid',$request->cust);
         }
         if($request->has('end')){
             $header_query->whereDate('marcarddate','<=',Carbon::parse($request->end));
         }
-        $headers = $header_query->where('void',0)->get();
-        $customers = [];
-        foreach($headers as $h){
-            array_push($customers,$h->marcardcustomerid);
-        }
-        $customers = array_unique($customers);
-        $ar_detail_data = [];
+        $ars = $header_query->orderBy('marcardcustomerid','asc')->groupBy('marcardcustomerid')->get();
 
-        /*
-         * Build detail data per customer head
-         */
-        foreach ($customers as $cust) {
-            $idx=0;
-            $total_inv =0;
-            $total_trans =0;
-            $total_outstanding = 0;
-            $last_inv = "";
-            $detail_query = MARCard::on(Auth::user()->db_name)->where('marcardcustomerid',$cust)->where('void',0);
-            if($request->has('end')){
-                $detail_query->whereDate('marcarddate','<=',Carbon::parse($request->end));
-            }
-            $details = $detail_query->get();
-            array_push($ar_detail_data,['customerid' => $cust,'customername' => $details[$idx]->marcardcustomername,'footer' => false]);
-            foreach($details as $dt){
-                $dt['outstanding_prc'] = number_format($dt->marcardoutstanding,$data['decimals'],$data['dec_point'],$data['thousands_sep']);
-                $dt['total_prc'] = number_format($dt->marcardtotalinv,$data['decimals'],$data['dec_point'],$data['thousands_sep']);
-                $dt['pay_prc'] = number_format($dt->marcardpayamount,$data['decimals'],$data['dec_point'],$data['thousands_sep']);
-                $dt['aging'] = Carbon::now()->diffInDays(Carbon::parse($dt->marcarddate));
-                $dt['trans_count'] = count(MDInvoice::on(Auth::user()->db_name)->where('mhinvoiceno',$dt->marcardtransno)->get());
+        foreach($ars as $ar){
+            $ar['header'] = true;
+            $ar['data'] = false;
+            $ar['footer'] = false;
+            $ar['numoftrans'] = 0;
+            $ar['1w'] = 0;
+            $ar['2w'] = 0;
+            $ar['3w'] = 0;
+            $ar['4w'] = 0;
+            $ar['1m'] = 0;
+            $ar->marcardtotalinv = 0;
+            $ar->marcardoutstanding = 0;
+            $details = MARCard::on(Auth::user()->db_name)->whereIn('marcardwarehouseid',$warehouse_ids)->where('marcardcustomerid',$ar->marcardcustomerid)->where('void',0)->get();
+            foreach($details as $d){
+                $ar['numoftrans'] += 1;
+                $now = Carbon::now();
+                $due = Carbon::parse($d->marcardduedate);
+                $diff = $now->diffInDays($due,false);
 
-                if($last_inv != $dt->marcardtransno){
-                    $total_inv += $dt->marcardtotalinv;
-                    $total_outstanding += $dt->marcardoutstanding;
-                    $last_inv = $dt->marcardtransno;
-                } else {
-                    $total_outstanding = $dt->marcardoutstanding;
+                $ar->marcardtotalinv += $d->marcardtotalinv;
+                $ar->marcardoutstanding += $d->marcardoutstanding;
+
+                // spread the ar in weeks
+                if($diff > 0 && $diff <= 7){
+                    $ar['1w'] += $d->marcardoutstanding;
                 }
-                $total_trans += $dt['trans_count'];
-                $dt['footer'] = false;
-                array_push($ar_detail_data,$dt);
+                if($diff > 7 && $diff <= 14){
+                    $ar['2w'] += $d->marcardoutstanding;
+                }
+                if($diff > 14 && $diff <= 21){
+                    $ar['3w'] += $d->marcardoutstanding;
+                }
+                if($diff > 21 && $diff <= 30){
+                    $ar['4w'] += $d->marcardoutstanding;
+                }
+                if($diff > 30){
+                    $ar['1m'] += $d->marcardoutstanding;
+                }
             }
-            $footer = array(
-                'footer' => true,
-                'total_inv' => $total_inv,
-                'total_trans' => $total_trans,
-                'total_outstanding' => $total_outstanding
-            );
-            array_push($ar_detail_data,$footer);
-            $idx++;
         }
 
-        return response()->json($ar_detail_data);
+        return response()->json($ars);
+    }
+
+    public function arcust_detail(Request $request,$customer_id){
+        $active_branch = MBRANCH::on(Auth::user()->db_name)->where('id',Auth::user()->defaultbranch)->first();
+
+        // get all warehouses in branch
+        $warehouses = MWarehouse::on(Auth::user()->db_name)->where('mwarehousebranchid',$active_branch->mbranchcode)->get();
+        $warehouse_ids = array_map(function($w){
+            return $w['id'];
+        },$warehouses->toArray());
+
+        $detail_query = MARCard::on(Auth::user()->db_name)->whereIn('marcardwarehouseid',$warehouse_ids)->where('void',0)->where('marcardcustomerid',$customer_id);
+
+        if($request->has('end')){
+            $detail_query->whereDate('marcarddate','<=',Carbon::parse($request->end));
+        }
+
+        $details = $detail_query->get();
+
+        foreach($details as $d){
+            $d['header'] = false;
+            $d['data'] = true;
+            $d['footer'] = false;
+            $d['numoftrans'] = 0;
+            $d['1w'] = 0;
+            $d['2w'] = 0;
+            $d['3w'] = 0;
+            $d['4w'] = 0;
+            $d['1m'] = 0;
+
+            $now = Carbon::now();
+            $due = Carbon::parse($d->marcardduedate);
+            $diff = $now->diffInDays($due,false);
+            $d['aging'] = $diff;
+            // spread the ar in weeks
+            if($diff > 0 && $diff <= 7){
+                $d['1w'] += $d->marcardoutstanding;
+            }
+            if($diff > 7 && $diff <= 14){
+                $d['2w'] += $d->marcardoutstanding;
+            }
+            if($diff > 14 && $diff <= 21){
+                $d['3w'] += $d->marcardoutstanding;
+            }
+            if($diff > 21 && $diff <= 30){
+                $d['4w'] += $d->marcardoutstanding;
+            }
+            if($diff > 30){
+                $d['1m'] += $d->marcardoutstanding;
+            }
+
+        }
+
+        $footer = [
+            'header' => false,
+            'data' => false,
+            'footer' => true
+        ];
+
+        $details->push($footer);
+
+        return response()->json($details);
+
     }
 }

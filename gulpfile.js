@@ -1,6 +1,14 @@
 const elixir = require('laravel-elixir');
 
 require('laravel-elixir-vue');
+require('laravel-elixir-webpack-official');
+
+Elixir.webpack.mergeConfig({
+    babel: {
+       presets: ['babel-preset-stage-3'],
+       plugins: ['babel-plugin-transform-runtime'],
+   }
+})
 
 /*
  |--------------------------------------------------------------------------
@@ -17,9 +25,9 @@ elixir(mix => {
     // mix.webpack('salesinvoice.js');
     // mix.webpack('purchaseinvoice.js');
     // mix.webpack('stockcardreport.js');
-    mix.webpack('salesreport.js');
+    // mix.webpack('salesreport.js');
     // mix.webpack('invoicereport.js');
-    // mix.webpack('arcustreport.js');
+    mix.webpack('arcustreport.js');
     // mix.webpack('arreport.js');
     // mix.webpack('stockvaluereport.js');
     // mix.webpack('purchasereport.js');

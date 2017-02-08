@@ -55,119 +55,7 @@
                                 <div class="widget-body no-padding">
                                     <div class="container">
                                         <div id="report">
-                                            <br>
-                                            <div class="row">
-                                                <p class="col-md-1 report-label">Per</p>
-                                                <input v-dpicker v-model="invoice_date_end" type="text" class="small-date form-control" />
-                                            </div>
-                                            <br>
-                                            <div class="row">
-                                                <p class="col-md-1 report-label">Cabang</p>
-                                                <select v-selecttwo class="col-md-2" v-model="selected_branch">
-                                                    <option value="">Semua</option>
-                                                </select>
-                                            </div>
-                                            <div class="row">
-                                                <p class="col-md-1 report-label">Customer</p>
-                                                <select v-selecttwo class="col-md-2" v-model="selected_customer">
-                                                    <option value="">Semua</option>
-                                                    <option v-for="c in customers" :value="c.mcustomerid">@{{ c.mcustomername }}</option>
-                                                </select>
-                                            </div>
-                                            <div class="row">
-                                                <p class="col-md-1 report-label">Sort By</p>
-                                                <select v-selecttwo class="col-md-2" v-model="selected_sort">
-                                                    <option value="">Semua</option>
-                                                    <option v-for="s in sorts" :value="s.id">@{{ s.label }}</option>
-                                                </select>
-                                            </div>
-                                            <br>
-                                            <div class="row">
-                                                <div class="col-md-3">
-                                                    <button class="dt-button pull-left" v-on:click="fetchArs">Filter</button>
-                                                </div>
-                                                <div class="col-md-3 col-md-offset-6">
-                                                    <button class="dt-button pull-right" v-on:click="printTable">Print</button>
-                                                    <button class="dt-button pull-right" v-on:click="pdfTable">PDF</button>
-                                                    <button class="dt-button pull-right" v-on:click="excelTable">Excel</button>
-                                                    <button class="dt-button pull-right" v-on:click="csvTable">CSV</button>
-                                                </div>
-                                            </div>
-                                            <hr>
-                                            <div class="row">
-                                                <div class="col-md-12">
-                                                    <br>
-                                                    <h4 class="text-center">{{ $config->msyscompname }}</h4>
-                                                    <h4 class="text-center">Laporan Piutang</h4>
-                                                    <h4 class="text-center">Per @{{ invoice_date_end }}</h4>
-                                                </div>
-                                            </div>
-                                            <br>
-                                            <div class="row">
-                                                <div class="col-md-4">
-                                                    <p>Cabang : @{{ label_branch }}</p>
-                                                    <p>Customer : @{{ label_customer }}</p>
-                                                </div>
-                                                <div class="pull-right" style="padding-right:20px;">
-                                                    <p>User : {{ Auth::user()->name }}</p>
-                                                    <p>Tgl Cetak : {{ Carbon\Carbon::now() }}</p>
-                                                </div>
-                                            </div>
-                                            <br>
-                                            <div class="row">
-                                                <div class="col-md-12">
-                                                    <table class="table table-bordered" id="tableapi">
-                                                        <thead>
-                                                            <tr>
-                                                                <th>Kode Customer</th>
-                                                                <th>Nama Customer</th>
-                                                                <th>No Invoice</th>
-                                                                <th>Tgl Invoice</th>
-                                                                <th>Tgl Jatuh Tempo</th>
-                                                                <th>Nilai Nota</th>
-                                                                <th>Nilai Bayar</th>
-                                                                <th>Outstanding</th>
-                                                                <th>Aging</th>
-                                                            </tr>
-                                                        </thead>
-                                                        <tbody>
-                                                            <tr v-for="ar in ars">
-                                                                <td v-if="ar.footer == false">@{{ ar.customerid }}</td>
-                                                                <td v-if="ar.footer == false">@{{ ar.customername }}</td>
-                                                                <td v-if="ar.footer == false">@{{ ar.marcardtransno }}</td>
-                                                                <td v-if="ar.footer == false">@{{ ar.marcarddate }}</td>
-                                                                <td v-if="ar.footer == false">@{{ ar.marcardduedate }}</td>
-                                                                <td v-if="ar.footer == false" style="text-align:right">@{{ ar.total_prc }}</td>
-                                                                <td v-if="ar.footer == false" style="text-align:right">@{{ ar.pay_prc }}</td>
-                                                                <td v-if="ar.footer == false" style="text-align:right">@{{ ar.outstanding_prc }}</td>
-                                                                <td v-if="ar.footer == false">@{{ ar.aging }}</td>
-                                                                <!--  footer -->
-                                                                <td v-if="ar.footer == true" class="tbl-footer" colspan="2">Total</td>
-                                                                <td v-if="ar.footer == true" class="tbl-footer"></td>
-                                                                <td v-if="ar.footer == true" class="tbl-footer"></td>
-                                                                <td v-if="ar.footer == true" class="tbl-footer"></td>
-                                                                <td v-if="ar.footer == true" class="tbl-footer" style="text-align:right" v-priceformatlabel="num_format">@{{ ar.total_inv }}</td>
-                                                                <td v-if="ar.footer == true" class="tbl-footer"></td>
-                                                                <td v-if="ar.footer == true" class="tbl-footer" style="text-align:right" v-priceformatlabel="num_format">@{{ ar.total_outstanding }}</td>
-                                                                <td v-if="ar.footer == true" class="tbl-footer"></td>
-                                                            </tr>
-                                                        </tbody>
-                                                        <thead>
-                                                            <tr>
-                                                                <th colspan="2">Grand Total</th>
-                                                                <th></th>
-                                                                <th></th>
-                                                                <th></th>
-                                                                <th></th>
-                                                                <th></th>
-                                                                <th style="text-align:right" v-priceformatlabel="num_format" >@{{ outstanding_total }}</th>
-                                                                <th></th>
-                                                            </tr>
-                                                        </thead>
-                                                    </table>
-                                                </div>
-                                            </div>
-                                            <br>
+                                            <arcustreport username="{{ Auth::user()->name }}"></arcustreport>
                                         </div>
                                     </div>
                                 </div>
@@ -214,6 +102,9 @@
             font-size: 11px;
         }
         .tbl-footer {
+            background-image: -webkit-linear-gradient(top,#f2f2f2 0,#fafafa 100%);
+        }
+        .foot {
             background-image: -webkit-linear-gradient(top,#f2f2f2 0,#fafafa 100%);
         }
     </style>

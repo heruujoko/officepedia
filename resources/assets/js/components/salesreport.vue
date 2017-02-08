@@ -243,11 +243,25 @@
                     item.expand_length = 0;
                 }
             },
-            expandAll(){
+            expandAll: async function(){
+                // for(let i=0;i<this.sales.length;i++){
+                //     if(this.sales[i].header == true){
+                //         this.expander(i,this.sales[i]);
+                //     }
+                // }
                 for(let i=0;i<this.sales.length;i++){
-                    console.log('expand');
                     if(this.sales[i].header == true){
-                        this.expander(i,this.sales[i]);
+                        try {
+                            let res = await Axios.get('/admin-api/salesreport/detail/'+this.sales[i].mhinvoicedate+"?wh="+this.selected_warehouse+"&goods="+this.selected_goods)
+                            this.sales[i].expanded = true;
+                            this.sales[i].expand_length = res.data.length;
+                            for(let j=1;j<=res.data.length;j++){
+                                console.log(res.data[j-1]);
+                                this.sales.splice(i+j,0,res.data[j-1]);
+                            }
+                        } catch(err){
+                            console.log(err);
+                        }
                     }
                 }
             },
