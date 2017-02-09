@@ -242,6 +242,12 @@ Route::group(['prefix'=>'admin-nano','middleware' => ['auth','tenantdb']],functi
   Route::get('reports/ledger/export/excel','LedgerController@ledger_excel');
   Route::get('reports/ledger/export/csv','LedgerController@ledger_csv');
 
+  Route::get('reports/arbook','ARBookController@index');
+  Route::get('reports/arbook/export/print','ARBookController@arbook_print');
+  Route::get('reports/arbook/export/pdf','ARBookController@arbook_pdf');
+  Route::get('reports/arbook/export/excel','ARBookController@arbook_excel');
+  Route::get('reports/arbook/export/csv','ARBookController@arbook_csv');
+
   Route::get('roles','RoleController@index');
   Route::get('roles/export/print','RoleController@roles_print');
   Route::get('roles/export/pdf','RoleController@roles_pdf');
@@ -367,6 +373,9 @@ Route::group(['prefix'=>'admin-nano','middleware' => ['auth','tenantdb']],functi
   Route::get('profile/branch','Api\ProfileController@mybranch');
   Route::get('profile/defaultbranch','Api\ProfileController@default_branch');
   Route::post('profile/defaultbranch','Api\ProfileController@update_default_branch');
+
+  Route::get('arbook','Api\ARBookController@index');
+  Route::get('arbook/details/{customer_id}','Api\ARBookController@details');
 
 
   Route::controllers([

@@ -703,6 +703,11 @@
           this.edit_index = _.indexOf(this.invoice_goods,current);
           this.detail_goods = current.goods;
 
+          this.detail_warehouse = current.warehouse;
+          console.log('current',current.warehouse);
+          $('#'+this.select_warehouse_id).val(current.warehouse);
+          $('#'+this.select_warehouse_id).trigger('update');
+
           // cenverted unit
           this.detail_goods_unit3 = current.detail_goods_unit3;
           this.detail_goods_unit3_conv = current.detail_goods_unit3_conv;
@@ -960,7 +965,7 @@
               goods: _.find(this.goods,{ mgoodscode: res.data[i].mdpurchasegoodsid}),
             //   tax: res.data[i].mdpurchasegoodstax,
                 tax: 0,
-              warehouse: 0,
+              warehouse: res.data[i].mdpurchasegoodsidwhouse,
               saved_unit: res.data[i].saved_unit+""
             };
 
