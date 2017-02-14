@@ -116,7 +116,7 @@
 <body class="global-css">
 <div class="top-left">
     {{-- TOP LEFT --}}
- 	<h2 style="color: #257293">{{ $config->msyscompname }}</h2>
+ 	<h1 style="color: #257293">{{ $config->msyscompname }}</h1>
     <table border="" cellpadding="5" cellpadding="5">
         <tr>
             <th style=""></th>
@@ -163,26 +163,30 @@
     {{-- TOP RIGHT --}}
 
 <div class="header-topright">
-     <h2 style="padding-top: 25px;" style="color: #217293">Pesanan Pembelian</h2>
+     <h1 style="padding-top: 25px;" style="color: #217293">Pesanan Pembelian</h1>
     <table border="" cellpadding="5" cellpadding="5">
         <tr>
             <th style=""></th>
         </tr>
 
         <tr>
-            <th style="text-align: left;" class="thnoborder">DATE &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: </td>
+            <th style="text-align: left;" class="thnoborder">DATE</th>
+            <th style="text-align: right;">:</th>
             <td style="border-style: solid; border-width: 1px; width: 85px; text-align: center;">{{ $quotation[0]['mhpurchasequotationdate'] }}</td>
         </tr>
         <tr>
-            <th style="text-align: left;" class="thnoborder">QUOTE&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: </td>
+            <th style="text-align: left;" class="thnoborder">QUOTE</th>
+            <th style="text-align: right;">:</th>
             <td style="border-style: solid; border-width: 1px; width: 85px; text-align: center;">{{ $quotation[0]['mhpurchasequotationno'] }}</td>
         </tr>
         <tr>
-            <th style="text-align: left;" class="thnoborder">CUSTOMER ID&nbsp;&nbsp;:</td>
+            <th style="text-align: left;" class="thnoborder">CUSTOMER ID</th>
+            <th style="text-align: right;">:</th>
             <td style="border-style: solid; border-width: 1px; width: 85px; text-align: center;">{{ $quotation[0]['mhpurchasequotationsupplierid'] }}</td>
         </tr>
         <tr>
-            <th style="text-align: left;" class="thnoborder">VALID UNTIL &nbsp;&nbsp;&nbsp;&nbsp;: </td>
+            <th style="text-align: left;" class="thnoborder">VALID UNTIL</th>
+            <th style="text-align: right;">:</th>
             <td style="border-style: solid; border-width: 1px; width: 85px; text-align: center;">{{ $quotation[0]['mhpurchasequotationduedate'] }}</td>
         </tr>
     </table>
@@ -395,28 +399,31 @@
              <tr>
                     <td colspan="5"></td>
                     <td style="text-align: left;"><span contenteditable>Total Item :</span></td>
-                    <td><span data-prefix></span><span>{{ $totalitem }}</span></td>
+                    <td style="text-align: left;">IDR &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ $totalitem }}</td>
                 </tr>
 
                 <tr>
                     <td colspan="5"></td>
-                    <td style="text-align: left;"><span contenteditable>Sub Total :</span></td>
-                    <td><span data-prefix><b>IDR</b> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span contenteditable>{{ number_format($subtotal,$decimals,$dec_point,$thousands_sep) }}</span></td>
+                    <th style="text-align: left;">Sub Total :</th>
+                    <td style="text-align: left;">IDR &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ number_format($subtotal,$decimals,$dec_point,$thousands_sep) }}</td>
+                   
+                    
                 </tr>
                 <tr>
                     <td colspan="5"></td>
                     <td style="text-align: left;"><span contenteditable>Discount :</span></td>
-                    <td><span data-prefix><b>IDR</b> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span>{{ number_format($discount,$decimals,$dec_point,$thousands_sep) }}</span></td>
+                    <td style="text-align: left;">IDR &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ number_format($discount,$decimals,$dec_point,$thousands_sep) }}</td>
                 </tr>
                  <tr>
                     <td colspan="5"></td>
                     <td style="border-bottom: 4px solid black; text-align: left;"><span contenteditable>PPN 10% :</span></td>
-                    <td style="border-bottom: 4px solid black;"><span data-prefix><b>IDR</b> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span>{{ number_format($quotation[0]['mhpurchasequotationtaxtotal'],$decimals,$dec_point,$thousands_sep) }}</span></td>
+                     <td style="text-align: left;border-bottom: 4px solid black;">IDR &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ number_format($quotation[0]['mhpurchasequotationtaxtotal'],$decimals,$dec_point,$thousands_sep) }}</td>
+
                 </tr>
                  <tr>
                     <td colspan="5"></td>
                     <td style="text-align: left;"><span contenteditable>Total :</span></td>
-                    <td style="background: #f0f0f2; border-style: solid; border-width: 1px;"><span data-prefix><b>IDR</b> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span>{{ number_format($quotation[0]['mhpurchasequotationgrandtotal'],$decimals,$dec_point,$thousands_sep)}}</span></td>
+                    <td style="text-align: left;background: #f0f0f2; border-style: solid; border-width: 1px;">IDR &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ number_format($quotation[0]['mhpurchasequotationgrandtotal'],$decimals,$dec_point,$thousands_sep)}}</td>
                 </tr>
           </tfoot>
        </table>
