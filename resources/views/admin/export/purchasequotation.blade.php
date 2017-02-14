@@ -399,31 +399,31 @@
              <tr>
                     <td colspan="5"></td>
                     <td style="text-align: left;"><span contenteditable>Total Item :</span></td>
-                    <td style="text-align: left;">IDR &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ $totalitem }}</td>
+                    <td style="text-align: left;">IDR &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ $totalitem }}</td>
                 </tr>
 
                 <tr>
                     <td colspan="5"></td>
-                    <th style="text-align: left;">Sub Total :</th>
-                    <td style="text-align: left;">IDR &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ number_format($subtotal,$decimals,$dec_point,$thousands_sep) }}</td>
+                    <td style="text-align: left;">Sub Total :</td>
+                    <td style="text-align: left;">IDR &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ number_format($subtotal,$decimals,$dec_point,$thousands_sep) }}</td>
                    
                     
                 </tr>
                 <tr>
                     <td colspan="5"></td>
                     <td style="text-align: left;"><span contenteditable>Discount :</span></td>
-                    <td style="text-align: left;">IDR &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ number_format($discount,$decimals,$dec_point,$thousands_sep) }}</td>
+                    <td style="text-align: left;">IDR &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ number_format($discount,$decimals,$dec_point,$thousands_sep) }}</td>
                 </tr>
                  <tr>
                     <td colspan="5"></td>
                     <td style="border-bottom: 4px solid black; text-align: left;"><span contenteditable>PPN 10% :</span></td>
-                     <td style="text-align: left;border-bottom: 4px solid black;">IDR &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ number_format($quotation[0]['mhpurchasequotationtaxtotal'],$decimals,$dec_point,$thousands_sep) }}</td>
+                     <td style="text-align: left;border-bottom: 4px solid black;">IDR &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ number_format($quotation[0]['mhpurchasequotationtaxtotal'],$decimals,$dec_point,$thousands_sep) }}</td>
 
                 </tr>
                  <tr>
                     <td colspan="5"></td>
                     <td style="text-align: left;"><span contenteditable>Total :</span></td>
-                    <td style="text-align: left;background: #f0f0f2; border-style: solid; border-width: 1px;">IDR &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ number_format($quotation[0]['mhpurchasequotationgrandtotal'],$decimals,$dec_point,$thousands_sep)}}</td>
+                    <td style="text-align: left;background: #f0f0f2; border-style: solid; border-width: 1px;">IDR &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ number_format($quotation[0]['mhpurchasequotationgrandtotal'],$decimals,$dec_point,$thousands_sep)}}</td>
                 </tr>
           </tfoot>
        </table>
