@@ -13,7 +13,7 @@
         <br>
         <div class="row">
             <p class="col-md-1 report-label">Gudang</p>
-            <select v-selecttwo class="col-md-2" v-model="selected_warehouse">
+            <select id="select_warehouse" v-selecttwo class="col-md-2" v-model="selected_warehouse">
                 <option value="">Semua</option>
                 <option v-for="wh in warehouses" :value="wh.id">{{ wh.mwarehousename }}</option>
             </select>
@@ -168,6 +168,17 @@
             }
         },
         computed:{
+            expanded_header(){
+                let exp = [];
+                this.sales.map( sl => {
+                    if(sl.header == true){
+                        if(sl.expanded == true){
+                            exp.push(sl.id);
+                        }
+                    }
+                });
+                return exp;
+            },
             label_warehouse(){
                 let self = this;
                 if(this.selected_warehouse != ""){
@@ -313,6 +324,7 @@
                 .then(function(res){
                     console.log(res.data);
                     self.warehouses = res.data;
+                    $('#select_warehouse').trigger('change');
                 })
                 .catch(function(err){
                     console.log(err);
@@ -336,19 +348,19 @@
                 });
             },
             printTable(){
-                let data = base64.encode(JSON.stringify(this.sales));
+                let data = base64.encode(JSON.stringify(this.expanded_header));
                 window.open('/admin-nano/reports/salesreport/export/print?wh='+this.selected_warehouse+'&goods='+this.selected_goods+'&start='+this.invoice_date_start+'&end='+this.invoice_date_end+'&data='+data,'_blank');
             },
             pdfTable(){
-                let data = base64.encode(JSON.stringify(this.sales));
+                let data = base64.encode(JSON.stringify(this.expanded_header));
                 window.open('/admin-nano/reports/salesreport/export/pdf?wh='+this.selected_warehouse+'&goods='+this.selected_goods+'&start='+this.invoice_date_start+'&end='+this.invoice_date_end+'&data='+data,'_blank');
             },
             excelTable(){
-                let data = base64.encode(JSON.stringify(this.sales));
+                let data = base64.encode(JSON.stringify(this.expanded_header));
                 window.open('/admin-nano/reports/salesreport/export/excel?wh='+this.selected_warehouse+'&goods='+this.selected_goods+'&start='+this.invoice_date_start+'&end='+this.invoice_date_end+'&data='+data,'_blank');
             },
             csvTable(){
-                let data = base64.encode(JSON.stringify(this.sales));
+                let data = base64.encode(JSON.stringify(this.expanded_header));
                 window.open('/admin-nano/reports/salesreport/export/csv?wh='+this.selected_warehouse+'&goods='+this.selected_goods+'&start='+this.invoice_date_start+'&end='+this.invoice_date_end+'&data='+data,'_blank');
             }
         },
@@ -357,6 +369,10 @@
             this.fetchSales();
             this.fetchWarehouses();
             this.fetchGoods();
+            this.$parent.$on('update-warehouses', () => {
+                console.log('update');
+                this.fetchWarehouses();
+            })
         }
     }
 </script>

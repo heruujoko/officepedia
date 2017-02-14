@@ -24,8 +24,8 @@ Elixir.webpack.mergeConfig({
 elixir(mix => {
     // mix.webpack('salesinvoice.js');
     // mix.webpack('purchaseinvoice.js');
-    mix.webpack('stockcardreport.js');
-    // mix.webpack('salesreport.js');
+    // mix.webpack('stockcardreport.js');
+    mix.webpack('salesreport.js');
     // mix.webpack('invoicereport.js');
     // mix.webpack('arcustreport.js');
     // mix.webpack('arreport.js');
@@ -43,7 +43,7 @@ elixir(mix => {
     // mix.webpack('cashincome.js');
     // mix.webpack('generaljournal.js');
     // mix.webpack('roles.js');
-    // mix.webpack('changebranch.js');
+    mix.webpack('changebranch.js');
     // mix.webpack('arbook.js');
     // mix.scripts([
     //     '/public/app.min.js','/public/app.config.js','/public/select2.min.js'

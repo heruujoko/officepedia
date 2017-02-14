@@ -62,7 +62,7 @@
                     setTimeout(function(){
                         $('.tableapi').DataTable().ajax.reload();
                         console.log('wh0 '+self.active);
-                        if(self.active == 'stockcardreport'){
+                        if(self.active == 'stockcardreport' || self.active == 'salesreports'){
                             refreshWarehouses();
                         }
                         if(self.active == 'payap' || self.active == 'payar'){

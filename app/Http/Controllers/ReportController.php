@@ -23,6 +23,219 @@ use App\UserBranch;
 
 class ReportController extends Controller
 {
+
+    private function salesreport_data($request){
+        $sales = [];
+        $headers=[];
+        $mhinvoicesubtotal_sum = 0;
+        $mhinvoicediscounttotal_sum = 0;
+        $mhinvoicetaxtotal_sum = 0;
+        $mhinvoicegrandtotal_sum = 0;
+        $warehouse_ids = [];
+        /*
+         * filter date header
+         */
+        $header_query = MHInvoice::on(Auth::user()->db_name);
+        if($request->has('start')){
+            $header_query->whereDate('mhinvoicedate','>=',Carbon::parse($request->start));
+        }
+        if($request->has('end')){
+            $header_query->whereDate('mhinvoicedate','<=',Carbon::parse($request->end));
+        }
+
+        if(!$request->has('wh')){
+            // branch filter
+            $branch_ids = UserBranch::on(Auth::user()->db_name)->where('userid',Auth::user()->id)->get();
+            $branches = collect();
+            foreach($branch_ids as $br){
+                $br = MBRANCH::on(Auth::user()->db_name)->where('id',$br->branchid)->first();
+                $branches->push($br);
+            }
+
+            foreach ($branches as $br) {
+                $wh = MWarehouse::on(Auth::user()->db_name)->where('mwarehousebranchid',$br->mbranchcode)->get();
+                foreach($wh as $w){
+                    array_push($warehouse_ids,$w->id);
+                }
+            }
+        }
+
+        if($request->has('goods') && $request->has('wh')){
+            $details = MDInvoice::on(Auth::user()->db_name)->where('mdinvoicegoodsid',$request->goods)->where('mdinvoicegoodsidwhouse',$request->wh)->get();
+            foreach ($details as $d) {
+                array_push($headers,$d->mhinvoiceno);
+            }
+            $headers = array_unique($headers);
+            $sales = $header_query->whereIn('mhinvoiceno',$headers)->groupBy('mhinvoicedate')->get();
+            foreach($sales as $s){
+
+                $details = MDInvoice::on(Auth::user()->db_name)
+                ->where('mdinvoicedate',$s->mhinvoicedate)
+                ->where('mdinvoicegoodsid',$request->goods)
+                ->where('mdinvoicegoodsidwhouse',$request->wh)
+                ->get();
+                $s['detail_count'] = count($details);
+                $s['numoftrans'] = count($details);
+                $s['header'] = true;
+                foreach($details as $dt){
+
+                        $mhinvoicesubtotal_sum += $dt->mdinvoicegoodsgrossamount;
+                        $mhinvoicediscounttotal_sum += $dt->mdinvoicegoodsdiscount;
+                        $mhinvoicetaxtotal_sum += $dt->mdinvoicegoodstax;
+                        $mhinvoicegrandtotal_sum += ($dt->mdinvoicegoodsgrossamount + $dt->mdinvoicegoodstax);
+
+                }
+
+                $s['mhinvoicesubtotal_sum'] = $mhinvoicesubtotal_sum;
+                $s['mhinvoicediscounttotal_sum'] = $mhinvoicediscounttotal_sum;
+                $s['mhinvoicetaxtotal_sum'] = $mhinvoicetaxtotal_sum;
+                $s['mhinvoicegrandtotal_sum'] = $mhinvoicegrandtotal_sum;
+            }
+
+        } else if($request->has('wh')){
+            $details = MDInvoice::on(Auth::user()->db_name)->where('mdinvoicegoodsidwhouse',$request->wh)->get();
+            foreach ($details as $d) {
+                array_push($headers,$d->mhinvoiceno);
+            }
+            $headers = array_unique($headers);
+            $sales = $header_query->whereIn('mhinvoiceno',$headers)->groupBy('mhinvoicedate')->get();
+            foreach($sales as $s){
+
+                $mhinvoicesubtotal_sum = 0;
+                $mhinvoicediscounttotal_sum = 0;
+                $mhinvoicetaxtotal_sum = 0;
+                $mhinvoicegrandtotal_sum = 0;
+
+                $details = MDInvoice::on(Auth::user()->db_name)
+                ->where('mdinvoicedate',$s->mhinvoicedate)
+                ->where('mdinvoicegoodsidwhouse',$request->wh)
+                ->get();
+                $s['detail_count'] = count($details);
+                $s['numoftrans'] = count($details);
+                $s['header'] = true;
+                foreach($details as $dt){
+
+                        $mhinvoicesubtotal_sum += $dt->mdinvoicegoodsgrossamount;
+                        $mhinvoicediscounttotal_sum += $dt->mdinvoicegoodsdiscount;
+                        $mhinvoicetaxtotal_sum += $dt->mdinvoicegoodstax;
+                        $mhinvoicegrandtotal_sum += ($dt->mdinvoicegoodsgrossamount + $dt->mdinvoicegoodstax);
+
+                }
+
+                $s['mhinvoicesubtotal_sum'] = $mhinvoicesubtotal_sum;
+                $s['mhinvoicediscounttotal_sum'] = $mhinvoicediscounttotal_sum;
+                $s['mhinvoicetaxtotal_sum'] = $mhinvoicetaxtotal_sum;
+                $s['mhinvoicegrandtotal_sum'] = $mhinvoicegrandtotal_sum;
+
+            }
+        }else if($request->has('goods')){
+            $details = MDInvoice::on(Auth::user()->db_name)->where('mdinvoicegoodsid',$request->goods)
+            ->whereDate('mdinvoicedate','>=',Carbon::parse($request->start))
+            ->whereDate('mdinvoicedate','<=',Carbon::parse($request->end))
+            ->get();
+            foreach ($details as $d) {
+                array_push($headers,$d->mhinvoiceno);
+            }
+            $headers = array_unique($headers);
+            $sales = $header_query->whereIn('mhinvoiceno',$headers)->groupBy('mhinvoicedate')->get();
+            foreach($sales as $s){
+                $mhinvoicesubtotal_sum = 0;
+                $mhinvoicediscounttotal_sum = 0;
+                $mhinvoicetaxtotal_sum = 0;
+                $mhinvoicegrandtotal_sum = 0;
+
+                $details = MDInvoice::on(Auth::user()->db_name)
+                ->where('mdinvoicedate',$s->mhinvoicedate)
+                ->where('mdinvoicegoodsid',$request->goods)
+                ->whereIn('mdinvoicegoodsidwhouse',$warehouse_ids)
+                ->get();
+                $s['detail_count'] = count($details);
+                $s['numoftrans'] = count($details);
+                $s['header'] = true;
+                foreach($details as $dt){
+
+                        $mhinvoicesubtotal_sum += $dt->mdinvoicegoodsgrossamount;
+                        $mhinvoicediscounttotal_sum += $dt->mdinvoicegoodsdiscount;
+                        $mhinvoicetaxtotal_sum += $dt->mdinvoicegoodstax;
+                        $mhinvoicegrandtotal_sum += ($dt->mdinvoicegoodsgrossamount + $dt->mdinvoicegoodstax);
+
+                }
+
+                $s['mhinvoicesubtotal_sum'] = $mhinvoicesubtotal_sum;
+                $s['mhinvoicediscounttotal_sum'] = $mhinvoicediscounttotal_sum;
+                $s['mhinvoicetaxtotal_sum'] = $mhinvoicetaxtotal_sum;
+                $s['mhinvoicegrandtotal_sum'] = $mhinvoicegrandtotal_sum;
+            }
+        } else {
+            $sales = $header_query->groupBy('mhinvoicedate')
+            ->selectRaw('*,sum(mhinvoicesubtotal) as mhinvoicesubtotal_sum,sum(mhinvoicediscounttotal) as mhinvoicediscounttotal_sum,sum(mhinvoicetaxtotal) as mhinvoicetaxtotal_sum,sum(mhinvoicegrandtotal) as mhinvoicegrandtotal_sum,count(mhinvoiceno) as numoftrans')
+            ->get();
+
+            foreach($sales as $s){
+                $details = MDInvoice::on(Auth::user()->db_name)->whereIn('mdinvoicegoodsidwhouse',$warehouse_ids)->where('mdinvoicedate',$s->mhinvoicedate)->get();
+                $s['detail_count'] = count($details);
+                $s['numoftrans'] = count($details);
+                $s['header'] = true;
+            }
+        }
+
+        $expanded_ids = base64_decode($request->data);
+        $expanded_ids = json_decode($expanded_ids);
+        $sales = $sales->toArray();
+
+        $expanded_sales = [];
+
+        for($i = 0;$i<count($sales);$i++){
+            $chunk = [];
+            array_push($expanded_sales,$sales[$i]);
+            if( in_array($sales[$i]['id'],$expanded_ids) ){
+                $details = $this->sales_detail_data($request,$sales[$i]['mhinvoicedate']);
+                foreach($details as $dt){
+                    array_push($expanded_sales,$dt);
+                }
+            }
+        }
+
+        return json_encode($expanded_sales);
+    }
+
+    private function sales_detail_data($request,$invoice_date){
+        $warehouse_ids = [];
+        $detail_query = MDInvoice::on(Auth::user()->db_name)->whereDate('mdinvoicedate','=',Carbon::parse($invoice_date))->where('void',0)->orderBy('mhinvoiceno','asc');
+        if($request->has('goods')){
+            $detail_query->where('mdinvoicegoodsid',$request->goods);
+        }
+        if($request->has('wh')){
+            $detail_query->where('mdinvoicegoodsidwhouse',$request->wh);
+        } else {
+            // branch filter
+            $branch_ids = UserBranch::on(Auth::user()->db_name)->where('userid',Auth::user()->id)->get();
+            $branches = collect();
+            foreach($branch_ids as $br){
+                $br = MBRANCH::on(Auth::user()->db_name)->where('id',$br->branchid)->first();
+                $branches->push($br);
+            }
+
+            foreach ($branches as $br) {
+                $wh = MWarehouse::on(Auth::user()->db_name)->where('mwarehousebranchid',$br->mbranchcode)->get();
+                foreach($wh as $w){
+                    array_push($warehouse_ids,$w->id);
+                }
+            }
+            $detail_query->whereIn('mdinvoicegoodsidwhouse',$warehouse_ids);
+        }
+        $details = $detail_query->get();
+        foreach ($details as $d) {
+            $md = MDInvoice::on(Auth::user()->db_name)->where('mhinvoiceno',$d->mhinvoiceno)->where('void',0)->get();
+            $d['header'] = false;
+            $d['numoftrans'] = count($md);
+            $d['mhinvoicesubtotal_sum'] = $d->mdinvoicegoodsgrossamount;
+            $d['mhinvoicetaxtotal_sum'] = $d->mdinvoicegoodstax;
+            $d['mhinvoicegrandtotal_sum'] = $d->mdinvoicegoodsgrossamount + $d->mdinvoicegoodstax;
+        }
+        return $details;
+    }
+
     public function salesreport(){
 
         if(Auth::user()->has_role('R_salesreport')){
@@ -37,10 +250,11 @@ class ReportController extends Controller
 
     public function salesreport_print(Request $request){
 
-        $data = $request->data;
-        $data = base64_decode($data);
+        // $data = $request->data;
+        // $data = base64_decode($data);
 
-        $decoded_data = json_decode($data);
+        $decoded_data = json_decode($this->salesreport_data($request));
+
         if($request->wh != ''){
             $param['wh'] = MWarehouse::on(Auth::user()->db_name)->where('id',$request->wh)->first()->mwarehousename;
         } else {
@@ -81,10 +295,11 @@ class ReportController extends Controller
     }
 
     public function salesreport_pdf(Request $request){
-        $data = $request->data;
-        $data = base64_decode($data);
+        // $data = $request->data;
+        // $data = base64_decode($data);
 
-        $decoded_data = json_decode($data);
+        $decoded_data = json_decode($this->salesreport_data($request));
+
         if($request->wh != ''){
             $param['wh'] = MWarehouse::on(Auth::user()->db_name)->where('id',$request->wh)->first()->mwarehousename;
         } else {
@@ -127,10 +342,10 @@ class ReportController extends Controller
 
     public function salesreport_excel(Request $request){
         $this->count =0;
-        $data_dec = $request->data;
-        $data_dec = base64_decode($data_dec);
+        // $data_dec = $request->data;
+        // $data_dec = base64_decode($data_dec);
 
-        $decoded_data = json_decode($data_dec);
+        $decoded_data = json_decode($this->salesreport_data($request));
         if($request->wh != ''){
             $data['wh'] = MWarehouse::on(Auth::user()->db_name)->where('id',$request->wh)->first()->mwarehousename;
         } else {
@@ -297,10 +512,10 @@ class ReportController extends Controller
 
     public function salesreport_csv(Request $request){
         $this->count =0;
-        $data_dec = $request->data;
-        $data_dec = base64_decode($data_dec);
+        // $data_dec = $request->data;
+        // $data_dec = base64_decode($data_dec);
 
-        $decoded_data = json_decode($data_dec);
+        $decoded_data = json_decode($this->salesreport_data($request));
         if($request->wh != ''){
             $data['wh'] = MWarehouse::on(Auth::user()->db_name)->where('id',$request->wh)->first()->mwarehousename;
         } else {
