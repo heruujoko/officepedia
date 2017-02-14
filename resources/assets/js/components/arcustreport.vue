@@ -153,6 +153,17 @@
             }
         },
         computed:{
+            expand_headers(){
+                let exp = [];
+                this.ars.map(item => {
+                    if(item.header == true){
+                        if(item.checked == true){
+                            exp.push(item.id);
+                        }
+                    }
+                });
+                return exp;
+            },
             label_branch(){
                 let self = this;
                 if(this.selected_branch != ""){
@@ -323,19 +334,19 @@
                 });
             },
             printTable(){
-                let data = base64.encode(JSON.stringify(this.ars));
+                let data = base64.encode(JSON.stringify(this.expand_headers));
                 window.open('/admin-nano/reports/arcustreport/export/print?start='+this.invoice_date_start+'&end='+this.invoice_date_end+'&cust='+this.selected_customer+'&br='+this.selected_branch+"&data="+data,'_blank');
             },
             pdfTable(){
-                let data = base64.encode(JSON.stringify(this.ars));
+                let data = base64.encode(JSON.stringify(this.expand_headers));
                 window.open('/admin-nano/reports/arcustreport/export/pdf?start='+this.invoice_date_start+'&end='+this.invoice_date_end+'&cust='+this.selected_customer+'&br='+this.selected_branch+"&data="+data,'_blank');
             },
             excelTable(){
-                let data = base64.encode(JSON.stringify(this.ars));
+                let data = base64.encode(JSON.stringify(this.expand_headers));
                 window.open('/admin-nano/reports/arcustreport/export/excel?start='+this.invoice_date_start+'&end='+this.invoice_date_end+'&cust='+this.selected_customer+'&br='+this.selected_branch+"&data="+data,'_blank');
             },
             csvTable(){
-                let data = base64.encode(JSON.stringify(this.ars));
+                let data = base64.encode(JSON.stringify(this.expand_headers));
                 window.open('/admin-nano/reports/arcustreport/export/csv?start='+this.invoice_date_start+'&end='+this.invoice_date_end+'&cust='+this.selected_customer+'&br='+this.selected_branch+"&data="+data,'_blank');
             }
         },

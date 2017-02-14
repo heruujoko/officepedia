@@ -1933,6 +1933,145 @@ class ReportController extends Controller
 		})->export('csv');
     }
 
+    private function custreport_data($request){
+        $active_branch = MBRANCH::on(Auth::user()->db_name)->where('id',Auth::user()->defaultbranch)->first();
+        // get all warehouses in branch
+        $warehouses = MWarehouse::on(Auth::user()->db_name)->where('mwarehousebranchid',$active_branch->mbranchcode)->get();
+        $warehouse_ids = array_map(function($w){
+            return $w['id'];
+        },$warehouses->toArray());
+
+        $header_query = MARCard::on(Auth::user()->db_name)->where('void',0)->whereIn('marcardwarehouseid',$warehouse_ids);
+
+        if($request->has('cust')){
+            $header_query->where('marcardcustomerid',$request->cust);
+        }
+        if($request->has('end')){
+            $header_query->whereDate('marcarddate','<=',Carbon::parse($request->end));
+        }
+        $ars = $header_query->orderBy('marcardcustomerid','asc')->groupBy('marcardcustomerid')->get();
+
+        $expanded_ars = [];
+
+        $expanded_ids = base64_decode($request->data);
+        $expanded_ids = json_decode($expanded_ids);
+
+
+        foreach($ars as $ar){
+            $ar['header'] = true;
+            $ar['data'] = false;
+            $ar['footer'] = false;
+            $ar['numoftrans'] = 0;
+            $ar['1w'] = 0;
+            $ar['2w'] = 0;
+            $ar['3w'] = 0;
+            $ar['4w'] = 0;
+            $ar['1m'] = 0;
+            $ar->marcardtotalinv = 0;
+            $ar->marcardoutstanding = 0;
+            $details = MARCard::on(Auth::user()->db_name)->whereIn('marcardwarehouseid',$warehouse_ids)->where('marcardcustomerid',$ar->marcardcustomerid)->where('void',0)->get();
+            foreach($details as $d){
+                $ar['numoftrans'] += 1;
+                $now = Carbon::now();
+                $due = Carbon::parse($d->marcardduedate);
+                $diff = $now->diffInDays($due,false);
+
+                $ar->marcardtotalinv += $d->marcardtotalinv;
+                $ar->marcardoutstanding += $d->marcardoutstanding;
+
+                // spread the ar in weeks
+                if($diff > 0 && $diff <= 7){
+                    $ar['1w'] += $d->marcardoutstanding;
+                }
+                if($diff > 7 && $diff <= 14){
+                    $ar['2w'] += $d->marcardoutstanding;
+                }
+                if($diff > 14 && $diff <= 21){
+                    $ar['3w'] += $d->marcardoutstanding;
+                }
+                if($diff > 21 && $diff <= 30){
+                    $ar['4w'] += $d->marcardoutstanding;
+                }
+                if($diff > 30){
+                    $ar['1m'] += $d->marcardoutstanding;
+                }
+            }
+
+            array_push($expanded_ars,$ar);
+
+            if(in_array($ar->id,$expanded_ids)){
+                $expand_details = $this->custreport_detail_data($request,$ar->marcardcustomerid);
+                foreach($expand_details as $ex){
+                    array_push($expanded_ars,$ex);
+                }
+            }
+        }
+
+        return json_encode($expanded_ars);
+    }
+
+    private function custreport_detail_data($request,$customer_id){
+        $active_branch = MBRANCH::on(Auth::user()->db_name)->where('id',Auth::user()->defaultbranch)->first();
+
+        // get all warehouses in branch
+        $warehouses = MWarehouse::on(Auth::user()->db_name)->where('mwarehousebranchid',$active_branch->mbranchcode)->get();
+        $warehouse_ids = array_map(function($w){
+            return $w['id'];
+        },$warehouses->toArray());
+
+        $detail_query = MARCard::on(Auth::user()->db_name)->whereIn('marcardwarehouseid',$warehouse_ids)->where('void',0)->where('marcardcustomerid',$customer_id);
+
+        if($request->has('end')){
+            $detail_query->whereDate('marcarddate','<=',Carbon::parse($request->end));
+        }
+
+        $details = $detail_query->get();
+
+        foreach($details as $d){
+            $d['header'] = false;
+            $d['data'] = true;
+            $d['footer'] = false;
+            $d['numoftrans'] = 0;
+            $d['1w'] = 0;
+            $d['2w'] = 0;
+            $d['3w'] = 0;
+            $d['4w'] = 0;
+            $d['1m'] = 0;
+
+            $now = Carbon::now();
+            $due = Carbon::parse($d->marcardduedate);
+            $diff = $now->diffInDays($due,false);
+            $d['aging'] = $diff;
+            // spread the ar in weeks
+            if($diff > 0 && $diff <= 7){
+                $d['1w'] += $d->marcardoutstanding;
+            }
+            if($diff > 7 && $diff <= 14){
+                $d['2w'] += $d->marcardoutstanding;
+            }
+            if($diff > 14 && $diff <= 21){
+                $d['3w'] += $d->marcardoutstanding;
+            }
+            if($diff > 21 && $diff <= 30){
+                $d['4w'] += $d->marcardoutstanding;
+            }
+            if($diff > 30){
+                $d['1m'] += $d->marcardoutstanding;
+            }
+
+        }
+
+        $footer = [
+            'header' => false,
+            'data' => false,
+            'footer' => true
+        ];
+
+        $details->push($footer);
+
+        return $details;
+    }
+
     public function arcustreport(){
 
         if(Auth::user()->has_role('R_arcustomerreport')){
@@ -1946,11 +2085,10 @@ class ReportController extends Controller
     }
 
     public function arcustreport_print(Request $request){
-        $data_dec = $request->data;
-        $data_dec = base64_decode($data_dec);
+        // $data_dec = $request->data;
+        // $data_dec = base64_decode($data_dec);
 
-        $decoded_data = json_decode($data_dec);
-
+        $decoded_data = json_decode($this->custreport_data($request));
         /*
          * price config
          */
@@ -2004,10 +2142,10 @@ class ReportController extends Controller
     }
 
     public function arcustreport_pdf(Request $request){
-        $data_dec = $request->data;
-        $data_dec = base64_decode($data_dec);
+        // $data_dec = $request->data;
+        // $data_dec = base64_decode($data_dec);
 
-        $decoded_data = json_decode($data_dec);
+        $decoded_data = json_decode($this->custreport_data($request));
 
         /*
          * price config
@@ -2064,10 +2202,10 @@ class ReportController extends Controller
 
     public function arcustreport_excel(Request $request){
 
-        $data_dec = $request->data;
-        $data_dec = base64_decode($data_dec);
+        // $data_dec = $request->data;
+        // $data_dec = base64_decode($data_dec);
 
-        $this->ars = json_decode($data_dec);
+        $this->ars = json_decode($this->custreport_data($request));
         /*
          * price config
          */
@@ -2252,10 +2390,10 @@ class ReportController extends Controller
 
     public function arcustreport_csv(Request $request){
 
-        $data_dec = $request->data;
-        $data_dec = base64_decode($data_dec);
+        // $data_dec = $request->data;
+        // $data_dec = base64_decode($data_dec);
 
-        $this->ars = json_decode($data_dec);
+        $this->ars = json_decode($this->custreport_data($request));
         /*
          * price config
          */
