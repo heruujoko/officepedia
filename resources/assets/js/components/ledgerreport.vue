@@ -162,20 +162,20 @@
                 });
             },
             printTable(){
-                this.fetchJournals();
-                window.open('/admin-nano/reports/ledger/export/print?end='+this.report_date_end+"&bank="+this.report_bank,'_blank');
+                let accs = base64.encode(JSON.stringify(this.selected_account));
+                window.open('/admin-nano/reports/ledger/export/print?end='+this.report_date_end+"&coa="+accs+"&start="+this.report_date_start,'_blank');
             },
             pdfTable(){
-                this.fetchJournals();
-                window.open('/admin-nano/reports/ledger/export/pdf?end='+this.report_date_end+"&bank="+this.report_bank,'_blank');
+                let accs = base64.encode(JSON.stringify(this.selected_account));
+                window.open('/admin-nano/reports/ledger/export/pdf?end='+this.report_date_end+"&coa="+accs+"&start="+this.report_date_start,'_blank');
             },
             excelTable(){
-                this.fetchJournals();
-                window.open('/admin-nano/reports/ledger/export/excel?end='+this.report_date_end+"&bank="+this.report_bank,'_blank');
+                let accs = base64.encode(JSON.stringify(this.selected_account));
+                window.open('/admin-nano/reports/ledger/export/excel?end='+this.report_date_end+"&coa="+accs+"&start="+this.report_date_start,'_blank');
             },
             csvTable(){
-                this.fetchJournals();
-                window.open('/admin-nano/reports/ledger/export/csv?end='+this.report_date_end+"&bank="+this.report_bank,'_blank');
+                let accs = base64.encode(JSON.stringify(this.selected_account));
+                window.open('/admin-nano/reports/ledger/export/csv?end='+this.report_date_end+"&coa="+accs+"&start="+this.report_date_start,'_blank');
             }
         },
         mounted(){

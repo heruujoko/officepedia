@@ -22,12 +22,12 @@ class LedgerController extends Controller
             $data['config'] = MConfig::on(Auth::user()->db_name)->where('id',1)->first();
             return view('admin.ledgerreport',$data);
         } else {
-            return redirect('/admin-nano/index');    
+            return redirect('/admin-nano/index');
         }
 
     }
 
-    private function ledger_data($request){
+    private function ledger_dataold($request){
         $ledger_query = MJournal::on(Auth::user()->db_name);
         $coa ="";
         if($request->has('bank') && $request->bank != 'Semua'){
@@ -100,6 +100,70 @@ class LedgerController extends Controller
         return $ledgers;
     }
 
+
+    private function ledger_data($request){
+        $coa = base64_decode($request->coa);
+        $coa = json_decode($coa);
+
+        $group_data = [];
+
+        foreach($coa as $c){
+            $ledger_query = MJournal::on(Auth::user()->db_name)->where('mjournalcoa',$c);
+
+            if($request->has('start')){
+                $ledger_query->whereDate('mjournaldate','>=',Carbon::parse($request->start));
+            }
+
+            if($request->has('end')){
+                $ledger_query->whereDate('mjournaldate','<=',Carbon::parse($request->end));
+            }
+
+            $data = $ledger_query->get();
+
+            $mcoa = MCOA::on(Auth::user()->db_name)->where('mcoacode',$c)->first();
+
+            $sum_d = 0;
+            $sum_k = 0;
+
+            foreach($data as $d){
+                $sum_d+= $d->mjournaldebit;
+                $sum_k+= $d->mjournalcredit;
+
+            }
+
+            $group = [
+                'mcoacode' => $c,
+                'mcoaname' => $mcoa->mcoaname,
+                'last_saldo' => $this->account_last_saldo($c,$request->start),
+                'transactions' => $data,
+                'sum_d' => $sum_d,
+                'sum_k' => $sum_k,
+            ];
+
+            array_push($group_data,$group);
+        }
+
+        return $group_data;
+    }
+
+    private function account_last_saldo($coa,$offset){
+        $first_day =  Carbon::parse(date('Y-01-01'));
+        if($first_day->diffInDays(Carbon::parse($offset)) > 0){
+            $debit = 0;
+            $credit = 0;
+            $journal_data = MJournal::on(Auth::user()->db_name)->where('mjournalcoa',$coa)->whereDate('mjournaldate','<',Carbon::parse($offset))->get();
+            foreach($journal_data as $j){
+                $debit += $j->mjournaldebit;
+                $credit += $j->mjournalcredit;
+            }
+
+            return ($debit - $credit);
+        } else {
+            return 0;
+        }
+
+    }
+
     public function ledger_print(Request $request){
         $data['config'] = MConfig::on(Auth::user()->db_name)->where('id',1)->first();
         $data['decimals'] = $data['config']->msysgenrounddec;
@@ -115,7 +179,13 @@ class LedgerController extends Controller
         } else {
             $data['end'] ="";
         }
+        if($request->has('start')){
+            $data['start'] = $request->start;
+        } else {
+            $data['start'] ="";
+        }
         $data['ledgers'] = $this->ledger_data($request);
+
         return view('admin.export.ledgerreport',$data);
     }
 
@@ -133,6 +203,11 @@ class LedgerController extends Controller
             $data['end'] = $request->end;
         } else {
             $data['end'] ="";
+        }
+        if($request->has('start')){
+            $data['start'] = $request->start;
+        } else {
+            $data['start'] ="";
         }
         $data['ledgers'] = $this->ledger_data($request);
         $pdf = PDF::loadview('admin/export/ledgerreport',$data);
@@ -154,7 +229,14 @@ class LedgerController extends Controller
         } else {
             $this->data['end'] ="";
         }
+        if($request->has('start')){
+            $this->data['start'] = $request->start;
+        } else {
+            $this->data['start'] ="";
+        }
+
         $this->data['ledgers'] = $this->ledger_data($request);
+
         $this->count =0;
         return Excel::create('Buku Besar',function($excel){
             $excel->sheet('Buku Besar',function($sheet){
@@ -173,7 +255,7 @@ class LedgerController extends Controller
 
                 $this->count++;
                 $sheet->mergeCells('A3:E3');
-                $sheet->row($this->count,array('Per '.$this->data['end']));
+                $sheet->row($this->count,array('Periode '.$this->data['start'].' '.$this->data['end']));
                 $sheet->cell('A3',function($cell){
                     $cell->setAlignment('center');
                 });
@@ -196,37 +278,47 @@ class LedgerController extends Controller
                 });
 
                 $this->count+=2;
-                $sheet->row($this->count,array(
-                    'Tanggal','Akun','Tipe Transaksi','Debet','Credit'
-                ));
                 foreach($this->data['ledgers'] as $l){
                     $this->count++;
-                    if($l['data'] == true){
+                    $sheet->row($this->count,array(
+                        'Kode Perkiraan : '.$l['mcoacode'],
+                        'Nama : '.$l['mcoacode'].' '.$l['mcoaname']
+                    ));
+                    $this->count++;
+                    $sheet->row($this->count,array(
+                        'Tanggal','Akun','Tipe Transaksi','Debet','Credit'
+                    ));
+                    $this->count++;
+                    $sheet->row($this->count,array(
+                        '',
+                        'Saldo Sebelum nya',
+                        '',
+                        $l['last_saldo']
+                    ));
+
+                    $sheet->mergeCells('D'.$this->count.':E'.$this->count);
+
+                    foreach($l['transactions'] as $tr){
+                        $this->count++;
                         $sheet->row($this->count,array(
-                            $l->mjournaldate,
-                            $l['akun']->mcoaname,
-                            $l->mjournaltranstype,
-                            $l->mjournaldebit,
-                            $l->mjournalcredit
-                        ));
-                    } else if($l['data'] == false && $l['summary'] == false){
-                        $sheet->row($this->count,array(
-                            'Saldo',
-                            '',
-                            '',
-                            $l['debit'],
-                            $l['credit']
-                        ));
-                    } else {
-                        $sheet->row($this->count,array(
-                            '',
-                            '',
-                            '',
-                            $l['debit'],
-                            $l['credit']
+                            $tr->mjournaldate,
+                            $tr->mjournalcoa,
+                            $tr->mjournaltranstype,
+                            $tr->mjournaldebit,
+                            $tr->mjournalcredit,
                         ));
                     }
 
+                    $this->count++;
+                    $sheet->row($this->count,array(
+                        'Saldo',
+                        '',
+                        '',
+                        $l['sum_d'],
+                        $l['sum_k'],
+                    ));
+                    $sheet->mergeCells('A'.$this->count.':C'.$this->count);
+                    $this->count+= 3;
                 }
             });
         })->export('xls');
@@ -247,7 +339,14 @@ class LedgerController extends Controller
         } else {
             $this->data['end'] ="";
         }
+        if($request->has('start')){
+            $this->data['start'] = $request->start;
+        } else {
+            $this->data['start'] ="";
+        }
+
         $this->data['ledgers'] = $this->ledger_data($request);
+
         $this->count =0;
         return Excel::create('Buku Besar',function($excel){
             $excel->sheet('Buku Besar',function($sheet){
@@ -266,7 +365,7 @@ class LedgerController extends Controller
 
                 $this->count++;
                 $sheet->mergeCells('A3:E3');
-                $sheet->row($this->count,array('Per '.$this->data['end']));
+                $sheet->row($this->count,array('Periode '.$this->data['start'].' '.$this->data['end']));
                 $sheet->cell('A3',function($cell){
                     $cell->setAlignment('center');
                 });
@@ -289,37 +388,47 @@ class LedgerController extends Controller
                 });
 
                 $this->count+=2;
-                $sheet->row($this->count,array(
-                    'Tanggal','Akun','Tipe Transaksi','Debet','Credit'
-                ));
                 foreach($this->data['ledgers'] as $l){
                     $this->count++;
-                    if($l['data'] == true){
+                    $sheet->row($this->count,array(
+                        'Kode Perkiraan : '.$l['mcoacode'],
+                        'Nama : '.$l['mcoacode'].' '.$l['mcoaname']
+                    ));
+                    $this->count++;
+                    $sheet->row($this->count,array(
+                        'Tanggal','Akun','Tipe Transaksi','Debet','Credit'
+                    ));
+                    $this->count++;
+                    $sheet->row($this->count,array(
+                        '',
+                        'Saldo Sebelum nya',
+                        '',
+                        $l['last_saldo']
+                    ));
+
+                    $sheet->mergeCells('D'.$this->count.':E'.$this->count);
+
+                    foreach($l['transactions'] as $tr){
+                        $this->count++;
                         $sheet->row($this->count,array(
-                            $l->mjournaldate,
-                            $l['akun']->mcoaname,
-                            $l->mjournaltranstype,
-                            $l->mjournaldebit,
-                            $l->mjournalcredit
-                        ));
-                    } else if($l['data'] == false && $l['summary'] == false){
-                        $sheet->row($this->count,array(
-                            'Saldo',
-                            '',
-                            '',
-                            $l['debit'],
-                            $l['credit']
-                        ));
-                    } else {
-                        $sheet->row($this->count,array(
-                            '',
-                            '',
-                            '',
-                            $l['debit'],
-                            $l['credit']
+                            $tr->mjournaldate,
+                            $tr->mjournalcoa,
+                            $tr->mjournaltranstype,
+                            $tr->mjournaldebit,
+                            $tr->mjournalcredit,
                         ));
                     }
 
+                    $this->count++;
+                    $sheet->row($this->count,array(
+                        'Saldo',
+                        '',
+                        '',
+                        $l['sum_d'],
+                        $l['sum_k'],
+                    ));
+                    $sheet->mergeCells('A'.$this->count.':C'.$this->count);
+                    $this->count+= 3;
                 }
             });
         })->export('csv');
