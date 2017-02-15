@@ -13,6 +13,7 @@ use App\MConfig;
 use App\MARCard;
 use App\MWarehouse;
 use App\MBRANCH;
+use App\UserBranch;
 use Carbon\Carbon;
 
 class SalesController extends Controller
@@ -24,6 +25,7 @@ class SalesController extends Controller
         $mhinvoicediscounttotal_sum = 0;
         $mhinvoicetaxtotal_sum = 0;
         $mhinvoicegrandtotal_sum = 0;
+        $warehouse_ids = [];
         /*
          * filter date header
          */
@@ -33,6 +35,23 @@ class SalesController extends Controller
         }
         if($request->has('end')){
             $header_query->whereDate('mhinvoicedate','<=',Carbon::parse($request->end));
+        }
+
+        if(!$request->has('wh')){
+            // branch filter
+            $branch_ids = UserBranch::on(Auth::user()->db_name)->where('userid',Auth::user()->id)->get();
+            $branches = collect();
+            foreach($branch_ids as $br){
+                $br = MBRANCH::on(Auth::user()->db_name)->where('id',$br->branchid)->first();
+                $branches->push($br);
+            }
+
+            foreach ($branches as $br) {
+                $wh = MWarehouse::on(Auth::user()->db_name)->where('mwarehousebranchid',$br->mbranchcode)->get();
+                foreach($wh as $w){
+                    array_push($warehouse_ids,$w->id);
+                }
+            }
         }
 
         if($request->has('goods') && $request->has('wh')){
@@ -122,6 +141,7 @@ class SalesController extends Controller
                 $details = MDInvoice::on(Auth::user()->db_name)
                 ->where('mdinvoicedate',$s->mhinvoicedate)
                 ->where('mdinvoicegoodsid',$request->goods)
+                ->whereIn('mdinvoicegoodsidwhouse',$warehouse_ids)
                 ->get();
                 $s['detail_count'] = count($details);
                 $s['numoftrans'] = count($details);
@@ -146,10 +166,20 @@ class SalesController extends Controller
             ->get();
 
             foreach($sales as $s){
-
-                $details = MDInvoice::on(Auth::user()->db_name)->where('mdinvoicedate',$s->mhinvoicedate)->get();
+                $details = MDInvoice::on(Auth::user()->db_name)->whereIn('mdinvoicegoodsidwhouse',$warehouse_ids)->where('mdinvoicedate',$s->mhinvoicedate)->get();
                 $s['detail_count'] = count($details);
+                $s['numoftrans'] = count($details);
                 $s['header'] = true;
+                $s['mhinvoicesubtotal_sum'] = 0;
+                $s['mhinvoicediscounttotal_sum'] = 0;
+                $s['mhinvoicetaxtotal_sum'] = 0;
+                $s['mhinvoicegrandtotal_sum'] = 0;
+                foreach($details as $dt){
+                    $s['mhinvoicesubtotal_sum'] += $dt->mdinvoicegoodsgrossamount;
+                    $s['mhinvoicediscounttotal_sum'] += $dt->mdinvoicegoodsdiscount;
+                    $s['mhinvoicetaxtotal_sum'] += $dt->mdinvoicegoodstax;
+                    $s['mhinvoicegrandtotal_sum'] += $dt->mdinvoicegoodsgrossamount + $dt->mdinvoicegoodstax;
+                }
             }
         }
 
@@ -157,9 +187,29 @@ class SalesController extends Controller
     }
 
     public function invoice_detail(Request $request,$invoice_date){
-        $detail_query = MDInvoice::on(Auth::user()->db_name)->whereDate('created_at','=',Carbon::parse($invoice_date))->where('void',0)->orderBy('mhinvoiceno','asc');
+        $warehouse_ids = [];
+        $detail_query = MDInvoice::on(Auth::user()->db_name)->whereDate('mdinvoicedate','=',Carbon::parse($invoice_date))->where('void',0)->orderBy('mhinvoiceno','asc');
         if($request->has('goods')){
             $detail_query->where('mdinvoicegoodsid',$request->goods);
+        }
+        if($request->has('wh')){
+            $detail_query->where('mdinvoicegoodsidwhouse',$request->wh);
+        } else {
+            // branch filter
+            $branch_ids = UserBranch::on(Auth::user()->db_name)->where('userid',Auth::user()->id)->get();
+            $branches = collect();
+            foreach($branch_ids as $br){
+                $br = MBRANCH::on(Auth::user()->db_name)->where('id',$br->branchid)->first();
+                $branches->push($br);
+            }
+
+            foreach ($branches as $br) {
+                $wh = MWarehouse::on(Auth::user()->db_name)->where('mwarehousebranchid',$br->mbranchcode)->get();
+                foreach($wh as $w){
+                    array_push($warehouse_ids,$w->id);
+                }
+            }
+            $detail_query->whereIn('mdinvoicegoodsidwhouse',$warehouse_ids);
         }
         $details = $detail_query->get();
         foreach ($details as $d) {

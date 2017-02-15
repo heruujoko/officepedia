@@ -11,6 +11,8 @@ use App\Http\Controllers\Controller;
 use App\MStockCard;
 use App\MGoods;
 use App\MWarehouse;
+use App\MBRANCH;
+use App\UserBranch;
 use App\MDInvoice;
 use App\MDPurchase;
 use Datatables;
@@ -49,7 +51,24 @@ class MStockcardreportController extends Controller
     //     $join->on('mdinvoice.mhinvoiceno','=','mstockcard.mstockcardtransno');
     //     $join->on('mdinvoice.mdinvoicegoodsid','=','mstockcard.mstockcardgoodsid');
     // });
-    $data = $query->groupBy('mstockcardgoodsid')->get();
+
+    // branch filter
+    $branch_ids = UserBranch::on(Auth::user()->db_name)->where('userid',Auth::user()->id)->get();
+    $branches = collect();
+    foreach($branch_ids as $br){
+        $br = MBRANCH::on(Auth::user()->db_name)->where('id',$br->branchid)->first();
+        $branches->push($br);
+    }
+
+    $warehouse_ids = [];
+    foreach ($branches as $br) {
+        $wh = MWarehouse::on(Auth::user()->db_name)->where('mwarehousebranchid',$br->mbranchcode)->get();
+        foreach($wh as $w){
+            array_push($warehouse_ids,$w->id);
+        }
+    }
+
+    $data = $query->whereIn('mstockcardwhouse',$warehouse_ids)->groupBy('mstockcardgoodsid')->get();
 
     $headers = [];
     $stocks =[];

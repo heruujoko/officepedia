@@ -18,9 +18,224 @@ use App\MCUSTOMER;
 use App\MStockCard;
 use App\Helper\UnitHelper;
 use App\MGoods;
+use App\MBRANCH;
+use App\UserBranch;
 
 class ReportController extends Controller
 {
+
+    private function salesreport_data($request){
+        $sales = [];
+        $headers=[];
+        $mhinvoicesubtotal_sum = 0;
+        $mhinvoicediscounttotal_sum = 0;
+        $mhinvoicetaxtotal_sum = 0;
+        $mhinvoicegrandtotal_sum = 0;
+        $warehouse_ids = [];
+        /*
+         * filter date header
+         */
+        $header_query = MHInvoice::on(Auth::user()->db_name);
+        if($request->has('start')){
+            $header_query->whereDate('mhinvoicedate','>=',Carbon::parse($request->start));
+        }
+        if($request->has('end')){
+            $header_query->whereDate('mhinvoicedate','<=',Carbon::parse($request->end));
+        }
+
+        if(!$request->has('wh')){
+            // branch filter
+            $branch_ids = UserBranch::on(Auth::user()->db_name)->where('userid',Auth::user()->id)->get();
+            $branches = collect();
+            foreach($branch_ids as $br){
+                $br = MBRANCH::on(Auth::user()->db_name)->where('id',$br->branchid)->first();
+                $branches->push($br);
+            }
+
+            foreach ($branches as $br) {
+                $wh = MWarehouse::on(Auth::user()->db_name)->where('mwarehousebranchid',$br->mbranchcode)->get();
+                foreach($wh as $w){
+                    array_push($warehouse_ids,$w->id);
+                }
+            }
+        }
+
+        if($request->has('goods') && $request->has('wh')){
+            $details = MDInvoice::on(Auth::user()->db_name)->where('mdinvoicegoodsid',$request->goods)->where('mdinvoicegoodsidwhouse',$request->wh)->get();
+            foreach ($details as $d) {
+                array_push($headers,$d->mhinvoiceno);
+            }
+            $headers = array_unique($headers);
+            $sales = $header_query->whereIn('mhinvoiceno',$headers)->groupBy('mhinvoicedate')->get();
+            foreach($sales as $s){
+
+                $details = MDInvoice::on(Auth::user()->db_name)
+                ->where('mdinvoicedate',$s->mhinvoicedate)
+                ->where('mdinvoicegoodsid',$request->goods)
+                ->where('mdinvoicegoodsidwhouse',$request->wh)
+                ->get();
+                $s['detail_count'] = count($details);
+                $s['numoftrans'] = count($details);
+                $s['header'] = true;
+                foreach($details as $dt){
+
+                        $mhinvoicesubtotal_sum += $dt->mdinvoicegoodsgrossamount;
+                        $mhinvoicediscounttotal_sum += $dt->mdinvoicegoodsdiscount;
+                        $mhinvoicetaxtotal_sum += $dt->mdinvoicegoodstax;
+                        $mhinvoicegrandtotal_sum += ($dt->mdinvoicegoodsgrossamount + $dt->mdinvoicegoodstax);
+
+                }
+
+                $s['mhinvoicesubtotal_sum'] = $mhinvoicesubtotal_sum;
+                $s['mhinvoicediscounttotal_sum'] = $mhinvoicediscounttotal_sum;
+                $s['mhinvoicetaxtotal_sum'] = $mhinvoicetaxtotal_sum;
+                $s['mhinvoicegrandtotal_sum'] = $mhinvoicegrandtotal_sum;
+            }
+
+        } else if($request->has('wh')){
+            $details = MDInvoice::on(Auth::user()->db_name)->where('mdinvoicegoodsidwhouse',$request->wh)->get();
+            foreach ($details as $d) {
+                array_push($headers,$d->mhinvoiceno);
+            }
+            $headers = array_unique($headers);
+            $sales = $header_query->whereIn('mhinvoiceno',$headers)->groupBy('mhinvoicedate')->get();
+            foreach($sales as $s){
+
+                $mhinvoicesubtotal_sum = 0;
+                $mhinvoicediscounttotal_sum = 0;
+                $mhinvoicetaxtotal_sum = 0;
+                $mhinvoicegrandtotal_sum = 0;
+
+                $details = MDInvoice::on(Auth::user()->db_name)
+                ->where('mdinvoicedate',$s->mhinvoicedate)
+                ->where('mdinvoicegoodsidwhouse',$request->wh)
+                ->get();
+                $s['detail_count'] = count($details);
+                $s['numoftrans'] = count($details);
+                $s['header'] = true;
+                foreach($details as $dt){
+
+                        $mhinvoicesubtotal_sum += $dt->mdinvoicegoodsgrossamount;
+                        $mhinvoicediscounttotal_sum += $dt->mdinvoicegoodsdiscount;
+                        $mhinvoicetaxtotal_sum += $dt->mdinvoicegoodstax;
+                        $mhinvoicegrandtotal_sum += ($dt->mdinvoicegoodsgrossamount + $dt->mdinvoicegoodstax);
+
+                }
+
+                $s['mhinvoicesubtotal_sum'] = $mhinvoicesubtotal_sum;
+                $s['mhinvoicediscounttotal_sum'] = $mhinvoicediscounttotal_sum;
+                $s['mhinvoicetaxtotal_sum'] = $mhinvoicetaxtotal_sum;
+                $s['mhinvoicegrandtotal_sum'] = $mhinvoicegrandtotal_sum;
+
+            }
+        }else if($request->has('goods')){
+            $details = MDInvoice::on(Auth::user()->db_name)->where('mdinvoicegoodsid',$request->goods)
+            ->whereDate('mdinvoicedate','>=',Carbon::parse($request->start))
+            ->whereDate('mdinvoicedate','<=',Carbon::parse($request->end))
+            ->get();
+            foreach ($details as $d) {
+                array_push($headers,$d->mhinvoiceno);
+            }
+            $headers = array_unique($headers);
+            $sales = $header_query->whereIn('mhinvoiceno',$headers)->groupBy('mhinvoicedate')->get();
+            foreach($sales as $s){
+                $mhinvoicesubtotal_sum = 0;
+                $mhinvoicediscounttotal_sum = 0;
+                $mhinvoicetaxtotal_sum = 0;
+                $mhinvoicegrandtotal_sum = 0;
+
+                $details = MDInvoice::on(Auth::user()->db_name)
+                ->where('mdinvoicedate',$s->mhinvoicedate)
+                ->where('mdinvoicegoodsid',$request->goods)
+                ->whereIn('mdinvoicegoodsidwhouse',$warehouse_ids)
+                ->get();
+                $s['detail_count'] = count($details);
+                $s['numoftrans'] = count($details);
+                $s['header'] = true;
+                foreach($details as $dt){
+
+                        $mhinvoicesubtotal_sum += $dt->mdinvoicegoodsgrossamount;
+                        $mhinvoicediscounttotal_sum += $dt->mdinvoicegoodsdiscount;
+                        $mhinvoicetaxtotal_sum += $dt->mdinvoicegoodstax;
+                        $mhinvoicegrandtotal_sum += ($dt->mdinvoicegoodsgrossamount + $dt->mdinvoicegoodstax);
+
+                }
+
+                $s['mhinvoicesubtotal_sum'] = $mhinvoicesubtotal_sum;
+                $s['mhinvoicediscounttotal_sum'] = $mhinvoicediscounttotal_sum;
+                $s['mhinvoicetaxtotal_sum'] = $mhinvoicetaxtotal_sum;
+                $s['mhinvoicegrandtotal_sum'] = $mhinvoicegrandtotal_sum;
+            }
+        } else {
+            $sales = $header_query->groupBy('mhinvoicedate')
+            ->selectRaw('*,sum(mhinvoicesubtotal) as mhinvoicesubtotal_sum,sum(mhinvoicediscounttotal) as mhinvoicediscounttotal_sum,sum(mhinvoicetaxtotal) as mhinvoicetaxtotal_sum,sum(mhinvoicegrandtotal) as mhinvoicegrandtotal_sum,count(mhinvoiceno) as numoftrans')
+            ->get();
+
+            foreach($sales as $s){
+                $details = MDInvoice::on(Auth::user()->db_name)->whereIn('mdinvoicegoodsidwhouse',$warehouse_ids)->where('mdinvoicedate',$s->mhinvoicedate)->get();
+                $s['detail_count'] = count($details);
+                $s['numoftrans'] = count($details);
+                $s['header'] = true;
+            }
+        }
+
+        $expanded_ids = base64_decode($request->data);
+        $expanded_ids = json_decode($expanded_ids);
+        $sales = $sales->toArray();
+
+        $expanded_sales = [];
+
+        for($i = 0;$i<count($sales);$i++){
+            $chunk = [];
+            array_push($expanded_sales,$sales[$i]);
+            if( in_array($sales[$i]['id'],$expanded_ids) ){
+                $details = $this->sales_detail_data($request,$sales[$i]['mhinvoicedate']);
+                foreach($details as $dt){
+                    array_push($expanded_sales,$dt);
+                }
+            }
+        }
+
+        return json_encode($expanded_sales);
+    }
+
+    private function sales_detail_data($request,$invoice_date){
+        $warehouse_ids = [];
+        $detail_query = MDInvoice::on(Auth::user()->db_name)->whereDate('mdinvoicedate','=',Carbon::parse($invoice_date))->where('void',0)->orderBy('mhinvoiceno','asc');
+        if($request->has('goods')){
+            $detail_query->where('mdinvoicegoodsid',$request->goods);
+        }
+        if($request->has('wh')){
+            $detail_query->where('mdinvoicegoodsidwhouse',$request->wh);
+        } else {
+            // branch filter
+            $branch_ids = UserBranch::on(Auth::user()->db_name)->where('userid',Auth::user()->id)->get();
+            $branches = collect();
+            foreach($branch_ids as $br){
+                $br = MBRANCH::on(Auth::user()->db_name)->where('id',$br->branchid)->first();
+                $branches->push($br);
+            }
+
+            foreach ($branches as $br) {
+                $wh = MWarehouse::on(Auth::user()->db_name)->where('mwarehousebranchid',$br->mbranchcode)->get();
+                foreach($wh as $w){
+                    array_push($warehouse_ids,$w->id);
+                }
+            }
+            $detail_query->whereIn('mdinvoicegoodsidwhouse',$warehouse_ids);
+        }
+        $details = $detail_query->get();
+        foreach ($details as $d) {
+            $md = MDInvoice::on(Auth::user()->db_name)->where('mhinvoiceno',$d->mhinvoiceno)->where('void',0)->get();
+            $d['header'] = false;
+            $d['numoftrans'] = count($md);
+            $d['mhinvoicesubtotal_sum'] = $d->mdinvoicegoodsgrossamount;
+            $d['mhinvoicetaxtotal_sum'] = $d->mdinvoicegoodstax;
+            $d['mhinvoicegrandtotal_sum'] = $d->mdinvoicegoodsgrossamount + $d->mdinvoicegoodstax;
+        }
+        return $details;
+    }
+
     public function salesreport(){
 
         if(Auth::user()->has_role('R_salesreport')){
@@ -35,10 +250,11 @@ class ReportController extends Controller
 
     public function salesreport_print(Request $request){
 
-        $data = $request->data;
-        $data = base64_decode($data);
+        // $data = $request->data;
+        // $data = base64_decode($data);
 
-        $decoded_data = json_decode($data);
+        $decoded_data = json_decode($this->salesreport_data($request));
+
         if($request->wh != ''){
             $param['wh'] = MWarehouse::on(Auth::user()->db_name)->where('id',$request->wh)->first()->mwarehousename;
         } else {
@@ -79,10 +295,11 @@ class ReportController extends Controller
     }
 
     public function salesreport_pdf(Request $request){
-        $data = $request->data;
-        $data = base64_decode($data);
+        // $data = $request->data;
+        // $data = base64_decode($data);
 
-        $decoded_data = json_decode($data);
+        $decoded_data = json_decode($this->salesreport_data($request));
+
         if($request->wh != ''){
             $param['wh'] = MWarehouse::on(Auth::user()->db_name)->where('id',$request->wh)->first()->mwarehousename;
         } else {
@@ -125,10 +342,10 @@ class ReportController extends Controller
 
     public function salesreport_excel(Request $request){
         $this->count =0;
-        $data_dec = $request->data;
-        $data_dec = base64_decode($data_dec);
+        // $data_dec = $request->data;
+        // $data_dec = base64_decode($data_dec);
 
-        $decoded_data = json_decode($data_dec);
+        $decoded_data = json_decode($this->salesreport_data($request));
         if($request->wh != ''){
             $data['wh'] = MWarehouse::on(Auth::user()->db_name)->where('id',$request->wh)->first()->mwarehousename;
         } else {
@@ -295,10 +512,10 @@ class ReportController extends Controller
 
     public function salesreport_csv(Request $request){
         $this->count =0;
-        $data_dec = $request->data;
-        $data_dec = base64_decode($data_dec);
+        // $data_dec = $request->data;
+        // $data_dec = base64_decode($data_dec);
 
-        $decoded_data = json_decode($data_dec);
+        $decoded_data = json_decode($this->salesreport_data($request));
         if($request->wh != ''){
             $data['wh'] = MWarehouse::on(Auth::user()->db_name)->where('id',$request->wh)->first()->mwarehousename;
         } else {
@@ -1716,6 +1933,145 @@ class ReportController extends Controller
 		})->export('csv');
     }
 
+    private function custreport_data($request){
+        $active_branch = MBRANCH::on(Auth::user()->db_name)->where('id',Auth::user()->defaultbranch)->first();
+        // get all warehouses in branch
+        $warehouses = MWarehouse::on(Auth::user()->db_name)->where('mwarehousebranchid',$active_branch->mbranchcode)->get();
+        $warehouse_ids = array_map(function($w){
+            return $w['id'];
+        },$warehouses->toArray());
+
+        $header_query = MARCard::on(Auth::user()->db_name)->where('void',0)->whereIn('marcardwarehouseid',$warehouse_ids);
+
+        if($request->has('cust')){
+            $header_query->where('marcardcustomerid',$request->cust);
+        }
+        if($request->has('end')){
+            $header_query->whereDate('marcarddate','<=',Carbon::parse($request->end));
+        }
+        $ars = $header_query->orderBy('marcardcustomerid','asc')->groupBy('marcardcustomerid')->get();
+
+        $expanded_ars = [];
+
+        $expanded_ids = base64_decode($request->data);
+        $expanded_ids = json_decode($expanded_ids);
+
+
+        foreach($ars as $ar){
+            $ar['header'] = true;
+            $ar['data'] = false;
+            $ar['footer'] = false;
+            $ar['numoftrans'] = 0;
+            $ar['1w'] = 0;
+            $ar['2w'] = 0;
+            $ar['3w'] = 0;
+            $ar['4w'] = 0;
+            $ar['1m'] = 0;
+            $ar->marcardtotalinv = 0;
+            $ar->marcardoutstanding = 0;
+            $details = MARCard::on(Auth::user()->db_name)->whereIn('marcardwarehouseid',$warehouse_ids)->where('marcardcustomerid',$ar->marcardcustomerid)->where('void',0)->get();
+            foreach($details as $d){
+                $ar['numoftrans'] += 1;
+                $now = Carbon::now();
+                $due = Carbon::parse($d->marcardduedate);
+                $diff = $now->diffInDays($due,false);
+
+                $ar->marcardtotalinv += $d->marcardtotalinv;
+                $ar->marcardoutstanding += $d->marcardoutstanding;
+
+                // spread the ar in weeks
+                if($diff > 0 && $diff <= 7){
+                    $ar['1w'] += $d->marcardoutstanding;
+                }
+                if($diff > 7 && $diff <= 14){
+                    $ar['2w'] += $d->marcardoutstanding;
+                }
+                if($diff > 14 && $diff <= 21){
+                    $ar['3w'] += $d->marcardoutstanding;
+                }
+                if($diff > 21 && $diff <= 30){
+                    $ar['4w'] += $d->marcardoutstanding;
+                }
+                if($diff > 30){
+                    $ar['1m'] += $d->marcardoutstanding;
+                }
+            }
+
+            array_push($expanded_ars,$ar);
+
+            if(in_array($ar->id,$expanded_ids)){
+                $expand_details = $this->custreport_detail_data($request,$ar->marcardcustomerid);
+                foreach($expand_details as $ex){
+                    array_push($expanded_ars,$ex);
+                }
+            }
+        }
+
+        return json_encode($expanded_ars);
+    }
+
+    private function custreport_detail_data($request,$customer_id){
+        $active_branch = MBRANCH::on(Auth::user()->db_name)->where('id',Auth::user()->defaultbranch)->first();
+
+        // get all warehouses in branch
+        $warehouses = MWarehouse::on(Auth::user()->db_name)->where('mwarehousebranchid',$active_branch->mbranchcode)->get();
+        $warehouse_ids = array_map(function($w){
+            return $w['id'];
+        },$warehouses->toArray());
+
+        $detail_query = MARCard::on(Auth::user()->db_name)->whereIn('marcardwarehouseid',$warehouse_ids)->where('void',0)->where('marcardcustomerid',$customer_id);
+
+        if($request->has('end')){
+            $detail_query->whereDate('marcarddate','<=',Carbon::parse($request->end));
+        }
+
+        $details = $detail_query->get();
+
+        foreach($details as $d){
+            $d['header'] = false;
+            $d['data'] = true;
+            $d['footer'] = false;
+            $d['numoftrans'] = 0;
+            $d['1w'] = 0;
+            $d['2w'] = 0;
+            $d['3w'] = 0;
+            $d['4w'] = 0;
+            $d['1m'] = 0;
+
+            $now = Carbon::now();
+            $due = Carbon::parse($d->marcardduedate);
+            $diff = $now->diffInDays($due,false);
+            $d['aging'] = $diff;
+            // spread the ar in weeks
+            if($diff > 0 && $diff <= 7){
+                $d['1w'] += $d->marcardoutstanding;
+            }
+            if($diff > 7 && $diff <= 14){
+                $d['2w'] += $d->marcardoutstanding;
+            }
+            if($diff > 14 && $diff <= 21){
+                $d['3w'] += $d->marcardoutstanding;
+            }
+            if($diff > 21 && $diff <= 30){
+                $d['4w'] += $d->marcardoutstanding;
+            }
+            if($diff > 30){
+                $d['1m'] += $d->marcardoutstanding;
+            }
+
+        }
+
+        $footer = [
+            'header' => false,
+            'data' => false,
+            'footer' => true
+        ];
+
+        $details->push($footer);
+
+        return $details;
+    }
+
     public function arcustreport(){
 
         if(Auth::user()->has_role('R_arcustomerreport')){
@@ -1729,11 +2085,10 @@ class ReportController extends Controller
     }
 
     public function arcustreport_print(Request $request){
-        $data_dec = $request->data;
-        $data_dec = base64_decode($data_dec);
+        // $data_dec = $request->data;
+        // $data_dec = base64_decode($data_dec);
 
-        $decoded_data = json_decode($data_dec);
-
+        $decoded_data = json_decode($this->custreport_data($request));
         /*
          * price config
          */
@@ -1787,10 +2142,10 @@ class ReportController extends Controller
     }
 
     public function arcustreport_pdf(Request $request){
-        $data_dec = $request->data;
-        $data_dec = base64_decode($data_dec);
+        // $data_dec = $request->data;
+        // $data_dec = base64_decode($data_dec);
 
-        $decoded_data = json_decode($data_dec);
+        $decoded_data = json_decode($this->custreport_data($request));
 
         /*
          * price config
@@ -1847,10 +2202,10 @@ class ReportController extends Controller
 
     public function arcustreport_excel(Request $request){
 
-        $data_dec = $request->data;
-        $data_dec = base64_decode($data_dec);
+        // $data_dec = $request->data;
+        // $data_dec = base64_decode($data_dec);
 
-        $this->ars = json_decode($data_dec);
+        $this->ars = json_decode($this->custreport_data($request));
         /*
          * price config
          */
@@ -2035,10 +2390,10 @@ class ReportController extends Controller
 
     public function arcustreport_csv(Request $request){
 
-        $data_dec = $request->data;
-        $data_dec = base64_decode($data_dec);
+        // $data_dec = $request->data;
+        // $data_dec = base64_decode($data_dec);
 
-        $this->ars = json_decode($data_dec);
+        $this->ars = json_decode($this->custreport_data($request));
         /*
          * price config
          */
@@ -2221,7 +2576,8 @@ class ReportController extends Controller
 		})->export('csv');
     }
 
-    public function stockreport_print(Request $request){
+    private function stockreport_data($request){
+
         $query = MStockCard::on(Auth::user()->db_name);
         if ($request->has('start')) {
              $query->whereDate('mstockcarddate','>=',Carbon::parse($request->start));
@@ -2235,12 +2591,24 @@ class ReportController extends Controller
         if ($request->has('mstockcardwhouse')) {
             $query->where('mstockcardwhouse',$request->mstockcardwhouse);
         }
-        // http://stackoverflow.com/questions/20731606/laravel-eloquent-inner-join-with-multiple-conditions
-        // $query->join('mdinvoice',function($join){
-        //     $join->on('mdinvoice.mhinvoiceno','=','mstockcard.mstockcardtransno');
-        //     $join->on('mdinvoice.mdinvoicegoodsid','=','mstockcard.mstockcardgoodsid');
-        // });
-        $data = $query->groupBy('mstockcardgoodsid')->get();
+
+        // branch filter
+        $branch_ids = UserBranch::on(Auth::user()->db_name)->where('userid',Auth::user()->id)->get();
+        $branches = collect();
+        foreach($branch_ids as $br){
+            $br = MBRANCH::on(Auth::user()->db_name)->where('id',$br->branchid)->first();
+            $branches->push($br);
+        }
+
+        $warehouse_ids = [];
+        foreach ($branches as $br) {
+            $wh = MWarehouse::on(Auth::user()->db_name)->where('mwarehousebranchid',$br->mbranchcode)->get();
+            foreach($wh as $w){
+                array_push($warehouse_ids,$w->id);
+            }
+        }
+
+        $data = $query->whereIn('mstockcardwhouse',$warehouse_ids)->groupBy('mstockcardgoodsid')->get();
 
         $headers = [];
         $stocks =[];
@@ -2294,12 +2662,12 @@ class ReportController extends Controller
 
             $blank = array(
                 'blank' => true,
-                'data' => false,
+                'data' => 'blank',
                 'footer' => false
             );
 
             $footer = array(
-                'data' => 'footer',
+                'data' => false,
                 'blank' => false,
                 'footer' => true,
                 'mstockcardgoodsid' => $last_stock['mstockcardgoodsid'],
@@ -2322,7 +2690,13 @@ class ReportController extends Controller
 
         }
 
-        $data['stocks'] = $stocks;
+        return $stocks;
+
+    }
+
+    public function stockreport_print(Request $request){
+
+        $data['stocks'] = $this->stockreport_data($request);
         $config = MConfig::on(Auth::user()->db_name)->where('id',1)->first();
         $data['company'] = $config->msyscompname;
         $data['start'] = Carbon::parse($request->start)->formatLocalized('%d %B %Y');
@@ -2348,106 +2722,7 @@ class ReportController extends Controller
     }
 
     public function stockreport_pdf(Request $request){
-        $query = MStockCard::on(Auth::user()->db_name);
-        if ($request->has('start')) {
-             $query->whereDate('mstockcarddate','>=',Carbon::parse($request->start));
-        }
-        if($request->has('end')){
-                $query->whereDate('mstockcarddate','<=',Carbon::parse($request->end));
-            }
-        if($request->has('mstockcardgoodsid')){
-                $query->where('mstockcardgoodsid',$request->mstockcardgoodsid);
-        }
-        if ($request->has('mstockcardwhouse')) {
-            $query->where('mstockcardwhouse',$request->mstockcardwhouse);
-        }
-        // http://stackoverflow.com/questions/20731606/laravel-eloquent-inner-join-with-multiple-conditions
-        // $query->join('mdinvoice',function($join){
-        //     $join->on('mdinvoice.mhinvoiceno','=','mstockcard.mstockcardtransno');
-        //     $join->on('mdinvoice.mdinvoicegoodsid','=','mstockcard.mstockcardgoodsid');
-        // });
-        $data = $query->groupBy('mstockcardgoodsid')->get();
-
-        $headers = [];
-        $stocks =[];
-
-        foreach($data as $dt){
-            array_push($headers,array('mstockcardgoodsid' => $dt->mstockcardgoodsid,'mstockcardgoodsname' => $dt->mstockcardgoodsname));
-        }
-
-        foreach ($headers as $dtl) {
-            $grp_h = array(
-                'blank' => false,
-                'data' => 'header',
-                'footer' => false,
-                'mstockcardgoodsid' => $dtl['mstockcardgoodsid'],
-                'mstockcardgoodsname' => $dtl['mstockcardgoodsname'],
-            );
-            array_push($stocks,$grp_h);
-            $grp_query = MStockCard::on(Auth::user()->db_name)->where('mstockcardgoodsid',$dtl['mstockcardgoodsid']);
-
-            if ($request->has('start')) {
-                 $grp_query->whereDate('mstockcarddate','>=',Carbon::parse($request->start));
-            }
-            if($request->has('end')){
-                    $grp_query->whereDate('mstockcarddate','<=',Carbon::parse($request->end));
-            }
-            if ($request->has('mstockcardwhouse')) {
-                $grp_query->where('mstockcardwhouse',$request->mstockcardwhouse);
-            }
-
-            $grp = $grp_query->get();
-            foreach ($grp as $g) {
-
-                $mgoods = MGoods::on(Auth::user()->db_name)->where('mgoodscode',$g->mstockcardgoodsid)->first();
-
-                $g['data'] = 'data';
-                $g['blank'] = false;
-                $g['footer'] = false;
-                if($g->mstockcardstockin != 0){
-                    $g['verbs'] = UnitHelper::label($mgoods,$g->mstockcardstockin);
-                } else {
-                    $g['verbs'] = UnitHelper::label($mgoods,$g->mstockcardstockout);
-                }
-
-                $g['gudang'] = $g->gudang()->mwarehousename;
-                $g['cabang'] = $g->gudang()->cabang()->mbranchname;
-                $g['single'] = UnitHelper::singlelabel($mgoods,$g->mstockcardstocktotal);
-                array_push($stocks,$g);
-            }
-
-            $last_stock = end($stocks);
-
-            $blank = array(
-                'blank' => true,
-                'data' => false,
-                'footer' => false
-            );
-
-            $footer = array(
-                'data' => 'footer',
-                'blank' => false,
-                'footer' => true,
-                'mstockcardgoodsid' => $last_stock['mstockcardgoodsid'],
-                'mstockcardgoodsname' => $last_stock->mstockcardgoodsname,
-                'mstockcardstocktotal' => $last_stock->mstockcardstocktotal,
-                'mstockcardstockin' => $last_stock->mstockcardstockin,
-                'mstockcardstockout' => $last_stock->mstockcardstockout,
-                'verbs' => UnitHelper::label($mgoods,$last_stock->mstockcardstocktotal),
-                'mstockcarddate' => $last_stock->mstockcarddate,
-                'mstockcardtranstype' => $last_stock->mstockcardtranstype,
-                'mstockcardtransno' => $last_stock->mstockcardtransno,
-                'gudang' => $last_stock['gudang'],
-                'mstockcardremark' => $last_stock->mstockcardremark
-            );
-
-            $footer['footer'] = true;
-            $footer['data'] = 'footer';
-            array_push($stocks,$footer);
-            array_push($stocks,$blank);
-
-        }
-        $data['stocks'] = $stocks;
+        $data['stocks'] = $this->stockreport_data($request);
         $config = MConfig::on(Auth::user()->db_name)->where('id',1)->first();
         $data['company'] = $config->msyscompname;
         $data['start'] = Carbon::parse($request->start)->formatLocalized('%d %B %Y');
@@ -2467,107 +2742,7 @@ class ReportController extends Controller
     }
 
     public function stockreport_excel(Request $request){
-        $query = MStockCard::on(Auth::user()->db_name);
-        if ($request->has('start')) {
-             $query->whereDate('mstockcarddate','>=',Carbon::parse($request->start));
-        }
-        if($request->has('end')){
-                $query->whereDate('mstockcarddate','<=',Carbon::parse($request->end));
-            }
-        if($request->has('mstockcardgoodsid')){
-                $query->where('mstockcardgoodsid',$request->mstockcardgoodsid);
-        }
-        if ($request->has('mstockcardwhouse')) {
-            $query->where('mstockcardwhouse',$request->mstockcardwhouse);
-        }
-        // http://stackoverflow.com/questions/20731606/laravel-eloquent-inner-join-with-multiple-conditions
-        // $query->join('mdinvoice',function($join){
-        //     $join->on('mdinvoice.mhinvoiceno','=','mstockcard.mstockcardtransno');
-        //     $join->on('mdinvoice.mdinvoicegoodsid','=','mstockcard.mstockcardgoodsid');
-        // });
-        $data = $query->groupBy('mstockcardgoodsid')->get();
-
-        $headers = [];
-        $stocks =[];
-
-        foreach($data as $dt){
-            array_push($headers,array('mstockcardgoodsid' => $dt->mstockcardgoodsid,'mstockcardgoodsname' => $dt->mstockcardgoodsname));
-        }
-
-        foreach ($headers as $dtl) {
-            $grp_h = array(
-                'blank' => false,
-                'data' => 'header',
-                'footer' => false,
-                'mstockcardgoodsid' => $dtl['mstockcardgoodsid'],
-                'mstockcardgoodsname' => $dtl['mstockcardgoodsname'],
-            );
-            array_push($stocks,$grp_h);
-            $grp_query = MStockCard::on(Auth::user()->db_name)->where('mstockcardgoodsid',$dtl['mstockcardgoodsid']);
-
-            if ($request->has('start')) {
-                 $grp_query->whereDate('mstockcarddate','>=',Carbon::parse($request->start));
-            }
-            if($request->has('end')){
-                    $grp_query->whereDate('mstockcarddate','<=',Carbon::parse($request->end));
-            }
-            if ($request->has('mstockcardwhouse')) {
-                $grp_query->where('mstockcardwhouse',$request->mstockcardwhouse);
-            }
-
-            $grp = $grp_query->get();
-            foreach ($grp as $g) {
-
-                $mgoods = MGoods::on(Auth::user()->db_name)->where('mgoodscode',$g->mstockcardgoodsid)->first();
-
-                $g['data'] = 'data';
-                $g['blank'] = false;
-                $g['footer'] = false;
-                if($g->mstockcardstockin != 0){
-                    $g['verbs'] = UnitHelper::label($mgoods,$g->mstockcardstockin);
-                } else {
-                    $g['verbs'] = UnitHelper::label($mgoods,$g->mstockcardstockout);
-                }
-
-                $g['gudang'] = $g->gudang()->mwarehousename;
-                $g['cabang'] = $g->gudang()->cabang()->mbranchname;
-                $g['single'] = UnitHelper::singlelabel($mgoods,$g->mstockcardstocktotal);
-                array_push($stocks,$g);
-            }
-
-            $last_stock = end($stocks);
-
-            $blank = array(
-                'blank' => true,
-                'data' => false,
-                'footer' => false
-            );
-
-            $footer = array(
-                'data' => 'footer',
-                'blank' => false,
-                'footer' => true,
-                'mstockcardgoodsid' => $last_stock['mstockcardgoodsid'],
-                'mstockcardgoodsname' => $last_stock->mstockcardgoodsname,
-                'mstockcardstocktotal' => $last_stock->mstockcardstocktotal,
-                'mstockcardstockin' => $last_stock->mstockcardstockin,
-                'mstockcardstockout' => $last_stock->mstockcardstockout,
-                'verbs' => UnitHelper::label($mgoods,$last_stock->mstockcardstocktotal),
-                'mstockcarddate' => $last_stock->mstockcarddate,
-                'mstockcardtranstype' => $last_stock->mstockcardtranstype,
-                'mstockcardtransno' => $last_stock->mstockcardtransno,
-                'gudang' => $last_stock['gudang'],
-                'mstockcardremark' => $last_stock->mstockcardremark
-            );
-
-            $footer['footer'] = true;
-            $footer['data'] = 'footer';
-            array_push($stocks,$footer);
-            array_push($stocks,$blank);
-
-        }
-
-        $this->data['stocks'] = $stocks;
+        $this->data['stocks'] = $this->stockreport_data($request);
         $config = MConfig::on(Auth::user()->db_name)->where('id',1)->first();
         $this->data['company'] = $config->msyscompname;
         $this->data['start'] = Carbon::parse($request->start)->formatLocalized('%d %B %Y');
@@ -2691,11 +2866,11 @@ class ReportController extends Controller
                             $st['mstockcardstockin'],
                             $st['mstockcardstockout'],
                             ($st['mstockcardstocktotal']),
-                            $st['mstockcarddate'],
-                            $st['mstockcardtranstype'],
-                            $st['mstockcardtransno'],
-                            $st['gudang'],
-                            'Umum',
+                            '',
+                            '',
+                            '',
+                            '',
+                            '',
                             ''
                         ));
                     } else {
@@ -2723,107 +2898,8 @@ class ReportController extends Controller
     }
 
     public function stockreport_csv(Request $request){
-        $query = MStockCard::on(Auth::user()->db_name);
-        if ($request->has('start')) {
-             $query->whereDate('mstockcarddate','>=',Carbon::parse($request->start));
-        }
-        if($request->has('end')){
-                $query->whereDate('mstockcarddate','<=',Carbon::parse($request->end));
-            }
-        if($request->has('mstockcardgoodsid')){
-                $query->where('mstockcardgoodsid',$request->mstockcardgoodsid);
-        }
-        if ($request->has('mstockcardwhouse')) {
-            $query->where('mstockcardwhouse',$request->mstockcardwhouse);
-        }
-        // http://stackoverflow.com/questions/20731606/laravel-eloquent-inner-join-with-multiple-conditions
-        // $query->join('mdinvoice',function($join){
-        //     $join->on('mdinvoice.mhinvoiceno','=','mstockcard.mstockcardtransno');
-        //     $join->on('mdinvoice.mdinvoicegoodsid','=','mstockcard.mstockcardgoodsid');
-        // });
-        $data = $query->groupBy('mstockcardgoodsid')->get();
 
-        $headers = [];
-        $stocks =[];
-
-        foreach($data as $dt){
-            array_push($headers,array('mstockcardgoodsid' => $dt->mstockcardgoodsid,'mstockcardgoodsname' => $dt->mstockcardgoodsname));
-        }
-
-        foreach ($headers as $dtl) {
-            $grp_h = array(
-                'blank' => false,
-                'data' => 'header',
-                'footer' => false,
-                'mstockcardgoodsid' => $dtl['mstockcardgoodsid'],
-                'mstockcardgoodsname' => $dtl['mstockcardgoodsname'],
-            );
-            array_push($stocks,$grp_h);
-            $grp_query = MStockCard::on(Auth::user()->db_name)->where('mstockcardgoodsid',$dtl['mstockcardgoodsid']);
-
-            if ($request->has('start')) {
-                 $grp_query->whereDate('mstockcarddate','>=',Carbon::parse($request->start));
-            }
-            if($request->has('end')){
-                    $grp_query->whereDate('mstockcarddate','<=',Carbon::parse($request->end));
-            }
-            if ($request->has('mstockcardwhouse')) {
-                $grp_query->where('mstockcardwhouse',$request->mstockcardwhouse);
-            }
-
-            $grp = $grp_query->get();
-            foreach ($grp as $g) {
-
-                $mgoods = MGoods::on(Auth::user()->db_name)->where('mgoodscode',$g->mstockcardgoodsid)->first();
-
-                $g['data'] = 'data';
-                $g['blank'] = false;
-                $g['footer'] = false;
-                if($g->mstockcardstockin != 0){
-                    $g['verbs'] = UnitHelper::label($mgoods,$g->mstockcardstockin);
-                } else {
-                    $g['verbs'] = UnitHelper::label($mgoods,$g->mstockcardstockout);
-                }
-
-                $g['gudang'] = $g->gudang()->mwarehousename;
-                $g['cabang'] = $g->gudang()->cabang()->mbranchname;
-                $g['single'] = UnitHelper::singlelabel($mgoods,$g->mstockcardstocktotal);
-                array_push($stocks,$g);
-            }
-
-            $last_stock = end($stocks);
-
-            $blank = array(
-                'blank' => true,
-                'data' => false,
-                'footer' => false
-            );
-
-            $footer = array(
-                'data' => 'footer',
-                'blank' => false,
-                'footer' => true,
-                'mstockcardgoodsid' => $last_stock['mstockcardgoodsid'],
-                'mstockcardgoodsname' => $last_stock->mstockcardgoodsname,
-                'mstockcardstocktotal' => $last_stock->mstockcardstocktotal,
-                'mstockcardstockin' => $last_stock->mstockcardstockin,
-                'mstockcardstockout' => $last_stock->mstockcardstockout,
-                'verbs' => UnitHelper::label($mgoods,$last_stock->mstockcardstocktotal),
-                'mstockcarddate' => $last_stock->mstockcarddate,
-                'mstockcardtranstype' => $last_stock->mstockcardtranstype,
-                'mstockcardtransno' => $last_stock->mstockcardtransno,
-                'gudang' => $last_stock['gudang'],
-                'mstockcardremark' => $last_stock->mstockcardremark
-            );
-
-            $footer['footer'] = true;
-            $footer['data'] = 'footer';
-            array_push($stocks,$footer);
-            array_push($stocks,$blank);
-
-        }
-
-        $this->data['stocks'] = $stocks;
+        $this->data['stocks'] = $this->stockreport_data($request);
         $config = MConfig::on(Auth::user()->db_name)->where('id',1)->first();
         $this->data['company'] = $config->msyscompname;
         $this->data['start'] = Carbon::parse($request->start)->formatLocalized('%d %B %Y');
@@ -2947,11 +3023,11 @@ class ReportController extends Controller
                             $st['mstockcardstockin'],
                             $st['mstockcardstockout'],
                             ($st['mstockcardstocktotal']),
-                            $st['mstockcarddate'],
-                            $st['mstockcardtranstype'],
-                            $st['mstockcardtransno'],
-                            $st['gudang'],
-                            'Umum',
+                            '',
+                            '',
+                            '',
+                            '',
+                            '',
                             ''
                         ));
                     } else {

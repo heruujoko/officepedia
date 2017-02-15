@@ -72,7 +72,7 @@
                                             <br>
                                                 <div class="row">
                                                 <p class="col-md-1 report-label">Gudang</p>
-                                                <select v-selecttwo class="col-md-4" v-model="mstockcardwhouse">
+                                                <select id="stockwhouse" v-selecttwo class="col-md-4" v-model="mstockcardwhouse">
                           					                <option value="">Semua</option>
                                                     <option v-for="warehouse in warehouses" :value="warehouse.id">@{{warehouse.mwarehousename}}</option>
                                                    </select>

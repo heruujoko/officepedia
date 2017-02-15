@@ -121,8 +121,7 @@ const stockcardreport = new Vue({
 			Axios.get('/admin-api/mwarehouse/datalist').then(function(res){
 				$('#loading_modal').modal('toggle');
 				self.warehouses = res.data;
-
-
+                $('#stockwhouse').trigger('change');
 			})
 			.catch(function(err){
 				console.log(err);
@@ -132,7 +131,6 @@ const stockcardreport = new Vue({
 			var self = this;
 			Axios.get('/admin-api/mwarehouse/datalist').then(function(res){
 				self.warehouses = res.data;
-
 
 			})
 			.catch(function(err){

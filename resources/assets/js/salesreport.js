@@ -50,9 +50,11 @@ Vue.directive('priceformatlabel',{
   }
 });
 
-const stockreport = new Vue({
+const salesreport = new Vue({
     el: '#report',
     components: {
         salesreport: SalesReport
     }
 })
+
+window.salesreport = salesreport;

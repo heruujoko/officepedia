@@ -83,6 +83,12 @@
 
 @section('js')
     <script src="{{ url('/js/salesreport.js') }}"></script>
+    <script>
+        function refreshWarehouses(){
+            console.log('eve',salesreport);
+            salesreport.$emit('update-warehouses');
+        }
+    </script>
 @stop
 
 @section('css')
