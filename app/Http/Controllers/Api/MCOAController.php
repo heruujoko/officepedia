@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use App\MCOA;
+use App\MCOAParent;
 use App\MCOAGrandParent;
 use Datatables;
 use Exception;
@@ -141,8 +142,26 @@ class MCOAController extends Controller
     }
 
     public function datalistledger(){
-        $mcoa = MCOA::on(Auth::user()->db_name)->where('mcoaparentcode','1101.00')->orWhere('mcoaparentcode','1102.00')->orWhere('mcoaparentcode','2101.00')->orWhere('mcoaparentcode','1103.00')->get();
-        return response()->json($mcoa);
+        // $mcoa = MCOA::on(Auth::user()->db_name)->where('mcoaparentcode','1101.00')->orWhere('mcoaparentcode','1102.00')->orWhere('mcoaparentcode','2101.00')->orWhere('mcoaparentcode','1103.00')->get();
+
+        $all_list = [];
+
+        $gp = MCOAGrandParent::on(Auth::user()->db_name)->get();
+        foreach ($gp as $g) {
+            $g['type'] = 'gp';
+            array_push($all_list,$g);
+            $pr = MCOAParent::on(Auth::user()->db_name)->where('mcoagrandparentcode',$g->mcoagrandparentcode)->get();
+            foreach($pr as $p){
+                $p['type'] = 'p';
+                array_push($all_list,$p);
+                $mcoa = MCOA::on(Auth::user()->db_name)->where('mcoaparentcode',$p->mcoaparentcode)->get();
+                foreach($mcoa as $coa){
+                    $coa['type'] = 'coa';
+                    array_push($all_list,$coa);
+                }
+            }
+        }
+        return response()->json($all_list);
     }
 
     public function show($id){
