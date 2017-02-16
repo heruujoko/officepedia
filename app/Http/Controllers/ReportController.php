@@ -201,7 +201,8 @@ class ReportController extends Controller
 
     private function sales_detail_data($request,$invoice_date){
         $warehouse_ids = [];
-        $detail_query = MDInvoice::on(Auth::user()->db_name)->whereDate('mdinvoicedate','=',Carbon::parse($invoice_date))->where('void',0)->orderBy('mhinvoiceno','asc');
+        $last_cust = "";
+        $detail_query = MDInvoice::on(Auth::user()->db_name)->whereDate('mdinvoicedate','=',Carbon::parse($invoice_date))->where('void',0)->orderBy('mdcustomerid','asc');
         if($request->has('goods')){
             $detail_query->where('mdinvoicegoodsid',$request->goods);
         }
@@ -232,6 +233,12 @@ class ReportController extends Controller
             $d['mhinvoicesubtotal_sum'] = $d->mdinvoicegoodsgrossamount;
             $d['mhinvoicetaxtotal_sum'] = $d->mdinvoicegoodstax;
             $d['mhinvoicegrandtotal_sum'] = $d->mdinvoicegoodsgrossamount + $d->mdinvoicegoodstax;
+            if($d->mdcustomerid != $last_cust){
+                $last_cust = $d->mdcustomerid;
+            } else {
+                $d->mdcustomerid = "";
+                $d->mdcustomername = "";
+            }
         }
         return $details;
     }

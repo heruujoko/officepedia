@@ -188,7 +188,8 @@ class SalesController extends Controller
 
     public function invoice_detail(Request $request,$invoice_date){
         $warehouse_ids = [];
-        $detail_query = MDInvoice::on(Auth::user()->db_name)->whereDate('mdinvoicedate','=',Carbon::parse($invoice_date))->where('void',0)->orderBy('mhinvoiceno','asc');
+        $last_cust = "";
+        $detail_query = MDInvoice::on(Auth::user()->db_name)->whereDate('mdinvoicedate','=',Carbon::parse($invoice_date))->where('void',0)->orderBy('mdcustomerid','asc');
         if($request->has('goods')){
             $detail_query->where('mdinvoicegoodsid',$request->goods);
         }
@@ -213,12 +214,18 @@ class SalesController extends Controller
         }
         $details = $detail_query->get();
         foreach ($details as $d) {
-            $md = MDInvoice::on(Auth::user()->db_name)->where('mhinvoiceno',$d->mhinvoiceno)->where('void',0)->get();
+            $md = MDInvoice::on(Auth::user()->db_name)->where('mhinvoiceno',$d->mhinvoiceno)->where('void',0)->orderBy('mdcustomerid','asc')->get();
             $d['header'] = false;
             $d['numoftrans'] = count($md);
             $d['mhinvoicesubtotal_sum'] = $d->mdinvoicegoodsgrossamount;
             $d['mhinvoicetaxtotal_sum'] = $d->mdinvoicegoodstax;
             $d['mhinvoicegrandtotal_sum'] = $d->mdinvoicegoodsgrossamount + $d->mdinvoicegoodstax;
+            if($d->mdcustomerid != $last_cust){
+                $last_cust = $d->mdcustomerid;
+            } else {
+                $d->mdcustomerid = "";
+                $d->mdcustomername = "";
+            }
         }
         return response()->json($details);
     }
@@ -497,7 +504,7 @@ class SalesController extends Controller
                     $last_ar['1m'] += $last_ar->marcardoutstanding;
                 }
 
-                $accumulative_ar_data->push($last_ar);    
+                $accumulative_ar_data->push($last_ar);
             }
 
         }
