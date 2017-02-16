@@ -174,7 +174,7 @@ class MHInvoice extends Model
         $ar->marcardtranstype = $request->type;
         $ar->marcardtransno = $header->mhinvoiceno;
         $ar->marcardremark = "Transaksi ".$request->type." untuk ".$customer->mcustomername." ".$g['remark'];
-        $ar->marcardduedate = Carbon::now()->addDays($customer->mcustomerdefaultar);
+        $ar->marcardduedate = Carbon::parse($request->date)->addDays($customer->mcustomerdefaultar);
         $ar->marcardtotalinv = $request->subtotal + $request->tax - $request->disc;
         $ar->marcardpayamount = 0;
         $ar->marcardoutstanding = $request->subtotal + $request->tax - $request->disc;
@@ -440,7 +440,7 @@ class MHInvoice extends Model
         $ar->marcardtranstype = $request->type;
         $ar->marcardtransno = $header->mhinvoiceno;
         $ar->marcardremark = "Revisi Transaksi ".$request->type." untuk ".$customer->mcustomername." ".$g['remark'];
-        $ar->marcardduedate = Carbon::now()->addDays($customer->mcustomerdefaultar);
+        $ar->marcardduedate = Carbon::parse($request->date)->addDays($customer->mcustomerdefaultar);
         $ar->marcardtotalinv = $request->subtotal + $request->tax - $request->disc;
         $ar->marcardpayamount = 0;
         $ar->marcardoutstanding = $request->subtotal + $request->tax - $request->disc;
