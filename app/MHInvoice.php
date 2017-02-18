@@ -16,6 +16,7 @@ use DB;
 use Exception;
 use App\MJournal;
 use App\MCOA;
+use App\HPPHistory;
 
 class MHInvoice extends Model
 {
@@ -92,6 +93,12 @@ class MHInvoice extends Model
 
         $header = MHInvoice::on(Auth::user()->db_name)->where('id',$invoice_header->id)->first();
 
+        // insert journal
+        MJournal::record_journal($header->mhinvoiceno,'Penjualan','1103.00',$header->mhinvoicesubtotal,0,"","","");
+        MJournal::record_journal($header->mhinvoiceno,'Penjualan','4100.01',0,$header->mhinvoicesubtotal,"","","");
+        MJournal::record_journal($header->mhinvoiceno,'Penjualan','2102.01',0,$header->mhinvoicetaxtotal,"","","");
+
+
         //insert detail
         foreach($request->goods as $g){
 
@@ -155,6 +162,13 @@ class MHInvoice extends Model
           $invoice_detail->stock_ref = $stock_card->id;
           $invoice_detail->save();
 
+          $hpp = HPPHistory::on(Auth::user()->db_name)->where('hpphistorygoodsid',$g['goods']['mgoodscode'])->get()->last();
+          $hpp_price = $hpp->hpphistorycogs * $g['usage'];
+          // add per item journal
+          MJournal::record_journal($header->mhinvoiceno,'Penjualan','5100.11',$hpp_price,0,"","","");
+          MJournal::record_journal($header->mhinvoiceno,'Penjualan','1105.01',0,$hpp_price,"","","");
+
+
           //check allow minus
           if($allow_minus == 0 && ($mgoods->mgoodsstock < 0)){
             DB::connection(Auth::user()->db_name)->rollBack();
@@ -184,6 +198,8 @@ class MHInvoice extends Model
         $ar->marcardusereventtime = Carbon::now();
         $ar->marcardwarehouseid = $g['warehouse'];
         $ar->save();
+
+        MJournal::add_prefix();
 
         DB::connection(Auth::user()->db_name)->commit();
         return 'ok';
