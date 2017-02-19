@@ -94,10 +94,16 @@ class MHInvoice extends Model
         $header = MHInvoice::on(Auth::user()->db_name)->where('id',$invoice_header->id)->first();
 
         // insert journal
-        MJournal::record_journal($header->mhinvoiceno,'Penjualan','1103.00',$header->mhinvoicesubtotal,0,"","","");
+        MJournal::record_journal($header->mhinvoiceno,'Penjualan','1103.02',$header->mhinvoicegrandtotal,0,"","","");
         MJournal::record_journal($header->mhinvoiceno,'Penjualan','4100.01',0,$header->mhinvoicesubtotal,"","","");
         MJournal::record_journal($header->mhinvoiceno,'Penjualan','2102.01',0,$header->mhinvoicetaxtotal,"","","");
 
+        $coa_piutang = MCOA::on(Auth::user()->db_name)->where('mcoacode','1103.02')->first();
+        $coa_piutang->update_saldo('+',$header->mhinvoicegrandtotal);
+        $coa_sales = MCOA::on(Auth::user()->db_name)->where('mcoacode','4100.01')->first();
+        $coa_sales->update_saldo('+',$header->mhinvoicesubtotal);
+        $coa_tax = MCOA::on(Auth::user()->db_name)->where('mcoacode','2102.01')->first();
+        $coa_tax->update_saldo('+',$header->mhinvoicetaxtotal);
 
         //insert detail
         foreach($request->goods as $g){
@@ -164,10 +170,15 @@ class MHInvoice extends Model
 
           $hpp = HPPHistory::on(Auth::user()->db_name)->where('hpphistorygoodsid',$g['goods']['mgoodscode'])->get()->last();
           $hpp_price = $hpp->hpphistorycogs * $g['usage'];
+
           // add per item journal
-          MJournal::record_journal($header->mhinvoiceno,'Penjualan','5100.11',$hpp_price,0,"","","");
+          MJournal::record_journal($header->mhinvoiceno,'Penjualan','5100.01',$hpp_price,0,"","","");
           MJournal::record_journal($header->mhinvoiceno,'Penjualan','1105.01',0,$hpp_price,"","","");
 
+          $coa_hpp = MCOA::on(Auth::user()->db_name)->where('mcoacode','5100.01')->first();
+          $coa_hpp->update_saldo('-',$hpp_price);
+          $coa_persediaan_barang = MCOA::on(Auth::user()->db_name)->where('mcoacode','1105.01')->first();
+          $coa_persediaan_barang->update_saldo('-',$hpp_price);
 
           //check allow minus
           if($allow_minus == 0 && ($mgoods->mgoodsstock < 0)){
@@ -214,12 +225,12 @@ class MHInvoice extends Model
     public function update_transaction($request){
       $conf = MConfig::on(Auth::user()->db_name)->where('id',1)->first();
       $allow_minus = $conf->msysinventallowminus;
-      $conf = MConfig::on(Auth::user()->db_name)->where('id',1)->first();
-      $coa = $conf->msyspayaraccount;
-      $coa_ar = MCOA::on(Auth::user()->db_name)->where('mcoacode',$coa)->first();
-
-      /* revert back saldo */
-      $coa_ar->update_saldo("-",$this->mhinvoicegrandtotal);
+    //   $conf = MConfig::on(Auth::user()->db_name)->where('id',1)->first();
+    //   $coa = $conf->msyspayaraccount;
+    //   $coa_ar = MCOA::on(Auth::user()->db_name)->where('mcoacode',$coa)->first();
+      //
+    //   /* revert back saldo */
+    //   $coa_ar->update_saldo("-",$this->mhinvoicegrandtotal);
 
       DB::connection(Auth::user()->db_name)->beginTransaction();
       try{
@@ -242,6 +253,44 @@ class MHInvoice extends Model
         $invoice_header->mhinvoiceduedate = Carbon::now()->addDays($customer->mcustomerdefaultar);
         $invoice_header->save();
         $header = MHInvoice::on(Auth::user()->db_name)->where('id',$invoice_header->id)->first();
+
+        // update header journal
+        $journal_piutang = MJournal::on(Auth::user()->db_name)->where('mjournaltransno',$header->mhinvoiceno)->where('mjournalcoa','1103.02')->first();
+        $journal_sales = MJournal::on(Auth::user()->db_name)->where('mjournaltransno',$header->mhinvoiceno)->where('mjournalcoa','4100.01')->first();
+        $journal_tax = MJournal::on(Auth::user()->db_name)->where('mjournaltransno',$header->mhinvoiceno)->where('mjournalcoa','2102.01')->first();
+
+        $coa_piutang = MCOA::on(Auth::user()->db_name)->where('mcoacode','1103.02')->first();
+        $coa_piutang->update_saldo('-',$journal_piutang->mjournaldebit);
+
+        $coa_sales = MCOA::on(Auth::user()->db_name)->where('mcoacode','4100.01')->first();
+        $coa_sales->update_saldo('-',$journal_sales->mjournalcredit);
+
+        $coa_tax = MCOA::on(Auth::user()->db_name)->where('mcoacode','2102.01')->first();
+        $coa_tax->update_saldo('-',$journal_tax->mjournalcredit);
+
+        $journal_piutang->mjournaldebit = $header->mhinvoicegrandtotal;
+        $coa_piutang->update_saldo('+',$header->mhinvoicegrandtotal);
+        $journal_piutang->save();
+
+        $journal_sales->mjournalcredit = $header->mhinvoicesubtotal;
+        $coa_sales->update_saldo('+',$header->mhinvoicesubtotal);
+        $journal_sales->save();
+
+        $journal_tax->mjournalcredit = $header->mhinvoicetaxtotal;
+        $coa_tax->update_saldo('+',$header->mhinvoicetaxtotal);
+        $journal_tax->save();
+
+        $journal_hpp = MJournal::on(Auth::user()->db_name)->where('mjournaltransno',$header->mhinvoiceno)->where('mjournalcoa','5100.01')->first();
+        $journal_persediaan = MJournal::on(Auth::user()->db_name)->where('mjournaltransno',$header->mhinvoiceno)->where('mjournalcoa','1105.01')->first();
+
+        $coa_hpp = MCOA::on(Auth::user()->db_name)->where('mcoacode','5100.01')->first();
+        $coa_persediaan_barang = MCOA::on(Auth::user()->db_name)->where('mcoacode','1105.01')->first();
+
+        $coa_hpp->update_saldo('+',$journal_hpp->mjournaldebit);
+        $coa_persediaan_barang->update_saldo('+',$journal_persediaan->mjournalcredit);
+
+        $journal_persediaan->mjournalcredit = 0;
+        $journal_hpp->mjournaldebit = 0;
 
         // void all detail dlu biar tau mana yg di hapus
         $details = MDInvoice::on(Auth::user()->db_name)->where('mhinvoiceno',$invoice_header->mhinvoiceno)->get();
@@ -348,9 +397,31 @@ class MHInvoice extends Model
                   return 'empty';
                 }
 
+                // update journal
+
+                $hpp_coa = MCOA::on(Auth::user()->db_name)->where('mcoacode','5100.01')->first();
+                $hpp = HPPHistory::on(Auth::user()->db_name)->where('hpphistorygoodsid',$g['goods']['mgoodscode'])->get()->last();
+                $last_amount = $old_qty * $hpp->hpphistorycogs;
+                $persediaan_barang_coa = MCOA::on(Auth::user()->db_name)->where('mcoacode','1105.01')->first();
+                $new_amount = $hpp->hpphistorycogs * $g['usage'];
+                $hpp_coa->update_saldo('-',$new_amount);
+                $persediaan_barang_coa->update_saldo('-',$new_amount);
+                $journal_hpp->mjournaldebit += $new_amount;
+                $journal_persediaan->mjournalcredit += $new_amount;
+
+                $journal_hpp->save();
+                $journal_persediaan->save();
+
               } else {
                 // data tdk berubah
                 // $invoice_detail = MDInvoice::on(Auth::user()->db_name)->where('mdinvoicegoodsid',$g['goods']['mgoodscode'])->where('mhinvoiceno',$header->mhinvoiceno)->first();
+                $new_amount = $hpp->hpphistorycogs * $g['usage'];
+                $journal_hpp->mjournaldebit += $new_amount;
+                $journal_persediaan->mjournalcredit += $new_amount;
+
+                $journal_hpp->save();
+                $journal_persediaan->save();
+
                 $invoice_detail->void=0;
                 $invoice_detail->save();
               }
@@ -443,6 +514,22 @@ class MHInvoice extends Model
                 DB::connection(Auth::user()->db_name)->rollBack();
                 return 'empty';
               }
+
+              // add per item journal
+              MJournal::record_journal($header->mhinvoiceno,'Penjualan','5100.01',$hpp_price,0,"","","");
+              MJournal::record_journal($header->mhinvoiceno,'Penjualan','1105.01',0,$hpp_price,"","","");
+
+              $coa_hpp = MCOA::on(Auth::user()->db_name)->where('mcoacode','5100.01')->first();
+              $coa_hpp->update_saldo('-',$hpp_price);
+              $coa_persediaan_barang = MCOA::on(Auth::user()->db_name)->where('mcoacode','1105.01')->first();
+              $coa_persediaan_barang->update_saldo('-',$hpp_price);
+
+              $hpp = HPPHistory::on(Auth::user()->db_name)->where('hpphistorygoodsid',$g['goods']['mgoodscode'])->get()->last();
+              $new_amount = $hpp->hpphistorycogs * $g['usage'];
+              $journal_hpp->mjournaldebit += $new_amount;
+              $journal_persediaan->mjournalcredit += $new_amount;
+              $journal_hpp->save();
+              $journal_persediaan->save();
           }
 
         }
@@ -509,8 +596,24 @@ class MHInvoice extends Model
             $header->void = 1;
             $header->save();
 
-            $details = MDInvoice::on(Auth::user()->db_name)->where('mhinvoiceno',$header->mhinvoiceno)->get();
+            $journals = MJournal::on(Auth::user()->db_name)->where('mjournaltransno',$header->mhinvoiceno)->get();
+            $coa_piutang = MCOA::on(Auth::user()->db_name)->where('mcoacode','1103.02')->first();
+            $coa_sales = MCOA::on(Auth::user()->db_name)->where('mcoacode','4100.01')->first();
+            $coa_tax = MCOA::on(Auth::user()->db_name)->where('mcoacode','2102.01')->first();
+            $coa_hpp = MCOA::on(Auth::user()->db_name)->where('mcoacode','5100.01')->first();
+            $coa_persediaan_barang = MCOA::on(Auth::user()->db_name)->where('mcoacode','1105.01')->first();
 
+            $journal_hpp = MJournal::on(Auth::user()->db_name)->where('mjournaltransno',$header->mhinvoiceno)->where('mjournalcoa','5100.01')->first();
+            $journal_persediaan = MJournal::on(Auth::user()->db_name)->where('mjournaltransno',$header->mhinvoiceno)->where('mjournalcoa','1105.01')->first();
+
+            $coa_piutang->update_saldo('-',$header->mhinvoicegrandtotal);
+            $coa_sales->update_saldo('-',$header->mhinvoicesubtotal);
+            $coa_tax->update_saldo('-',$header->mhinvoicetaxtotal);
+            $coa_hpp->update_saldo('+',$journal_hpp->mjournaldebit);
+            $coa_persediaan_barang->update_saldo('+',$journal_persediaan->mjournalcredit);
+
+            $details = MDInvoice::on(Auth::user()->db_name)->where('mhinvoiceno',$header->mhinvoiceno)->get();
+            MJournal::on(Auth::user()->db_name)->where('mjournaltransno',$header->mhinvoiceno)->delete();
             // void all details and return the stock
             foreach($details as $detail){
 
@@ -557,6 +660,7 @@ class MHInvoice extends Model
 
         } catch(\Exception $e){
             DB::connection(Auth::user()->db_name)->rollBack();
+            dd($e);
             return 'err';
         }
     }
