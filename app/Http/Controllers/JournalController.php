@@ -29,13 +29,49 @@ class JournalController extends Controller
 
     private function journal_data($request){
         $journal_query = MJournal::on(Auth::user()->db_name)->where('void',0);
+        if($request->has('start')){
+            $journal_query->whereDate('mjournaldate','>=',Carbon::parse($request->start));
+        }
         if($request->has('end')){
-            $journal_query->whereDate('created_at','<=',Carbon::parse($request->end));
+            $journal_query->whereDate('mjournaldate','<=',Carbon::parse($request->end));
         }
-        $journals = $journal_query->get();
-        foreach($journals as $j){
-            $j['akun'] = MCOA::on(Auth::user()->db_name)->where('mcoacode',$j->mjournalcoa)->first();
+        $headers = $journal_query->groupBy('mjournalid')->get();
+        $journals = [];
+
+        foreach($headers as $h){
+
+            $group_query = MJournal::on(Auth::user()->db_name)->where('mjournalid',$h->mjournalid);
+
+            if($request->has('start')){
+                $journal_query->whereDate('mjournaldate','>=',Carbon::parse($request->start));
+            }
+            if($request->has('end')){
+                $journal_query->whereDate('mjournaldate','<=',Carbon::parse($request->end));
+            }
+
+            $groups = $group_query->get();
+
+            $sum_debit = 0;
+            $sum_credit = 0;
+
+            foreach($groups as $g){
+                $sum_debit += $g->mjournaldebit;
+                $sum_credit += $g->mjournalcredit;
+                $g['mjournalcoaname'] = MCOA::on(Auth::user()->db_name)->where('mcoacode',$g->mjournalcoa)->first()->mcoaname;
+            }
+
+            $data = [
+                'date' => $h->mjournaldate,
+                'type' => $h->mjournaltranstype,
+                'trans' => $h->mjournaltransno,
+                'sum_debit' => $sum_debit,
+                'sum_credit' => $sum_credit,
+                'transactions' => $groups
+            ];
+
+            array_push($journals,$data);
         }
+
         return $journals;
     }
 
@@ -54,6 +90,11 @@ class JournalController extends Controller
             $data['end'] = $request->end;
         } else {
             $data['end'] ="";
+        }
+        if($request->has('start')){
+            $data['start'] = $request->start;
+        } else {
+            $data['start'] ="";
         }
         return view('admin.export.journalreport',$data);
     }
@@ -74,8 +115,13 @@ class JournalController extends Controller
         } else {
             $data['end'] ="";
         }
+        if($request->has('start')){
+            $data['start'] = $request->start;
+        } else {
+            $data['start'] ="";
+        }
         $pdf = PDF::loadview('admin/export/journalreport',$data);
-		return $pdf->setPaper('a4', 'landscape')->download('Jurnal.pdf');
+		return $pdf->setPaper('a4', 'potrait')->download('Jurnal.pdf');
     }
 
     public function journal_excel(Request $request){
@@ -84,6 +130,7 @@ class JournalController extends Controller
         $this->count = 0;
         $this->data['end'] = $request->end;
         $this->data['journals'] = $this->journal_data($request);
+
         return Excel::create('Jurnal',function($excel){
             $excel->sheet('Jurnal',function($sheet){
                 $this->count++;
@@ -93,14 +140,14 @@ class JournalController extends Controller
                     $cell->setAlignment('center');
                 });
                 $this->count++;
-                $sheet->mergeCells('A2:E2');
+                $sheet->mergeCells('A2:F2');
                 $sheet->row($this->count,array('Jurnal'));
                 $sheet->cell('A2',function($cell){
                     $cell->setAlignment('center');
                 });
 
                 $this->count++;
-                $sheet->mergeCells('A3:E3');
+                $sheet->mergeCells('A3:F3');
                 $sheet->row($this->count,array('Per '.$this->data['end']));
                 $sheet->cell('A3',function($cell){
                     $cell->setAlignment('center');
@@ -124,19 +171,39 @@ class JournalController extends Controller
                 });
 
                 $this->count+=2;
-                $sheet->row($this->count,array(
-                    'Tanggal','No Transaksi','Tipe','Akun','Debet','Credit'
-                ));
                 foreach($this->data['journals'] as $j){
+                    $sheet->row($this->count,array(
+                        'Tanggal',$j['date']
+                    ));
                     $this->count++;
                     $sheet->row($this->count,array(
-                        $j->mjournaldate,
-                        $j->mjournaltransno,
-                        $j->mjournaltype,
-                        $j['akun']->mcoacode." - ".$j['akun']->mcoaname,
-                        $j->mjournaldebit,
-                        $j->mjournalcredit
+                        'Tipe Transaksi',$j['type']
                     ));
+                    $this->count++;
+                    $sheet->row($this->count,array(
+                        'No Transaksi',$j['trans']
+                    ));
+                    $this->count+=2;
+
+                    $sheet->row($this->count,array(
+                        'Tanggal','No Transaksi','Tipe','Akun','Debet','Credit'
+                    ));
+                    foreach($j['transactions'] as $tr){
+                        $this->count++;
+                        $sheet->row($this->count,array(
+                            $tr->mjournaldate,
+                            $tr->mjournaltransno,
+                            $tr->mjournaltype,
+                            $tr['mjournalcoaname'],
+                            $tr->mjournaldebit,
+                            $tr->mjournalcredit
+                        ));
+                    }
+                    $this->count++;
+                    $sheet->row($this->count,array(
+                        '','','','',$j['sum_debit'],$j['sum_credit']
+                    ));
+                    $this->count+=2;
                 }
             });
         })->export('xls');
@@ -148,6 +215,7 @@ class JournalController extends Controller
         $this->count = 0;
         $this->data['end'] = $request->end;
         $this->data['journals'] = $this->journal_data($request);
+
         return Excel::create('Jurnal',function($excel){
             $excel->sheet('Jurnal',function($sheet){
                 $this->count++;
@@ -157,14 +225,14 @@ class JournalController extends Controller
                     $cell->setAlignment('center');
                 });
                 $this->count++;
-                $sheet->mergeCells('A2:E2');
+                $sheet->mergeCells('A2:F2');
                 $sheet->row($this->count,array('Jurnal'));
                 $sheet->cell('A2',function($cell){
                     $cell->setAlignment('center');
                 });
 
                 $this->count++;
-                $sheet->mergeCells('A3:E3');
+                $sheet->mergeCells('A3:F3');
                 $sheet->row($this->count,array('Per '.$this->data['end']));
                 $sheet->cell('A3',function($cell){
                     $cell->setAlignment('center');
@@ -188,19 +256,39 @@ class JournalController extends Controller
                 });
 
                 $this->count+=2;
-                $sheet->row($this->count,array(
-                    'Tanggal','No Transaksi','Tipe','Akun','Debet','Credit'
-                ));
                 foreach($this->data['journals'] as $j){
+                    $sheet->row($this->count,array(
+                        'Tanggal',$j['date']
+                    ));
                     $this->count++;
                     $sheet->row($this->count,array(
-                        $j->mjournaldate,
-                        $j->mjournaltransno,
-                        $j->mjournaltype,
-                        $j['akun']->mcoacode." - ".$j['akun']->mcoaname,
-                        $j->mjournaldebit,
-                        $j->mjournalcredit
+                        'Tipe Transaksi',$j['type']
                     ));
+                    $this->count++;
+                    $sheet->row($this->count,array(
+                        'No Transaksi',$j['trans']
+                    ));
+                    $this->count+=2;
+
+                    $sheet->row($this->count,array(
+                        'Tanggal','No Transaksi','Tipe','Akun','Debet','Credit'
+                    ));
+                    foreach($j['transactions'] as $tr){
+                        $this->count++;
+                        $sheet->row($this->count,array(
+                            $tr->mjournaldate,
+                            $tr->mjournaltransno,
+                            $tr->mjournaltype,
+                            $tr['mjournalcoaname'],
+                            $tr->mjournaldebit,
+                            $tr->mjournalcredit
+                        ));
+                    }
+                    $this->count++;
+                    $sheet->row($this->count,array(
+                        '','','','',$j['sum_debit'],$j['sum_credit']
+                    ));
+                    $this->count+=2;
                 }
             });
         })->export('csv');
