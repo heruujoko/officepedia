@@ -357,6 +357,11 @@
                     @else
                       <li><a href="{{ url('admin-nano/reports/salesjournal') }}">Laporan Jurnal Penjualan</a></li>
                     @endif
+                    @if($active == 'cashbalance')
+                      <li class="active"><a href="{{ url('admin-nano/reports/cashbalance') }}">Laporan Neraca Saldo</a></li>
+                    @else
+                      <li><a href="{{ url('admin-nano/reports/cashbalance') }}">Laporan Neraca Saldo</a></li>
+                    @endif
                 @endif
 			</ul>
         </li>
