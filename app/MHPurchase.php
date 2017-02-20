@@ -100,6 +100,8 @@ class MHPurchase extends Model
             MJournal::record_journal($header->mhpurchaseno,"Pembelian","1107.01",$header->mhpurchasetaxtotal,0,"","","");
             MJournal::record_journal($header->mhpurchaseno,"Pembelian","2101.03",0,$header->mhpurchasegrandtotal,"","","");
 
+            MJournal::add_prefix();
+
             $coa_persediaan->update_saldo('+',$header->mhpurchasesubtotal);
             $coa_ppn->update_saldo('+',$header->mhpurchasetaxtotal);
             $coa_hutang->update_saldo('+',$header->mhpurchasegrandtotal);

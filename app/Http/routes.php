@@ -248,6 +248,18 @@ Route::group(['prefix'=>'admin-nano','middleware' => ['auth','tenantdb']],functi
   Route::get('reports/arbook/export/excel','ARBookController@arbook_excel');
   Route::get('reports/arbook/export/csv','ARBookController@arbook_csv');
 
+  Route::get('reports/purchasejournal','PurchaseJournalController@index');
+  Route::get('reports/purchasejournal/export/print','PurchaseJournalController@purchasejournal_print');
+  Route::get('reports/purchasejournal/export/pdf','PurchaseJournalController@purchasejournal_pdf');
+  Route::get('reports/purchasejournal/export/excel','PurchaseJournalController@purchasejournal_excel');
+  Route::get('reports/purchasejournal/export/csv','PurchaseJournalController@purchasejournal_csv');
+
+  Route::get('reports/salesjournal','SalesJournalController@index');
+  Route::get('reports/salesjournal/export/print','SalesJournalController@salesjournal_print');
+  Route::get('reports/salesjournal/export/pdf','SalesJournalController@salesjournal_pdf');
+  Route::get('reports/salesjournal/export/excel','SalesJournalController@salesjournal_excel');
+  Route::get('reports/salesjournal/export/csv','SalesJournalController@salesjournal_csv');
+
   Route::get('roles','RoleController@index');
   Route::get('roles/export/print','RoleController@roles_print');
   Route::get('roles/export/pdf','RoleController@roles_pdf');
@@ -377,6 +389,8 @@ Route::group(['prefix'=>'admin-nano','middleware' => ['auth','tenantdb']],functi
   Route::get('arbook','Api\ARBookController@index');
   Route::get('arbook/details/{customer_id}','Api\ARBookController@details');
 
+  Route::get('purchasejournal','Api\PurchaseJournalController@index');
+  Route::get('salesjournal','Api\SalesJournalController@index');
 
   Route::controllers([
     '/'=>'ApiController'

@@ -68,40 +68,46 @@
     </head>
     <body>
         <h5 class="text-center">{{ $company }}</h5>
-        <h5 class="text-center">Jurnal</h5>
-        <h5 class="text-center">Per {{ $end }}</h5>
+        <h5 class="text-center">Jurnal {{ $mode }}</h5>
+        <h5 class="text-center">Periode {{ $start }} - {{ $end }}</h5>
         <br>
         <p class="header-status">User {{ Auth::user()->name }}</p>
         <p class="header-status">Tanggal Cetak {{ Carbon\Carbon::now() }}</p>
         </div>
         <br>
-        <table class="table" id="tableapi" style="width:100%">
-            <thead>
-                <tr>
-                    <th>Tanggal</th>
-                    <th>No Transaksi</th>
-                    <th>Tipe</th>
-                    <th>Akun</th>
-                    <th>Debet</th>
-                    <th>Credit</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach($journals as $j)
-                <tr>
-                    <td>{{ $j->mjournaldate }}</td>
-                    <td>{{ $j->mjournaltransno }}</td>
-                    <td>{{ $j->mjournaltranstype }}</td>
-                    <td>{{ $j['akun']->mcoacode }} - {{ $j['akun']->mcoaname }}</td>
-                    <td>{{ number_format($j->mjournaldebit,$decimals,$dec_point,$thousands_sep) }}</td>
-                    <td>{{ number_format($j->mjournalcredit,$decimals,$dec_point,$thousands_sep) }}</td>
-                </tr>
-                @endforeach
-            </tbody>
-            <thead>
-
-            </thead>
-        </table>
+        @foreach($journals as $j)
+            <h6>Tanggal : {{ $j['date'] }}</h6>
+            <h6>Tipe Transaksi : {{ $j['type'] }}</h6>
+            <h6>No Transaksi : {{ $j['trans'] }}</h6>
+            <table class="table" id="tableapi" style="width:100%">
+                <thead>
+                    <tr>
+                        <td style="font-weight: bold;text-align: left">Kode Akun</td>
+                        <td style="font-weight: bold;text-align: left">Nama Akun</td>
+                        <td style="font-weight: bold;text-align: left">Debet</td>
+                        <td style="font-weight: bold;text-align: left">Kredit</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach($j['transactions'] as $tr)
+                        <tr>
+                            <td>{{ $tr->mjournalcoa }}</td>
+                            <td>{{ $tr['mjournalcoaname'] }}</td>
+                            <td style="text-align: right">{{ number_format($tr->mjournaldebit,$decimals,$dec_point,$thousands_sep) }}</td>
+                            <td style="text-align: right">{{ number_format($tr->mjournalcredit,$decimals,$dec_point,$thousands_sep) }}</td>
+                        </tr>
+                    @endforeach
+                </tbody>
+                <thead>
+                    <tr>
+                        <td colspan="2"></td>
+                        <td style="text-align: right">{{ number_format($j['sum_debit'],$decimals,$dec_point,$thousands_sep) }}</td>
+                        <td style="text-align: right">{{ number_format($j['sum_credit'],$decimals,$dec_point,$thousands_sep) }}</td>
+                    </tr>
+                </thead>
+            </table>
+            <br>
+        @endforeach
         <script>
             window.print();
         </script>

@@ -346,6 +346,18 @@
                       <li><a href="{{ url('admin-nano/reports/cogshistory') }}">Laporan History HPP</a></li>
                     @endif
                 @endif
+                @if(Auth::user()->has_role('R_journal'))
+                    @if($active == 'purchasejournal')
+                      <li class="active"><a href="{{ url('admin-nano/reports/purchasejournal') }}">Laporan Jurnal Pembelian</a></li>
+                    @else
+                      <li><a href="{{ url('admin-nano/reports/purchasejournal') }}">Laporan Jurnal Pembelian</a></li>
+                    @endif
+                    @if($active == 'salesjournal')
+                      <li class="active"><a href="{{ url('admin-nano/reports/salesjournal') }}">Laporan Jurnal Penjualan</a></li>
+                    @else
+                      <li><a href="{{ url('admin-nano/reports/salesjournal') }}">Laporan Jurnal Penjualan</a></li>
+                    @endif
+                @endif
 			</ul>
         </li>
         <li>
