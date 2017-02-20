@@ -117,9 +117,14 @@
               });
             },
             fetchJournals(){
+                $("#loading_modal").modal('toggle');
                 Axios.get('/admin-api/journal?end='+this.report_date_end+"&start="+this.report_date_start)
                 .then((res) => {
                   this.journals = res.data;
+                  $("#loading_modal").modal('toggle');
+                })
+                .catch(err => {
+                    $("#loading_modal").modal('toggle');
                 });
             },
             printTable(){
