@@ -260,6 +260,12 @@ Route::group(['prefix'=>'admin-nano','middleware' => ['auth','tenantdb']],functi
   Route::get('reports/salesjournal/export/excel','SalesJournalController@salesjournal_excel');
   Route::get('reports/salesjournal/export/csv','SalesJournalController@salesjournal_csv');
 
+  Route::get('reports/cashbalance','CashBalanceReport@index');
+  Route::get('reports/cashbalance/export/print','CashBalanceReport@cashbalance_print');
+  Route::get('reports/cashbalance/export/pdf','CashBalanceReport@cashbalance_pdf');
+  Route::get('reports/cashbalance/export/excel','CashBalanceReport@cashbalance_excel');
+  Route::get('reports/cashbalance/export/csv','CashBalanceReport@cashbalance_csv');
+
   Route::get('roles','RoleController@index');
   Route::get('roles/export/print','RoleController@roles_print');
   Route::get('roles/export/pdf','RoleController@roles_pdf');
@@ -391,6 +397,7 @@ Route::group(['prefix'=>'admin-nano','middleware' => ['auth','tenantdb']],functi
 
   Route::get('purchasejournal','Api\PurchaseJournalController@index');
   Route::get('salesjournal','Api\SalesJournalController@index');
+  Route::get('cashbalance','Api\CashBalanceReport@index');
 
   Route::controllers([
     '/'=>'ApiController'

@@ -38,7 +38,7 @@ elixir(mix => {
     // mix.webpack('payar.js');
     // mix.webpack('salesquotation.js');
     // mix.webpack('purchasequotation.js');
-    mix.webpack('journalreport.js');
+    // mix.webpack('journalreport.js');
     // mix.webpack('ledgerreport.js');
     // mix.webpack('cashincome.js');
     // mix.webpack('generaljournal.js');
@@ -46,6 +46,7 @@ elixir(mix => {
     // mix.webpack('changebranch.js');
     // mix.webpack('arbook.js');
     // mix.webpack('salespurchasejournal.js');
+    mix.webpack('cashbalance.js');
     // mix.scripts([
     //     '/public/app.min.js','/public/app.config.js','/public/select2.min.js'
     // ],'public/js/app.mixed.js');
