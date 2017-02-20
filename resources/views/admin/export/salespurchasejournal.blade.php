@@ -68,7 +68,7 @@
     </head>
     <body>
         <h5 class="text-center">{{ $company }}</h5>
-        <h5 class="text-center">Jurnal</h5>
+        <h5 class="text-center">Jurnal {{ $mode }}</h5>
         <h5 class="text-center">Periode {{ $start }} - {{ $end }}</h5>
         <br>
         <p class="header-status">User {{ Auth::user()->name }}</p>
@@ -79,35 +79,30 @@
             <h6>Tanggal : {{ $j['date'] }}</h6>
             <h6>Tipe Transaksi : {{ $j['type'] }}</h6>
             <h6>No Transaksi : {{ $j['trans'] }}</h6>
-
-            <table class="table" style="width:100%">
+            <table class="table" id="tableapi" style="width:100%">
                 <thead>
                     <tr>
-                        <td style="font-weight: bold">Tanggal</td>
-                        <td style="font-weight: bold">No Transaksi</td>
-                        <td style="font-weight: bold">Tipe</td>
-                        <td style="font-weight: bold">Akun</td>
-                        <td style="font-weight: bold">Debet</td>
-                        <td style="font-weight: bold">Credit</td>
+                        <td style="font-weight: bold;text-align: left">Kode Akun</td>
+                        <td style="font-weight: bold;text-align: left">Nama Akun</td>
+                        <td style="font-weight: bold;text-align: left">Debet</td>
+                        <td style="font-weight: bold;text-align: left">Kredit</th>
                     </tr>
                 </thead>
                 <tbody>
                     @foreach($j['transactions'] as $tr)
-                    <tr>
-                        <td>{{ $tr->mjournaldate }}</td>
-                        <td>{{ $tr->mjournaltransno }}</td>
-                        <td>{{ $tr->mjournaltranstype }}</td>
-                        <td>{{ $tr['mjournalcoaname'] }}</td>
-                        <td>{{ number_format($tr->mjournaldebit,$decimals,$dec_point,$thousands_sep) }}</td>
-                        <td>{{ number_format($tr->mjournalcredit,$decimals,$dec_point,$thousands_sep) }}</td>
-                    </tr>
+                        <tr>
+                            <td>{{ $tr->mjournalcoa }}</td>
+                            <td>{{ $tr['mjournalcoaname'] }}</td>
+                            <td style="text-align: right">{{ number_format($tr->mjournaldebit,$decimals,$dec_point,$thousands_sep) }}</td>
+                            <td style="text-align: right">{{ number_format($tr->mjournalcredit,$decimals,$dec_point,$thousands_sep) }}</td>
+                        </tr>
                     @endforeach
                 </tbody>
                 <thead>
                     <tr>
-                        <td colspan="4"></td>
-                        <td>{{ number_format($j['sum_debit'],$decimals,$dec_point,$thousands_sep) }}</td>
-                        <td>{{ number_format($j['sum_credit'],$decimals,$dec_point,$thousands_sep) }}</td>
+                        <td colspan="2"></td>
+                        <td style="text-align: right">{{ number_format($j['sum_debit'],$decimals,$dec_point,$thousands_sep) }}</td>
+                        <td style="text-align: right">{{ number_format($j['sum_credit'],$decimals,$dec_point,$thousands_sep) }}</td>
                     </tr>
                 </thead>
             </table>

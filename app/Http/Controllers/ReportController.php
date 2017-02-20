@@ -201,7 +201,8 @@ class ReportController extends Controller
 
     private function sales_detail_data($request,$invoice_date){
         $warehouse_ids = [];
-        $detail_query = MDInvoice::on(Auth::user()->db_name)->whereDate('mdinvoicedate','=',Carbon::parse($invoice_date))->where('void',0)->orderBy('mhinvoiceno','asc');
+        $last_cust = "";
+        $detail_query = MDInvoice::on(Auth::user()->db_name)->whereDate('mdinvoicedate','=',Carbon::parse($invoice_date))->where('void',0)->orderBy('mdcustomerid','asc');
         if($request->has('goods')){
             $detail_query->where('mdinvoicegoodsid',$request->goods);
         }
@@ -232,6 +233,12 @@ class ReportController extends Controller
             $d['mhinvoicesubtotal_sum'] = $d->mdinvoicegoodsgrossamount;
             $d['mhinvoicetaxtotal_sum'] = $d->mdinvoicegoodstax;
             $d['mhinvoicegrandtotal_sum'] = $d->mdinvoicegoodsgrossamount + $d->mdinvoicegoodstax;
+            if($d->mdcustomerid != $last_cust){
+                $last_cust = $d->mdcustomerid;
+            } else {
+                $d->mdcustomerid = "";
+                $d->mdcustomername = "";
+            }
         }
         return $details;
     }
@@ -1969,31 +1976,35 @@ class ReportController extends Controller
             $ar['1m'] = 0;
             $ar->marcardtotalinv = 0;
             $ar->marcardoutstanding = 0;
-            $details = MARCard::on(Auth::user()->db_name)->whereIn('marcardwarehouseid',$warehouse_ids)->where('marcardcustomerid',$ar->marcardcustomerid)->where('void',0)->get();
+            $details = MARCard::on(Auth::user()->db_name)->whereIn('marcardwarehouseid',$warehouse_ids)->where('marcardcustomerid',$ar->marcardcustomerid)->where('void',0)->groupBy('marcardtransno')->get();
             foreach($details as $d){
-                $ar['numoftrans'] += 1;
-                $now = Carbon::now();
-                $due = Carbon::parse($d->marcardduedate);
-                $diff = $now->diffInDays($due,false);
+                $last_ar = MARCard::get_accumulate_history($d->marcardtransno,$d->marcarddate);
 
-                $ar->marcardtotalinv += $d->marcardtotalinv;
-                $ar->marcardoutstanding += $d->marcardoutstanding;
+                if($last_ar->marcardoutstanding != 0){
+                    $ar['numoftrans'] += 1;
+                    $now = Carbon::now();
+                    $due = Carbon::parse($last_ar->marcardduedate);
+                    $diff = $now->diffInDays($due,false);
 
-                // spread the ar in weeks
-                if($diff > 0 && $diff <= 7){
-                    $ar['1w'] += $d->marcardoutstanding;
-                }
-                if($diff > 7 && $diff <= 14){
-                    $ar['2w'] += $d->marcardoutstanding;
-                }
-                if($diff > 14 && $diff <= 21){
-                    $ar['3w'] += $d->marcardoutstanding;
-                }
-                if($diff > 21 && $diff <= 30){
-                    $ar['4w'] += $d->marcardoutstanding;
-                }
-                if($diff > 30){
-                    $ar['1m'] += $d->marcardoutstanding;
+                    $ar->marcardtotalinv += $last_ar->marcardtotalinv;
+                    $ar->marcardoutstanding += $last_ar->marcardoutstanding;
+
+                    // spread the ar in weeks
+                    if($diff > 0 && $diff <= 7){
+                        $ar['1w'] += $last_ar->marcardoutstanding;
+                    }
+                    if($diff > 7 && $diff <= 14){
+                        $ar['2w'] += $last_ar->marcardoutstanding;
+                    }
+                    if($diff > 14 && $diff <= 21){
+                        $ar['3w'] += $last_ar->marcardoutstanding;
+                    }
+                    if($diff > 21 && $diff <= 30){
+                        $ar['4w'] += $last_ar->marcardoutstanding;
+                    }
+                    if($diff > 30){
+                        $ar['1m'] += $last_ar->marcardoutstanding;
+                    }
                 }
             }
 
@@ -2025,38 +2036,46 @@ class ReportController extends Controller
             $detail_query->whereDate('marcarddate','<=',Carbon::parse($request->end));
         }
 
-        $details = $detail_query->get();
+        $details = $detail_query->groupBy('marcardtransno')->get();
+
+        $accumulative_ar_data = collect();
 
         foreach($details as $d){
-            $d['header'] = false;
-            $d['data'] = true;
-            $d['footer'] = false;
-            $d['numoftrans'] = 0;
-            $d['1w'] = 0;
-            $d['2w'] = 0;
-            $d['3w'] = 0;
-            $d['4w'] = 0;
-            $d['1m'] = 0;
+            $last_ar = MARCard::get_accumulate_history($d->marcardtransno,$d->marcarddate);
 
-            $now = Carbon::now();
-            $due = Carbon::parse($d->marcardduedate);
-            $diff = $now->diffInDays($due,false);
-            $d['aging'] = $diff;
-            // spread the ar in weeks
-            if($diff > 0 && $diff <= 7){
-                $d['1w'] += $d->marcardoutstanding;
-            }
-            if($diff > 7 && $diff <= 14){
-                $d['2w'] += $d->marcardoutstanding;
-            }
-            if($diff > 14 && $diff <= 21){
-                $d['3w'] += $d->marcardoutstanding;
-            }
-            if($diff > 21 && $diff <= 30){
-                $d['4w'] += $d->marcardoutstanding;
-            }
-            if($diff > 30){
-                $d['1m'] += $d->marcardoutstanding;
+            if($last_ar->marcardoutstanding != 0){
+                $last_ar['header'] = false;
+                $last_ar['data'] = true;
+                $last_ar['footer'] = false;
+                $last_ar['numoftrans'] = 0;
+                $last_ar['1w'] = 0;
+                $last_ar['2w'] = 0;
+                $last_ar['3w'] = 0;
+                $last_ar['4w'] = 0;
+                $last_ar['1m'] = 0;
+
+                $now = Carbon::now();
+                $due = Carbon::parse($last_ar->marcardduedate);
+                $diff = $now->diffInDays($due,false);
+                $last_ar['aging'] = $diff;
+                // spread the ar in weeks
+                if($diff > 0 && $diff <= 7){
+                    $last_ar['1w'] += $last_ar->marcardoutstanding;
+                }
+                if($diff > 7 && $diff <= 14){
+                    $last_ar['2w'] += $last_ar->marcardoutstanding;
+                }
+                if($diff > 14 && $diff <= 21){
+                    $last_ar['3w'] += $last_ar->marcardoutstanding;
+                }
+                if($diff > 21 && $diff <= 30){
+                    $last_ar['4w'] += $last_ar->marcardoutstanding;
+                }
+                if($diff > 30){
+                    $last_ar['1m'] += $last_ar->marcardoutstanding;
+                }
+
+                $accumulative_ar_data->push($last_ar);
             }
 
         }
@@ -2067,9 +2086,9 @@ class ReportController extends Controller
             'footer' => true
         ];
 
-        $details->push($footer);
+        $accumulative_ar_data->push($footer);
 
-        return $details;
+        return $accumulative_ar_data;
     }
 
     public function arcustreport(){

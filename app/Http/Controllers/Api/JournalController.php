@@ -19,15 +19,53 @@ class JournalController extends Controller
     private $iteration;
 
     public function journal(Request $request){
+
         $journal_query = MJournal::on(Auth::user()->db_name)->where('void',0);
+        if($request->has('start')){
+            $journal_query->whereDate('mjournaldate','>=',Carbon::parse($request->start));
+        }
         if($request->has('end')){
-            $journal_query->whereDate('created_at','<=',Carbon::parse($request->end));
+            $journal_query->whereDate('mjournaldate','<=',Carbon::parse($request->end));
         }
-        $journals = $journal_query->get();
-        foreach($journals as $j){
-            $j['akun'] = MCOA::on(Auth::user()->db_name)->where('mcoacode',$j->mjournalcoa)->first();
+        $headers = $journal_query->groupBy('mjournalid')->get();
+        $journals = [];
+
+        foreach($headers as $h){
+
+            $group_query = MJournal::on(Auth::user()->db_name)->where('mjournalid',$h->mjournalid);
+
+            if($request->has('start')){
+                $journal_query->whereDate('mjournaldate','>=',Carbon::parse($request->start));
+            }
+            if($request->has('end')){
+                $journal_query->whereDate('mjournaldate','<=',Carbon::parse($request->end));
+            }
+
+            $groups = $group_query->get();
+
+            $sum_debit = 0;
+            $sum_credit = 0;
+
+            foreach($groups as $g){
+                $sum_debit += $g->mjournaldebit;
+                $sum_credit += $g->mjournalcredit;
+                $g['mjournalcoaname'] = MCOA::on(Auth::user()->db_name)->where('mcoacode',$g->mjournalcoa)->first()->mcoaname;
+            }
+
+            $data = [
+                'date' => $h->mjournaldate,
+                'type' => $h->mjournaltranstype,
+                'trans' => $h->mjournaltransno,
+                'sum_debit' => $sum_debit,
+                'sum_credit' => $sum_credit,
+                'transactions' => $groups
+            ];
+
+            array_push($journals,$data);
         }
+
         return response()->json($journals);
+
     }
 
     public function group_journal($type){

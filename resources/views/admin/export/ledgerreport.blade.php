@@ -73,50 +73,50 @@
     <body>
         <h5 class="text-center">{{ $company }}</h5>
         <h5 class="text-center">Jurnal</h5>
-        <h5 class="text-center">Per {{ $end }}</h5>
+        <h5 class="text-center">Periode {{ $start}} - {{ $end }}</h5>
         <br>
         <p class="header-status">User {{ Auth::user()->name }}</p>
         <p class="header-status">Tanggal Cetak {{ Carbon\Carbon::now() }}</p>
         </div>
         <br>
-        <table class="table" id="tableapi" style="width:100%">
-            <thead>
-                <tr class="tbl-footer">
-                    <th>Tanggal</th>
-                    <th>Akun</th>
-                    <th>Tipe Transaksi</th>
-                    <th>Debet</th>
-                    <th>Kredit</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach($ledgers as $l)
-                    @if($l['data'] == true)
-                        <tr>
-                            <td>{{ $l->mjournaldate }}</td>
-                            <td>{{ $l['akun']->mcoaname }}</td>
-                            <td>{{ $l->mjournaltranstype }}</td>
-                            <td>{{ number_format($l->mjournaldebit,$decimals,$dec_point,$thousands_sep) }}</td>
-                            <td>{{ number_format($l->mjournalcredit,$decimals,$dec_point,$thousands_sep) }}</td>
-                        </tr>
-                    @elseif ($l['data'] == false && $l['summary'] == false)
-                        <tr class="tbl-footer">
-                            <td colspan="3" rowspan="2">Saldo</td>
-                            <td>{{ number_format($l['debit'],$decimals,$dec_point,$thousands_sep) }}</td>
-                            <td>{{ number_format($l['credit'],$decimals,$dec_point,$thousands_sep) }}</td>
-                        </tr>
-                    @else
+        @foreach($ledgers as $l)
+            <h6>Kode Perkiraan : {{ $l['mcoacode'] }}</h6>
+            <h6>Nama : {{ $l['mcoacode'] }} {{ $l['mcoaname'] }}</h6>
+            <table class="table" id="tableapi" style="width:100%">
+                <thead>
                     <tr class="tbl-footer">
-                        <td>{{ number_format($l['debit'],$decimals,$dec_point,$thousands_sep) }}</td>
-                        <td>{{ number_format($l['credit'],$decimals,$dec_point,$thousands_sep) }}</td>
+                        <th>Tanggal</th>
+                        <th>Akun</th>
+                        <th>Tipe Transaksi</th>
+                        <th>Debet</th>
+                        <th>Kredit</th>
                     </tr>
-                    @endif
-                @endforeach
-            </tbody>
-            <thead>
-
-            </thead>
-        </table>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td></td>
+                        <td colspan="2">Saldo Sebelumnya</td>
+                        <td colspan="2" style="text-align: right">{{ $l['last_saldo'] }}</td>
+                    </tr>
+                    @foreach($l['transactions'] as $tr)
+                        <tr>
+                            <td>{{ $tr['mjournaldate'] }}</td>
+                            <td>{{ $tr['mjournalcoa'] }}</td>
+                            <td>{{ $tr['mjournaltranstype'] }}</td>
+                            <td style="text-align: right">{{ number_format($tr['mjournaldebit'],$decimals,$dec_point,$thousands_sep) }}</td>
+                            <td style="text-align: right">{{ number_format($tr['mjournalcredit'],$decimals,$dec_point,$thousands_sep) }}</td>
+                        </tr>
+                    @endforeach
+                </tbody>
+                <thead>
+                    <tr class="tbl-footer">
+                        <td colspan="3" style="text-align: center">Total</td>
+                        <td style="text-align: right">{{ number_format($l['sum_d'],$decimals,$dec_point,$thousands_sep) }}</td>
+                        <td style="text-align: right">{{ number_format($l['sum_k'],$decimals,$dec_point,$thousands_sep) }}</td>
+                    </tr>
+                </thead>
+            </table>
+        @endforeach
         <script>
             window.print();
         </script>

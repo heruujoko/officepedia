@@ -2,7 +2,12 @@
     <div>
         <br>
         <div class="row">
-            <p class="col-md-1 report-label">Per</p>
+            <p class="col-md-1 report-label">Periode Awal</p>
+            <input v-dpicker v-model="report_date_start" type="text" class="small-date form-control" />
+        </div>
+        <br>
+        <div class="row">
+            <p class="col-md-1 report-label">Periode Akhir</p>
             <input v-dpicker v-model="report_date_end" type="text" class="small-date form-control" />
         </div>
         <br>
@@ -36,32 +41,42 @@
         <br>
         <div class="row">
             <div class="col-md-12">
-                <table class="table table-bordered" id="tableapi">
-                    <thead>
-                        <tr>
-                            <th>Tanggal</th>
-                            <th>No Transaksi</th>
-                            <th>Tipe</th>
-                            <th>Akun</th>
-                            <th>Debet</th>
-                            <th>Credit</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr v-for="j in journals">
-                            <td>{{ j.mjournaldate }}</td>
-                            <td>{{ j.mjournalid }}</td>
-                            <td>{{ j.mjournaltranstype }}</td>
-                            <td v-if="j.mjournaldebit != 0">{{ j.akun.mcoacode }} - {{ j.akun.mcoaname }}</td>
-                            <td v-if="j.mjournalcredit != 0" style="text-align: center">{{ j.akun.mcoacode }} - {{ j.akun.mcoaname }}</td>
-                            <td style="text-align:right" v-priceformatlabel="num_format">{{ j.mjournaldebit }}</td>
-                            <td style="text-align:right" v-priceformatlabel="num_format">{{ j.mjournalcredit }}</td>
-                        </tr>
-                    </tbody>
-                    <thead>
+                <div v-for="j in journals">
+                    <h6>Tanggal {{ j.date }}</h6>
+                    <h6>Tipe Transaksi {{ j.type }}</h6>
+                    <h6>No Transaksi {{ j.trans }}</h6>
 
-                    </thead>
-                </table>
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th>Tanggal</th>
+                                <th>No Transaksi</th>
+                                <th>Tipe</th>
+                                <th>Akun</th>
+                                <th>Debet</th>
+                                <th>Credit</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr v-for="tr in j.transactions">
+                                <td>{{ tr.mjournaldate }}</td>
+                                <td>{{ tr.mjournaltransno }}</td>
+                                <td>{{ tr.mjournaltranstype }}</td>
+                                <td>{{ tr.mjournalcoaname }}</td>
+                                <td style="text-align: right" v-priceformatlabel="num_format">{{ tr.mjournaldebit }}</td>
+                                <td style="text-align: right" v-priceformatlabel="num_format">{{ tr.mjournalcredit }}</td>
+                            </tr>
+                        </tbody>
+                        <thead>
+                            <tr>
+                                <td colspan="4"></td>
+                                <td style="text-align: right" v-priceformatlabel="num_format">{{ j.sum_debit }}</td>
+                                <td style="text-align: right" v-priceformatlabel="num_format">{{ j.sum_credit }}</td>
+                            </tr>
+                        </thead>
+                    </table>
+                    <br>
+                </div>
             </div>
         </div>
         <br>
@@ -77,6 +92,7 @@
         data(){
             return {
                 company_name: "",
+                report_date_start : moment().format('L'),
                 report_date_end : moment().format('L'),
                 report_print_date: moment().format('L'),
                 num_format:"0.0",
@@ -101,22 +117,27 @@
               });
             },
             fetchJournals(){
-                Axios.get('/admin-api/journal?end='+this.report_date_end)
+                $("#loading_modal").modal('toggle');
+                Axios.get('/admin-api/journal?end='+this.report_date_end+"&start="+this.report_date_start)
                 .then((res) => {
                   this.journals = res.data;
+                  $("#loading_modal").modal('toggle');
+                })
+                .catch(err => {
+                    $("#loading_modal").modal('toggle');
                 });
             },
             printTable(){
-                window.open('/admin-nano/reports/journal/export/print?end='+this.report_date_end,'_blank');
+                window.open('/admin-nano/reports/journal/export/print?end='+this.report_date_end+"&start="+this.report_date_start,'_blank');
             },
             pdfTable(){
-                window.open('/admin-nano/reports/journal/export/pdf?end='+this.report_date_end,'_blank');
+                window.open('/admin-nano/reports/journal/export/pdf?end='+this.report_date_end+"&start="+this.report_date_start,'_blank');
             },
             excelTable(){
-                window.open('/admin-nano/reports/journal/export/excel?end='+this.report_date_end,'_blank');
+                window.open('/admin-nano/reports/journal/export/excel?end='+this.report_date_end+"&start="+this.report_date_start,'_blank');
             },
             csvTable(){
-                window.open('/admin-nano/reports/journal/export/csv?end='+this.report_date_end,'_blank');
+                window.open('/admin-nano/reports/journal/export/csv?end='+this.report_date_end+"&start="+this.report_date_start,'_blank');
             }
         },
         mounted(){

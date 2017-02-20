@@ -1,5 +1,5 @@
 <div id="branchswitcher" style="padding:10px;">
-    <!-- <changer active="{{ $active }}"></changer> -->
+    <changer active="{{ $active }}"></changer>
 </div>
 <ul>
   @if($active == 'dashboard')
@@ -322,81 +322,119 @@
   <li>
     <a href="#"><i class="fa fa-lg fa-fw fa-briefcase"></i> <span class="menu-item-parent">Laporan</span></a>
     <ul>
-        @if(Auth::user()->has_role('R_stockreport'))
-            @if($active == 'mstockcardreport')
-              <li class="active"><a href="{{ url('admin-nano/mstockcardreport') }}">Laporan Stock</a></li>
-            @else
-              <li><a href="{{ url('admin-nano/mstockcardreport') }}">Laporan Stock</a></li>
-            @endif
-        @endif
-        @if(Auth::user()->has_role('R_salesreport'))
-            @if($active == 'salesreports')
-              <li class="active"><a href="{{ url('admin-nano/reports/salesreport') }}">Laporan Penjualan</a></li>
-            @else
-              <li><a href="{{ url('admin-nano/reports/salesreport') }}">Laporan Penjualan</a></li>
-            @endif
-        @endif
-        @if(Auth::user()->has_role('R_invoicereport'))
-            @if($active == 'invoicereports')
-              <li class="active"><a href="{{ url('admin-nano/reports/invoicereport') }}">Laporan Penjualan Invoice</a></li>
-            @else
-              <li><a href="{{ url('admin-nano/reports/invoicereport') }}">Laporan Penjualan Invoice</a></li>
-            @endif
-        @endif
-        @if(Auth::user()->has_role('arreport'))
-            @if($active == 'arreports')
-              <li class="active"><a href="{{ url('admin-nano/reports/arreport') }}">Laporan Piutang</a></li>
-            @else
-              <li><a href="{{ url('admin-nano/reports/arreport') }}">Laporan Piutang</a></li>
-            @endif
-        @endif
-        @if(Auth::user()->has_role('R_arcustomerreport'))
-            @if($active == 'arcustreport')
-              <li class="active"><a href="{{ url('admin-nano/reports/arcustreport') }}">Laporan Piutang Customer</a></li>
-            @else
-              <li><a href="{{ url('admin-nano/reports/arcustreport') }}">Laporan Piutang Customer</a></li>
-            @endif
-        @endif
-        @if(Auth::user()->has_role('R_purchasereport'))
-            @if($active == 'purchasereport')
-              <li class="active"><a href="{{ url('admin-nano/reports/purchasereport') }}">Laporan Pembelian</a></li>
-            @else
-              <li><a href="{{ url('admin-nano/reports/purchasereport') }}">Laporan Pembelian</a></li>
-            @endif
-        @endif
-        @if(Auth::user()->has_role('R_apreport'))
-            @if($active == 'apreport')
-              <li class="active"><a href="{{ url('admin-nano/reports/apreport') }}">Laporan Hutang Dagang</a></li>
-            @else
-              <li><a href="{{ url('admin-nano/reports/apreport') }}">Laporan Hutang Dagang</a></li>
-            @endif
-        @endif
-        @if(Auth::user()->has_role('R_stockvaluereport'))
-            @if($active == 'stockvalue')
-              <li class="active"><a href="{{ url('admin-nano/reports/stockvalue') }}">Laporan Nilai Persediaan</a></li>
-            @else
-              <li><a href="{{ url('admin-nano/reports/stockvalue') }}">Laporan Nilai Persediaan</a></li>
-            @endif
-            @if($active == 'cogshistory')
-              <li class="active"><a href="{{ url('admin-nano/reports/cogshistory') }}">Laporan History HPP</a></li>
-            @else
-              <li><a href="{{ url('admin-nano/reports/cogshistory') }}">Laporan History HPP</a></li>
-            @endif
-        @endif
-        @if(Auth::user()->has_role('R_journal'))
-            @if($active == 'journal')
-              <li class="active"><a href="{{ url('admin-nano/reports/journal') }}">Jurnal</a></li>
-            @else
-              <li><a href="{{ url('admin-nano/reports/journal') }}">Jurnal</a></li>
-            @endif
-        @endif
-        @if(Auth::user()->has_role('R_ledger'))
-            @if($active == 'ledger')
-              <li class="active"><a href="{{ url('admin-nano/reports/ledger') }}">Buku Besar</a></li>
-            @else
-              <li><a href="{{ url('admin-nano/reports/ledger') }}">Buku Besar</a></li>
-            @endif
-        @endif
+        <li>
+            <a href="#">Keuangan</a>
+            <ul>
+                @if(Auth::user()->has_role('R_journal'))
+                    @if($active == 'journal')
+                      <li class="active"><a href="{{ url('admin-nano/reports/journal') }}">Jurnal</a></li>
+                    @else
+                      <li><a href="{{ url('admin-nano/reports/journal') }}">Jurnal</a></li>
+                    @endif
+                @endif
+                @if(Auth::user()->has_role('R_ledger'))
+                    @if($active == 'ledger')
+                      <li class="active"><a href="{{ url('admin-nano/reports/ledger') }}">Buku Besar</a></li>
+                    @else
+                      <li><a href="{{ url('admin-nano/reports/ledger') }}">Buku Besar</a></li>
+                    @endif
+                @endif
+                @if(Auth::user()->has_role('R_stockvaluereport'))
+                    @if($active == 'cogshistory')
+                      <li class="active"><a href="{{ url('admin-nano/reports/cogshistory') }}">Laporan History HPP</a></li>
+                    @else
+                      <li><a href="{{ url('admin-nano/reports/cogshistory') }}">Laporan History HPP</a></li>
+                    @endif
+                @endif
+                @if(Auth::user()->has_role('R_journal'))
+                    @if($active == 'purchasejournal')
+                      <li class="active"><a href="{{ url('admin-nano/reports/purchasejournal') }}">Laporan Jurnal Pembelian</a></li>
+                    @else
+                      <li><a href="{{ url('admin-nano/reports/purchasejournal') }}">Laporan Jurnal Pembelian</a></li>
+                    @endif
+                    @if($active == 'salesjournal')
+                      <li class="active"><a href="{{ url('admin-nano/reports/salesjournal') }}">Laporan Jurnal Penjualan</a></li>
+                    @else
+                      <li><a href="{{ url('admin-nano/reports/salesjournal') }}">Laporan Jurnal Penjualan</a></li>
+                    @endif
+                @endif
+			</ul>
+        </li>
+        <li>
+            <a href="#">Inventory</a>
+            <ul>
+                @if(Auth::user()->has_role('R_stockreport'))
+                    @if($active == 'mstockcardreport')
+                      <li class="active"><a href="{{ url('admin-nano/mstockcardreport') }}">Laporan Stock</a></li>
+                    @else
+                      <li><a href="{{ url('admin-nano/mstockcardreport') }}">Laporan Stock</a></li>
+                    @endif
+                @endif
+                @if(Auth::user()->has_role('R_stockvaluereport'))
+                    @if($active == 'stockvalue')
+                      <li class="active"><a href="{{ url('admin-nano/reports/stockvalue') }}">Laporan Nilai Persediaan</a></li>
+                    @else
+                      <li><a href="{{ url('admin-nano/reports/stockvalue') }}">Laporan Nilai Persediaan</a></li>
+                    @endif
+                @endif
+			</ul>
+        </li>
+        <li>
+            <a href="#">Penjualan</a>
+            <ul>
+                @if(Auth::user()->has_role('R_salesreport'))
+                    @if($active == 'salesreports')
+                      <li class="active"><a href="{{ url('admin-nano/reports/salesreport') }}">Laporan Penjualan</a></li>
+                    @else
+                      <li><a href="{{ url('admin-nano/reports/salesreport') }}">Laporan Penjualan</a></li>
+                    @endif
+                @endif
+                @if(Auth::user()->has_role('R_arcustomerreport'))
+                    @if($active == 'arcustreport')
+                      <li class="active"><a href="{{ url('admin-nano/reports/arcustreport') }}">Laporan Piutang Customer</a></li>
+                    @else
+                      <li><a href="{{ url('admin-nano/reports/arcustreport') }}">Laporan Piutang Customer</a></li>
+                    @endif
+                    @if($active == 'arbook')
+                      <li class="active"><a href="{{ url('admin-nano/reports/arbook') }}">Laporan Buku Piutang</a></li>
+                    @else
+                      <li><a href="{{ url('admin-nano/reports/arbook') }}">Laporan Buku Piutang</a></li>
+                    @endif
+                @endif
+			</ul>
+        </li>
+        <li>
+            <a href="#">Pembelian</a>
+            <ul>
+                @if(Auth::user()->has_role('R_purchasereport'))
+                    @if($active == 'purchasereport')
+                      <li class="active"><a href="{{ url('admin-nano/reports/purchasereport') }}">Laporan Pembelian</a></li>
+                    @else
+                      <li><a href="{{ url('admin-nano/reports/purchasereport') }}">Laporan Pembelian</a></li>
+                    @endif
+                @endif
+                @if(Auth::user()->has_role('R_apreport'))
+                    @if($active == 'apreport')
+                      <li class="active"><a href="{{ url('admin-nano/reports/apreport') }}">Laporan Hutang Dagang</a></li>
+                    @else
+                      <li><a href="{{ url('admin-nano/reports/apreport') }}">Laporan Hutang Dagang</a></li>
+                    @endif
+                    @if($active == 'apbook')
+                      <li class="active"><a href="{{ url('admin-nano/reports/apbook') }}">Laporan Buku Hutang</a></li>
+                    @else
+                      <li><a href="{{ url('admin-nano/reports/apbook') }}">Laporan Buku Hutang</a></li>
+                    @endif
+                @endif
+			</ul>
+        </li>
+        <li>
+            <a href="#">Audit</a>
+            <ul>
+			    <li><a href="forum.html">Laporan Kartu Stok</a></li>
+				<li><a href="forum-topic.html">Laporan Penjualan</a></li>
+				<li><a href="forum-post.html">Laporan Pembelian</a></li>
+			</ul>
+        </li>
     </ul>
   </li>
 </ul>

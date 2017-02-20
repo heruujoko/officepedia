@@ -1091,7 +1091,7 @@
                                   buttons: table_btns,
 					       				      processing: false,
 										          serverSide: false,
-															iDisplayLength: 100,
+															iDisplayLength: 1000,
 										          ajax: '{{URL::to('/')}}/admin-api/mcoa',
           										columns: [
                               {data: 'action', name:'action', searchable: false, orderable: false},
