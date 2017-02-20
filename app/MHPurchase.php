@@ -91,6 +91,19 @@ class MHPurchase extends Model
             }
             $header = MHPurchase::on(Auth::user()->db_name)->where('id',$trans_header->id)->first();
 
+            $coa_persediaan = MCOA::on(Auth::user()->db_name)->where('mcoacode',"1105.01")->first();
+            $coa_ppn = MCOA::on(Auth::user()->db_name)->where('mcoacode',"1107.01")->first();
+            $coa_hutang = MCOA::on(Auth::user()->db_name)->where('mcoacode',"2101.03")->first();
+
+            // add journal
+            MJournal::record_journal($header->mhpurchaseno,"Pembelian","1105.01",$header->mhpurchasesubtotal,0,"","","");
+            MJournal::record_journal($header->mhpurchaseno,"Pembelian","1107.01",$header->mhpurchasetaxtotal,0,"","","");
+            MJournal::record_journal($header->mhpurchaseno,"Pembelian","2101.03",0,$header->mhpurchasegrandtotal,"","","");
+
+            $coa_persediaan->update_saldo('+',$header->mhpurchasesubtotal);
+            $coa_ppn->update_saldo('+',$header->mhpurchasetaxtotal);
+            $coa_hutang->update_saldo('+',$header->mhpurchasegrandtotal);
+
             // fill the detail info
             foreach($request->goods as $g){
                 $mgoods = MGoods::on(Auth::user()->db_name)->where('mgoodscode',$g['goods']['mgoodscode'])->first();
@@ -252,6 +265,31 @@ class MHPurchase extends Model
             }
             $trans_header->mhpurchaseremark = '';
             $trans_header->save();
+
+            // update journal
+
+            $coa_persediaan = MCOA::on(Auth::user()->db_name)->where('mcoacode',"1105.01")->first();
+            $coa_ppn = MCOA::on(Auth::user()->db_name)->where('mcoacode',"1107.01")->first();
+            $coa_hutang = MCOA::on(Auth::user()->db_name)->where('mcoacode',"2101.03")->first();
+
+            $journal_persediaan = MJournal::on(Auth::user()->db_name)->where('mjournaltransno',$trans_header->mhpurchaseno)->where('mjournalcoa',"1105.01")->first();
+            $journal_ppn = MJournal::on(Auth::user()->db_name)->where('mjournaltransno',$trans_header->mhpurchaseno)->where('mjournalcoa',"1107.01")->first();
+            $journal_hutang = MJournal::on(Auth::user()->db_name)->where('mjournaltransno',$trans_header->mhpurchaseno)->where('mjournalcoa',"2101.03")->first();
+
+            $coa_persediaan->update_saldo('-',$journal_persediaan->mjournaldebit);
+            $coa_ppn->update_saldo('-',$journal_ppn->mjournaldebit);
+            $coa_hutang->update_saldo('-',$journal_hutang->mjournalcredit);
+
+            $journal_persediaan->mjournaldebit = $trans_header->mhpurchasesubtotal;
+            $journal_persediaan->save();
+            $journal_ppn->mjournaldebit = $trans_header->mhpurchasetaxtotal;
+            $journal_ppn->save();
+            $journal_hutang->mjournalcredit = $trans_header->mhpurchasegrandtotal;
+            $journal_hutang->save();
+
+            $coa_persediaan->update_saldo('+',$trans_header->mhpurchasesubtotal);
+            $coa_ppn->update_saldo('+',$trans_header->mhpurchasetaxtotal);
+            $coa_hutang->update_saldo('+',$trans_header->mhpurchasegrandtotal);
 
             // loop new details
             // void them all
@@ -556,6 +594,20 @@ class MHPurchase extends Model
 
             $details = MDPurchase::on(Auth::user()->db_name)->where('mhpurchaseno',$header->mhpurchaseno)->get();
 
+            $coa_persediaan = MCOA::on(Auth::user()->db_name)->where('mcoacode',"1105.01")->first();
+            $coa_ppn = MCOA::on(Auth::user()->db_name)->where('mcoacode',"1107.01")->first();
+            $coa_hutang = MCOA::on(Auth::user()->db_name)->where('mcoacode',"2101.03")->first();
+
+            $journal_persediaan = MJournal::on(Auth::user()->db_name)->where('mjournaltransno',$header->mhpurchaseno)->where('mjournalcoa',"1105.01")->first();
+            $journal_ppn = MJournal::on(Auth::user()->db_name)->where('mjournaltransno',$header->mhpurchaseno)->where('mjournalcoa',"1107.01")->first();
+            $journal_hutang = MJournal::on(Auth::user()->db_name)->where('mjournaltransno',$header->mhpurchaseno)->where('mjournalcoa',"2101.03")->first();
+
+            $coa_persediaan->update_saldo('-',$journal_persediaan->mjournaldebit);
+            $coa_ppn->update_saldo('-',$journal_ppn->mjournaldebit);
+            $coa_hutang->update_saldo('-',$journal_hutang->mjournalcredit);
+
+            MJournal::on(Auth::user()->db_name)->where('mjournaltransno',$header->mhpurchaseno)->delete();
+
             // void all details and return the stock
             foreach($details as $detail){
                 $detail->void = 1;
@@ -633,20 +685,13 @@ class MHPurchase extends Model
                 $header->save();
 
             }
-            $conf = MConfig::on(Auth::user()->db_name)->where('id',1)->first();
-            $coa = $conf->msyspayapaccount;
-            $coa_ap = MCOA::on(Auth::user()->db_name)->where('mcoacode',$coa)->first();
-
-            $coa_ap->update_saldo("-",$header->mhpurchasegrandtotal);
 
             DB::connection(Auth::user()->db_name)->commit();
             return 'ok';
 
-            $coa_ap->update_saldo("-",$detail->mdpurchasegoodsgrossamount);
-
         } catch(\Exception $e){
             DB::connection(Auth::user()->db_name)->rollBack();
-            var_dump($e);
+            dd($e);
             return 'err';
         }
     }
