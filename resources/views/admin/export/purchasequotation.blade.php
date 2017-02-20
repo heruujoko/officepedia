@@ -405,19 +405,19 @@
                 <tr>
                     <td style="position: absolute;" colspan="5"></td>
                     <td style="text-align: left;">Sub Total </td>
-                    <td style="text-align: left;">IDR &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ number_format($subtotal,$decimals,$dec_point,$thousands_sep) }}</td>
+                    <td style="text-align: left;">IDR &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; @if($subtotal < 0)-{{number_format(abs($subtotal),$decimals,$dec_point,$thousands_sep)}} @else {{ number_format($subtotal,$decimals,$dec_point,$thousands_sep) }} @endif</td>
                    
                     
                 </tr>
                 <tr>
                     <td style="position: absolute;" colspan="5"></td>
                     <td style="text-align: left;"><span contenteditable>Discount </span></td>
-                    <td style="text-align: left;">IDR &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ number_format($discount,$decimals,$dec_point,$thousands_sep) }}</td>
+                    <td style="text-align: left;">IDR &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; @if($discount < 0)-{{number_format(abs($discount),$decimals,$dec_point,$thousands_sep)}} @else {{ number_format($discount,$decimals,$dec_point,$thousands_sep) }} @endif</td>
                 </tr>
-                 <tr>
+                 <tr> 
                     <td style="position: absolute;" colspan="5"></td>
                     <td style="border-bottom: 4px solid black; text-align: left;"><span contenteditable>PPN 10% </span></td>
-                     <td style="text-align: left;border-bottom: 4px solid black;">IDR &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ number_format($quotation[0]['mhpurchasequotationtaxtotal'],$decimals,$dec_point,$thousands_sep) }}</td>
+                     <td style="text-align: left;border-bottom: 4px solid black;">IDR &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; @if($quotation[0]['mhpurchasequotationtaxtotal'] < 0)-{{number_format(abs($quotation[0]['mhpurchasequotationtaxtotal']),$quotation[0]['mhpurchasequotationtaxtotal'],$dec_point,$thousands_sep)}} @else {{ number_format($quotation[0]['mhpurchasequotationtaxtotal'],$decimals,$dec_point,$thousands_sep) }} @endif</td>
 
                 </tr>
                  <tr>
