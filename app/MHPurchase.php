@@ -11,6 +11,7 @@ use DB;
 use App\MGoods;
 use App\MDPurchase;
 use App\Helper\DBHelper;
+use App\Helper\IntegrityHelper;
 use App\MStockCard;
 use App\MAPCard;
 use App\MCOGS;
@@ -171,41 +172,45 @@ class MHPurchase extends Model
                 $detail->save();
 
                 // update COGS
-                // find first cogs
-                $goods_cogs = MCOGS::on(Auth::user()->db_name)->where('mcogsgoodscode',$mgoods->mgoodscode)->first();
-                $current_cogs = 0;
-                if($goods_cogs == null){
-                    $cogs = new MCOGS;
-                    $cogs->setConnection(Auth::user()->db_name);
-                    $cogs->mcogsgoodscode = $mgoods->mgoodscode;
-                    $cogs->mcogsgoodsname = $mgoods->mgoodsname;
-                    $cogs->mcogsgoodstotalqty = $mgoods->mgoodsstock;
-                    $cogs->mcogslastcogs = $detail->mdpurchasegoodsgrossamount / $mgoods->mgoodsstock;
-                    $cogs->mcogsremarks = "";
-                    $cogs->save();
-                    $current_cogs = $cogs->mcogslastcogs;
-                } else {
-                    // update cogs
-                    $goods_cogs->mcogsgoodstotalqty = $mgoods->mgoodsstock;
-                    $cogs_num = (($last_stock * $goods_cogs->mcogslastcogs) + $detail->mdpurchasegoodsgrossamount ) / $mgoods->mgoodsstock;
-                    $goods_cogs->mcogslastcogs = $cogs_num;
-                    $goods_cogs->mcogsremarks = "";
-                    $goods_cogs->save();
-                    $current_cogs = $goods_cogs->mcogslastcogs;
-                }
-
-                // save cogs log
-                $h = new HPPHistory;
-                $h->setConnection(Auth::user()->db_name);
-                $h->hpphistorygoodsid = $mgoods->mgoodscode;
-                $h->hpphistorypurchase = $detail->mdpurchasegoodsgrossamount;
-                $h->hpphistoryqty = $detail->mdpurchasegoodsqty;
-                $h->hpphistorycogs = $current_cogs;
-                $h->hpphistoryremarks = "";
-                $h->save();
-
-                $detail->cogs_ref = $h->id;
+                $detail->cogs_ref = IntegrityHelper::calculateCOGS($mgoods,$detail->mdpurchasegoodsgrossamount);
                 $detail->save();
+
+
+                // find first cogs
+                // $goods_cogs = MCOGS::on(Auth::user()->db_name)->where('mcogsgoodscode',$mgoods->mgoodscode)->first();
+                // $current_cogs = 0;
+                // if($goods_cogs == null){
+                //     $cogs = new MCOGS;
+                //     $cogs->setConnection(Auth::user()->db_name);
+                //     $cogs->mcogsgoodscode = $mgoods->mgoodscode;
+                //     $cogs->mcogsgoodsname = $mgoods->mgoodsname;
+                //     $cogs->mcogsgoodstotalqty = $mgoods->mgoodsstock;
+                //     $cogs->mcogslastcogs = $detail->mdpurchasegoodsgrossamount / $mgoods->mgoodsstock;
+                //     $cogs->mcogsremarks = "";
+                //     $cogs->save();
+                //     $current_cogs = $cogs->mcogslastcogs;
+                // } else {
+                //     // update cogs
+                //     $goods_cogs->mcogsgoodstotalqty = $mgoods->mgoodsstock;
+                //     $cogs_num = (($last_stock * $goods_cogs->mcogslastcogs) + $detail->mdpurchasegoodsgrossamount ) / $mgoods->mgoodsstock;
+                //     $goods_cogs->mcogslastcogs = $cogs_num;
+                //     $goods_cogs->mcogsremarks = "";
+                //     $goods_cogs->save();
+                //     $current_cogs = $goods_cogs->mcogslastcogs;
+                // }
+                //
+                // // save cogs log
+                // $h = new HPPHistory;
+                // $h->setConnection(Auth::user()->db_name);
+                // $h->hpphistorygoodsid = $mgoods->mgoodscode;
+                // $h->hpphistorypurchase = $detail->mdpurchasegoodsgrossamount;
+                // $h->hpphistoryqty = $detail->mdpurchasegoodsqty;
+                // $h->hpphistorycogs = $current_cogs;
+                // $h->hpphistoryremarks = "";
+                // $h->save();
+                //
+                // $detail->cogs_ref = $h->id;
+                // $detail->save();
             }
 
             // fill the AP
@@ -246,6 +251,8 @@ class MHPurchase extends Model
             $conf = MConfig::on(Auth::user()->db_name)->where('id',1)->first();
             $coa = $conf->msyspayapaccount;
             $coa_ap = MCOA::on(Auth::user()->db_name)->where('mcoacode',$coa)->first();
+
+            $should_calculate_cogs_again = false;
 
             $coa_ap->update_saldo("-",$trans_header->mhpurchasegrandtotal);
 
@@ -310,8 +317,9 @@ class MHPurchase extends Model
                     $mgoods->save();
                     $last_stock = MStockCard::on(Auth::user()->db_name)->where('mstockcardtransno',$trans_header->mhpurchaseno)->where('mstockcardgoodsid',$mgoods->mgoodscode)->orderBy('created_at','desc')->get()->first();
                     $old_qty = $invoice_detail->mdpurchasegoodsqty;
-                    // dd($old_qty);
+
                     $old_detail = $invoice_detail;
+                    $old_price = $old_detail->mdpurchasebuyprice;
                     // update detail data
                     $invoice_detail->mhpurchaseno = $trans_header->mhpurchaseno;
                     $invoice_detail->mdpurchasesupplierid = $trans_header->mhpurchasesupplierid;
@@ -341,8 +349,17 @@ class MHPurchase extends Model
                     $invoice_detail->void = 0;
                     $invoice_detail->save();
 
+                    // if qty still same but price changed
+                    if(($old_qty == $g['usage']) && ($old_price != $g['buy_price'])){
+                        $invoice_detail->cogs_ref = IntegrityHelper::updateCOGS($mgoods,$invoice_detail->mdpurchasegoodsgrossamount,$g['usage']);
+                        $invoice_detail->save();
+                        $should_calculate_cogs_again = true;
+                    }
+
+
                     // update stock card
                     if($old_qty != $g['usage']){
+                        $should_calculate_cogs_again = true;
                         //out dengan qty lama
                         $stock_card = new MStockCard;
                         $stock_card->setConnection(Auth::user()->db_name);
@@ -371,27 +388,27 @@ class MHPurchase extends Model
                         $mgoods->save();
 
                         // reset COGS
-                        $last_cogs = MCOGS::on(Auth::user()->db_name)->where('mcogsgoodscode',$mgoods->mgoodscode)->first();
-                        $ref_cogs = HPPHistory::on(Auth::user()->db_name)->where('id',$invoice_detail->cogs_ref)->first();
-                        if($mgoods->mgoodsstock == 0){
-                            $cogs_num = 0;
-                        } else {
-                            $cogs_num = (($last_cogs->mcogslastcogs * $last_cogs->mcogsgoodstotalqty) - $ref_cogs->hpphistorypurchase) / $mgoods->mgoodsstock;
-                        }
-
-                        $h = new HPPHistory;
-                        $h->setConnection(Auth::user()->db_name);
-                        $h->hpphistorygoodsid = $mgoods->mgoodscode;
-                        $h->hpphistorypurchase = 0;
-                        $h->hpphistoryqty = $mgoods->mgoodsstock;
-                        $h->hpphistorycogs = $cogs_num;
-                        $h->hpphistoryremarks = "Revisi pembelian";
-                        $h->save();
-
-                        $goods_cogs = MCOGS::on(Auth::user()->db_name)->where('mcogsgoodscode',$mgoods->mgoodscode)->first();
-                        $goods_cogs->mcogslastcogs = $cogs_num;
-                        $goods_cogs->mcogsgoodstotalqty = $mgoods->mgoodsstock;
-                        $goods_cogs->save();
+                        // $last_cogs = MCOGS::on(Auth::user()->db_name)->where('mcogsgoodscode',$mgoods->mgoodscode)->first();
+                        // $ref_cogs = HPPHistory::on(Auth::user()->db_name)->where('id',$invoice_detail->cogs_ref)->first();
+                        // if($mgoods->mgoodsstock == 0){
+                        //     $cogs_num = 0;
+                        // } else {
+                        //     $cogs_num = (($last_cogs->mcogslastcogs * $last_cogs->mcogsgoodstotalqty) - $ref_cogs->hpphistorypurchase) / $mgoods->mgoodsstock;
+                        // }
+                        //
+                        // $h = new HPPHistory;
+                        // $h->setConnection(Auth::user()->db_name);
+                        // $h->hpphistorygoodsid = $mgoods->mgoodscode;
+                        // $h->hpphistorypurchase = 0;
+                        // $h->hpphistoryqty = $mgoods->mgoodsstock;
+                        // $h->hpphistorycogs = $cogs_num;
+                        // $h->hpphistoryremarks = "Revisi pembelian";
+                        // $h->save();
+                        //
+                        // $goods_cogs = MCOGS::on(Auth::user()->db_name)->where('mcogsgoodscode',$mgoods->mgoodscode)->first();
+                        // $goods_cogs->mcogslastcogs = $cogs_num;
+                        // $goods_cogs->mcogsgoodstotalqty = $mgoods->mgoodsstock;
+                        // $goods_cogs->save();
 
                         // in dengan yg baru
                         $stock_card = new MStockCard;
@@ -415,27 +432,27 @@ class MHPurchase extends Model
                         $stock_card->save();
 
                         $last_stock = $mgoods->mgoodsstock;
-                        // $mgoods->mgoodsstock += $g['usage'];
+                        $mgoods->mgoodsstock += $g['usage'];
                         $mgoods->save();
 
-                        $cogs_num = (($last_stock * $goods_cogs->mcogslastcogs) + $invoice_detail->mdpurchasegoodsgrossamount ) / $mgoods->mgoodsstock;
-                        $goods_cogs->mcogsgoodstotalqty = $mgoods->mgoodsstock;
-                        $goods_cogs->mcogslastcogs = $cogs_num;
-                        $goods_cogs->mcogsremarks = "";
-                        $goods_cogs->save();
-
-                        $h = new HPPHistory;
-                        $h->setConnection(Auth::user()->db_name);
-                        $h->hpphistorygoodsid = $mgoods->mgoodscode;
-                        $h->hpphistorypurchase = $invoice_detail->mdpurchasegoodsgrossamount;
-                        $h->hpphistoryqty = $mgoods->mgoodsstock;
-                        $h->hpphistorycogs = $cogs_num;
-                        $h->hpphistoryremarks = "Revisi pembelian";
-                        $h->save();
+                        // $cogs_num = (($last_stock * $goods_cogs->mcogslastcogs) + $invoice_detail->mdpurchasegoodsgrossamount ) / $mgoods->mgoodsstock;
+                        // $goods_cogs->mcogsgoodstotalqty = $mgoods->mgoodsstock;
+                        // $goods_cogs->mcogslastcogs = $cogs_num;
+                        // $goods_cogs->mcogsremarks = "";
+                        // $goods_cogs->save();
+                        //
+                        // $h = new HPPHistory;
+                        // $h->setConnection(Auth::user()->db_name);
+                        // $h->hpphistorygoodsid = $mgoods->mgoodscode;
+                        // $h->hpphistorypurchase = $invoice_detail->mdpurchasegoodsgrossamount;
+                        // $h->hpphistoryqty = $mgoods->mgoodsstock;
+                        // $h->hpphistorycogs = $cogs_num;
+                        // $h->hpphistoryremarks = "Revisi pembelian";
+                        // $h->save();
 
                         // update detail reference
                         $invoice_detail->stock_ref = $stock_card->id;
-                        $invoice_detail->cogs_ref = $h->id;
+                        $invoice_detail->cogs_ref = IntegrityHelper::updateCOGS($mgoods,$invoice_detail->mdpurchasegoodsgrossamount);
                         $invoice_detail->save();
 
                     }
@@ -500,37 +517,40 @@ class MHPurchase extends Model
 
                     // update COGS
                     // find first cogs
-                    $goods_cogs = MCOGS::on(Auth::user()->db_name)->where('mcogsgoodscode',$mgoods->mgoodscode)->first();
-                    $current_cogs = 0;
-                    if($goods_cogs == null){
-                        $cogs = new MCOGS;
-                        $cogs->setConnection(Auth::user()->db_name);
-                        $cogs->mcogsgoodscode = $mgoods->mgoodscode;
-                        $cogs->mcogsgoodsname = $mgoods->mgoodsname;
-                        $cogs->mcogsgoodstotalqty = $mgoods->mgoodsstock;
-                        $cogs->mcogslastcogs = $header->mhpurchasegrandtotal / $mgoods->mgoodsstock;
-                        $cogs->mcogsremarks = "";
-                        $cogs->save();
-                        $current_cogs = $cogs->mcogslastcogs;
-                    } else {
-                        // update cogs
-                        $goods_cogs->mcogsgoodstotalqty = $mgoods->mgoodsstock;
-                        $cogs_num = (($last_stock * $goods_cogs->mcogslastcogs) + $detail->mdpurchasegoodsgrossamount ) / $mgoods->mgoodsstock;
-                        $goods_cogs->mcogslastcogs = $cogs_num;
-                        $goods_cogs->mcogsremarks = "";
-                        $goods_cogs->save();
-                        $current_cogs = $goods_cogs->mcogslastcogs;
-                    }
+                    // $goods_cogs = MCOGS::on(Auth::user()->db_name)->where('mcogsgoodscode',$mgoods->mgoodscode)->first();
+                    // $current_cogs = 0;
+                    // if($goods_cogs == null){
+                    //     $cogs = new MCOGS;
+                    //     $cogs->setConnection(Auth::user()->db_name);
+                    //     $cogs->mcogsgoodscode = $mgoods->mgoodscode;
+                    //     $cogs->mcogsgoodsname = $mgoods->mgoodsname;
+                    //     $cogs->mcogsgoodstotalqty = $mgoods->mgoodsstock;
+                    //     $cogs->mcogslastcogs = $header->mhpurchasegrandtotal / $mgoods->mgoodsstock;
+                    //     $cogs->mcogsremarks = "";
+                    //     $cogs->save();
+                    //     $current_cogs = $cogs->mcogslastcogs;
+                    // } else {
+                    //     // update cogs
+                    //     $goods_cogs->mcogsgoodstotalqty = $mgoods->mgoodsstock;
+                    //     $cogs_num = (($last_stock * $goods_cogs->mcogslastcogs) + $detail->mdpurchasegoodsgrossamount ) / $mgoods->mgoodsstock;
+                    //     $goods_cogs->mcogslastcogs = $cogs_num;
+                    //     $goods_cogs->mcogsremarks = "";
+                    //     $goods_cogs->save();
+                    //     $current_cogs = $goods_cogs->mcogslastcogs;
+                    // }
+                    //
+                    // // save cogs log
+                    // $h = new HPPHistory;
+                    // $h->setConnection(Auth::user()->db_name);
+                    // $h->hpphistorygoodsid = $mgoods->mgoodscode;
+                    // $h->hpphistorypurchase = $detail->mdpurchasegoodsgrossamount;
+                    // $h->hpphistoryqty = $detail->mdpurchasegoodsqty;
+                    // $h->hpphistorycogs = $current_cogs;
+                    // $h->hpphistoryremarks = "";
+                    // $h->save();
 
-                    // save cogs log
-                    $h = new HPPHistory;
-                    $h->setConnection(Auth::user()->db_name);
-                    $h->hpphistorygoodsid = $mgoods->mgoodscode;
-                    $h->hpphistorypurchase = $detail->mdpurchasegoodsgrossamount;
-                    $h->hpphistoryqty = $detail->mdpurchasegoodsqty;
-                    $h->hpphistorycogs = $current_cogs;
-                    $h->hpphistoryremarks = "";
-                    $h->save();
+                    $invoice_detail->cogs_ref = IntegrityHelper::updateCOGS($mgoods,$invoice_detail->mdpurchasegoodsgrossamount);
+                    $invoice_detail->save();
                 }
             }
 
@@ -580,6 +600,9 @@ class MHPurchase extends Model
             // $journal->save();
             //
             // $coa_ap->update_saldo("+",$trans_header->mhpurchasegrandtotal);
+            if($should_calculate_cogs_again){
+                IntegrityHelper::recalculateTransactionFrom($request->date);
+            }
 
             DB::connection(Auth::user()->db_name)->commit();
             return 'ok';
@@ -651,28 +674,32 @@ class MHPurchase extends Model
                 $mgoods->mgoodsstock = $last_stock;
                 $mgoods->save();
 
-                // reset COGS
-                $last_cogs = MCOGS::on(Auth::user()->db_name)->where('mcogsgoodscode',$mgoods->mgoodscode)->first();
                 $ref_cogs = HPPHistory::on(Auth::user()->db_name)->where('id',$detail->cogs_ref)->first();
-                if($mgoods->mgoodsstock == 0){
-                    $cogs_num = 0;
-                } else {
-                    $cogs_num = (($last_cogs->mcogslastcogs * $last_cogs->mcogsgoodstotalqty) - $ref_cogs->hpphistorypurchase) / $mgoods->mgoodsstock;
-                }
 
-                $h = new HPPHistory;
-                $h->setConnection(Auth::user()->db_name);
-                $h->hpphistorygoodsid = $mgoods->mgoodscode;
-                $h->hpphistorypurchase = 0;
-                $h->hpphistoryqty = $mgoods->mgoodsstock;
-                $h->hpphistorycogs = $cogs_num;
-                $h->hpphistoryremarks = "Void pembelian";
-                $h->save();
+                // reset COGS
+                // // $last_cogs = MCOGS::on(Auth::user()->db_name)->where('mcogsgoodscode',$mgoods->mgoodscode)->first();
+                // // $ref_cogs = HPPHistory::on(Auth::user()->db_name)->where('id',$detail->cogs_ref)->first();
+                // // if($mgoods->mgoodsstock == 0){
+                // //     $cogs_num = 0;
+                // // } else {
+                // //     $cogs_num = (($last_cogs->mcogslastcogs * $last_cogs->mcogsgoodstotalqty) - $ref_cogs->hpphistorypurchase) / $mgoods->mgoodsstock;
+                // // }
+                // //
+                // // $h = new HPPHistory;
+                // // $h->setConnection(Auth::user()->db_name);
+                // // $h->hpphistorygoodsid = $mgoods->mgoodscode;
+                // // $h->hpphistorypurchase = 0;
+                // // $h->hpphistoryqty = $mgoods->mgoodsstock;
+                // // $h->hpphistorycogs = $cogs_num;
+                // // $h->hpphistoryremarks = "Void pembelian";
+                // // $h->save();
+                //
+                // $goods_cogs = MCOGS::on(Auth::user()->db_name)->where('mcogsgoodscode',$mgoods->mgoodscode)->first();
+                // $goods_cogs->mcogslastcogs = $cogs_num;
+                // $goods_cogs->mcogsgoodstotalqty = $mgoods->mgoodsstock;
+                // $goods_cogs->save();
 
-                $goods_cogs = MCOGS::on(Auth::user()->db_name)->where('mcogsgoodscode',$mgoods->mgoodscode)->first();
-                $goods_cogs->mcogslastcogs = $cogs_num;
-                $goods_cogs->mcogsgoodstotalqty = $mgoods->mgoodsstock;
-                $goods_cogs->save();
+                IntegrityHelper::deleteCOGS($mgoods,$ref_cogs->hpphistorypurchase,'void');
 
                 // void APCard;
                 $ap = MAPCard::on(Auth::user()->db_name)->where('mapcardtransno',$detail->mhpurchaseno)->first();
@@ -693,7 +720,6 @@ class MHPurchase extends Model
 
         } catch(\Exception $e){
             DB::connection(Auth::user()->db_name)->rollBack();
-            dd($e);
             return 'err';
         }
     }

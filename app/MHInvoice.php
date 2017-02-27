@@ -170,7 +170,6 @@ class MHInvoice extends Model
 
           $hpp = HPPHistory::on(Auth::user()->db_name)->where('hpphistorygoodsid',$g['goods']['mgoodscode'])->get()->last();
           $hpp_price = $hpp->hpphistorycogs * $g['usage'];
-
           // add per item journal
           MJournal::record_journal($header->mhinvoiceno,'Penjualan','5100.01',$hpp_price,0,"","","");
           MJournal::record_journal($header->mhinvoiceno,'Penjualan','1105.01',0,$hpp_price,"","","");
