@@ -313,9 +313,11 @@ class MHPurchase extends Model
                 // var_dump($invoice_detail);
                 if($invoice_detail != null ){
                     $mgoods = MGoods::on(Auth::user()->db_name)->where('mgoodscode',$g['goods']['mgoodscode'])->first();
+                    var_dump($mgoods->mgoodscode." ".$mgoods->mgoodsname." : ".$mgoods->mgoodsstock);
+                    $goods_stock_count = $mgoods->mgoodsstock;
                     $mgoods->mgoodspricein = $g['buy_price'];
                     $mgoods->save();
-                    $last_stock = MStockCard::on(Auth::user()->db_name)->where('mstockcardtransno',$trans_header->mhpurchaseno)->where('mstockcardgoodsid',$mgoods->mgoodscode)->orderBy('created_at','desc')->get()->first();
+                    $last_stock = MStockCard::on(Auth::user()->db_name)->where('mstockcardtransno',$trans_header->mhpurchaseno)->where('mstockcardgoodsid',$mgoods->mgoodscode)->get()->last();
                     $old_qty = $invoice_detail->mdpurchasegoodsqty;
 
                     $old_detail = $invoice_detail;
@@ -381,11 +383,14 @@ class MHPurchase extends Model
                         $stock_card->edited = 1;
                         $stock_card->void = 0;
                         $stock_card->save();
-
+                        var_dump('before '.$goods_stock_count);
+                        var_dump('before in '.$last_stock->mstockcardstockin);
+                        var_dump('before out '.$last_stock->mstockcardstockout);
+                        var_dump('before id'.$last_stock->id);
                         if($old_qty != $g['usage']){
-                        //   $mgoods->mgoodsstock -= $last_stock->mstockcardstockin;
+                          $goods_stock_count = $goods_stock_count - $last_stock->mstockcardstockin;
                         }
-                        $mgoods->save();
+                        var_dump('after '.$goods_stock_count);
 
                         // reset COGS
                         // $last_cogs = MCOGS::on(Auth::user()->db_name)->where('mcogsgoodscode',$mgoods->mgoodscode)->first();
@@ -432,7 +437,9 @@ class MHPurchase extends Model
                         $stock_card->save();
 
                         $last_stock = $mgoods->mgoodsstock;
-                        $mgoods->mgoodsstock += $g['usage'];
+                        $goods_stock_count += $g['usage'];
+                        var_dump('after add '.$goods_stock_count);
+                        $mgoods->mgoodsstock = $goods_stock_count;
                         $mgoods->save();
 
                         // $cogs_num = (($last_stock * $goods_cogs->mcogslastcogs) + $invoice_detail->mdpurchasegoodsgrossamount ) / $mgoods->mgoodsstock;
@@ -608,6 +615,7 @@ class MHPurchase extends Model
             return 'ok';
         } catch(\Exception $e){
             DB::connection(Auth::user()->db_name)->rollBack();
+            // dd($e);
             return 'err';
         }
     }
