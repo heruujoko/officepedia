@@ -8,6 +8,7 @@ use App\HPPHistory;
 use Carbon\Carbon;
 use App\MDInvoice;
 use App\MJournal;
+use App\MCOA;
 
 class IntegrityHelper {
 
@@ -19,12 +20,22 @@ class IntegrityHelper {
         var_dump('in '.$diff_in_days.' days');
         $diff_in_days++;
 
-        for($i=0;$i<$diff_in_days;$i++){
+        for($i=0;$i<=$diff_in_days;$i++){
             $loop_date = Carbon::parse($date)->addDays($i);
+            var_dump('loop date '.$loop_date);
             $mdinvoices = MDInvoice::on(Auth::user()->db_name)->whereDate('mdinvoicedate','=',$loop_date)->get();
             foreach($mdinvoices as $mdi){
+
+                $hpp_coa = MCOA::on(Auth::user()->db_name)->where('mcoacode','5100.01')->first();
+                $persediaan_coa = MCOA::on(Auth::user()->db_name)->where('mcoacode','1105.01')->first();
+
+
+
                 $hpp_journal = MJournal::on(Auth::user()->db_name)->where('mjournaltransno',$mdi->mhinvoiceno)->where('mjournalcoa','5100.01')->first();
                 $persediaan_journal = MJournal::on(Auth::user()->db_name)->where('mjournaltransno',$mdi->mhinvoiceno)->where('mjournalcoa','1105.01')->first();
+                $hpp_coa->update_saldo('-',$hpp_journal->mjournaldebit);
+                $persediaan_coa->update_saldo('+',$persediaan_journal->mjournalcredit);
+
                 $cogs = MCOGS::on(Auth::user()->db_name)->where('mcogsgoodscode',$mdi->mdinvoicegoodsid)->first();
 
                 $hpp_journal->mjournaldebit = $mdi->mdinvoicegoodsqty * $cogs->mcogslastcogs;
@@ -33,6 +44,8 @@ class IntegrityHelper {
                 $persediaan_journal->mjournalcredit = $mdi->mdinvoicegoodsqty * $cogs->mcogslastcogs;
                 var_dump('credit '.$persediaan_journal->mjournalcredit);
                 $persediaan_journal->save();
+                $hpp_coa->update_saldo('+',$hpp_journal->mjournaldebit);
+                $persediaan_coa->update_saldo('-',$persediaan_journal->mjournalcredit);
             }
         }
 
@@ -135,7 +148,7 @@ class IntegrityHelper {
             $cogs->save();
 
         $lastcogs->void = 1;
-        $lastcogs->save();    
+        $lastcogs->save();
         // save cogs log
         // $h = new HPPHistory;
         // $h->setConnection(Auth::user()->db_name);

@@ -31,10 +31,10 @@ class MJournal extends Model
         }
     }
 
-    public static function record_journal($transaction,$type,$coa,$debit,$credit,$remark,$md_ap,$md_ar){
+    public static function record_journal($transaction,$type,$coa,$debit,$credit,$remark,$md_ap,$md_ar,$journal_date){
         $journal = new MJournal;
         $journal->setConnection(Auth::user()->db_name);
-        $journal->mjournaldate = Carbon::now();
+        $journal->mjournaldate = Carbon::parse($journal_date);
         $journal->mjournaltransno = $transaction;
         $journal->mjournaltranstype = $type;
         $journal->mjournalcoa = $coa;
@@ -47,10 +47,10 @@ class MJournal extends Model
         $journal->save();
     }
 
-    public static function record_journal_cash($transaction,$type,$coa,$debit,$credit,$remark,$md_ap,$md_ar){
+    public static function record_journal_cash($transaction,$type,$coa,$debit,$credit,$remark,$md_ap,$md_ar,$journal_date){
         $journal = new MJournal;
         $journal->setConnection(Auth::user()->db_name);
-        $journal->mjournaldate = Carbon::now();
+        $journal->mjournaldate = Carbon::parse($journal_date);
         $journal->mjournaltransno = $transaction;
         $journal->mjournaltranstype = $type;
         $journal->mjournalcoa = $coa;
@@ -63,10 +63,10 @@ class MJournal extends Model
         $journal->save();
     }
 
-    public static function record_journal_bank($transaction,$type,$coa,$debit,$credit,$remark,$md_ap,$md_ar){
+    public static function record_journal_bank($transaction,$type,$coa,$debit,$credit,$remark,$md_ap,$md_ar,$journal_date){
         $journal = new MJournal;
         $journal->setConnection(Auth::user()->db_name);
-        $journal->mjournaldate = Carbon::now();
+        $journal->mjournaldate = Carbon::parse($journal_date);
         $journal->mjournaltransno = $transaction;
         $journal->mjournaltranstype = $type;
         $journal->mjournalcoa = $coa;

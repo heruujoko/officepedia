@@ -94,9 +94,9 @@ class MHInvoice extends Model
         $header = MHInvoice::on(Auth::user()->db_name)->where('id',$invoice_header->id)->first();
 
         // insert journal
-        MJournal::record_journal($header->mhinvoiceno,'Penjualan','1103.02',$header->mhinvoicegrandtotal,0,"","","");
-        MJournal::record_journal($header->mhinvoiceno,'Penjualan','4100.01',0,$header->mhinvoicesubtotal,"","","");
-        MJournal::record_journal($header->mhinvoiceno,'Penjualan','2102.01',0,$header->mhinvoicetaxtotal,"","","");
+        MJournal::record_journal($header->mhinvoiceno,'Penjualan','1103.02',$header->mhinvoicegrandtotal,0,"","","",$invoice_header->mhinvoicedate);
+        MJournal::record_journal($header->mhinvoiceno,'Penjualan','4100.01',0,$header->mhinvoicesubtotal,"","","",$invoice_header->mhinvoicedate);
+        MJournal::record_journal($header->mhinvoiceno,'Penjualan','2102.01',0,$header->mhinvoicetaxtotal,"","","",$invoice_header->mhinvoicedate);
 
         $coa_piutang = MCOA::on(Auth::user()->db_name)->where('mcoacode','1103.02')->first();
         $coa_piutang->update_saldo('+',$header->mhinvoicegrandtotal);
@@ -171,8 +171,8 @@ class MHInvoice extends Model
           $hpp = HPPHistory::on(Auth::user()->db_name)->where('hpphistorygoodsid',$g['goods']['mgoodscode'])->get()->last();
           $hpp_price = $hpp->hpphistorycogs * $g['usage'];
           // add per item journal
-          MJournal::record_journal($header->mhinvoiceno,'Penjualan','5100.01',$hpp_price,0,"","","");
-          MJournal::record_journal($header->mhinvoiceno,'Penjualan','1105.01',0,$hpp_price,"","","");
+          MJournal::record_journal($header->mhinvoiceno,'Penjualan','5100.01',$hpp_price,0,"","","",$invoice_header->mhinvoicedate);
+          MJournal::record_journal($header->mhinvoiceno,'Penjualan','1105.01',0,$hpp_price,"","","",$invoice_header->mhinvoicedate);
 
           $coa_hpp = MCOA::on(Auth::user()->db_name)->where('mcoacode','5100.01')->first();
           $coa_hpp->update_saldo('-',$hpp_price);

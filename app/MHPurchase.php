@@ -97,9 +97,9 @@ class MHPurchase extends Model
             $coa_hutang = MCOA::on(Auth::user()->db_name)->where('mcoacode',"2101.03")->first();
 
             // add journal
-            MJournal::record_journal($header->mhpurchaseno,"Pembelian","1105.01",$header->mhpurchasesubtotal,0,"","","");
-            MJournal::record_journal($header->mhpurchaseno,"Pembelian","1107.01",$header->mhpurchasetaxtotal,0,"","","");
-            MJournal::record_journal($header->mhpurchaseno,"Pembelian","2101.03",0,$header->mhpurchasegrandtotal,"","","");
+            MJournal::record_journal($header->mhpurchaseno,"Pembelian","1105.01",$header->mhpurchasesubtotal,0,"","","",$trans_header->mhpurchasedate);
+            MJournal::record_journal($header->mhpurchaseno,"Pembelian","1107.01",$header->mhpurchasetaxtotal,0,"","","",$trans_header->mhpurchasedate);
+            MJournal::record_journal($header->mhpurchaseno,"Pembelian","2101.03",0,$header->mhpurchasegrandtotal,"","","",$trans_header->mhpurchasedate);
 
             MJournal::add_prefix();
 
@@ -608,7 +608,7 @@ class MHPurchase extends Model
             //
             // $coa_ap->update_saldo("+",$trans_header->mhpurchasegrandtotal);
             if($should_calculate_cogs_again){
-                IntegrityHelper::recalculateTransactionFrom($request->date);
+                IntegrityHelper::recalculateTransactionFrom($trans_header->mhpurchasedate);
             }
 
             DB::connection(Auth::user()->db_name)->commit();
