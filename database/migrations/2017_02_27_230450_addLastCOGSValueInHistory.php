@@ -15,6 +15,7 @@ class AddLastCOGSValueInHistory extends Migration
         Schema::table('hpphistory',function(Blueprint $table){
             $table->double('lastcogs')->after('hpphistorycogs');
             $table->double('lastqty')->after('lastcogs');
+            $table->double('buyprice')->after('lastqty');
         });
     }
 

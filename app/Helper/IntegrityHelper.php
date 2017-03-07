@@ -58,10 +58,15 @@ class IntegrityHelper {
         $lastcogsvalue = $lastcogs->lastcogs;
         $lastqtyvalue = $lastcogs->lastqty;
 
+        var_dump('lastcogsvalue '.$lastcogsvalue);
+        var_dump('lastqtyvalue '.$lastqtyvalue);
+
         $last_stock = $lastcogs->lastqty;
+        var_dump('last_stock '.$last_stock);
         $cogs->mcogsgoodstotalqty -= $lastcogs->hpphistoryqty;
         var_dump('(('.$last_stock.' * '.$lastcogsvalue.' + '.$mdpurchasegoodsgrossamount.' / '.$mgoods->mgoodsstock.' ))');
         $cogs_num = (($last_stock * $lastcogsvalue) + $mdpurchasegoodsgrossamount ) / $mgoods->mgoodsstock;
+        var_dump('cogs_num '.$cogs_num);
         // $lastcogsvalue = $cogs->mcogslastcogs;
         $cogs->mcogslastcogs = $cogs_num;
         $cogs->mcogsgoodstotalqty = $mgoods->mgoodsstock;
@@ -130,6 +135,7 @@ class IntegrityHelper {
         $h->hpphistorycogs = $cogs_num;
         $h->lastcogs = $lastcogsvalue;
         $h->lastqty = $lastqtysvalue;
+        $h->buyprice = ($mdpurchasegoodsgrossamount / $buy_amount);
         $h->hpphistoryremarks = $remarks;
         $h->save();
 
