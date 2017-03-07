@@ -87,8 +87,8 @@ class IntegrityHelper {
 
     }
 
-    public static function calculateCOGS($mgoods,$mdpurchasegoodsgrossamount,$remarks = ""){
-        $lastcogs = HPPHistory::on(Auth::user()->db_name)->where('hpphistorygoodsid',$mgoods->mgoodscode)->get()->last();
+    public static function calculateCOGS($mgoods,$mdpurchasegoodsgrossamount,$buy_amount,$remarks = ""){
+        $lastcogs = HPPHistory::on(Auth::user()->db_name)->where('hpphistorygoodsid',$mgoods->mgoodscode)->where('void',0)->get()->last();
         $cogs = MCOGS::on(Auth::user()->db_name)->where('mcogsgoodscode',$mgoods->mgoodscode)->first();
         $lastcogsvalue = 0;
         $lastqtysvalue = 0;
@@ -104,17 +104,17 @@ class IntegrityHelper {
             $cogs->save();
             $cogs_num = $cogs->mcogslastcogs;
         } else {
-            // $last_stock = $mgoods->mgoodstock - $lastcogs->hpphistoryqty;
-            $sum_buy_price = 0;
+            var_dump($mgoods->mgoodsstock.' - '.$buy_amount);
+            $last_stock = $mgoods->mgoodsstock - $buy_amount;
             $histories =  HPPHistory::on(Auth::user()->db_name)->where('hpphistorygoodsid',$mgoods->mgoodscode)->where('void',0)->get();
             $last_history = $histories->last();
             $lastqtysvalue = $last_history->hpphistoryqty;
             $lastcogsvalue = $last_history->hpphistorycogs;
-            foreach ($histories as $h) {
-                $sum_buy_price += $h->hpphistorypurchase;
-            }
-
-            $cogs_num = ($sum_buy_price + $mdpurchasegoodsgrossamount ) / $mgoods->mgoodsstock;
+            var_dump('last stock '.$last_stock);
+            var_dump('last stock '.$lastcogsvalue);
+            var_dump('mdpurchasegoodsgrossamount '.$mdpurchasegoodsgrossamount);
+            var_dump('all stock '.$mgoods->mgoodsstock);
+            $cogs_num = (($last_stock * $lastcogsvalue) + $mdpurchasegoodsgrossamount ) / $mgoods->mgoodsstock;
 
             $cogs->mcogslastcogs = $cogs_num;
             $cogs->mcogsgoodstotalqty = $mgoods->mgoodsstock;
