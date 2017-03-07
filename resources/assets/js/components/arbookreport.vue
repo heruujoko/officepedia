@@ -83,7 +83,7 @@
                             <td><span v-if="ar.data">{{ ar.marcardduedate }}<span></td>
                             <td style="text-align:right"><span v-if="ar.footer == false" v-priceformatlabel="num_format">{{ ar.marcardtotalinv }}</span></td>
                             <td style="text-align:right"><span v-if="ar.footer == false" v-priceformatlabel="num_format">{{ ar.marcardpayamount }}</span></td>
-                            <td style="text-align:right"><span v-if="ar.footer == false" v-priceformatlabel="num_format">{{ ar.marcardoutstanding }}</span></td>
+                            <td style="text-align:right"><span v-if="ar.footer == false" v-priceformatlabel="num_format">{{ ar.marcardtotalinv - ar.marcardpayamount }}</span></td>
                             <td><span v-if="ar.data">{{ ar.aging }}<span></td>
                         </tr>
                     </tbody>
