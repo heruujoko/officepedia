@@ -65,6 +65,10 @@
             zoom :0.9 !important;
         }
 
+        .submenu > li > a {
+            font-size: 11px;
+        }
+
 	.phone-number .col-xs-3::after{
 	content: "-";
 	position:absolute;

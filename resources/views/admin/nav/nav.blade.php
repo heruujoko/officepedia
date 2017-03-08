@@ -14,7 +14,7 @@
   @if(Auth::user()->has_role('R_config'))
       <li>
         <a href="#"><i class="fa fa-lg fa-fw fa-cogs"></i> <span class="menu-item-parent">Setting Sistem</span></a>
-        <ul>
+        <ul class="submenu">
           @if($active == 'sysparam')
             <li class="active"><a href="{{ url('admin-nano/mconfig/sysparam') }}">Parameter Sistem</a></li>
           @else
@@ -31,7 +31,7 @@
   @endif
   <li>
     <a href="#"><i class="fa fa-lg fa-fw fa-book"></i> <span class="menu-item-parent">Akutansi</span></a>
-    <ul>
+    <ul class="submenu">
         @if(Auth::user()->has_role('R_mcoa'))
             @if($active == 'mcoa')
               <li class="active">
@@ -66,7 +66,7 @@
   </li>
   <li>
     <a href="#"><i class="fa fa-lg fa-fw fa-money"></i> <span class="menu-item-parent">Kas Bank</span></a>
-    <ul>
+    <ul class="submenu">
         @if(Auth::user()->has_role('R_cashbank'))
             @if($active == 'cashbank')
               <li class="active">
@@ -116,7 +116,7 @@
   </li>
   <li>
     <a href="#"><i class="fa fa-lg fa-fw fa-shopping-cart"></i> <span class="menu-item-parent">Pembelian</span></a>
-    <ul>
+    <ul class="submenu">
         @if(Auth::user()->has_role('R_purchase'))
             @if($active == 'purchaseinvoice')
               <li class="active"><a href="{{ url('admin-nano/purchaseinvoice') }}">Pembelian</a></li>
@@ -156,7 +156,7 @@
   </li>
   <li>
     <a href="#"><i class="fa fa-lg fa-fw fa-tag"></i> <span class="menu-item-parent">Penjualan</span></a>
-    <ul>
+    <ul class="submenu">
         @if(Auth::user()->has_role('R_sales'))
             @if($active == 'salesinvoice')
               <li class="active">
@@ -205,7 +205,7 @@
   </li>
   <li>
     <a href="#"><i class="fa fa-lg fa-fw fa-briefcase"></i> <span class="menu-item-parent">Inventory</span></a>
-    <ul>
+    <ul class="submenu">
         @if(Auth::user()->has_role('R_goods'))
             @if($active == 'barang')
               <li class="active">
@@ -260,7 +260,7 @@
   </li>
   <li>
     <a href="#"><i class="fa fa-lg fa-fw fa-briefcase"></i> <span class="menu-item-parent">Lain-lain</span></a>
-    <ul>
+    <ul class="submenu">
         @if(Auth::user()->has_role('R_employee'))
             @if($active == 'memployee')
               <li class="active"><a href="{{ url('admin-nano/memployee') }}">Master Karyawan</a></li>
@@ -321,10 +321,10 @@
   </li>
   <li>
     <a href="#"><i class="fa fa-lg fa-fw fa-briefcase"></i> <span class="menu-item-parent">Laporan</span></a>
-    <ul>
+    <ul class="submenu">
         <li>
             <a href="#">Keuangan</a>
-            <ul>
+            <ul class="submenu">
                 @if(Auth::user()->has_role('R_journal'))
                     @if($active == 'journal')
                       <li class="active"><a href="{{ url('admin-nano/reports/journal') }}">Jurnal</a></li>
@@ -367,7 +367,7 @@
         </li>
         <li>
             <a href="#">Inventory</a>
-            <ul>
+            <ul class="submenu">
                 @if(Auth::user()->has_role('R_stockreport'))
                     @if($active == 'mstockcardreport')
                       <li class="active"><a href="{{ url('admin-nano/mstockcardreport') }}">Laporan Stock</a></li>
@@ -386,7 +386,7 @@
         </li>
         <li>
             <a href="#">Penjualan</a>
-            <ul>
+            <ul class="submenu">
                 @if(Auth::user()->has_role('R_salesreport'))
                     @if($active == 'salesreports')
                       <li class="active"><a href="{{ url('admin-nano/reports/salesreport') }}">Laporan Penjualan</a></li>
@@ -410,7 +410,7 @@
         </li>
         <li>
             <a href="#">Pembelian</a>
-            <ul>
+            <ul class="submenu">
                 @if(Auth::user()->has_role('R_purchasereport'))
                     @if($active == 'purchasereport')
                       <li class="active"><a href="{{ url('admin-nano/reports/purchasereport') }}">Laporan Pembelian</a></li>
@@ -434,7 +434,7 @@
         </li>
         <li>
             <a href="#">Audit</a>
-            <ul>
+            <ul class="submenu">
 			    <li><a href="forum.html">Laporan Kartu Stok</a></li>
 				<li><a href="forum-topic.html">Laporan Penjualan</a></li>
 				<li><a href="forum-post.html">Laporan Pembelian</a></li>
