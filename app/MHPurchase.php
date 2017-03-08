@@ -247,7 +247,7 @@ class MHPurchase extends Model
             // update header data
 
             $trans_header = MHPurchase::on(Auth::user()->db_name)->where('id',$id)->first();
-
+            $old_date = $trans_header->mhpurchasedate;
             $conf = MConfig::on(Auth::user()->db_name)->where('id',1)->first();
             $coa = $conf->msyspayapaccount;
             $coa_ap = MCOA::on(Auth::user()->db_name)->where('mcoacode',$coa)->first();
@@ -290,10 +290,13 @@ class MHPurchase extends Model
             $coa_hutang->update_saldo('-',$journal_hutang->mjournalcredit);
 
             $journal_persediaan->mjournaldebit = $trans_header->mhpurchasesubtotal;
+            $journal_persediaan->mjournaldate = Carbon::parse($request->date);
             $journal_persediaan->save();
             $journal_ppn->mjournaldebit = $trans_header->mhpurchasetaxtotal;
+            $journal_ppn->mjournaldate = Carbon::parse($request->date);
             $journal_ppn->save();
             $journal_hutang->mjournalcredit = $trans_header->mhpurchasegrandtotal;
+            $journal_hutang->mjournaldate = Carbon::parse($request->date);
             $journal_hutang->save();
 
             $coa_persediaan->update_saldo('+',$trans_header->mhpurchasesubtotal);
@@ -305,6 +308,7 @@ class MHPurchase extends Model
             $details = MDPurchase::on(Auth::user()->db_name)->where('mhpurchaseno',$trans_header->mhpurchaseno)->get();
             foreach ($details as $dt) {
               $dt->void = 1;
+              $dt->mdpurchasedate = Carbon::parse($request->date);
               $dt->save();
             }
 

@@ -295,6 +295,7 @@ class MHInvoice extends Model
         $details = MDInvoice::on(Auth::user()->db_name)->where('mhinvoiceno',$invoice_header->mhinvoiceno)->get();
         foreach ($details as $dt) {
           $dt->void = 1;
+          $dt->mdinvoicedate = Carbon::parse($request->date);
           $dt->save();
         }
 
@@ -329,8 +330,10 @@ class MHInvoice extends Model
               $invoice_detail->mdinvoicegoodsdiscount = $g['disc'];
               $invoice_detail->mdinvoicegoodstax = $g['tax'];
               $invoice_detail->saved_unit = $g['saved_unit'];
-              $invoice_detail->mdinvoicegoodsidwhouse = $g['warehouse'];
-              $invoice_detail->mdinvoiceremarks = $g['remark'];
+              if($g['warehouse'] != ""){
+                $invoice_detail->mdinvoicegoodsidwhouse = $g['warehouse'];
+              }
+              $invoice_detail->mdinvoiceremarks = "";
               $invoice_detail->void = 0;
               $invoice_detail->save();
 
@@ -414,11 +417,14 @@ class MHInvoice extends Model
               } else {
                 // data tdk berubah
                 // $invoice_detail = MDInvoice::on(Auth::user()->db_name)->where('mdinvoicegoodsid',$g['goods']['mgoodscode'])->where('mhinvoiceno',$header->mhinvoiceno)->first();
-                $new_amount = $hpp->hpphistorycogs * $g['usage'];
-                $journal_hpp->mjournaldebit += $new_amount;
-                $journal_persediaan->mjournalcredit += $new_amount;
+                // $new_amount = $hpp->hpphistorycogs * $g['usage'];
+                // $journal_hpp->mjournaldebit += $new_amount;
+                // $journal_persediaan->mjournalcredit += $new_amount;
+                $journal_hpp->mjournaldate = Carbon::parse($request->date);
 
                 $journal_hpp->save();
+
+                $journal_persediaan->mjournaldate = Carbon::parse($request->date);
                 $journal_persediaan->save();
 
                 $invoice_detail->void=0;
@@ -515,8 +521,8 @@ class MHInvoice extends Model
               }
 
               // add per item journal
-              MJournal::record_journal($header->mhinvoiceno,'Penjualan','5100.01',$hpp_price,0,"","","");
-              MJournal::record_journal($header->mhinvoiceno,'Penjualan','1105.01',0,$hpp_price,"","","");
+              MJournal::record_journal($header->mhinvoiceno,'Penjualan','5100.01',$hpp_price,0,"","","",$header->mhinvoicedate);
+              MJournal::record_journal($header->mhinvoiceno,'Penjualan','1105.01',0,$hpp_price,"","","",$header->mhinvoicedate);
 
               $coa_hpp = MCOA::on(Auth::user()->db_name)->where('mcoacode','5100.01')->first();
               $coa_hpp->update_saldo('-',$hpp_price);
@@ -541,7 +547,7 @@ class MHInvoice extends Model
         $ar->marcardduedate = Carbon::parse($request->duedate);
         $ar->marcardtranstype = $request->type;
         $ar->marcardtransno = $header->mhinvoiceno;
-        $ar->marcardremark = "Revisi Transaksi ".$request->type." untuk ".$customer->mcustomername." ".$g['remark'];
+        $ar->marcardremark = "Revisi Transaksi ".$request->type." untuk ".$customer->mcustomername." ";
         $ar->marcardduedate = Carbon::parse($request->date)->addDays($customer->mcustomerdefaultar);
         $ar->marcardtotalinv = $request->subtotal + $request->tax - $request->disc;
         $ar->marcardpayamount = 0;
@@ -583,6 +589,7 @@ class MHInvoice extends Model
         return 'ok';
       } catch(Exception $e){
         DB::connection(Auth::user()->db_name)->rollBack();
+        dd($e);
         return $e;
       }
 

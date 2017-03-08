@@ -99,8 +99,8 @@ class MHPayAP extends Model
                 $detail->mdpayapinvoicediscount = 0;
                 $detail->mdpayapuserid = Auth::user()->id;
                 $detail->mdpayapusername = Auth::user()->name;
-                $detail->mdpayapeventdate = Carbon::now();
-                $detail->mdpayapeventtime = Carbon::now();
+                $detail->mdpayapeventdate = Carbon::parse($request->invoice_date);
+                $detail->mdpayapeventtime = Carbon::parse($request->invoice_date);
                 $detail->mdpayapcashcoa = $ap['payments']['cash']['coa'];
                 $detail->mdpayapcashamount = $ap['payments']['cash']['amount'];
                 $detail->mdpayapbankcoa = $ap['payments']['bank']['coa'];
@@ -113,7 +113,7 @@ class MHPayAP extends Model
                 $new_ap->setConnection(Auth::user()->db_name);
                 $new_ap->mapcardsupplierid = $header->mhpayapsupplierno;
                 $new_ap->mapcardsuppliername = $header->mhpayapsuppliername;
-                $new_ap->mapcardtdate = Carbon::now();
+                $new_ap->mapcardtdate = Carbon::parse($request->invoice_date);
                 $new_ap->mapcardtransno = $old_ap->mapcardtransno;
                 $new_ap->mapcardpayno = $header->mhpayapno;
                 $new_ap->mapcardtranstype = "Pembayaran Hutang Dagang";
@@ -124,8 +124,8 @@ class MHPayAP extends Model
                 $new_ap->mapcardoutstanding = $old_ap->mapcardoutstanding - $ap['payamount'];
                 $new_ap->mapcardusername = Auth::user()->name;
                 $new_ap->mapcarduserid = Auth::user()->id;
-                $new_ap->mapcardeventdate = Carbon::now();
-                $new_ap->mapcardeventtime = Carbon::now();
+                $new_ap->mapcardeventdate = Carbon::parse($request->invoice_date);
+                $new_ap->mapcardeventtime = Carbon::parse($request->invoice_date);
                 $new_ap->mapcardwarehouseid = $old_ap->mapcardwarehouseid;
                 $new_ap->void = 0;
                 $new_ap->save();
@@ -139,8 +139,8 @@ class MHPayAP extends Model
                     $coa_cash = MCOA::on(Auth::user()->db_name)->where('mcoacode',$detail->mdpayapcashcoa)->first();
 
                     // update journal
-                    MJournal::record_journal_cash($header->mhpayapno,'Pembayaran Hutang',$coa,$detail->mdpayapcashamount,0,"",$detail->id,"");
-                    MJournal::record_journal_cash($header->mhpayapno,'Pembayaran Hutang',$detail->mdpayapcashcoa,0,$detail->mdpayapcashamount,"",$detail->id,"");
+                    MJournal::record_journal_cash($header->mhpayapno,'Pembayaran Hutang',$coa,$detail->mdpayapcashamount,0,"",$detail->id,"",$request->invoice_date);
+                    MJournal::record_journal_cash($header->mhpayapno,'Pembayaran Hutang',$detail->mdpayapcashcoa,0,$detail->mdpayapcashamount,"",$detail->id,"",$request->invoice_date);
 
                     // update coa saldo
                     $coa_cash->update_saldo('-',$detail->mdpayapcashamount);
@@ -153,8 +153,8 @@ class MHPayAP extends Model
                     $coa_bank = MCOA::on(Auth::user()->db_name)->where('mcoacode',$detail->mdpayapbankcoa)->first();
 
                     // update journal
-                    MJournal::record_journal_bank($header->mhpayapno,'Pembayaran Hutang',$coa,$detail->mdpayapbankamount,0,"",$detail->id,"");
-                    MJournal::record_journal_bank($header->mhpayapno,'Pembayaran Hutang',$detail->mdpayapbankcoa,0,$detail->mdpayapbankamount,"",$detail->id,"");
+                    MJournal::record_journal_bank($header->mhpayapno,'Pembayaran Hutang',$coa,$detail->mdpayapbankamount,0,"",$detail->id,"",$request->invoice_date);
+                    MJournal::record_journal_bank($header->mhpayapno,'Pembayaran Hutang',$detail->mdpayapbankcoa,0,$detail->mdpayapbankamount,"",$detail->id,"",$request->invoice_date);
 
                     // update coa saldo
                     $coa_bank->update_saldo('-',$detail->mdpayapbankamount);
@@ -167,6 +167,7 @@ class MHPayAP extends Model
             return 'ok';
         } catch(\Exception $e){
             DB::connection(Auth::user()->db_name)->rollBack();
+            dd($e);
             return "err";
         }
     }
@@ -228,8 +229,8 @@ class MHPayAP extends Model
                     $detail->mdpayapinvoicediscount = 0;
                     $detail->mdpayapuserid = Auth::user()->id;
                     $detail->mdpayapusername = Auth::user()->name;
-                    $detail->mdpayapeventdate = Carbon::now();
-                    $detail->mdpayapeventtime = Carbon::now();
+                    $detail->mdpayapeventdate = Carbon::parse($request->invoice_date);
+                    $detail->mdpayapeventtime = Carbon::parse($request->invoice_date);
 
                     $detail->mdpayapcashcoa = $ap['payments']['cash']['coa'];
                     $detail->mdpayapcashamount = $ap['payments']['cash']['amount'];
@@ -240,6 +241,17 @@ class MHPayAP extends Model
                     $detail->void = 0;
                     $detail->save();
 
+                    $aps = MAPCard::on(Auth::user()->db_name)->where('id',$detail->mdpayap_apref)->first();
+                    $aps->mapcardtdate = Carbon::parse($request->invoice_date);
+                    $aps->save();
+
+                    $this_transaction_journal = MJournal::on(Auth::user()->db_name)->where('mdpayap_ref',$detail->id)->get();
+
+                    foreach ($this_transaction_journal as $tjournal) {
+                        $tjournal->mjournaldate = Carbon::parse($request->invoice_date);
+                        $tjournal->save();
+                    }
+
                     // only update APCARD if the amount is different
 
                     if($ap['payamount'] != $old_ap->mapcardpayamount){
@@ -248,7 +260,7 @@ class MHPayAP extends Model
                         $new_ap->setConnection(Auth::user()->db_name);
                         $new_ap->mapcardsupplierid = $header->mhpayapsupplierno;
                         $new_ap->mapcardsuppliername = $header->mhpayapsuppliername;
-                        $new_ap->mapcardtdate = Carbon::now();
+                        $new_ap->mapcardtdate = Carbon::parse($request->invoice_date);
                         $new_ap->mapcardtransno = $old_ap->mapcardtransno;
                         $new_ap->mapcardpayno = $header->mhpayapno;
                         $new_ap->mapcardremark = "Revisi Hutang Dagang oleh ".Auth::user()->name."/".Auth::user()->id;
@@ -267,7 +279,7 @@ class MHPayAP extends Model
                         $new_ap->setConnection(Auth::user()->db_name);
                         $new_ap->mapcardsupplierid = $header->mhpayapsupplierno;
                         $new_ap->mapcardsuppliername = $header->mhpayapsuppliername;
-                        $new_ap->mapcardtdate = Carbon::now();
+                        $new_ap->mapcardtdate = Carbon::parse($request->invoice_date);
                         $new_ap->mapcardtransno = $old_ap->mapcardtransno;
                         $new_ap->mapcardpayno = $header->mhpayapno;
                         $new_ap->mapcardtranstype ="Pembayaran Hutang";

@@ -239,6 +239,16 @@ class MHPayAR extends Model
                     $detail->void = 0;
                     $detail->save();
 
+                    $ars = MARCard::on(Auth::user()->db_name)->where('id',$detail->mdpayar_arref)->first();
+                    $ars->marcarddate = Carbon::parse($request->invoice_date);
+                    $ars->save();
+
+                    $this_transaction_journal = MJournal::on(Auth::user()->db_name)->where('mdpayar_ref',$detail->id)->get();
+                    foreach ($this_transaction_journal as $tjournal) {
+                        $tjournal->mjournaldate = Carbon::parse($request->invoice_date);
+                        $tjournal->save();
+                    }
+
                     // only update if payamount is changed
                     if($ar['payamount'] != $old_ar->marcardpayamount){
 
@@ -268,7 +278,7 @@ class MHPayAR extends Model
                         $new_ar->setConnection(Auth::user()->db_name);
                         $new_ar->marcardcustomerid = $header->mhpayarcustomerno;
                         $new_ar->marcardcustomername = $header->mhpayarcustomername;
-                        $new_ar->marcarddate = Carbon::now();
+                        $new_ar->marcarddate = Carbon::parse($request->invoice_date);
                         $new_ar->marcardtransno = $old_ar->marcardtransno;
                         $new_ar->marcardpayno = $header->mhpayarno;
                         $new_ar->marcardremark = "Revisi Piutang Dagang oleh ".Auth::user()->name."/".Auth::user()->id;
@@ -290,6 +300,12 @@ class MHPayAR extends Model
                         // update journal
                         $this_transaction_journal = MJournal::on(Auth::user()->db_name)->where('mdpayar_ref',$detail->id)->get();
                         var_dump(count($this_transaction_journal));
+
+                        foreach ($this_transaction_journal as $tjournal) {
+                            $tjournal->mjournaldate = Carbon::parse($request->invoice_date);
+                            $tjournal->save();
+                        }
+
                         // there will be 4 records
 
                         // the first two is for cash payment
@@ -372,8 +388,8 @@ class MHPayAR extends Model
                         $coa_cash = MCOA::on(Auth::user()->db_name)->where('mcoacode',$detail->mdpayarcashcoa)->first();
 
                         // update journal
-                        MJournal::record_journal_cash($header->mhpayarno,'Pembayaran Piutang',$detail->mdpayarcashcoa,$detail->mdpayarcashamount,0,"","",$detail->id);
-                        MJournal::record_journal_cash($header->mhpayarno,'Pembayaran Piutang',$coa,0,$detail->mdpayarcashamount,"","",$detail->id);
+                        MJournal::record_journal_cash($header->mhpayarno,'Pembayaran Piutang',$detail->mdpayarcashcoa,$detail->mdpayarcashamount,0,"","",$detail->id,$request->invoice_date);
+                        MJournal::record_journal_cash($header->mhpayarno,'Pembayaran Piutang',$coa,0,$detail->mdpayarcashamount,"","",$detail->id,$request->invoice_date);
 
                         // update coa saldo
                         $coa_cash->update_saldo('+',$detail->mdpayarcashamount);
@@ -386,8 +402,8 @@ class MHPayAR extends Model
                         $coa_bank = MCOA::on(Auth::user()->db_name)->where('mcoacode',$detail->mdpayarbankcoa)->first();
 
                         // update journal
-                        MJournal::record_journal_bank($header->mhpayarno,'Pembayaran Piutang',$coa,0,$detail->mdpayarbankamount,"","",$detail->id);
-                        MJournal::record_journal_bank($header->mhpayarno,'Pembayaran Piutang',$detail->mdpayarbankcoa,$detail->mdpayarbankamount,0,"","",$detail->id);
+                        MJournal::record_journal_bank($header->mhpayarno,'Pembayaran Piutang',$coa,0,$detail->mdpayarbankamount,"","",$detail->id,$request->invoice_date);
+                        MJournal::record_journal_bank($header->mhpayarno,'Pembayaran Piutang',$detail->mdpayarbankcoa,$detail->mdpayarbankamount,0,"","",$detail->id,$request->invoice_date);
 
                         // update coa saldo
                         $coa_bank->update_saldo('+',$detail->mdpayarbankamount);
