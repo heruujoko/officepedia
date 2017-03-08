@@ -86,7 +86,7 @@
 																	<tfoot>
 																		<tr>
 																			<th colspan="2" style="text-align:center;">TOTAL</th>
-																			<td style="text-align:right"><span id="totalcash">0</span></td>
+																			<td style="text-align:right"><span class="totalcash">0</span></td>
 																		</tr>
 																	</tfoot>
 																</table>
@@ -116,34 +116,35 @@
 																	<tfoot>
 																		<tr>
 																			<th colspan="2" style="text-align:center;">TOTAL</th>
-																			<td style="text-align:right"><span id="totalbank">0</span></td>
+																			<td style="text-align:right"><span class="totalbank">0</span></td>
 																		</tr>
 																	</tfoot>
 																</table>
 
 																<h2 style="margin-top:-20px;">Total Kas / Bank</h2>
 																<br><br>
-																<table id="tabletotal" class="tableapi table table-bordered" width="100%">
+																<table id="tabletotal" class=" table table-bordered" width="100%">
 																	<thead style="">
 																		<tr>
-																			<th class="hasinput" style="width:5%">
-																			</th>
 																			<th class="hasinput" style="width:9%">
 
 																			</th>
 																			<th class="hasinput" style="width:9%">
 
 																			</th>
-																		</tr>
-																		<tr>
-
 																		</tr>
 																	</thead>
-																	<tbody>
-																	</tbody>
 																	<tfoot>
+                                                                        <tr>
+                                                                            <td>Total Kas</td>
+                                                                            <td style="text-align:right"><span class="totalcash"></span></td>
+																		</tr>
+                                                                        <tr>
+                                                                            <td>Total Bank</td>
+                                                                            <td style="text-align:right"><span class="totalbank"></span></td>
+																		</tr>
 																		<tr>
-																			<th colspan="2" style="text-align:center;">TOTAL KAS / BANK</th>
+																			<th colspan="1" style="text-align:center;">TOTAL KAS / BANK</th>
 																			<td style="text-align:right"><span id="grandtotal">0</span></td>
 																		</tr>
 																	</tfoot>

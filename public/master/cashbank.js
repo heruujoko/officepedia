@@ -28,7 +28,7 @@ function get_bank_total(code){
     method: "GET",
     url: API_URL+"/cashbank/total/"+code,
     success: function(response){
-      $('#totalbank').html(response);
+      $('.totalbank').html(response);
     }
   });
 }
@@ -38,7 +38,7 @@ function get_cash_total(code){
     method: "GET",
     url: API_URL+"/cashbank/total/"+code,
     success: function(response){
-      $('#totalcash').html(response);
+      $('.totalcash').html(response);
     }
   });
 }
