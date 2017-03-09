@@ -16,6 +16,8 @@ class AddLastCOGSValueInHistory extends Migration
             $table->double('lastcogs')->after('hpphistorycogs');
             $table->double('lastqty')->after('lastcogs');
             $table->double('buyprice')->after('lastqty');
+            $table->string('type')->after('hpphistorygoodsid');
+            $table->integer('usage')->after('buyprice');
         });
     }
 

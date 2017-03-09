@@ -15,12 +15,12 @@ class IntegrityHelper {
     public static function recalculateTransactionFrom($date){
 
         $calculation_date = Carbon::parse($date)->addDays(0);
-        var_dump('calculating from '.$calculation_date);
         $diff_in_days = Carbon::now()->diffInDays($calculation_date);
+        var_dump('calculating from '.$calculation_date->addDays(1));
         var_dump('in '.$diff_in_days.' days');
         $diff_in_days++;
 
-        for($i=0;$i<=$diff_in_days;$i++){
+        for($i=1;$i<=$diff_in_days;$i++){
             $loop_date = Carbon::parse($date)->addDays($i);
             var_dump('loop date '.$loop_date);
             $mdinvoices = MDInvoice::on(Auth::user()->db_name)->whereDate('mdinvoicedate','=',$loop_date)->get();
@@ -51,8 +51,8 @@ class IntegrityHelper {
 
     }
 
-    public static function updateCOGS($mgoods,$mdpurchasegoodsgrossamount,$remarks = ""){
-        $lastcogs = HPPHistory::on(Auth::user()->db_name)->where('hpphistorygoodsid',$mgoods->mgoodscode)->where('void',0)->get()->last();
+    public static function updateCOGS($mgoods,$mdpurchasegoodsgrossamount,$buy_amount,$remarks = ""){
+        $lastcogs = HPPHistory::on(Auth::user()->db_name)->where('hpphistorygoodsid',$mgoods->mgoodscode)->where('void',0)->where('type','purchase')->get()->last();
         $cogs = MCOGS::on(Auth::user()->db_name)->where('mcogsgoodscode',$mgoods->mgoodscode)->first();
         $cogs_num = 0;
         $lastcogsvalue = $lastcogs->lastcogs;
@@ -84,8 +84,11 @@ class IntegrityHelper {
         $h->hpphistoryqty = $mgoods->mgoodsstock;
         $h->hpphistorycogs = $cogs_num;
         $h->lastcogs = $lastcogsvalue;
+        $h->type = 'purchase';
+        $h->usage = $buy_amount;
         $h->lastqty = $lastqtyvalue;
-        $h->hpphistoryremarks = $remarks;
+        $h->buyprice = ($mdpurchasegoodsgrossamount / $buy_amount);
+        $h->hpphistoryremarks = 'Revisi Pembelian';
         $h->save();
 
         return $h->id;
@@ -93,7 +96,7 @@ class IntegrityHelper {
     }
 
     public static function calculateCOGS($mgoods,$mdpurchasegoodsgrossamount,$buy_amount,$remarks = ""){
-        $lastcogs = HPPHistory::on(Auth::user()->db_name)->where('hpphistorygoodsid',$mgoods->mgoodscode)->where('void',0)->get()->last();
+        $lastcogs = HPPHistory::on(Auth::user()->db_name)->where('hpphistorygoodsid',$mgoods->mgoodscode)->where('void',0)->where('type','purchase')->get()->last();
         $cogs = MCOGS::on(Auth::user()->db_name)->where('mcogsgoodscode',$mgoods->mgoodscode)->first();
         $lastcogsvalue = 0;
         $lastqtysvalue = 0;
@@ -135,8 +138,10 @@ class IntegrityHelper {
         $h->hpphistorycogs = $cogs_num;
         $h->lastcogs = $lastcogsvalue;
         $h->lastqty = $lastqtysvalue;
+        $h->type = 'purchase';
+        $h->usage = $buy_amount;
         $h->buyprice = ($mdpurchasegoodsgrossamount / $buy_amount);
-        $h->hpphistoryremarks = $remarks;
+        $h->hpphistoryremarks = 'Pembelian';
         $h->save();
 
         return $h->id;
@@ -144,7 +149,7 @@ class IntegrityHelper {
     }
 
     public static function deleteCOGS($mgoods,$mdpurchasegoodsgrossamount,$remarks = ""){
-        $lastcogs = HPPHistory::on(Auth::user()->db_name)->where('hpphistorygoodsid',$mgoods->mgoodscode)->where('void',0)->get()->last();
+        $lastcogs = HPPHistory::on(Auth::user()->db_name)->where('hpphistorygoodsid',$mgoods->mgoodscode)->where('void',0)->where('type','purchase')->get()->last();
         $cogs = MCOGS::on(Auth::user()->db_name)->where('mcogsgoodscode',$mgoods->mgoodscode)->first();
         $cogs_num = 0;
 

@@ -61,6 +61,14 @@ class MHPurchase extends Model
     public static function start_transaction($request){
         DB::connection(Auth::user()->db_name)->beginTransaction();
         try{
+            $should_calculate_cogs_again = false;
+
+            $transaction_date_in_past = Carbon::now()->diffInDays(Carbon::parse($request->date),false) < 0;
+
+            if($transaction_date_in_past){
+                $should_calculate_cogs_again = true;
+                var_dump('past transaction');
+            }
 
             // fill the header info
             $trans_header = new MHPurchase;
@@ -232,6 +240,10 @@ class MHPurchase extends Model
             $ap->mapcardwarehouseid = $g['warehouse'];
             $ap->save();
 
+            if($should_calculate_cogs_again){
+                IntegrityHelper::recalculateTransactionFrom($request->date);
+            }
+
             DB::connection(Auth::user()->db_name)->commit();
             return 'ok';
         } catch (\Exception $e){
@@ -253,8 +265,14 @@ class MHPurchase extends Model
             $coa_ap = MCOA::on(Auth::user()->db_name)->where('mcoacode',$coa)->first();
 
             $should_calculate_cogs_again = false;
+            $last_purchase_date = Carbon::parse($trans_header->mhpurchasedate);
 
-            $coa_ap->update_saldo("-",$trans_header->mhpurchasegrandtotal);
+            $purchase_date_changed = Carbon::parse($request->date)->diffInDays($last_purchase_date) != 0;
+            if($purchase_date_changed){
+                $should_calculate_cogs_again = true;
+            }else {
+                var_dump('date not changed');
+            }
 
             $trans_header->mhpurchasedeliveryno = $request->do;
             $trans_header->mhpurchaseorderyno = $request->order;
@@ -287,7 +305,7 @@ class MHPurchase extends Model
 
             $coa_persediaan->update_saldo('-',$journal_persediaan->mjournaldebit);
             $coa_ppn->update_saldo('-',$journal_ppn->mjournaldebit);
-            $coa_hutang->update_saldo('-',$journal_hutang->mjournalcredit);
+            $coa_ap->update_saldo("-",$trans_header->mhpurchasegrandtotal);
 
             $journal_persediaan->mjournaldebit = $trans_header->mhpurchasesubtotal;
             $journal_persediaan->mjournaldate = Carbon::parse($request->date);
@@ -301,7 +319,7 @@ class MHPurchase extends Model
 
             $coa_persediaan->update_saldo('+',$trans_header->mhpurchasesubtotal);
             $coa_ppn->update_saldo('+',$trans_header->mhpurchasetaxtotal);
-            $coa_hutang->update_saldo('+',$trans_header->mhpurchasegrandtotal);
+            $coa_ap->update_saldo("+",$trans_header->mhpurchasegrandtotal);
 
             // loop new details
             // void them all
@@ -360,6 +378,7 @@ class MHPurchase extends Model
                         $invoice_detail->cogs_ref = IntegrityHelper::updateCOGS($mgoods,$invoice_detail->mdpurchasegoodsgrossamount,$g['usage']);
                         $invoice_detail->save();
                         $should_calculate_cogs_again = true;
+                        var_dump('price changed');
                     }
 
 
@@ -463,7 +482,7 @@ class MHPurchase extends Model
 
                         // update detail reference
                         $invoice_detail->stock_ref = $stock_card->id;
-                        $invoice_detail->cogs_ref = IntegrityHelper::updateCOGS($mgoods,$invoice_detail->mdpurchasegoodsgrossamount);
+                        $invoice_detail->cogs_ref = IntegrityHelper::updateCOGS($mgoods,$invoice_detail->mdpurchasegoodsgrossamount,$g['usage']);
                         $invoice_detail->save();
 
                     }

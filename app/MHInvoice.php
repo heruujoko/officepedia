@@ -179,6 +179,23 @@ class MHInvoice extends Model
           $coa_persediaan_barang = MCOA::on(Auth::user()->db_name)->where('mcoacode','1105.01')->first();
           $coa_persediaan_barang->update_saldo('-',$hpp_price);
 
+          $purchase_histories = HPPHistory::on(Auth::user()->db_name)->where('hpphistorygoodsid',$mgoods->mgoodscode)->where('type','purchase')->where('void',0)->get();
+          $last_purchase = $purchase_histories->last();
+
+          // save cogs log
+          $h = new HPPHistory;
+          $h->setConnection(Auth::user()->db_name);
+          $h->hpphistorygoodsid = $mgoods->mgoodscode;
+          $h->hpphistorypurchase = 0;
+          $h->hpphistoryqty = $mgoods->mgoodsstock;
+          $h->hpphistorycogs = $hpp->hpphistorycogs;
+          $h->lastcogs = $last_purchase->hpphistorycogs;
+          $h->type = 'sales';
+          $h->usage = $g['usage'];
+          $h->lastqty = $last_purchase->hpphistoryqty;
+          $h->hpphistoryremarks = 'Penjualan';
+          $h->save();
+
           //check allow minus
           if($allow_minus == 0 && ($mgoods->mgoodsstock < 0)){
             DB::connection(Auth::user()->db_name)->rollBack();

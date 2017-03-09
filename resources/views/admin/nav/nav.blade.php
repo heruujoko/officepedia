@@ -117,6 +117,11 @@
   <li>
     <a href="#"><i class="fa fa-lg fa-fw fa-shopping-cart"></i> <span class="menu-item-parent">Pembelian</span></a>
     <ul class="submenu">
+        @if($active == 'purchasequotation')
+          <li class="active"><a href="{{ url('admin-nano/purchasequotation') }}">Penawaran Pembelian</a></li>
+        @else
+          <li><a href="{{ url('admin-nano/purchasequotation') }}">Penawaran Pembelian</a></li>
+        @endif
         @if(Auth::user()->has_role('R_purchase'))
             @if($active == 'purchaseinvoice')
               <li class="active"><a href="{{ url('admin-nano/purchaseinvoice') }}">Pembelian</a></li>
@@ -124,13 +129,6 @@
               <li><a href="{{ url('admin-nano/purchaseinvoice') }}">Pembelian</a></li>
             @endif
         @endif
-
-            @if($active == 'purchasequotation')
-              <li class="active"><a href="{{ url('admin-nano/purchasequotation') }}">Purchase Order</a></li>
-            @else
-              <li><a href="{{ url('admin-nano/purchasequotation') }}">Penawaran Pembelian</a></li>
-            @endif
-
         @if(Auth::user()->has_role('R_payap'))
             @if($active == 'payap')
               <li class="active"><a href="{{ url('admin-nano/payap') }}">Pembayaran Hutang Dagang</a></li>
@@ -157,6 +155,11 @@
   <li>
     <a href="#"><i class="fa fa-lg fa-fw fa-tag"></i> <span class="menu-item-parent">Penjualan</span></a>
     <ul class="submenu">
+        @if($active == 'invoicequotation')
+          <li class="active"><a href="{{ url('admin-nano/invoicequotation') }}">Penawaran Penjualan</a></li>
+        @else
+          <li><a href="{{ url('admin-nano/purchasequotation') }}">Penawaran Penjualan</a></li>
+        @endif
         @if(Auth::user()->has_role('R_sales'))
             @if($active == 'salesinvoice')
               <li class="active">
@@ -168,13 +171,6 @@
               </li>
             @endif
         @endif
-
-            @if($active == 'invoicequotation')
-              <li class="active"><a href="{{ url('admin-nano/invoicequotation') }}">Penawaran Pembelian</a></li>
-            @else
-              <li><a href="{{ url('admin-nano/purchasequotation') }}">Penawaran Pembelian</a></li>
-            @endif
-
         @if(Auth::user()->has_role('R_payar'))
             @if($active == 'payar')
               <li class="active"><a href="{{ url('admin-nano/payar') }}">Pembayaran Piutang Dagang</a></li>
@@ -341,26 +337,16 @@
                 @endif
                 @if(Auth::user()->has_role('R_stockvaluereport'))
                     @if($active == 'cogshistory')
-                      <li class="active"><a href="{{ url('admin-nano/reports/cogshistory') }}">Laporan History HPP</a></li>
+                      <li class="active"><a href="{{ url('admin-nano/reports/cogshistory') }}">History HPP</a></li>
                     @else
-                      <li><a href="{{ url('admin-nano/reports/cogshistory') }}">Laporan History HPP</a></li>
+                      <li><a href="{{ url('admin-nano/reports/cogshistory') }}">History HPP</a></li>
                     @endif
                 @endif
                 @if(Auth::user()->has_role('R_journal'))
-                    @if($active == 'purchasejournal')
-                      <li class="active"><a href="{{ url('admin-nano/reports/purchasejournal') }}">Laporan Jurnal Pembelian</a></li>
-                    @else
-                      <li><a href="{{ url('admin-nano/reports/purchasejournal') }}">Laporan Jurnal Pembelian</a></li>
-                    @endif
-                    @if($active == 'salesjournal')
-                      <li class="active"><a href="{{ url('admin-nano/reports/salesjournal') }}">Laporan Jurnal Penjualan</a></li>
-                    @else
-                      <li><a href="{{ url('admin-nano/reports/salesjournal') }}">Laporan Jurnal Penjualan</a></li>
-                    @endif
                     @if($active == 'cashbalance')
-                      <li class="active"><a href="{{ url('admin-nano/reports/cashbalance') }}">Laporan Neraca Saldo</a></li>
+                      <li class="active"><a href="{{ url('admin-nano/reports/cashbalance') }}">Neraca Saldo</a></li>
                     @else
-                      <li><a href="{{ url('admin-nano/reports/cashbalance') }}">Laporan Neraca Saldo</a></li>
+                      <li><a href="{{ url('admin-nano/reports/cashbalance') }}">Neraca Saldo</a></li>
                     @endif
                 @endif
 			</ul>
@@ -370,16 +356,16 @@
             <ul class="submenu">
                 @if(Auth::user()->has_role('R_stockreport'))
                     @if($active == 'mstockcardreport')
-                      <li class="active"><a href="{{ url('admin-nano/mstockcardreport') }}">Laporan Stock</a></li>
+                      <li class="active"><a href="{{ url('admin-nano/mstockcardreport') }}">Kartu Stock</a></li>
                     @else
-                      <li><a href="{{ url('admin-nano/mstockcardreport') }}">Laporan Stock</a></li>
+                      <li><a href="{{ url('admin-nano/mstockcardreport') }}">Kartu Stock</a></li>
                     @endif
                 @endif
                 @if(Auth::user()->has_role('R_stockvaluereport'))
                     @if($active == 'stockvalue')
-                      <li class="active"><a href="{{ url('admin-nano/reports/stockvalue') }}">Laporan Nilai Persediaan</a></li>
+                      <li class="active"><a href="{{ url('admin-nano/reports/stockvalue') }}">Nilai Persediaan</a></li>
                     @else
-                      <li><a href="{{ url('admin-nano/reports/stockvalue') }}">Laporan Nilai Persediaan</a></li>
+                      <li><a href="{{ url('admin-nano/reports/stockvalue') }}">Nilai Persediaan</a></li>
                     @endif
                 @endif
 			</ul>
@@ -389,21 +375,21 @@
             <ul class="submenu">
                 @if(Auth::user()->has_role('R_salesreport'))
                     @if($active == 'salesreports')
-                      <li class="active"><a href="{{ url('admin-nano/reports/salesreport') }}">Laporan Penjualan</a></li>
+                      <li class="active"><a href="{{ url('admin-nano/reports/salesreport') }}">Penjualan</a></li>
                     @else
-                      <li><a href="{{ url('admin-nano/reports/salesreport') }}">Laporan Penjualan</a></li>
+                      <li><a href="{{ url('admin-nano/reports/salesreport') }}">Penjualan</a></li>
                     @endif
                 @endif
                 @if(Auth::user()->has_role('R_arcustomerreport'))
                     @if($active == 'arcustreport')
-                      <li class="active"><a href="{{ url('admin-nano/reports/arcustreport') }}">Laporan Piutang Customer</a></li>
+                      <li class="active"><a href="{{ url('admin-nano/reports/arcustreport') }}">Piutang Customer</a></li>
                     @else
-                      <li><a href="{{ url('admin-nano/reports/arcustreport') }}">Laporan Piutang Customer</a></li>
+                      <li><a href="{{ url('admin-nano/reports/arcustreport') }}">Piutang Customer</a></li>
                     @endif
                     @if($active == 'arbook')
-                      <li class="active"><a href="{{ url('admin-nano/reports/arbook') }}">Laporan Buku Piutang</a></li>
+                      <li class="active"><a href="{{ url('admin-nano/reports/arbook') }}">Buku Piutang</a></li>
                     @else
-                      <li><a href="{{ url('admin-nano/reports/arbook') }}">Laporan Buku Piutang</a></li>
+                      <li><a href="{{ url('admin-nano/reports/arbook') }}">Buku Piutang</a></li>
                     @endif
                 @endif
 			</ul>
@@ -413,21 +399,21 @@
             <ul class="submenu">
                 @if(Auth::user()->has_role('R_purchasereport'))
                     @if($active == 'purchasereport')
-                      <li class="active"><a href="{{ url('admin-nano/reports/purchasereport') }}">Laporan Pembelian</a></li>
+                      <li class="active"><a href="{{ url('admin-nano/reports/purchasereport') }}">Pembelian</a></li>
                     @else
-                      <li><a href="{{ url('admin-nano/reports/purchasereport') }}">Laporan Pembelian</a></li>
+                      <li><a href="{{ url('admin-nano/reports/purchasereport') }}">Pembelian</a></li>
                     @endif
                 @endif
                 @if(Auth::user()->has_role('R_apreport'))
                     @if($active == 'apreport')
-                      <li class="active"><a href="{{ url('admin-nano/reports/apreport') }}">Laporan Hutang Dagang</a></li>
+                      <li class="active"><a href="{{ url('admin-nano/reports/apreport') }}">Hutang Dagang</a></li>
                     @else
-                      <li><a href="{{ url('admin-nano/reports/apreport') }}">Laporan Hutang Dagang</a></li>
+                      <li><a href="{{ url('admin-nano/reports/apreport') }}">Hutang Dagang</a></li>
                     @endif
                     @if($active == 'apbook')
-                      <li class="active"><a href="{{ url('admin-nano/reports/apbook') }}">Laporan Buku Hutang</a></li>
+                      <li class="active"><a href="{{ url('admin-nano/reports/apbook') }}">Buku Hutang</a></li>
                     @else
-                      <li><a href="{{ url('admin-nano/reports/apbook') }}">Laporan Buku Hutang</a></li>
+                      <li><a href="{{ url('admin-nano/reports/apbook') }}">Buku Hutang</a></li>
                     @endif
                 @endif
 			</ul>
@@ -435,9 +421,9 @@
         <li>
             <a href="#">Audit</a>
             <ul class="submenu">
-			    <li><a href="forum.html">Laporan Kartu Stok</a></li>
-				<li><a href="forum-topic.html">Laporan Penjualan</a></li>
-				<li><a href="forum-post.html">Laporan Pembelian</a></li>
+			    <li><a href="forum.html">Kartu Stok</a></li>
+				<li><a href="forum-topic.html">Penjualan</a></li>
+				<li><a href="forum-post.html">Pembelian</a></li>
 			</ul>
         </li>
     </ul>

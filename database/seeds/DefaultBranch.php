@@ -12,7 +12,7 @@ class DefaultBranch extends Seeder
     {
         DB::table('mbranch')->insert([
             'mbranchcode' => 'BRN000001',
-            'mbranchname' => 'Cabang Utama',
+            'mbranchname' => 'Pusat',
             'address' => "",
             'phone' => "",
             'city' => "",

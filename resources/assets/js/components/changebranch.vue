@@ -1,6 +1,6 @@
 <template>
     <div>
-        <label for="" style="color:white;font-size: 12px;">Cabang</label>
+        <label for="" style="color:white;font-size: 12px;">Login Sebagai Cabang :</label>
         <select v-model="selected_branch" v-selecttwo="branch_label" id="branch_switch">
             <option v-for="branch in branches" :value="branch.id">{{ branch.mbranchname}}</option>
         </select>
