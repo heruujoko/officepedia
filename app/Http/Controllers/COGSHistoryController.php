@@ -43,14 +43,20 @@ class COGSHistoryController extends Controller
                 'hpphistorygoodsid' => $h->hpphistorygoodsid,
                 'name' => $h->goods()->mgoodsname
             ];
+            $qtys = 0;
             array_push($history_data,$header);
-            $childs_q = HPPHistory::on(Auth::user()->db_name)->where('hpphistorygoodsid',$h->hpphistorygoodsid);
+            $childs_q = HPPHistory::on(Auth::user()->db_name)->where('void',0)->where('hpphistorygoodsid',$h->hpphistorygoodsid);
             if($request->has('end')){
                 $childs_q->whereDate('created_at','<=',Carbon::parse($request->end));
             }
             $childs = $childs_q->get();
             foreach($childs as $ch){
                 $ch['data'] = 'data';
+                if($ch->type == 'purchase'){
+                    $qtys += $ch->usage;
+                } else {
+                    $qtys -= $ch->usage;
+                }
                 array_push($history_data,$ch);
             }
 
@@ -58,7 +64,7 @@ class COGSHistoryController extends Controller
                 'data' => 'footer',
                 'hpphistorygoodsid' => $h->hpphistorygoodsid,
                 'name' => $h->goods()->mgoodsname,
-                'hpphistoryqty' => $childs->last()->hpphistoryqty,
+                'hpphistoryqty' => $qtys,
                 'hpphistorycogs' => $childs->last()->hpphistorycogs
             ];
             array_push($history_data,$footer);
@@ -109,14 +115,20 @@ class COGSHistoryController extends Controller
                 'hpphistorygoodsid' => $h->hpphistorygoodsid,
                 'name' => $h->goods()->mgoodsname
             ];
+            $qtys = 0;
             array_push($history_data,$header);
-            $childs_q = HPPHistory::on(Auth::user()->db_name)->where('hpphistorygoodsid',$h->hpphistorygoodsid);
+            $childs_q = HPPHistory::on(Auth::user()->db_name)->where('void',0)->where('hpphistorygoodsid',$h->hpphistorygoodsid);
             if($request->has('end')){
                 $childs_q->whereDate('created_at','<=',Carbon::parse($request->end));
             }
             $childs = $childs_q->get();
             foreach($childs as $ch){
                 $ch['data'] = 'data';
+                if($ch->type == 'purchase'){
+                    $qtys += $ch->usage;
+                } else {
+                    $qtys -= $ch->usage;
+                }
                 array_push($history_data,$ch);
             }
 
@@ -124,7 +136,7 @@ class COGSHistoryController extends Controller
                 'data' => 'footer',
                 'hpphistorygoodsid' => $h->hpphistorygoodsid,
                 'name' => $h->goods()->mgoodsname,
-                'hpphistoryqty' => $childs->last()->hpphistoryqty,
+                'hpphistoryqty' => $qtys,
                 'hpphistorycogs' => $childs->last()->hpphistorycogs
             ];
             array_push($history_data,$footer);
@@ -176,14 +188,20 @@ class COGSHistoryController extends Controller
                 'hpphistorygoodsid' => $h->hpphistorygoodsid,
                 'name' => $h->goods()->mgoodsname
             ];
+            $qtys = 0;
             array_push($history_data,$header);
-            $childs_q = HPPHistory::on(Auth::user()->db_name)->where('hpphistorygoodsid',$h->hpphistorygoodsid);
+            $childs_q = HPPHistory::on(Auth::user()->db_name)->where('void',0)->where('hpphistorygoodsid',$h->hpphistorygoodsid);
             if($request->has('end')){
                 $childs_q->whereDate('created_at','<=',Carbon::parse($request->end));
             }
             $childs = $childs_q->get();
             foreach($childs as $ch){
                 $ch['data'] = 'data';
+                if($ch->type == 'purchase'){
+                    $qtys += $ch->usage;
+                } else {
+                    $qtys -= $ch->usage;
+                }
                 array_push($history_data,$ch);
             }
 
@@ -191,7 +209,7 @@ class COGSHistoryController extends Controller
                 'data' => 'footer',
                 'hpphistorygoodsid' => $h->hpphistorygoodsid,
                 'name' => $h->goods()->mgoodsname,
-                'hpphistoryqty' => $childs->last()->hpphistoryqty,
+                'hpphistoryqty' => $qtys,
                 'hpphistorycogs' => $childs->last()->hpphistorycogs
             ];
             array_push($history_data,$footer);
@@ -267,7 +285,7 @@ class COGSHistoryController extends Controller
 
                 $this->count+=2;
                 $sheet->row($this->count,array(
-                    'Kode Barang','Nama Barang','Pembelian','Qty','HPP','Remark'
+                    'Kode Barang','Nama Barang','Qty','Harga Beli','Pembelian','HPP','Remark'
                 ));
                 foreach($this->data['histories'] as $h){
                     $this->count++;
@@ -284,8 +302,9 @@ class COGSHistoryController extends Controller
                         $sheet->row($this->count,array(
                             '',
                             '',
+                            $h->usage,
+                            $h->buyprice,
                             $h->hpphistorypurchase,
-                            $h->hpphistoryqty,
                             $h->hpphistorycogs,
                             $h->hpphistoryremarks
                         ));
@@ -293,8 +312,9 @@ class COGSHistoryController extends Controller
                         $sheet->row($this->count,array(
                             'TOTAL',
                             '',
-                            '',
                             $h['hpphistoryqty'],
+                            '',
+                            '',
                             $h['hpphistorycogs'],
                             ''
                         ));
@@ -325,14 +345,20 @@ class COGSHistoryController extends Controller
                 'hpphistorygoodsid' => $h->hpphistorygoodsid,
                 'name' => $h->goods()->mgoodsname
             ];
+            $qtys = 0;
             array_push($history_data,$header);
-            $childs_q = HPPHistory::on(Auth::user()->db_name)->where('hpphistorygoodsid',$h->hpphistorygoodsid);
+            $childs_q = HPPHistory::on(Auth::user()->db_name)->where('void',0)->where('hpphistorygoodsid',$h->hpphistorygoodsid);
             if($request->has('end')){
                 $childs_q->whereDate('created_at','<=',Carbon::parse($request->end));
             }
             $childs = $childs_q->get();
             foreach($childs as $ch){
                 $ch['data'] = 'data';
+                if($ch->type == 'purchase'){
+                    $qtys += $ch->usage;
+                } else {
+                    $qtys -= $ch->usage;
+                }
                 array_push($history_data,$ch);
             }
 
@@ -340,7 +366,7 @@ class COGSHistoryController extends Controller
                 'data' => 'footer',
                 'hpphistorygoodsid' => $h->hpphistorygoodsid,
                 'name' => $h->goods()->mgoodsname,
-                'hpphistoryqty' => $childs->last()->hpphistoryqty,
+                'hpphistoryqty' => $qtys,
                 'hpphistorycogs' => $childs->last()->hpphistorycogs
             ];
             array_push($history_data,$footer);
@@ -416,7 +442,7 @@ class COGSHistoryController extends Controller
 
                 $this->count+=2;
                 $sheet->row($this->count,array(
-                    'Kode Barang','Nama Barang','Pembelian','Qty','HPP','Remark'
+                    'Kode Barang','Nama Barang','Qty','Harga Beli','Pembelian','HPP','Remark'
                 ));
                 foreach($this->data['histories'] as $h){
                     $this->count++;
@@ -433,8 +459,9 @@ class COGSHistoryController extends Controller
                         $sheet->row($this->count,array(
                             '',
                             '',
+                            $h->usage,
+                            $h->buyprice,
                             $h->hpphistorypurchase,
-                            $h->hpphistoryqty,
                             $h->hpphistorycogs,
                             $h->hpphistoryremarks
                         ));
@@ -442,8 +469,9 @@ class COGSHistoryController extends Controller
                         $sheet->row($this->count,array(
                             'TOTAL',
                             '',
-                            '',
                             $h['hpphistoryqty'],
+                            '',
+                            '',
                             $h['hpphistorycogs'],
                             ''
                         ));

@@ -79,12 +79,13 @@
         <table class="table" id="tableapi" style="width:100%">
             <thead>
                 <tr>
-                    <th>Kode Barang</th>
-                    <th>Nama Barang</th>
-                    <th>Pembelian</th>
-                    <th>Qty</th>
-                    <th>HPP</th>
-                    <th>Remark</th>
+                    <td style="font-weight:bold">Kode Barang</td>
+                    <td style="font-weight:bold">Nama Barang</td>
+                    <td style="font-weight:bold">Qty</td>
+                    <td style="font-weight:bold">Harga Beli</td>
+                    <td style="font-weight:bold">Pembelian</td>
+                    <td style="font-weight:bold">HPP</td>
+                    <td style="font-weight:bold">Remark</td>
                 </tr>
             </thead>
             <tbody>
@@ -97,13 +98,15 @@
                         <td></td>
                         <td></td>
                         <td></td>
+                        <td></td>
                     </tr>
                     @elseif($h['data'] == 'data')
                     <tr>
                         <td></td>
                         <td></td>
-                        <td>{{ $h->hpphistorypurchase }}</td>
-                        <td>{{ $h->hpphistoryqty }}</td>
+                        <td>{{ $h->usage }}</td>
+                        <td>{{ number_format($h->buyprice,$decimals,$dec_point,$thousands_sep) }}</td>
+                        <td>{{ number_format($h->hpphistorypurchase,$decimals,$dec_point,$thousands_sep) }}</td>
                         <td>{{ number_format($h->hpphistorycogs,$decimals,$dec_point,$thousands_sep) }}</td>
                         <td>{{ $h->hpphistoryremarks }}</td>
                     </tr>
@@ -111,8 +114,9 @@
                     <tr>
                         <td style="font-weight:bold">TOTAL</td>
                         <td style="font-weight:bold"></td>
-                        <td style="font-weight:bold"></td>
                         <td style="font-weight:bold">{{ $h['hpphistoryqty'] }}</td>
+                        <td style="font-weight:bold"></td>
+                        <td style="font-weight:bold"></td>
                         <td style="font-weight:bold">{{ number_format($h['hpphistorycogs'],$decimals,$dec_point,$thousands_sep) }}</td>
                         <td style="font-weight:bold"></td>
                     </tr>
