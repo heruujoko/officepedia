@@ -71,7 +71,7 @@
                                             <br>
                                             <div class="row">
                                                 <div class="col-md-3">
-                                                    <button class="dt-button pull-left" v-on:click="fetchHistories">Print</button>
+                                                    <button class="dt-button pull-left" v-on:click="fetchHistories">Filter</button>
                                                 </div>
                                                 <div class="col-md-3 col-md-offset-6">
                                                     <button class="dt-button pull-right" v-on:click="printTable">Print</button>
@@ -118,7 +118,7 @@
                                                             <tr v-for="hi in histories">
                                                                 <td v-if="hi.data != 'footer'"><span v-if="hi.data == 'header'">@{{ hi.hpphistorygoodsid }}</span></td>
                                                                 <td v-if="hi.data != 'footer'"><span v-if="hi.data == 'header'">@{{ hi.name }}</span></td>
-                                                                <td v-if="hi.data != 'footer'"><span v-if="hi.data != 'header'">@{{ hi.hpphistoryqty }}</span></td>
+                                                                <td v-if="hi.data != 'footer'"><span v-if="hi.data != 'header'">@{{ hi.usage }}</span></td>
                                                                 <td v-if="hi.data != 'footer'" style="text-align:right"><span v-priceformatlabel="num_format" v-if="hi.data != 'header'">@{{ hi.buyprice }}</span></td>
                                                                 <td v-if="hi.data != 'footer'" style="text-align:right"><span v-priceformatlabel="num_format" v-if="hi.data != 'header'">@{{ hi.hpphistorypurchase }}</span></td>
                                                                 <td v-if="hi.data != 'footer'" style="text-align:right"><span v-priceformatlabel="num_format" v-if="hi.data != 'header'">@{{ hi.hpphistorycogs }}</span></td>
