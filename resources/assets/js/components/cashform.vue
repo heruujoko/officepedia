@@ -11,8 +11,8 @@
                   <div class="col-md-10">
                       <select v-bind:id="from_account_id" v-selecttwo="account_label" v-model="from_account" class="col-md-10 form-control" v-bind:disabled="disable_from">
                           <option></option>
-                          <option v-if="cashtype == 'income' || cashtype == 'transfer'" v-for="cb in accounts" :value="cb.mcoacode">{{ cb.mcoaname }}</option>
-                          <option v-if="cashtype == 'outcome'" v-for="cb in cashbankaccounts" :value="cb.mcoacode">{{ cb.mcoaname }}</option>
+                          <option v-if="cashtype == 'income' || cashtype == 'transfer'" v-for="cb in accounts" :value="cb.mcoacode">{{ cb.mcoacode }} - {{ cb.mcoaname }}</option>
+                          <option v-if="cashtype == 'outcome'" v-for="cb in cashbankaccounts" :value="cb.mcoacode">{{ cb.mcoacode }} - {{ cb.mcoaname }}</option>
                       </select>
                       <label style="color: #0288D1">Kredit</label><br>
                       <label v-if="from_alert" style="color:rgb(212, 103, 82)!important">Akun ini tidak bisa kosong</label>
@@ -49,8 +49,8 @@
                   <div class="col-md-12">
                       <select v-bind:disabled="!notview" v-bind:id="to_account_id" v-selecttwo="account_label" v-model="selected_detail_code" class="col-md-8 form-control">
                           <option></option>
-                          <option v-if="cashtype == 'outcome' || cashtype == 'transfer'" v-for="cb in accounts" :value="cb.mcoacode">{{ cb.mcoaname }}</option>
-                          <option v-if="cashtype == 'income'" v-for="cb in cashbankaccounts" :value="cb.mcoacode">{{ cb.mcoaname }}</option>
+                          <option v-if="cashtype == 'outcome' || cashtype == 'transfer'" v-for="cb in accounts" :value="cb.mcoacode">{{cb.mcoacode }} - {{ cb.mcoaname }}</option>
+                          <option v-if="cashtype == 'income'" v-for="cb in cashbankaccounts" :value="cb.mcoacode">{{cb.mcoacode }} - {{ cb.mcoaname }}</option>
                       </select>
                       <label style="color: #0288D1">Debit</label><br>
                   </div>
