@@ -2,10 +2,6 @@
     <div>
         <br>
         <div class="row">
-            <p class="col-md-2 report-label">Periode Awal</p>
-            <input v-dpicker v-model="report_date_start" type="text" class="small-date form-control" />
-        </div>
-        <div class="row">
             <p class="col-md-2 report-label">Periode Akhir</p>
             <input v-dpicker v-model="report_date_end" type="text" class="small-date form-control" />
         </div>
@@ -59,6 +55,11 @@
                     <td style="text-align: right" v-priceformatlabel="num_format">{{ j.sum_debit }}</td>
                     <td style="text-align: right" v-priceformatlabel="num_format">{{ j.sum_credit }}</td>
                 </tr>
+                <tr>
+                    <td colspan="2">TOTAL</td>
+                    <td style="text-align: right" v-priceformatlabel="num_format">{{ this.sumDebit }}</td>
+                    <td style="text-align: right" v-priceformatlabel="num_format">{{ this.sumCredit }}</td>
+                </tr>
             </tbody>
         </table>
     </div>
@@ -66,6 +67,7 @@
 <script>
     import moment from 'moment'
     import axios from 'axios'
+    import _ from 'lodash'
     export default {
         props:['username'],
         data(){
@@ -77,6 +79,18 @@
                 journals: [],
                 num_format: "0,0",
                 company_name: ""
+            }
+        },
+        computed: {
+            sumDebit(){
+                return _.sumBy(this.journals,(jr) => {
+                    return jr.sum_debit;
+                });
+            },
+            sumCredit(){
+                return _.sumBy(this.journals,(jr) => {
+                    return jr.sum_credit;
+                });
             }
         },
         methods: {
@@ -123,6 +137,9 @@
         created(){
             this.fetchConfig()
             this.fetchBalance()
+            var thisYear = (new Date()).getFullYear();
+            var start = new Date("1/1/" + thisYear);
+            this.report_date_start = moment(start.valueOf()).format('L');
         }
     }
 </script>

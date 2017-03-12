@@ -86,12 +86,20 @@
                 </thead>
                 <tbody>
                     @foreach($journals as $j)
-                    <tr>
-                        <td>{{ $j->mcoacode }}</td>
-                        <td>{{ $j->mcoaname }}</td>
-                        <td>{{ number_format($j['sum_debit'],$decimals,$dec_point,$thousands_sep) }}</td>
-                        <td>{{ number_format($j['sum_credit'],$decimals,$dec_point,$thousands_sep) }}</td>
-                    </tr>
+                    @if($j['type'] == 'data')
+                        <tr>
+                            <td>{{ $j->mcoacode }}</td>
+                            <td>{{ $j->mcoaname }}</td>
+                            <td>{{ number_format($j['sum_debit'],$decimals,$dec_point,$thousands_sep) }}</td>
+                            <td>{{ number_format($j['sum_credit'],$decimals,$dec_point,$thousands_sep) }}</td>
+                        </tr>
+                    @else
+                        <tr>
+                            <td colspan="2">TOTAL</td>
+                            <td>{{ number_format($j['sum_debit'],$decimals,$dec_point,$thousands_sep) }}</td>
+                            <td>{{ number_format($j['sum_credit'],$decimals,$dec_point,$thousands_sep) }}</td>
+                        </tr>
+                    @endif
                     @endforeach
                 </tbody>
             </table>

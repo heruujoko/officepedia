@@ -50,7 +50,7 @@ class CashBalanceReport extends Controller
 
             $coa['sum_debit'] = $sum_debit;
             $coa['sum_credit'] = $sum_credit;
-
+            $coa['type'] = 'data';
             if($request->notzero == "true"){
                 // dd(($sum_debit != 0) && ($sum_credit != 0));
                 if(($sum_debit != 0) || ($sum_credit != 0)){
@@ -60,6 +60,20 @@ class CashBalanceReport extends Controller
                 array_push($filtered_coa,$coa);
             }
         }
+        $sum_debit = 0;
+        $sum_credit = 0;
+        foreach ($filtered_coa as $key) {
+            $sum_debit += $key['sum_debit'];
+            $sum_credit += $key['sum_credit'];
+        }
+
+        $row_total = [
+            'type' => "total",
+            'sum_debit' => $sum_debit,
+            'sum_credit' => $sum_credit
+        ];
+
+        array_push($filtered_coa,$row_total);
 
         return $filtered_coa;
     }
@@ -158,12 +172,21 @@ class CashBalanceReport extends Controller
                 ));
                 foreach($this->data['journals'] as $j){
                     $this->count++;
-                    $sheet->row($this->count,array(
-                        $j->mcoacode,
-                        $j->mcoaname,
-                        $j['sum_debit'],
-                        $j['sum_credit']
-                    ));
+                    if($j['type'] == 'data'){
+                        $sheet->row($this->count,array(
+                            $j->mcoacode,
+                            $j->mcoaname,
+                            $j['sum_debit'],
+                            $j['sum_credit']
+                        ));
+                    } else {
+                        $sheet->row($this->count,array(
+                            'TOTAL',
+                            '',
+                            $j['sum_debit'],
+                            $j['sum_credit']
+                        ));
+                    }
                 }
 			});
 		})->export('xls');
@@ -228,12 +251,21 @@ class CashBalanceReport extends Controller
                 ));
                 foreach($this->data['journals'] as $j){
                     $this->count++;
-                    $sheet->row($this->count,array(
-                        $j->mcoacode,
-                        $j->mcoaname,
-                        $j['sum_debit'],
-                        $j['sum_credit']
-                    ));
+                    if($j['type'] == 'data'){
+                        $sheet->row($this->count,array(
+                            $j->mcoacode,
+                            $j->mcoaname,
+                            $j['sum_debit'],
+                            $j['sum_credit']
+                        ));
+                    } else {
+                        $sheet->row($this->count,array(
+                            'TOTAL',
+                            '',
+                            $j['sum_debit'],
+                            $j['sum_credit']
+                        ));
+                    }
                 }
 			});
 		})->export('csv');
