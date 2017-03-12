@@ -118,9 +118,9 @@
     <a href="#"><i class="fa fa-lg fa-fw fa-shopping-cart"></i> <span class="menu-item-parent">Pembelian</span></a>
     <ul class="submenu">
         @if($active == 'purchasequotation')
-          <li class="active"><a href="{{ url('admin-nano/purchasequotation') }}">Penawaran Pembelian</a></li>
+          <!-- <li class="active"><a href="{{ url('admin-nano/purchasequotation') }}">Penawaran Pembelian</a></li> -->
         @else
-          <li><a href="{{ url('admin-nano/purchasequotation') }}">Penawaran Pembelian</a></li>
+          <!-- <li><a href="{{ url('admin-nano/purchasequotation') }}">Penawaran Pembelian</a></li> -->
         @endif
         @if(Auth::user()->has_role('R_purchase'))
             @if($active == 'purchaseinvoice')
