@@ -97,10 +97,11 @@
             </thead>
             <tbody>
                 @foreach($ars as $ar)
-                    @if($ar->header == true)
+                    @if($ar['header'] == true)
                         <tr>
-                            <td>{{ $ar->marcardcustomerid }}</td>
-                            <td>{{ $ar->marcardcustomername }}</td>
+                            <td>{{ $ar['marcardcustomerid'] }}</td>
+                            <td>{{ $ar['marcardcustomername'] }}</td>
+                            <td></td>
                             <td></td>
                             <td></td>
                             <td></td>
@@ -109,21 +110,22 @@
                             <td>{{ number_format($ar->marcardoutstanding,$decimals,$dec_point,$thousands_sep) }}</td>
                             <td></td>
                         </tr>
-                    @elseif($ar->data == true)
+                    @elseif($ar['data'] == true)
                     <tr>
                         <td></td>
                         <td></td>
-                        <td>{{ $ar->marcarddate }}</td>
-                        <td>{{ $ar->marcardtransno }}</td>
-                        <td>{{ $ar->inv_date }}</td>
-                        <td>{{ $ar->marcardduedate }}</td>
-                        <td>{{ number_format($ar->marcardtotalinv,$decimals,$dec_point,$thousands_sep) }}</td>
-                        <td>{{ number_format($ar->marcardpayamount,$decimals,$dec_point,$thousands_sep) }}</td>
-                        <td>{{ number_format($ar->marcardoutstanding,$decimals,$dec_point,$thousands_sep) }}</td>
+                        <td>{{ $ar['marcarddate'] }}</td>
+                        <td>{{ $ar['marcardtransno'] }}</td>
+                        <td>{{ $ar['inv_date'] }}</td>
+                        <td>{{ $ar['marcardduedate'] }}</td>
+                        <td>{{ number_format($ar['marcardtotalinv'],$decimals,$dec_point,$thousands_sep) }}</td>
+                        <td>{{ number_format($ar['marcardpayamount'],$decimals,$dec_point,$thousands_sep) }}</td>
+                        <td>{{ number_format($ar['marcardoutstanding'],$decimals,$dec_point,$thousands_sep) }}</td>
                         <td></td>
                     </tr>
                     @else
                     <tr>
+                        <td></td>
                         <td></td>
                         <td></td>
                         <td></td>
@@ -140,15 +142,15 @@
             <thead>
                 <tr>
                     <td colspan="6">TOTAL</td>
-                    <td>{{ number_format($total_inv,$decimals,$dec_point,$thousands_sep) }}</td>
-                    <td>{{ number_format($total_pay,$decimals,$dec_point,$thousands_sep) }}</td>
-                    <td>{{ number_format($total_outs,$decimals,$dec_point,$thousands_sep) }}</td>
+                    <td style="font-weight: bold">{{ number_format($total_inv,$decimals,$dec_point,$thousands_sep) }}</td>
+                    <td style="font-weight: bold">{{ number_format($total_pay,$decimals,$dec_point,$thousands_sep) }}</td>
+                    <td style="font-weight: bold">{{ number_format($total_outs,$decimals,$dec_point,$thousands_sep) }}</td>
                     <td>
                 </tr>
             </thead>
         </table>
         <script>
-            window.print();
+            // window.print();
         </script>
     </body>
 </html>

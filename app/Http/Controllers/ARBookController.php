@@ -10,6 +10,9 @@ use App\MConfig;
 use PDF;
 use Excel;
 use Carbon\Carbon;
+use App\MWarehouse;
+use App\MBRANCH;
+use App\MARCard;
 
 class ARBookController extends Controller
 {
@@ -24,13 +27,87 @@ class ARBookController extends Controller
         }
     }
 
+    public function arbook_data($request,$opens){
+        //fetch warehouses
+        $branch = MBRANCH::on(Auth::user()->db_name)->where('id',Auth::user()->defaultbranch)->first();
+
+        $warehouses = MWarehouse::on(Auth::user()->db_name)->where('mwarehousebranchid',$branch->mbranchcode)->get();
+
+        $warehouse_ids = array_map(function($w){
+            return $w['id'];
+        },$warehouses->toArray());
+
+        $header_query = MARCard::on(Auth::user()->db_name)
+        ->whereIn('marcardwarehouseid',$warehouse_ids)
+        ->where('void',0);
+
+        if($request->has('customer') && $request->customer != 'Semua'){
+            $header_query->where('marcardcustomerid',$request->customer);
+        }
+
+        $ars = $header_query->groupBy('marcardcustomerid')->get();
+        $ars_with_details_mixed = [];
+        foreach($ars as $idx=>$ar){
+            $ar['header'] = true;
+            $ar['data'] = false;
+            $ar['footer'] = false;
+            $ar->marcardtotalinv = 0;
+            $ar->marcardpayamount = 0;
+            $ar->marcardoutstanding = 0;
+            $pays = MARCard::on(Auth::user()->db_name)->where('marcardcustomerid',$ar->marcardcustomerid)->where('void',0)->orderBy('marcardtransno','asc')->get();
+            $current_inv = "";
+            foreach($pays as $p){
+                if($p->marcardtransno != $current_inv){
+                    $ar->marcardtotalinv += $p->marcardtotalinv;
+                    $current_inv = $p->marcardtransno;
+                }
+                $ar->marcardpayamount += $p->marcardpayamount;
+                // $ar->marcardoutstanding += $p->marcardoutstanding;
+            }
+            $ar->marcardoutstanding = $ar->marcardtotalinv - $ar->marcardpayamount;
+            array_push($ars_with_details_mixed,$ar);
+            if(in_array($idx,$opens)){
+                $pays = MARCard::on(Auth::user()->db_name)->where('marcardcustomerid',$ar->marcardcustomerid)->where('void',0)->where('marcardpayamount','>',0)->orderBy('created_at','asc')->get();
+
+                foreach ($pays as $p) {
+                    $p['header'] = false;
+                    $p['data'] = true;
+                    $p['footer'] = false;
+
+                    $p['inv_date'] = MARCard::on(Auth::user()->db_name)->where('marcardpayamount',0)->where('marcardtransno',$p->marcardtransno)->first()->marcarddate;
+
+                    if($p->marcardpayamount == $p->marcardtotalinv){
+                        $p['aging'] = 'Lunas';
+                    } else {
+                        $now = Carbon::now();
+                        $due = Carbon::parse($p->marcardduedate);
+                        $diff = $now->diffInDays($due,false);
+
+                        $p['aging'] = $diff.' Hari';
+                    }
+                    array_push($ars_with_details_mixed,$p);
+                }
+
+                $footer = [
+                    'header' => false,
+                    'data' => false,
+                    'footer' => true,
+                ];
+
+                array_push($ars_with_details_mixed,$footer);
+            }
+        }
+
+        return $ars_with_details_mixed;
+    }
+
     public function arbook_print(Request $request){
-        $data_dec = $request->data;
-        $data_dec = base64_decode($data_dec);
+        $data_opens = $request->data;
+        $data_opens = base64_decode($data_opens);
+        $decoded_data = json_decode($data_opens);
 
-        $decoded_data = json_decode($data_dec);
-
-        $data['ars'] = $decoded_data;
+        $data['ars'] = $this->arbook_data($request,$decoded_data);
+        // dd($data);
         $config = MConfig::on(Auth::user()->db_name)->where('id',1)->first();
         $data['decimals'] = $config->msysgenrounddec;
         $data['dec_point'] = $config->msysnumseparator;
@@ -50,23 +127,22 @@ class ARBookController extends Controller
         $data['total_pay'] =0;
         $data['total_outs'] =0;
         foreach($data['ars'] as $ar){
-            if($ar->header == true){
+            if($ar['header'] == true){
                 $data['total_inv'] += $ar->marcardtotalinv;
                 $data['total_pay'] += $ar->marcardpayamount;
                 $data['total_outs'] += $ar->marcardoutstanding;
             }
         }
-
         return view('admin/export/arbook',$data);
     }
 
     public function arbook_pdf(Request $request){
-        $data_dec = $request->data;
-        $data_dec = base64_decode($data_dec);
+        $data_opens = $request->data;
+        $data_opens = base64_decode($data_opens);
+        $decoded_data = json_decode($data_opens);
 
-        $decoded_data = json_decode($data_dec);
-
-        $data['ars'] = $decoded_data;
+        $data['ars'] = $this->arbook_data($request,$decoded_data);
+        // dd($data);
         $config = MConfig::on(Auth::user()->db_name)->where('id',1)->first();
         $data['decimals'] = $config->msysgenrounddec;
         $data['dec_point'] = $config->msysnumseparator;
@@ -86,7 +162,7 @@ class ARBookController extends Controller
         $data['total_pay'] =0;
         $data['total_outs'] =0;
         foreach($data['ars'] as $ar){
-            if($ar->header == true){
+            if($ar['header'] == true){
                 $data['total_inv'] += $ar->marcardtotalinv;
                 $data['total_pay'] += $ar->marcardpayamount;
                 $data['total_outs'] += $ar->marcardoutstanding;
@@ -99,12 +175,12 @@ class ARBookController extends Controller
 
     public function arbook_excel(Request $request){
 
-        $data_dec = $request->data;
-        $data_dec = base64_decode($data_dec);
+        $data_opens = $request->data;
+        $data_opens = base64_decode($data_opens);
+        $decoded_data = json_decode($data_opens);
 
-        $decoded_data = json_decode($data_dec);
-
-        $this->data['ars'] = $decoded_data;
+        $this->data['ars'] = $this->arbook_data($request,$decoded_data);
+        // dd($this->data);
         $config = MConfig::on(Auth::user()->db_name)->where('id',1)->first();
         $this->data['decimals'] = $config->msysgenrounddec;
         $this->data['dec_point'] = $config->msysnumseparator;
@@ -124,12 +200,13 @@ class ARBookController extends Controller
         $this->data['total_pay'] =0;
         $this->data['total_outs'] =0;
         foreach($this->data['ars'] as $ar){
-            if($ar->header == true){
+            if($ar['header'] == true){
                 $this->data['total_inv'] += $ar->marcardtotalinv;
                 $this->data['total_pay'] += $ar->marcardpayamount;
                 $this->data['total_outs'] += $ar->marcardoutstanding;
             }
         }
+
         $this->count = 0;
         $this->request = $request;
         return Excel::create('Laporan Buku Piutang',function($excel){
@@ -190,31 +267,31 @@ class ARBookController extends Controller
                 ));
                 foreach($this->data['ars'] as $ar){
                     $this->count++;
-                    if($ar->header == true){
+                    if($ar['header'] == true){
                         $sheet->row($this->count,array(
-                            $ar->marcardcustomerid,
-                            $ar->marcardcustomername,
+                            $ar['marcardcustomerid'],
+                            $ar['marcardcustomername'],
                             '',
                             '',
                             '',
                             '',
-                            $ar->marcardtotalinv,
-                            $ar->marcardpayamount,
-                            $ar->marcardoutstanding,
+                            $ar['marcardtotalinv'],
+                            $ar['marcardpayamount'],
+                            $ar['marcardoutstanding'],
                             ''
                         ));
-                    } else if($ar->data == true){
+                    } else if($ar['data'] == true){
                         $sheet->row($this->count,array(
                             '',
                             '',
-                            $ar->marcarddate,
-                            $ar->marcardtransno,
-                            $ar->inv_date,
-                            $ar->marcardduedate,
-                            $ar->marcardtotalinv,
-                            $ar->marcardpayamount,
-                            $ar->marcardoutstanding,
-                            $ar->aging
+                            $ar['marcarddate'],
+                            $ar['marcardtransno'],
+                            $ar['inv_date'],
+                            $ar['marcardduedate'],
+                            $ar['marcardtotalinv'],
+                            $ar['marcardpayamount'],
+                            $ar['marcardoutstanding'],
+                            $ar['aging']
                         ));
                     } else {
                         $sheet->row($this->count,array(
@@ -253,12 +330,12 @@ class ARBookController extends Controller
 
     public function arbook_csv(Request $request){
 
-        $data_dec = $request->data;
-        $data_dec = base64_decode($data_dec);
+        $data_opens = $request->data;
+        $data_opens = base64_decode($data_opens);
+        $decoded_data = json_decode($data_opens);
 
-        $decoded_data = json_decode($data_dec);
-
-        $this->data['ars'] = $decoded_data;
+        $this->data['ars'] = $this->arbook_data($request,$decoded_data);
+        // dd($this->data);
         $config = MConfig::on(Auth::user()->db_name)->where('id',1)->first();
         $this->data['decimals'] = $config->msysgenrounddec;
         $this->data['dec_point'] = $config->msysnumseparator;
@@ -278,17 +355,18 @@ class ARBookController extends Controller
         $this->data['total_pay'] =0;
         $this->data['total_outs'] =0;
         foreach($this->data['ars'] as $ar){
-            if($ar->header == true){
+            if($ar['header'] == true){
                 $this->data['total_inv'] += $ar->marcardtotalinv;
                 $this->data['total_pay'] += $ar->marcardpayamount;
                 $this->data['total_outs'] += $ar->marcardoutstanding;
             }
         }
+
         $this->count = 0;
         $this->request = $request;
         return Excel::create('Laporan Buku Piutang',function($excel){
-            $excel->sheet('Laporan Buku Piutang',function($sheet){
-                $this->count++;
+			$excel->sheet('Laporan Buku Piutang',function($sheet){
+				$this->count++;
                 $sheet->mergeCells('A1:K1');
                 $sheet->row($this->count,array($this->data['company']));
                 $sheet->cell('A1',function($cell){
@@ -344,31 +422,31 @@ class ARBookController extends Controller
                 ));
                 foreach($this->data['ars'] as $ar){
                     $this->count++;
-                    if($ar->header == true){
+                    if($ar['header'] == true){
                         $sheet->row($this->count,array(
-                            $ar->marcardcustomerid,
-                            $ar->marcardcustomername,
+                            $ar['marcardcustomerid'],
+                            $ar['marcardcustomername'],
                             '',
                             '',
                             '',
                             '',
-                            $ar->marcardtotalinv,
-                            $ar->marcardpayamount,
-                            $ar->marcardoutstanding,
+                            $ar['marcardtotalinv'],
+                            $ar['marcardpayamount'],
+                            $ar['marcardoutstanding'],
                             ''
                         ));
-                    } else if($ar->data == true){
+                    } else if($ar['data'] == true){
                         $sheet->row($this->count,array(
                             '',
                             '',
-                            $ar->marcarddate,
-                            $ar->marcardtransno,
-                            $ar->inv_date,
-                            $ar->marcardduedate,
-                            $ar->marcardtotalinv,
-                            $ar->marcardpayamount,
-                            $ar->marcardoutstanding,
-                            $ar->aging
+                            $ar['marcarddate'],
+                            $ar['marcardtransno'],
+                            $ar['inv_date'],
+                            $ar['marcardduedate'],
+                            $ar['marcardtotalinv'],
+                            $ar['marcardpayamount'],
+                            $ar['marcardoutstanding'],
+                            $ar['aging']
                         ));
                     } else {
                         $sheet->row($this->count,array(
@@ -401,7 +479,7 @@ class ARBookController extends Controller
                     ''
                 ));
 
-            });
-        })->export('csv');
+			});
+		})->export('csv');
     }
 }

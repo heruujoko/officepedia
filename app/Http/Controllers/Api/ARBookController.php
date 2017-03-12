@@ -28,8 +28,7 @@ class ARBookController extends Controller
 
         $header_query = MARCard::on(Auth::user()->db_name)
         ->whereIn('marcardwarehouseid',$warehouse_ids)
-        ->where('void',0)
-        ->where('marcardpayamount','>',0);
+        ->where('void',0);
 
         if($request->has('customer')){
             $header_query->where('marcardcustomerid',$request->customer);
@@ -44,7 +43,7 @@ class ARBookController extends Controller
             $ar->marcardtotalinv = 0;
             $ar->marcardpayamount = 0;
             $ar->marcardoutstanding = 0;
-            $pays = MARCard::on(Auth::user()->db_name)->where('marcardcustomerid',$ar->marcardcustomerid)->where('void',0)->where('marcardpayamount','>',0)->orderBy('marcardtransno','asc')->get();
+            $pays = MARCard::on(Auth::user()->db_name)->where('marcardcustomerid',$ar->marcardcustomerid)->where('void',0)->orderBy('marcardtransno','asc')->get();
             $current_inv = "";
             foreach($pays as $p){
                 if($p->marcardtransno != $current_inv){
@@ -52,9 +51,9 @@ class ARBookController extends Controller
                     $current_inv = $p->marcardtransno;
                 }
                 $ar->marcardpayamount += $p->marcardpayamount;
-                $ar->marcardoutstanding += $p->marcardoutstanding;
+                // $ar->marcardoutstanding += $p->marcardoutstanding;
             }
-
+            $ar->marcardoutstanding = $ar->marcardtotalinv - $ar->marcardpayamount;
         }
 
         return response()->json($ars);

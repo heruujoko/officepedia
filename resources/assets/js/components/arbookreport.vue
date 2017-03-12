@@ -120,7 +120,8 @@
                 compname: "",
                 print_date: moment().format('L'),
                 ars: [],
-                num_format:"0,0"
+                num_format:"0,0",
+                opens:[]
             }
         },
         computed: {
@@ -170,6 +171,7 @@
                         for(let i=1;i<=res.data.length;i++){
                             this.ars.splice(index+i,0,res.data[i-1]);
                         }
+                        this.opens.push(index);
                         $("#loading_modal").modal('toggle');
                     })
                     .catch( err => {
@@ -177,6 +179,10 @@
                     })
                 } else {
                     this.ars.splice(index+1,ar.expand_length);
+                    let removed = _.remove(this.opens,(n) => {
+                        return n != index;
+                    });
+                    this.opens = removed;
                     ar.checked = false;
                     ar.expand_length = 0;
                 }
@@ -188,6 +194,7 @@
 
                             let res = await Axios.get('/admin-api/arbook/details/'+this.ars[i].marcardcustomerid)
                             this.ars[i].checked = true;
+                            this.opens.push(i);
                             this.ars[i].expand_length = res.data.length;
                             for(let j=1;j<=res.data.length;j++){
                                 console.log(res.data[j-1]);
@@ -235,6 +242,7 @@
             fetchArs(){
                 $('#loading_modal').modal('toggle');
                 let self = this;
+                this.opens = [];
                 Axios.get('/admin-api/arbook?customer='+this.selected_customer)
                 .then(res => {
 
@@ -255,20 +263,20 @@
                 })
             },
             printTable(){
-                let data = base64.encode(JSON.stringify(this.ars));
-                window.open('/admin-nano/reports/arbook/export/print?customer='+this.label_customer+"&br="+this.label_branch+"&data="+data,'_blank');
+                let data = base64.encode(JSON.stringify(this.opens));
+                window.open('/admin-nano/reports/arbook/export/print?customer='+this.selected_customer+"&br="+this.label_branch+"&data="+data,'_blank');
             },
             pdfTable(){
-                let data = base64.encode(JSON.stringify(this.ars));
-                window.open('/admin-nano/reports/arbook/export/pdf?customer='+this.label_customer+"&br="+this.label_branch+"&data="+data,'_blank');
+                let data = base64.encode(JSON.stringify(this.opens));
+                window.open('/admin-nano/reports/arbook/export/pdf?customer='+this.selected_customer+"&br="+this.label_branch+"&data="+data,'_blank');
             },
             excelTable(){
-                let data = base64.encode(JSON.stringify(this.ars));
-                window.open('/admin-nano/reports/arbook/export/excel?customer='+this.label_customer+"&br="+this.label_branch+"&data="+data,'_blank');
+                let data = base64.encode(JSON.stringify(this.opens));
+                window.open('/admin-nano/reports/arbook/export/excel?customer='+this.selected_customer+"&br="+this.label_branch+"&data="+data,'_blank');
             },
             csvTable(){
-                let data = base64.encode(JSON.stringify(this.ars));
-                window.open('/admin-nano/reports/arbook/export/csv?customer='+this.label_customer+"&br="+this.label_branch+"&data="+data,'_blank');
+                let data = base64.encode(JSON.stringify(this.opens));
+                window.open('/admin-nano/reports/arbook/export/csv?customer='+this.selected_customer+"&br="+this.label_branch+"&data="+data,'_blank');
             }
         },
         created(){
