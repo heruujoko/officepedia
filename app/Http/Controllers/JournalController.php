@@ -190,14 +190,25 @@ class JournalController extends Controller
                     ));
                     foreach($j['transactions'] as $tr){
                         $this->count++;
-                        $sheet->row($this->count,array(
-                            $tr->mjournaldate,
-                            $tr->mjournaltransno,
-                            $tr->mjournaltype,
-                            $tr['mjournalcoaname'],
-                            $tr->mjournaldebit,
-                            $tr->mjournalcredit
-                        ));
+                        if($tr->mjournalcredit != 0){
+                            $sheet->row($this->count,array(
+                                $tr->mjournaldate,
+                                $tr->mjournaltransno,
+                                $tr->mjournaltype,
+                                '                 '.$tr['mjournalcoaname'],
+                                $tr->mjournaldebit,
+                                $tr->mjournalcredit
+                            ));
+                        } else {
+                            $sheet->row($this->count,array(
+                                $tr->mjournaldate,
+                                $tr->mjournaltransno,
+                                $tr->mjournaltype,
+                                $tr['mjournalcoaname'],
+                                $tr->mjournaldebit,
+                                $tr->mjournalcredit
+                            ));
+                        }
                     }
                     $this->count++;
                     $sheet->row($this->count,array(
@@ -275,14 +286,25 @@ class JournalController extends Controller
                     ));
                     foreach($j['transactions'] as $tr){
                         $this->count++;
-                        $sheet->row($this->count,array(
-                            $tr->mjournaldate,
-                            $tr->mjournaltransno,
-                            $tr->mjournaltype,
-                            $tr['mjournalcoaname'],
-                            $tr->mjournaldebit,
-                            $tr->mjournalcredit
-                        ));
+                        if($tr->mjournalcredit != 0){
+                            $sheet->row($this->count,array(
+                                $tr->mjournaldate,
+                                $tr->mjournaltransno,
+                                $tr->mjournaltype,
+                                '                 '.$tr['mjournalcoaname'],
+                                $tr->mjournaldebit,
+                                $tr->mjournalcredit
+                            ));
+                        } else {
+                            $sheet->row($this->count,array(
+                                $tr->mjournaldate,
+                                $tr->mjournaltransno,
+                                $tr->mjournaltype,
+                                $tr['mjournalcoaname'],
+                                $tr->mjournaldebit,
+                                $tr->mjournalcredit
+                            ));
+                        }
                     }
                     $this->count++;
                     $sheet->row($this->count,array(

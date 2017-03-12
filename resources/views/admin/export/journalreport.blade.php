@@ -64,6 +64,9 @@
             font-size: 9px;
             display: block;
         }
+        .push{
+            padding-left: 50px !important;
+        }
         </style>
     </head>
     <body>
@@ -97,7 +100,11 @@
                         <td>{{ $tr->mjournaldate }}</td>
                         <td>{{ $tr->mjournaltransno }}</td>
                         <td>{{ $tr->mjournaltranstype }}</td>
-                        <td>{{ $tr['mjournalcoaname'] }}</td>
+                        @if($tr->mjournalcredit != 0)
+                            <td class="push"><span>{{ $tr['mjournalcoaname'] }}</span></td>
+                        @else
+                            <td><span>{{ $tr['mjournalcoaname'] }}</span></td>
+                        @endif
                         <td>{{ number_format($tr->mjournaldebit,$decimals,$dec_point,$thousands_sep) }}</td>
                         <td>{{ number_format($tr->mjournalcredit,$decimals,$dec_point,$thousands_sep) }}</td>
                     </tr>

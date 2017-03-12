@@ -52,7 +52,7 @@
                                 <th>Tanggal</th>
                                 <th>No Transaksi</th>
                                 <th>Tipe</th>
-                                <th>Akun</th>
+                                <th style="width: 2%">Akun</th>
                                 <th>Debet</th>
                                 <th>Credit</th>
                             </tr>
@@ -62,7 +62,8 @@
                                 <td>{{ tr.mjournaldate }}</td>
                                 <td>{{ tr.mjournaltransno }}</td>
                                 <td>{{ tr.mjournaltranstype }}</td>
-                                <td>{{ tr.mjournalcoaname }}</td>
+                                <td v-if="tr.mjournaldebit == 0 && tr.mjournalcredit != 0"><span style="margin-left: 50px">{{ tr.mjournalcoaname }}</span></td>
+                                <td v-else><span>{{ tr.mjournalcoaname }}</span></td>
                                 <td style="text-align: right" v-priceformatlabel="num_format">{{ tr.mjournaldebit }}</td>
                                 <td style="text-align: right" v-priceformatlabel="num_format">{{ tr.mjournalcredit }}</td>
                             </tr>
