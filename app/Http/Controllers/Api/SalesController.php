@@ -421,7 +421,7 @@ class SalesController extends Controller
                     $ar['numoftrans'] += 1;
                     $now = Carbon::now();
                     $due = Carbon::parse($last_ar->marcardduedate);
-                    $diff = $now->diffInDays($due,false);
+                    $diff = $now->diffInDays($due,true);
 
                     $ar->marcardtotalinv += $last_ar->marcardtotalinv;
                     $ar->marcardoutstanding += $last_ar->marcardoutstanding;
