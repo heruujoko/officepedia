@@ -285,7 +285,7 @@ class COGSHistoryController extends Controller
 
                 $this->count+=2;
                 $sheet->row($this->count,array(
-                    'Kode Barang','Nama Barang','Qty','Harga Beli','Pembelian','HPP','Remark'
+                    'Kode Barang','Nama Barang','Tanggal','Qty','Harga Beli','Pembelian','HPP','Remark'
                 ));
                 foreach($this->data['histories'] as $h){
                     $this->count++;
@@ -296,12 +296,14 @@ class COGSHistoryController extends Controller
                             '',
                             '',
                             '',
+                            '',
                             ''
                         ));
                     } else if($h['data'] == 'data'){
                         $sheet->row($this->count,array(
                             '',
                             '',
+                            $h->created_at,
                             $h->usage,
                             $h->buyprice,
                             $h->hpphistorypurchase,
@@ -311,6 +313,7 @@ class COGSHistoryController extends Controller
                     } else {
                         $sheet->row($this->count,array(
                             'TOTAL',
+                            '',
                             '',
                             $h['hpphistoryqty'],
                             '',
@@ -442,7 +445,7 @@ class COGSHistoryController extends Controller
 
                 $this->count+=2;
                 $sheet->row($this->count,array(
-                    'Kode Barang','Nama Barang','Qty','Harga Beli','Pembelian','HPP','Remark'
+                    'Kode Barang','Nama Barang','Tanggal','Qty','Harga Beli','Pembelian','HPP','Remark'
                 ));
                 foreach($this->data['histories'] as $h){
                     $this->count++;
@@ -453,12 +456,14 @@ class COGSHistoryController extends Controller
                             '',
                             '',
                             '',
+                            '',
                             ''
                         ));
                     } else if($h['data'] == 'data'){
                         $sheet->row($this->count,array(
                             '',
                             '',
+                            $h->created_at,
                             $h->usage,
                             $h->buyprice,
                             $h->hpphistorypurchase,
@@ -468,6 +473,7 @@ class COGSHistoryController extends Controller
                     } else {
                         $sheet->row($this->count,array(
                             'TOTAL',
+                            '',
                             '',
                             $h['hpphistoryqty'],
                             '',

@@ -81,6 +81,7 @@
                 <tr>
                     <td style="font-weight:bold">Kode Barang</td>
                     <td style="font-weight:bold">Nama Barang</td>
+                    <td style="font-weight:bold">Tanggal</td>
                     <td style="font-weight:bold">Qty</td>
                     <td style="font-weight:bold">Harga Beli</td>
                     <td style="font-weight:bold">Pembelian</td>
@@ -99,11 +100,13 @@
                         <td></td>
                         <td></td>
                         <td></td>
+                        <td></td>
                     </tr>
                     @elseif($h['data'] == 'data')
                     <tr>
                         <td></td>
                         <td></td>
+                        <td>{{ $h->created_at }}</td>
                         <td>{{ $h->usage }}</td>
                         <td>{{ number_format($h->buyprice,$decimals,$dec_point,$thousands_sep) }}</td>
                         <td>{{ number_format($h->hpphistorypurchase,$decimals,$dec_point,$thousands_sep) }}</td>
@@ -113,6 +116,7 @@
                     @elseif($h['data'] == 'footer')
                     <tr>
                         <td style="font-weight:bold">TOTAL</td>
+                        <td style="font-weight:bold"></td>
                         <td style="font-weight:bold"></td>
                         <td style="font-weight:bold">{{ $h['hpphistoryqty'] }}</td>
                         <td style="font-weight:bold"></td>
