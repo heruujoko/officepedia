@@ -64,6 +64,7 @@ class MHPurchase extends Model
             $should_calculate_cogs_again = false;
 
             $transaction_date_in_past = Carbon::now()->diffInDays(Carbon::parse($request->date),false) < 0;
+            $conf = MConfig::on(Auth::user()->db_name)->where('id',1)->first();
 
             if($transaction_date_in_past){
                 $should_calculate_cogs_again = true;
@@ -100,14 +101,14 @@ class MHPurchase extends Model
             }
             $header = MHPurchase::on(Auth::user()->db_name)->where('id',$trans_header->id)->first();
 
-            $coa_persediaan = MCOA::on(Auth::user()->db_name)->where('mcoacode',"1105.01")->first();
+            $coa_persediaan = MCOA::on(Auth::user()->db_name)->where('mcoacode',$conf->msysaccstock)->first();
             $coa_ppn = MCOA::on(Auth::user()->db_name)->where('mcoacode',"1107.01")->first();
-            $coa_hutang = MCOA::on(Auth::user()->db_name)->where('mcoacode',"2101.03")->first();
+            $coa_hutang = MCOA::on(Auth::user()->db_name)->where('mcoacode',$conf->msyspayapaccount)->first();
 
             // add journal
-            MJournal::record_journal($header->mhpurchaseno,"Pembelian","1105.01",$header->mhpurchasesubtotal,0,"","","",$trans_header->mhpurchasedate);
+            MJournal::record_journal($header->mhpurchaseno,"Pembelian",$conf->msysaccstock,$header->mhpurchasesubtotal,0,"","","",$trans_header->mhpurchasedate);
             MJournal::record_journal($header->mhpurchaseno,"Pembelian","1107.01",$header->mhpurchasetaxtotal,0,"","","",$trans_header->mhpurchasedate);
-            MJournal::record_journal($header->mhpurchaseno,"Pembelian","2101.03",0,$header->mhpurchasegrandtotal,"","","",$trans_header->mhpurchasedate);
+            MJournal::record_journal($header->mhpurchaseno,"Pembelian",$conf->msyspayapaccount,0,$header->mhpurchasegrandtotal,"","","",$trans_header->mhpurchasedate);
 
             MJournal::add_prefix();
 
@@ -295,13 +296,13 @@ class MHPurchase extends Model
 
             // update journal
 
-            $coa_persediaan = MCOA::on(Auth::user()->db_name)->where('mcoacode',"1105.01")->first();
+            $coa_persediaan = MCOA::on(Auth::user()->db_name)->where('mcoacode',$conf->msysaccstock)->first();
             $coa_ppn = MCOA::on(Auth::user()->db_name)->where('mcoacode',"1107.01")->first();
-            $coa_hutang = MCOA::on(Auth::user()->db_name)->where('mcoacode',"2101.03")->first();
+            $coa_hutang = MCOA::on(Auth::user()->db_name)->where('mcoacode',$conf->msyspayapaccount)->first();
 
-            $journal_persediaan = MJournal::on(Auth::user()->db_name)->where('mjournaltransno',$trans_header->mhpurchaseno)->where('mjournalcoa',"1105.01")->first();
+            $journal_persediaan = MJournal::on(Auth::user()->db_name)->where('mjournaltransno',$trans_header->mhpurchaseno)->where('mjournalcoa',$conf->msysaccstock)->first();
             $journal_ppn = MJournal::on(Auth::user()->db_name)->where('mjournaltransno',$trans_header->mhpurchaseno)->where('mjournalcoa',"1107.01")->first();
-            $journal_hutang = MJournal::on(Auth::user()->db_name)->where('mjournaltransno',$trans_header->mhpurchaseno)->where('mjournalcoa',"2101.03")->first();
+            $journal_hutang = MJournal::on(Auth::user()->db_name)->where('mjournaltransno',$trans_header->mhpurchaseno)->where('mjournalcoa',$conf->msyspayapaccount)->first();
 
             $coa_persediaan->update_saldo('-',$journal_persediaan->mjournaldebit);
             $coa_ppn->update_saldo('-',$journal_ppn->mjournaldebit);
@@ -416,27 +417,7 @@ class MHPurchase extends Model
                         var_dump('after '.$goods_stock_count);
 
                         // reset COGS
-                        // $last_cogs = MCOGS::on(Auth::user()->db_name)->where('mcogsgoodscode',$mgoods->mgoodscode)->first();
-                        // $ref_cogs = HPPHistory::on(Auth::user()->db_name)->where('id',$invoice_detail->cogs_ref)->first();
-                        // if($mgoods->mgoodsstock == 0){
-                        //     $cogs_num = 0;
-                        // } else {
-                        //     $cogs_num = (($last_cogs->mcogslastcogs * $last_cogs->mcogsgoodstotalqty) - $ref_cogs->hpphistorypurchase) / $mgoods->mgoodsstock;
-                        // }
-                        //
-                        // $h = new HPPHistory;
-                        // $h->setConnection(Auth::user()->db_name);
-                        // $h->hpphistorygoodsid = $mgoods->mgoodscode;
-                        // $h->hpphistorypurchase = 0;
-                        // $h->hpphistoryqty = $mgoods->mgoodsstock;
-                        // $h->hpphistorycogs = $cogs_num;
-                        // $h->hpphistoryremarks = "Revisi pembelian";
-                        // $h->save();
-                        //
-                        // $goods_cogs = MCOGS::on(Auth::user()->db_name)->where('mcogsgoodscode',$mgoods->mgoodscode)->first();
-                        // $goods_cogs->mcogslastcogs = $cogs_num;
-                        // $goods_cogs->mcogsgoodstotalqty = $mgoods->mgoodsstock;
-                        // $goods_cogs->save();
+
 
                         // in dengan yg baru
                         $stock_card = new MStockCard;
@@ -464,21 +445,6 @@ class MHPurchase extends Model
                         var_dump('after add '.$goods_stock_count);
                         $mgoods->mgoodsstock = $goods_stock_count;
                         $mgoods->save();
-
-                        // $cogs_num = (($last_stock * $goods_cogs->mcogslastcogs) + $invoice_detail->mdpurchasegoodsgrossamount ) / $mgoods->mgoodsstock;
-                        // $goods_cogs->mcogsgoodstotalqty = $mgoods->mgoodsstock;
-                        // $goods_cogs->mcogslastcogs = $cogs_num;
-                        // $goods_cogs->mcogsremarks = "";
-                        // $goods_cogs->save();
-                        //
-                        // $h = new HPPHistory;
-                        // $h->setConnection(Auth::user()->db_name);
-                        // $h->hpphistorygoodsid = $mgoods->mgoodscode;
-                        // $h->hpphistorypurchase = $invoice_detail->mdpurchasegoodsgrossamount;
-                        // $h->hpphistoryqty = $mgoods->mgoodsstock;
-                        // $h->hpphistorycogs = $cogs_num;
-                        // $h->hpphistoryremarks = "Revisi pembelian";
-                        // $h->save();
 
                         // update detail reference
                         $invoice_detail->stock_ref = $stock_card->id;
@@ -546,39 +512,6 @@ class MHPurchase extends Model
                     $mgoods->save();
 
                     // update COGS
-                    // find first cogs
-                    // $goods_cogs = MCOGS::on(Auth::user()->db_name)->where('mcogsgoodscode',$mgoods->mgoodscode)->first();
-                    // $current_cogs = 0;
-                    // if($goods_cogs == null){
-                    //     $cogs = new MCOGS;
-                    //     $cogs->setConnection(Auth::user()->db_name);
-                    //     $cogs->mcogsgoodscode = $mgoods->mgoodscode;
-                    //     $cogs->mcogsgoodsname = $mgoods->mgoodsname;
-                    //     $cogs->mcogsgoodstotalqty = $mgoods->mgoodsstock;
-                    //     $cogs->mcogslastcogs = $header->mhpurchasegrandtotal / $mgoods->mgoodsstock;
-                    //     $cogs->mcogsremarks = "";
-                    //     $cogs->save();
-                    //     $current_cogs = $cogs->mcogslastcogs;
-                    // } else {
-                    //     // update cogs
-                    //     $goods_cogs->mcogsgoodstotalqty = $mgoods->mgoodsstock;
-                    //     $cogs_num = (($last_stock * $goods_cogs->mcogslastcogs) + $detail->mdpurchasegoodsgrossamount ) / $mgoods->mgoodsstock;
-                    //     $goods_cogs->mcogslastcogs = $cogs_num;
-                    //     $goods_cogs->mcogsremarks = "";
-                    //     $goods_cogs->save();
-                    //     $current_cogs = $goods_cogs->mcogslastcogs;
-                    // }
-                    //
-                    // // save cogs log
-                    // $h = new HPPHistory;
-                    // $h->setConnection(Auth::user()->db_name);
-                    // $h->hpphistorygoodsid = $mgoods->mgoodscode;
-                    // $h->hpphistorypurchase = $detail->mdpurchasegoodsgrossamount;
-                    // $h->hpphistoryqty = $detail->mdpurchasegoodsqty;
-                    // $h->hpphistorycogs = $current_cogs;
-                    // $h->hpphistoryremarks = "";
-                    // $h->save();
-
                     $invoice_detail->cogs_ref = IntegrityHelper::updateCOGS($mgoods,$invoice_detail->mdpurchasegoodsgrossamount);
                     $invoice_detail->save();
                 }
@@ -625,11 +558,6 @@ class MHPurchase extends Model
                 $stock_card->save();
             }
 
-            // $journal = MJournal::on(Auth::user()->db_name)->where('mjournaltransno',$trans_header->mhpurchaseno)->where('mjournaltranstype','Pembelian')->first();
-            // $journal->mjournalcredit = $trans_header->mhpurchasegrandtotal;
-            // $journal->save();
-            //
-            // $coa_ap->update_saldo("+",$trans_header->mhpurchasegrandtotal);
             if($should_calculate_cogs_again){
                 IntegrityHelper::recalculateTransactionFrom($trans_header->mhpurchasedate);
             }
@@ -647,16 +575,16 @@ class MHPurchase extends Model
         DB::connection(Auth::user()->db_name)->beginTransaction();
         try{
             $header = MHPurchase::on(Auth::user()->db_name)->where('id',$id)->first();
-
+            $conf = MConfig::on(Auth::user()->db_name)->where('id',1)->first();
             $details = MDPurchase::on(Auth::user()->db_name)->where('mhpurchaseno',$header->mhpurchaseno)->get();
 
-            $coa_persediaan = MCOA::on(Auth::user()->db_name)->where('mcoacode',"1105.01")->first();
+            $coa_persediaan = MCOA::on(Auth::user()->db_name)->where('mcoacode',$conf->msysaccstock)->first();
             $coa_ppn = MCOA::on(Auth::user()->db_name)->where('mcoacode',"1107.01")->first();
-            $coa_hutang = MCOA::on(Auth::user()->db_name)->where('mcoacode',"2101.03")->first();
+            $coa_hutang = MCOA::on(Auth::user()->db_name)->where('mcoacode',$conf->msyspayapaccount)->first();
 
-            $journal_persediaan = MJournal::on(Auth::user()->db_name)->where('mjournaltransno',$header->mhpurchaseno)->where('mjournalcoa',"1105.01")->first();
+            $journal_persediaan = MJournal::on(Auth::user()->db_name)->where('mjournaltransno',$header->mhpurchaseno)->where('mjournalcoa',$conf->msysaccstock)->first();
             $journal_ppn = MJournal::on(Auth::user()->db_name)->where('mjournaltransno',$header->mhpurchaseno)->where('mjournalcoa',"1107.01")->first();
-            $journal_hutang = MJournal::on(Auth::user()->db_name)->where('mjournaltransno',$header->mhpurchaseno)->where('mjournalcoa',"2101.03")->first();
+            $journal_hutang = MJournal::on(Auth::user()->db_name)->where('mjournaltransno',$header->mhpurchaseno)->where('mjournalcoa',$conf->msyspayapaccount)->first();
 
             $coa_persediaan->update_saldo('-',$journal_persediaan->mjournaldebit);
             $coa_ppn->update_saldo('-',$journal_ppn->mjournaldebit);
