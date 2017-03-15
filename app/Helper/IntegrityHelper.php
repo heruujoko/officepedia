@@ -224,6 +224,19 @@ class IntegrityHelper {
                 $cogs->mcogslastcogs = $hpp;
                 $cogs->mcogsgoodstotalqty = $mgoods->mgoodsstock;
                 $cogs->save();
+                var_dump('stock '.$mgoods->mgoodsstock);
+            } else if($tr->type == 'sales') {
+                var_dump('sales '.$tr->id.' - '.$tr->transno);
+                $mgoods->mgoodsstock -= $tr->usage;
+                $mgoods->save();
+                $tr->hpphistorycogs = $cogs->mcogslastcogs;
+                $tr->lastcogs = $cogs->mcogslastcogs;
+                $tr->lastqty = $tr->prev()->hpphistoryqty;
+                $tr->hpphistoryqty = $mgoods->mgoodsstock;
+                $tr->save();
+                var_dump('stock '.$mgoods->mgoodsstock);
+            } else {
+
             }
         }
     }
