@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Builder;
 use App\MConfig;
 use Auth;
 use App\Helper\DBHelper;
+use App\Helper\IntegrityHelper;
 use Carbon\Carbon;
 use App\MCUSTOMER;
 use App\MStockCard;
@@ -192,6 +193,7 @@ class MHInvoice extends Model
           $h->lastcogs = $last_purchase->hpphistorycogs;
           $h->type = 'sales';
           $h->usage = $g['usage'];
+          $h->transno = $invoice_detail->mhinvoiceno;
           $h->lastqty = $last_purchase->hpphistoryqty;
           $h->hpphistoryremarks = 'Penjualan';
           $h->save();
@@ -691,13 +693,15 @@ class MHInvoice extends Model
                 // $last_stock += $stock_card->mstockcardstockin;
                 // $mgoods->mgoodsstock = $last_stock;
                 $mgoods->save();
+
+                IntegrityHelper::restoreCOGS($mgoods,$header->mhinvoiceno,$stock_ref->mstockcardstockout);
             }
 
             // void ar
             $ars = MARCard::on(Auth::user()->db_name)->where('marcardtransno',$header->mhinvoiceno)->get();
             foreach($ars as $ar){
                 $ar->void = 1;
-                $ar->save();    
+                $ar->save();
             }
 
             foreach($journals as $j){

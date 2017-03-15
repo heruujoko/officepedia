@@ -13,4 +13,12 @@ class HPPHistory extends Model
     public function goods(){
         return MGoods::on(Auth::user()->db_name)->where('mgoodscode',$this->hpphistorygoodsid)->first();
     }
+
+    public function prev(){
+        return HPPHistory::on(Auth::user()->db_name)->where('id',($this->id -1))->first();
+    }
+
+    public function next(){
+        return HPPHistory::on(Auth::user()->db_name)->where('id',($this->id +1))->first();
+    }
 }

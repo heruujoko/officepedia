@@ -51,51 +51,10 @@ class IntegrityHelper {
 
     }
 
-    public static function updateCOGS($mgoods,$mdpurchasegoodsgrossamount,$buy_amount,$remarks = ""){
-        $lastcogs = HPPHistory::on(Auth::user()->db_name)->where('hpphistorygoodsid',$mgoods->mgoodscode)->where('void',0)->where('type','purchase')->get()->last();
-        $cogs = MCOGS::on(Auth::user()->db_name)->where('mcogsgoodscode',$mgoods->mgoodscode)->first();
-        $cogs_num = 0;
-        $lastcogsvalue = $lastcogs->lastcogs;
-        $lastqtyvalue = $lastcogs->lastqty;
-
-        var_dump('lastcogsvalue '.$lastcogsvalue);
-        var_dump('lastqtyvalue '.$lastqtyvalue);
-
-        $last_stock = $lastcogs->lastqty;
-        var_dump('last_stock '.$last_stock);
-        $cogs->mcogsgoodstotalqty -= $lastcogs->hpphistoryqty;
-        var_dump('(('.$last_stock.' * '.$lastcogsvalue.' + '.$mdpurchasegoodsgrossamount.' / '.$mgoods->mgoodsstock.' ))');
-        $cogs_num = (($last_stock * $lastcogsvalue) + $mdpurchasegoodsgrossamount ) / $mgoods->mgoodsstock;
-        var_dump('cogs_num '.$cogs_num);
-        // $lastcogsvalue = $cogs->mcogslastcogs;
-        $cogs->mcogslastcogs = $cogs_num;
-        $cogs->mcogsgoodstotalqty = $mgoods->mgoodsstock;
-        $cogs->save();
-
-        // void edited history
-        $lastcogs->void = 1;
-        $lastcogs->save();
-
-        // save cogs log
-        $h = new HPPHistory;
-        $h->setConnection(Auth::user()->db_name);
-        $h->hpphistorygoodsid = $mgoods->mgoodscode;
-        $h->hpphistorypurchase = $mdpurchasegoodsgrossamount;
-        $h->hpphistoryqty = $mgoods->mgoodsstock;
-        $h->hpphistorycogs = $cogs_num;
-        $h->lastcogs = $lastcogsvalue;
-        $h->type = 'purchase';
-        $h->usage = $buy_amount;
-        $h->lastqty = $lastqtyvalue;
-        $h->buyprice = ($mdpurchasegoodsgrossamount / $buy_amount);
-        $h->hpphistoryremarks = 'Revisi Pembelian';
-        $h->save();
-
-        return $h->id;
-
-    }
-
-    public static function calculateCOGS($mgoods,$mdpurchasegoodsgrossamount,$buy_amount,$remarks = ""){
+    /*
+     *  on create purchase
+     */
+    public static function calculateCOGS($mgoods,$mdpurchasegoodsgrossamount,$buy_amount,$purchaseno,$remarks = ""){
         $lastcogs = HPPHistory::on(Auth::user()->db_name)->where('hpphistorygoodsid',$mgoods->mgoodscode)->where('void',0)->where('type','purchase')->get()->last();
         $cogs = MCOGS::on(Auth::user()->db_name)->where('mcogsgoodscode',$mgoods->mgoodscode)->first();
         $lastcogsvalue = 0;
@@ -140,6 +99,7 @@ class IntegrityHelper {
         $h->lastqty = $lastqtysvalue;
         $h->type = 'purchase';
         $h->usage = $buy_amount;
+        $h->transno = $purchaseno;
         $h->buyprice = ($mdpurchasegoodsgrossamount / $buy_amount);
         $h->hpphistoryremarks = 'Pembelian';
         $h->save();
@@ -148,6 +108,56 @@ class IntegrityHelper {
 
     }
 
+    /*
+     *  on update purchase
+     */
+    public static function updateCOGS($mgoods,$mdpurchasegoodsgrossamount,$buy_amount,$remarks = ""){
+        $lastcogs = HPPHistory::on(Auth::user()->db_name)->where('hpphistorygoodsid',$mgoods->mgoodscode)->where('void',0)->where('type','purchase')->get()->last();
+        $cogs = MCOGS::on(Auth::user()->db_name)->where('mcogsgoodscode',$mgoods->mgoodscode)->first();
+        $cogs_num = 0;
+        $lastcogsvalue = $lastcogs->lastcogs;
+        $lastqtyvalue = $lastcogs->lastqty;
+
+        var_dump('lastcogsvalue '.$lastcogsvalue);
+        var_dump('lastqtyvalue '.$lastqtyvalue);
+
+        $last_stock = $lastcogs->lastqty;
+        var_dump('last_stock '.$last_stock);
+        $cogs->mcogsgoodstotalqty -= $lastcogs->hpphistoryqty;
+        var_dump('(('.$last_stock.' * '.$lastcogsvalue.' + '.$mdpurchasegoodsgrossamount.' / '.$mgoods->mgoodsstock.' ))');
+        $cogs_num = (($last_stock * $lastcogsvalue) + $mdpurchasegoodsgrossamount ) / $mgoods->mgoodsstock;
+        var_dump('cogs_num '.$cogs_num);
+        // $lastcogsvalue = $cogs->mcogslastcogs;
+        $cogs->mcogslastcogs = $cogs_num;
+        $cogs->mcogsgoodstotalqty = $mgoods->mgoodsstock;
+        $cogs->save();
+
+        // void edited history
+        $lastcogs->void = 1;
+        $lastcogs->save();
+
+        // save cogs log
+        $h = new HPPHistory;
+        $h->setConnection(Auth::user()->db_name);
+        $h->hpphistorygoodsid = $mgoods->mgoodscode;
+        $h->hpphistorypurchase = $mdpurchasegoodsgrossamount;
+        $h->hpphistoryqty = $mgoods->mgoodsstock;
+        $h->hpphistorycogs = $cogs_num;
+        $h->lastcogs = $lastcogsvalue;
+        $h->type = 'purchase';
+        $h->usage = $buy_amount;
+        $h->lastqty = $lastqtyvalue;
+        $h->buyprice = ($mdpurchasegoodsgrossamount / $buy_amount);
+        $h->hpphistoryremarks = 'Revisi Pembelian';
+        $h->save();
+
+        return $h->id;
+
+    }
+
+    /*
+     *  on delete purchase
+     */
     public static function deleteCOGS($mgoods,$mdpurchasegoodsgrossamount,$remarks = ""){
         $lastcogs = HPPHistory::on(Auth::user()->db_name)->where('hpphistorygoodsid',$mgoods->mgoodscode)->where('void',0)->where('type','purchase')->get()->last();
         $cogs = MCOGS::on(Auth::user()->db_name)->where('mcogsgoodscode',$mgoods->mgoodscode)->first();
@@ -174,4 +184,47 @@ class IntegrityHelper {
 
     }
 
+
+    /*
+     *  on delete sales
+     */
+    public static function restoreCOGS($mgoods,$invoiceno,$usage,$remarks = ""){
+
+        $cogs = MCOGS::on(Auth::user()->db_name)->where('mcogsgoodscode',$mgoods->mgoodscode)->first();
+        $history = HPPHistory::on(Auth::user()->db_name)->where('transno',$invoiceno)->first();
+        $history->void = 1;
+        $history->save();
+        $cogs->mcogsgoodstotalqty = $history->prev()->hpphistoryqty;
+        $cogs->mcogslastcogs = $history->prev()->hpphistorycogs;
+        $cogs->save();
+
+        $mgoods->mgoodsstock = $cogs->mcogsgoodstotalqty;
+        $mgoods->save();
+
+        $start_state = $history->prev();
+
+        $affected_transaction = HPPHistory::on(Auth::user()->db_name)->where('id','>', $start_state->id)->where('hpphistorygoodsid',$mgoods->mgoodscode)->where('void',0)->get();
+        $count = 0;
+        foreach($affected_transaction as $tr){
+            $count++;
+            if($tr->type == 'purchase'){
+                if($count == 1){
+                    $tr->hpphistoryqty += $usage;
+                    $tr->lastqty += $usage;
+                    $tr->hpphistorypurchase = ($tr->hpphistoryqty * $tr->buyprice);
+                }
+
+                $hpp = (($mgoods->mgoodsstock * $tr->lastcogs) + ($tr->usage * $tr->buyprice)) / ($mgoods->mgoodsstock + $tr->usage);
+                var_dump('hpp '.$tr->id.' - '.$tr->transno.' = '.$hpp);
+                $tr->hpphistorycogs = $hpp;
+                $tr->save();
+
+                $mgoods->mgoodsstock += $tr->usage;
+                $mgoods->save();
+                $cogs->mcogslastcogs = $hpp;
+                $cogs->mcogsgoodstotalqty = $mgoods->mgoodsstock;
+                $cogs->save();
+            }
+        }
+    }
 }

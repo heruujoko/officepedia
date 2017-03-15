@@ -181,45 +181,8 @@ class MHPurchase extends Model
                 $detail->save();
 
                 // update COGS
-                $detail->cogs_ref = IntegrityHelper::calculateCOGS($mgoods,$detail->mdpurchasegoodsgrossamount,$g['usage']);
+                $detail->cogs_ref = IntegrityHelper::calculateCOGS($mgoods,$detail->mdpurchasegoodsgrossamount,$g['usage'],$detail->mhpurchaseno);
                 $detail->save();
-
-
-                // find first cogs
-                // $goods_cogs = MCOGS::on(Auth::user()->db_name)->where('mcogsgoodscode',$mgoods->mgoodscode)->first();
-                // $current_cogs = 0;
-                // if($goods_cogs == null){
-                //     $cogs = new MCOGS;
-                //     $cogs->setConnection(Auth::user()->db_name);
-                //     $cogs->mcogsgoodscode = $mgoods->mgoodscode;
-                //     $cogs->mcogsgoodsname = $mgoods->mgoodsname;
-                //     $cogs->mcogsgoodstotalqty = $mgoods->mgoodsstock;
-                //     $cogs->mcogslastcogs = $detail->mdpurchasegoodsgrossamount / $mgoods->mgoodsstock;
-                //     $cogs->mcogsremarks = "";
-                //     $cogs->save();
-                //     $current_cogs = $cogs->mcogslastcogs;
-                // } else {
-                //     // update cogs
-                //     $goods_cogs->mcogsgoodstotalqty = $mgoods->mgoodsstock;
-                //     $cogs_num = (($last_stock * $goods_cogs->mcogslastcogs) + $detail->mdpurchasegoodsgrossamount ) / $mgoods->mgoodsstock;
-                //     $goods_cogs->mcogslastcogs = $cogs_num;
-                //     $goods_cogs->mcogsremarks = "";
-                //     $goods_cogs->save();
-                //     $current_cogs = $goods_cogs->mcogslastcogs;
-                // }
-                //
-                // // save cogs log
-                // $h = new HPPHistory;
-                // $h->setConnection(Auth::user()->db_name);
-                // $h->hpphistorygoodsid = $mgoods->mgoodscode;
-                // $h->hpphistorypurchase = $detail->mdpurchasegoodsgrossamount;
-                // $h->hpphistoryqty = $detail->mdpurchasegoodsqty;
-                // $h->hpphistorycogs = $current_cogs;
-                // $h->hpphistoryremarks = "";
-                // $h->save();
-                //
-                // $detail->cogs_ref = $h->id;
-                // $detail->save();
             }
 
             // fill the AP
