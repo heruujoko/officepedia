@@ -206,13 +206,15 @@ class IntegrityHelper {
 
         $affected_transaction = HPPHistory::on(Auth::user()->db_name)->where('id','>', $start_state->id)->where('hpphistorygoodsid',$mgoods->mgoodscode)->where('void',0)->where('transno','!=',$invoiceno)->get();
         $count = 0;
+        $first_purcahse_since = true;
         foreach($affected_transaction as $tr){
             $count++;
             if($tr->type == 'purchase'){
-                if($count == 1){
+                if($first_purcahse_since){
                     $tr->hpphistoryqty += $usage;
                     $tr->lastqty += $usage;
                     $tr->hpphistorypurchase = ($tr->hpphistoryqty * $tr->buyprice);
+                    $first_purcahse_since = false;
                 }
 
                 $hpp = (($mgoods->mgoodsstock * $tr->lastcogs) + ($tr->usage * $tr->buyprice)) / ($mgoods->mgoodsstock + $tr->usage);
