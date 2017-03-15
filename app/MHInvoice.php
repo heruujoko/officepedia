@@ -595,6 +595,7 @@ class MHInvoice extends Model
         $voided_details = MDInvoice::on(Auth::user()->db_name)->where('mhinvoiceno',$invoice_header->mhinvoiceno)->where('void',1)->get();
         foreach ($voided_details as $v) {
             $mgoods = MGoods::on(Auth::user()->db_name)->where('mgoodscode',$v->mdinvoicegoodsid)->first();
+            var_dump('STOCK sebelum helper '.$mgoods->mgoodsstock);
             //in dengan qty lama
             $stock_card = new MStockCard;
             $stock_card->setConnection(Auth::user()->db_name);
@@ -603,7 +604,7 @@ class MHInvoice extends Model
             $stock_card->mstockcarddate = Carbon::parse($request->date);
             $stock_card->mstockcardtranstype = $request->type;
             $stock_card->mstockcardtransno = $header->mhinvoiceno;
-            $stock_card->mstockcardremark = "Revisi Transaksi Hapus item".$request->type." untuk ".$customer->mcustomername." ".$g['remark'];
+            $stock_card->mstockcardremark = "Revisi Transaksi Hapus item".$request->type." untuk ".$customer->mcustomername;
             $stock_card->mstockcardstockin = $v->mdinvoicegoodsqty;
             $stock_card->mstockcardstockout = 0;
             $stock_card->mstockcardstocktotal = $mgoods->mgoodsstock + $v->mdinvoicegoodsqty;
@@ -615,6 +616,8 @@ class MHInvoice extends Model
             $stock_card->save();
             // $mgoods->mgoodsstock = $stock_card->mstockcardstocktotal;
             // $mgoods->save();
+
+            IntegrityHelper::restoreCOGS($mgoods,$invoice_detail->mhinvoiceno,$v->mdinvoicegoodsqty,"hapus detail.");
         }
 
         $journal_hpp->mjournaldebit = $sum_hpp_journal;
@@ -627,6 +630,7 @@ class MHInvoice extends Model
         return 'ok';
       } catch(Exception $e){
         DB::connection(Auth::user()->db_name)->rollBack();
+        dd($e);
         return $e;
       }
 

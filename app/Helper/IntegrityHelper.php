@@ -201,9 +201,10 @@ class IntegrityHelper {
         $mgoods->mgoodsstock = $cogs->mcogsgoodstotalqty;
         $mgoods->save();
 
+        var_dump('STOCK dalam helper '.$mgoods->mgoodsstock);
         $start_state = $history->prev();
 
-        $affected_transaction = HPPHistory::on(Auth::user()->db_name)->where('id','>', $start_state->id)->where('hpphistorygoodsid',$mgoods->mgoodscode)->where('void',0)->get();
+        $affected_transaction = HPPHistory::on(Auth::user()->db_name)->where('id','>', $start_state->id)->where('hpphistorygoodsid',$mgoods->mgoodscode)->where('void',0)->where('transno','!=',$invoiceno)->get();
         $count = 0;
         foreach($affected_transaction as $tr){
             $count++;

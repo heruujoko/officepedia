@@ -15,7 +15,18 @@ class HPPHistory extends Model
     }
 
     public function prev(){
-        return HPPHistory::on(Auth::user()->db_name)->where('id',($this->id -1))->first();
+        $same = true;
+        $count = 0;
+        $prev_trans = [];
+        while($same){
+            $count++;
+            $hist = HPPHistory::on(Auth::user()->db_name)->where('id',($this->id -$count))->first();
+            if($hist->transno != $this->transno){
+                $same = false;
+                $prev_trans = $hist;
+            }
+        }
+        return $prev_trans;
     }
 
     public function next(){
