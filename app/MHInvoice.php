@@ -432,7 +432,11 @@ class MHInvoice extends Model
                 //check allow minus
                 if($allow_minus == 0 && ($mgoods->mgoodsstock < 0)){
                   DB::connection(Auth::user()->db_name)->rollBack();
-                  return 'empty';
+                  $resp = [
+                      'status' => 'empty',
+                      'data' => null
+                  ];
+                  return $resp;
                 }
 
                 // update journal
@@ -532,7 +536,11 @@ class MHInvoice extends Model
               //check allow minus
               if($allow_minus == 0 && ($mgoods->mgoodsstock < 0)){
                 DB::connection(Auth::user()->db_name)->rollBack();
-                return 'empty';
+                $resp = [
+                    'status' => 'empty',
+                    'data' => null
+                ];
+                return $resp;
               }
 
               $cogs = MCOGS::on(Auth::user()->db_name)->where('mcogsgoodscode',$mgoods->mgoodscode)->first();
@@ -630,11 +638,18 @@ class MHInvoice extends Model
         $journal_persediaan->save();
 
         DB::connection(Auth::user()->db_name)->commit();
-        return 'ok';
+        $resp = [
+            'status' => 'ok',
+            'data' => $invoice_header
+        ];
+        return $resp;
       } catch(Exception $e){
         DB::connection(Auth::user()->db_name)->rollBack();
-        dd($e);
-        return $e;
+        $resp = [
+            'status' => 'err',
+            'data' => $e
+        ];
+        return $resp;
       }
 
     }

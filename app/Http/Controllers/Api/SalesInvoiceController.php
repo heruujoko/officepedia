@@ -119,9 +119,9 @@ class SalesInvoiceController extends Controller
     public function update($id, Request $request){
       $header = MHInvoice::on(Auth::user()->db_name)->where('id',$id)->first();
       $transaction = $header->update_transaction($request);
-      if($transaction == "ok"){
-          return response()->json($transaction);
-      } else if($transaction == "empty") {
+      if($transaction['status'] == "ok"){
+          return response()->json($transaction['data']);
+      } else if($transaction['status'] == "empty") {
           return response()->json($transaction,400);
       } else {
           return response()->json($transaction,500);
