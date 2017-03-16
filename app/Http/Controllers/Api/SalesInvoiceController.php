@@ -105,9 +105,10 @@ class SalesInvoiceController extends Controller
     public function store(Request $request){
 
       $transaction = MHInvoice::start_transaction($request);
-      if($transaction == "ok"){
-          return response()->json($transaction);
-      } else if($transaction == "empty") {
+      if($transaction['status'] == "ok"){
+          $invoice = MHInvoice::on(Auth::user()->db_name)->where('id',$transaction['data']->id)->first();
+          return response()->json($invoice);
+      } else if($transaction['status'] == "empty") {
           return response()->json($transaction,400);
       } else {
           return response()->json($transaction,500);

@@ -132,6 +132,7 @@ Route::group(['prefix'=>'admin-nano','middleware' => ['auth','tenantdb']],functi
   Route::get('mwarehouse/export/excel','MWarehouseController@excel');
   Route::get('mwarehouse/export/pdf','MWarehouseController@pdf');
 
+  Route::get('salesinvoice/{invoiceno}/lpt','SalesInvoiceController@lptPrint');
   Route::get('salesinvoice','SalesInvoiceController@index');
   Route::get('salesinvoice/export/csv','SalesInvoiceController@csv');
   Route::get('salesinvoice/export/excel','SalesInvoiceController@excel');

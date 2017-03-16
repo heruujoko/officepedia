@@ -201,7 +201,11 @@ class MHInvoice extends Model
           //check allow minus
           if($allow_minus == 0 && ($mgoods->mgoodsstock < 0)){
             DB::connection(Auth::user()->db_name)->rollBack();
-            return 'empty';
+            $resp = [
+                'status' => 'empty',
+                'data' => null
+            ];
+            return $resp;
           }
 
         }
@@ -241,11 +245,18 @@ class MHInvoice extends Model
         MJournal::add_prefix();
 
         DB::connection(Auth::user()->db_name)->commit();
-        return 'ok';
+        $resp = [
+            'status' => 'ok',
+            'data' => $invoice_header
+        ];
+        return $resp;
       } catch(Exception $e){
         DB::connection(Auth::user()->db_name)->rollBack();
-        dd($e);
-        return 'err';
+        $resp = [
+            'status' => 'err',
+            'data' => $e
+        ];
+        return $resp;
       }
 
     }
@@ -719,5 +730,9 @@ class MHInvoice extends Model
 
     public function customers(){
       return MCUSTOMER::on(Auth::user()->db_name)->where('mcustomerid',$this->mhinvoicecustomerid)->first();
+    }
+
+    public function details(){
+        return MDInvoice::on(Auth::user()->db_name)->where('mhinvoiceno',$this->mhinvoiceno)->get();
     }
 }
