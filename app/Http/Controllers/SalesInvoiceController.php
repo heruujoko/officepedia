@@ -12,6 +12,7 @@ use Auth;
 use App\Http\Requests;
 use App\MHInvoice;
 use App\Helper\DBHelper;
+use App\Helper\UnitHelper;
 use Excel;
 use PDF;
 use App\MConfig;
@@ -106,5 +107,33 @@ class SalesInvoiceController extends Controller
       $pdf = PDF::loadview('admin/export/mhinvoice',$data);
       return $pdf->download('master transaksi penjualan.pdf');
       // return view('admin/export/mcoapdf',$data);
+    }
+
+    public function lptPrint($invoiceno){
+        $data['invoice'] = MHINvoice::on(Auth::user()->db_name)->where('mhinvoiceno',$invoiceno)->first();
+        $config = MConfig::on(Auth::user()->db_name)->where('id',1)->first();
+        $data['decimals'] = $config->msysgenrounddec;
+        $data['dec_point'] = $config->msysnumseparator;
+        if($data['dec_point'] == ","){
+          $data['thousands_sep'] = ".";
+        } else {
+          $data['thousands_sep'] = ",";
+        }
+        $data['config'] = $config;
+        $inv_details = $data['invoice']->details();
+
+        $data['sum_subtotal'] = 0;
+        $data['sum_tax'] = 0;
+        $data['sum_disc'] = 0;
+
+        foreach ($inv_details as $d) {
+            $goods = MGoods::on(Auth::user()->db_name)->where('mgoodscode',$d->mdinvoicegoodsid)->first();
+            $d['qty_label'] = UnitHelper::label($goods,$d->mdinvoicegoodsqty);
+            $data['sum_subtotal'] += $d->mdinvoicegoodsgrossamount;
+            $data['sum_tax'] += $d->mdinvoicegoodstax;
+            $data['sum_disc'] += $d->mdinvoicegoodsdiscount;
+        }
+        $data['details'] = $inv_details;
+        return view('admin.export.invoicelpt',$data);
     }
 }

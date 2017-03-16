@@ -316,7 +316,8 @@
         invoice_auto: true,
         lock_sell_price: false,
         disable_customer: false,
-        set_alert:false
+        set_alert:false,
+        lpt_print: false
       }
     },
     computed:{
@@ -377,6 +378,9 @@
     },
     },
     methods: {
+        lptPrint(invoiceno){
+            window.open('/admin-nano/salesinvoice/'+invoiceno+'/lpt','_blank');
+        },
         dismissModal(){
             this.selected_goods = "-";
         },
@@ -427,6 +431,11 @@
               this.lock_sell_price = true;
           } else {
               this.lock_sell_price = false;
+          }
+          if(conf.msysinvlptdirectprinting == 1){
+              this.lpt_print = true;
+          } else {
+              this.lpt_print = false;
           }
         });
       },
@@ -820,6 +829,10 @@
           this.resetInvoice();
           $('.tableapi').DataTable().ajax.reload();
           window.location.href="#formtable";
+          console.log('resp',res.data);
+          if(this.lpt_print){
+              this.lptPrint(res.data.mhinvoiceno);
+          }
         })
         .catch((err) => {
           if(this.mode == 'edit'){

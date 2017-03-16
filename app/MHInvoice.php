@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Builder;
 use App\MConfig;
 use Auth;
 use App\Helper\DBHelper;
+use App\Helper\IntegrityHelper;
 use Carbon\Carbon;
 use App\MCUSTOMER;
 use App\MStockCard;
@@ -192,6 +193,7 @@ class MHInvoice extends Model
           $h->lastcogs = $last_purchase->hpphistorycogs;
           $h->type = 'sales';
           $h->usage = $g['usage'];
+          $h->transno = $invoice_detail->mhinvoiceno;
           $h->lastqty = $last_purchase->hpphistoryqty;
           $h->hpphistoryremarks = 'Penjualan';
           $h->save();
@@ -199,7 +201,11 @@ class MHInvoice extends Model
           //check allow minus
           if($allow_minus == 0 && ($mgoods->mgoodsstock < 0)){
             DB::connection(Auth::user()->db_name)->rollBack();
-            return 'empty';
+            $resp = [
+                'status' => 'empty',
+                'data' => null
+            ];
+            return $resp;
           }
 
         }
@@ -239,11 +245,18 @@ class MHInvoice extends Model
         MJournal::add_prefix();
 
         DB::connection(Auth::user()->db_name)->commit();
-        return 'ok';
+        $resp = [
+            'status' => 'ok',
+            'data' => $invoice_header
+        ];
+        return $resp;
       } catch(Exception $e){
         DB::connection(Auth::user()->db_name)->rollBack();
-        dd($e);
-        return 'err';
+        $resp = [
+            'status' => 'err',
+            'data' => $e
+        ];
+        return $resp;
       }
 
     }
@@ -509,39 +522,11 @@ class MHInvoice extends Model
               $stock_card->mstockcardeventdate = Carbon::now();
               $stock_card->mstockcardeventtime = Carbon::now();
               $stock_card->edited = 0;
-              $stock_card->mstockcardunit3 = $mgoods->mgoodscurrentunit3;
-              $stock_card->mstockcardunit3conv = $mgoods->mgoodscurrentunit3conv;
-              $stock_card->mstockcardunit3label = $mgoods->mgoodscurrentunit3label;
-              $stock_card->mstockcardunit2 = $mgoods->mgoodscurrentunit2;
-              $stock_card->mstockcardunit2conv = $mgoods->mgoodscurrentunit2conv;
-              $stock_card->mstockcardunit2label = $mgoods->mgoodscurrentunit2label;
-              $stock_card->mstockcardunit1 = $mgoods->mgoodscurrentunit1;
-              $stock_card->mstockcardunit1conv = $mgoods->mgoodscurrentunit1conv;
-              $stock_card->mstockcardunit1label = $mgoods->mgoodscurrentunit1label;
-              // out conversion
-              $stock_card->mstockcardoutunit3 = $g['detail_goods_unit3'];
-              $stock_card->mstockcardoutunit3conv = $g['detail_goods_unit3_conv'];
-              $stock_card->mstockcardoutunit3label = $g['detail_goods_unit3_label'];
-              $stock_card->mstockcardoutunit2 = $g['detail_goods_unit2'];
-              $stock_card->mstockcardoutunit2conv = $g['detail_goods_unit2_conv'];
-              $stock_card->mstockcardoutunit2label = $g['detail_goods_unit2_label'];
-              $stock_card->mstockcardoutunit1 = $g['detail_goods_unit1'];
-              $stock_card->mstockcardoutunit1conv = $g['detail_goods_unit1_conv'];
-              $stock_card->mstockcardoutunit1label = $g['detail_goods_unit1_label'];
               $stock_card->save();
 
               // update master barang
             //   $mgoods->mgoodsstock = $stock_card->mstockcardstocktotal;
               $mgoods->mgoodsstock = $mgoods->mgoodsstock - $g['usage'];
-              $mgoods->mgoodscurrentunit3 -= $g['detail_goods_unit3'];
-              $mgoods->mgoodscurrentunit3conv = $g['detail_goods_unit3_conv'];
-              $mgoods->mgoodscurrentunit3label = $g['detail_goods_unit3_label'];
-              $mgoods->mgoodscurrentunit2 -= $g['detail_goods_unit2'];
-              $mgoods->mgoodscurrentunit2conv = $g['detail_goods_unit2_conv'];
-              $mgoods->mgoodscurrentunit2label = $g['detail_goods_unit2_label'];
-              $mgoods->mgoodscurrentunit1 -= $g['detail_goods_unit1'];
-              $mgoods->mgoodscurrentunit1conv = $g['detail_goods_unit1_conv'];
-              $mgoods->mgoodscurrentunit1label = $g['detail_goods_unit1_label'];
               $mgoods->save();
 
               //check allow minus
@@ -550,21 +535,41 @@ class MHInvoice extends Model
                 return 'empty';
               }
 
-              // add per item journal
-              MJournal::record_journal($header->mhinvoiceno,'Penjualan',$conf->msysaccsellingexpense,$hpp_price,0,"","","",$header->mhinvoicedate);
-              MJournal::record_journal($header->mhinvoiceno,'Penjualan',$conf->msysaccstock,0,$hpp_price,"","","",$header->mhinvoicedate);
+              $cogs = MCOGS::on(Auth::user()->db_name)->where('mcogsgoodscode',$mgoods->mgoodscode)->first();
+              $hpp_price = $g['usage'] * $cogs->mcogslastcogs;
+              $sum_hpp_journal += $hpp_price;
+              $sum_persediaan_journal += $hpp_price;
+
 
               $coa_hpp = MCOA::on(Auth::user()->db_name)->where('mcoacode',$conf->msysaccsellingexpense)->first();
               $coa_hpp->update_saldo('-',$hpp_price);
               $coa_persediaan_barang = MCOA::on(Auth::user()->db_name)->where('mcoacode',$conf->msysaccstock)->first();
               $coa_persediaan_barang->update_saldo('-',$hpp_price);
 
-              $hpp = HPPHistory::on(Auth::user()->db_name)->where('hpphistorygoodsid',$g['goods']['mgoodscode'])->get()->last();
-              $new_amount = $hpp->hpphistorycogs * $g['usage'];
-              $journal_hpp->mjournaldebit += $new_amount;
-              $journal_persediaan->mjournalcredit += $new_amount;
-              $journal_hpp->save();
-              $journal_persediaan->save();
+            //   $hpp = HPPHistory::on(Auth::user()->db_name)->where('hpphistorygoodsid',$g['goods']['mgoodscode'])->get()->last();
+            //   $new_amount = $hpp->hpphistorycogs * $g['usage'];
+            //   $journal_hpp->mjournaldebit += $new_amount;
+            //   $journal_persediaan->mjournalcredit += $new_amount;
+            //   $journal_hpp->save();
+            //   $journal_persediaan->save();
+
+              $purchase_histories = HPPHistory::on(Auth::user()->db_name)->where('hpphistorygoodsid',$mgoods->mgoodscode)->where('type','purchase')->where('void',0)->get();
+              $last_purchase = $purchase_histories->last();
+
+              // save cogs log
+              $h = new HPPHistory;
+              $h->setConnection(Auth::user()->db_name);
+              $h->hpphistorygoodsid = $mgoods->mgoodscode;
+              $h->hpphistorypurchase = 0;
+              $h->hpphistoryqty = $mgoods->mgoodsstock;
+              $h->hpphistorycogs = $hpp->hpphistorycogs;
+              $h->lastcogs = $last_purchase->hpphistorycogs;
+              $h->type = 'sales';
+              $h->usage = $g['usage'];
+              $h->transno = $invoice_detail->mhinvoiceno;
+              $h->lastqty = $last_purchase->hpphistoryqty;
+              $h->hpphistoryremarks = 'Penjualan';
+              $h->save();
           }
 
         }
@@ -593,6 +598,7 @@ class MHInvoice extends Model
         $voided_details = MDInvoice::on(Auth::user()->db_name)->where('mhinvoiceno',$invoice_header->mhinvoiceno)->where('void',1)->get();
         foreach ($voided_details as $v) {
             $mgoods = MGoods::on(Auth::user()->db_name)->where('mgoodscode',$v->mdinvoicegoodsid)->first();
+            var_dump('STOCK sebelum helper '.$mgoods->mgoodsstock);
             //in dengan qty lama
             $stock_card = new MStockCard;
             $stock_card->setConnection(Auth::user()->db_name);
@@ -601,7 +607,7 @@ class MHInvoice extends Model
             $stock_card->mstockcarddate = Carbon::parse($request->date);
             $stock_card->mstockcardtranstype = $request->type;
             $stock_card->mstockcardtransno = $header->mhinvoiceno;
-            $stock_card->mstockcardremark = "Revisi Transaksi Hapus item".$request->type." untuk ".$customer->mcustomername." ".$g['remark'];
+            $stock_card->mstockcardremark = "Revisi Transaksi Hapus item".$request->type." untuk ".$customer->mcustomername;
             $stock_card->mstockcardstockin = $v->mdinvoicegoodsqty;
             $stock_card->mstockcardstockout = 0;
             $stock_card->mstockcardstocktotal = $mgoods->mgoodsstock + $v->mdinvoicegoodsqty;
@@ -613,6 +619,8 @@ class MHInvoice extends Model
             $stock_card->save();
             // $mgoods->mgoodsstock = $stock_card->mstockcardstocktotal;
             // $mgoods->save();
+
+            IntegrityHelper::restoreCOGS($mgoods,$invoice_detail->mhinvoiceno,$v->mdinvoicegoodsqty,"hapus detail.");
         }
 
         $journal_hpp->mjournaldebit = $sum_hpp_journal;
@@ -625,6 +633,7 @@ class MHInvoice extends Model
         return 'ok';
       } catch(Exception $e){
         DB::connection(Auth::user()->db_name)->rollBack();
+        dd($e);
         return $e;
       }
 
@@ -691,13 +700,15 @@ class MHInvoice extends Model
                 // $last_stock += $stock_card->mstockcardstockin;
                 // $mgoods->mgoodsstock = $last_stock;
                 $mgoods->save();
+
+                IntegrityHelper::restoreCOGS($mgoods,$header->mhinvoiceno,$stock_ref->mstockcardstockout);
             }
 
             // void ar
             $ars = MARCard::on(Auth::user()->db_name)->where('marcardtransno',$header->mhinvoiceno)->get();
             foreach($ars as $ar){
                 $ar->void = 1;
-                $ar->save();    
+                $ar->save();
             }
 
             foreach($journals as $j){
@@ -719,5 +730,9 @@ class MHInvoice extends Model
 
     public function customers(){
       return MCUSTOMER::on(Auth::user()->db_name)->where('mcustomerid',$this->mhinvoicecustomerid)->first();
+    }
+
+    public function details(){
+        return MDInvoice::on(Auth::user()->db_name)->where('mhinvoiceno',$this->mhinvoiceno)->get();
     }
 }
