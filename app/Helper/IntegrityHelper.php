@@ -9,52 +9,71 @@ use Carbon\Carbon;
 use App\MDInvoice;
 use App\MJournal;
 use App\MCOA;
+use App\MDPurchase;
+use App\MGoods;
 
 class IntegrityHelper {
 
     public static function recalculateTransactionFrom($date){
 
-        $calculation_date = Carbon::parse($date)->addDays(0);
-        $diff_in_days = Carbon::now()->diffInDays($calculation_date);
-        var_dump('calculating from '.$calculation_date->addDays(1));
-        var_dump('in '.$diff_in_days.' days');
-        $diff_in_days++;
+        // $calculation_date = Carbon::parse($date)->addDays(0);
+        // $diff_in_days = Carbon::now()->diffInDays($calculation_date);
+        // var_dump('calculating from '.$calculation_date->addDays(1));
+        // var_dump('in '.$diff_in_days.' days');
+        // $diff_in_days++;
 
-        for($i=1;$i<=$diff_in_days;$i++){
-            $loop_date = Carbon::parse($date)->addDays($i);
-            var_dump('loop date '.$loop_date);
-            $mdinvoices = MDInvoice::on(Auth::user()->db_name)->whereDate('mdinvoicedate','=',$loop_date)->get();
-            foreach($mdinvoices as $mdi){
+        $affected_history = HPPHistory::on(Auth::user()->db_name)->where('created_at','>',Carbon::parse($date))->where('void',0)->get();
 
-                $hpp_coa = MCOA::on(Auth::user()->db_name)->where('mcoacode','5100.01')->first();
-                $persediaan_coa = MCOA::on(Auth::user()->db_name)->where('mcoacode','1105.01')->first();
+        var_dump('affecting '.count($affected_history).' histories');
+
+        foreach($affected_history as $af){
+            // $loop_date = Carbon::parse($date)->addDays($i);
+            // var_dump('loop date '.$loop_date);
+            // $mdinvoices = MDInvoice::on(Auth::user()->db_name)->whereDate('mdinvoicedate','=',$loop_date)->get();
+            if($af->type == 'sales'){
+                var_dump('recalculate sales');
+                $mdinvoices = MDInvoice::on(Auth::user()->db_name)->where('mhinvoiceno',$af->transno)->get();
+                foreach($mdinvoices as $mdi){
+                    $hpp_coa = MCOA::on(Auth::user()->db_name)->where('mcoacode','5100.01')->first();
+                    $persediaan_coa = MCOA::on(Auth::user()->db_name)->where('mcoacode','1105.01')->first();
 
 
 
-                $hpp_journal = MJournal::on(Auth::user()->db_name)->where('mjournaltransno',$mdi->mhinvoiceno)->where('mjournalcoa','5100.01')->first();
-                $persediaan_journal = MJournal::on(Auth::user()->db_name)->where('mjournaltransno',$mdi->mhinvoiceno)->where('mjournalcoa','1105.01')->first();
-                $hpp_coa->update_saldo('-',$hpp_journal->mjournaldebit);
-                $persediaan_coa->update_saldo('+',$persediaan_journal->mjournalcredit);
+                    $hpp_journal = MJournal::on(Auth::user()->db_name)->where('mjournaltransno',$mdi->mhinvoiceno)->where('mjournalcoa','5100.01')->first();
+                    $persediaan_journal = MJournal::on(Auth::user()->db_name)->where('mjournaltransno',$mdi->mhinvoiceno)->where('mjournalcoa','1105.01')->first();
+                    $hpp_coa->update_saldo('-',$hpp_journal->mjournaldebit);
+                    $persediaan_coa->update_saldo('+',$persediaan_journal->mjournalcredit);
 
-                $cogs = MCOGS::on(Auth::user()->db_name)->where('mcogsgoodscode',$mdi->mdinvoicegoodsid)->first();
+                    $cogs = MCOGS::on(Auth::user()->db_name)->where('mcogsgoodscode',$mdi->mdinvoicegoodsid)->first();
 
-                $hpp_journal->mjournaldebit = $mdi->mdinvoicegoodsqty * $cogs->mcogslastcogs;
-                var_dump('debit '.$hpp_journal->mjournaldebit);
-                $hpp_journal->save();
-                $persediaan_journal->mjournalcredit = $mdi->mdinvoicegoodsqty * $cogs->mcogslastcogs;
-                var_dump('credit '.$persediaan_journal->mjournalcredit);
-                $persediaan_journal->save();
-                $hpp_coa->update_saldo('+',$hpp_journal->mjournaldebit);
-                $persediaan_coa->update_saldo('-',$persediaan_journal->mjournalcredit);
+                    $hpp_journal->mjournaldebit = $mdi->mdinvoicegoodsqty * $cogs->mcogslastcogs;
+                    var_dump('debit '.$hpp_journal->mjournaldebit);
+                    $hpp_journal->save();
+                    $persediaan_journal->mjournalcredit = $mdi->mdinvoicegoodsqty * $cogs->mcogslastcogs;
+                    var_dump('credit '.$persediaan_journal->mjournalcredit);
+                    $persediaan_journal->save();
+                    $hpp_coa->update_saldo('+',$hpp_journal->mjournaldebit);
+                    $persediaan_coa->update_saldo('-',$persediaan_journal->mjournalcredit);
+                }
+
+            } else {
+                var_dump('recalculate purchase');
+                $mdpurchase = MDPurchase::on(Auth::user()->db_name)->where('mhpurchaseno',$af->transno)->get();
+                foreach($mdpurchase as $mdp){
+                    $mgoods = MGoods::on(Auth::user()->db_name)->where('mgoodscode',$mdp->mdpurchasegoodsid)->first();
+                    $mgoods->mgoodsstock += $mdp->mdpurchasegoodsqty;
+                    $mgoods->save();
+                    $mdp->cogs_ref = IntegrityHelper::updateCOGS($mgoods,$mdp,$mdp->mdpurchasegoodsqty,$af,$remarks = "Revisi Pembelian Turunan");
+                    $mdp->save();
+                }
             }
         }
-
     }
 
     /*
      *  on create purchase
      */
-    public static function calculateCOGS($mgoods,$mdpurchasegoodsgrossamount,$buy_amount,$purchaseno,$remarks = ""){
+    public static function calculateCOGS($mgoods,$mdpurchasegoodsgrossamount,$buy_amount,$purchaseno,$remarks = "Pembelian"){
         $lastcogs = HPPHistory::on(Auth::user()->db_name)->where('hpphistorygoodsid',$mgoods->mgoodscode)->where('void',0)->where('type','purchase')->get()->last();
         $cogs = MCOGS::on(Auth::user()->db_name)->where('mcogsgoodscode',$mgoods->mgoodscode)->first();
         $lastcogsvalue = 0;
@@ -101,7 +120,7 @@ class IntegrityHelper {
         $h->usage = $buy_amount;
         $h->transno = $purchaseno;
         $h->buyprice = ($mdpurchasegoodsgrossamount / $buy_amount);
-        $h->hpphistoryremarks = 'Pembelian';
+        $h->hpphistoryremarks = $remarks;
         $h->save();
 
         return $h->id;
@@ -111,50 +130,69 @@ class IntegrityHelper {
     /*
      *  on update purchase
      */
-    public static function updateCOGS($mgoods,$mdpurchasegoodsgrossamount,$buy_amount,$purchaseno,$purchasedate,$remarks = ""){
-        $lastcogs = HPPHistory::on(Auth::user()->db_name)->where('hpphistorygoodsid',$mgoods->mgoodscode)->where('void',0)->where('type','purchase')->get()->last();
+    public static function updateCOGS($mgoods,$mdpurchase,$buy_amount,$edited_history,$remarks = "Revisi Pembelian"){
+        $lastcogs = HPPHistory::on(Auth::user()->db_name)->where('hpphistorygoodsid',$mgoods->mgoodscode)->where('void',0)->where('type','purchase')->where('created_at','<',Carbon::parse($edited_history->created_at))->orderBy('created_at','asc')->get()->last();
         $cogs = MCOGS::on(Auth::user()->db_name)->where('mcogsgoodscode',$mgoods->mgoodscode)->first();
         $cogs_num = 0;
-        $lastcogsvalue = $lastcogs->lastcogs;
-        $lastqtyvalue = $lastcogs->lastqty;
 
-        var_dump('lastcogsvalue '.$lastcogsvalue);
-        var_dump('lastqtyvalue '.$lastqtyvalue);
+        $lastcogsvalue = 0;
+        $lastqtyvalue = 0;
+        if($lastcogs != null){
+            $lastcogsvalue = $lastcogs->hpphistorycogs;
+            $lastqtyvalue = $lastcogs->hpphistoryqty;
 
-        $last_stock = $lastcogs->lastqty;
-        var_dump('last_stock '.$last_stock);
-        $cogs->mcogsgoodstotalqty -= $lastcogs->hpphistoryqty;
-        var_dump('(('.$last_stock.' * '.$lastcogsvalue.' + '.$mdpurchasegoodsgrossamount.' / '.$mgoods->mgoodsstock.' ))');
-        $cogs_num = (($last_stock * $lastcogsvalue) + $mdpurchasegoodsgrossamount ) / $mgoods->mgoodsstock;
-        var_dump('cogs_num '.$cogs_num);
-        // $lastcogsvalue = $cogs->mcogslastcogs;
-        $cogs->mcogslastcogs = $cogs_num;
-        $cogs->mcogsgoodstotalqty = $mgoods->mgoodsstock;
-        $cogs->save();
+            var_dump('lastcogsvalue '.$lastcogsvalue);
+            var_dump('lastqtyvalue '.$lastqtyvalue);
+            var_dump('goods_stock '.$mgoods->mgoodsstock);
+
+            $last_stock = $lastqtyvalue;
+            var_dump('last_stock '.$last_stock);
+            $cogs->mcogsgoodstotalqty -= $lastcogs->hpphistoryqty;
+            var_dump('(('.$last_stock.' * '.$lastcogsvalue.' + '.$mdpurchase->mdpurchasegoodsgrossamount.' / '.$mgoods->mgoodsstock.' ))');
+            $cogs_num = (($last_stock * $lastcogsvalue) + $mdpurchase->mdpurchasegoodsgrossamount ) / $mgoods->mgoodsstock;
+
+            var_dump('cogs_num '.$cogs_num);
+            // $lastcogsvalue = $cogs->mcogslastcogs;
+            $cogs->mcogslastcogs = $cogs_num;
+            $cogs->mcogsgoodstotalqty = $mgoods->mgoodsstock;
+            $cogs->save();
+        } else {
+            var_dump('is first history');
+            $cogs_num = $mdpurchase->mdpurchasegoodsgrossamount / $mdpurchase->mdpurchasegoodsqty;
+
+            var_dump('cogs_num '.$cogs_num);
+            // $lastcogsvalue = $cogs->mcogslastcogs;
+            $cogs->mcogslastcogs = $cogs_num;
+            $cogs->mcogsgoodstotalqty = $mdpurchase->mdpurchasegoodsqty;
+            $cogs->save();
+            $mgoods->mgoodsstock = $mdpurchase->mdpurchasegoodsqty;
+            $mgoods->save();
+        }
+
+
 
         // void edited history
         // $lastcogs->void = 1;
-        $void_cogs = HPPHistory::on(Auth::user()->db_name)->where('transno',$purchaseno)->get()->last();
-        $void_cogs->void = 1;
-        $void_cogs->save();
+        $edited_history->void = 1;
+        $edited_history->save();
 
         // save cogs log
         $h = new HPPHistory;
         $h->setConnection(Auth::user()->db_name);
         $h->hpphistorygoodsid = $mgoods->mgoodscode;
-        $h->hpphistorypurchase = $mdpurchasegoodsgrossamount;
+        $h->hpphistorypurchase = $mdpurchase->mdpurchasegoodsgrossamount;
         $h->hpphistoryqty = $mgoods->mgoodsstock;
         $h->hpphistorycogs = $cogs_num;
         $h->lastcogs = $lastcogsvalue;
         $h->type = 'purchase';
-        $h->usage = $buy_amount;
+        $h->usage = $mdpurchase->mdpurchasegoodsqty;
         $h->lastqty = $lastqtyvalue;
-        $h->transno = $purchaseno;
-        $h->buyprice = ($mdpurchasegoodsgrossamount / $buy_amount);
-        $h->hpphistoryremarks = 'Revisi Pembelian';
+        $h->transno = $mdpurchase->mhpurchaseno;
+        $h->buyprice = ($mdpurchase->mdpurchasegoodsgrossamount / $mdpurchase->mdpurchasegoodsqty);
+        $h->hpphistoryremarks = $remarks;
         $h->save();
 
-        $h->created_at = $void_cogs->created_at;
+        $h->created_at = $edited_history->created_at;
         $h->save();
 
         return $h->id;

@@ -221,7 +221,7 @@ class MHPurchase extends Model
         DB::connection(Auth::user()->db_name)->beginTransaction();
         try{
             // update header data
-
+            $oldest_details = Carbon::now();
             $trans_header = MHPurchase::on(Auth::user()->db_name)->where('id',$id)->first();
             $old_date = $trans_header->mhpurchasedate;
             $conf = MConfig::on(Auth::user()->db_name)->where('id',1)->first();
@@ -339,9 +339,12 @@ class MHPurchase extends Model
 
                     // if qty still same but price changed
                     if(($old_qty == $g['usage']) && ($old_price != $g['buy_price'])){
-                        $invoice_detail->cogs_ref = IntegrityHelper::updateCOGS($mgoods,$invoice_detail->mdpurchasegoodsgrossamount,$g['usage'],$trans_header->mhpurchaseno,$trans_header->mhpurchasedate);
+                        $void_history = HPPHistory::on(Auth::user()->db_name)->where('id',$invoice_detail->cogs_ref)->first();
+                        $invoice_detail->cogs_ref = IntegrityHelper::updateCOGS($mgoods,$invoice_detail,$g['usage'],$void_history);
                         $invoice_detail->save();
                         $should_calculate_cogs_again = true;
+
+                        $oldest_details = $oldest_details->min(Carbon::parse($void_history->created_at));
                         var_dump('price changed');
                     }
 
@@ -409,11 +412,19 @@ class MHPurchase extends Model
                         $mgoods->mgoodsstock = $goods_stock_count;
                         $mgoods->save();
 
+                        // cek jika hpp bukan history terakhir
+                        $future_hpp = HPPHistory::on(Auth::user()->db_name)->where('id','>',$invoice_detail->cogs_ref)->get();
+                        $void_history = HPPHistory::on(Auth::user()->db_name)->where('id',$invoice_detail->cogs_ref)->first();
+                        if(count($future_hpp) > 0){
+                            $should_calculate_cogs_again = true;
+                            $oldest_details = $oldest_details->min(Carbon::parse($void_history->created_at));
+                        }
+
                         // update detail reference
                         $invoice_detail->stock_ref = $stock_card->id;
-                        $invoice_detail->cogs_ref = IntegrityHelper::updateCOGS($mgoods,$invoice_detail->mdpurchasegoodsgrossamount,$g['usage'],$trans_header->mhpurchaseno,$trans_header->mhpurchasedate);
+                        var_dump('beforeHelper '.$invoice_detail->mdpurchasegoodsgrossamount);
+                        $invoice_detail->cogs_ref = IntegrityHelper::updateCOGS($mgoods,$invoice_detail,$g['usage'],$void_history);
                         $invoice_detail->save();
-
                     }
                 } else {
                     // new data
@@ -522,14 +533,14 @@ class MHPurchase extends Model
             }
 
             if($should_calculate_cogs_again){
-                IntegrityHelper::recalculateTransactionFrom($trans_header->mhpurchasedate);
+                IntegrityHelper::recalculateTransactionFrom($oldest_details);
             }
 
             DB::connection(Auth::user()->db_name)->commit();
             return 'ok';
         } catch(\Exception $e){
             DB::connection(Auth::user()->db_name)->rollBack();
-            // dd($e);
+            dd($e);
             return 'err';
         }
     }

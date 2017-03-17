@@ -25,7 +25,7 @@ class COGSHistoryController extends Controller
             $history_query->whereDate('created_at','<=',Carbon::parse($request->end));
         }
 
-        $histories = $history_query->groupBy('hpphistorygoodsid')->get();
+        $histories = $history_query->groupBy('hpphistorygoodsid')->where('void',0)->get();
 
         $history_data = [];
 
