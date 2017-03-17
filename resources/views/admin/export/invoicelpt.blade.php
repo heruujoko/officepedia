@@ -75,7 +75,7 @@
                 <p>{{ $config->msyscompaddress }}</p>
             </div>
             <div class="col-md-6">
-                <h2 class="pull-right" style="margin-right: 50px">INVOICE</h2>    
+                <h2 class="pull-right" style="margin-right: 50px">INVOICE</h2>
             </div>
         </div>
         <hr>
@@ -127,5 +127,8 @@
                 </tr>
             </tbody>
         </table>
+        <script type="text/javascript">
+            window.print();
+        </script>
     </body>
 </html>
