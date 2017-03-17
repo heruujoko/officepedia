@@ -43,7 +43,7 @@ class COGSHistoryController extends Controller
             if($request->has('end')){
                 $childs_q->whereDate('created_at','<=',Carbon::parse($request->end));
             }
-            $childs = $childs_q->get();
+            $childs = $childs_q->orderBy('created_at','asc')->get();
             foreach($childs as $ch){
                 $ch['data'] = 'data';
 

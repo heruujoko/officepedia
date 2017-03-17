@@ -339,7 +339,7 @@ class MHPurchase extends Model
 
                     // if qty still same but price changed
                     if(($old_qty == $g['usage']) && ($old_price != $g['buy_price'])){
-                        $invoice_detail->cogs_ref = IntegrityHelper::updateCOGS($mgoods,$invoice_detail->mdpurchasegoodsgrossamount,$g['usage']);
+                        $invoice_detail->cogs_ref = IntegrityHelper::updateCOGS($mgoods,$invoice_detail->mdpurchasegoodsgrossamount,$g['usage'],$trans_header->mhpurchaseno,$trans_header->mhpurchasedate);
                         $invoice_detail->save();
                         $should_calculate_cogs_again = true;
                         var_dump('price changed');
@@ -411,7 +411,7 @@ class MHPurchase extends Model
 
                         // update detail reference
                         $invoice_detail->stock_ref = $stock_card->id;
-                        $invoice_detail->cogs_ref = IntegrityHelper::updateCOGS($mgoods,$invoice_detail->mdpurchasegoodsgrossamount,$g['usage']);
+                        $invoice_detail->cogs_ref = IntegrityHelper::updateCOGS($mgoods,$invoice_detail->mdpurchasegoodsgrossamount,$g['usage'],$trans_header->mhpurchaseno,$trans_header->mhpurchasedate);
                         $invoice_detail->save();
 
                     }
@@ -475,7 +475,7 @@ class MHPurchase extends Model
                     $mgoods->save();
 
                     // update COGS
-                    $invoice_detail->cogs_ref = IntegrityHelper::updateCOGS($mgoods,$invoice_detail->mdpurchasegoodsgrossamount);
+                    $invoice_detail->cogs_ref = IntegrityHelper::calculateCOGS($mgoods,$detail->mdpurchasegoodsgrossamount,$g['usage'],$trans_header->mhpurchaseno,$trans_header->mhpurchasedate);
                     $invoice_detail->save();
                 }
             }

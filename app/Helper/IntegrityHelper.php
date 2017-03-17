@@ -111,7 +111,7 @@ class IntegrityHelper {
     /*
      *  on update purchase
      */
-    public static function updateCOGS($mgoods,$mdpurchasegoodsgrossamount,$buy_amount,$remarks = ""){
+    public static function updateCOGS($mgoods,$mdpurchasegoodsgrossamount,$buy_amount,$purchaseno,$purchasedate,$remarks = ""){
         $lastcogs = HPPHistory::on(Auth::user()->db_name)->where('hpphistorygoodsid',$mgoods->mgoodscode)->where('void',0)->where('type','purchase')->get()->last();
         $cogs = MCOGS::on(Auth::user()->db_name)->where('mcogsgoodscode',$mgoods->mgoodscode)->first();
         $cogs_num = 0;
@@ -133,8 +133,10 @@ class IntegrityHelper {
         $cogs->save();
 
         // void edited history
-        $lastcogs->void = 1;
-        $lastcogs->save();
+        // $lastcogs->void = 1;
+        $void_cogs = HPPHistory::on(Auth::user()->db_name)->where('transno',$purchaseno)->get()->last();
+        $void_cogs->void = 1;
+        $void_cogs->save();
 
         // save cogs log
         $h = new HPPHistory;
@@ -147,8 +149,12 @@ class IntegrityHelper {
         $h->type = 'purchase';
         $h->usage = $buy_amount;
         $h->lastqty = $lastqtyvalue;
+        $h->transno = $purchaseno;
         $h->buyprice = ($mdpurchasegoodsgrossamount / $buy_amount);
         $h->hpphistoryremarks = 'Revisi Pembelian';
+        $h->save();
+
+        $h->created_at = $void_cogs->created_at;
         $h->save();
 
         return $h->id;
