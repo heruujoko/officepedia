@@ -14,11 +14,23 @@
             <tbody>
                 <tr v-for="(acc,index) in accounts">
                     <td style="width: 5%" v-if="acc.type == 'gp'">{{ acc.mcoagrandparentcode }}</td>
-                    <td style="width: 5%" v-if="acc.type == 'p'"><span style="margin-left: 25px">{{ acc.mcoaparentcode }}</span></td>
-                    <td style="width: 5%" v-if="acc.type == 'coa'"><span style="margin-left: 55px">{{ acc.mcoacode }}</span></td>
+                    <td style="width: 5%" v-if="acc.type == 'p'">
+                        <span v-if="acc.mcoaparentcode == '1103.00' " style="margin-left: 25px"><a href="/admin-nano/reports/arbook">{{ acc.mcoaparentcode }}</a></span>
+                        <span v-else style="margin-left: 25px">{{ acc.mcoaparentcode }}</span>
+                    </td>
+                    <td style="width: 5%" v-if="acc.type == 'coa'">
+                        <span v-if="acc.mcoaparentcode == '1103.00' " style="margin-left: 55px"><a href="/admin-nano/reports/arbook">{{ acc.mcoacode }}</a></span>
+                        <span v-else style="margin-left: 55px">{{ acc.mcoacode }}</span>
+                    </td>
                     <td style="width: 10%" v-if="acc.type == 'gp'">{{ acc.mcoagrandparentname }}</td>
-                    <td style="width: 10%" v-if="acc.type == 'p'">{{ acc.mcoaparentname }}</td>
-                    <td style="width: 10%" v-if="acc.type == 'coa'">{{ acc.mcoaname }}</td>
+                    <td style="width: 10%" v-if="acc.type == 'p'">
+                        <span v-if="acc.mcoaparentcode == '1103.00' "><a href="/admin-nano/reports/arbook">{{ acc.mcoaparentname }}</a></span>
+                        <span v-else>{{ acc.mcoaparentname }}</span>
+                    </td>
+                    <td style="width: 10%" v-if="acc.type == 'coa'">
+                        <span v-if="acc.mcoaparentcode == '1103.00' "><a href="/admin-nano/reports/arbook">{{ acc.mcoaname }}</a></span>
+                        <span v-else>{{ acc.mcoaname }}</span>
+                    </td>
                     <td style="width: 5%">Aktifa / Aset</td>
                     <td style="width: 2%" v-if="acc.saldo >= 0">D</td>
                     <td style="width: 2%" v-if="acc.saldo < 0">K</td>

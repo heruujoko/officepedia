@@ -119,7 +119,7 @@
                                                             <tr v-for="hi in histories">
                                                                 <td v-if="hi.data != 'footer'"><span v-if="hi.data == 'header'">@{{ hi.hpphistorygoodsid }}</span></td>
                                                                 <td v-if="hi.data != 'footer'"><span v-if="hi.data == 'header'">@{{ hi.name }}</span></td>
-                                                                <td v-if="hi.data != 'footer'"><span v-if="hi.data != 'header'">@{{ hi.created_at }}</span></td>
+                                                                <td v-if="hi.data != 'footer'"><span v-if="hi.data != 'header'">@{{ moment(hi.created_at).format('L') }}</span></td>
                                                                 <td v-if="hi.data != 'footer'"><span v-if="hi.data != 'header'">@{{ hi.usage }}</span></td>
                                                                 <td v-if="hi.data != 'footer'" style="text-align:right"><span v-priceformatlabel="num_format" v-if="hi.data != 'header'">@{{ hi.buyprice }}</span></td>
                                                                 <td v-if="hi.data != 'footer'" style="text-align:right"><span v-priceformatlabel="num_format" v-if="hi.data != 'header'">@{{ hi.hpphistorypurchase }}</span></td>

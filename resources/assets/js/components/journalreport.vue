@@ -44,7 +44,7 @@
                 <div v-for="j in journals">
                     <h6>Tanggal {{ j.date }}</h6>
                     <h6>Tipe Transaksi {{ j.type }}</h6>
-                    <h6>No Transaksi {{ j.trans }}</h6>
+                    <h6>No Jurnal {{ j.mjournalid }}</h6>
 
                     <table class="table table-bordered">
                         <thead>

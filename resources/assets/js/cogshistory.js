@@ -67,7 +67,8 @@ const cogshistoryapp = new Vue({
         goods:[],
         num_format: "0,0.00",
         invoice_date_end: moment().format('L'),
-        selected_goods:""
+        selected_goods:"",
+        moment: moment
     },
     computed:{
         label_goods(){

@@ -56,6 +56,7 @@ class JournalController extends Controller
                 'date' => $h->mjournaldate,
                 'type' => $h->mjournaltranstype,
                 'trans' => $h->mjournaltransno,
+                'mjournalid' => $h->mjournalid,
                 'sum_debit' => $sum_debit,
                 'sum_credit' => $sum_credit,
                 'transactions' => $groups

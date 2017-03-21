@@ -61,6 +61,8 @@
                         <li class="active"><a data-toggle="tab" href="#menu1">Spesifikasi</a></li>
                         <li><a data-toggle="tab" href="#menu2">Spesifikasi 2</a></li>
                         <li><a data-toggle="tab" href="#menu3">Pajak</a></li>
+                        <li><a data-toggle="tab" href="#menu4">Import Barang</a></li>
+                        <li><a data-toggle="tab" href="#menu5">Import Harga Barang</a></li>
 
                       </ul>
                       <div id="insert-wrapper" class="tab-content" data-parsley-validate>
@@ -459,6 +461,21 @@
                             </div>
                           </div>
                         </div>
+                        <div id="menu4" class="tab-pane fade">
+                            <div class="form form-horizontal" style="margin-top:21px;">
+                              <div class="col-md-12">
+                                <div style="height: 21px;" class="form-group">
+                                    <label class="col-md-2 control-label"><b>File</b>  (<font color="red">*</font>) &nbsp  :</label>
+                                    <div class="col-md-4">
+                                        <input type="file" class="form-control"/>
+                                        <br>
+                                        <a style="font-size: 16px" href="#">Download template file upload.</a>
+                                    </div>
+                                </div>
+                              </div>
+                            </div>
+                        </div>
+                        <div id="menu5" class="tab-pane fade"></div>
                     </div>
                     <div class="row">
                       <div class="col-md-offset-5 col-md-5" style="margin-top:20px;margin-bottom:20px;">
