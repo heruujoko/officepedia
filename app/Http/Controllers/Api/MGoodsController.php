@@ -13,6 +13,13 @@ use Validator;
 use Exception;
 use App\MConfig;
 use Auth;
+use Excel;
+use App\MGoodstype;
+use App\MGoodssubtype;
+use App\MGoodsbrand;
+use App\MGoodsMark;
+use App\MCategorygoods;
+use File;
 
 class MGoodsController extends Controller
 {
@@ -186,7 +193,7 @@ class MGoodsController extends Controller
     return response()->json();
 	}
 
-	  public function gambar(Request $request){
+	public function gambar(Request $request){
 
       $validator = Validator::make($request->all(),[
         'gambar' => 'required|max:2000|mimes:png,jpg,jpeg'
@@ -203,6 +210,153 @@ class MGoodsController extends Controller
       }
 
 
+    }
+
+    public function importGoods(Request $request){
+        $importFile = $request->file('excel');
+        $filename = uniqid().'.'.$importFile->extension();
+        $importFile->move('gambar',$filename);
+        $this->error_logs = [];
+        DB::connection(Auth::user()->db_name)->beginTransaction();
+        Excel::load('gambar/'.$filename,function($reader){
+            $data = $reader->get();
+            foreach($data as $goods){
+                $validate = MGoods::on(Auth::user()->db_name)->where('mgoodsname',$goods->mgoodsname)->where('void',0)->first();
+                if ($validate == null) {
+                    $mgoods = new MGoods;
+                    $mgoods->setConnection(Auth::user()->db_name);
+                    $mgoods->mgoodsbarcode = $goods->barcode;
+                    $mgoods->mgoodsname = $goods->nama_barang;
+                    if($goods->nama_barang_alias == null){
+                        $mgoods->mgoodsalias = "";
+                    } else {
+                        $mgoods->mgoodsalias = $goods->nama_barang_alias;
+                    }
+                    $mgoods->mgoodsremark = $goods->keterangan;
+                    $mgoods->mgoodsmultiunit = intval($goods->multi_unit);
+                    $mgoods->mgoodsunit = $goods->nama_satuan_1;
+                    $mgoods->mgoodsunit2 = $goods->nama_satuan_2;
+                    $mgoods->mgoodsunit2conv = $goods->satuan_2;
+                    $mgoods->mgoodsunit3 = $goods->nama_satuan_3;
+                    $mgoods->mgoodsunit3conv = $goods->satuan_3;
+                    $mgoods->mgoodsactive = intval($goods->status);
+                    $mgoods->mgoodspriceout = $goods->harga_jual;
+                    $mgoods->mgoodssuppliercode = $goods->kode_supplier;
+                    $mgoods->mgoodsuniquetransaction = intval($goods->transaksi_unik);
+                    $mgoods->void = 0;
+                    $mgoods->save();
+
+                    $mgoods->mgoodssuppliername = $mgoods->supplier()->msuppliername;
+                    if($goods->kode_barang == null || $goods->kode_barang == ""){
+                        $mgoods->autogenproc();
+                    } else {
+                        $mgoods->mgoodscode = $goods->kode_barang;
+                    }
+
+                    $cats = MGoodsType::on(Auth::user()->db_name)->where('mgoodstypename',$goods->tipe_barang)->first();
+                    if(($goods->tipe_barang != null || $goods->tipe_barang != "") && $cats != null){
+                        if($cats != null){
+                            $mgoods->mgoodstype = $cats->id;
+                        } else {
+                            $elog = array(
+                                'message' => 'tipe tidak ditemukan untuk '.$goods->tipe_barang
+                            );
+                            array_push($this->error_logs,$elog);
+                        }
+                    }
+
+                    $cats = MCategorygoods::on(Auth::user()->db_name)->where('category_name',$goods->kategori_barang)->first();
+                    if(($goods->kategori_barang != null || $goods->kategori_barang != "") && $cats != null){
+                        $mgoods->mgoodscategory = $cats->id;
+                    } else {
+                        $elog = array(
+                            'message' => 'kategori tidak ditemukan untuk '.$goods->kategori_barang
+                        );
+                        array_push($this->error_logs,$elog);
+                    }
+
+                    $cats = Mgoodssubtype::on(Auth::user()->db_name)->where('mgoodssubtypename',$goods->sub_tipe_barang)->first();
+                    if(($goods->sub_tipe_barang != null || $goods->sub_tipe_barang != "") && $cats != null){
+                        $mgoods->mgoodssubtype = $cats->id;
+                    } else {
+                        $elog = array(
+                            'message' => 'subtipe tidak ditemukan untuk '.$goods->sub_tipe_barang
+                        );
+                        array_push($this->error_logs,$elog);
+                    }
+
+                    $cats = MGoodsMark::on(Auth::user()->db_name)->where('category_name',$goods->merek_barang)->first();
+                    if(($goods->merek_barang != null || $goods->merek_barang != "" ) && $cats != null){
+                        $mgoods->mgoodsbrand = $cats->id;
+                    } else {
+                        $elog = array(
+                            'message' => 'brand tidak ditemukan untuk '.$goods->merek_barang
+                        );
+                        array_push($this->error_logs,$elog);
+                    }
+
+                    if($goods->pajak == null || $goods->pajak == ""){
+                        $mgoods->mgoodstaxppn = 2;
+                    } else {
+                        $mgoods->mgoodstaxppn = 1;
+                    }
+
+                    if($goods->pajak_barang_mewah == null || $goods->pajak_barang_mewah == ""){
+                        $mgoods->mgoodstaxppnbm = 2;
+                    } else {
+                        $mgoods->mgoodstaxppnbm = 1;
+                    }
+
+                    $mgoods->save();
+                } else {
+                    $elog = [
+                        'message' => 'duplicate data on '.$goods->nama_barang
+                    ];
+                    array_push($this->error_logs,$elog);
+                }
+            }
+        });
+        File::delete('gambar/'.$filename);
+        if(count($this->error_logs) > 0){
+            DB::connection(Auth::user()->db_name)->rollBack();
+        } else {
+            DB::connection(Auth::user()->db_name)->commit();
+        }
+        return response()->json($this->error_logs);
+
+    }
+
+    public function importGoodsPrice(Request $request){
+        $importFile = $request->file('excel');
+        $filename = uniqid().'.'.$importFile->extension();
+        $importFile->move('gambar',$filename);
+        $this->error_logs = [];
+        DB::connection(Auth::user()->db_name)->beginTransaction();
+        Excel::load('gambar/'.$filename,function($reader){
+            $data = $reader->get();
+
+            foreach($data as $goods){
+
+                $g = MGoods::on(Auth::user()->db_name)->where('mgoodscode',$goods->kode_barang)->first();
+                if($g == null){
+                    $elog = [
+                        'message' => 'kode barang tidak ditemukan untuk '.$goods->kode_barang
+                    ];
+                    array_push($this->error_logs,$elog);
+                } else {
+                    $g->mgoodspriceout = $goods->harga_jual;
+                    $g->save();
+                }
+            }
+
+        });
+        File::delete('gambar/'.$filename);
+        if(count($this->error_logs) > 0){
+            DB::connection(Auth::user()->db_name)->rollBack();
+        } else {
+            DB::connection(Auth::user()->db_name)->commit();
+        }
+        return response()->json($this->error_logs);
     }
 
 

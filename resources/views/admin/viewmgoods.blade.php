@@ -463,19 +463,44 @@
                         </div>
                         <div id="menu4" class="tab-pane fade">
                             <div class="form form-horizontal" style="margin-top:21px;">
-                              <div class="col-md-12">
+                              <div class="col-md-6">
                                 <div style="height: 21px;" class="form-group">
                                     <label class="col-md-2 control-label"><b>File</b>  (<font color="red">*</font>) &nbsp  :</label>
-                                    <div class="col-md-4">
-                                        <input type="file" class="form-control"/>
-                                        <br>
-                                        <a style="font-size: 16px" href="#">Download template file upload.</a>
+                                    <div class="col-md-10">
+                                        <div id="importgoods" class="dropzone"></div>
                                     </div>
                                 </div>
                               </div>
+                              <div class="col-md-6">
+                                  <a style="font-size: 16px" href="{{ url('/import_mgoods.xlsx')}}">Download template file upload.</a>
+                                  <br>
+                                  <br>
+                                  <p style="font-size: 12px">Hasil :</p>
+                                  <table id="importresults" class="table table-stripped">
+                                  </table>
+                              </div>
                             </div>
                         </div>
-                        <div id="menu5" class="tab-pane fade"></div>
+                        <div id="menu5" class="tab-pane fade">
+                            <div class="form form-horizontal" style="margin-top:21px;">
+                              <div class="col-md-6">
+                                <div style="height: 21px;" class="form-group">
+                                    <label class="col-md-2 control-label"><b>File</b>  (<font color="red">*</font>) &nbsp  :</label>
+                                    <div class="col-md-10">
+                                        <div id="importgoodsprice" class="dropzone"></div>
+                                    </div>
+                                </div>
+                              </div>
+                              <div class="col-md-6">
+                                  <a style="font-size: 16px" href="{{ url('/import_mgoods.xlsx')}}">Download template file upload.</a>
+                                  <br>
+                                  <br>
+                                  <p style="font-size: 12px">Hasil :</p>
+                                  <table id="importpriceresults" class="table table-stripped">
+                                  </table>
+                              </div>
+                            </div>
+                        </div>
                     </div>
                     <div class="row">
                       <div class="col-md-offset-5 col-md-5" style="margin-top:20px;margin-bottom:20px;">
@@ -1756,6 +1781,14 @@ $("#dropzone-gambar").dropzone({
     }
     #tableapi {
       border: 1px solid #ddd !important;
+    }
+    #importresults td {
+        background: #ED4337 !important;
+        color: #fff;
+    }
+    #importpriceresults td {
+        background: #ED4337 !important;
+        color: #fff;
     }
   </style>
 @stop

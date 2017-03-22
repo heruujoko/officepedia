@@ -724,3 +724,80 @@ function backmgoods(){
   $('#tablewrapper').css('margin-top','0px');
   window.location.href="#main";
 }
+
+// handle import goods
+$('#importgoods').dropzone({
+    paramName: "excel",
+    url: "/admin-api/barang/import",
+    success: function(response){
+      console.log(JSON.parse(response.xhr.response));
+      var resp = JSON.parse(response.xhr.response);
+      console.log(resp.length);
+
+      if(resp.length < 1){
+          swal({
+            title: "Upload Sukses!",
+            type: "success",
+            timer: 1000
+          });
+          $("#importpriceresults tr").remove();
+          Dropzone.forElement("#importgoods").removeAllFiles(true);
+      } else {
+          for(var i=0;i<resp.length;i++){
+            var strHtml = "<tr><td>"+resp[i].message+"</td></tr>";
+            $('#importresults').append(strHtml);
+          }
+
+      }
+    //   $('#insert-mgoodspicture').val(parsed.url);
+
+    },
+    error: function(response){
+      var parsed = $.parseJSON(response.xhr.response);
+      this.removeAllFiles(true);
+      swal({
+        title: "Upload Gagal!",
+        text: parsed,
+        type: "error",
+        timer: 1000
+      });
+    }
+});
+
+$('#importgoodsprice').dropzone({
+    paramName: "excel",
+    url: "/admin-api/barang/importprice",
+    success: function(response){
+      console.log(JSON.parse(response.xhr.response));
+      var resp = JSON.parse(response.xhr.response);
+      console.log(resp.length);
+
+      if(resp.length < 1){
+          swal({
+            title: "Upload Sukses!",
+            type: "success",
+            timer: 1000
+          });
+          $("#importresults tr").remove();
+          Dropzone.forElement("#importgoodsprice").removeAllFiles(true);
+      } else {
+          for(var i=0;i<resp.length;i++){
+            var strHtml = "<tr><td>"+resp[i].message+"</td></tr>";
+            $('#importpriceresults').append(strHtml);
+          }
+
+      }
+    //   $('#insert-mgoodspicture').val(parsed.url);
+
+    },
+    error: function(response){
+      var parsed = $.parseJSON(response.xhr.response);
+      this.removeAllFiles(true);
+      swal({
+        title: "Upload Gagal!",
+        text: parsed,
+        type: "error",
+        timer: 1000
+      });
+    }
+});
