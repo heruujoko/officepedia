@@ -726,11 +726,23 @@ function backmgoods(){
 }
 
 // handle import goods
+
 $('#importgoods').dropzone({
     paramName: "excel",
     url: "/admin-api/barang/import",
     init: function(){
-        console.log('initial');    
+        this.on("addedfile",function(file){
+            swal({
+              title: "Uploading 20%",
+              type: "success"
+            });
+        })
+        this.on("sending",function(file){
+            swal({
+              title: "Uploading 50%",
+              type: "success"
+            });
+        })
     },
     success: function(response){
       console.log(JSON.parse(response.xhr.response));
@@ -746,6 +758,7 @@ $('#importgoods').dropzone({
           $("#importpriceresults tr").remove();
           Dropzone.forElement("#importgoods").removeAllFiles(true);
       } else {
+          swal.close();
           for(var i=0;i<resp.length;i++){
             var strHtml = "<tr><td>"+resp[i].message+"</td></tr>";
             $('#importresults').append(strHtml);
@@ -770,6 +783,20 @@ $('#importgoods').dropzone({
 $('#importgoodsprice').dropzone({
     paramName: "excel",
     url: "/admin-api/barang/importprice",
+    init: function(){
+        this.on("addedfile",function(file){
+            swal({
+              title: "Uploading 20%",
+              type: "success"
+            });
+        })
+        this.on("sending",function(file){
+            swal({
+              title: "Uploading 50%",
+              type: "success"
+            });
+        })
+    },
     success: function(response){
       console.log(JSON.parse(response.xhr.response));
       var resp = JSON.parse(response.xhr.response);
