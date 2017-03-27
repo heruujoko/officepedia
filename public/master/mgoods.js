@@ -734,13 +734,15 @@ $('#importgoods').dropzone({
         this.on("addedfile",function(file){
             swal({
               title: "Uploading 20%",
-              type: "success"
+              type: "success",
+              showConfirmButton: false
             });
         })
         this.on("sending",function(file){
             swal({
               title: "Uploading 50%",
-              type: "success"
+              type: "success",
+              showConfirmButton: false
             });
         })
     },
@@ -787,13 +789,15 @@ $('#importgoodsprice').dropzone({
         this.on("addedfile",function(file){
             swal({
               title: "Uploading 20%",
-              type: "success"
+              type: "success",
+              showConfirmButton: false
             });
         })
         this.on("sending",function(file){
             swal({
               title: "Uploading 50%",
-              type: "success"
+              type: "success",
+              showConfirmButton: false
             });
         })
     },
