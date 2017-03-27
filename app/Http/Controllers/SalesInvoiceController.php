@@ -16,6 +16,7 @@ use App\Helper\UnitHelper;
 use Excel;
 use PDF;
 use App\MConfig;
+use Nasution\Terbilang;
 
 class SalesInvoiceController extends Controller
 {
@@ -145,6 +146,7 @@ class SalesInvoiceController extends Controller
         $data['sum_subtotal'] = 0;
         $data['sum_tax'] = 0;
         $data['sum_disc'] = 0;
+        $data['terbilang'] = Terbilang::convert($data['invoice']->mhinvoicegrandtotal);
 
         foreach ($inv_details as $d) {
             $goods = MGoods::on(Auth::user()->db_name)->where('mgoodscode',$d->mdinvoicegoodsid)->first();

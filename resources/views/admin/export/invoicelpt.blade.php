@@ -186,9 +186,7 @@
                     TIDAK DAPAT DILAYAN. TERIMA KASIH.
                 </td>
                 <td colspan="2">
-                    BARANG TELAH DITERIMA DENGAN BAIK DAN CUKUP.
-                    KLAIM SETELAH PENGIRIMAN MENINGGALKAN TEMPAT,
-                    TIDAK DAPAT DILAYAN. TERIMA KASIH.
+                    {{ $terbilang }}
                 </td>
             </tr>
         </table>

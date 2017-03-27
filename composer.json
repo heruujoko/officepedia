@@ -16,7 +16,8 @@
         "doctrine/dbal": "^2.5",
         "laracasts/flash": "^2.0",
         "tymon/jwt-auth": "0.5.*",
-        "ktamas77/firebase-php": "dev-master"
+        "ktamas77/firebase-php": "dev-master",
+        "nasution/terbilang": " *"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",
