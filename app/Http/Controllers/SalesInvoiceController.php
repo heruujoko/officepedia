@@ -121,6 +121,26 @@ class SalesInvoiceController extends Controller
         }
         $data['config'] = $config;
         $inv_details = $data['invoice']->details();
+        $data['allitem'] = count($inv_details);
+        $inv_details_arr = [];
+        foreach($inv_details as $dtl){
+            array_push($inv_details_arr,$dtl);
+        }
+        $data['per_page'] = 10;
+        $chunks = array_chunk($inv_details_arr,$data['per_page']);
+        $inv_details_chunked = [];
+        foreach ($chunks as $c) {
+            $sum_c_subtotal = 0;
+            foreach ($c as $item_per_chunks) {
+                $sum_c_subtotal += $item_per_chunks->mdinvoicegoodsgrossamount;
+            }
+            $item = array(
+                'details' => $c,
+                'chunk_subtotal' => $sum_c_subtotal
+            );
+            array_push($inv_details_chunked,$item);
+        }
+        $data['chunks'] = $inv_details_chunked;
 
         $data['sum_subtotal'] = 0;
         $data['sum_tax'] = 0;

@@ -21,15 +21,34 @@
                 vertical-align: top;
                 border-top: 1px solid #000;
             }
+
+            .last > td {
+                border-bottom: 1px solid #000;
+            }
+
             #footer {
                 width: 100%;
             }
             .footline > td {
                 border-top: 1px solid #000;
             }
+            .pbreak {
+                page-break-after: always;
+            }
+            .blanks {
+                border-top: none !important;
+            }
+            @media print {
+             #footer {
+                 bottom: auto;
+              }
+            }
         </style>
     </head>
     <body>
+        <?php $count = 0?>
+        @foreach($chunks as $c)
+        <?php $count++?>
         <table class="wrapper">
             <tr>
                 <td width="70%">{{ $config->msyscompname }}</td>
@@ -38,27 +57,22 @@
             <tr>
                 <td>{{ $config->msyscompaddress }}</td>
                 <td>No Faktur</td>
-                <td>: #181818181</td>
+                <td>: {{ $invoice->mhinvoiceno }}</td>
             </tr>
             <tr>
                 <td></td>
                 <td>Tanggal Faktur</td>
-                <td>: #181818181</td>
-            </tr>
-            <tr>
-                <td></td>
-                <td>Tanggal Faktur</td>
-                <td>: #181818181</td>
+                <td>: {{ $invoice->mhinvoicedate }}</td>
             </tr>
             <tr>
                 <td></td>
                 <td>Jatuh Tempo</td>
-                <td>: #181818181</td>
+                <td>: {{ $invoice->mhinvoiceduedate }}</td>
             </tr>
             <tr>
                 <td>Kepada Yth :</td>
                 <td>Tanggal Order</td>
-                <td>: #181818181</td>
+                <td>: {{ $invoice->created_at }}</td>
             </tr>
             <tr>
                 <td>{{ $invoice->mhinvoicecustomername }} {{ $invoice->mhinvoicecustomerid }}</td>
@@ -66,19 +80,19 @@
                 <td>: {{ Auth::user()->id }} {{ Auth::user()->name }}</td>
             </tr>
             <tr>
-                <td>Alamat</td>
+                <td></td>
                 <td>Divisi</td>
-                <td>: #181818181</td>
+                <td>: </td>
             </tr>
             <tr>
-                <td>Alamat</td>
+                <td></td>
                 <td>No PO</td>
-                <td>: #181818181</td>
+                <td>: </td>
             </tr>
             <tr>
-                <td>NPWP</td>
+                <td></td>
                 <td>No Performa</td>
-                <td>: #181818181</td>
+                <td>: </td>
             </tr>
             <tr>
                 <td colspan="3">
@@ -93,7 +107,7 @@
                             <td>Diskon</td>
                             <td>Diskon Special</td>
                         </tr>
-                        @foreach($details as $d)
+                        @foreach($c['details'] as $d)
                             <tr>
                                 <td>{{ $d->mhinvoiceno }}</td>
                                 <td>{{ $d->mdinvoicegoodsid }} - {{ $d->mdinvoicegoodsname }}</td>
@@ -105,27 +119,46 @@
                                 <td></td>
                             </tr>
                         @endforeach
+                        @if(count($c['details']) < $per_page)
+                        <?php $diff = $per_page - count($c['details']);
+
+                            for($i=0;$i<$diff;$i++){
+                                echo "<tr><td class='blanks'></td></tr>";
+                            }
+
+                         ?>
+                        @else
+                            <tr class="last">
+                                <td colspan="4">#item {{ count($c['details']) }}</td>
+                                <td>TOTAL</td>
+                                <td colspan="5">{{ number_format($c['chunk_subtotal'],$decimals,$dec_point,$thousands_sep) }}</td>
+                            </tr>
+                        @endif
                     </table>
                 </td>
             </tr>
         </table>
+        @if($count != count($chunks))
+            <div class="pbreak"></div>
+        @endif
+        @endforeach
         <table id="footer">
             <tr>
                 <td width="33%">Cap dan tanda-tangan</td>
-                <td>Jumlah 115 Unit</td>
-                <td>500.000</td>
-                <td>0</td>
+                <td>Jumlah {{ $allitem }} Unit</td>
+                <td>{{ number_format($invoice->mhinvoicesubtotal,$decimals,$dec_point,$thousands_sep) }}</td>
+                <td></td>
             </tr>
             <tr>
                 <td width="33%"></td>
                 <td>Subtotal</td>
-                <td>500.000</td>
+                <td>{{ number_format($invoice->mhinvoicesubtotal,$decimals,$dec_point,$thousands_sep) }}</td>
                 <td></td>
             </tr>
             <tr>
                 <td width="33%"></td>
                 <td>Discount(Sudah Termasuk Cash Disc.) 1.000 %</td>
-                <td>0</td>
+                <td>{{ number_format($invoice->mhinvoicediscounttotal,$decimals,$dec_point,$thousands_sep) }}</td>
                 <td></td>
             </tr>
             <tr>
@@ -137,13 +170,13 @@
             <tr>
                 <td width="33%">(...................................................) (...................................................)</td>
                 <td>PPn 10%</td>
-                <td>0</td>
+                <td>{{ number_format($invoice->mhinvoicetaxtotal,$decimals,$dec_point,$thousands_sep) }}</td>
                 <td></td>
             </tr>
             <tr>
                 <td width="33%"> <span>Toko / Pembeli</span> <span style="margin-left: 130px">Otorisasi</span> </td>
                 <td>TOTAL</td>
-                <td>0</td>
+                <td>{{ number_format($invoice->mhinvoicegrandtotal,$decimals,$dec_point,$thousands_sep) }}</td>
                 <td></td>
             </tr>
             <tr class="footline">
@@ -159,5 +192,8 @@
                 </td>
             </tr>
         </table>
+        <script>
+            window.print();
+        </script>
     </body>
 </html>

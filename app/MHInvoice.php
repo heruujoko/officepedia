@@ -174,7 +174,9 @@ class MHInvoice extends Model
           $invoice_detail->save();
 
           $hpp = HPPHistory::on(Auth::user()->db_name)->where('hpphistorygoodsid',$g['goods']['mgoodscode'])->get()->last();
+
           $hpp_price = $hpp->hpphistorycogs * $g['usage'];
+
 
           // add per item sum
           $sum_hpp_journal += $hpp_price;
@@ -252,6 +254,7 @@ class MHInvoice extends Model
         return $resp;
       } catch(Exception $e){
         DB::connection(Auth::user()->db_name)->rollBack();
+        dd($e);
         $resp = [
             'status' => 'err',
             'data' => $e
