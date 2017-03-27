@@ -729,6 +729,9 @@ function backmgoods(){
 $('#importgoods').dropzone({
     paramName: "excel",
     url: "/admin-api/barang/import",
+    init: function(){
+        console.log('initial');    
+    },
     success: function(response){
       console.log(JSON.parse(response.xhr.response));
       var resp = JSON.parse(response.xhr.response);

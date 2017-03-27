@@ -3,132 +3,161 @@
     <head>
         <meta charset="utf-8">
         <title></title>
-        <style type="text/css" media="print">
-          @page { size: landscape; }
-          table th {
-              font-size: 11px;
-          }
-          table td {
-              font-size: 8px;
-          }
-          table {
-              background-color: transparent;
-          }
-          table {
-              border-collapse: collapse;
-              border-spacing: 0;
-          }
-          *, :after, :before {
-              -webkit-box-sizing: border-box;
-              -moz-box-sizing: border-box;
-              box-sizing: border-box;
-          }
-          tr {
-              display: table-row;
-              vertical-align: inherit;
-              border-color: inherit;
-          }
-          .table>tbody>tr>td, .table>tbody>tr>th, .table>tfoot>tr>td, .table>tfoot>tr>th, .table>thead>tr>td, .table>thead>tr>th {
-              padding: 8px;
-              line-height: 1.42857143;
-              vertical-align: top;
-              border-top: 1px solid #ddd;
-          }
-          td, th {
-              padding: 0;
-          }
-          td, th {
-              display: table-cell;
-              vertical-align: inherit;
-          }
-          tbody {
-              display: table-row-group;
-              vertical-align: middle;
-              border-color: inherit;
-          }
-          .lc {
-            height: 30px;
-          }
-          .text-center {
-              text-align: center;
-          }
-          .report-label {
-              font-size: 14px;
-              margin-top: 5px;
-          }
-          .header-status {
-              font-size: 9px;
-              text-align: right;
-              display: block;
-          }
-          .filter-status {
-              font-size: 9px;
-              display: block;
-          }
+        <style>
+            body {
+                font-size: 11px;
+            }
+            .wrapper {
+                width: 100%;
+            }
+
+            .table {
+                width: 100%;
+            }
+
+            .table>tbody>tr>td, .table>tbody>tr>th, .table>tfoot>tr>td, .table>tfoot>tr>th, .table>thead>tr>td, .table>thead>tr>th {
+                padding: 8px;
+                line-height: 1.42857143;
+                vertical-align: top;
+                border-top: 1px solid #000;
+            }
+            #footer {
+                width: 100%;
+            }
+            .footline > td {
+                border-top: 1px solid #000;
+            }
         </style>
-        <link rel="stylesheet" href="{{ url('/css/bootstrap.min.css') }}" />
     </head>
     <body>
-        <div class="row">
-            <div class="col-md-6">
-                <p>{{ $config->msyscompname }}</p>
-                <p>{{ $config->msyscompaddress }}</p>
-            </div>
-            <div class="col-md-6">
-                <h2 class="pull-right" style="margin-right: 50px">INVOICE</h2>
-            </div>
-        </div>
-        <hr>
-        <p>Kepada : {{ $invoice->mhinvoicecustomername }}</p>
-        <p>Telpon : {{ $invoice->mhinvoicecustomername }}</p>
-        <p>Alamat : {{ $invoice->mhinvoicecustomername }}</p>
-        <table class="table" id="tableapi" style="width:100%">
-            <thead>
-                <tr>
-                    <td style="font-weight: bold">Kode</td>
-                    <td style="font-weight: bold">Nama Barang</td>
-                    <td style="font-weight: bold">Satuan</td>
-                    <td style="font-weight: bold">Harga Satuan</td>
-                    <td style="font-weight: bold">Subtotal</td>
-                    <td style="font-weight: bold">Discount</td>
-                    <td style="font-weight: bold">Pajak</td>
-                    <td style="font-weight: bold">Total</td>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach($details as $d)
-                    <tr>
-                        <td>{{ $d->mhinvoiceno }}</td>
-                        <td>{{ $d->mdinvoicegoodsid }} - {{ $d->mdinvoicegoodsname }}</td>
-                        <td>{{ $d['qty_label'] }}</td>
-                        <td>{{ number_format($d->mdinvoicegoodsprice,$decimals,$dec_point,$thousands_sep)}}</td>
-                        <td>{{ number_format($d->mdinvoicegoodsgrossamount,$decimals,$dec_point,$thousands_sep)}}</td>
-                        <td>{{ number_format($d->mdinvoicegoodsdiscount,$decimals,$dec_point,$thousands_sep)}}</td>
-                        <td>{{ number_format($d->mdinvoicegoodstax,$decimals,$dec_point,$thousands_sep)}}</td>
-                        <td>{{ number_format(( $d->mdinvoicegoodsgrossamount + $d->mdinvoicegoodstax - $d->mdinvoicegoodsdiscount),$decimals,$dec_point,$thousands_sep)}}</td>
-                    </tr>
-                @endforeach
-                <tr>
-                    <td colspan="4" rowspan="4">Total Item : {{ count($details) }} item.</td>
-                    <td colspan="3">Subtotal</td>
-                    <td>{{ number_format($sum_subtotal,$decimals,$dec_point,$thousands_sep) }}</td>
-                </tr>
-                <tr>
-                    <td colspan="3">Diskon</td>
-                    <td>{{ number_format($sum_disc,$decimals,$dec_point,$thousands_sep) }}</td>
-                </tr>
-                <tr>
-                    <td colspan="3">Pajak</td>
-                    <td>{{ number_format($sum_tax,$decimals,$dec_point,$thousands_sep) }}</td>
-                </tr>
-                <tr>
-                    <td colspan="3">Total</td>
-                    <td>{{ number_format(( $sum_subtotal + $sum_tax - $sum_disc ),$decimals,$dec_point,$thousands_sep) }}</td>
-                </tr>
-            </tbody>
+        <table class="wrapper">
+            <tr>
+                <td width="70%">{{ $config->msyscompname }}</td>
+                <td colspan="2">Nota Penjualan</td>
+            </tr>
+            <tr>
+                <td>{{ $config->msyscompaddress }}</td>
+                <td>No Faktur</td>
+                <td>: #181818181</td>
+            </tr>
+            <tr>
+                <td></td>
+                <td>Tanggal Faktur</td>
+                <td>: #181818181</td>
+            </tr>
+            <tr>
+                <td></td>
+                <td>Tanggal Faktur</td>
+                <td>: #181818181</td>
+            </tr>
+            <tr>
+                <td></td>
+                <td>Jatuh Tempo</td>
+                <td>: #181818181</td>
+            </tr>
+            <tr>
+                <td>Kepada Yth :</td>
+                <td>Tanggal Order</td>
+                <td>: #181818181</td>
+            </tr>
+            <tr>
+                <td>{{ $invoice->mhinvoicecustomername }} {{ $invoice->mhinvoicecustomerid }}</td>
+                <td>User</td>
+                <td>: {{ Auth::user()->id }} {{ Auth::user()->name }}</td>
+            </tr>
+            <tr>
+                <td>Alamat</td>
+                <td>Divisi</td>
+                <td>: #181818181</td>
+            </tr>
+            <tr>
+                <td>Alamat</td>
+                <td>No PO</td>
+                <td>: #181818181</td>
+            </tr>
+            <tr>
+                <td>NPWP</td>
+                <td>No Performa</td>
+                <td>: #181818181</td>
+            </tr>
+            <tr>
+                <td colspan="3">
+                    <table class="table">
+                        <tr>
+                            <td>Kode</td>
+                            <td>Nama Produk</td>
+                            <td>Jumlah Barang</td>
+                            <td>Multi Satuan</td>
+                            <td>Harga Jual</td>
+                            <td>Subtotal</td>
+                            <td>Diskon</td>
+                            <td>Diskon Special</td>
+                        </tr>
+                        @foreach($details as $d)
+                            <tr>
+                                <td>{{ $d->mhinvoiceno }}</td>
+                                <td>{{ $d->mdinvoicegoodsid }} - {{ $d->mdinvoicegoodsname }}</td>
+                                <td>{{ $d->mdinvoicegoodsqty }}</td>
+                                <td>{{ $d['qty_label'] }}</td>
+                                <td>{{ number_format($d->mdinvoicegoodsprice,$decimals,$dec_point,$thousands_sep)}}</td>
+                                <td>{{ number_format($d->mdinvoicegoodsgrossamount,$decimals,$dec_point,$thousands_sep)}}</td>
+                                <td>{{ number_format($d->mdinvoicegoodsdiscount,$decimals,$dec_point,$thousands_sep)}}</td>
+                                <td></td>
+                            </tr>
+                        @endforeach
+                    </table>
+                </td>
+            </tr>
         </table>
-        <script type="text/javascript">
-            window.print();
-        </script>
+        <table id="footer">
+            <tr>
+                <td width="33%">Cap dan tanda-tangan</td>
+                <td>Jumlah 115 Unit</td>
+                <td>500.000</td>
+                <td>0</td>
+            </tr>
+            <tr>
+                <td width="33%"></td>
+                <td>Subtotal</td>
+                <td>500.000</td>
+                <td></td>
+            </tr>
+            <tr>
+                <td width="33%"></td>
+                <td>Discount(Sudah Termasuk Cash Disc.) 1.000 %</td>
+                <td>0</td>
+                <td></td>
+            </tr>
+            <tr>
+                <td width="33%"></td>
+                <td>Dasar Pengenaan Pajak</td>
+                <td>0</td>
+                <td></td>
+            </tr>
+            <tr>
+                <td width="33%">(...................................................) (...................................................)</td>
+                <td>PPn 10%</td>
+                <td>0</td>
+                <td></td>
+            </tr>
+            <tr>
+                <td width="33%"> <span>Toko / Pembeli</span> <span style="margin-left: 130px">Otorisasi</span> </td>
+                <td>TOTAL</td>
+                <td>0</td>
+                <td></td>
+            </tr>
+            <tr class="footline">
+                <td colspan="2" width="50%">
+                    BARANG TELAH DITERIMA DENGAN BAIK DAN CUKUP.
+                    KLAIM SETELAH PENGIRIMAN MENINGGALKAN TEMPAT,
+                    TIDAK DAPAT DILAYAN. TERIMA KASIH.
+                </td>
+                <td colspan="2">
+                    BARANG TELAH DITERIMA DENGAN BAIK DAN CUKUP.
+                    KLAIM SETELAH PENGIRIMAN MENINGGALKAN TEMPAT,
+                    TIDAK DAPAT DILAYAN. TERIMA KASIH.
+                </td>
+            </tr>
+        </table>
     </body>
 </html>

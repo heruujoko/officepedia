@@ -232,7 +232,12 @@ class MGoodsController extends Controller
                     } else {
                         $mgoods->mgoodsalias = $goods->nama_barang_alias;
                     }
-                    $mgoods->mgoodsremark = $goods->keterangan;
+                    if($goods->keterangan != null){
+                        $mgoods->mgoodsremark = $goods->keterangan;
+                    } else {
+                        $mgoods->mgoodsremark = "";    
+                    }
+
                     $mgoods->mgoodsmultiunit = intval($goods->multi_unit);
                     $mgoods->mgoodsunit = $goods->nama_satuan_1;
                     $mgoods->mgoodsunit2 = $goods->nama_satuan_2;
