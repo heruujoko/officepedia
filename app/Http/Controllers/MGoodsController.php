@@ -83,4 +83,24 @@ class MGoodsController extends Controller
 		return $pdf->setPaper('a3', 'landscape')->download('Master Barang.pdf');
 	}
 
+    public function pricelist(){
+        $this->goods = MGoods::on(Auth::user()->db_name)->get();
+        $this->count = 0;
+        return Excel::create('import_harga',function($excel){
+			$excel->sheet('import_harga',function($sheet){
+				$this->count++;
+				$sheet->row($this->count,array(
+				    'Kode Barang','Harga Jual'
+				));
+				foreach($this->goods as $g){
+					$this->count++;
+					$sheet->row($this->count,array(
+						$g->mgoodscode,
+                        $g->mgoodspriceout
+					));
+				}
+			});
+		})->export('xls');
+    }
+
 }

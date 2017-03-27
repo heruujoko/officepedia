@@ -492,7 +492,7 @@
                                 </div>
                               </div>
                               <div class="col-md-6">
-                                  <a style="font-size: 16px" href="{{ url('/assets/import_harga.xlsx')}}">Download template file upload.</a>
+                                  <a style="font-size: 16px" href="{{ url('/admin-nano/barang/export/pricelist')}}">Download template file upload.</a>
                                   <br>
                                   <br>
                                   <p style="font-size: 12px">Hasil :</p>

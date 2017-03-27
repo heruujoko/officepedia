@@ -66,6 +66,7 @@ Route::group(['prefix'=>'admin-nano','middleware' => ['auth','tenantdb']],functi
   Route::get('barang/export/csv','MGoodsController@csv');
   Route::get('barang/export/excel','MGoodsController@excel');
   Route::get('barang/export/pdf','MGoodsController@pdf');
+  Route::get('barang/export/pricelist','MGoodsController@pricelist');
 
   Route::get('mcategorycustomer','MCategorycustomerController@index');
   Route::get('mcategorycustomer/export/csv','MCategorycustomerController@csv');
