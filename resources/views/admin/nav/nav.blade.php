@@ -156,9 +156,9 @@
     <a href="#"><i class="fa fa-lg fa-fw fa-tag"></i> <span class="menu-item-parent">Penjualan</span></a>
     <ul class="submenu">
         @if($active == 'invoicequotation')
-          <li class="active"><a href="{{ url('admin-nano/invoicequotation') }}">Penawaran Penjualan</a></li>
+          <!-- <li class="active"><a href="{{ url('admin-nano/invoicequotation') }}">Penawaran Penjualan</a></li> -->
         @else
-          <li><a href="{{ url('admin-nano/purchasequotation') }}">Penawaran Penjualan</a></li>
+          <!-- <li><a href="{{ url('admin-nano/invoicequotation') }}">Penawaran Penjualan</a></li> -->
         @endif
         @if(Auth::user()->has_role('R_sales'))
             @if($active == 'salesinvoice')

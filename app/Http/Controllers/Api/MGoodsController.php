@@ -235,15 +235,20 @@ class MGoodsController extends Controller
                     if($goods->keterangan != null){
                         $mgoods->mgoodsremark = $goods->keterangan;
                     } else {
-                        $mgoods->mgoodsremark = "";    
+                        $mgoods->mgoodsremark = "";
+                    }
+                    $mgoods->mgoodsunit = $goods->nama_satuan_1;
+                    if($goods->nama_satuan_2 != null){
+                        $mgoods->mgoodsmultiunit = 1;
+                        $mgoods->mgoodsunit2 = $goods->nama_satuan_2;
+                        $mgoods->mgoodsunit2conv = $goods->satuan_2;
                     }
 
-                    $mgoods->mgoodsmultiunit = intval($goods->multi_unit);
-                    $mgoods->mgoodsunit = $goods->nama_satuan_1;
-                    $mgoods->mgoodsunit2 = $goods->nama_satuan_2;
-                    $mgoods->mgoodsunit2conv = $goods->satuan_2;
-                    $mgoods->mgoodsunit3 = $goods->nama_satuan_3;
-                    $mgoods->mgoodsunit3conv = $goods->satuan_3;
+                    if($goods->nama_satuan_3 != null){
+                        $mgoods->mgoodsunit3 = $goods->nama_satuan_3;
+                        $mgoods->mgoodsunit3conv = $goods->satuan_3;
+                    }
+
                     $mgoods->mgoodsactive = intval($goods->status);
                     $mgoods->mgoodspriceout = $goods->harga_jual;
                     $mgoods->mgoodssuppliercode = $goods->kode_supplier;
