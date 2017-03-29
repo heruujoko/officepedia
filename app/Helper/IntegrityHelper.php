@@ -22,7 +22,7 @@ class IntegrityHelper {
         // var_dump('in '.$diff_in_days.' days');
         // $diff_in_days++;
 
-        $affected_history = HPPHistory::on(Auth::user()->db_name)->where('created_at','>',Carbon::parse($date))->where('void',0)->get();
+        $affected_history = HPPHistory::on(Auth::user()->db_name)->where('created_at','>',Carbon::parse($date))->where('void',0)->orderBy('created_at','asc')->get();
 
         var_dump('affecting '.count($affected_history).' histories');
 

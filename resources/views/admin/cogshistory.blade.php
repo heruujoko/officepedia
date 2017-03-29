@@ -112,6 +112,7 @@
                                                                 <th>Harga Beli</th>
                                                                 <th>Pembelian</th>
                                                                 <th>HPP</th>
+                                                                <th>Stock</th>
                                                                 <th>Remark</th>
                                                             </tr>
                                                         </thead>
@@ -124,6 +125,7 @@
                                                                 <td v-if="hi.data != 'footer'" style="text-align:right"><span v-priceformatlabel="num_format" v-if="hi.data != 'header'">@{{ hi.buyprice }}</span></td>
                                                                 <td v-if="hi.data != 'footer'" style="text-align:right"><span v-priceformatlabel="num_format" v-if="hi.data != 'header'">@{{ hi.hpphistorypurchase }}</span></td>
                                                                 <td v-if="hi.data != 'footer'" style="text-align:right"><span v-priceformatlabel="num_format" v-if="hi.data != 'header'">@{{ hi.hpphistorycogs }}</span></td>
+                                                                <td v-if="hi.data != 'footer'">@{{ hi.hpphistoryqty }}</td>
                                                                 <td v-if="hi.data != 'footer'">@{{ hi.hpphistoryremarks }}</td>
 
                                                                 <td class="tbl-footer" v-if="hi.data == 'footer'">TOTAL</td>
@@ -133,6 +135,7 @@
                                                                 <td class="tbl-footer" v-if="hi.data == 'footer'"></td>
                                                                 <td class="tbl-footer" v-if="hi.data == 'footer'" style="text-align:right"></td>
                                                                 <td class="tbl-footer" v-if="hi.data == 'footer'" style="text-align:right"><span v-priceformatlabel="num_format">@{{ hi.hpphistorycogs }}</span></td>
+                                                                <td class="tbl-footer" v-if="hi.data == 'footer'"></td>
                                                                 <td class="tbl-footer" v-if="hi.data == 'footer'">@{{ hi.hpphistoryremarks }}</td>
                                                             </tr>
                                                         </tbody>
