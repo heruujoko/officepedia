@@ -54,6 +54,8 @@ class IntegrityHelper {
                     $persediaan_journal->save();
                     $hpp_coa->update_saldo('+',$hpp_journal->mjournaldebit);
                     $persediaan_coa->update_saldo('-',$persediaan_journal->mjournalcredit);
+                    $af->hpphistorycogs = $cogs->mcogslastcogs;
+                    $af->save();
                 }
 
             } else {
