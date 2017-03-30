@@ -21,7 +21,7 @@ class HPPHistory extends Model
         while($same){
             $count++;
             $hist = HPPHistory::on(Auth::user()->db_name)->where('id',($this->id -$count))->first();
-            if($hist->transno != $this->transno){
+            if(($hist->transno != $this->transno) && ($hist->void == 0)){
                 $same = false;
                 $prev_trans = $hist;
             }

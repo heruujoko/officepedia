@@ -339,7 +339,7 @@ class IntegrityHelper {
                 if($first_purcahse_since){
                     $tr->hpphistoryqty += $usage;
                     $tr->lastqty += $usage;
-                    $tr->hpphistorypurchase = ($tr->hpphistoryqty * $tr->buyprice);
+                    $tr->hpphistorypurchase = ($tr->usage * $tr->buyprice);
                     $first_purcahse_since = false;
                 }
 
