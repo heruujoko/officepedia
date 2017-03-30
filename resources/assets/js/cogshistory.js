@@ -113,6 +113,7 @@ const cogshistoryapp = new Vue({
         },
         fetchHistories(){
           $('#loading_modal').modal('toggle');
+          this.histories = [];
           Axios.get('/admin-api/cogshistory?goods='+this.selected_goods+"&end="+this.invoice_date_end)
           .then((res) => {
             $('#loading_modal').modal('toggle');

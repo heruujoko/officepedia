@@ -979,7 +979,8 @@
           remark: this.goods_remark
         };
         // this.invoice_goods[this.edit_index] = editedGoods;
-        Vue.set(this.invoice_goods,this.edit_index,editedGoods);
+        console.log('nih err nya');
+        this.$set(this.invoice_goods,this.edit_index,editedGoods);
         this.reEvaluateInvoice();
         if(this.mode == 'edit'){
             $('#edit_detail_modal').modal('toggle');

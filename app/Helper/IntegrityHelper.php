@@ -14,6 +14,83 @@ use App\MGoods;
 
 class IntegrityHelper {
 
+    public static function recalculateSalesTransactionFrom($date,$edited_history,$mdinvoice){
+      $affected_history = HPPHistory::on(Auth::user()->db_name)->where('created_at','>',Carbon::parse($date))->where('void',0)->orderBy('created_at','asc')->get();
+      var_dump('affecting '.count($affected_history).' histories');
+
+      $mgoods = MGoods::on(Auth::user()->db_name)->where('mgoodscode',$affected_history[0]->hpphistorygoodsid)->first();
+      var_dump('goods stock awal = '.$mgoods->mgoodsstock);
+      $mgoods->mgoodsstock = $edited_history->lastqty - $mdinvoice->mdinvoicegoodsqty;
+      $mgoods->save();
+      var_dump('goods nya jadi '.$mgoods->mgoodsstock);
+
+      // save cogs log
+      $h = new HPPHistory;
+      $h->setConnection(Auth::user()->db_name);
+      $h->hpphistorygoodsid = $mgoods->mgoodscode;
+      $h->hpphistorypurchase = 0;
+      $h->hpphistoryqty = $mgoods->mgoodsstock;
+      $h->hpphistorycogs = $edited_history->hpphistorycogs;
+      $h->lastcogs = $edited_history->lastcogs;
+      $h->lastqty = $edited_history->lastqty;
+      $h->type = 'sales';
+      $h->usage = $mdinvoice->mdinvoicegoodsqty;
+      $h->transno = $mdinvoice->mhinvoiceno;
+      $h->buyprice = 0;
+      $h->hpphistoryremarks = "Revisi Penjualan";
+      $h->save();
+      $h->created_at = $edited_history->created_at;
+      $h->save();
+
+      $edited_history->void = 1;
+      $edited_history->save();
+
+      foreach($affected_history as $af){
+          var_dump($af->id);
+          // $loop_date = Carbon::parse($date)->addDays($i);
+          // var_dump('loop date '.$loop_date);
+          // $mdinvoices = MDInvoice::on(Auth::user()->db_name)->whereDate('mdinvoicedate','=',$loop_date)->get();
+          if($af->type == 'sales'){
+              var_dump('recalculate sales');
+              $mdinvoices = MDInvoice::on(Auth::user()->db_name)->where('mhinvoiceno',$af->transno)->get();
+              foreach($mdinvoices as $mdi){
+                  $hpp_coa = MCOA::on(Auth::user()->db_name)->where('mcoacode','5100.01')->first();
+                  $persediaan_coa = MCOA::on(Auth::user()->db_name)->where('mcoacode','1105.01')->first();
+
+                  $hpp_journal = MJournal::on(Auth::user()->db_name)->where('mjournaltransno',$mdi->mhinvoiceno)->where('mjournalcoa','5100.01')->first();
+                  $persediaan_journal = MJournal::on(Auth::user()->db_name)->where('mjournaltransno',$mdi->mhinvoiceno)->where('mjournalcoa','1105.01')->first();
+                  $hpp_coa->update_saldo('-',$hpp_journal->mjournaldebit);
+                  $persediaan_coa->update_saldo('+',$persediaan_journal->mjournalcredit);
+
+                  $cogs = MCOGS::on(Auth::user()->db_name)->where('mcogsgoodscode',$mdi->mdinvoicegoodsid)->first();
+
+                  $hpp_journal->mjournaldebit = $mdi->mdinvoicegoodsqty * $cogs->mcogslastcogs;
+                  var_dump('debit '.$hpp_journal->mjournaldebit);
+                  $hpp_journal->save();
+                  $persediaan_journal->mjournalcredit = $mdi->mdinvoicegoodsqty * $cogs->mcogslastcogs;
+                  var_dump('credit '.$persediaan_journal->mjournalcredit);
+                  $persediaan_journal->save();
+                  $hpp_coa->update_saldo('+',$hpp_journal->mjournaldebit);
+                  $persediaan_coa->update_saldo('-',$persediaan_journal->mjournalcredit);
+                  $af->hpphistorycogs = $cogs->mcogslastcogs;
+                  $af->save();
+              }
+
+          } else {
+              var_dump('recalculate purchase');
+              $mdpurchase = MDPurchase::on(Auth::user()->db_name)->where('mhpurchaseno',$af->transno)->get();
+              foreach($mdpurchase as $mdp){
+                  $mgoods = MGoods::on(Auth::user()->db_name)->where('mgoodscode',$mdp->mdpurchasegoodsid)->first();
+                  $mgoods->mgoodsstock += $mdp->mdpurchasegoodsqty;
+                  $mgoods->save();
+                  $mdp->cogs_ref = IntegrityHelper::updateCOGS($mgoods,$mdp,$mdp->mdpurchasegoodsqty,$af,$remarks = "Revisi Pembelian Turunan");
+                  $mdp->save();
+              }
+          }
+      }
+
+    }
+
     public static function recalculateTransactionFrom($date){
 
         // $calculation_date = Carbon::parse($date)->addDays(0);
@@ -27,6 +104,7 @@ class IntegrityHelper {
         var_dump('affecting '.count($affected_history).' histories');
 
         foreach($affected_history as $af){
+            var_dump($af->id);
             // $loop_date = Carbon::parse($date)->addDays($i);
             // var_dump('loop date '.$loop_date);
             // $mdinvoices = MDInvoice::on(Auth::user()->db_name)->whereDate('mdinvoicedate','=',$loop_date)->get();
@@ -133,13 +211,15 @@ class IntegrityHelper {
      *  on update purchase
      */
     public static function updateCOGS($mgoods,$mdpurchase,$buy_amount,$edited_history,$remarks = "Revisi Pembelian"){
-        $lastcogs = HPPHistory::on(Auth::user()->db_name)->where('hpphistorygoodsid',$mgoods->mgoodscode)->where('void',0)->where('type','purchase')->where('created_at','<',Carbon::parse($edited_history->created_at))->orderBy('created_at','asc')->get()->last();
+        // $lastcogs = HPPHistory::on(Auth::user()->db_name)->where('hpphistorygoodsid',$mgoods->mgoodscode)->where('void',0)->where('type','purchase')->where('created_at','<',Carbon::parse($edited_history->created_at))->orderBy('created_at','asc')->get()->last();
+        $lastcogs = HPPHistory::on(Auth::user()->db_name)->where('hpphistorygoodsid',$mgoods->mgoodscode)->where('void',0)->where('created_at','<',Carbon::parse($edited_history->created_at))->orderBy('created_at','asc')->get()->last();
         $cogs = MCOGS::on(Auth::user()->db_name)->where('mcogsgoodscode',$mgoods->mgoodscode)->first();
         $cogs_num = 0;
 
         $lastcogsvalue = 0;
         $lastqtyvalue = 0;
         if($lastcogs != null){
+            var_dump('lastcogs id = '.$lastcogs->id);
             $lastcogsvalue = $lastcogs->hpphistorycogs;
             $lastqtyvalue = $lastcogs->hpphistoryqty;
 
