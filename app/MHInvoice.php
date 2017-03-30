@@ -427,6 +427,7 @@ class MHInvoice extends Model
 
                 // $mgoods->mgoodsstock -= $g['usage'];
                 $mgoods->save();
+                var_dump('before_mgoods '.$mgoods->mgoodsstock);
 
                 // update detail stock refs
                 $invoice_detail->stock_ref = $stock_card->id;
@@ -445,7 +446,8 @@ class MHInvoice extends Model
                 // update journal
 
                 $hpp_coa = MCOA::on(Auth::user()->db_name)->where('mcoacode',$conf->msysaccsellingexpense)->first();
-                $hpp = HPPHistory::on(Auth::user()->db_name)->where('hpphistorygoodsid',$g['goods']['mgoodscode'])->get()->last();
+                $hpp = HPPHistory::on(Auth::user()->db_name)->where('transno',$invoice_detail->mhinvoiceno)->where('void',0)->first();
+                var_dump('hpp yg di pilih '.$hpp->hpphistorycogs);
                 $last_amount = $old_qty * $hpp->hpphistorycogs;
                 $persediaan_barang_coa = MCOA::on(Auth::user()->db_name)->where('mcoacode',$conf->msysaccstock)->first();
                 $new_amount = $hpp->hpphistorycogs * $g['usage'];
@@ -454,6 +456,11 @@ class MHInvoice extends Model
                 var_dump('tambah '.$new_amount);
                 $sum_hpp_journal += $new_amount;
                 $sum_persediaan_journal += $new_amount;
+
+                // jika qty barang berubah maka mempengaruhi stock lain nya
+                var_dump('qty berubah, lakukan perhitungan ulang');
+
+                IntegrityHelper::recalculateSalesTransactionFrom($invoice_detail->created_at,$hpp,$invoice_detail);
 
               } else {
                 // data tdk berubah

@@ -17,7 +17,8 @@
         "laracasts/flash": "^2.0",
         "tymon/jwt-auth": "0.5.*",
         "ktamas77/firebase-php": "dev-master",
-        "nasution/terbilang": " *"
+        "nasution/terbilang": " *",
+        "soundasleep/html2text": "^0.3.4"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",

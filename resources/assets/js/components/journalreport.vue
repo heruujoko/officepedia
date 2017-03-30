@@ -88,6 +88,7 @@
     import Axios from 'axios'
     import _ from 'lodash'
     import moment from 'moment'
+
     export default {
         props:['username'],
         data(){
@@ -118,13 +119,17 @@
               });
             },
             fetchJournals(){
+                let self = this;
+                self.journals = [];
                 $("#loading_modal").modal('toggle');
                 Axios.get('/admin-api/journal?end='+this.report_date_end+"&start="+this.report_date_start)
                 .then((res) => {
-                  this.journals = res.data;
-                  $("#loading_modal").modal('toggle');
+                    self.journals = res.data;
+                    $("#loading_modal").modal('toggle');
                 })
                 .catch(err => {
+                    console.log(err);
+                    console.log('let it err');
                     $("#loading_modal").modal('toggle');
                 });
             },

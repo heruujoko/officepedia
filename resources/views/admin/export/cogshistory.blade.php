@@ -86,6 +86,7 @@
                     <td style="font-weight:bold">Harga Beli</td>
                     <td style="font-weight:bold">Pembelian</td>
                     <td style="font-weight:bold">HPP</td>
+                    <td style="font-weight:bold">Stock</td>
                     <td style="font-weight:bold">Remark</td>
                 </tr>
             </thead>
@@ -95,6 +96,7 @@
                     <tr>
                         <td>{{ $h['hpphistorygoodsid'] }}</td>
                         <td>{{ $h['name'] }}</td>
+                        <td></td>
                         <td></td>
                         <td></td>
                         <td></td>
@@ -111,6 +113,7 @@
                         <td>{{ number_format($h->buyprice,$decimals,$dec_point,$thousands_sep) }}</td>
                         <td>{{ number_format($h->hpphistorypurchase,$decimals,$dec_point,$thousands_sep) }}</td>
                         <td>{{ number_format($h->hpphistorycogs,$decimals,$dec_point,$thousands_sep) }}</td>
+                        <td>{{ $h->hpphistoryqty }}</td>
                         <td>{{ $h->hpphistoryremarks }}</td>
                     </tr>
                     @elseif($h['data'] == 'footer')
@@ -122,6 +125,7 @@
                         <td style="font-weight:bold"></td>
                         <td style="font-weight:bold"></td>
                         <td style="font-weight:bold">{{ number_format($h['hpphistorycogs'],$decimals,$dec_point,$thousands_sep) }}</td>
+                        <td style="font-weight:bold"></td>
                         <td style="font-weight:bold"></td>
                     </tr>
                     @endif

@@ -2,7 +2,6 @@
 .env
 /public/.DS_Store
 .DS_Store
-composer.lock
 /node_modules
 /vendor
 /public/storage
