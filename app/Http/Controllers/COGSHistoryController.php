@@ -49,7 +49,7 @@ class COGSHistoryController extends Controller
             if($request->has('end')){
                 $childs_q->whereDate('created_at','<=',Carbon::parse($request->end));
             }
-            $childs = $childs_q->get();
+            $childs = $childs_q->orderBy('created_at','asc')->get();
             foreach($childs as $ch){
                 $ch['data'] = 'data';
                 if($ch->type == 'purchase'){
@@ -121,7 +121,7 @@ class COGSHistoryController extends Controller
             if($request->has('end')){
                 $childs_q->whereDate('created_at','<=',Carbon::parse($request->end));
             }
-            $childs = $childs_q->get();
+            $childs = $childs_q->orderBy('created_at','asc')->get();
             foreach($childs as $ch){
                 $ch['data'] = 'data';
                 if($ch->type == 'purchase'){
@@ -194,7 +194,7 @@ class COGSHistoryController extends Controller
             if($request->has('end')){
                 $childs_q->whereDate('created_at','<=',Carbon::parse($request->end));
             }
-            $childs = $childs_q->get();
+            $childs = $childs_q->orderBy('created_at','asc')->get();
             foreach($childs as $ch){
                 $ch['data'] = 'data';
                 if($ch->type == 'purchase'){
@@ -285,7 +285,7 @@ class COGSHistoryController extends Controller
 
                 $this->count+=2;
                 $sheet->row($this->count,array(
-                    'Kode Barang','Nama Barang','Tanggal','Qty','Harga Beli','Pembelian','HPP','Remark'
+                    'Kode Barang','Nama Barang','Tanggal','Qty','Harga Beli','Pembelian','HPP','Stock','Remark'
                 ));
                 foreach($this->data['histories'] as $h){
                     $this->count++;
@@ -308,6 +308,7 @@ class COGSHistoryController extends Controller
                             $h->buyprice,
                             $h->hpphistorypurchase,
                             $h->hpphistorycogs,
+                            $h->hpphistoryqty,
                             $h->hpphistoryremarks
                         ));
                     } else {
@@ -354,7 +355,7 @@ class COGSHistoryController extends Controller
             if($request->has('end')){
                 $childs_q->whereDate('created_at','<=',Carbon::parse($request->end));
             }
-            $childs = $childs_q->get();
+            $childs = $childs_q->orderBy('created_at','asc')->get();
             foreach($childs as $ch){
                 $ch['data'] = 'data';
                 if($ch->type == 'purchase'){
@@ -445,7 +446,7 @@ class COGSHistoryController extends Controller
 
                 $this->count+=2;
                 $sheet->row($this->count,array(
-                    'Kode Barang','Nama Barang','Tanggal','Qty','Harga Beli','Pembelian','HPP','Remark'
+                    'Kode Barang','Nama Barang','Tanggal','Qty','Harga Beli','Pembelian','HPP','Stock','Remark'
                 ));
                 foreach($this->data['histories'] as $h){
                     $this->count++;
@@ -468,6 +469,7 @@ class COGSHistoryController extends Controller
                             $h->buyprice,
                             $h->hpphistorypurchase,
                             $h->hpphistorycogs,
+                            $h->hpphistoryqty,
                             $h->hpphistoryremarks
                         ));
                     } else {
