@@ -13,10 +13,12 @@ use App\Http\Requests;
 use App\MHInvoice;
 use App\Helper\DBHelper;
 use App\Helper\UnitHelper;
+use App\Helper\LPTPrintHelper;
 use Excel;
 use PDF;
 use App\MConfig;
 use Nasution\Terbilang;
+use Html2Text\Html2Text;
 
 class SalesInvoiceController extends Controller
 {
@@ -115,6 +117,7 @@ class SalesInvoiceController extends Controller
         $config = MConfig::on(Auth::user()->db_name)->where('id',1)->first();
         $data['decimals'] = $config->msysgenrounddec;
         $data['dec_point'] = $config->msysnumseparator;
+        $data['user'] = Auth::user();
         if($data['dec_point'] == ","){
           $data['thousands_sep'] = ".";
         } else {
@@ -151,11 +154,25 @@ class SalesInvoiceController extends Controller
         foreach ($inv_details as $d) {
             $goods = MGoods::on(Auth::user()->db_name)->where('mgoodscode',$d->mdinvoicegoodsid)->first();
             $d['qty_label'] = UnitHelper::label($goods,$d->mdinvoicegoodsqty);
+            $spaces_label = sizeof(explode(' ',$d['qty_label']));
+
+            if($spaces_label == 3){
+              $data['offset'] = 49;
+            } else if($spaces_label > 3 && $spaces_label < 7){
+              $data['offset'] = 39;
+            } else {
+              $data['offset'] = 30;
+            }
+
             $data['sum_subtotal'] += $d->mdinvoicegoodsgrossamount;
             $data['sum_tax'] += $d->mdinvoicegoodstax;
             $data['sum_disc'] += $d->mdinvoicegoodsdiscount;
         }
         $data['details'] = $inv_details;
-        return view('admin.export.invoicelpt',$data);
+        $data['footnote'] = $config->msysinvinvfootnote;
+        // $html = view('admin.export.invoicelpt',$data);
+        $htt = LPTPrintHelper::toTextPage($data);
+        return $htt;
+        // return view('admin.export.invoicelpt',$data);
     }
 }

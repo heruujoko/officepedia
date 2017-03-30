@@ -317,7 +317,8 @@
         lock_sell_price: false,
         disable_customer: false,
         set_alert:false,
-        lpt_print: false
+        lpt_print: false,
+        bloburl: null
       }
     },
     computed:{
@@ -379,7 +380,25 @@
     },
     methods: {
         lptPrint(invoiceno){
-            window.open('/admin-nano/salesinvoice/'+invoiceno+'/lpt','_blank');
+            // window.open(,'_blank');
+            Axios.get('/admin-nano/salesinvoice/'+invoiceno+'/lpt').then((res) => {
+              var htmls = res.data;
+              this.makeTextFile(htmls);
+              var win = window.open(this.bloburl);
+              win.print();
+            });
+
+
+        },
+        makeTextFile(text){
+          var data = new Blob([text], {type: 'text/plain'});
+          if(this.bloburl != null){
+            console.log('revoking');
+            window.URL.revokeObjectURL(this.bloburl);
+          }
+          this.bloburl = window.URL.createObjectURL(data);
+
+
         },
         dismissModal(){
             this.selected_goods = "-";
