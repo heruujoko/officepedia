@@ -130,7 +130,7 @@ class SalesInvoiceController extends Controller
         foreach($inv_details as $dtl){
             array_push($inv_details_arr,$dtl);
         }
-        $data['per_page'] = 10;
+        $data['per_page'] = 7;
         $chunks = array_chunk($inv_details_arr,$data['per_page']);
         $inv_details_chunked = [];
         foreach ($chunks as $c) {
@@ -157,11 +157,11 @@ class SalesInvoiceController extends Controller
             $spaces_label = sizeof(explode(' ',$d['qty_label']));
 
             if($spaces_label == 3){
-              $data['offset'] = 49;
+              $data['offset'] = 0;
             } else if($spaces_label > 3 && $spaces_label < 7){
-              $data['offset'] = 39;
+              $data['offset'] = 0;
             } else {
-              $data['offset'] = 30;
+              $data['offset'] = 0;
             }
 
             $data['sum_subtotal'] += $d->mdinvoicegoodsgrossamount;

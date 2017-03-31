@@ -19,7 +19,7 @@ class LPTPrintHelper {
         if($page == sizeof($data['chunks'])){
           $isLastPage = true;
         }
-        $html .= "".$data['config']->msyscompname."\t\t\t\t\t\t\t\t\t\t"."NOTA PENJUALAN"."\t\n";
+        $html .= "".$data['config']->msyscompname."\t\t\t\t\t\t\t"."NOTA PENJUALAN"."\n";
 
         $addr = explode(" ",$data['config']->msyscompaddress);
         $addrwords = sizeof($addr);
@@ -29,17 +29,17 @@ class LPTPrintHelper {
             $html .= "\t";
           }
         } else {
-          $html .= "\t\t\t\t\t\t\t\t\t\t\t";
+          $html .= "\t\t\t\t\t\t\t\t";
         }
 
         $html .= "No Faktur "."\t".$data['invoice']->mhinvoiceno."\n";
-        $html .= "\t\t\t\t\t\t\t\t\t\t\t"."Tanggal Faktur "."\t".$data['invoice']->mhinvoicedate."\n";
-        $html .= "\t\t\t\t\t\t\t\t\t\t\t"."Jatuh Tempo "."\t".$data['invoice']->mhinvoiceduedate."\n";
-        $html .= "\t\t\t\t\t\t\t\t\t\t\t"."Tanggal Order "."\t".$data['invoice']->mhinvoicedate."\n";
-        $html .= "Kepada Yth:\t\t\t\t\t\t\t\t\t\t"."User "."\t".$data['user']->id." ".$data['user']->name."\n";
-        $html .= $data['invoice']->mhinvoicecustomername."\t\t\t\t\t\t\t\t\t\t\t"."Divisi "."\t\n";
-        $html .= "\t\t\t\t\t\t\t\t\t\t\t"."No PO "."\t\n";
-        $html .= "\t\t\t\t\t\t\t\t\t\t\t"."No Proforma "."\t";
+        $html .= "\t\t\t\t\t\t\t\t"."Tanggal Faktur "."\t".$data['invoice']->mhinvoicedate."\n";
+        $html .= "\t\t\t\t\t\t\t\t"."Jatuh Tempo "."\t".$data['invoice']->mhinvoiceduedate."\n";
+        $html .= "\t\t\t\t\t\t\t\t"."Tanggal Order "."\t".$data['invoice']->mhinvoicedate."\n";
+        $html .= "Kepada Yth:\t\t\t\t\t\t\t"."User "."\t".$data['user']->id." ".$data['user']->name."\n";
+        $html .= $data['invoice']->mhinvoicecustomername."\t\t\t\t\t\t\t\t"."Divisi "."\t";
+        // $html .= "\t\t\t\t\t\t\t\t"."No PO "."\t\n";
+        // $html .= "\t\t\t\t\t\t\t\t"."No Proforma "."\t";
 
         $rows = [];
         $rows[0] = [
@@ -53,14 +53,14 @@ class LPTPrintHelper {
           array_push($rows,$r);
         }
 
-        if(sizeof($c['details']) < 20){
+        if(sizeof($c['details']) < 8){
 
           if($isLastPage){
             $dummyLine = [
               '','','','','','',''
             ];
 
-            for($dl=0;$dl<(20-sizeof($c['details']));$dl++){
+            for($dl=0;$dl<(8-sizeof($c['details']));$dl++){
               array_push($rows,$dummyLine);
             }
           } else {
@@ -68,7 +68,7 @@ class LPTPrintHelper {
               '','','','','','',''
             ];
 
-            for($dl=0;$dl<(30-sizeof($c['details']));$dl++){
+            for($dl=0;$dl<(13-sizeof($c['details']));$dl++){
               array_push($rows,$dummyLine);
             }
           }
@@ -84,16 +84,18 @@ class LPTPrintHelper {
         $html .= "\n".$att->render()."\n";
 
         if($isLastPage){
-            $html .= "Cap dan tanda-tangan:"."\t\t\t\t\t\t"."Jumlah "."\t\t\t\t\t".number_format($data['invoice']->mhinvoicesubtotal,$decimals,$dec_point,$thousands_sep)."\t\n";
-            $html .= ""."\t\t\t\t\t\t\t\t"."Discount"."\t\t\t\t".number_format($data['invoice']->mhinvoicediscounttotal,$decimals,$dec_point,$thousands_sep)."\t\n";
-            $html .= ""."\t\t\t\t\t\t\t\t"."Dasar Pengenaan Pajak"."\t\t\t".number_format($data['invoice']->mhinvoicesubtotal - $data['invoice']->mhinvoicediscounttotal,$decimals,$dec_point,$thousands_sep)."\t\n";
-            $html .= "\t\t\t\t\t\t\t\t"."PPn 10 %"."\t\t\t\t".number_format($data['invoice']->mhinvoicetaxtotal - $data['invoice']->mhinvoicediscounttotal,$decimals,$dec_point,$thousands_sep)."\t\n";
-            $html .= "\n\n\n(.............................) (.............................)"."\tTOTAL"."\t\t\t\t\t"."".number_format($data['invoice']->mhinvoicegrandtotal,$decimals,$dec_point,$thousands_sep)."\n";
-            $html .= "\t"."Toko / Pembeli"."\t\t\t"."   Otorisasi\n";
-            $html .= $data['footnote']."\t\tTerbilang ".$data['terbilang']."\n";
+            $html .= "Cap dan tanda-tangan:"."\t\t\t"."Jumlah "."\t\t\t".number_format($data['invoice']->mhinvoicesubtotal,$decimals,$dec_point,$thousands_sep)."\t\n";
+            $html .= ""."\t\t\t\t\t"."Discount"."\t\t".number_format($data['invoice']->mhinvoicediscounttotal,$decimals,$dec_point,$thousands_sep)."\t\n";
+            $html .= ""."\t\t\t\t\t"."Dasar Pengenaan Pajak"."\t".number_format($data['invoice']->mhinvoicesubtotal - $data['invoice']->mhinvoicediscounttotal,$decimals,$dec_point,$thousands_sep)."\t\n";
+            $html .= "\t\t\t\t\t"."PPn 10 %"."\t\t".number_format($data['invoice']->mhinvoicetaxtotal - $data['invoice']->mhinvoicediscounttotal,$decimals,$dec_point,$thousands_sep)."\t\n";
+            $html .= "(...............) (...............)"."\tTOTAL"."\t\t\t"."".number_format($data['invoice']->mhinvoicegrandtotal,$decimals,$dec_point,$thousands_sep)."\n";
+            $html .= " "."Toko / Pembeli"."\t"."       Otorisasi\n";
+            // $html .= $data['footnote']."\t\tTerbilang ".$data['terbilang']."\n";
+            $html .= "Terbilang ".$data['terbilang']."\n";
+            $html .= $data['footnote']."\n";
         }
 
-        $html .= "\n\n\t\t\t\t\t\t\t\t\t\t\t\t\t"."halaman ke ".$page." dari ".sizeof($data['chunks']);
+        $html .= "\t\t\t\t\t\t\t\t"."halaman ke ".$page." dari ".sizeof($data['chunks']);
       }
 
       return $html;
