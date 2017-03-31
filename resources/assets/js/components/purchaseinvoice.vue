@@ -814,7 +814,7 @@
               saved_unit: this.unit //for editing purpose only
             };
             // this.invoice_goods[this.edit_index] = editedGoods;
-            Vue.set(this.invoice_goods,this.edit_index,editedGoods);
+            this.$set(this.invoice_goods,this.edit_index,editedGoods);
             this.reEvaluateInvoice();
             if(this.mode == 'edit'){
                 $('#edit_detail_modal').modal('toggle');

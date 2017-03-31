@@ -22,8 +22,8 @@ Elixir.webpack.mergeConfig({
  */
 
 elixir(mix => {
-    mix.webpack('salesinvoice.js');
-    // mix.webpack('purchaseinvoice.js');
+    // mix.webpack('salesinvoice.js');
+    mix.webpack('purchaseinvoice.js');
     // mix.webpack('stockcardreport.js');
     // mix.webpack('salesreport.js');
     // mix.webpack('invoicereport.js');

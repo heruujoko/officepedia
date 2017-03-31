@@ -15,14 +15,14 @@ use App\MGoods;
 class IntegrityHelper {
 
     public static function recalculateSalesTransactionFrom($date,$edited_history,$mdinvoice){
-      $affected_history = HPPHistory::on(Auth::user()->db_name)->where('created_at','>',Carbon::parse($date))->where('void',0)->orderBy('created_at','asc')->get();
+      $affected_history = HPPHistory::on(Auth::user()->db_name)->where('created_at','>',Carbon::parse($date))->where('void',0)->where('hpphistorygoodsid',$edited_history->hpphistorygoodsid)->orderBy('created_at','asc')->get();
       var_dump('affecting '.count($affected_history).' histories');
 
-      $mgoods = MGoods::on(Auth::user()->db_name)->where('mgoodscode',$affected_history[0]->hpphistorygoodsid)->first();
-      var_dump('goods stock awal = '.$mgoods->mgoodsstock);
-      $mgoods->mgoodsstock = $edited_history->lastqty - $mdinvoice->mdinvoicegoodsqty;
-      $mgoods->save();
-      var_dump('goods nya jadi '.$mgoods->mgoodsstock);
+        $mgoods = MGoods::on(Auth::user()->db_name)->where('mgoodscode',$edited_history->hpphistorygoodsid)->first();
+        var_dump('goods stock awal = '.$mgoods->mgoodsstock);
+        $mgoods->mgoodsstock = $edited_history->lastqty - $mdinvoice->mdinvoicegoodsqty;
+        $mgoods->save();
+        var_dump('goods nya jadi '.$mgoods->mgoodsstock);
 
       // save cogs log
       $h = new HPPHistory;
@@ -115,15 +115,13 @@ class IntegrityHelper {
                     $hpp_coa = MCOA::on(Auth::user()->db_name)->where('mcoacode','5100.01')->first();
                     $persediaan_coa = MCOA::on(Auth::user()->db_name)->where('mcoacode','1105.01')->first();
 
-
-
                     $hpp_journal = MJournal::on(Auth::user()->db_name)->where('mjournaltransno',$mdi->mhinvoiceno)->where('mjournalcoa','5100.01')->first();
                     $persediaan_journal = MJournal::on(Auth::user()->db_name)->where('mjournaltransno',$mdi->mhinvoiceno)->where('mjournalcoa','1105.01')->first();
                     $hpp_coa->update_saldo('-',$hpp_journal->mjournaldebit);
                     $persediaan_coa->update_saldo('+',$persediaan_journal->mjournalcredit);
 
                     $cogs = MCOGS::on(Auth::user()->db_name)->where('mcogsgoodscode',$mdi->mdinvoicegoodsid)->first();
-
+                    var_dump('cogs '.$cogs->mcogslastcogs);
                     $hpp_journal->mjournaldebit = $mdi->mdinvoicegoodsqty * $cogs->mcogslastcogs;
                     var_dump('debit '.$hpp_journal->mjournaldebit);
                     $hpp_journal->save();
@@ -134,6 +132,34 @@ class IntegrityHelper {
                     $persediaan_coa->update_saldo('-',$persediaan_journal->mjournalcredit);
                     $af->hpphistorycogs = $cogs->mcogslastcogs;
                     $af->save();
+
+                    $mgoods = MGoods::on(Auth::user()->db_name)->where('mgoodscode',$mdi->mdinvoicegoodsid)->first();
+                    $mgoods->mgoodsstock -= $mdi->mdinvoicegoodsqty;
+                    $mgoods->save();
+
+                    var_dump('stock '.$mgoods->mgoodsstock);
+
+                    // save cogs log
+                    $h = new HPPHistory;
+                    $h->setConnection(Auth::user()->db_name);
+                    $h->hpphistorygoodsid = $mgoods->mgoodscode;
+                    $h->hpphistorypurchase = 0;
+                    $h->hpphistoryqty = $mgoods->mgoodsstock;
+                    $h->hpphistorycogs = $af->hpphistorycogs;
+                    $h->lastcogs = $af->lastcogs;
+                    $h->lastqty = $mgoods->mgoodsstock + $mdi->mdinvoicegoodsqty;
+                    $h->type = 'sales';
+                    $h->usage = $mdi->mdinvoicegoodsqty;
+                    $h->transno = $mdi->mhinvoiceno;
+                    $h->buyprice = 0;
+                    $h->hpphistoryremarks = "Revisi Penjualan Turunan";
+                    $h->save();
+                    $h->created_at = $af->created_at;
+                    $h->save();
+
+                    $af->void =1;
+                    $af->save();
+
                 }
 
             } else {
@@ -141,6 +167,7 @@ class IntegrityHelper {
                 $mdpurchase = MDPurchase::on(Auth::user()->db_name)->where('mhpurchaseno',$af->transno)->get();
                 foreach($mdpurchase as $mdp){
                     $mgoods = MGoods::on(Auth::user()->db_name)->where('mgoodscode',$mdp->mdpurchasegoodsid)->first();
+                    var_dump('stock '.$mgoods->mgoodsstock);
                     $mgoods->mgoodsstock += $mdp->mdpurchasegoodsqty;
                     $mgoods->save();
                     $mdp->cogs_ref = IntegrityHelper::updateCOGS($mgoods,$mdp,$mdp->mdpurchasegoodsqty,$af,$remarks = "Revisi Pembelian Turunan");
