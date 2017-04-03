@@ -944,6 +944,8 @@
             this.invoice_date = moment(data.mhpurchasedate).format('L');
             //find suppliers
             let spl = _.find(this.suppliers, { msupplierid: data.mhpurchasesupplierid});
+            console.log('spl',spl);
+            console.log('id',data.mhpurchasesupplierid);
             self.invoice_supplier = spl.id+"";
             this.fetchDetailData(data.mhpurchaseno);
             this.invoice_subtotal = parseInt(res.data.mhpurchasesubtotal) - parseInt(res.data.mhpurchasediscounttotal);
