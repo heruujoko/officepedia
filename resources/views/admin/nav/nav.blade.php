@@ -1,5 +1,5 @@
 <div id="branchswitcher" style="padding:10px;">
-    <changer active="{{ $active }}"></changer>
+    <!-- <changer active="{{ $active }}"></changer> -->
 </div>
 <ul>
   @if($active == 'dashboard')
@@ -60,7 +60,7 @@
             @else
               <li><a href="{{ url('admin-nano/mcategoryfixedassets') }}">Master Kategori Aset Tetap</a></li>
             @endif
-            <li><a href="">Pembelian Aset Tetap</a></li>
+            <li><a href="{{ url('admin-nano/mpurchasefixedassets') }}">Pembelian Aset Tetap</a></li>
         @endif
     </ul>
   </li>

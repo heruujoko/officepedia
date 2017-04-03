@@ -75,6 +75,11 @@ class MCategoryfixedassetsController extends Controller
     return response()->json();
 	}
 
+	public function data(){
+		$categories = MCategoryfixedassets::on(Auth::user()->db_name)->get();
+		return response()->json($categories);
+	}
+
 
 
 }
