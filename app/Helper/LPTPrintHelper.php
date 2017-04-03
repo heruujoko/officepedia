@@ -43,12 +43,12 @@ class LPTPrintHelper {
 
         $rows = [];
         $rows[0] = [
-          'Kode','Nama Produk','Jumlah','Multi Satuan','Harga Jual','Subtotal','Diskon'
+          'Nama Produk','Jumlah','Satuan','Harga Jual','Subtotal','Diskon'
         ];
 
         foreach ($c['details'] as $d) {
           $r = [
-            $d->mhinvoiceno,$d->mdinvoicegoodsid." - ".$d->mdinvoicegoodsname,$d->mdinvoicegoodsqty,$d['qty_label'],number_format($d->mdinvoicegoodsprice,$decimals,$dec_point,$thousands_sep),number_format($d->mdinvoicegoodsgrossamount,$decimals,$dec_point,$thousands_sep),number_format($d->mdinvoicegoodsdiscount,$decimals,$dec_point,$thousands_sep)
+            $d->mdinvoicegoodsid." - ".$d->mdinvoicegoodsname,$d->mdinvoicegoodsqty,$d['qty_label'],number_format($d->mdinvoicegoodsprice,$decimals,$dec_point,$thousands_sep),number_format($d->mdinvoicegoodsgrossamount,$decimals,$dec_point,$thousands_sep),number_format($d->mdinvoicegoodsdiscount,$decimals,$dec_point,$thousands_sep)
           ];
           array_push($rows,$r);
         }
@@ -57,18 +57,18 @@ class LPTPrintHelper {
 
           if($isLastPage){
             $dummyLine = [
-              '','','','','','',''
+              '','','','','',''
             ];
 
-            for($dl=0;$dl<(8-sizeof($c['details']));$dl++){
+            for($dl=0;$dl<(6-sizeof($c['details']));$dl++){
               array_push($rows,$dummyLine);
             }
           } else {
             $dummyLine = [
-              '','','','','','',''
+              '','','','','',''
             ];
 
-            for($dl=0;$dl<(13-sizeof($c['details']));$dl++){
+            for($dl=0;$dl<(10-sizeof($c['details']));$dl++){
               array_push($rows,$dummyLine);
             }
           }

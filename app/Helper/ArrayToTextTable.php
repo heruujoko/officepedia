@@ -38,7 +38,7 @@ class ArrayToTextTable
     /**
      * @var int Max Row Width (chars)
      */
-    private $mW = 14;
+    private $mW = 50;
 
     private $head  = false;
     private $pcen  = "+";
@@ -69,10 +69,10 @@ class ArrayToTextTable
 
         for($x=0; $x<$xc; $x++)
             for($y=0; $y<$columns; $y++){
-              if($y != 1){
+              if($y != 0){
                 $this->setMax($x, $y, $this->rows[$x][$this->keys[$y]]);
               } else {
-                $this->setMax($x, $y, $this->rows[$x][$this->keys[$y]]);
+                $this->setMaxGoodsName($x, $y, $this->rows[$x][$this->keys[$y]]);
               }
             }
 
@@ -230,7 +230,7 @@ class ArrayToTextTable
     private function setMaxGoodsName($rowKey, $colKey, &$colVal)
     {
         // $w = mb_strlen($colVal);
-        $w = mb_strlen($colVal)+($this->offset  -mb_strlen($colVal));
+        $w = mb_strlen($colVal)+10;
         $h = 1;
         if($w > $this->mW)
         {
