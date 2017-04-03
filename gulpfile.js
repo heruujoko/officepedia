@@ -47,6 +47,7 @@ elixir(mix => {
     // mix.webpack('arbook.js');
     // mix.webpack('salespurchasejournal.js');
     // mix.webpack('cashbalance.js');
+    // mix.webpack('purchasefixedasset.js');
     // mix.scripts([
     //     '/public/app.min.js','/public/app.config.js','/public/select2.min.js'
     // ],'public/js/app.mixed.js');

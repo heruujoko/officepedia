@@ -88,6 +88,8 @@ Route::group(['prefix'=>'admin-nano','middleware' => ['auth','tenantdb']],functi
   Route::get('mcategoryfixedassets/export/excel','MCategoryfixedassetsController@excel');
   Route::get('mcategoryfixedassets/export/pdf','MCategoryfixedassetsController@pdf');
 
+  Route::get('mpurchasefixedassets','MHPurchaseFixedAssetController@index');
+
   Route::get('mcategorygoodsmark','MGoodsMarkController@index');
   Route::get('mcategorygoodsmark/export/csv','MGoodsMarkController@csv');
   Route::get('mcategorygoodsmark/export/excel','MGoodsMarkController@excel');
@@ -330,6 +332,7 @@ Route::group(['prefix'=>'admin-nano','middleware' => ['auth','tenantdb']],functi
   Route::resource('mcategorycustomer','Api\MCategorycustomerController');
   Route::resource('mcategorysupplier','Api\MCategorysupplierController');
   Route::resource('mcategorygoods','Api\MCategorygoodsController');
+  Route::resource('mcategoryfixedassets/data','Api\MCategoryfixedassetsController@data');
   Route::resource('mcategoryfixedassets','Api\MCategoryfixedassetsController');
   Route::resource('mcategorygoodsmark','Api\MGoodsMarkController');
   Route::resource('memployeelevel','Api\MEmployeeLevelController');
