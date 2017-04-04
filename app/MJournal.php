@@ -22,6 +22,7 @@ class MJournal extends Model
         return $conf->msysprefixjournal.$conf->msysprefixjournallastcount;
     }
 
+    // TODO more safer way to add prefix ?
     public static function add_prefix(){
         $journals = MJournal::on(Auth::user()->db_name)->where('mjournalid',"")->get();
         MJournal::update_prefix_status();

@@ -56,7 +56,7 @@
 							<!-- widget content -->
 							<div class="widget-body no-padding">
 							    <div class="container">
-
+										<purchase mode="view"></purchase>
 							    </div>
 	 					  </div>
 	 				  </div>
@@ -112,7 +112,7 @@
 							<!-- widget content -->
 							<div class="widget-body no-padding">
 							    <div class="container">
-
+										<purchase mode="edit"></purchase>
 							    </div>
 	 					  </div>
 	 				  </div>
@@ -151,38 +151,22 @@
 														<input type="text" class="form-control" placeholder="Filter Nomor Invoice" />
 													</th>
 			                    <th class="hasinput" style="width:9%">
-														<input type="text" class="form-control" placeholder="Filter Customer" />
+														<input type="text" class="form-control" placeholder="Filter Aset" />
 													</th>
 													<th class="hasinput" style="width:9%">
 														<input type="text" class="form-control" placeholder="Filter Tanggal" />
 													</th>
 													<th class="hasinput" style="width:9%">
-														<input type="text" class="form-control" placeholder="Filter Jatuh Tempo" />
-													</th>
-													<th class="hasinput" style="width:9%">
-														<input type="text" class="form-control" placeholder="Filter Subtotal" />
-													</th>
-													<th class="hasinput" style="width:9%">
-														<input type="text" class="form-control" placeholder="Filter Pajak" />
-													</th>
-													<th class="hasinput" style="width:9%">
-														<input type="text" class="form-control" placeholder="Filter Diskon" />
-													</th>
-													<th class="hasinput" style="width:9%">
-														<input type="text" class="form-control" placeholder="Filter Total" />
+														<input type="text" class="form-control" placeholder="Filter Kategori" />
 													</th>
 												</tr>
 												<tr>
 													<th data-hide="action"><center>Aksi</center></th>
 			                    <th data-hide="no"><center>No</center></th>
-			                    <th data-hide="mhinvoiceno"><center>Nomor Invoice</center></th>
-													<th data-hide="mhinvoicecustomername"><center>Customer</center></th>
-													<th data-hide="mhinvoicedate"><center>Tanggal</center></th>
-													<th data-hide="mhinvoiceduedate"><center>Jatuh Tempo</center></th>
-													<th data-hide="mhinvoicesubtotal"><center>Sub Total</center></th>
-													<th data-hide="mhinvoicetaxtotal"><center>Pajak</center></th>
-													<th data-hide="mhinvoicediscounttotal"><center>Diskon</center></th>
-													<th data-hide="mhinvoicegrandtotal"><center>Total</center></th>
+			                    <th data-hide="mhpurchasefixedassetno"><center>Nomor Invoice</center></th>
+													<th data-hide="mhpurchasefixedassetname"><center>Nama Aset</center></th>
+													<th data-hide="mhpurchasefixedassetdate"><center>Tanggal</center></th>
+													<th data-hide="categoryname"><center>Kategori</center></th>
 												</tr>
 											</thead>
 											<tbody>
@@ -249,11 +233,11 @@
             "sLengthMenu": "Show _MENU_ Entries",
             "sInfo": "Showing ( _START_ to _END_ ) to _TOTAL_ Entries"
         },
-        "aoColumnDefs": [{ "bVisible": false, "aTargets": [5,6,7,8] }],
+        // "aoColumnDefs": [{ "bVisible": false, "aTargets": [5,6,7,8] }],
         buttons: [ {
             extend: 'copyHtml5',
             exportOptions: {
-                columns: [1,2,3,4,5,6,7,8,9]
+                columns: [1,2,3,4,5]
             }
         },
         {
@@ -277,7 +261,7 @@
         {
             extend: 'print',
             exportOptions: {
-                columns: [1,2,3,4,5,6,7,8,9] //setting kolom mana yg mau di print
+                columns: [1,2,3,4,5] //setting kolom mana yg mau di print
             }
 
         },
@@ -290,18 +274,14 @@
 
                     processing: false,
                 serverSide: false,
-                ajax: '{{URL::to('/')}}/admin-api/purchaseinvoice',
+                ajax: '{{URL::to('/')}}/admin-api/purchasefixedasset',
                 columns: [
                 {data: 'action', name:'action', searchable: false, orderable: false},
                 {data: 'no', no: 'no' },
-								{data: 'mhpurchaseno', mhpurchaseno: 'mhpurchaseno' },
-								{data: 'mhpurchasesuppliername', mhpurchasesuppliername: 'mhpurchasesuppliername' },
-								{data: 'mhpurchasedate', mhpurchasedate: 'mhpurchasedate' },
-								{data: 'mhpurchaseduedate', mhpurchaseduedate: 'mhpurchaseduedate' },
-								{data: 'subtotal', subtotal: 'subtotal' },
-								{data: 'tax', tax: 'tax' },
-								{data: 'disc', disc: 'disc' },
-								{data: 'gtotal', gtotal: 'gtotal' }
+								{data: 'mhpurchasefixedassetno', mhpurchasefixedassetno: 'mhpurchasefixedassetno' },
+								{data: 'mhpurchasefixedassetname', mhpurchasefixedassetname: 'mhpurchasefixedassetname' },
+								{data: 'mhpurchasefixedassetdate', mhpurchasefixedassetdate: 'mhpurchasefixedassetdate' },
+								{data: 'categoryname', categoryname: 'categoryname' }
                 ]
               }).on('xhr.dt',function(){
 								$('#loading_modal').modal('hide');
@@ -329,7 +309,7 @@
         if (isconfirm) {
           $.ajax({
             type: "DELETE",
-            url: API_URL+"/purchaseinvoice/"+id,
+            url: API_URL+"/purchasefixedasset/"+id,
             success: function(response){
               console.log(response);
               table.ajax.reload();

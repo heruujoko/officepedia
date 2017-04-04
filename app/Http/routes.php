@@ -329,6 +329,10 @@ Route::group(['prefix'=>'admin-nano','middleware' => ['auth','tenantdb']],functi
     Route::get('cashbank/transfer/header/{id}','Api\CashBankIncomeController@header');
     Route::get('cashbank/detailtransfer/{journalid}','Api\CashBankTransferController@details');
 
+  Route::resource('purchasefixedasset/{id}/details','Api\MHPurchaseFixedAssetController@details');
+  Route::resource('purchasefixedasset','Api\MHPurchaseFixedAssetController');
+
+
   Route::resource('mcategorycustomer','Api\MCategorycustomerController');
   Route::resource('mcategorysupplier','Api\MCategorysupplierController');
   Route::resource('mcategorygoods','Api\MCategorygoodsController');

@@ -14,12 +14,14 @@ class MDFixedAssetsPurchase extends Migration
     {
         Schema::create('mdpurchasefixedasset',function(Blueprint $table){
           $table->increments('id');
+          $table->string('mhpurchasefixedassetno');
           $table->string('mdpurchasefixedassetjournalcode');
           $table->string('mdpurchasefixedassetdate');
           $table->string('mdpurchasefixedassetcoacode');
           $table->string('mdpurchasefixedassetcoaname');
-          $table->string('mdpurchasefixedassetdebit');
-          $table->string('mdpurchasefixedassetcredit');
+          $table->double('mdpurchasefixedassetdebit');
+          $table->double('mdpurchasefixedassetcredit');
+          $table->boolean('void')->default(0);
           $table->timestamps();
         });
     }
