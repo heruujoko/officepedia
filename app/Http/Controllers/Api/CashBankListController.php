@@ -22,7 +22,7 @@ class CashBankListController extends Controller
 
     public function cash(){
       DBHelper::configureConnection(Auth::user()->db_alias);
-      $config = MConfig::on(Auth::user()->db_dname)->where('id',1)->first();
+      $config = MConfig::on(Auth::user()->db_name)->where('id',1)->first();
       $this->round = $config->msysgenrounddec;
       $this->separator = $config->msysnumseparator;
       $kas = MCOA::on(Auth::user()->db_name)->where('mcoaparentcode','1101.00')->get();
@@ -54,7 +54,7 @@ class CashBankListController extends Controller
 
     public function bank(){
       DBHelper::configureConnection(Auth::user()->db_alias);
-      $config = MConfig::on(Auth::user()->db_dname)->where('id',1)->first();
+      $config = MConfig::on(Auth::user()->db_name)->where('id',1)->first();
       $this->round = $config->msysgenrounddec;
       $this->separator = $config->msysnumseparator;
       $kas = MCOA::on(Auth::user()->db_name)->where('mcoaparentcode','1102.00')->get();
@@ -93,6 +93,7 @@ class CashBankListController extends Controller
           $mcoa->mcoacode = "";
           $mcoa->mcoaname = $request->mcoaname;
           $mcoa->mcoatype = $parent->mcoaparenttype;
+          $mcoa->void = 0;
           $mcoa->set_parent("1101.00");
           $mcoa->save();
           $mcoa->mcoacode = $mcoa->auto_code();
@@ -118,13 +119,14 @@ class CashBankListController extends Controller
 
     public function add_bank(Request $request){
       DBHelper::configureConnection(Auth::user()->db_alias);
-      $parent = MCOAParent::where('mcoaparentcode','1102.00')->first();
+      $parent = MCOAParent::on(Auth::user()->db_name)->where('mcoaparentcode','1102.00')->first();
       try{
           $mcoa = new MCOA;
           $mcoa->setConnection(Auth::user()->db_name);
           $mcoa->mcoacode = "";
           $mcoa->mcoaname = $request->mcoaname;
           $mcoa->mcoatype = $parent->mcoaparenttype;
+          $mcoa->void = 0;
           $mcoa->set_parent("1102.00");
           $mcoa->save();
           $mcoa->mcoacode = $mcoa->auto_code();
@@ -148,8 +150,8 @@ class CashBankListController extends Controller
     }
 
     public function total($code){
-      DBHelper::configureConnection(Auth::user()->db_alias);
-      $config = MConfig::on(Auth::user()->db_dname)->where('id',1)->first();
+      // DBHelper::configureConnection(Auth::user()->db_alias);
+      $config = MConfig::on(Auth::user()->db_name)->where('id',1)->first();
       $this->round = $config->msysgenrounddec;
       $this->separator = $config->msysnumseparator;
       $decimals = $this->round;
@@ -170,7 +172,7 @@ class CashBankListController extends Controller
 
     public function grand_total(){
       DBHelper::configureConnection(Auth::user()->db_alias);
-      $config = MConfig::on(Auth::user()->db_dname)->where('id',1)->first();
+      $config = MConfig::on(Auth::user()->db_name)->where('id',1)->first();
       $this->round = $config->msysgenrounddec;
       $this->separator = $config->msysnumseparator;
       $decimals = $this->round;
