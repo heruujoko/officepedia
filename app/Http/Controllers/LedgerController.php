@@ -120,6 +120,11 @@ class LedgerController extends Controller
 
             $data = $ledger_query->get();
 
+            foreach($data as $d){
+              $coa = MCOA::on(Auth::user()->db_name)->where('mcoacode',$d->mjournalcoa)->first();
+              $d['coaname'] = $coa->mcoaname;
+            }
+
             $mcoa = MCOA::on(Auth::user()->db_name)->where('mcoacode',$c)->first();
 
             $sum_d = 0;
@@ -286,12 +291,13 @@ class LedgerController extends Controller
                     ));
                     $this->count++;
                     $sheet->row($this->count,array(
-                        'Tanggal','Akun','Tipe Transaksi','Debet','Credit'
+                        'Tanggal','Akun','Keterangan','Tipe Transaksi','Debet','Credit'
                     ));
                     $this->count++;
                     $sheet->row($this->count,array(
                         '',
                         'Saldo Sebelum nya',
+                        '',
                         '',
                         $l['last_saldo']
                     ));
@@ -302,7 +308,8 @@ class LedgerController extends Controller
                         $this->count++;
                         $sheet->row($this->count,array(
                             $tr->mjournaldate,
-                            $tr->mjournalcoa,
+                            $tr->mjournalcoa.' - '.$tr['coaname'],
+                            '',
                             $tr->mjournaltranstype,
                             $tr->mjournaldebit,
                             $tr->mjournalcredit,
@@ -312,6 +319,7 @@ class LedgerController extends Controller
                     $this->count++;
                     $sheet->row($this->count,array(
                         'Saldo',
+                        '',
                         '',
                         '',
                         $l['sum_d'],
@@ -396,12 +404,13 @@ class LedgerController extends Controller
                     ));
                     $this->count++;
                     $sheet->row($this->count,array(
-                        'Tanggal','Akun','Tipe Transaksi','Debet','Credit'
+                        'Tanggal','Akun','Keterangan','Tipe Transaksi','Debet','Credit'
                     ));
                     $this->count++;
                     $sheet->row($this->count,array(
                         '',
                         'Saldo Sebelum nya',
+                        '',
                         '',
                         $l['last_saldo']
                     ));
@@ -412,7 +421,8 @@ class LedgerController extends Controller
                         $this->count++;
                         $sheet->row($this->count,array(
                             $tr->mjournaldate,
-                            $tr->mjournalcoa,
+                            $tr->mjournalcoa.' - '.$tr['coaname'],
+                            '',
                             $tr->mjournaltranstype,
                             $tr->mjournaldebit,
                             $tr->mjournalcredit,
@@ -422,6 +432,7 @@ class LedgerController extends Controller
                     $this->count++;
                     $sheet->row($this->count,array(
                         'Saldo',
+                        '',
                         '',
                         '',
                         $l['sum_d'],

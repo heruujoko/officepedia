@@ -52,6 +52,7 @@
                             <tr>
                                 <th style="width: 10%">Tanggal</th>
                                 <th>Akun</th>
+                                <th>Keterangan</th>
                                 <th>Tipe Transaksi</th>
                                 <th>Debet</th>
                                 <th>Kredit</th>
@@ -60,12 +61,13 @@
                         <tbody>
                             <tr>
                                 <td></td>
-                                <td colspan="2">Saldo Sebelumnya</td>
+                                <td colspan="3">Saldo Sebelumnya</td>
                                 <td colspan="2" v-priceformatlabel="num_format" style="text-align: right">{{ journal.last_saldo }}</td>
                             </tr>
                             <tr v-for="tr in journal.transactions">
                                 <td>{{ tr.mjournaldate }}</td>
-                                <td>{{ tr.mjournalcoa }}</td>
+                                <td>{{ tr.mjournalcoa }} - {{ tr.coaname }}</td>
+                                <td></td>
                                 <td>{{ tr.mjournaltranstype }}</td>
                                 <td v-priceformatlabel="num_format" style="text-align: right">{{ tr.mjournaldebit }}</td>
                                 <td v-priceformatlabel="num_format" style="text-align: right">{{ tr.mjournalcredit }}</td>
@@ -73,7 +75,7 @@
                         </tbody>
                         <thead>
                             <tr>
-                                <td colspan="3" style="text-align: center;vertical-align: middle">TOTAL</td>
+                                <td colspan="4" style="text-align: center;vertical-align: middle">TOTAL</td>
                                 <td v-priceformatlabel="num_format" style="text-align: right">{{ lodash.sumBy(journal.transactions , (jt) => { return jt.mjournaldebit } )}}</td>
                                 <td v-priceformatlabel="num_format" style="text-align: right">{{ lodash.sumBy(journal.transactions , (jt) => { return jt.mjournalcredit } )}}</td>
                             </tr>

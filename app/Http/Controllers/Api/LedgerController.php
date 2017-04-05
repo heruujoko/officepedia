@@ -33,6 +33,11 @@ class LedgerController extends Controller
 
             $data = $ledger_query->get();
 
+            foreach($data as $d){
+              $coa = MCOA::on(Auth::user()->db_name)->where('mcoacode',$d->mjournalcoa)->first();
+              $d['coaname'] = $coa->mcoaname;
+            }
+
             $mcoa = MCOA::on(Auth::user()->db_name)->where('mcoacode',$c)->first();
 
             $group = [

@@ -87,6 +87,7 @@
                     <tr class="tbl-footer">
                         <th>Tanggal</th>
                         <th>Akun</th>
+                        <th>Keterangan</th>
                         <th>Tipe Transaksi</th>
                         <th>Debet</th>
                         <th>Kredit</th>
@@ -95,13 +96,14 @@
                 <tbody>
                     <tr>
                         <td></td>
-                        <td colspan="2">Saldo Sebelumnya</td>
+                        <td colspan="3">Saldo Sebelumnya</td>
                         <td colspan="2" style="text-align: right">{{ $l['last_saldo'] }}</td>
                     </tr>
                     @foreach($l['transactions'] as $tr)
                         <tr>
                             <td>{{ $tr['mjournaldate'] }}</td>
-                            <td>{{ $tr['mjournalcoa'] }}</td>
+                            <td>{{ $tr['mjournalcoa'] }} - {{ $tr['coaname'] }}</td>
+                            <td></td>
                             <td>{{ $tr['mjournaltranstype'] }}</td>
                             <td style="text-align: right">{{ number_format($tr['mjournaldebit'],$decimals,$dec_point,$thousands_sep) }}</td>
                             <td style="text-align: right">{{ number_format($tr['mjournalcredit'],$decimals,$dec_point,$thousands_sep) }}</td>
@@ -110,7 +112,7 @@
                 </tbody>
                 <thead>
                     <tr class="tbl-footer">
-                        <td colspan="3" style="text-align: center">Total</td>
+                        <td colspan="4" style="text-align: center">Total</td>
                         <td style="text-align: right">{{ number_format($l['sum_d'],$decimals,$dec_point,$thousands_sep) }}</td>
                         <td style="text-align: right">{{ number_format($l['sum_k'],$decimals,$dec_point,$thousands_sep) }}</td>
                     </tr>
