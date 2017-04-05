@@ -71,6 +71,7 @@
                             <th>Tgl Invoice</th>
                             <th>Tgl Jatuh Tempo</th>
                             <th>Aging</th>
+                            <th>Jatuh Tempo</th>
                             <th>1 - 7 Hari</th>
                             <th>7 - 14 Hari</th>
                             <th>14 - 21 Hari</th>
@@ -96,6 +97,7 @@
                             <td><span v-if="ar.data == true">{{ ar.marcarddate }}</span></td>
                             <td><span v-if="ar.data == true">{{ ar.marcardduedate }}</span></td>
                             <td><span v-if="ar.data == true">{{ ar.aging }}</span></td>
+                            <td><span v-if="ar.data == true"><span v-if="ar.has_due">sudah jatuh tempo</span></span></td>
                             <td v-if="ar.footer == false" style="text-align: right" v-priceformatlabel="num_format">{{ ar['1w'] }}</td><td v-if="ar.footer == true"></td>
                             <td v-if="ar.footer == false" style="text-align: right" v-priceformatlabel="num_format">{{ ar['2w'] }}</td><td v-if="ar.footer == true"></td>
                             <td v-if="ar.footer == false" style="text-align: right" v-priceformatlabel="num_format">{{ ar['3w'] }}</td><td v-if="ar.footer == true"></td>
@@ -108,15 +110,16 @@
                             <th colspan="2">TOTAL</th>
                             <th></th>
                             <th></th>
-                            <th style="text-align: right" v-priceformatlabel="num_format">{{ invoice_total }}</th>
-                            <th style="text-align: right" v-priceformatlabel="num_format">{{ outstanding_total }}</th>
+                            <th style="text-align: right">{{ invoice_total }}</th>
+                            <th style="text-align: right">{{ outstanding_total }}</th>
                             <th colspan="2"></th>
                             <th></th>
-                            <th style="text-align: right" v-priceformatlabel="num_format">{{ one_w_total }}</th>
-                            <th style="text-align: right" v-priceformatlabel="num_format">{{ two_w_total }}</th>
-                            <th style="text-align: right" v-priceformatlabel="num_format">{{ three_w_total }}</th>
-                            <th style="text-align: right" v-priceformatlabel="num_format">{{ four_w_total }}</th>
-                            <th style="text-align: right" v-priceformatlabel="num_format">{{ one_m_total }}</th>
+                            <th>{{ num_format }}</th>
+                            <th style="text-align: right">{{ one_w_total }}</th>
+                            <th style="text-align: right">{{ two_w_total }}</th>
+                            <th style="text-align: right">{{ three_w_total }}</th>
+                            <th style="text-align: right">{{ four_w_total }}</th>
+                            <th style="text-align: right">{{ one_m_total }}</th>
                         </tr>
                     </thead>
                 </table>
@@ -141,7 +144,7 @@
                 branches:[],
                 customers:[],
                 ars:[],
-                num_format:"0,0.00",
+                num_format:"0,0",
                 selected_branch:"",
                 selected_customer:"",
                 invoice_date_start: moment().format('L'),
@@ -237,43 +240,63 @@
         methods:{
             expander(ar,index){
                 console.log('chk',ar.checked);
+                let rest_of_the_list = [];
+                let tmp_ars = this.ars;
+                for(let r=index+1;r<this.ars.length;r++){
+                  rest_of_the_list.push(this.ars[r]);
+                }
+                this.ars = [];
+                for(let l=0;l<=index;l++){
+                  this.ars.push(tmp_ars[l]);
+                }
+                ar = this.ars[index];
                 if(!ar.checked){
                     $("#loading_modal").modal('toggle');
                     Axios.get('/admin-api/arcustreport/details/'+ar.marcardcustomerid+"?end="+this.invoice_date_end)
                     .then( res => {
                         ar.checked = true;
                         ar.expand_length = res.data.length;
-                        for(let i=1;i<=res.data.length;i++){
-                            console.log(res.data[i-1]);
-                            this.ars.splice(index+i,0,res.data[i-1]);
+                        for(let i=0;i<res.data.length;i++){
+                            this.ars.push(res.data[i]);
                         }
+                        for(let r=0;r<rest_of_the_list.length;r++){
+                          this.ars.push(rest_of_the_list[r]);
+                        }
+
                         $("#loading_modal").modal('toggle');
                     })
                     .catch( err => {
                         $("#loading_modal").modal('toggle');
                     })
                 } else {
-                    this.ars.splice(index+1,ar.expand_length);
+                    // this.ars.splice(index+1,ar.expand_length);
+                    for(let off=0;off<ar.expand_length;off++){
+                        this.$delete(this.ars,index+1);
+                    }
                     ar.checked = false;
                     ar.expand_length = 0;
                 }
+                // this.$set(this.ars,tmp_ars);
             },
             expandAll: async function (){
-                for(let i=0;i<this.ars.length;i++){
-                    if(this.ars[i].header == true){
+                let tmp_ars = this.ars;
+                this.ars = [];
+                for(let i=0;i<tmp_ars.length;i++){
+                    if(tmp_ars[i].header == true){
                         try {
-                            let res = await Axios.get('/admin-api/arcustreport/details/'+this.ars[i].marcardcustomerid+"?end="+this.invoice_date_end)
-                            this.ars[i].checked = true;
-                            this.ars[i].expand_length = res.data.length;
+                            let res = await Axios.get('/admin-api/arcustreport/details/'+tmp_ars[i].marcardcustomerid+"?end="+this.invoice_date_end)
+                            tmp_ars[i].checked = true;
+                            tmp_ars[i].expand_length = res.data.length;
                             for(let j=1;j<=res.data.length;j++){
                                 console.log(res.data[j-1]);
-                                this.ars.splice(i+j,0,res.data[j-1]);
+                                tmp_ars.splice(i+j,0,res.data[j-1]);
                             }
                         } catch(err){
                             console.log(err);
                         }
                     }
                 }
+                this.ars = tmp_ars;
             },
             fetchConfig(){
                 var self = this;
@@ -300,14 +323,17 @@
             fetchArs(){
                 $('#loading_modal').modal('toggle');
                 var self = this;
+                this.ars = [];
                 Axios.get('/admin-api/arcustreport?br='+this.selected_branch+'&cust='+this.selected_customer+'&start='+this.invoice_date_start+'&end='+this.invoice_date_end)
                 .then(function(res){
                     $('#loading_modal').modal('toggle');
                     for(let i=0;i<res.data.length;i++){
                         res.data[i].checked = false;
                         res.data[i].expand_length = 0;
+                        console.log(i,res.data[i].marcardtotalinv);
+                        self.$set(self.ars,i,res.data[i]);
                     }
-                    self.ars = res.data;
+                    // self.ars = res.data;
                     if(self.expand_all == true){
                         self.expandAll()
                     }

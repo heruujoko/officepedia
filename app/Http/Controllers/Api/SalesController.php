@@ -416,7 +416,7 @@ class SalesController extends Controller
             $ar['1m'] = 0;
             $ar->marcardtotalinv = 0;
             $ar->marcardoutstanding = 0;
-            $details = MARCard::on(Auth::user()->db_name)->whereIn('marcardwarehouseid',$warehouse_ids)->where('marcardcustomerid',$ar->marcardcustomerid)->where('void',0)->groupBy('marcardtransno')->get();
+            $details = MARCard::on(Auth::user()->db_name)->whereIn('marcardwarehouseid',$warehouse_ids)->where('marcardcustomerid',$ar->marcardcustomerid)->whereDate('marcarddate','<=',Carbon::parse($request->end))->where('void',0)->groupBy('marcardtransno')->get();
             foreach($details as $d){
 
                 $last_ar = MARCard::get_accumulate_history($d->marcardtransno,$d->marcarddate);
@@ -475,7 +475,6 @@ class SalesController extends Controller
         foreach($details as $d){
 
             $last_ar = MARCard::get_accumulate_history($d->marcardtransno,$d->marcarddate);
-
             if($last_ar->marcardoutstanding != 0){
                 $last_ar['header'] = false;
                 $last_ar['data'] = true;
@@ -490,7 +489,12 @@ class SalesController extends Controller
                 $now = Carbon::now();
                 $due = Carbon::parse($last_ar->marcardduedate);
                 $diff = $now->diffInDays($due,false);
+                $last_ar['has_due'] = false;
+                if($diff <= 0){
+                  $last_ar['has_due'] = true;
+                }
                 $last_ar['aging'] = $diff;
+                $diff = abs($diff);
                 // spread the ar in weeks
                 if($diff > 0 && $diff <= 7){
                     $last_ar['1w'] += $last_ar->marcardoutstanding;

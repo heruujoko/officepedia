@@ -1984,7 +1984,7 @@ class ReportController extends Controller
                     $ar['numoftrans'] += 1;
                     $now = Carbon::now();
                     $due = Carbon::parse($last_ar->marcardduedate);
-                    $diff = $now->diffInDays($due,false);
+                    $diff = $now->diffInDays($due,true);
 
                     $ar->marcardtotalinv += $last_ar->marcardtotalinv;
                     $ar->marcardoutstanding += $last_ar->marcardoutstanding;
@@ -2058,6 +2058,7 @@ class ReportController extends Controller
                 $due = Carbon::parse($last_ar->marcardduedate);
                 $diff = $now->diffInDays($due,false);
                 $last_ar['aging'] = $diff;
+                $diff = abs($diff);
                 // spread the ar in weeks
                 if($diff > 0 && $diff <= 7){
                     $last_ar['1w'] += $last_ar->marcardoutstanding;
