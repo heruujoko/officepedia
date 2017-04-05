@@ -55,7 +55,7 @@ class SalesController extends Controller
         }
 
         if($request->has('goods') && $request->has('wh')){
-            $details = MDInvoice::on(Auth::user()->db_name)->where('mdinvoicegoodsid',$request->goods)->where('mdinvoicegoodsidwhouse',$request->wh)->get();
+            $details = MDInvoice::on(Auth::user()->db_name)->where('mdinvoicegoodsid',$request->goods)->where('mdinvoicegoodsidwhouse',$request->wh)->where('void',0)->get();
             foreach ($details as $d) {
                 array_push($headers,$d->mhinvoiceno);
             }
@@ -67,6 +67,7 @@ class SalesController extends Controller
                 ->where('mdinvoicedate',$s->mhinvoicedate)
                 ->where('mdinvoicegoodsid',$request->goods)
                 ->where('mdinvoicegoodsidwhouse',$request->wh)
+                ->where('void',0)
                 ->get();
                 $s['detail_count'] = count($details);
                 $s['numoftrans'] = count($details);
@@ -87,7 +88,7 @@ class SalesController extends Controller
             }
 
         } else if($request->has('wh')){
-            $details = MDInvoice::on(Auth::user()->db_name)->where('mdinvoicegoodsidwhouse',$request->wh)->get();
+            $details = MDInvoice::on(Auth::user()->db_name)->where('mdinvoicegoodsidwhouse',$request->wh)->where('void',0)->get();
             foreach ($details as $d) {
                 array_push($headers,$d->mhinvoiceno);
             }
@@ -103,6 +104,7 @@ class SalesController extends Controller
                 $details = MDInvoice::on(Auth::user()->db_name)
                 ->where('mdinvoicedate',$s->mhinvoicedate)
                 ->where('mdinvoicegoodsidwhouse',$request->wh)
+                ->where('void',0)
                 ->get();
                 $s['detail_count'] = count($details);
                 $s['numoftrans'] = count($details);
@@ -126,6 +128,7 @@ class SalesController extends Controller
             $details = MDInvoice::on(Auth::user()->db_name)->where('mdinvoicegoodsid',$request->goods)
             ->whereDate('mdinvoicedate','>=',Carbon::parse($request->start))
             ->whereDate('mdinvoicedate','<=',Carbon::parse($request->end))
+            ->where('void',0)
             ->get();
             foreach ($details as $d) {
                 array_push($headers,$d->mhinvoiceno);
@@ -142,6 +145,7 @@ class SalesController extends Controller
                 ->where('mdinvoicedate',$s->mhinvoicedate)
                 ->where('mdinvoicegoodsid',$request->goods)
                 ->whereIn('mdinvoicegoodsidwhouse',$warehouse_ids)
+                ->where('void',0)
                 ->get();
                 $s['detail_count'] = count($details);
                 $s['numoftrans'] = count($details);
@@ -166,7 +170,7 @@ class SalesController extends Controller
             ->get();
 
             foreach($sales as $s){
-                $details = MDInvoice::on(Auth::user()->db_name)->whereIn('mdinvoicegoodsidwhouse',$warehouse_ids)->where('mdinvoicedate',$s->mhinvoicedate)->get();
+                $details = MDInvoice::on(Auth::user()->db_name)->whereIn('mdinvoicegoodsidwhouse',$warehouse_ids)->where('mdinvoicedate',$s->mhinvoicedate)->where('void',0)->get();
                 $s['detail_count'] = count($details);
                 $s['numoftrans'] = count($details);
                 $s['header'] = true;

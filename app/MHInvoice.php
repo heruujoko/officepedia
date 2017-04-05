@@ -138,7 +138,8 @@ class MHInvoice extends Model
           $invoice_detail->mdinvoicegoodsprice = $g['goods']['mgoodspriceout'];
           $invoice_detail->mdinvoicegoodsgrossamount = $g['subtotal'];
           $invoice_detail->mdinvoicegoodsdiscount = $g['disc'];
-          $invoice_detail->mdinvoicegoodstax = $g['tax'];
+          // $invoice_detail->mdinvoicegoodstax = $g['tax'];
+          $invoice_detail->mdinvoicegoodstax = (10 / 100) * $g['subtotal'];
           $invoice_detail->saved_unit = $g['saved_unit'];
           $invoice_detail->mdinvoicegoodsidwhouse = $g['warehouse'];
           $invoice_detail->mdinvoiceremarks = $g['remark'];
