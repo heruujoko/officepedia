@@ -93,6 +93,7 @@
                     <td class="bold">Tgl Invoice</td>
                     <td class="bold">Tgl Jatuh Tempo</td>
                     <td class="bold">Aging</td>
+                    <td class="bold">Jatuh Tempo</td>
                     <td class="bold">1 - 7 Hari</td>
                     <td class="bold">7 - 14 Hari</td>
                     <td class="bold">14 - 21 Hari</td>
@@ -107,6 +108,7 @@
                             <td>{{ $ar->marcardcustomerid }}</td>
                             <td>{{ $ar->marcardcustomername }}</td>
                             <td>{{ $ar->numoftrans }}</td>
+                            <td></td>
                             <td></td>
                             <td></td>
                             <td></td>
@@ -130,6 +132,7 @@
                         <td>{{ $ar->marcarddate }}</td>
                         <td>{{ $ar->marcardduedate }}</td>
                         <td>{{ $ar->aging }}</td>
+                        <td>{{ $ar->has_due }}</td>
                         <td>{{ number_format($ar->{'1w'},$decimals,$dec_point,$thousands_sep) }}</td>
                         <td>{{ number_format($ar->{'2w'},$decimals,$dec_point,$thousands_sep) }}</td>
                         <td>{{ number_format($ar->{'3w'},$decimals,$dec_point,$thousands_sep) }}</td>
@@ -138,6 +141,7 @@
                     </tr>
                     @else
                     <tr>
+                        <td></td>
                         <td></td>
                         <td></td>
                         <td></td>
@@ -163,6 +167,7 @@
                     <td></td>
                     <td>{{ number_format($total_inv,$decimals,$dec_point,$thousands_sep) }}</td>
                     <td>{{ number_format($total_outs,$decimals,$dec_point,$thousands_sep) }}</td>
+                    <td></td>
                     <td></td>
                     <td></td>
                     <td></td>

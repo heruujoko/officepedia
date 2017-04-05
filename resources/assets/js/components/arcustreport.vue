@@ -114,7 +114,7 @@
                             <th style="text-align: right">{{ outstanding_total }}</th>
                             <th colspan="2"></th>
                             <th></th>
-                            <th>{{ num_format }}</th>
+                            <th></th>
                             <th style="text-align: right">{{ one_w_total }}</th>
                             <th style="text-align: right">{{ two_w_total }}</th>
                             <th style="text-align: right">{{ three_w_total }}</th>
@@ -133,6 +133,7 @@
     import _ from 'lodash'
     import moment from 'moment'
     import base64 from 'base-64'
+    import numeral from 'numeral'
 
     export default {
         props: ['username'],
@@ -188,53 +189,60 @@
                 }
             },
             outstanding_total(){
-                return _.sumBy(this.ars,(ar) => {
+                let amount =  _.sumBy(this.ars,(ar) => {
                     if(ar.header == true){
                         return ar.marcardoutstanding;
                     }
                 });
+                return numeral(amount).format(this.num_format);
             },
             invoice_total(){
-                return _.sumBy(this.ars,(ar) => {
+                let amount = _.sumBy(this.ars,(ar) => {
                     if(ar.header == true){
                         return ar.marcardtotalinv;
                     }
                 });
+                return numeral(amount).format(this.num_format);
             },
             one_w_total(){
-                return _.sumBy(this.ars,(ar) => {
+                let amount = _.sumBy(this.ars,(ar) => {
                     if(ar.header == true){
                         return ar['1w'];
                     }
                 });
+                return numeral(amount).format(this.num_format);
             },
             two_w_total(){
-                return _.sumBy(this.ars,(ar) => {
+                let amount =  _.sumBy(this.ars,(ar) => {
                     if(ar.header == true){
                         return ar['2w'];
                     }
                 });
+                return numeral(amount).format(this.num_format);
             },
             three_w_total(){
-                return _.sumBy(this.ars,(ar) => {
+                let amount =  _.sumBy(this.ars,(ar) => {
                     if(ar.header == true){
                         return ar['3w'];
                     }
                 });
+                return numeral(amount).format(this.num_format);
             },
             four_w_total(){
-                return _.sumBy(this.ars,(ar) => {
+                let amount =  _.sumBy(this.ars,(ar) => {
                     if(ar.header == true){
                         return ar['4w'];
                     }
                 });
+                return numeral(amount).format(this.num_format);
             },
             one_m_total(){
-                return _.sumBy(this.ars,(ar) => {
+                let amount =  _.sumBy(this.ars,(ar) => {
                     if(ar.header == true){
                         return ar['1m'];
                     }
                 });
+                return numeral(amount).format(this.num_format);
             }
         },
         methods:{

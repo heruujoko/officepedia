@@ -2058,6 +2058,10 @@ class ReportController extends Controller
                 $due = Carbon::parse($last_ar->marcardduedate);
                 $diff = $now->diffInDays($due,false);
                 $last_ar['aging'] = $diff;
+                $last_ar['has_due'] = "";
+                if($diff <= 0){
+                  $last_ar['has_due'] = "sudah jatuh tempo";
+                }
                 $diff = abs($diff);
                 // spread the ar in weeks
                 if($diff > 0 && $diff <= 7){
@@ -2326,7 +2330,7 @@ class ReportController extends Controller
 
                 $this->count+=2;
                 $sheet->row($this->count,array(
-                    'Kode Customer','Nama Customer','Total Nota','No Invoice','Nilai Invoice','Oustanding','Tgl Invoice','Tgl Jatuh Tempo','Aging','1-7 Hari','7-14 Hari','14-21 Hari','21-30 Hari','> 1 Bulan'
+                    'Kode Customer','Nama Customer','Total Nota','No Invoice','Nilai Invoice','Oustanding','Tgl Invoice','Tgl Jatuh Tempo','Aging','Jatuh Tempo','1-7 Hari','7-14 Hari','14-21 Hari','21-30 Hari','> 1 Bulan'
                 ));
 
                 foreach ($this->ars as $ar) {
@@ -2336,6 +2340,7 @@ class ReportController extends Controller
                             $ar->marcardcustomerid,
                             $ar->marcardcustomername,
                             $ar->numoftrans,
+                            '',
                             '',
                             '',
                             '',
@@ -2359,6 +2364,7 @@ class ReportController extends Controller
                             $ar->marcarddate,
                             $ar->marcardduedate,
                             $ar->aging,
+                            $ar->has_due,
                             $ar->{'1w'},
                             $ar->{'2w'},
                             $ar->{'3w'},
@@ -2367,6 +2373,7 @@ class ReportController extends Controller
                         ));
                     } else {
                         $sheet->row($this->count,array(
+                            '',
                             '',
                             '',
                             '',
@@ -2393,6 +2400,7 @@ class ReportController extends Controller
                     '',
                     $this->data['total_inv'],
                     $this->data['total_outs'],
+                    '',
                     '',
                     '',
                     '',
