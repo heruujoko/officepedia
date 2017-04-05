@@ -178,8 +178,10 @@ class MCOAController extends Controller
           $mcoa->mcoacode = $request->mcoacode;
           $mcoa->mcoaname = $request->mcoaname;
           $mcoa->mcoatype = $request->mcoatype;
+          $mcoa->void = 0;
           $mcoa->set_parent($request->mcoaparent);
           $mcoa->save();
+          var_dump($request->automcoacode);
           if($request->automcoacode == "true"){
             $mcoa->mcoacode = $mcoa->auto_code();
           }

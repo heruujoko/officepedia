@@ -48,9 +48,10 @@ class MCOA extends \LaravelArdent\Ardent\Ardent
     }
 
     public function auto_code(){
-      $childs = DB::table('mcoa')->where('mcoaparentcode',$this->mcoaparentcode)->get();
-      $count = count($childs);
+      $childs = MCOA::on(Auth::user()->db_name)->where('mcoaparentcode',$this->mcoaparentcode)->get();
+      $count = sizeof($childs);
       $count++;
+      var_dump($count);
       $string_count = "";
       if($count < 10){
         $string_count = "0".$count;
@@ -59,6 +60,7 @@ class MCOA extends \LaravelArdent\Ardent\Ardent
       }
       $parent_code = $this->parent()->mcoaparentcode;
       $p = explode(".",$parent_code);
+      var_dump($p[0].".".$string_count);
       return $p[0].".".$string_count;
     }
 
