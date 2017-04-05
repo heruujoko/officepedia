@@ -392,6 +392,7 @@ Route::group(['prefix'=>'admin-nano','middleware' => ['auth','tenantdb']],functi
   Route::resource('payar','Api\PayArController');
   Route::get('payar/details/{invoice_no}','Api\PayArController@details');
 
+  Route::get('journal/types','Api\JournalController@trans_types');
   Route::get('journal','Api\JournalController@journal');
   Route::get('journal/group/{type}','Api\JournalController@group_journal');
   Route::get('coaledger','Api\MCOAController@datalistledger');

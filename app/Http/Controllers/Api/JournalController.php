@@ -18,6 +18,18 @@ class JournalController extends Controller
 
     private $iteration;
 
+    public function trans_types(){
+      $trans_types = [
+          'Pembelian',
+          'Penjualan',
+          'Pemasukan',
+          'Pengeluaran',
+          'Transfer',
+          'Umum'
+      ];
+      return response()->json($trans_types);
+    }
+
     public function journal(Request $request){
 
         $journal_query = MJournal::on(Auth::user()->db_name)->where('void',0);
@@ -27,11 +39,14 @@ class JournalController extends Controller
         if($request->has('end')){
             $journal_query->whereDate('mjournaldate','<=',Carbon::parse($request->end));
         }
+
+        if($request->has('type')){
+            $journal_query->where('mjournaltranstype',$request->type);
+        }
+
         $headers = $journal_query->groupBy('mjournalid')->get();
         $journals = [];
-
         foreach($headers as $h){
-
             $group_query = MJournal::on(Auth::user()->db_name)->where('mjournalid',$h->mjournalid);
 
             if($request->has('start')){
@@ -41,15 +56,23 @@ class JournalController extends Controller
                 $journal_query->whereDate('mjournaldate','<=',Carbon::parse($request->end));
             }
 
+            if($request->has('type')){
+                $journal_query->where('mjournaltranstype',$request->type);
+            }
+
             $groups = $group_query->get();
 
             $sum_debit = 0;
             $sum_credit = 0;
-
+            $count_group = 0;
             foreach($groups as $g){
+                $count_group++;
                 $sum_debit += $g->mjournaldebit;
                 $sum_credit += $g->mjournalcredit;
                 $g['mjournalcoaname'] = MCOA::on(Auth::user()->db_name)->where('mcoacode',$g->mjournalcoa)->first()->mcoaname;
+                if($count_group != 1){
+                  $g['mjournaldate'] = "";
+                }
             }
 
             $data = [
@@ -61,6 +84,7 @@ class JournalController extends Controller
                 'sum_credit' => $sum_credit,
                 'transactions' => $groups
             ];
+
 
             array_push($journals,$data);
         }

@@ -10,6 +10,13 @@
             <p class="col-md-1 report-label">Periode Akhir</p>
             <input v-dpicker v-model="report_date_end" type="text" class="small-date form-control" />
         </div>
+        <div class="row">
+            <p class="col-md-1 report-label">Tipe Transaksi</p>
+            <select v-selecttwo class="col-md-2" v-model="selected_type">
+                <option value="">Semua</option>
+                <option v-for="s in journal_types" :value="s">{{ s }}</option>
+            </select>
+        </div>
         <br>
         <div class="row">
             <div class="col-md-3">
@@ -62,8 +69,8 @@
                                 <td>{{ tr.mjournaldate }}</td>
                                 <td>{{ tr.mjournaltransno }}</td>
                                 <td>{{ tr.mjournaltranstype }}</td>
-                                <td v-if="tr.mjournaldebit == 0 && tr.mjournalcredit != 0"><span style="margin-left: 50px">{{ tr.mjournalcoaname }}</span></td>
-                                <td v-else><span>{{ tr.mjournalcoaname }}</span></td>
+                                <td v-if="tr.mjournaldebit == 0 && tr.mjournalcredit != 0"><span style="margin-left: 40px">{{ tr.mjournalcoa }} - {{ tr.mjournalcoaname }}</span></td>
+                                <td v-else><span>{{ tr.mjournalcoa }} - {{ tr.mjournalcoaname }}</span></td>
                                 <td style="text-align: right" v-priceformatlabel="num_format">{{ tr.mjournaldebit }}</td>
                                 <td style="text-align: right" v-priceformatlabel="num_format">{{ tr.mjournalcredit }}</td>
                             </tr>
@@ -98,10 +105,28 @@
                 report_date_end : moment().format('L'),
                 report_print_date: moment().format('L'),
                 num_format:"0.0",
-                journals:[]
+                journals:[],
+                journal_types:[
+                  "Pembelian",
+                  "Pembelian",
+                  "Pemasukan",
+                  "Pengeluaran",
+                  "Transfer",
+                  "Umum"
+                ],
+                selected_type: ""
             }
         },
         methods:{
+            fetchTypes(){
+              Axios.get('/admin-api/journal/types')
+              .then( res => {
+                this.journal_types = res.data;
+              })
+              .catch(err => {
+                console.log(err);
+              });
+            },
             fetchConfig(){
               Axios.get('/admin-api/mconfig')
               .then((res) => {
@@ -122,7 +147,7 @@
                 let self = this;
                 self.journals = [];
                 $("#loading_modal").modal('toggle');
-                Axios.get('/admin-api/journal?end='+this.report_date_end+"&start="+this.report_date_start)
+                Axios.get('/admin-api/journal?end='+this.report_date_end+"&start="+this.report_date_start+"&type="+this.selected_type)
                 .then((res) => {
                     self.journals = res.data;
                     $("#loading_modal").modal('toggle');
@@ -134,21 +159,22 @@
                 });
             },
             printTable(){
-                window.open('/admin-nano/reports/journal/export/print?end='+this.report_date_end+"&start="+this.report_date_start,'_blank');
+                window.open('/admin-nano/reports/journal/export/print?end='+this.report_date_end+"&start="+this.report_date_start+"&type="+this.selected_type,'_blank');
             },
             pdfTable(){
-                window.open('/admin-nano/reports/journal/export/pdf?end='+this.report_date_end+"&start="+this.report_date_start,'_blank');
+                window.open('/admin-nano/reports/journal/export/pdf?end='+this.report_date_end+"&start="+this.report_date_start+"&type="+this.selected_type,'_blank');
             },
             excelTable(){
-                window.open('/admin-nano/reports/journal/export/excel?end='+this.report_date_end+"&start="+this.report_date_start,'_blank');
+                window.open('/admin-nano/reports/journal/export/excel?end='+this.report_date_end+"&start="+this.report_date_start+"&type="+this.selected_type,'_blank');
             },
             csvTable(){
-                window.open('/admin-nano/reports/journal/export/csv?end='+this.report_date_end+"&start="+this.report_date_start,'_blank');
+                window.open('/admin-nano/reports/journal/export/csv?end='+this.report_date_end+"&start="+this.report_date_start+"&type="+this.selected_type,'_blank');
             }
         },
-        mounted(){
+        created(){
             this.fetchConfig();
             this.fetchJournals();
+            this.fetchTypes();
         }
     }
 </script>

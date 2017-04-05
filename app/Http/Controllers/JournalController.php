@@ -35,6 +35,11 @@ class JournalController extends Controller
         if($request->has('end')){
             $journal_query->whereDate('mjournaldate','<=',Carbon::parse($request->end));
         }
+
+        if($request->has('type')){
+            $journal_query->where('mjournaltranstype',$request->type);
+        }
+
         $headers = $journal_query->groupBy('mjournalid')->get();
         $journals = [];
 
@@ -47,6 +52,10 @@ class JournalController extends Controller
             }
             if($request->has('end')){
                 $journal_query->whereDate('mjournaldate','<=',Carbon::parse($request->end));
+            }
+
+            if($request->has('type')){
+                $journal_query->where('mjournaltranstype',$request->type);
             }
 
             $groups = $group_query->get();
