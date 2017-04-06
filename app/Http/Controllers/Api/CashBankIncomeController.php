@@ -40,15 +40,20 @@ class CashBankIncomeController extends Controller
     public function store(Request $request){
         try{
             DB::connection(Auth::user()->db_name)->beginTransaction();
+            // from debit to credit
             $from_coa = MCOA::on(Auth::user()->db_name)->where('mcoacode',$request->from_account['mcoacode'])->first();
+            $total_D = 0;
             foreach($request->to_accounts as $to_acc){
-                    MJournal::record_journal("","Pemasukan",$to_acc['mcoacode'],$to_acc['amount'],0,"","","",$request->date);
-                    MJournal::record_journal("","Pemasukan",$request->from_account['mcoacode'],0,$to_acc['amount'],"","","",$request->date);
+              $total_D += $to_acc['amount'];
+            }
+            MJournal::record_journal("","Pemasukan",$request->from_account['mcoacode'],$total_D,0,"","","",$request->date);
+            foreach($request->to_accounts as $to_acc){
+                    MJournal::record_journal("","Pemasukan",$to_acc['mcoacode'],0,$to_acc['amount'],"","","",$request->date);
 
                     $to_coa = MCOA::on(Auth::user()->db_name)->where('mcoacode',$to_acc['mcoacode'])->first();
 
-                    $from_coa->update_saldo('-',$to_acc['amount']);
-                    $to_coa->update_saldo('+',$to_acc['amount']);
+                    $from_coa->update_saldo('+',$to_acc['amount']);
+                    $to_coa->update_saldo('-',$to_acc['amount']);
             }
             MJournal::add_prefix();
             DB::connection(Auth::user()->db_name)->commit();
