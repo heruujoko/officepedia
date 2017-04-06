@@ -9,11 +9,16 @@ $('#insert-mcategoryfixedassetshrink').on('change',function(event){
   if($('#insert-mcategoryfixedassetshrink').is(':checked')){
     $('#insert-mcategoryfixedassetdepreciaton').prop('disabled',false);
     $('#insert-mcategoryfixedassetcoaasset').prop('disabled',false);
+    $('#insert-mcategoryfixedassetcoaaccudepr').prop('disabled',false);
+    $('#insert-mcategoryfixedassetremark').prop('disabled',false);
+    $('#insert-mcategoryfixedassetcoadeprexp').prop('disabled',false);
 
   } else {
     $('#insert-mcategoryfixedassetdepreciaton').prop('disabled',true);
     $('#insert-mcategoryfixedassetcoaasset').prop('disabled',true);
-    
+    $('#insert-mcategoryfixedassetcoaaccudepr').prop('disabled',true);
+    $('#insert-mcategoryfixedassetremark').prop('disabled',true);
+    $('#insert-mcategoryfixedassetcoadeprexp').prop('disabled',true);
   }
 });
 
@@ -23,11 +28,17 @@ $('#edit-mcategoryfixedassetshrink').on('change',function(event){
   if($('#edit-mcategoryfixedassetshrink').is(':checked')){
     $('#edit-mcategoryfixedassetdepreciaton').prop('disabled',false);
     $('#edit-mcategoryfixedassetcoaasset').prop('disabled',false);
+    $('#edit-mcategoryfixedassetcoaaccudepr').prop('disabled',false);
+    $('#edit-mcategoryfixedassetremark').prop('disabled',false);
+    $('#edit-mcategoryfixedassetcoadeprexp').prop('disabled',false);
 
   } else {
     $('#edit-mcategoryfixedassetdepreciaton').prop('disabled',true);
     $('#edit-mcategoryfixedassetcoaasset').prop('disabled',true);
-    
+    $('#edir-mcategoryfixedassetcoaaccudepr').prop('disabled',true);
+    $('#edir-mcategoryfixedassetremark').prop('disabled',true);
+    $('#edir-mcategoryfixedassetcoadeprexp').prop('disabled',true);
+
   }
 });
 
@@ -103,7 +114,7 @@ function viewmcategory(id){
       $('#view-mcategoryfixedassetgroupcode').val(response.mcategoryfixedassetgroupcode);
       $('#view-mcategoryfixedassetgroupname').val(response.mcategoryfixedassetgroupname);
       $('#view-mcategoryfixedassetage').val(response.mcategoryfixedassetage);
-      
+
       if(response.mcategoryfixedassetshrink == true){
         $('#view-mcategoryfixedassetshrink').attr('checked',true);
         $('#view-mcategoryfixedassetdepreciaton').prop('disabled',false);

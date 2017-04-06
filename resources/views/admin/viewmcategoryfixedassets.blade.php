@@ -83,15 +83,7 @@
 								<div class="col-md-11 box-group1">
 								<div class="box-pajak-wrapper">
 
-								<div style="height: 21px;" class="form-group">
-									<label class="col-md-3 control-label"><b>Kode Grup</b> (<font color="red">*</font>) &nbsp  :</label>
-									<div class="col-md-7">
-										<div class="icon-addon addon-md">
-											<input id="insert-mcategoryfixedassetgroupcode" value="{{old('mcategoryfixedassetgroupcode')}}" name="mcategoryfixedassetgroupcode" class="form-control forminput" placeholder="Kode Grup" type="text" required data-parsley-required-message="Field Ini Tidak Boleh Kosong" @if (Session::has('autofocus')) autofocus @endif >
-											<label for="mgoodsgroup1" class="glyphicon glyphicon-info-sign" rel="tooltip" title="Kode Grup"></label>
-										</div>
-									</div>
-								</div>
+
 								<div style="height: 21px;" class="form-group">
 									<label class="col-md-3 control-label"><b>Nama Grup</b> (<font color="red">*</font>) &nbsp  :</label>
 									<div class="col-md-7">
@@ -105,16 +97,7 @@
 									<label class="col-md-3 control-label"><b>Umur Ekonomis (Tahun)</b> (<font color="red">*</font>) &nbsp  :</label>
 									<div class="col-md-7">
 										<div class="icon-addon addon-md">
-											<select id="insert-mcategoryfixedassetage" class="form-control select2">
-											<?php
-											    for ($i=1; $i<=100; $i++)
-											    {
-											        ?>
-											            <option value="<?php echo $i;?>"><?php echo $i;?></option>
-											        <?php
-											    }
-											?>
-											</select>
+											<input type="number" id="insert-mcategoryfixedassetage" class="form-control" value="0" required data-parsley-required-message="Field Ini Tidak Boleh Kosong">
 										</div>
 									</div>
 								</div>
@@ -157,12 +140,13 @@
 								</div>
 
 								<div style="height: 21px;" class="form-group">
-									<label class="col-md-3 control-label"><b>COA Harta</b>  &nbsp  :</label>
+									<label class="col-md-3 control-label"><b>COA Aset Tetap</b>  &nbsp  :</label>
 									<div class="col-md-7">
 										<div class="icon-addon addon-md">
 											<div class="icon-addon addon-md">
 											<select disabled id="insert-mcategoryfixedassetcoaasset" class="form-control select2">
 											@foreach($mcoa as $m)
+												<option selected>Kosong</option>
 												<option value="{{ $m->mcoacode }}">{{ $m->mcoaname }}</option>
 											@endforeach
 											</select>
@@ -175,8 +159,9 @@
 									<label class="col-md-3 control-label"><b>COA Akumulasi Penyusutan</b>  &nbsp  :</label>
 									<div class="col-md-7">
 										<div class="icon-addon addon-md">
-											<select id="insert-mcategoryfixedassetcoaaccudepr" class="form-control select2">
+											<select disabled id="insert-mcategoryfixedassetcoaaccudepr" class="form-control select2">
 											@foreach($mcoa as $m)
+												<option selected>Kosong</option>
 												<option value="{{ $m->mcoacode }}">{{ $m->mcoaname }}</option>
 											@endforeach
 											</select>
@@ -188,8 +173,9 @@
 									<label class="col-md-3 control-label"><b>COA Beban Penyusutan</b>  &nbsp  :</label>
 									<div class="col-md-7">
 										<div class="icon-addon addon-md">
-											<select id="insert-mcategoryfixedassetcoadeprexp" class="form-control select2">
+											<select disabled id="insert-mcategoryfixedassetcoadeprexp" class="form-control select2">
 											@foreach($mcoa as $m)
+												<option selected>Kosong</option>
 												<option value="{{ $m->mcoacode }}">{{ $m->mcoaname }}</option>
 											@endforeach
 											</select>
@@ -201,7 +187,7 @@
 									<label class="col-md-3 control-label"><b>Keterangan</b>  &nbsp  :</label>
 									<div class="col-md-7">
 										<div class="icon-addon addon-md">
-											<input id="insert-mcategoryfixedassetremark" value="{{old('mcategoryfixedassetremark')}}" name="mcategoryfixedassetremark" class="form-control forminput" placeholder="Keterangan" type="text" required data-parsley-required-message="Field Ini Tidak Boleh Kosong" @if (Session::has('autofocus')) autofocus @endif >
+											<input disabled id="insert-mcategoryfixedassetremark" value="{{old('mcategoryfixedassetremark')}}" name="mcategoryfixedassetremark" class="form-control forminput" placeholder="Keterangan" type="text" @if (Session::has('autofocus')) autofocus @endif >
 											<label for="mgoodsgroup1" class="glyphicon glyphicon-info-sign" rel="tooltip" title="Keterangan"></label>
 										</div>
 									</div>
@@ -263,15 +249,7 @@
 								<div class="col-md-11 box-group1">
 								<div class="box-pajak-wrapper">
 
-								<div style="height: 21px;" class="form-group">
-									<label class="col-md-3 control-label"><b>Kode Grup</b> (<font color="red">*</font>) &nbsp  :</label>
-									<div class="col-md-7">
-										<div class="icon-addon addon-md">
-											<input id="edit-mcategoryfixedassetgroupcode" value="{{old('mcategoryfixedassetgroupcode')}}" name="mcategoryfixedassetgroupcode" class="form-control forminput" placeholder="Kode Grup" type="text" required data-parsley-required-message="Field Ini Tidak Boleh Kosong" @if (Session::has('autofocus')) autofocus @endif >
-											<label for="mgoodsgroup1" class="glyphicon glyphicon-info-sign" rel="tooltip" title="Kode Grup"></label>
-										</div>
-									</div>
-								</div>
+
 								<div style="height: 21px;" class="form-group">
 									<label class="col-md-3 control-label"><b>Nama Grup</b> (<font color="red">*</font>) &nbsp  :</label>
 									<div class="col-md-7">
@@ -439,15 +417,6 @@
 								<div class="box-pajak-wrapper">
 
 								<div style="height: 21px;" class="form-group">
-									<label class="col-md-3 control-label"><b>Kode Grup</b> (<font color="red">*</font>) &nbsp  :</label>
-									<div class="col-md-7">
-										<div class="icon-addon addon-md">
-											<input disabled id="view-mcategoryfixedassetgroupcode" value="{{old('mcategoryfixedassetgroupcode')}}" name="mcategoryfixedassetgroupcode" class="form-control forminput" placeholder="Kode Grup" type="text" required data-parsley-required-message="Field Ini Tidak Boleh Kosong" @if (Session::has('autofocus')) autofocus @endif >
-											<label for="mgoodsgroup1" class="glyphicon glyphicon-info-sign" rel="tooltip" title="Kode Grup"></label>
-										</div>
-									</div>
-								</div>
-								<div style="height: 21px;" class="form-group">
 									<label class="col-md-3 control-label"><b>Nama Grup</b> (<font color="red">*</font>) &nbsp  :</label>
 									<div class="col-md-7">
 										<div class="icon-addon addon-md">
@@ -613,9 +582,6 @@
 											<input type="text" class="form-control" placeholder="Filter No" />
 										</th>
 										<th class="hasinput" style="width:9%">
-											<input type="text" class="form-control" placeholder="Filter Kode Group" />
-										</th>
-										<th class="hasinput" style="width:9%">
 											<input type="text" class="form-control" placeholder="Filter Nama Group" />
 										</th>
 										<th class="hasinput" style="width:9%">
@@ -643,7 +609,6 @@
 									<tr>
 					<th data-hide="action"><center>Aksi</center></th>
                     <th data-hide="no"><center>No</center></th>
-                    <th data-hide="mcategoryfixedassetgroupcode"><center>Kode Group</center></th>
                     <th data-hide="mcategoryfixedassetgroupname"><center>Nama Group</center></th>
                     <th data-hide="mcategoryfixedassetage"><center>Umur Ekonomis (Tahun)</center></th>
                     <th data-hide="mcategoryfixedassetshrink"><center>Mengalami Penyusutan</center></th>
@@ -674,7 +639,7 @@
                               buttons: [ {
                                     extend: 'copyHtml5',
                                     exportOptions: {
-                                        columns: [ 1, 2, 3, 4, 5, 6, 7, 8, 9]
+                                        columns: [ 1, 2, 3, 4, 5, 6, 7, 8]
                                     }
                                   },
                                   {
@@ -698,7 +663,7 @@
                                   {
                                       extend: 'print',
                                       exportOptions: {
-                                          columns: [ 1, 2, 3, 4, 5, 6, 7, 8, 9] //setting kolom mana yg mau di export
+                                          columns: [ 1, 2, 3, 4, 5, 6, 7, 8] //setting kolom mana yg mau di export
                                       }
 
                                   },
@@ -714,7 +679,6 @@
           										columns: [
                               {data: 'action', name:'action', searchable: false, orderable: false},
                               {data: 'no', no: 'no' },
-                              {data: 'mcategoryfixedassetgroupcode', mcategoryfixedassetgroupcode: 'mcategoryfixedassetgroupcode'},
 							  {data: 'mcategoryfixedassetgroupname', mcategoryfixedassetgroupname: 'mcategoryfixedassetgroupname'},
 							  {data: 'mcategoryfixedassetage', mcategoryfixedassetage: 'mcategoryfixedassetage'},
 							  {data: 'mcategoryfixedassetshrink', mcategoryfixedassetshrink: 'mcategoryfixedassetshrink'},
