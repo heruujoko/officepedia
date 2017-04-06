@@ -71,7 +71,7 @@
                       <th style="width:10%;">Dari Akun</th>
                       <th style="width:10%;">Ke Akun</th>
                       <th style="width:10%;">Jumlah</th>
-                      <th style="width:45%;">Keterangan</th>
+                      <th style="width:15%;">Keterangan</th>
                       <th v-if="notview" style="width:10%;">Aksi</th>
                     </tr>
                   </thead>
@@ -80,7 +80,7 @@
                         <td>{{ transaction_date }}</td>
                         <td>{{ transaction_from_account.mcoacode }} / {{ transaction_from_account.mcoaname }}</td>
                         <td>{{ item.mcoacode }} / {{ item.mcoaname }}</td>
-                        <td v-priceformatlabel="num_format">{{ item.amount }}</td>
+                        <td>{{ item.amount }}</td>
                         <td>{{ item.description }}</td>
                         <td v-if="notview"><a v-on:click="editItem(item.id)"><span style="color:lightblue">Edit</span></a> <a v-on:click="deleteTransactionItem(item.id)"><span style="color:red">Hapus</span></a></td>
                     </tr>
@@ -104,7 +104,9 @@
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header" style="text-align: center">
-                        <h4>Penerimaan Kas/Bank</h4>
+                        <h4 v-if="cashtype == 'income'">Penerimaan Kas/Bank</h4>
+                        <h4 v-if="cashtype == 'outcome'">Pengeluaran Kas/Bank</h4>
+                        <h4 v-if="cashtype == 'transfer'">Transfer Kas/Bank</h4>
                     </div>
                     <div class="modal-body">
                         <div class="form form-horizontal">
@@ -122,6 +124,12 @@
                                 <label class="control-label col-md-2">Jumlah</label>
                                 <div class="col-md-8">
                                     <input autofocus v-bind:id="amount_id" class="form-control forminput" type="text" v-model="transaction_detail.amount" v-priceformatcash="num_format" style="text-align:right"/>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-md-2">Pajak (jika ada)</label>
+                                <div class="col-md-8">
+                                    <input class="form-control forminput" type="text" v-model="transaction_detail.tax" v-priceformattax="num_format" style="text-align:right"/>
                                 </div>
                             </div>
                             <div class="form-group">
@@ -173,15 +181,17 @@
                     id: "",
                     mcoacode:"",
                     mcoaname:"",
-                    amount: 0,
+                    amount: "",
                     date: "",
-                    description:""
+                    description:"",
+                    tax: ""
                 },
                 detail_coa:"",
                 num_format:"0,0",
                 disable_from: false,
                 disable_detail_account_id: false,
-                from_alert: false
+                from_alert: false,
+                tax_index: -1
             }
         },
         computed: {
@@ -208,6 +218,11 @@
             },
             amount_id(){
                 return this.mode+"_amount"
+            },
+            total_tax(){
+              return _.sumBy(this.transaction_items, (item) => {
+                 return item.tax;
+              })
             }
         },
         methods: {
@@ -303,21 +318,66 @@
                     });
                     this.from_alert = true
                 } else {
-                    this.transaction_detail.amount = numeral().unformat(this.transaction_detail.amount)
+
+                    this.transaction_detail.amount = numeral(this.transaction_detail.amount).format(this.num_format)
+                    this.transaction_detail.tax = numeral(this.transaction_detail.tax).format(this.num_format)
+
+                    let tax = numeral().unformat(this.transaction_detail.tax);
                     this.transaction_items.push(this.transaction_detail)
+                    console.log('tax',tax);
+                    if(tax != 0){
+                      console.log('idx',this.tax_index);
+                      if(this.tax_index == -1){
+                        let tax_detail = {
+                            id: "",
+                            mcoacode:"2102.01",
+                            mcoaname:"Hutang Pajak Penjualan (PPn Keluaran)",
+                            amount: this.transaction_detail.tax,
+                            date: this.transaction_detail.date,
+                            description:"",
+                            tax: ""
+                        };
+                        this.transaction_items.push(tax_detail)
+                        this.tax_index = this.transaction_items.length -1;
+                      } else {
+                        console.log('pretax',this.transaction_items[this.tax_index].amount);
+                        let pretax = numeral().unformat(this.transaction_items[this.tax_index].amount);
+                        console.log('pretax',pretax);
+                        tax += pretax;
+                        console.log(tax);
+                        let tax_detail = {
+                            id: "",
+                            mcoacode:"2102.01",
+                            mcoaname:"Hutang Pajak Penjualan (PPn Keluaran)",
+                            amount: numeral(tax).format(this.num_format),
+                            date: this.transaction_detail.date,
+                            description:"",
+                            tax: ""
+                        };
+                        this.$set(this.transaction_items,this.tax_index,tax_detail);
+                      }
+                    }
                     this.disable_from = true
                 }
                 this.dismissModal()
             },
             updateTransactionItem(){
                 let index = _.findIndex(this.transaction_items,{id: this.transaction_detail.id})
-                this.transaction_detail.amount = numeral().unformat(this.transaction_detail.amount)
+                // if(typeof this.transaction_detail.amount == 'string'){
+                //     this.transaction_detail.amount = numeral().unformat(this.transaction_detail.amount)
+                // }
+                // if(typeof this.transaction_detail.tax == 'string'){
+                //     this.transaction_detail.tax = numeral().unformat(this.transaction_detail.tax)
+                // }
+                this.transaction_detail.amount = numeral(this.transaction_detail.amount).format(this.num_format)
+                this.transaction_detail.tax = numeral(this.transaction_detail.tax).format(this.num_format)
                 this.$set(this.transaction_items,index,this.transaction_detail)
                 this.dismissModal()
             },
             deleteTransactionItem(idx){
                 let index = _.findIndex(this.transaction_items,{ id: idx})
-                this.transaction_items.splice(index,1)
+                // this.transaction_items.splice(index,1)
+                this.$delete(this.transaction_items,index);
             },
             saveTransaction(){
                 let transaction_data = {
@@ -334,6 +394,11 @@
                 }
                 if(this.cashtype == "transfer"){
                     action_url = "/admin-api/cashbank/transfer"
+                }
+
+                for(let i=0;i<this.transaction_items.length;i++){
+                  this.transaction_items[i].amount = numeral().unformat(this.transaction_items[i].amount);
+                  // this.transaction_items[i].tax = numeral().unformat(this.transaction_items[i].tax);
                 }
 
                 Axios.post(action_url,transaction_data)
@@ -420,6 +485,10 @@
 
                         this.transaction_items.push(obj)
                     }
+                    for(let i=0;i<this.transaction_items.length;i++){
+                      this.transaction_items[i].amount = numeral(this.transaction_items[i].amount).format(this.num_format)
+                      this.transaction_items[i].tax = numeral(this.transaction_items[i].tax).format(this.num_format)
+                    }
                     $("#"+this.loading_id).modal('toggle')
                 })
                 .catch((err) => {
@@ -433,6 +502,11 @@
                     date: this.transaction_date,
                     from_account: this.transaction_from_account,
                     to_accounts: this.transaction_items
+                }
+
+                for(let i=0;i<this.transaction_items.length;i++){
+                  this.transaction_items[i].amount = numeral().unformat(this.transaction_items[i].amount);
+                  this.transaction_items[i].tax = numeral().unformat(this.transaction_items[i].tax);
                 }
 
                 console.log(transaction_data);

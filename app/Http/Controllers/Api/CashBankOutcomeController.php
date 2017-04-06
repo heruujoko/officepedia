@@ -40,15 +40,15 @@ class CashBankOutcomeController extends Controller
         try{
             DB::connection(Auth::user()->db_name)->beginTransaction();
             $from_coa = MCOA::on(Auth::user()->db_name)->where('mcoacode',$request->from_account['mcoacode'])->first();
+            $total_K = 0;
             foreach($request->to_accounts as $to_acc){
-                    MJournal::record_journal("","Pengeluaran",$to_acc['mcoacode'],$to_acc['amount'],0,"","","",$request->date);
-                    MJournal::record_journal("","Pengeluaran",$request->from_account['mcoacode'],0,$to_acc['amount'],"","","",$request->date);
-
-                    $to_coa = MCOA::on(Auth::user()->db_name)->where('mcoacode',$to_acc['mcoacode'])->first();
-
-                    $from_coa->update_saldo('-',$to_acc['amount']);
-                    $to_coa->update_saldo('+',$to_acc['amount']);
+                      MJournal::record_journal("","Pengeluaran",$to_acc['mcoacode'],$to_acc['amount'],0,"","","",$request->date);
+                      $to_coa = MCOA::on(Auth::user()->db_name)->where('mcoacode',$to_acc['mcoacode'])->first();
+                      $from_coa->update_saldo('-',$to_acc['amount']);
+                      $to_coa->update_saldo('+',$to_acc['amount']);
+                      $total_K += $to_acc['amount'];
             }
+            MJournal::record_journal("","Pengeluaran",$request->from_account['mcoacode'],0,$total_K,"","","",$request->date);
             MJournal::add_prefix();
 
             DB::connection(Auth::user()->db_name)->commit();

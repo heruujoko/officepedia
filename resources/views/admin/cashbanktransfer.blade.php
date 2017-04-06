@@ -14,7 +14,7 @@
 		</span>
             <!-- breadcrumb -->
             <ol class="breadcrumb">
-                <li>Home</li><li>Pembelian</li><li>{{ $section }}</li>
+                <li>Home</li><li>Kas Bank</li><li>{{ $section }}</li>
             </ol>
         </div>
         <!-- END RIBBON -->
@@ -24,7 +24,7 @@
                 <div class="col-xs-12 col-sm-7 col-md-7 col-lg-4">
                     <h1 class="page-title txt-color-blueDark">
                         <i class="fa fa-table fa-fw "></i>
-                        Pembelian
+                        Kas Bank
 					<span>
 						{{ $section }}
 					</span>

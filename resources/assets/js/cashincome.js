@@ -5,6 +5,7 @@ import moment from 'moment'
 
 Vue.config.devtools = true
 var typingTimerCash;
+var typingTimerTax;
 var doneTypingInterval = 1000;
 
 import cashform from './components/cashform.vue'
@@ -26,14 +27,14 @@ Vue.directive('selecttwo',{
   }
 });
 
-Vue.directive('priceformatcash',{
+Vue.directive('priceformattax',{
   inserted(el,binding){
     let formatted = numeral($(el).val()).format(binding.value);
     $(el).val(formatted);
   },
   update(el,binding){
-    clearTimeout(typingTimerCash);
-    typingTimerCash = setTimeout(() => {
+    clearTimeout(typingTimerTax);
+    typingTimerTax = setTimeout(() => {
         let formatted = numeral(numeral().unformat($(el).val())).format(binding.value);
         $(el).val(formatted);
         if($(el).is(':focus')){
