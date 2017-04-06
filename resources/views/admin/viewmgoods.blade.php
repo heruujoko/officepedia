@@ -364,6 +364,34 @@
                                 </div>
                               </div>
                               <div style="height: 21px;" class="form-group">
+                                <label class="col-md-3 control-label"><b>COA </b> &nbsp  :</label>
+                                <div class="col-md-8 col-sm-12">
+                                    <select class="form-group select2" id="insert-mgoodscoa" name="mgoodsunitin">
+                                      @foreach($mcoa as $coa)
+                                        @if($coa->mcoacode == '1105.01')
+                                          <option selected value="{{ $coa->mcoacode }}">{{ $coa->mcoacode }} - {{ $coa->mcoaname }}</option>
+                                        @else
+                                          <option value="{{ $coa->mcoacode }}">{{ $coa->mcoacode }} - {{ $coa->mcoaname }}</option>
+                                        @endif
+                                      @endforeach
+                                    </select>
+                                </div>
+                              </div>
+                              <div style="height: 21px;" class="form-group">
+                                <label class="col-md-3 control-label"><b>Tampil pada </b> &nbsp  :</label>
+                                <div class="col-md-8 col-sm-12">
+                                    <select class="form-group select2" id="insert-mgoodsdisplayin" name="mgoodsunitin">
+                                      @foreach($displays as $dis)
+                                        @if($dis['code'] == 'all')
+                                          <option selected value="{{ $dis['code'] }}">{{ $dis['label'] }}</option>
+                                        @else
+                                          <option value="{{ $dis['code'] }}">{{ $dis['label'] }}</option>
+                                        @endif
+                                      @endforeach
+                                    </select>
+                                </div>
+                              </div>
+                              <div style="height: 21px;" class="form-group">
                                 <label class="col-md-3 control-label"><b>HPP </b> &nbsp  :</label>
                                 <div class="col-md-4 col-sm-12">
                                   <div class="icon-addon addon-md">
@@ -843,6 +871,34 @@
                                 </div>
                               </div>
                               <div style="height: 21px;" class="form-group">
+                                <label class="col-md-3 control-label"><b>COA </b> &nbsp  :</label>
+                                <div class="col-md-8 col-sm-12">
+                                    <select class="form-group select2" id="edit-mgoodscoa" name="mgoodsunitin">
+                                      @foreach($mcoa as $coa)
+                                        @if($coa->mcoacode == '1105.01')
+                                          <option selected value="{{ $coa->mcoacode }}">{{ $coa->mcoacode }} - {{ $coa->mcoaname }}</option>
+                                        @else
+                                          <option value="{{ $coa->mcoacode }}">{{ $coa->mcoacode }} - {{ $coa->mcoaname }}</option>
+                                        @endif
+                                      @endforeach
+                                    </select>
+                                </div>
+                              </div>
+                              <div style="height: 21px;" class="form-group">
+                                <label class="col-md-3 control-label"><b>Tampil pada </b> &nbsp  :</label>
+                                <div class="col-md-8 col-sm-12">
+                                    <select class="form-group select2" id="edit-mgoodsdisplayin" name="mgoodsunitin">
+                                      @foreach($displays as $dis)
+                                        @if($dis['code'] == 'all')
+                                          <option selected value="{{ $dis['code'] }}">{{ $dis['label'] }}</option>
+                                        @else
+                                          <option value="{{ $dis['code'] }}">{{ $dis['label'] }}</option>
+                                        @endif
+                                      @endforeach
+                                    </select>
+                                </div>
+                              </div>
+                              <div style="height: 21px;" class="form-group">
                                 <label class="col-md-3 control-label"><b>HPP </b> &nbsp  :</label>
                                 <div class="col-md-4 col-sm-12">
                                   <div class="icon-addon addon-md">
@@ -1279,6 +1335,34 @@
                                     <input disabled id="view-mgoodsmaxdiscrp" name="mgoodsmaxdiscrp" data-parsley-type="number" data-parsley-type-message="Field ini hanya dapat di isi oleh angka" class="form-control forminput" placeholder="Rupiah" type="text">
                                     <span class="input-group-addon" id="sizing-addon2">Rp</span>
                                   </div>
+                                </div>
+                              </div>
+                              <div style="height: 21px;" class="form-group">
+                                <label class="col-md-3 control-label"><b>COA </b> &nbsp  :</label>
+                                <div class="col-md-8 col-sm-12">
+                                    <select disabled class="form-group select2" id="view-mgoodscoa" name="mgoodsunitin">
+                                      @foreach($mcoa as $coa)
+                                        @if($coa->mcoacode == '1105.01')
+                                          <option selected value="{{ $coa->mcoacode }}">{{ $coa->mcoacode }} - {{ $coa->mcoaname }}</option>
+                                        @else
+                                          <option value="{{ $coa->mcoacode }}">{{ $coa->mcoacode }} - {{ $coa->mcoaname }}</option>
+                                        @endif
+                                      @endforeach
+                                    </select>
+                                </div>
+                              </div>
+                              <div style="height: 21px;" class="form-group">
+                                <label class="col-md-3 control-label"><b>Tampil pada </b> &nbsp  :</label>
+                                <div class="col-md-8 col-sm-12">
+                                    <select disabled class="form-group select2" id="view-mgoodsdisplayin" name="mgoodsunitin">
+                                      @foreach($displays as $dis)
+                                        @if($dis['code'] == 'all')
+                                          <option selected value="{{ $dis['code'] }}">{{ $dis['label'] }}</option>
+                                        @else
+                                          <option value="{{ $dis['code'] }}">{{ $dis['label'] }}</option>
+                                        @endif
+                                      @endforeach
+                                    </select>
                                 </div>
                               </div>
                               <div style="height: 21px;" class="form-group">

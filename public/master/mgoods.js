@@ -111,7 +111,9 @@ function insertmgoods(){
         mgoodstaxable: $('#insert-mgoodstaxable').is(':checked'),
         mgoodstaxppn: $('#insert-mgoodstaxppn').val(),
         mgoodstaxppnbm: $('#insert-mgoodstaxppnbm').val(),
-        autogen : $('#autogenmgoods').is(':checked')
+        autogen : $('#autogenmgoods').is(':checked'),
+        mgoodscoa : $('#insert-mgoodscoa').val(),
+        displayin : $('#insert-displayin').val()
 
       }
       if($('#insert-mgoodsmultiunit3').is(':checked')){
@@ -188,6 +190,8 @@ function editmgoods(id){
       $('#edit-mgoodsunit3conv').val(response.mgoodsunit3conv);
       $('#edit-mgoodstaxppn').val(response.mgoodstaxppn).change();
       $('#edit-mgoodstaxppnbm').val(response.mgoodstaxppnbm).change();
+      $('#edit-mgoodscoa').val(response.mgoodscoa).change();
+      $('#edit-mgoodsdisplayin').val(response.mgoodsdisplayon).change();
       $('#forminput').hide();
       $('#formview').hide();
       $('#formedit').show();
@@ -300,7 +304,9 @@ function updatemgoods(){
       mgoodstaxable: $('#edit-mgoodstaxable').is(':checked'),
       mgoodstaxppn: $('#edit-mgoodstaxppn').val(),
       mgoodstaxppnbm: $('#edit-mgoodstaxppnbm').val(),
-      autogen : $('#autogenmgoods').is(':checked')
+      autogen : $('#autogenmgoods').is(':checked'),
+      mgoodscoa : $('#edit-mgoodscoa').val(),
+      displayin : $('#edit-displayin').val()
 
     }
     if($('#edit-mgoodsmultiunit3').is(':checked')){
@@ -382,6 +388,8 @@ function updatemgoods(){
       $('#view-mgoodsunit3conv').val(response.mgoodsunit3conv);
       $('#view-mgoodstaxppn').val(response.mgoodstaxppn).change();
       $('#view-mgoodstaxppnbm').val(response.mgoodstaxppnbm).change();
+      $('#view-mgoodscoa').val(response.mgoodscoa).change();
+      $('#view-mgoodsdisplayin').val(response.mgoodsdisplayon).change();
       $('#forminput').hide();
       $('#formedit').hide();
       $('#formview').show();

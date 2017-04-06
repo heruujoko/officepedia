@@ -24,14 +24,19 @@ class MGoodsController extends Controller
 
         if(Auth::user()->has_role('R_goods')){
             $data['active'] = 'barang';
-    		$data['mcoa'] = MCOA::on(Auth::user()->db_name)->get();
+    		    $data['mcoa'] = MCOA::on(Auth::user()->db_name)->get();
             $data['marks'] = MGoodsMark::on(Auth::user()->db_name)->get();
             $data['categories'] = MCategorygoods::on(Auth::user()->db_name)->get();
-    		$data['msupplier'] = MSupplier::on(Auth::user()->db_name)->get();
+    		    $data['msupplier'] = MSupplier::on(Auth::user()->db_name)->get();
             $data['types'] = MGoodstype::on(Auth::user()->db_name)->get();
             $data['subtypes'] = MGoodssubtype::on(Auth::user()->db_name)->get();
             $data['taxes'] = MTax::on(Auth::user()->db_name)->get();
             $data['units'] = MUnit::on(Auth::user()->db_name)->where('void',0)->get();
+            $data['displays'] = [
+                ['code' => 'all', 'label' => 'Pembelian Penjualan'],
+                ['code' => 'purchase', 'label' => 'Pembelian'],
+                ['code' => 'sales', 'label' => 'Penjualan']
+            ];
     		return view('admin/viewmgoods',$data);
         } else{
             return redirect('/admin-nano/index');
