@@ -230,7 +230,7 @@ class ArrayToTextTable
     private function setMaxGoodsName($rowKey, $colKey, &$colVal)
     {
         // $w = mb_strlen($colVal);
-        $w = mb_strlen($colVal)+10;
+        $w = mb_strlen($colVal)+5;
         $h = 1;
         if($w > $this->mW)
         {
