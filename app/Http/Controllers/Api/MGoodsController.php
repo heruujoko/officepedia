@@ -143,7 +143,7 @@ class MGoodsController extends Controller
         $MGoods->mgoodstaxable = $this->convertBoolean($request->mgoodstaxable);
         $MGoods->mgoodssuppliercode = $request->mgoodssuppliercode;
         $MGoods->mgoodscoa = $request->mgoodscoa;
-        $MGoods->mgoodsdisplayin = $request->mgoodsdisplayin;
+        $MGoods->mgoodsdisplayon = $request->mgoodsdisplayin;
         $MGoods->save();
         $MGoods->mgoodssuppliername = $MGoods->supplier()->msuppliername;
         $MGoods->save();

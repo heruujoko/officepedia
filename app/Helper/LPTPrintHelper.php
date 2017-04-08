@@ -36,8 +36,8 @@ class LPTPrintHelper {
         $html .= "\t\t\t\t\t\t\t\t"."Tanggal Faktur "."\t".$data['invoice']->mhinvoicedate."\n";
         $html .= "\t\t\t\t\t\t\t\t"."Jatuh Tempo "."\t".$data['invoice']->mhinvoiceduedate."\n";
         $html .= "\t\t\t\t\t\t\t\t"."Tanggal Order "."\t".$data['invoice']->mhinvoicedate."\n";
-        $html .= "Kepada Yth:\t\t\t\t\t\t\t"."User "."\t".$data['user']->id." ".$data['user']->name."\n";
-        $html .= $data['invoice']->mhinvoicecustomername."\t\t\t\t\t\t\t\t"."Divisi "."\t";
+        $html .= "Kepada Yth:\t\t\t\t\t\t\t"."User "."\t\t".$data['user']->id." ".$data['user']->name."\n";
+        $html .= $data['invoice']->mhinvoicecustomername;
         // $html .= "\t\t\t\t\t\t\t\t"."No PO "."\t\n";
         // $html .= "\t\t\t\t\t\t\t\t"."No Proforma "."\t";
 
