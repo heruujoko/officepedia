@@ -113,9 +113,12 @@ function insertmgoods(){
         mgoodstaxppnbm: $('#insert-mgoodstaxppnbm').val(),
         autogen : $('#autogenmgoods').is(':checked'),
         mgoodscoa : $('#insert-mgoodscoa').val(),
-        displayin : $('#insert-displayin').val()
+        mgoodsdisplayin : $('#insert-mgoodsdisplayin').val()
 
       }
+
+      console.log(data);
+
       if($('#insert-mgoodsmultiunit3').is(':checked')){
         data.mgoodsmultiunit = true;
       }
