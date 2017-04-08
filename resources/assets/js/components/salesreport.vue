@@ -121,9 +121,9 @@
                             <th colspan="3">Saldo</th>
                             <th>{{ invoice_count_total }}</th>
                             <th colspan="7"></th>
-                            <th style="text-align:right" v-priceformatlabel="num_format" >{{ sales_total }}</th>
-                            <th style="text-align:right" v-priceformatlabel="num_format" >{{ tax_total }}</th>
-                            <th style="text-align:right" v-priceformatlabel="num_format" >{{ sales_total + tax_total - discount_total }}</th>
+                            <th style="text-align:right"  >{{ sales_total }}</th>
+                            <th style="text-align:right"  >{{ tax_total }}</th>
+                            <th style="text-align:right"  >{{ grand_total }}</th>
                             <th></th>
                         </tr>
                     </thead>
@@ -209,26 +209,47 @@
                 return sum;
             },
             sales_total(){
-                return _.sumBy(this.sales, (iv) => {
+                let amount =  _.sumBy(this.sales, (iv) => {
                     if(iv.header == true){
                         return iv.mhinvoicesubtotal_sum;
                     }
                 })
+                return numeral(amount).format(this.num_format)
             },
             free_total(){
                 return 0;
             },
             discount_total(){
-                return _.sumBy(this.sales, (iv) => {
+                let amount = _.sumBy(this.sales, (iv) => {
                     return iv.mhinvoicediscounttotal_sum;
                 })
+                return numeral(amount).format(this.num_format)
             },
             tax_total(){
-                return _.sumBy(this.sales, (iv) => {
+                let amount = _.sumBy(this.sales, (iv) => {
                     if(iv.header == true){
                         return iv.mhinvoicetaxtotal_sum;
                     }
                 })
+                return numeral(amount).format(this.num_format)
+            },
+            grand_total(){
+              let sales = _.sumBy(this.sales, (iv) => {
+                  if(iv.header == true){
+                      return iv.mhinvoicesubtotal_sum;
+                  }
+              });
+              let discount = _.sumBy(this.sales, (iv) => {
+                  return iv.mhinvoicediscounttotal_sum;
+              });
+              let tax = _.sumBy(this.sales, (iv) => {
+                  if(iv.header == true){
+                      return iv.mhinvoicetaxtotal_sum;
+                  }
+              });
+
+              let amount = sales + tax - discount;
+              return numeral(amount).format(this.num_format)
             }
         },
         methods:{
