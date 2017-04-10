@@ -10,6 +10,7 @@ use App\MBRANCH;
 use Datatables;
 use Exception;
 use Auth;
+use App\UserBranch;
 
 class MBranchController extends Controller
 {
@@ -54,9 +55,14 @@ class MBranchController extends Controller
 				$mbranch->defaultwarehouse = $request->defaultwarehouse;
 				$mbranch->void = 0;
 				$mbranch->save();
+
+				$user_branch = new UserBranch;
+				$user_branch->setConnection(Auth::user()->db_name);
+				$user_branch->userid = Auth::user()->id;
+				$user_branch->branchid = $mbranch->id;
+				$user_branch->save();
 				return response()->json($mbranch);
 			} catch(Exception $e){
-				dd($e);
 				return response()->json($e,400);
 			}
 

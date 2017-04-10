@@ -50,6 +50,7 @@ function insertmbranch(){
             timer: 1000
           });
           reset();
+          window.location.reload();
         },
         error: function(response){
           var err_msg = response.responseJSON.errorInfo[2];
