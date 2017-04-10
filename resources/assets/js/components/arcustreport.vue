@@ -90,19 +90,19 @@
                             <td><span v-if="ar.header == true">{{ ar.marcardcustomername }}</span></td>
                             <td><span v-if="ar.header == true">{{ ar.numoftrans }}</span></td>
                             <td><span v-if="ar.data == true">{{ ar.marcardtransno }}</span></td>
-                            <td v-if="ar.footer == false" style="text-align: right" v-priceformatlabel="num_format">{{ ar.marcardtotalinv }}</td>
+                            <td v-if="ar.footer == false" style="text-align: right" >{{ ar.marcardtotalinv }}</td>
                             <td v-if="ar.footer == true"></td>
-                            <td v-if="ar.footer == false" style="text-align: right" v-priceformatlabel="num_format">{{ ar.marcardoutstanding }}</td>
+                            <td v-if="ar.footer == false" style="text-align: right" >{{ ar.marcardoutstanding }}</td>
                             <td v-if="ar.footer == true"></td>
                             <td><span v-if="ar.data == true">{{ ar.marcarddate }}</span></td>
                             <td><span v-if="ar.data == true">{{ ar.marcardduedate }}</span></td>
                             <td><span v-if="ar.data == true">{{ ar.aging }}</span></td>
                             <td><span v-if="ar.data == true"><span v-if="ar.has_due">sudah jatuh tempo</span></span></td>
-                            <td v-if="ar.footer == false" style="text-align: right" v-priceformatlabel="num_format">{{ ar['1w'] }}</td><td v-if="ar.footer == true"></td>
-                            <td v-if="ar.footer == false" style="text-align: right" v-priceformatlabel="num_format">{{ ar['2w'] }}</td><td v-if="ar.footer == true"></td>
-                            <td v-if="ar.footer == false" style="text-align: right" v-priceformatlabel="num_format">{{ ar['3w'] }}</td><td v-if="ar.footer == true"></td>
-                            <td v-if="ar.footer == false" style="text-align: right" v-priceformatlabel="num_format">{{ ar['4w'] }}</td><td v-if="ar.footer == true"></td>
-                            <td v-if="ar.footer == false" style="text-align: right" v-priceformatlabel="num_format">{{ ar['1m'] }}</td><td v-if="ar.footer == true"></td>
+                            <td v-if="ar.footer == false" style="text-align: right" >{{ ar['1w'] }}</td><td v-if="ar.footer == true"></td>
+                            <td v-if="ar.footer == false" style="text-align: right" >{{ ar['2w'] }}</td><td v-if="ar.footer == true"></td>
+                            <td v-if="ar.footer == false" style="text-align: right" >{{ ar['3w'] }}</td><td v-if="ar.footer == true"></td>
+                            <td v-if="ar.footer == false" style="text-align: right" >{{ ar['4w'] }}</td><td v-if="ar.footer == true"></td>
+                            <td v-if="ar.footer == false" style="text-align: right" >{{ ar['1m'] }}</td><td v-if="ar.footer == true"></td>
                         </tr>
                     </tbody>
                     <thead>
@@ -191,7 +191,7 @@
             outstanding_total(){
                 let amount =  _.sumBy(this.ars,(ar) => {
                     if(ar.header == true){
-                        return ar.marcardoutstanding;
+                        return numeral().unformat(ar.marcardoutstanding);
                     }
                 });
                 return numeral(amount).format(this.num_format);
@@ -199,7 +199,7 @@
             invoice_total(){
                 let amount = _.sumBy(this.ars,(ar) => {
                     if(ar.header == true){
-                        return ar.marcardtotalinv;
+                        return numeral().unformat(ar.marcardtotalinv);
                     }
                 });
                 return numeral(amount).format(this.num_format);
@@ -207,7 +207,7 @@
             one_w_total(){
                 let amount = _.sumBy(this.ars,(ar) => {
                     if(ar.header == true){
-                        return ar['1w'];
+                        return numeral().unformat(ar['1w']);
                     }
                 });
                 return numeral(amount).format(this.num_format);
@@ -215,7 +215,7 @@
             two_w_total(){
                 let amount =  _.sumBy(this.ars,(ar) => {
                     if(ar.header == true){
-                        return ar['2w'];
+                        return numeral().unformat(ar['2w']);
                     }
                 });
                 return numeral(amount).format(this.num_format);
@@ -223,7 +223,7 @@
             three_w_total(){
                 let amount =  _.sumBy(this.ars,(ar) => {
                     if(ar.header == true){
-                        return ar['3w'];
+                        return numeral().unformat(ar['3w']);
                     }
                 });
                 return numeral(amount).format(this.num_format);
@@ -231,7 +231,7 @@
             four_w_total(){
                 let amount =  _.sumBy(this.ars,(ar) => {
                     if(ar.header == true){
-                        return ar['4w'];
+                        return numeral().unformat(ar['4w']);
                     }
                 });
                 return numeral(amount).format(this.num_format);
@@ -239,7 +239,7 @@
             one_m_total(){
                 let amount =  _.sumBy(this.ars,(ar) => {
                     if(ar.header == true){
-                        return ar['1m'];
+                        return numeral().unformat(ar['1m']);
                     }
                 });
                 return numeral(amount).format(this.num_format);
@@ -265,6 +265,13 @@
                         ar.checked = true;
                         ar.expand_length = res.data.length;
                         for(let i=0;i<res.data.length;i++){
+                            res.data[i].marcardtotalinv = numeral(res.data[i].marcardtotalinv).format(self.num_format);
+                            res.data[i].marcardoutstanding = numeral(res.data[i].marcardoutstanding).format(self.num_format);
+                            res.data[i]['1w'] = numeral(res.data[i]['1w']).format(self.num_format);
+                            res.data[i]['2w'] = numeral(res.data[i]['2w']).format(self.num_format);
+                            res.data[i]['3w'] = numeral(res.data[i]['3w']).format(self.num_format);
+                            res.data[i]['4w'] = numeral(res.data[i]['4w']).format(self.num_format);
+                            res.data[i]['1m'] = numeral(res.data[i]['1m']).format(self.num_format);
                             this.ars.push(res.data[i]);
                         }
                         for(let r=0;r<rest_of_the_list.length;r++){
@@ -278,6 +285,9 @@
                     })
                 } else {
                     // this.ars.splice(index+1,ar.expand_length);
+                    for(let r=0;r<rest_of_the_list.length;r++){
+                        this.ars.push(rest_of_the_list[r]);
+                    }
                     for(let off=0;off<ar.expand_length;off++){
                         this.$delete(this.ars,index+1);
                     }
@@ -296,6 +306,13 @@
                             tmp_ars[i].checked = true;
                             tmp_ars[i].expand_length = res.data.length;
                             for(let j=1;j<=res.data.length;j++){
+                                res.data[j-1].marcardtotalinv = numeral(res.data[j-1].marcardtotalinv).format(self.num_format);
+                                res.data[j-1].marcardoutstanding = numeral(res.data[j-1].marcardoutstanding).format(self.num_format);
+                                res.data[j-1]['1w'] = numeral(res.data[j-1]['1w']).format(self.num_format);
+                                res.data[j-1]['2w'] = numeral(res.data[j-1]['2w']).format(self.num_format);
+                                res.data[j-1]['3w'] = numeral(res.data[j-1]['3w']).format(self.num_format);
+                                res.data[j-1]['4w'] = numeral(res.data[j-1]['4w']).format(self.num_format);
+                                res.data[j-1]['1m'] = numeral(res.data[j-1]['1m']).format(self.num_format);
                                 console.log(res.data[j-1]);
                                 tmp_ars.splice(i+j,0,res.data[j-1]);
                             }
@@ -338,6 +355,13 @@
                     for(let i=0;i<res.data.length;i++){
                         res.data[i].checked = false;
                         res.data[i].expand_length = 0;
+                        res.data[i].marcardtotalinv = numeral(res.data[i].marcardtotalinv).format(self.num_format);
+                        res.data[i].marcardoutstanding = numeral(res.data[i].marcardoutstanding).format(self.num_format);
+                        res.data[i]['1w'] = numeral(res.data[i]['1w']).format(self.num_format);
+                        res.data[i]['2w'] = numeral(res.data[i]['2w']).format(self.num_format);
+                        res.data[i]['3w'] = numeral(res.data[i]['3w']).format(self.num_format);
+                        res.data[i]['4w'] = numeral(res.data[i]['4w']).format(self.num_format);
+                        res.data[i]['1m'] = numeral(res.data[i]['1m']).format(self.num_format);
                         console.log(i,res.data[i].marcardtotalinv);
                         self.$set(self.ars,i,res.data[i]);
                     }

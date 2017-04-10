@@ -27,7 +27,7 @@ elixir(mix => {
     // mix.webpack('stockcardreport.js');
     // mix.webpack('salesreport.js');
     // mix.webpack('invoicereport.js');
-    // mix.webpack('arcustreport.js');
+    mix.webpack('arcustreport.js');
     // mix.webpack('arreport.js');
     // mix.webpack('stockvaluereport.js');
     // mix.webpack('purchasereport.js');
@@ -40,7 +40,7 @@ elixir(mix => {
     // mix.webpack('purchasequotation.js');
     // mix.webpack('journalreport.js');
     // mix.webpack('ledgerreport.js');
-    mix.webpack('cashincome.js');
+    // mix.webpack('cashincome.js');
     // mix.webpack('generaljournal.js');
     // mix.webpack('roles.js');
     // mix.webpack('changebranch.js');

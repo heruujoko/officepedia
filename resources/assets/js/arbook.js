@@ -5,6 +5,13 @@ import ARBook from './components/arbookreport.vue'
 
 Vue.config.devtools = true
 
+const arcustreport = new Vue({
+    el:"#report",
+    components: {
+        arbook: ARBook
+    }
+});
+
 Vue.directive('dpicker',{
   inserted(el,binding,vnode){
       let self = this;
@@ -39,29 +46,32 @@ Vue.directive('selecttwo',{
 });
 
 Vue.directive('priceformatlabel',{
+  bind(){
+    Vue.nextTick(arcustreport);
+  },
   inserted(el,binding){
+      console.log('oinit');
     let num = $(el).context.textContent;
     $(el).html(numeral(num).format(binding.value))
   },
   update(el,binding){
-    //   let num = numeral().unformat($(el).context.textContent);
-    //   console.log(num);
-    //   $(el).html(numeral(num).format(binding.value))
+      // let num = numeral().unformat($(el).context.textContent);
+      // console.log('update lib',num);
+      // $(el).html(numeral(num).format(binding.value))
   },
   componentUpdated(el,binding){
     if($(el).context.textContent != ""){
         let num = numeral().unformat($(el).context.textContent);
+        console.log('update lib 2',num);
         $(el).html(numeral(num).format(binding.value))
+        Vue.nextTick(() => {
+            let num = numeral().unformat($(el).context.textContent);
+
+            console.log('update lib 2 next',$(el));
+        });
     } else {
         $(el).html("");
     }
 
   }
-});
-
-const arcustreport = new Vue({
-    el:"#report",
-    components: {
-        arbook: ARBook
-    }
 });

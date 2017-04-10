@@ -76,23 +76,23 @@
                                     <span class="pull-right" v-if="ar.header == true">{{ ar.marcardcustomerid }}</span>
                                 </span>
                             </td>
-                            <td><span v-if="ar.header">{{ ar.marcardcustomername }}<span></td>
-                            <td><span v-if="ar.data">{{ ar.marcarddate }}<span></td>
-                            <td><span v-if="ar.data">{{ ar.marcardtransno }}<span></td>
-                            <td><span v-if="ar.data">{{ ar.inv_date }}<span></td>
-                            <td><span v-if="ar.data">{{ ar.marcardduedate }}<span></td>
-                            <td style="text-align:right"><span v-if="ar.footer == false" v-priceformatlabel="num_format">{{ ar.marcardtotalinv }}</span></td>
-                            <td style="text-align:right"><span v-if="ar.footer == false" v-priceformatlabel="num_format">{{ ar.marcardpayamount }}</span></td>
-                            <td style="text-align:right"><span v-if="ar.footer == false" v-priceformatlabel="num_format">{{ ar.marcardtotalinv - ar.marcardpayamount }}</span></td>
-                            <td><span v-if="ar.data">{{ ar.aging }}<span></td>
+                            <td><span v-if="ar.header">{{ ar.marcardcustomername }}</span></td>
+                            <td><span v-if="ar.data">{{ ar.marcarddate }}</span></td>
+                            <td><span v-if="ar.data">{{ ar.marcardtransno }}</span></td>
+                            <td><span v-if="ar.data">{{ ar.inv_date }}</span></td>
+                            <td><span v-if="ar.data">{{ ar.marcardduedate }}</span></td>
+                            <td style="text-align:right"><span v-if="ar.footer == false" >{{ ar.marcardtotalinv }}</span></td>
+                            <td style="text-align:right"><span v-if="ar.footer == false" >{{ ar.marcardpayamount }}</span></td>
+                            <td style="text-align:right"><span v-if="ar.footer == false" >{{ ar.outs }}</span></td>
+                            <td><span v-if="ar.data">{{ ar.aging }}</span></td>
                         </tr>
                     </tbody>
                     <thead>
                         <tr>
                             <th colspan="6">TOTAL</th>
-                            <th style="text-align:right" v-priceformatlabel="num_format">{{ total_inv }}</th>
-                            <th style="text-align:right" v-priceformatlabel="num_format">{{ total_pay }}</th>
-                            <th style="text-align:right" v-priceformatlabel="num_format">{{ total_outs }}</th>
+                            <th style="text-align:right" >{{ total_inv }}</th>
+                            <th style="text-align:right" >{{ total_pay }}</th>
+                            <th style="text-align:right" >{{ total_outs }}</th>
                             <th></th>
                         </tr>
                     </thead>
@@ -104,6 +104,7 @@
 </template>
 <script>
     import Axios from 'axios'
+    import numeral from 'numeral'
     import _ from 'lodash'
     import moment from 'moment'
     import base64 from 'base-64'
@@ -139,37 +140,59 @@
                 }
             },
             total_inv(){
-                return _.sumBy(this.ars,(ar) => {
+                let amount = _.sumBy(this.ars,(ar) => {
                     if(ar.header == true){
-                        return ar.marcardtotalinv;
+                        return numeral().unformat(ar.marcardtotalinv);
                     }
                 });
+                return numeral(amount).format(this.num_format);
             },
             total_pay(){
-                return _.sumBy(this.ars,(ar) => {
+                let amount = _.sumBy(this.ars,(ar) => {
                     if(ar.header == true){
-                        return ar.marcardpayamount;
+                        return numeral().unformat(ar.marcardpayamount);
                     }
                 });
+                return numeral(amount).format(this.num_format);
             },
             total_outs(){
-                return _.sumBy(this.ars,(ar) => {
+                let amount = _.sumBy(this.ars,(ar) => {
                     if(ar.header == true){
-                        return ar.marcardoutstanding;
+                        return numeral().unformat(ar.outs);
                     }
                 });
+                return numeral(amount).format(this.num_format);
             }
         },
         methods: {
             expander(ar,index){
+
+                let rest_of_the_list = [];
+                let tmp_ars = this.ars;
+
+                for(let r=index+1;r<this.ars.length;r++){
+                    rest_of_the_list.push(this.ars[r]);
+                }
+                this.ars = [];
+                for(let ar=0;ar<=index;ar++){
+                    this.ars.push(tmp_ars[ar]);
+                }
+                ar = this.ars[index];
                 if(!ar.checked){
                     $("#loading_modal").modal('toggle');
                     Axios.get('/admin-api/arbook/details/'+ar.marcardcustomerid)
                     .then( res => {
                         ar.checked = true;
                         ar.expand_length = res.data.length;
-                        for(let i=1;i<=res.data.length;i++){
-                            this.ars.splice(index+i,0,res.data[i-1]);
+                        for(let i=0;i<res.data.length;i++){
+                            let outs = res.data[i].marcardtotalinv - res.data[i].marcardpayamount;
+                            res.data[i].marcardtotalinv = numeral(res.data[i].marcardtotalinv).format(this.num_format);
+                            res.data[i].marcardpayamount = numeral(res.data[i].marcardpayamount).format(this.num_format);
+                            res.data[i].outs = numeral(outs).format(this.num_format);
+                            this.ars.push(res.data[i]);
+                        }
+                        for(let r=0;r<rest_of_the_list.length;r++){
+                            this.ars.push(rest_of_the_list[r]);
                         }
                         this.opens.push(index);
                         $("#loading_modal").modal('toggle');
@@ -178,27 +201,34 @@
                         $("#loading_modal").modal('toggle');
                     })
                 } else {
-                    this.ars.splice(index+1,ar.expand_length);
                     let removed = _.remove(this.opens,(n) => {
                         return n != index;
                     });
+                    console.log('leng',this.ars.length);
+                    for(let rs=(index+1+ar.expand_length);rs<tmp_ars.length;rs++){
+                        this.ars.push(tmp_ars[rs]);
+                    }
+
+
                     this.opens = removed;
                     ar.checked = false;
                     ar.expand_length = 0;
                 }
             },
             expandAll: async function(){
-                for(let i=0;i<this.ars.length;i++){
-                    if(this.ars[i].header == true){
+                let tmp_ars = this.ars;
+                this.ars = [];
+                for(let i=0;i<tmp_ars.length;i++){
+                    if(tmp_ars[i].header == true){
                         try{
 
-                            let res = await Axios.get('/admin-api/arbook/details/'+this.ars[i].marcardcustomerid)
-                            this.ars[i].checked = true;
+                            let res = await Axios.get('/admin-api/arbook/details/'+tmp_ars[i].marcardcustomerid)
+                            tmp_ars[i].checked = true;
                             this.opens.push(i);
-                            this.ars[i].expand_length = res.data.length;
+                            tmp_ars[i].expand_length = res.data.length;
                             for(let j=1;j<=res.data.length;j++){
                                 console.log(res.data[j-1]);
-                                this.ars.splice(i+j,0,res.data[j-1]);
+                                tmp_ars.splice(i+j,0,res.data[j-1]);
                             }
 
                         } catch(err){
@@ -206,6 +236,18 @@
                         }
                     }
                 }
+
+                tmp_ars.map(item => {
+                    let outs = item.marcardtotalinv - item.marcardpayamount;
+                    item.marcardtotalinv = numeral(item.marcardtotalinv).format(this.num_format);
+                    item.marcardpayamount = numeral(item.marcardpayamount).format(this.num_format);
+                    if(item.data) {
+                        item.outs = numeral(outs).format(this.num_format);
+                    }
+
+                });
+
+                this.ars = tmp_ars;
             },
             fetchConfig(){
                 var self = this;
@@ -247,7 +289,12 @@
                 .then(res => {
 
                     for(let i=0;i<res.data.length;i++){
+                        let outs = res.data[i].marcardtotalinv - res.data[i].marcardpayamount;
+                        res.data[i].outs = numeral(outs).format(this.num_format);
                         res.data[i].checked = false;
+                        res.data[i].marcardtotalinv = numeral(res.data[i].marcardtotalinv).format(this.num_format);
+                        res.data[i].marcardpayamount = numeral(res.data[i].marcardpayamount).format(this.num_format);
+
                     }
 
                     self.ars = res.data;
