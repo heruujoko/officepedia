@@ -113,7 +113,7 @@ class SalesInvoiceController extends Controller
     }
 
     public function lptPrint($invoiceno){
-        $data['invoice'] = MHINvoice::on(Auth::user()->db_name)->where('mhinvoiceno',$invoiceno)->first();
+        $data['invoice'] = MHInvoice::on(Auth::user()->db_name)->where('mhinvoiceno',$invoiceno)->first();
         $config = MConfig::on(Auth::user()->db_name)->where('id',1)->first();
         $data['decimals'] = $config->msysgenrounddec;
         $data['dec_point'] = $config->msysnumseparator;
