@@ -255,7 +255,6 @@ class MHInvoice extends Model
         return $resp;
       } catch(Exception $e){
         DB::connection(Auth::user()->db_name)->rollBack();
-        dd($e);
         $resp = [
             'status' => 'err',
             'data' => $e
