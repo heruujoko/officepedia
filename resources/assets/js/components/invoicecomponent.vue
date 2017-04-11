@@ -380,13 +380,16 @@
     },
     methods: {
         lptPrint(invoiceno){
-            // window.open(,'_blank');
-            Axios.get('/admin-nano/salesinvoice/'+invoiceno+'/lpt').then((res) => {
-              var htmls = res.data;
-              this.makeTextFile(htmls);
-              var win = window.open(this.bloburl);
-              win.print();
-            });
+            // graphic mode
+             window.open('/admin-nano/salesinvoice/'+invoiceno+'/lpt','_blank');
+
+            // raw mode
+//            Axios.get('/admin-nano/salesinvoice/'+invoiceno+'/lpt').then((res) => {
+//              var htmls = res.data;
+//              this.makeTextFile(htmls);
+//              var win = window.open(this.bloburl);
+//              win.print();
+//            });
 
 
         },
@@ -789,6 +792,8 @@
             type: "success",
             timer: 1000
           });
+          console.log(res.data);
+          this.lptPrint(res.data.mhinvoiceno);
           this.resetInvoice();
           $('.tableapi').DataTable().ajax.reload();
           window.location.href="#formtable";

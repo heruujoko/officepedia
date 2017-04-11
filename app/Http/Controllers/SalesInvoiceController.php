@@ -145,6 +145,7 @@ class SalesInvoiceController extends Controller
             array_push($inv_details_chunked,$item);
         }
         $data['chunks'] = $inv_details_chunked;
+//        dd($data['chunks']);
 
         $data['sum_subtotal'] = 0;
         $data['sum_tax'] = 0;
@@ -170,9 +171,8 @@ class SalesInvoiceController extends Controller
         }
         $data['details'] = $inv_details;
         $data['footnote'] = $config->msysinvinvfootnote;
-        // $html = view('admin.export.invoicelpt',$data);
-        $htt = LPTPrintHelper::toTextPage($data);
+        $htt = view('admin.export.invoicelpt',$data);
+//        $htt = LPTPrintHelper::toTextPage($data);
         return $htt;
-        // return view('admin.export.invoicelpt',$data);
     }
 }

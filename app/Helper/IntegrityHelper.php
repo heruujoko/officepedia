@@ -16,13 +16,13 @@ class IntegrityHelper {
 
     public static function recalculateSalesTransactionFrom($date,$edited_history,$mdinvoice){
       $affected_history = HPPHistory::on(Auth::user()->db_name)->where('created_at','>',Carbon::parse($date))->where('void',0)->where('hpphistorygoodsid',$edited_history->hpphistorygoodsid)->orderBy('created_at','asc')->get();
-      var_dump('affecting '.count($affected_history).' histories');
+      // var_dump('affecting '.count($affected_history).' histories');
 
         $mgoods = MGoods::on(Auth::user()->db_name)->where('mgoodscode',$edited_history->hpphistorygoodsid)->first();
-        var_dump('goods stock awal = '.$mgoods->mgoodsstock);
+        // var_dump('goods stock awal = '.$mgoods->mgoodsstock);
         $mgoods->mgoodsstock = $edited_history->lastqty - $mdinvoice->mdinvoicegoodsqty;
         $mgoods->save();
-        var_dump('goods nya jadi '.$mgoods->mgoodsstock);
+        // var_dump('goods nya jadi '.$mgoods->mgoodsstock);
 
       // save cogs log
       $h = new HPPHistory;
@@ -46,12 +46,12 @@ class IntegrityHelper {
       $edited_history->save();
 
       foreach($affected_history as $af){
-          var_dump($af->id);
+          // var_dump($af->id);
           // $loop_date = Carbon::parse($date)->addDays($i);
           // var_dump('loop date '.$loop_date);
           // $mdinvoices = MDInvoice::on(Auth::user()->db_name)->whereDate('mdinvoicedate','=',$loop_date)->get();
           if($af->type == 'sales'){
-              var_dump('recalculate sales');
+              // var_dump('recalculate sales');
               $mdinvoices = MDInvoice::on(Auth::user()->db_name)->where('mhinvoiceno',$af->transno)->get();
               foreach($mdinvoices as $mdi){
                   $hpp_coa = MCOA::on(Auth::user()->db_name)->where('mcoacode','5100.01')->first();
@@ -65,10 +65,10 @@ class IntegrityHelper {
                   $cogs = MCOGS::on(Auth::user()->db_name)->where('mcogsgoodscode',$mdi->mdinvoicegoodsid)->first();
 
                   $hpp_journal->mjournaldebit = $mdi->mdinvoicegoodsqty * $cogs->mcogslastcogs;
-                  var_dump('debit '.$hpp_journal->mjournaldebit);
+                  // var_dump('debit '.$hpp_journal->mjournaldebit);
                   $hpp_journal->save();
                   $persediaan_journal->mjournalcredit = $mdi->mdinvoicegoodsqty * $cogs->mcogslastcogs;
-                  var_dump('credit '.$persediaan_journal->mjournalcredit);
+                  // var_dump('credit '.$persediaan_journal->mjournalcredit);
                   $persediaan_journal->save();
                   $hpp_coa->update_saldo('+',$hpp_journal->mjournaldebit);
                   $persediaan_coa->update_saldo('-',$persediaan_journal->mjournalcredit);
@@ -77,7 +77,7 @@ class IntegrityHelper {
               }
 
           } else {
-              var_dump('recalculate purchase');
+              // var_dump('recalculate purchase');
               $mdpurchase = MDPurchase::on(Auth::user()->db_name)->where('mhpurchaseno',$af->transno)->get();
               foreach($mdpurchase as $mdp){
                   $mgoods = MGoods::on(Auth::user()->db_name)->where('mgoodscode',$mdp->mdpurchasegoodsid)->first();
@@ -101,15 +101,15 @@ class IntegrityHelper {
 
         $affected_history = HPPHistory::on(Auth::user()->db_name)->where('created_at','>',Carbon::parse($date))->where('void',0)->orderBy('created_at','asc')->get();
 
-        var_dump('affecting '.count($affected_history).' histories');
+        // var_dump('affecting '.count($affected_history).' histories');
 
         foreach($affected_history as $af){
-            var_dump($af->id);
+            // var_dump($af->id);
             // $loop_date = Carbon::parse($date)->addDays($i);
             // var_dump('loop date '.$loop_date);
             // $mdinvoices = MDInvoice::on(Auth::user()->db_name)->whereDate('mdinvoicedate','=',$loop_date)->get();
             if($af->type == 'sales'){
-                var_dump('recalculate sales');
+                // var_dump('recalculate sales');
                 $mdinvoices = MDInvoice::on(Auth::user()->db_name)->where('mhinvoiceno',$af->transno)->get();
                 foreach($mdinvoices as $mdi){
                     $hpp_coa = MCOA::on(Auth::user()->db_name)->where('mcoacode','5100.01')->first();
@@ -121,12 +121,12 @@ class IntegrityHelper {
                     $persediaan_coa->update_saldo('+',$persediaan_journal->mjournalcredit);
 
                     $cogs = MCOGS::on(Auth::user()->db_name)->where('mcogsgoodscode',$mdi->mdinvoicegoodsid)->first();
-                    var_dump('cogs '.$cogs->mcogslastcogs);
+                    // var_dump('cogs '.$cogs->mcogslastcogs);
                     $hpp_journal->mjournaldebit = $mdi->mdinvoicegoodsqty * $cogs->mcogslastcogs;
-                    var_dump('debit '.$hpp_journal->mjournaldebit);
+                    // var_dump('debit '.$hpp_journal->mjournaldebit);
                     $hpp_journal->save();
                     $persediaan_journal->mjournalcredit = $mdi->mdinvoicegoodsqty * $cogs->mcogslastcogs;
-                    var_dump('credit '.$persediaan_journal->mjournalcredit);
+                    // var_dump('credit '.$persediaan_journal->mjournalcredit);
                     $persediaan_journal->save();
                     $hpp_coa->update_saldo('+',$hpp_journal->mjournaldebit);
                     $persediaan_coa->update_saldo('-',$persediaan_journal->mjournalcredit);
@@ -137,7 +137,7 @@ class IntegrityHelper {
                     $mgoods->mgoodsstock -= $mdi->mdinvoicegoodsqty;
                     $mgoods->save();
 
-                    var_dump('stock '.$mgoods->mgoodsstock);
+                    // var_dump('stock '.$mgoods->mgoodsstock);
 
                     // save cogs log
                     $h = new HPPHistory;
@@ -163,11 +163,11 @@ class IntegrityHelper {
                 }
 
             } else {
-                var_dump('recalculate purchase');
+                // var_dump('recalculate purchase');
                 $mdpurchase = MDPurchase::on(Auth::user()->db_name)->where('mhpurchaseno',$af->transno)->get();
                 foreach($mdpurchase as $mdp){
                     $mgoods = MGoods::on(Auth::user()->db_name)->where('mgoodscode',$mdp->mdpurchasegoodsid)->first();
-                    var_dump('stock '.$mgoods->mgoodsstock);
+                    // var_dump('stock '.$mgoods->mgoodsstock);
                     $mgoods->mgoodsstock += $mdp->mdpurchasegoodsqty;
                     $mgoods->save();
                     $mdp->cogs_ref = IntegrityHelper::updateCOGS($mgoods,$mdp,$mdp->mdpurchasegoodsqty,$af,$remarks = "Revisi Pembelian Turunan");
@@ -197,16 +197,16 @@ class IntegrityHelper {
             $cogs->save();
             $cogs_num = $cogs->mcogslastcogs;
         } else {
-            var_dump($mgoods->mgoodsstock.' - '.$buy_amount);
+            // var_dump($mgoods->mgoodsstock.' - '.$buy_amount);
             $last_stock = $mgoods->mgoodsstock - $buy_amount;
             $histories =  HPPHistory::on(Auth::user()->db_name)->where('hpphistorygoodsid',$mgoods->mgoodscode)->where('void',0)->get();
             $last_history = $histories->last();
             $lastqtysvalue = $last_history->hpphistoryqty;
             $lastcogsvalue = $last_history->hpphistorycogs;
-            var_dump('last stock '.$last_stock);
-            var_dump('last stock '.$lastcogsvalue);
-            var_dump('mdpurchasegoodsgrossamount '.$mdpurchasegoodsgrossamount);
-            var_dump('all stock '.$mgoods->mgoodsstock);
+            // var_dump('last stock '.$last_stock);
+            // var_dump('last stock '.$lastcogsvalue);
+            // var_dump('mdpurchasegoodsgrossamount '.$mdpurchasegoodsgrossamount);
+            // var_dump('all stock '.$mgoods->mgoodsstock);
             $cogs_num = (($last_stock * $lastcogsvalue) + $mdpurchasegoodsgrossamount ) / $mgoods->mgoodsstock;
 
             $cogs->mcogslastcogs = $cogs_num;
@@ -246,30 +246,30 @@ class IntegrityHelper {
         $lastcogsvalue = 0;
         $lastqtyvalue = 0;
         if($lastcogs != null){
-            var_dump('lastcogs id = '.$lastcogs->id);
+            // var_dump('lastcogs id = '.$lastcogs->id);
             $lastcogsvalue = $lastcogs->hpphistorycogs;
             $lastqtyvalue = $lastcogs->hpphistoryqty;
 
-            var_dump('lastcogsvalue '.$lastcogsvalue);
-            var_dump('lastqtyvalue '.$lastqtyvalue);
-            var_dump('goods_stock '.$mgoods->mgoodsstock);
+            // var_dump('lastcogsvalue '.$lastcogsvalue);
+            // var_dump('lastqtyvalue '.$lastqtyvalue);
+            // var_dump('goods_stock '.$mgoods->mgoodsstock);
 
             $last_stock = $lastqtyvalue;
-            var_dump('last_stock '.$last_stock);
+            // var_dump('last_stock '.$last_stock);
             $cogs->mcogsgoodstotalqty -= $lastcogs->hpphistoryqty;
-            var_dump('(('.$last_stock.' * '.$lastcogsvalue.' + '.$mdpurchase->mdpurchasegoodsgrossamount.' / '.$mgoods->mgoodsstock.' ))');
+            // var_dump('(('.$last_stock.' * '.$lastcogsvalue.' + '.$mdpurchase->mdpurchasegoodsgrossamount.' / '.$mgoods->mgoodsstock.' ))');
             $cogs_num = (($last_stock * $lastcogsvalue) + $mdpurchase->mdpurchasegoodsgrossamount ) / $mgoods->mgoodsstock;
 
-            var_dump('cogs_num '.$cogs_num);
+            // var_dump('cogs_num '.$cogs_num);
             // $lastcogsvalue = $cogs->mcogslastcogs;
             $cogs->mcogslastcogs = $cogs_num;
             $cogs->mcogsgoodstotalqty = $mgoods->mgoodsstock;
             $cogs->save();
         } else {
-            var_dump('is first history');
+            // var_dump('is first history');
             $cogs_num = $mdpurchase->mdpurchasegoodsgrossamount / $mdpurchase->mdpurchasegoodsqty;
 
-            var_dump('cogs_num '.$cogs_num);
+            // var_dump('cogs_num '.$cogs_num);
             // $lastcogsvalue = $cogs->mcogslastcogs;
             $cogs->mcogslastcogs = $cogs_num;
             $cogs->mcogsgoodstotalqty = $mdpurchase->mdpurchasegoodsqty;
@@ -354,7 +354,7 @@ class IntegrityHelper {
         $mgoods->mgoodsstock = $cogs->mcogsgoodstotalqty;
         $mgoods->save();
 
-        var_dump('STOCK dalam helper '.$mgoods->mgoodsstock);
+        // var_dump('STOCK dalam helper '.$mgoods->mgoodsstock);
         $start_state = $history->prev();
 
         $affected_transaction = HPPHistory::on(Auth::user()->db_name)->where('id','>', $start_state->id)->where('hpphistorygoodsid',$mgoods->mgoodscode)->where('void',0)->where('transno','!=',$invoiceno)->get();
@@ -371,7 +371,7 @@ class IntegrityHelper {
                 }
 
                 $hpp = (($mgoods->mgoodsstock * $tr->lastcogs) + ($tr->usage * $tr->buyprice)) / ($mgoods->mgoodsstock + $tr->usage);
-                var_dump('hpp '.$tr->id.' - '.$tr->transno.' = '.$hpp);
+                // var_dump('hpp '.$tr->id.' - '.$tr->transno.' = '.$hpp);
                 $tr->hpphistorycogs = $hpp;
                 $tr->save();
 
@@ -380,9 +380,9 @@ class IntegrityHelper {
                 $cogs->mcogslastcogs = $hpp;
                 $cogs->mcogsgoodstotalqty = $mgoods->mgoodsstock;
                 $cogs->save();
-                var_dump('stock '.$mgoods->mgoodsstock);
+                // var_dump('stock '.$mgoods->mgoodsstock);
             } else if($tr->type == 'sales') {
-                var_dump('sales '.$tr->id.' - '.$tr->transno);
+                // var_dump('sales '.$tr->id.' - '.$tr->transno);
                 $mgoods->mgoodsstock -= $tr->usage;
                 $mgoods->save();
                 $tr->hpphistorycogs = $cogs->mcogslastcogs;
@@ -390,7 +390,7 @@ class IntegrityHelper {
                 $tr->lastqty = $tr->prev()->hpphistoryqty;
                 $tr->hpphistoryqty = $mgoods->mgoodsstock;
                 $tr->save();
-                var_dump('stock '.$mgoods->mgoodsstock);
+                // var_dump('stock '.$mgoods->mgoodsstock);
             } else {
 
             }
