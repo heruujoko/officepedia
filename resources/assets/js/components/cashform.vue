@@ -329,15 +329,29 @@
                     if(tax != 0){
                       console.log('idx',this.tax_index);
                       if(this.tax_index == -1){
-                        let tax_detail = {
-                            id: "",
-                            mcoacode:"2102.01",
-                            mcoaname:"Hutang Pajak Penjualan (PPn Keluaran)",
-                            amount: this.transaction_detail.tax,
-                            date: this.transaction_detail.date,
-                            description:"",
-                            tax: ""
-                        };
+                        let tax_detail = {};
+                        if(this.cashtype == 'income'){
+                            tax_detail = {
+                                id: "",
+                                mcoacode:"2102.01",
+                                mcoaname:"Hutang Pajak Penjualan (PPn Keluaran)",
+                                amount: this.transaction_detail.tax,
+                                date: this.transaction_detail.date,
+                                description:"",
+                                tax: ""
+                            };
+                        } else {
+                            tax_detail = {
+                                id: "",
+                                mcoacode:"1107.01",
+                                mcoaname:"Piutang Pajak Pembelian (PPn Masukan)",
+                                amount: this.transaction_detail.tax,
+                                date: this.transaction_detail.date,
+                                description:"",
+                                tax: ""
+                            };
+                        }
+
                         this.transaction_items.push(tax_detail)
                         this.tax_index = this.transaction_items.length -1;
                       } else {

@@ -39,8 +39,8 @@ elixir(mix => {
     // mix.webpack('salesquotation.js');
     // mix.webpack('purchasequotation.js');
     // mix.webpack('journalreport.js');
-    mix.webpack('ledgerreport.js');
-    // mix.webpack('cashincome.js');
+    // mix.webpack('ledgerreport.js');
+    mix.webpack('cashincome.js');
     // mix.webpack('generaljournal.js');
     // mix.webpack('roles.js');
     // mix.webpack('changebranch.js');
