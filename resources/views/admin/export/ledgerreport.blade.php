@@ -103,7 +103,7 @@
                         <tr>
                             <td>{{ $tr['mjournaldate'] }}</td>
                             <td>{{ $tr['mjournalcoa'] }} - {{ $tr['coaname'] }}</td>
-                            <td></td>
+                            <td>{{ $tr['mjouranlremark'] }}</td>
                             <td>{{ $tr['mjournaltranstype'] }}</td>
                             <td style="text-align: right">{{ number_format($tr['mjournaldebit'],$decimals,$dec_point,$thousands_sep) }}</td>
                             <td style="text-align: right">{{ number_format($tr['mjournalcredit'],$decimals,$dec_point,$thousands_sep) }}</td>

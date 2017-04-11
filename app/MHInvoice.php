@@ -98,10 +98,11 @@ class MHInvoice extends Model
 
         $header = MHInvoice::on(Auth::user()->db_name)->where('id',$invoice_header->id)->first();
 
+        $remark = "".$header->mhinvoiceno." - ".$header->mhinvoicecustomerid." ".$header->mhinvoicecustomername;
         // insert journal
-        MJournal::record_journal($header->mhinvoiceno,'Penjualan',$conf->msyspayaraccount,$header->mhinvoicegrandtotal,0,"","","",$invoice_header->mhinvoicedate);
-        MJournal::record_journal($header->mhinvoiceno,'Penjualan',$conf->msysaccinv,0,$header->mhinvoicesubtotal,"","","",$invoice_header->mhinvoicedate);
-        MJournal::record_journal($header->mhinvoiceno,'Penjualan','2102.01',0,$header->mhinvoicetaxtotal,"","","",$invoice_header->mhinvoicedate);
+        MJournal::record_journal($header->mhinvoiceno,'Penjualan',$conf->msyspayaraccount,$header->mhinvoicegrandtotal,0,$remark,"","",$invoice_header->mhinvoicedate);
+        MJournal::record_journal($header->mhinvoiceno,'Penjualan',$conf->msysaccinv,0,$header->mhinvoicesubtotal,$remark,"","",$invoice_header->mhinvoicedate);
+        MJournal::record_journal($header->mhinvoiceno,'Penjualan','2102.01',0,$header->mhinvoicetaxtotal,$remark,"","",$invoice_header->mhinvoicedate);
 
         $coa_piutang = MCOA::on(Auth::user()->db_name)->where('mcoacode',$conf->msyspayaraccount)->first();
         $coa_piutang->update_saldo('+',$header->mhinvoicegrandtotal);

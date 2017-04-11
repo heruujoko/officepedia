@@ -309,7 +309,7 @@ class LedgerController extends Controller
                         $sheet->row($this->count,array(
                             $tr->mjournaldate,
                             $tr->mjournalcoa.' - '.$tr['coaname'],
-                            '',
+                            $tr->mjournalremark,
                             $tr->mjournaltranstype,
                             $tr->mjournaldebit,
                             $tr->mjournalcredit,
@@ -422,7 +422,7 @@ class LedgerController extends Controller
                         $sheet->row($this->count,array(
                             $tr->mjournaldate,
                             $tr->mjournalcoa.' - '.$tr['coaname'],
-                            '',
+                            $tr->mjournalremark,
                             $tr->mjournaltranstype,
                             $tr->mjournaldebit,
                             $tr->mjournalcredit,

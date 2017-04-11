@@ -67,7 +67,7 @@
                             <tr v-for="tr in journal.transactions">
                                 <td>{{ tr.mjournaldate }}</td>
                                 <td>{{ tr.mjournalcoa }} - {{ tr.coaname }}</td>
-                                <td></td>
+                                <td>{{ tr.mjournalremark }}</td>
                                 <td>{{ tr.mjournaltranstype }}</td>
                                 <td v-priceformatlabel="num_format" style="text-align: right">{{ tr.mjournaldebit }}</td>
                                 <td v-priceformatlabel="num_format" style="text-align: right">{{ tr.mjournalcredit }}</td>
@@ -154,6 +154,7 @@
             fetchJournals(){
                 $('#loading_modal').modal('toggle');
                 let accs = base64.encode(JSON.stringify(this.selected_account));
+                this.journals = [];
                 Axios.get('/admin-api/ledgers?end='+this.report_date_end+"&coa="+accs+"&start="+this.report_date_start)
                 .then((res) => {
                     $('#loading_modal').modal('toggle');
