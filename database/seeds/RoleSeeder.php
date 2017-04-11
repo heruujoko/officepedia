@@ -151,7 +151,8 @@ class RoleSeeder extends Seeder
             'r_apreport' => true,
             'r_stockvaluereport' => true,
             'r_journal' => true,
-            'r_ledger' => true  
+            'r_ledger' => true,
+            'r_departement' => true
         ]);
     }
 }

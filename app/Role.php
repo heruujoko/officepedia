@@ -146,7 +146,8 @@ class Role extends Model
         'r_apreport',
         'r_stockvaluereport',
         'r_journal',
-        'r_ledger'
+        'r_ledger',
+        'r_departement',
     ];
 
     protected $casts = [
@@ -288,5 +289,6 @@ class Role extends Model
         'r_stockvaluereport' => 'boolean',
         'r_journal' => 'boolean',
         'r_ledger' => 'boolean',
+        'r_departement' => 'boolean',
     ];
 }
