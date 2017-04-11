@@ -107,12 +107,12 @@
                             <td><span v-if="!sale.header">{{ sale.mdinvoicegoodsid }}<span></td>
                             <td><span v-if="!sale.header">{{ sale.mdinvoicegoodsname }}<span></td>
                             <td><span v-if="!sale.header">{{ sale.mdinvoicegoodsqty }}<span></td>
-                            <td style="text-align:right"><span v-if="!sale.header" v-priceformatlabel="num_format">{{ sale.mdinvoicegoodsprice }}<span></td>
+                            <td style="text-align:right"><span v-if="!sale.header" >{{ sale.mdinvoicegoodsprice }}<span></td>
                             <td></td>
-                            <td style="text-align:right"><span v-if="!sale.header" v-priceformatlabel="num_format">{{ sale.mdinvoicegoodsdiscount }}<span></td>
-                            <td style="text-align:right" v-priceformatlabel="num_format" >{{ sale.mhinvoicesubtotal_sum }}</td>
-                            <td style="text-align:right" v-priceformatlabel="num_format" >{{ sale.mhinvoicetaxtotal_sum }}</td>
-                            <td style="text-align:right" v-priceformatlabel="num_format" >{{ sale.mhinvoicegrandtotal_sum }}</td>
+                            <td style="text-align:right"><span v-if="!sale.header" >{{ sale.mdinvoicegoodsdiscount }}<span></td>
+                            <td style="text-align:right"  >{{ sale.mhinvoicesubtotal_sum }}</td>
+                            <td style="text-align:right"  >{{ sale.mhinvoicetaxtotal_sum }}</td>
+                            <td style="text-align:right"  >{{ sale.mhinvoicegrandtotal_sum }}</td>
                             <td></td>
                         </tr>
                     </tbody>
@@ -121,9 +121,9 @@
                             <th colspan="3">Saldo</th>
                             <th>{{ invoice_count_total }}</th>
                             <th colspan="7"></th>
-                            <th style="text-align:right" v-priceformatlabel="num_format" >{{ sales_total }}</th>
-                            <th style="text-align:right" v-priceformatlabel="num_format" >{{ tax_total }}</th>
-                            <th style="text-align:right" v-priceformatlabel="num_format" >{{ sales_total + tax_total - discount_total }}</th>
+                            <th style="text-align:right"  >{{ sales_total }}</th>
+                            <th style="text-align:right"  >{{ tax_total }}</th>
+                            <th style="text-align:right"  >{{ grand_total }}</th>
                             <th></th>
                         </tr>
                     </thead>
@@ -209,39 +209,81 @@
                 return sum;
             },
             sales_total(){
-                return _.sumBy(this.sales, (iv) => {
+                let amount =  _.sumBy(this.sales, (iv) => {
                     if(iv.header == true){
-                        return iv.mhinvoicesubtotal_sum;
+                        return numeral().unformat(iv.mhinvoicesubtotal_sum);
                     }
                 })
+                return numeral(amount).format(this.num_format)
             },
             free_total(){
                 return 0;
             },
             discount_total(){
-                return _.sumBy(this.sales, (iv) => {
-                    return iv.mhinvoicediscounttotal_sum;
+                let amount = _.sumBy(this.sales, (iv) => {
+                    return numeral().unformat(iv.mhinvoicediscounttotal_sum);
                 })
+                return numeral(amount).format(this.num_format)
             },
             tax_total(){
-                return _.sumBy(this.sales, (iv) => {
+                let amount = _.sumBy(this.sales, (iv) => {
                     if(iv.header == true){
-                        return iv.mhinvoicetaxtotal_sum;
+                        return numeral().unformat(iv.mhinvoicetaxtotal_sum);
                     }
                 })
+                return numeral(amount).format(this.num_format)
+            },
+            grand_total(){
+              let sales = _.sumBy(this.sales, (iv) => {
+                  if(iv.header == true){
+                      return numeral().unformat(iv.mhinvoicesubtotal_sum);
+                  }
+              });
+              let discount = _.sumBy(this.sales, (iv) => {
+                  return numeral().unformat(iv.mhinvoicediscounttotal_sum);
+              });
+              let tax = _.sumBy(this.sales, (iv) => {
+                  if(iv.header == true){
+                      return numeral().unformat(iv.mhinvoicetaxtotal_sum);
+                  }
+              });
+
+              let amount = sales + tax - discount;
+              return numeral(amount).format(this.num_format)
             }
         },
         methods:{
             expander(index,item){
+
+                let rest_of_the_list = [];
+                let tmp_sales = this.sales;
+                for(let s=index+1;s<this.sales.length;s++){
+                    rest_of_the_list.push(this.sales[s]);
+                }
+                console.log('rest',rest_of_the_list);
+                this.sales = [];
+                for(let sl=0;sl<=index;sl++){
+                    this.sales.push(tmp_sales[sl]);
+                }
+                item = this.sales[index];
                 if(!item.expanded){
                     $('#loading_modal').modal('toggle');
                     Axios.get('/admin-api/salesreport/detail/'+item.mhinvoicedate+"?wh="+this.selected_warehouse+"&goods="+this.selected_goods)
                     .then( res => {
                         item.expanded = true;
                         item.expand_length = res.data.length;
-                        for(let i=1;i<=res.data.length;i++){
-                            console.log(res.data[i-1]);
-                            this.sales.splice(index+i,0,res.data[i-1]);
+                        for(let i=0;i<res.data.length;i++){
+//                            console.log(res.data[i-1]);
+//                            this.sales.splice(index+i,0,res.data[i-1]);
+                            res.data[i].mdinvoicegoodsprice = numeral(res.data[i].mdinvoicegoodsprice).format(self.num_format);
+                            res.data[i].mdinvoicegoodsdiscount = numeral(res.data[i].mdinvoicegoodsdiscount).format(self.num_format);
+                            res.data[i].mhinvoicesubtotal_sum = numeral(res.data[i].mhinvoicesubtotal_sum).format(self.num_format);
+                            res.data[i].mhinvoicetaxtotal_sum = numeral(res.data[i].mhinvoicetaxtotal_sum).format(self.num_format);
+                            res.data[i].mhinvoicegrandtotal_sum = numeral(res.data[i].mhinvoicegrandtotal_sum).format(self.num_format);
+                            this.sales.push(res.data[i]);
+                        }
+                        for(let r=0;r<rest_of_the_list.length;r++){
+                            this.sales.push(rest_of_the_list[r]);
                         }
                         $('#loading_modal').modal('toggle');
                     })
@@ -249,32 +291,41 @@
 
                     })
                 } else {
-                    this.sales.splice(index+1,item.expand_length);
+//                    this.sales.splice(index+1,item.expand_length);
+                    for(let r=0;r<rest_of_the_list.length;r++){
+                        this.sales.push(rest_of_the_list[r]);
+                    }
+                    for(let off=0;off<item.expand_length;off++){
+                        this.$delete(this.sales,index+1);
+                    }
                     item.expanded = false;
                     item.expand_length = 0;
                 }
             },
             expandAll: async function(){
-                // for(let i=0;i<this.sales.length;i++){
-                //     if(this.sales[i].header == true){
-                //         this.expander(i,this.sales[i]);
-                //     }
-                // }
-                for(let i=0;i<this.sales.length;i++){
-                    if(this.sales[i].header == true){
+                let tmp_sales = this.sales;
+                this.sales = [];
+                for(let i=0;i<tmp_sales.length;i++){
+                    if(tmp_sales[i].header == true){
                         try {
-                            let res = await Axios.get('/admin-api/salesreport/detail/'+this.sales[i].mhinvoicedate+"?wh="+this.selected_warehouse+"&goods="+this.selected_goods)
-                            this.sales[i].expanded = true;
-                            this.sales[i].expand_length = res.data.length;
+                            let res = await Axios.get('/admin-api/salesreport/detail/'+tmp_sales[i].mhinvoicedate+"?wh="+this.selected_warehouse+"&goods="+this.selected_goods)
+                            tmp_sales[i].expanded = true;
+                            tmp_sales[i].expand_length = res.data.length;
                             for(let j=1;j<=res.data.length;j++){
+                                res.data[j-1].mdinvoicegoodsprice = numeral(res.data[j-1].mdinvoicegoodsprice).format(self.num_format);
+                                res.data[j-1].mdinvoicegoodsdiscount = numeral(res.data[j-1].mdinvoicegoodsdiscount).format(self.num_format);
+                                res.data[j-1].mhinvoicesubtotal_sum = numeral(res.data[j-1].mhinvoicesubtotal_sum).format(self.num_format);
+                                res.data[j-1].mhinvoicetaxtotal_sum = numeral(res.data[j-1].mhinvoicetaxtotal_sum).format(self.num_format);
+                                res.data[j-1].mhinvoicegrandtotal_sum = numeral(res.data[j-1].mhinvoicegrandtotal_sum).format(self.num_format);
                                 console.log(res.data[j-1]);
-                                this.sales.splice(i+j,0,res.data[j-1]);
+                                tmp_sales.splice(i+j,0,res.data[j-1]);
                             }
                         } catch(err){
                             console.log(err);
                         }
                     }
                 }
+                this.sales = tmp_sales;
             },
             fetchConfig(){
                 var self = this;
@@ -305,6 +356,11 @@
                     .then(function(res){
                         console.log(res.data);
                         for(let i=0;i<res.data.length;i++){
+                            res.data[i].mdinvoicegoodsprice = numeral(res.data[i].mdinvoicegoodsprice).format(self.num_format);
+                            res.data[i].mdinvoicegoodsdiscount = numeral(res.data[i].mdinvoicegoodsdiscount).format(self.num_format);
+                            res.data[i].mhinvoicesubtotal_sum = numeral(res.data[i].mhinvoicesubtotal_sum).format(self.num_format);
+                            res.data[i].mhinvoicetaxtotal_sum = numeral(res.data[i].mhinvoicetaxtotal_sum).format(self.num_format);
+                            res.data[i].mhinvoicegrandtotal_sum = numeral(res.data[i].mhinvoicegrandtotal_sum).format(self.num_format);
                             res.data[i].expanded = false;
                         }
                         self.sales = res.data;

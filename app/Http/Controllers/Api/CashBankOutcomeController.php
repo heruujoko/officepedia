@@ -42,7 +42,7 @@ class CashBankOutcomeController extends Controller
             $from_coa = MCOA::on(Auth::user()->db_name)->where('mcoacode',$request->from_account['mcoacode'])->first();
             $total_K = 0;
             foreach($request->to_accounts as $to_acc){
-                      MJournal::record_journal("","Pengeluaran",$to_acc['mcoacode'],$to_acc['amount'],0,"","","",$request->date);
+                      MJournal::record_journal("","Pengeluaran",$to_acc['mcoacode'],$to_acc['amount'],0,$to_acc['description'],"","",$request->date);
                       $to_coa = MCOA::on(Auth::user()->db_name)->where('mcoacode',$to_acc['mcoacode'])->first();
                       $from_coa->update_saldo('-',$to_acc['amount']);
                       $to_coa->update_saldo('+',$to_acc['amount']);

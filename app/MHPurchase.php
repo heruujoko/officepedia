@@ -105,10 +105,11 @@ class MHPurchase extends Model
             $coa_ppn = MCOA::on(Auth::user()->db_name)->where('mcoacode',"1107.01")->first();
             $coa_hutang = MCOA::on(Auth::user()->db_name)->where('mcoacode',$conf->msyspayapaccount)->first();
 
+            $remark = "".$header->mhpurchaseno." - ".$header->mhpurchasesupplierid." ".$header->mhpurchasesuppliername;
             // add journal
-            MJournal::record_journal($header->mhpurchaseno,"Pembelian",$conf->msysaccstock,$header->mhpurchasesubtotal,0,"","","",$trans_header->mhpurchasedate);
-            MJournal::record_journal($header->mhpurchaseno,"Pembelian","1107.01",$header->mhpurchasetaxtotal,0,"","","",$trans_header->mhpurchasedate);
-            MJournal::record_journal($header->mhpurchaseno,"Pembelian",$conf->msyspayapaccount,0,$header->mhpurchasegrandtotal,"","","",$trans_header->mhpurchasedate);
+            MJournal::record_journal($header->mhpurchaseno,"Pembelian",$conf->msysaccstock,$header->mhpurchasesubtotal,0,$remark,"","",$trans_header->mhpurchasedate);
+            MJournal::record_journal($header->mhpurchaseno,"Pembelian","1107.01",$header->mhpurchasetaxtotal,0,$remark,"","",$trans_header->mhpurchasedate);
+            MJournal::record_journal($header->mhpurchaseno,"Pembelian",$conf->msyspayapaccount,0,$header->mhpurchasegrandtotal,$remark,"","",$trans_header->mhpurchasedate);
 
             MJournal::add_prefix();
 

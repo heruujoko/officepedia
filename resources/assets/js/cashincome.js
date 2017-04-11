@@ -37,9 +37,9 @@ Vue.directive('priceformattax',{
     typingTimerTax = setTimeout(() => {
         let formatted = numeral(numeral().unformat($(el).val())).format(binding.value);
         $(el).val(formatted);
-        if($(el).is(':focus')){
-            $(el).select();
-        }
+        // if($(el).is(':focus')){
+        //     $(el).select();
+        // }
 
     }, doneTypingInterval);
   },
@@ -55,11 +55,11 @@ Vue.directive('priceformatcash',{
     typingTimerCash = setTimeout(() => {
         let formatted = numeral(numeral().unformat($(el).val())).format(binding.value);
         $(el).val(formatted);
-        if($(el).is(':focus')){
-            $(el).select();
-        } else {
-            $(el).select();
-        }
+        // if($(el).is(':focus')){
+        //     $(el).select();
+        // } else {
+        //     $(el).select();
+        // }
 
     }, doneTypingInterval);
   },

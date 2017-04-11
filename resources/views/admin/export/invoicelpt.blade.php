@@ -75,48 +75,29 @@
                 <td>: {{ $invoice->created_at }}</td>
             </tr>
             <tr>
-                <td>{{ $invoice->mhinvoicecustomername }} {{ $invoice->mhinvoicecustomerid }}</td>
+                <td>{{ $invoice->mhinvoicecustomername }} - {{ $invoice->mhinvoicecustomerid }}</td>
                 <td>User</td>
                 <td>: {{ Auth::user()->id }} {{ Auth::user()->name }}</td>
-            </tr>
-            <tr>
-                <td></td>
-                <td>Divisi</td>
-                <td>: </td>
-            </tr>
-            <tr>
-                <td></td>
-                <td>No PO</td>
-                <td>: </td>
-            </tr>
-            <tr>
-                <td></td>
-                <td>No Performa</td>
-                <td>: </td>
             </tr>
             <tr>
                 <td colspan="3">
                     <table class="table">
                         <tr>
-                            <td>Kode</td>
                             <td>Nama Produk</td>
                             <td>Jumlah Barang</td>
                             <td>Multi Satuan</td>
                             <td>Harga Jual</td>
                             <td>Subtotal</td>
                             <td>Diskon</td>
-                            <td>Diskon Special</td>
                         </tr>
                         @foreach($c['details'] as $d)
                             <tr>
-                                <td>{{ $d->mhinvoiceno }}</td>
                                 <td>{{ $d->mdinvoicegoodsid }} - {{ $d->mdinvoicegoodsname }}</td>
                                 <td>{{ $d->mdinvoicegoodsqty }}</td>
                                 <td>{{ $d['qty_label'] }}</td>
                                 <td>{{ number_format($d->mdinvoicegoodsprice,$decimals,$dec_point,$thousands_sep)}}</td>
                                 <td>{{ number_format($d->mdinvoicegoodsgrossamount,$decimals,$dec_point,$thousands_sep)}}</td>
                                 <td>{{ number_format($d->mdinvoicegoodsdiscount,$decimals,$dec_point,$thousands_sep)}}</td>
-                                <td></td>
                             </tr>
                         @endforeach
                         @if(count($c['details']) < $per_page)
@@ -144,7 +125,7 @@
         @endforeach
         <table id="footer">
             <tr>
-                <td width="33%">Cap dan tanda-tangan</td>
+                <td width="50%">Cap dan tanda-tangan {{ $c['chunk_subtotal'] }}</td>
                 <td>Jumlah {{ $allitem }} Unit</td>
                 <td>{{ number_format($invoice->mhinvoicesubtotal,$decimals,$dec_point,$thousands_sep) }}</td>
                 <td></td>
@@ -163,14 +144,14 @@
             </tr>
             <tr>
                 <td width="33%"></td>
-                <td>Dasar Pengenaan Pajak</td>
-                <td>0</td>
+                <td>PPn 10%</td>
+                <td>{{ number_format($invoice->mhinvoicetaxtotal,$decimals,$dec_point,$thousands_sep) }}</td>
                 <td></td>
             </tr>
             <tr>
                 <td width="33%">(...................................................) (...................................................)</td>
-                <td>PPn 10%</td>
-                <td>{{ number_format($invoice->mhinvoicetaxtotal,$decimals,$dec_point,$thousands_sep) }}</td>
+                <td></td>
+                <td></td>
                 <td></td>
             </tr>
             <tr>
@@ -180,16 +161,15 @@
                 <td></td>
             </tr>
             <tr class="footline">
-                <td colspan="2" width="50%">
-                    BARANG TELAH DITERIMA DENGAN BAIK DAN CUKUP.
-                    KLAIM SETELAH PENGIRIMAN MENINGGALKAN TEMPAT,
-                    TIDAK DAPAT DILAYAN. TERIMA KASIH.
+                <td colspan="1" width="50%">
+                    {{ $footnote }}
                 </td>
                 <td colspan="2">
-                    {{ $terbilang }}
+                    {{ $terbilang }} rupiah.
                 </td>
             </tr>
         </table>
+        <p style="float: right">halaman {{ $count }} dari {{ count($chunks) }}</p>
         <script>
             window.print();
         </script>

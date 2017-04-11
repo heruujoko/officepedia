@@ -29,7 +29,7 @@
                     <div class="col-md-12">
                         <select v-bind:disabled="!notview" v-bind:id="to_account_id" v-selecttwo="account_label" v-model="selected_detail_code" class="col-md-8 form-control">
                             <option></option>
-                            <option v-for="cb in accounts" :value="cb.mcoacode">{{ cb.mcoaname }}</option>
+                            <option v-for="cb in accounts" :value="cb.mcoacode">{{ cb.mcoacode }} - {{ cb.mcoaname }}</option>
                         </select>
                     </div>
                 </div>

@@ -63,11 +63,15 @@ class SalesController extends Controller
             $sales = $header_query->whereIn('mhinvoiceno',$headers)->groupBy('mhinvoicedate')->get();
             foreach($sales as $s){
 
+                $num_of_trans = 0;
+                $tmp_trans_name = "";
+
                 $details = MDInvoice::on(Auth::user()->db_name)
                 ->where('mdinvoicedate',$s->mhinvoicedate)
                 ->where('mdinvoicegoodsid',$request->goods)
                 ->where('mdinvoicegoodsidwhouse',$request->wh)
                 ->where('void',0)
+                ->orderBy('mhinvoiceno','asc')
                 ->get();
                 $s['detail_count'] = count($details);
                 $s['numoftrans'] = count($details);
@@ -78,13 +82,17 @@ class SalesController extends Controller
                         $mhinvoicediscounttotal_sum += $dt->mdinvoicegoodsdiscount;
                         $mhinvoicetaxtotal_sum += $dt->mdinvoicegoodstax;
                         $mhinvoicegrandtotal_sum += ($dt->mdinvoicegoodsgrossamount + $dt->mdinvoicegoodstax);
-
+                        if($dt->mhinvoiceno != $tmp_trans_name){
+                            $num_of_trans++;
+                            $tmp_trans_name = $dt->mhinvoiceno;
+                        }
                 }
 
                 $s['mhinvoicesubtotal_sum'] = $mhinvoicesubtotal_sum;
                 $s['mhinvoicediscounttotal_sum'] = $mhinvoicediscounttotal_sum;
                 $s['mhinvoicetaxtotal_sum'] = $mhinvoicetaxtotal_sum;
                 $s['mhinvoicegrandtotal_sum'] = $mhinvoicegrandtotal_sum;
+                $s['numoftrans'] = $num_of_trans;
             }
 
         } else if($request->has('wh')){
@@ -100,11 +108,14 @@ class SalesController extends Controller
                 $mhinvoicediscounttotal_sum = 0;
                 $mhinvoicetaxtotal_sum = 0;
                 $mhinvoicegrandtotal_sum = 0;
+                $num_of_trans = 0;
+                $tmp_trans_name = "";
 
                 $details = MDInvoice::on(Auth::user()->db_name)
                 ->where('mdinvoicedate',$s->mhinvoicedate)
                 ->where('mdinvoicegoodsidwhouse',$request->wh)
                 ->where('void',0)
+                ->orderBy('mhinvoiceno','asc')
                 ->get();
                 $s['detail_count'] = count($details);
                 $s['numoftrans'] = count($details);
@@ -115,6 +126,10 @@ class SalesController extends Controller
                         $mhinvoicediscounttotal_sum += $dt->mdinvoicegoodsdiscount;
                         $mhinvoicetaxtotal_sum += $dt->mdinvoicegoodstax;
                         $mhinvoicegrandtotal_sum += ($dt->mdinvoicegoodsgrossamount + $dt->mdinvoicegoodstax);
+                        if($dt->mhinvoiceno != $tmp_trans_name){
+                            $num_of_trans++;
+                            $tmp_trans_name = $dt->mhinvoiceno;
+                        }
 
                 }
 
@@ -122,6 +137,7 @@ class SalesController extends Controller
                 $s['mhinvoicediscounttotal_sum'] = $mhinvoicediscounttotal_sum;
                 $s['mhinvoicetaxtotal_sum'] = $mhinvoicetaxtotal_sum;
                 $s['mhinvoicegrandtotal_sum'] = $mhinvoicegrandtotal_sum;
+                $s['numoftrans'] = $num_of_trans;
 
             }
         }else if($request->has('goods')){
@@ -141,14 +157,17 @@ class SalesController extends Controller
                 $mhinvoicetaxtotal_sum = 0;
                 $mhinvoicegrandtotal_sum = 0;
 
+                $num_of_trans = 0;
+                $tmp_trans_name = "";
+
                 $details = MDInvoice::on(Auth::user()->db_name)
                 ->where('mdinvoicedate',$s->mhinvoicedate)
                 ->where('mdinvoicegoodsid',$request->goods)
                 ->whereIn('mdinvoicegoodsidwhouse',$warehouse_ids)
                 ->where('void',0)
+                ->orderBy('mhinvoiceno','asc')
                 ->get();
                 $s['detail_count'] = count($details);
-                $s['numoftrans'] = count($details);
                 $s['header'] = true;
                 foreach($details as $dt){
 
@@ -156,6 +175,10 @@ class SalesController extends Controller
                         $mhinvoicediscounttotal_sum += $dt->mdinvoicegoodsdiscount;
                         $mhinvoicetaxtotal_sum += $dt->mdinvoicegoodstax;
                         $mhinvoicegrandtotal_sum += ($dt->mdinvoicegoodsgrossamount + $dt->mdinvoicegoodstax);
+                        if($dt->mhinvoiceno != $tmp_trans_name){
+                            $num_of_trans++;
+                            $tmp_trans_name = $dt->mhinvoiceno;
+                        }
 
                 }
 
@@ -163,6 +186,7 @@ class SalesController extends Controller
                 $s['mhinvoicediscounttotal_sum'] = $mhinvoicediscounttotal_sum;
                 $s['mhinvoicetaxtotal_sum'] = $mhinvoicetaxtotal_sum;
                 $s['mhinvoicegrandtotal_sum'] = $mhinvoicegrandtotal_sum;
+                $s['numoftrans'] = $num_of_trans;
             }
         } else {
             $sales = $header_query->groupBy('mhinvoicedate')
@@ -170,9 +194,10 @@ class SalesController extends Controller
             ->get();
 
             foreach($sales as $s){
-                $details = MDInvoice::on(Auth::user()->db_name)->whereIn('mdinvoicegoodsidwhouse',$warehouse_ids)->where('mdinvoicedate',$s->mhinvoicedate)->where('void',0)->get();
+                $details = MDInvoice::on(Auth::user()->db_name)->whereIn('mdinvoicegoodsidwhouse',$warehouse_ids)->where('mdinvoicedate',$s->mhinvoicedate)->where('void',0)->orderBy('mhinvoiceno','asc')->get();
+                $num_of_trans = 0;
+                $tmp_trans_name = "";
                 $s['detail_count'] = count($details);
-                $s['numoftrans'] = count($details);
                 $s['header'] = true;
                 $s['mhinvoicesubtotal_sum'] = 0;
                 $s['mhinvoicediscounttotal_sum'] = 0;
@@ -183,7 +208,12 @@ class SalesController extends Controller
                     $s['mhinvoicediscounttotal_sum'] += $dt->mdinvoicegoodsdiscount;
                     $s['mhinvoicetaxtotal_sum'] += $dt->mdinvoicegoodstax;
                     $s['mhinvoicegrandtotal_sum'] += $dt->mdinvoicegoodsgrossamount + $dt->mdinvoicegoodstax;
+                    if($dt->mhinvoiceno != $tmp_trans_name){
+                        $num_of_trans++;
+                        $tmp_trans_name = $dt->mhinvoiceno;
+                    }
                 }
+                $s['numoftrans'] = $num_of_trans;
             }
         }
 
@@ -414,6 +444,7 @@ class SalesController extends Controller
             $ar['3w'] = 0;
             $ar['4w'] = 0;
             $ar['1m'] = 0;
+            $ar['has_due'] = 0;
             $ar->marcardtotalinv = 0;
             $ar->marcardoutstanding = 0;
             $details = MARCard::on(Auth::user()->db_name)->whereIn('marcardwarehouseid',$warehouse_ids)->where('marcardcustomerid',$ar->marcardcustomerid)->whereDate('marcarddate','<=',Carbon::parse($request->end))->where('void',0)->groupBy('marcardtransno')->get();
@@ -424,26 +455,34 @@ class SalesController extends Controller
                 if($last_ar->marcardoutstanding != 0){
                     $ar['numoftrans'] += 1;
                     $now = Carbon::now();
-                    $due = Carbon::parse($last_ar->marcardduedate);
-                    $diff = $now->diffInDays($due,true);
+                    if($request->age == 'duedate'){
+                        $due = Carbon::parse($last_ar->marcardduedate);
+                    } else {
+                        $due = Carbon::parse($last_ar->marcarddate);
+                    }
+
+                    $diff = $now->diffInDays($due,false);
 
                     $ar->marcardtotalinv += $last_ar->marcardtotalinv;
                     $ar->marcardoutstanding += $last_ar->marcardoutstanding;
 
                     // spread the ar in weeks
-                    if($diff > 0 && $diff <= 7){
+                    if($diff >= 0){
+                        $ar['has_due'] += $last_ar->marcardoutstanding;
+                    }
+                    if($diff < 0 && $diff >= -7){
                         $ar['1w'] += $last_ar->marcardoutstanding;
                     }
-                    if($diff > 7 && $diff <= 14){
+                    if($diff < -7 && $diff >= -14){
                         $ar['2w'] += $last_ar->marcardoutstanding;
                     }
-                    if($diff > 14 && $diff <= 21){
+                    if($diff < -14 && $diff >= -21){
                         $ar['3w'] += $last_ar->marcardoutstanding;
                     }
-                    if($diff > 21 && $diff <= 30){
+                    if($diff < -21 && $diff >= -30){
                         $ar['4w'] += $last_ar->marcardoutstanding;
                     }
-                    if($diff > 30){
+                    if($diff < -30){
                         $ar['1m'] += $last_ar->marcardoutstanding;
                     }
                 }
@@ -485,30 +524,34 @@ class SalesController extends Controller
                 $last_ar['3w'] = 0;
                 $last_ar['4w'] = 0;
                 $last_ar['1m'] = 0;
-
+                $last_ar['has_due'] = 0;
                 $now = Carbon::now();
-                $due = Carbon::parse($last_ar->marcardduedate);
-                $diff = $now->diffInDays($due,false);
-                $last_ar['has_due'] = false;
-                if($diff <= 0){
-                  $last_ar['has_due'] = true;
+                if($request->age == 'duedate'){
+                    $due = Carbon::parse($last_ar->marcardduedate);
+                } else {
+                    $due = Carbon::parse($last_ar->marcarddate);
                 }
+
+                $diff = $now->diffInDays($due,false);
                 $last_ar['aging'] = $diff;
-                $diff = abs($diff);
+
                 // spread the ar in weeks
-                if($diff > 0 && $diff <= 7){
+                if($diff >= 0){
+                    $last_ar['has_due'] += $last_ar->marcardoutstanding;
+                }
+                if($diff < 0 && $diff >= -7){
                     $last_ar['1w'] += $last_ar->marcardoutstanding;
                 }
-                if($diff > 7 && $diff <= 14){
+                if($diff < -7 && $diff >= -14){
                     $last_ar['2w'] += $last_ar->marcardoutstanding;
                 }
-                if($diff > 14 && $diff <= 21){
+                if($diff < -14 && $diff >= -21){
                     $last_ar['3w'] += $last_ar->marcardoutstanding;
                 }
-                if($diff > 21 && $diff <= 30){
+                if($diff < -21 && $diff >= -30){
                     $last_ar['4w'] += $last_ar->marcardoutstanding;
                 }
-                if($diff > 30){
+                if($diff < -30){
                     $last_ar['1m'] += $last_ar->marcardoutstanding;
                 }
 

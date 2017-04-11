@@ -48,7 +48,7 @@ class MHInvoice extends Model
         DBHelper::configureConnection(Auth::user()->db_alias);
         DB::connection(Auth::user()->db_name)->select(DB::raw('call autogen("mhinvoice","'.$conf->msysprefixinvoice.'",'.$conf->msysprefixinvoicecount.',"mhinvoiceno",'.$this->id.')'));
       } catch(Exception $e){
-        var_dump($e);
+        // var_dump($e);
         return $e;
       }
 
@@ -98,10 +98,11 @@ class MHInvoice extends Model
 
         $header = MHInvoice::on(Auth::user()->db_name)->where('id',$invoice_header->id)->first();
 
+        $remark = "".$header->mhinvoiceno." - ".$header->mhinvoicecustomerid." ".$header->mhinvoicecustomername;
         // insert journal
-        MJournal::record_journal($header->mhinvoiceno,'Penjualan',$conf->msyspayaraccount,$header->mhinvoicegrandtotal,0,"","","",$invoice_header->mhinvoicedate);
-        MJournal::record_journal($header->mhinvoiceno,'Penjualan',$conf->msysaccinv,0,$header->mhinvoicesubtotal,"","","",$invoice_header->mhinvoicedate);
-        MJournal::record_journal($header->mhinvoiceno,'Penjualan','2102.01',0,$header->mhinvoicetaxtotal,"","","",$invoice_header->mhinvoicedate);
+        MJournal::record_journal($header->mhinvoiceno,'Penjualan',$conf->msyspayaraccount,$header->mhinvoicegrandtotal,0,$remark,"","",$invoice_header->mhinvoicedate);
+        MJournal::record_journal($header->mhinvoiceno,'Penjualan',$conf->msysaccinv,0,$header->mhinvoicesubtotal,$remark,"","",$invoice_header->mhinvoicedate);
+        MJournal::record_journal($header->mhinvoiceno,'Penjualan','2102.01',0,$header->mhinvoicetaxtotal,$remark,"","",$invoice_header->mhinvoicedate);
 
         $coa_piutang = MCOA::on(Auth::user()->db_name)->where('mcoacode',$conf->msyspayaraccount)->first();
         $coa_piutang->update_saldo('+',$header->mhinvoicegrandtotal);
@@ -255,7 +256,6 @@ class MHInvoice extends Model
         return $resp;
       } catch(Exception $e){
         DB::connection(Auth::user()->db_name)->rollBack();
-        dd($e);
         $resp = [
             'status' => 'err',
             'data' => $e
@@ -428,7 +428,7 @@ class MHInvoice extends Model
 
                 // $mgoods->mgoodsstock -= $g['usage'];
                 $mgoods->save();
-                var_dump('before_mgoods '.$mgoods->mgoodsstock);
+                // var_dump('before_mgoods '.$mgoods->mgoodsstock);
 
                 // update detail stock refs
                 $invoice_detail->stock_ref = $stock_card->id;
@@ -448,18 +448,18 @@ class MHInvoice extends Model
 
                 $hpp_coa = MCOA::on(Auth::user()->db_name)->where('mcoacode',$conf->msysaccsellingexpense)->first();
                 $hpp = HPPHistory::on(Auth::user()->db_name)->where('transno',$invoice_detail->mhinvoiceno)->where('void',0)->first();
-                var_dump('hpp yg di pilih '.$hpp->hpphistorycogs);
+                // var_dump('hpp yg di pilih '.$hpp->hpphistorycogs);
                 $last_amount = $old_qty * $hpp->hpphistorycogs;
                 $persediaan_barang_coa = MCOA::on(Auth::user()->db_name)->where('mcoacode',$conf->msysaccstock)->first();
                 $new_amount = $hpp->hpphistorycogs * $g['usage'];
                 $hpp_coa->update_saldo('-',$new_amount);
                 $persediaan_barang_coa->update_saldo('-',$new_amount);
-                var_dump('tambah '.$new_amount);
+                // var_dump('tambah '.$new_amount);
                 $sum_hpp_journal += $new_amount;
                 $sum_persediaan_journal += $new_amount;
 
                 // jika qty barang berubah maka mempengaruhi stock lain nya
-                var_dump('qty berubah, lakukan perhitungan ulang');
+                // var_dump('qty berubah, lakukan perhitungan ulang');
 
                 IntegrityHelper::recalculateSalesTransactionFrom($invoice_detail->created_at,$hpp,$invoice_detail);
 
@@ -482,12 +482,12 @@ class MHInvoice extends Model
                 $new_amount = $hpp->hpphistorycogs * $g['usage'];
                 $hpp_coa->update_saldo('-',$new_amount);
                 $persediaan_barang_coa->update_saldo('-',$new_amount);
-                var_dump('before sum '.$sum_hpp_journal);
-                var_dump('tambah else '.$new_amount);
+                // var_dump('before sum '.$sum_hpp_journal);
+                // var_dump('tambah else '.$new_amount);
                 $sum_hpp_journal += $new_amount;
                 $sum_persediaan_journal += $new_amount;
               }
-              var_dump('sum '.$sum_hpp_journal);
+              // var_dump('sum '.$sum_hpp_journal);
           } else {
               // newdata
               $mgoods = MGoods::on(Auth::user()->db_name)->where('mgoodscode',$g['goods']['mgoodscode'])->first();
@@ -617,7 +617,7 @@ class MHInvoice extends Model
         $voided_details = MDInvoice::on(Auth::user()->db_name)->where('mhinvoiceno',$invoice_header->mhinvoiceno)->where('void',1)->get();
         foreach ($voided_details as $v) {
             $mgoods = MGoods::on(Auth::user()->db_name)->where('mgoodscode',$v->mdinvoicegoodsid)->first();
-            var_dump('STOCK sebelum helper '.$mgoods->mgoodsstock);
+            // var_dump('STOCK sebelum helper '.$mgoods->mgoodsstock);
             //in dengan qty lama
             $stock_card = new MStockCard;
             $stock_card->setConnection(Auth::user()->db_name);

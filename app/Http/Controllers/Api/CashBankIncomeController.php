@@ -48,7 +48,7 @@ class CashBankIncomeController extends Controller
             }
             MJournal::record_journal("","Pemasukan",$request->from_account['mcoacode'],$total_D,0,"","","",$request->date);
             foreach($request->to_accounts as $to_acc){
-                    MJournal::record_journal("","Pemasukan",$to_acc['mcoacode'],0,$to_acc['amount'],"","","",$request->date);
+                    MJournal::record_journal("","Pemasukan",$to_acc['mcoacode'],0,$to_acc['amount'],$to_acc['description'],"","",$request->date);
 
                     $to_coa = MCOA::on(Auth::user()->db_name)->where('mcoacode',$to_acc['mcoacode'])->first();
 
