@@ -444,6 +444,7 @@ class SalesController extends Controller
             $ar['3w'] = 0;
             $ar['4w'] = 0;
             $ar['1m'] = 0;
+            $ar['has_due'] = 0;
             $ar->marcardtotalinv = 0;
             $ar->marcardoutstanding = 0;
             $details = MARCard::on(Auth::user()->db_name)->whereIn('marcardwarehouseid',$warehouse_ids)->where('marcardcustomerid',$ar->marcardcustomerid)->whereDate('marcarddate','<=',Carbon::parse($request->end))->where('void',0)->groupBy('marcardtransno')->get();
@@ -454,26 +455,34 @@ class SalesController extends Controller
                 if($last_ar->marcardoutstanding != 0){
                     $ar['numoftrans'] += 1;
                     $now = Carbon::now();
-                    $due = Carbon::parse($last_ar->marcardduedate);
-                    $diff = $now->diffInDays($due,true);
+                    if($request->age == 'duedate'){
+                        $due = Carbon::parse($last_ar->marcardduedate);
+                    } else {
+                        $due = Carbon::parse($last_ar->marcarddate);
+                    }
+
+                    $diff = $now->diffInDays($due,false);
 
                     $ar->marcardtotalinv += $last_ar->marcardtotalinv;
                     $ar->marcardoutstanding += $last_ar->marcardoutstanding;
 
                     // spread the ar in weeks
-                    if($diff > 0 && $diff <= 7){
+                    if($diff >= 0){
+                        $ar['has_due'] += $last_ar->marcardoutstanding;
+                    }
+                    if($diff < 0 && $diff >= -7){
                         $ar['1w'] += $last_ar->marcardoutstanding;
                     }
-                    if($diff > 7 && $diff <= 14){
+                    if($diff < -7 && $diff >= -14){
                         $ar['2w'] += $last_ar->marcardoutstanding;
                     }
-                    if($diff > 14 && $diff <= 21){
+                    if($diff < -14 && $diff >= -21){
                         $ar['3w'] += $last_ar->marcardoutstanding;
                     }
-                    if($diff > 21 && $diff <= 30){
+                    if($diff < -21 && $diff >= -30){
                         $ar['4w'] += $last_ar->marcardoutstanding;
                     }
-                    if($diff > 30){
+                    if($diff < -30){
                         $ar['1m'] += $last_ar->marcardoutstanding;
                     }
                 }
@@ -515,30 +524,34 @@ class SalesController extends Controller
                 $last_ar['3w'] = 0;
                 $last_ar['4w'] = 0;
                 $last_ar['1m'] = 0;
-
+                $last_ar['has_due'] = 0;
                 $now = Carbon::now();
-                $due = Carbon::parse($last_ar->marcardduedate);
-                $diff = $now->diffInDays($due,false);
-                $last_ar['has_due'] = false;
-                if($diff <= 0){
-                  $last_ar['has_due'] = true;
+                if($request->age == 'duedate'){
+                    $due = Carbon::parse($last_ar->marcardduedate);
+                } else {
+                    $due = Carbon::parse($last_ar->marcarddate);
                 }
+
+                $diff = $now->diffInDays($due,false);
                 $last_ar['aging'] = $diff;
-                $diff = abs($diff);
+
                 // spread the ar in weeks
-                if($diff > 0 && $diff <= 7){
+                if($diff >= 0){
+                    $last_ar['has_due'] += $last_ar->marcardoutstanding;
+                }
+                if($diff < 0 && $diff >= -7){
                     $last_ar['1w'] += $last_ar->marcardoutstanding;
                 }
-                if($diff > 7 && $diff <= 14){
+                if($diff < -7 && $diff >= -14){
                     $last_ar['2w'] += $last_ar->marcardoutstanding;
                 }
-                if($diff > 14 && $diff <= 21){
+                if($diff < -14 && $diff >= -21){
                     $last_ar['3w'] += $last_ar->marcardoutstanding;
                 }
-                if($diff > 21 && $diff <= 30){
+                if($diff < -21 && $diff >= -30){
                     $last_ar['4w'] += $last_ar->marcardoutstanding;
                 }
-                if($diff > 30){
+                if($diff < -30){
                     $last_ar['1m'] += $last_ar->marcardoutstanding;
                 }
 

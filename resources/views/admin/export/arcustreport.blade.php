@@ -114,7 +114,7 @@
                             <td></td>
                             <td></td>
                             <td></td>
-                            <td></td>
+                            <td>{{ number_format($ar->has_due,$decimals,$dec_point,$thousands_sep) }}</td>
                             <td>{{ number_format($ar->{'1w'},$decimals,$dec_point,$thousands_sep) }}</td>
                             <td>{{ number_format($ar->{'2w'},$decimals,$dec_point,$thousands_sep) }}</td>
                             <td>{{ number_format($ar->{'3w'},$decimals,$dec_point,$thousands_sep) }}</td>
@@ -132,7 +132,7 @@
                         <td>{{ $ar->marcarddate }}</td>
                         <td>{{ $ar->marcardduedate }}</td>
                         <td>{{ $ar->aging }}</td>
-                        <td>{{ $ar->has_due }}</td>
+                        <td>{{ number_format($ar->has_due,$decimals,$dec_point,$thousands_sep) }}</td>
                         <td>{{ number_format($ar->{'1w'},$decimals,$dec_point,$thousands_sep) }}</td>
                         <td>{{ number_format($ar->{'2w'},$decimals,$dec_point,$thousands_sep) }}</td>
                         <td>{{ number_format($ar->{'3w'},$decimals,$dec_point,$thousands_sep) }}</td>
@@ -170,7 +170,7 @@
                     <td></td>
                     <td></td>
                     <td></td>
-                    <td></td>
+                    <td>{{ number_format($total_has_due,$decimals,$dec_point,$thousands_sep) }}</td>
                     <td>{{ number_format($total_1w,$decimals,$dec_point,$thousands_sep) }}</td>
                     <td>{{ number_format($total_2w,$decimals,$dec_point,$thousands_sep) }}</td>
                     <td>{{ number_format($total_3w,$decimals,$dec_point,$thousands_sep) }}</td>

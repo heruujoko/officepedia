@@ -2012,6 +2012,7 @@ class ReportController extends Controller
             $ar['3w'] = 0;
             $ar['4w'] = 0;
             $ar['1m'] = 0;
+            $ar['has_due'] = 0;
             $ar->marcardtotalinv = 0;
             $ar->marcardoutstanding = 0;
             $details = MARCard::on(Auth::user()->db_name)->whereIn('marcardwarehouseid',$warehouse_ids)->where('marcardcustomerid',$ar->marcardcustomerid)->where('void',0)->groupBy('marcardtransno')->get();
@@ -2021,26 +2022,34 @@ class ReportController extends Controller
                 if($last_ar->marcardoutstanding != 0){
                     $ar['numoftrans'] += 1;
                     $now = Carbon::now();
-                    $due = Carbon::parse($last_ar->marcardduedate);
-                    $diff = $now->diffInDays($due,true);
+                    if($request->age == 'duedate'){
+                        $due = Carbon::parse($last_ar->marcardduedate);
+                    } else {
+                        $due = Carbon::parse($last_ar->marcarddate);
+                    }
+
+                    $diff = $now->diffInDays($due,false);
 
                     $ar->marcardtotalinv += $last_ar->marcardtotalinv;
                     $ar->marcardoutstanding += $last_ar->marcardoutstanding;
 
                     // spread the ar in weeks
-                    if($diff > 0 && $diff <= 7){
+                    if($diff >= 0 ){
+                        $ar['has_due'] += $last_ar->marcardoutstanding;
+                    }
+                    if($diff < 0 && $diff >= -7){
                         $ar['1w'] += $last_ar->marcardoutstanding;
                     }
-                    if($diff > 7 && $diff <= 14){
+                    if($diff < -7 && $diff >= -14){
                         $ar['2w'] += $last_ar->marcardoutstanding;
                     }
-                    if($diff > 14 && $diff <= 21){
+                    if($diff < 14 && $diff >= -21){
                         $ar['3w'] += $last_ar->marcardoutstanding;
                     }
-                    if($diff > 21 && $diff <= 30){
+                    if($diff < -21 && $diff >= -30){
                         $ar['4w'] += $last_ar->marcardoutstanding;
                     }
-                    if($diff > 30){
+                    if($diff < -30){
                         $ar['1m'] += $last_ar->marcardoutstanding;
                     }
                 }
@@ -2091,9 +2100,15 @@ class ReportController extends Controller
                 $last_ar['3w'] = 0;
                 $last_ar['4w'] = 0;
                 $last_ar['1m'] = 0;
+                $last_ar['has_due'] = 0;
 
                 $now = Carbon::now();
-                $due = Carbon::parse($last_ar->marcardduedate);
+                if($request->age == 'duedate'){
+                    $due = Carbon::parse($last_ar->marcardduedate);
+                } else {
+                    $due = Carbon::parse($last_ar->marcarddate);
+                }
+
                 $diff = $now->diffInDays($due,false);
                 $last_ar['aging'] = $diff;
                 $last_ar['has_due'] = "";
@@ -2102,19 +2117,22 @@ class ReportController extends Controller
                 }
                 $diff = abs($diff);
                 // spread the ar in weeks
-                if($diff > 0 && $diff <= 7){
+                if($diff >= 0){
+                    $last_ar['has_due'] += $last_ar->marcardoutstanding;
+                }
+                if($diff < 0 && $diff >= -7){
                     $last_ar['1w'] += $last_ar->marcardoutstanding;
                 }
-                if($diff > 7 && $diff <= 14){
+                if($diff < -7 && $diff >= -14){
                     $last_ar['2w'] += $last_ar->marcardoutstanding;
                 }
-                if($diff > 14 && $diff <= 21){
+                if($diff < -14 && $diff >= -21){
                     $last_ar['3w'] += $last_ar->marcardoutstanding;
                 }
-                if($diff > 21 && $diff <= 30){
+                if($diff < -21 && $diff >= -30){
                     $last_ar['4w'] += $last_ar->marcardoutstanding;
                 }
-                if($diff > 30){
+                if($diff < -30){
                     $last_ar['1m'] += $last_ar->marcardoutstanding;
                 }
 
@@ -2187,6 +2205,7 @@ class ReportController extends Controller
         $data['total_3w'] = 0;
         $data['total_4w'] = 0;
         $data['total_1m'] = 0;
+        $data['total_has_due'] = 0;
 
         foreach($decoded_data as $d){
             if($d->header == true){
@@ -2197,6 +2216,7 @@ class ReportController extends Controller
                 $data['total_3w'] += $d->{'3w'};
                 $data['total_4w'] += $d->{'4w'};
                 $data['total_1m'] += $d->{'1m'};
+                $data['total_has_due'] += $d->has_due;
             }
         }
 
@@ -2245,6 +2265,7 @@ class ReportController extends Controller
         $data['total_3w'] = 0;
         $data['total_4w'] = 0;
         $data['total_1m'] = 0;
+        $data['total_has_due'];
 
         foreach($decoded_data as $d){
             if($d->header == true){
@@ -2255,6 +2276,8 @@ class ReportController extends Controller
                 $data['total_3w'] += $d->{'3w'};
                 $data['total_4w'] += $d->{'4w'};
                 $data['total_1m'] += $d->{'1m'};
+                $data['total_has_due'] += $d->has_due;
+
             }
         }
 
@@ -2293,6 +2316,7 @@ class ReportController extends Controller
         $this->data['total_3w'] = 0;
         $this->data['total_4w'] = 0;
         $this->data['total_1m'] = 0;
+        $this->data['total_has_due'] = 0;
 
         foreach($this->ars as $d){
             if($d->header == true){
@@ -2303,6 +2327,7 @@ class ReportController extends Controller
                 $this->data['total_3w'] += $d->{'3w'};
                 $this->data['total_4w'] += $d->{'4w'};
                 $this->data['total_1m'] += $d->{'1m'};
+                $this->data['total_has_due'] += $d->has_due;
             }
         }
 
@@ -2441,7 +2466,7 @@ class ReportController extends Controller
                     '',
                     '',
                     '',
-                    '',
+                    $this->data['total_has_due'],
                     $this->data['total_1w'],
                     $this->data['total_2w'],
                     $this->data['total_3w'],
@@ -2463,18 +2488,18 @@ class ReportController extends Controller
         /*
          * price config
          */
-         $this->count = 0;
-         $config = MConfig::on(Auth::user()->db_name)->where('id',1)->first();
-         $this->data['decimals'] = $config->msysgenrounddec;
-         $this->data['thousands_sep'] = $config->msysnumseparator;
-         if($this->data['thousands_sep'] == ","){
-           $this->data['dec_point'] = ".";
-         } else {
-           $this->data['dec_point'] = ",";
-         }
-         $this->data['company'] = $config->msyscompname;
-         $this->data['start'] = Carbon::parse($request->start)->formatLocalized('%d %B %Y');
-         $this->data['end'] = Carbon::parse($request->end)->formatLocalized('%d %B %Y');
+        $this->count = 0;
+        $config = MConfig::on(Auth::user()->db_name)->where('id',1)->first();
+        $this->data['decimals'] = $config->msysgenrounddec;
+        $this->data['thousands_sep'] = $config->msysnumseparator;
+        if($this->data['thousands_sep'] == ","){
+            $this->data['dec_point'] = ".";
+        } else {
+            $this->data['dec_point'] = ",";
+        }
+        $this->data['company'] = $config->msyscompname;
+        $this->data['start'] = Carbon::parse($request->start)->formatLocalized('%d %B %Y');
+        $this->data['end'] = Carbon::parse($request->end)->formatLocalized('%d %B %Y');
 
         $this->request = $request;
 
@@ -2485,6 +2510,7 @@ class ReportController extends Controller
         $this->data['total_3w'] = 0;
         $this->data['total_4w'] = 0;
         $this->data['total_1m'] = 0;
+        $this->data['total_has_due'] = 0;
 
         foreach($this->ars as $d){
             if($d->header == true){
@@ -2495,12 +2521,13 @@ class ReportController extends Controller
                 $this->data['total_3w'] += $d->{'3w'};
                 $this->data['total_4w'] += $d->{'4w'};
                 $this->data['total_1m'] += $d->{'1m'};
+                $this->data['total_has_due'] += $d->has_due;
             }
         }
 
         return Excel::create('Ar Customer Report',function($excel){
-			$excel->sheet('Ar Customer Report',function($sheet){
-				$this->count++;
+            $excel->sheet('Ar Customer Report',function($sheet){
+                $this->count++;
                 $sheet->mergeCells('A1:H1');
                 $sheet->row($this->count,array($this->data['company']));
                 $sheet->cell('A1',function($cell){
@@ -2560,7 +2587,7 @@ class ReportController extends Controller
 
                 $this->count+=2;
                 $sheet->row($this->count,array(
-                    'Kode Customer','Nama Customer','Total Nota','No Invoice','Nilai Invoice','Oustanding','Tgl Invoice','Tgl Jatuh Tempo','Aging','1-7 Hari','7-14 Hari','14-21 Hari','21-30 Hari','> 1 Bulan'
+                    'Kode Customer','Nama Customer','Total Nota','No Invoice','Nilai Invoice','Oustanding','Tgl Invoice','Tgl Jatuh Tempo','Aging','Jatuh Tempo','1-7 Hari','7-14 Hari','14-21 Hari','21-30 Hari','> 1 Bulan'
                 ));
 
                 foreach ($this->ars as $ar) {
@@ -2570,6 +2597,7 @@ class ReportController extends Controller
                             $ar->marcardcustomerid,
                             $ar->marcardcustomername,
                             $ar->numoftrans,
+                            '',
                             '',
                             '',
                             '',
@@ -2593,6 +2621,7 @@ class ReportController extends Controller
                             $ar->marcarddate,
                             $ar->marcardduedate,
                             $ar->aging,
+                            $ar->has_due,
                             $ar->{'1w'},
                             $ar->{'2w'},
                             $ar->{'3w'},
@@ -2601,6 +2630,7 @@ class ReportController extends Controller
                         ));
                     } else {
                         $sheet->row($this->count,array(
+                            '',
                             '',
                             '',
                             '',
@@ -2630,6 +2660,7 @@ class ReportController extends Controller
                     '',
                     '',
                     '',
+                    $this->data['total_has_due'],
                     $this->data['total_1w'],
                     $this->data['total_2w'],
                     $this->data['total_3w'],
@@ -2638,9 +2669,10 @@ class ReportController extends Controller
                 ));
 
 
-			});
-		})->export('csv');
+            });
+        })->export('csv');
     }
+
 
     private function stockreport_data($request){
 
