@@ -168,7 +168,7 @@ class JournalController extends Controller
                 if($cjr->mjournaldebit != 0){
                     $html_str.="<span style=\"float:left;\">".number_format($cjr->mjournalcredit,$this->decimals,$this->dec_point,$this->thousands_sep)."</span><br><br>";
                 } else {
-                    $html_str.="<span style=\"float:right;\">".number_format($cjr->mjournalcredit,$this->decimals,$this->dec_point,$this->thousands_sep)."</span><br><br>";
+                    $html_str.="<span style=\"margin-left: -80px;\">".number_format($cjr->mjournalcredit,$this->decimals,$this->dec_point,$this->thousands_sep)."</span><br><br>";
                 }
             }
             $html_str.="</div>";
@@ -179,7 +179,7 @@ class JournalController extends Controller
                 if($djr->mjournaldebit != 0){
                     $html_str.="<span style=\"float:left;\">".number_format($djr->mjournaldebit,$this->decimals,$this->dec_point,$this->thousands_sep)."</span><br><br>";
                 } else {
-                    $html_str.="<span style=\"float:right;\">".number_format($djr->mjournaldebit,$this->decimals,$this->dec_point,$this->thousands_sep)."</span><br><br>";
+                    $html_str.="<span style=\"float: left\">".number_format($djr->mjournaldebit,$this->decimals,$this->dec_point,$this->thousands_sep)."</span><br><br>";
                 }
             }
             $html_str.="</div>";
@@ -191,7 +191,7 @@ class JournalController extends Controller
                 if($jr->mjournaldebit != 0){
                     $html_str.="<span style=\"float:left;\">".$jr->mjournalcoa." - ".$account->mcoaname." "."</span><br><br>";
                 } else {
-                    $html_str.="<span style=\"float:right;\">".$jr->mjournalcoa." - ".$account->mcoaname." "."</span><br><br>";
+                    $html_str.="<span style=\"margin-left: -80px;\">".$jr->mjournalcoa." - ".$account->mcoaname." "."</span><br><br>";
                 }
             }
             $html_str.="</div>";
