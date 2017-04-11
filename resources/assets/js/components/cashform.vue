@@ -614,6 +614,11 @@
                     this.transaction_detail.mcoaname = coa.mcoaname
                 }
 
+            },
+            transaction_date(){
+                let tmp_items = this.transaction_items.map( item => {
+                    item.date = this.transaction_date;
+                });
             }
         },
         mounted(){
