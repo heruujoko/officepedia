@@ -106,11 +106,10 @@ const stockcardreport = new Vue({
 		fetchStocks(){
             $('#loading_modal').modal('toggle');
 			var self = this;
+			self.stocks = [];
 			Axios.get('/admin-api/mstockcardreport?start='+this.invoice_date_start+'&end='+this.invoice_date_end+'&mstockcardgoodsid='+this.mstockcardgoodsid+'&mstockcardwhouse='+this.mstockcardwhouse).then(function(res){
 				$('#loading_modal').modal('toggle');
 				self.stocks = res.data;
-
-
 			})
 			.catch(function(err){
 				console.log(err);
