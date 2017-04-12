@@ -276,6 +276,11 @@ Route::group(['prefix'=>'admin-nano','middleware' => ['auth','tenantdb']],functi
   Route::get('roles/export/excel','RoleController@roles_excel');
   Route::get('roles/export/csv','RoleController@roles_csv');
 
+  Route::get('mdepartement','MDepartementController@index');
+  Route::get('mdepartement/export/csv','MDepartementController@csv');
+  Route::get('mdepartement/export/excel','MDepartementController@excel');
+  Route::get('mdepartement/export/pdf','MDepartementController@pdf');
+
   Route::controllers([
     '/'=>'AdminController'
   ]);
@@ -410,6 +415,8 @@ Route::group(['prefix'=>'admin-nano','middleware' => ['auth','tenantdb']],functi
   Route::get('purchasejournal','Api\PurchaseJournalController@index');
   Route::get('salesjournal','Api\SalesJournalController@index');
   Route::get('cashbalance','Api\CashBalanceReport@index');
+
+  Route::resource('mdepartement','Api\MDepartementController');
 
   Route::controllers([
     '/'=>'ApiController'
