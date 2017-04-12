@@ -14,7 +14,7 @@ class NewFieldsMgoods extends Migration
     {
         Schema::table('mgoods',function(Blueprint $table){
           $table->string('mgoodscoa');
-          $table->enum('mgoodsdisplayon',['all','purhcase','sales']);
+          $table->enum('mgoodsdisplayon',['all','purchase','sales']);
         });
     }
 

@@ -491,7 +491,7 @@
           });
         },
         fetchGoods(){
-          Axios.get('/admin-api/barang/datalist')
+          Axios.get('/admin-api/barang/purchasedatalist')
           .then((res) => {
             this.goods = res.data;
           });

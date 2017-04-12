@@ -14,9 +14,9 @@ use App\Helper\DBHelper;
 class MDepartementController extends Controller
 {
     public function index(){
-        if(Auth::user()->has_role('R_departement')){
+        if(true){
             DBHelper::configureConnection(Auth::user()->db_alias);
-          	$data['active'] = 'departement';
+          	$data['active'] = 'mdepartement';
       		$data['section'] = 'Departement';
           	$data['activetab'] = 1;
       		$data['MDepartement'] = MDepartement::on(Auth::user()->db_name)->get();

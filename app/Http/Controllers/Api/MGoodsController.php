@@ -111,6 +111,18 @@ class MGoodsController extends Controller
     $goods = MGoods::on(Auth::user()->db_name)->where('void', '0')->orderby('created_at','desc')->get();
     return response()->json($goods);
   }
+
+  public function salesdatalist(){
+      $goods = MGoods::on(Auth::user()->db_name)->where('mgoodsdisplayon','!=','purchase')->where('void', '0')->orderby('created_at','desc')->get();
+      return response()->json($goods);
+  }
+
+    public function purchasedatalist(){
+        $goods = MGoods::on(Auth::user()->db_name)->where('mgoodsdisplayon','!=','sales')->where('void', '0')->orderby('created_at','desc')->get();
+        return response()->json($goods);
+    }
+
+
   public function pkp(){
     $goods = MConfig::on(Auth::user()->db_name)->where('id',1)->first();
     return response()->json($goods);

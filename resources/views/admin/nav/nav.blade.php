@@ -271,6 +271,11 @@
               <li><a href="{{ url('admin-nano/memployeelevel')}}">Master Level Karyawan</a></li>
             @endif
         @endif
+            @if($active == 'mdepartement')
+                <li class="active"><a href="{{ url('admin-nano/mdepartement')}}">Master Departemen</a></li>
+            @else
+                <li><a href="{{ url('admin-nano/mdepartement')}}">Master Departemen</a></li>
+            @endif
         <li><a href="">Master Mata Uang</a></li>
         @if(Auth::user()->has_role('R_tax'))
             @if($active == 'mtax')

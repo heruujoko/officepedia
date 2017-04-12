@@ -307,6 +307,9 @@ Route::group(['prefix'=>'admin-nano','middleware' => ['auth','tenantdb']],functi
   Route::put('mconfig','Api\MConfigController@update');
   Route::put('mconfig/feature','Api\MConfigController@update_feature');
   Route::get('barang/datalist','Api\MGoodsController@datalist');
+  Route::get('barang/purchasedatalist','Api\MGoodsController@datalist');
+  Route::get('barang/salesdatalist','Api\MGoodsController@salesdatalist');
+  Route::get('barang/purchasedatalist','Api\MGoodsController@purchasedatalist');
   Route::get('barang/pkp','Api\MGoodsController@pkp');
   Route::post('barang/import','Api\MGoodsController@importGoods');
   Route::post('barang/importprice','Api\MGoodsController@importGoodsPrice');
