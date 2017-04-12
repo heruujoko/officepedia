@@ -60,7 +60,7 @@ class JournalController extends Controller
                 $journal_query->where('mjournaltranstype',$request->type);
             }
 
-            $groups = $group_query->get();
+            $groups = $group_query->orderBy('mjournaldebit','desc')->get();
 
             $sum_debit = 0;
             $sum_credit = 0;
