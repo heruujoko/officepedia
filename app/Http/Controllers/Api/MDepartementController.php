@@ -37,6 +37,12 @@ class MDepartementController extends Controller
     return response()->json($mdepartement);
 
 	}
+
+	public function datalist(){
+        $mdepartement = MDepartement::on(Auth::user()->db_name)->where('void',0)->get();
+        return response()->json($mdepartement);
+    }
+
 	public function store(Request $request){
     try{
         $mdepartement = new MDepartement($request->all());

@@ -330,11 +330,11 @@ Route::group(['prefix'=>'admin-nano','middleware' => ['auth','tenantdb']],functi
   Route::get('cashbank/detailincome/{journalid}','Api\CashBankIncomeController@details');
 
   Route::resource('cashbank/outcome','Api\CashBankOutcomeController');
-    Route::get('cashbank/outcome/header/{id}','Api\CashBankIncomeController@header');
+    Route::get('cashbank/outcome/header/{id}','Api\CashBankOutcomeController@header');
   Route::get('cashbank/detailoutcome/{journalid}','Api\CashBankOutcomeController@details');
 
     Route::resource('cashbank/transfer','Api\CashBankTransferController');
-    Route::get('cashbank/transfer/header/{id}','Api\CashBankIncomeController@header');
+    Route::get('cashbank/transfer/header/{id}','Api\CashBankTransferController@header');
     Route::get('cashbank/detailtransfer/{journalid}','Api\CashBankTransferController@details');
 
   Route::resource('purchasefixedasset/{id}/details','Api\MHPurchaseFixedAssetController@details');
@@ -419,6 +419,7 @@ Route::group(['prefix'=>'admin-nano','middleware' => ['auth','tenantdb']],functi
   Route::get('salesjournal','Api\SalesJournalController@index');
   Route::get('cashbalance','Api\CashBalanceReport@index');
 
+  Route::get('mdepartment/datalist','Api\MDepartementController@datalist');
   Route::resource('mdepartement','Api\MDepartementController');
 
   Route::controllers([

@@ -134,6 +134,15 @@
                                 </div>
                             </div>
                             <div class="form-group">
+                                <label class="control-label col-md-2">Departement (opsional)</label>
+                                <div class="col-md-8">
+                                    <select class="form-control" type="text" v-model="selected_department" v-selecttwo="department_label" v-bind:id="department_id">
+                                        <option></option>
+                                        <option v-for="d in departments" :value="d.id">{{ d.departement_name }}</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group">
                                 <label class="control-label col-md-2">Keterangan</label>
                                 <div class="col-md-8">
                                     <textarea class="form-control" v-model="transaction_detail.description"></textarea>
@@ -185,17 +194,26 @@
                     amount: "",
                     date: "",
                     description:"",
-                    tax: ""
+                    tax: "",
+                    department: 0
                 },
                 detail_coa:"",
                 num_format:"0,0",
                 disable_from: false,
                 disable_detail_account_id: false,
                 from_alert: false,
-                tax_index: -1
+                tax_index: -1,
+                departments: [],
+                selected_department:0
             }
         },
         computed: {
+            department_id(){
+              return this.mode+"_departments";
+            },
+            department_label(){
+                return "pilih departmen (opsional)";
+            },
             notview(){
                 return this.mode != "view"
             },
@@ -227,6 +245,12 @@
             }
         },
         methods: {
+            fetchDepartments(){
+                let url = '/admin-api/mdepartment/datalist';
+                Axios.get(url).then((res) => {
+                    this.departments = res.data;
+                });
+            },
             fetchBanks(){
 
                 let url = '/admin-api/coadata'
@@ -263,6 +287,10 @@
                 this.transaction_detail.mcoaname = to_acc.mcoaname
                 this.transaction_detail.date = this.transaction_date
                 this.transaction_detail.id = to_acc.id
+                this.transaction_detail.description = to_acc.description
+                this.selected_department = to_acc.description;
+                console.log('#'+this.department_id);
+                $('#'+this.department_id).val(this.selected_department).trigger("change");
                 let already_added = false;
                 this.transaction_items.map( item => {
                   if(item.mcoacode == this.transaction_detail.mcoacode){
@@ -298,10 +326,15 @@
                 this.transaction_detail.amount = edit_acc.amount
                 this.transaction_detail.description = edit_acc.description
                 this.transaction_detail.id = edit_acc.id
+                this.selected_department = edit_acc.department;
                 console.log(edit_acc.mcoacode);
                 $("#"+this.modal_id).modal('toggle')
                 $("#"+this.detail_account_id).val(edit_acc.mcoacode)
                 $("#"+this.detail_account_id).trigger('change')
+                this.transaction_detail.description = edit_acc.description
+                this.selected_department = edit_acc.department;
+                console.log('#'+this.department_id);
+                $('#'+this.department_id).val(this.selected_department).trigger("change");
                 this.disable_detail_account_id = false
                 setTimeout(function () {
                     $('#'+this.amount_id).focus().select();
@@ -322,6 +355,10 @@
 
                     this.transaction_detail.amount = numeral(this.transaction_detail.amount).format(this.num_format)
                     this.transaction_detail.tax = numeral(this.transaction_detail.tax).format(this.num_format)
+                    this.transaction_detail.department = this.selected_department
+                    if(this.transaction_detail.description == undefined){
+                        this.transaction_detail.description = ""
+                    }
 
                     let tax = numeral().unformat(this.transaction_detail.tax);
                     this.transaction_items.push(this.transaction_detail)
@@ -338,6 +375,7 @@
                                 amount: this.transaction_detail.tax,
                                 date: this.transaction_detail.date,
                                 description:"",
+                                department: this.selected_department,
                                 tax: ""
                             };
                         } else {
@@ -348,6 +386,7 @@
                                 amount: this.transaction_detail.tax,
                                 date: this.transaction_detail.date,
                                 description:"",
+                                department: this.selected_department,
                                 tax: ""
                             };
                         }
@@ -386,6 +425,7 @@
                 // }
                 this.transaction_detail.amount = numeral(this.transaction_detail.amount).format(this.num_format)
                 this.transaction_detail.tax = numeral(this.transaction_detail.tax).format(this.num_format)
+                this.transaction_detail.department = this.selected_department;
                 this.$set(this.transaction_items,index,this.transaction_detail)
                 this.dismissModal()
             },
@@ -490,12 +530,15 @@
                             date: moment(res.data[i].mjournaldate).format('L'),
                             description: res.data[i].mjournalremark,
                             id:coa_id,
+                            department: res.data[i].mjournaldepartmentid+"",
                             mcoacode:res.data[i].mjournalcoa,
                             mcoaname:_.find(this.accounts,{mcoacode: res.data[i].mjournalcoa }).mcoaname
                         }
 
                         if(this.cashtype == "outcome" || this.cashtype == "transfer"){
                             obj.amount = res.data[i].mjournaldebit
+                        } else {
+                            obj.amount = res.data[i].mjournalcredit
                         }
 
                         this.transaction_items.push(obj)
@@ -622,6 +665,7 @@
             }
         },
         mounted(){
+            this.fetchDepartments();
             this.fetchBanks()
             this.fetchAllAccounts()
             if(this.mode == 'edit'){

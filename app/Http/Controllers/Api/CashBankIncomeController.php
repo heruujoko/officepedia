@@ -28,12 +28,12 @@ class CashBankIncomeController extends Controller
     }
 
     public function header($id){
-        $grp = MJournal::on(Auth::user()->db_name)->where('mjournalid',$id)->get()->last();
+        $grp = MJournal::on(Auth::user()->db_name)->where('mjournalid',$id)->get()->first();
         return response()->json($grp);
     }
 
     public function details($id){
-        $dtls = MJournal::on(Auth::user()->db_name)->where('mjournalid',$id)->where('void',0)->where('mjournaldebit','!=',"")->get();
+        $dtls = MJournal::on(Auth::user()->db_name)->where('mjournalid',$id)->where('void',0)->where('mjournalcredit','!=',"")->get();
         return response()->json($dtls);
     }
 
@@ -48,7 +48,7 @@ class CashBankIncomeController extends Controller
             }
             MJournal::record_journal("","Pemasukan",$request->from_account['mcoacode'],$total_D,0,"","","",$request->date);
             foreach($request->to_accounts as $to_acc){
-                    MJournal::record_journal("","Pemasukan",$to_acc['mcoacode'],0,$to_acc['amount'],$to_acc['description'],"","",$request->date);
+                    MJournal::record_journal("","Pemasukan",$to_acc['mcoacode'],0,$to_acc['amount'],$to_acc['description'],"","",$request->date,$to_acc['department']);
 
                     $to_coa = MCOA::on(Auth::user()->db_name)->where('mcoacode',$to_acc['mcoacode'])->first();
 
@@ -60,6 +60,7 @@ class CashBankIncomeController extends Controller
             return response()->json('ok');
         } catch(\Exception $e){
             DB::connection(Auth::user()->db_name)->rollBack();
+            dd($e);
             return response()->json('err',400);
         }
     }

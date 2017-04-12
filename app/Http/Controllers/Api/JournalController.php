@@ -60,7 +60,7 @@ class JournalController extends Controller
                 $journal_query->where('mjournaltranstype',$request->type);
             }
 
-            $groups = $group_query->orderBy('mjournaldebit','desc')->get();
+            $groups = $group_query->orderBy('mjournaldebit')->get();
 
             $sum_debit = 0;
             $sum_credit = 0;
@@ -99,7 +99,7 @@ class JournalController extends Controller
             $type = "Jurnal Umum";
         }
 
-        $grp = MJournal::on(Auth::user()->db_name)->where('void',0)->where('mjournaltranstype',$type)->groupBy('mjournalid')
+        $grp = MJournal::on(Auth::user()->db_name)->where('void',0)->orderBy('mjournaldebit','desc')->where('mjournaltranstype',$type)->groupBy('mjournalid')
         ->selectRaw('*,sum(mjournalcredit) as total_credit, sum(mjournaldebit) as total_debit')
         ->get();
 
@@ -163,12 +163,12 @@ class JournalController extends Controller
             $this->iteration++;
             return "<span style=\"float:right\">".$this->iteration."</span>";
         })->addColumn('credits',function($j){
-            $html_str = "<div>";
+            $html_str = "<div style='text-align: left'>";
             foreach($this->journals as $cjr){
                 if($cjr->mjournaldebit != 0){
-                    $html_str.="<span style=\"float:left;\">".number_format($cjr->mjournalcredit,$this->decimals,$this->dec_point,$this->thousands_sep)."</span><br><br>";
+                    $html_str.="<span style=\"\">".number_format($cjr->mjournalcredit,$this->decimals,$this->dec_point,$this->thousands_sep)."</span><br><br>";
                 } else {
-                    $html_str.="<span style=\"margin-left: -80px;\">".number_format($cjr->mjournalcredit,$this->decimals,$this->dec_point,$this->thousands_sep)."</span><br><br>";
+                    $html_str.="<span style=\"margin-left: 30px;\">".number_format($cjr->mjournalcredit,$this->decimals,$this->dec_point,$this->thousands_sep)."</span><br><br>";
                 }
             }
             $html_str.="</div>";
@@ -185,13 +185,13 @@ class JournalController extends Controller
             $html_str.="</div>";
             return $html_str;
         })->addColumn('accounttrace',function($j){
-            $html_str = "<div>";
+            $html_str = "<div style='text-align: left'>";
             foreach($this->journals as $jr){
                 $account = MCOA::on(Auth::user()->db_name)->where('mcoacode',$jr->mjournalcoa)->first();
                 if($jr->mjournaldebit != 0){
-                    $html_str.="<span style=\"float:left;\">".$jr->mjournalcoa." - ".$account->mcoaname." "."</span><br><br>";
+                    $html_str.="<span style=\"\">".$jr->mjournalcoa." - ".$account->mcoaname." "."</span><br><br>";
                 } else {
-                    $html_str.="<span style=\"margin-left: -80px;\">".$jr->mjournalcoa." - ".$account->mcoaname." "."</span><br><br>";
+                    $html_str.="<span style=\"margin-left: 30px;\">".$jr->mjournalcoa." - ".$account->mcoaname." "."</span><br><br>";
                 }
             }
             $html_str.="</div>";
