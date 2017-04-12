@@ -1,5 +1,5 @@
 <div id="branchswitcher" style="padding:10px;">
-    {{--<changer active="{{ $active }}"></changer>--}}
+    <changer active="{{ $active }}"></changer>
 </div>
 <ul>
   @if($active == 'dashboard')
