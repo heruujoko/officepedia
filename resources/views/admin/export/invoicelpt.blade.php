@@ -9,7 +9,7 @@
                 font-family: Sans-Serif;
             }
             .wrapper {
-                margin-top: -10px;
+                margin-top: -45px;
                 width: 100%;
             }
 
@@ -167,7 +167,7 @@
             <tr>
                 <td width="33%"> <span>Toko / Pembeli</span> <span style="margin-left: 130px">Otorisasi</span> </td>
                 <td class="bold">TOTAL</td>
-                <td class="bold right">{{ number_format($invoice->mhinvoicegrandtotal,$decimals,$dec_point,$thousands_sep) }}</td>
+                <td class="bold right" width="35%">{{ number_format($invoice->mhinvoicegrandtotal,$decimals,$dec_point,$thousands_sep) }}</td>
                 <td></td>
             </tr>
             <tr class="footline">
@@ -179,7 +179,7 @@
                 </td>
             </tr>
         </table>
-        <p style="float: right">halaman {{ $count }} dari {{ count($chunks) }}</p>
+        <span style="margin-left: 86%">halaman {{ $count }} dari {{ count($chunks) }}</span>
         <script>
             window.print();
         </script>
