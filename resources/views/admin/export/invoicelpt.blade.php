@@ -110,7 +110,7 @@
                             </tr>
                         @endforeach
                         @if(count($c['details']) < $per_page)
-                        <?php $diff = $per_page - count($c['details']) -1;
+                        <?php $diff = $per_page - count($c['details']);
 
                             for($i=0;$i<$diff;$i++){
                                 echo "<tr><td class='blanks'></td></tr>";
@@ -148,7 +148,7 @@
             </tr>
             <tr>
                 <td width="33%"></td>
-                <td>Discount(Sudah Termasuk Cash Disc.) 1.000 %</td>
+                <td>Discount</td>
                 <td class="right">{{ number_format($invoice->mhinvoicediscounttotal,$decimals,$dec_point,$thousands_sep) }}</td>
                 <td></td>
             </tr>
