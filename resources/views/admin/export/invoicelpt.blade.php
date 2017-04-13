@@ -119,6 +119,7 @@
                             </tr>
                         @endif
                     </table>
+                    <p style="float: right">halaman {{ $count }} dari {{ count($chunks) }}</p>
                 </td>
             </tr>
         </table>
