@@ -54,8 +54,8 @@
         <?php $count++?>
         <table class="wrapper">
             <tr>
-                <td width="70%">{{ $config->msyscompname }}</td>
-                <td colspan="2">Nota Penjualan</td>
+                <td width="70%" style="font-size: 14px">{{ $config->msyscompname }}</td>
+                <td colspan="2" style="font-size: 14px">Nota Penjualan</td>
             </tr>
             <tr>
                 <td>{{ $config->msyscompaddress }}</td>
