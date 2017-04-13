@@ -43,6 +43,9 @@
                  bottom: auto;
               }
             }
+            .bold {
+              font-weight: bold;
+            }
         </style>
     </head>
     <body>
@@ -83,12 +86,12 @@
                 <td colspan="3">
                     <table class="table">
                         <tr>
-                            <td>Nama Produk</td>
-                            <td>Jumlah Barang</td>
-                            <td>Multi Satuan</td>
-                            <td>Harga Jual</td>
-                            <td>Subtotal</td>
-                            <td>Diskon</td>
+                            <td class="bold">Nama Produk</td>
+                            <td class="bold">Jumlah Barang</td>
+                            <td class="bold">Multi Satuan</td>
+                            <td class="bold">Harga Jual</td>
+                            <td class="bold">Subtotal</td>
+                            <td class="bold">Diskon</td>
                         </tr>
                         @foreach($c['details'] as $d)
                             <tr>
@@ -156,8 +159,8 @@
             </tr>
             <tr>
                 <td width="33%"> <span>Toko / Pembeli</span> <span style="margin-left: 130px">Otorisasi</span> </td>
-                <td>TOTAL</td>
-                <td>{{ number_format($invoice->mhinvoicegrandtotal,$decimals,$dec_point,$thousands_sep) }}</td>
+                <td class="bold">TOTAL</td>
+                <td class="bold">{{ number_format($invoice->mhinvoicegrandtotal,$decimals,$dec_point,$thousands_sep) }}</td>
                 <td></td>
             </tr>
             <tr class="footline">
