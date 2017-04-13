@@ -5,7 +5,7 @@
         <title></title>
         <style>
             body {
-                font-size: 11px;
+                font-size: 12px;
             }
             .wrapper {
                 width: 100%;
