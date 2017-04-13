@@ -174,7 +174,7 @@ class SalesInvoiceController extends Controller
         // $htt = view('admin.export.invoicelpt',$data);
 
         $pdf = PDF::loadview('admin.export.invoicelpt',$data);
-        // $pdf->setPaper([0, 0, 612, 396], 'potrait');
+        $pdf->setPaper([0, 0, 1224, 792], 'potrait');
         return $pdf->stream('invoice.pdf');
 //        $htt = LPTPrintHelper::toTextPage($data);
         // return $htt;
