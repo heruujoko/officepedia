@@ -55,7 +55,7 @@
                                 <div class="widget-body no-padding">
                                     <div class="container">
                                         <div id="ledgerreportapp">
-                                            <report username="{{ Auth::user()->name }}" mode="ledger"></report>
+                                            <report username="{{ Auth::user()->name }}" mode="expenses"></report>
                                         </div>
                                     </div>
                                 </div>

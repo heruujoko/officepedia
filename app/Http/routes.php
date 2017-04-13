@@ -270,6 +270,12 @@ Route::group(['prefix'=>'admin-nano','middleware' => ['auth','tenantdb']],functi
   Route::get('reports/cashbalance/export/excel','CashBalanceReport@cashbalance_excel');
   Route::get('reports/cashbalance/export/csv','CashBalanceReport@cashbalance_csv');
 
+  Route::get('reports/expenses','ExpensesController@index');
+  Route::get('reports/expenses/export/print','ExpensesController@expenses_print');
+  Route::get('reports/expenses/export/pdf','ExpensesController@expenses_pdf');
+  Route::get('reports/expenses/export/excel','ExpensesController@expenses_excel');
+  Route::get('reports/expenses/export/csv','ExpensesController@expenses_csv');
+
   Route::get('roles','RoleController@index');
   Route::get('roles/export/print','RoleController@roles_print');
   Route::get('roles/export/pdf','RoleController@roles_pdf');
@@ -404,6 +410,7 @@ Route::group(['prefix'=>'admin-nano','middleware' => ['auth','tenantdb']],functi
   Route::get('journal','Api\JournalController@journal');
   Route::get('journal/group/{type}','Api\JournalController@group_journal');
   Route::get('coaledger','Api\MCOAController@datalistledger');
+  Route::get('coaexpenses','Api\MCOAController@datalistexpenses');
   Route::get('ledgers','Api\LedgerController@ledgers');
   Route::resource('generaljournal','Api\GeneralJournalController');
   Route::resource('roles','Api\RoleController');

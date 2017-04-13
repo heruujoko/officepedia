@@ -164,6 +164,29 @@ class MCOAController extends Controller
         return response()->json($all_list);
     }
 
+    public function datalistexpenses(){
+        // $mcoa = MCOA::on(Auth::user()->db_name)->where('mcoaparentcode','1101.00')->orWhere('mcoaparentcode','1102.00')->orWhere('mcoaparentcode','2101.00')->orWhere('mcoaparentcode','1103.00')->get();
+
+        $all_list = [];
+
+        $gp = MCOAGrandParent::on(Auth::user()->db_name)->where('mcoagrandparentcode','6000.00')->orWhere('mcoagrandparentcode','7000.00')->orWhere('mcoagrandparentcode','8000.00')->get();
+        foreach ($gp as $g) {
+            $g['type'] = 'gp';
+            array_push($all_list,$g);
+            $pr = MCOAParent::on(Auth::user()->db_name)->where('mcoagrandparentcode',$g->mcoagrandparentcode)->get();
+            foreach($pr as $p){
+                $p['type'] = 'p';
+                array_push($all_list,$p);
+                $mcoa = MCOA::on(Auth::user()->db_name)->where('mcoaparentcode',$p->mcoaparentcode)->get();
+                foreach($mcoa as $coa){
+                    $coa['type'] = 'coa';
+                    array_push($all_list,$coa);
+                }
+            }
+        }
+        return response()->json($all_list);
+    }
+
     public function show($id){
       DBHelper::configureConnection(Auth::user()->db_alias);
       $mcoa = MCOA::on(Auth::user()->db_name)->where('id',$id)->first();

@@ -24,7 +24,7 @@
             </div>
         </div>
         <hr>
-        <ledgeraccount v-if="view_mode == 'account'" v-bind:num="num_format"></ledgeraccount>
+        <ledgeraccount v-if="view_mode == 'account'" v-bind:num="num_format" mode="mode"></ledgeraccount>
         <div v-if="view_mode == 'table'">
             <div class="row">
                 <div class="col-md-12">
@@ -97,7 +97,7 @@
 
     import ledgeraccount from './ledgeraccount.vue'
     export default {
-        props:['username'],
+        props:['username','mode'],
         components: {
             ledgeraccount: ledgeraccount
         },

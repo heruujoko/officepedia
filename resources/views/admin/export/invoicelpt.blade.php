@@ -110,7 +110,7 @@
                             </tr>
                         @endforeach
                         @if(count($c['details']) < $per_page)
-                        <?php $diff = $per_page - count($c['details']);
+                        <?php $diff = $per_page - count($c['details']) -1;
 
                             for($i=0;$i<$diff;$i++){
                                 echo "<tr><td class='blanks'></td></tr>";
@@ -129,7 +129,7 @@
             </tr>
         </table>
         @if($count != count($chunks))
-            <p style="float: right">halaman {{ $count }} dari {{ count($chunks) }}</p>
+            <span style="margin-left: 86%">halaman {{ $count }} dari {{ count($chunks) }}</span>
             <div class="pbreak"></div>
         @endif
         @endforeach

@@ -47,7 +47,7 @@
 <script>
     import Axios from 'axios'
     export default {
-        props: ['num'],
+        props: ['num','mode'],
         data(){
             return {
                 accounts: [],
@@ -57,7 +57,14 @@
         methods:{
             fetchAccounts(){
                 $('#loading_modal').modal('toggle');
-                Axios.get('/admin-api/coaledger')
+                let url = ''
+                if(this.mode == 'ledger'){
+                  url = '/admin-api/coaledger'
+                } else {
+                  url = '/admin-api/coaexpenses'
+                }
+
+                Axios.get(url)
                 .then( res => {
                     $('#loading_modal').modal('toggle');
                     this.accounts = res.data;

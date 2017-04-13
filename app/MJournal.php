@@ -5,6 +5,7 @@ namespace App;
 use Illuminate\Database\Eloquent\Model;
 use Carbon\Carbon;
 use Auth;
+use App\MBRANCH;
 
 class MJournal extends Model
 {
@@ -33,6 +34,10 @@ class MJournal extends Model
     }
 
     public static function record_journal($transaction,$type,$coa,$debit,$credit,$remark,$md_ap,$md_ar,$journal_date,$department = ""){
+
+        $branch_code = Auth::user()->defaultbranch;
+        $branch = MBRANCH::on(Auth::user()->db_name)->where('id',$branch_code)->first();
+
         $journal = new MJournal;
         $journal->setConnection(Auth::user()->db_name);
         $journal->mjournaldate = Carbon::parse($journal_date);
@@ -46,10 +51,16 @@ class MJournal extends Model
         $journal->mdpayar_ref = $md_ar;
         $journal->paymenttype = "system";
         $journal->mjournaldepartmentid = $department;
+        $journal->mjournalbranchcode = $branch->mbranchcode;
+        $journal->mjournalbranchname = $branch->mbranchname;
         $journal->save();
     }
 
     public static function record_journal_cash($transaction,$type,$coa,$debit,$credit,$remark,$md_ap,$md_ar,$journal_date){
+
+        $branch_code = Auth::user()->defaultbranch;
+        $branch = MBRANCH::on(Auth::user()->db_name)->where('id',$branch_code)->first();
+
         $journal = new MJournal;
         $journal->setConnection(Auth::user()->db_name);
         $journal->mjournaldate = Carbon::parse($journal_date);
@@ -62,10 +73,16 @@ class MJournal extends Model
         $journal->mdpayap_ref = $md_ap;
         $journal->mdpayar_ref = $md_ar;
         $journal->paymenttype = "cash";
+        $journal->mjournalbranchcode = $branch->mbranchcode;
+        $journal->mjournalbranchname = $branch->mbranchname;
         $journal->save();
     }
 
     public static function record_journal_bank($transaction,$type,$coa,$debit,$credit,$remark,$md_ap,$md_ar,$journal_date){
+
+        $branch_code = Auth::user()->defaultbranch;
+        $branch = MBRANCH::on(Auth::user()->db_name)->where('id',$branch_code)->first();
+
         $journal = new MJournal;
         $journal->setConnection(Auth::user()->db_name);
         $journal->mjournaldate = Carbon::parse($journal_date);
@@ -78,6 +95,8 @@ class MJournal extends Model
         $journal->mdpayap_ref = $md_ap;
         $journal->mdpayar_ref = $md_ar;
         $journal->paymenttype = "bank";
+        $journal->mjournalbranchcode = $branch->mbranchcode;
+        $journal->mjournalbranchname = $branch->mbranchname;
         $journal->save();
     }
 }

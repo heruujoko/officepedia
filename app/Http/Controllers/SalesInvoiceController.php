@@ -130,7 +130,7 @@ class SalesInvoiceController extends Controller
         foreach($inv_details as $dtl){
             array_push($inv_details_arr,$dtl);
         }
-        $data['per_page'] = 10;
+        $data['per_page'] = 8;
         $chunks = array_chunk($inv_details_arr,$data['per_page']);
         $inv_details_chunked = [];
         foreach ($chunks as $c) {

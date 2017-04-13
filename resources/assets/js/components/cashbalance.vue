@@ -124,6 +124,7 @@
             },
             fetchBalance(){
                 $('#loading_modal').modal('toggle');
+
                 axios.get('/admin-api/cashbalance?start='+this.report_date_start+"&end="+this.report_date_end+"&notzero="+this.not_zero)
                 .then( res => {
                     this.journals = res.data;
