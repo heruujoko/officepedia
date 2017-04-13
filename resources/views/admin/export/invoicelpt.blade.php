@@ -7,9 +7,11 @@
             body {
                 font-size: 11px;
                 font-family: Sans-Serif;
+                margin-top: -45px;
+                width: 100%;
             }
             .wrapper {
-                margin-top: -45px;
+
                 width: 100%;
             }
 
@@ -59,9 +61,9 @@
         <?php $count = 0?>
         @foreach($chunks as $c)
         <?php $count++?>
-        <table class="wrapper">
+        <table class="">
             <tr>
-                <td width="70%" style="font-size: 14px">{{ $config->msyscompname }}</td>
+                <td width="350px" style="font-size: 14px">{{ $config->msyscompname }}</td>
                 <td colspan="2" style="font-size: 14px">Nota Penjualan</td>
             </tr>
             <tr>
@@ -93,12 +95,12 @@
                 <td colspan="3">
                     <table class="table">
                         <tr>
-                            <td class="bold">Nama Produk</td>
+                            <td class="bold" style="width: 220px">Nama Produk</td>
                             <td class="bold">Jumlah Barang</td>
-                            <td class="bold">Multi Satuan</td>
-                            <td class="bold">Harga Jual</td>
-                            <td class="bold">Subtotal</td>
-                            <td class="bold">Diskon</td>
+                            <td class="bold" style="width: 70px">Multi Satuan</td>
+                            <td class="bold" style="width: 100px">Harga Jual</td>
+                            <td class="bold" style="width: 100px">Subtotal</td>
+                            <td class="bold" style="width: 100px">Diskon</td>
                         </tr>
                         @foreach($c['details'] as $d)
                             <tr>
@@ -130,7 +132,7 @@
             </tr>
         </table>
         @if($count != count($chunks))
-            <span style="margin-left: 86%">halaman {{ $count }} dari {{ count($chunks) }}</span>
+            <span style="margin-left: 88%">halaman {{ $count }} dari {{ count($chunks) }}</span>
             <div class="pbreak"></div>
         @endif
         @endforeach
@@ -180,7 +182,7 @@
                 </td>
             </tr>
         </table>
-        <span style="margin-left: 86%">halaman {{ $count }} dari {{ count($chunks) }}</span>
+        <span style="margin-left: 88%">halaman {{ $count }} dari {{ count($chunks) }}</span>
         <script>
             window.print();
         </script>
