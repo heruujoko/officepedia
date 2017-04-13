@@ -24,10 +24,15 @@
             }
 
             .table>tbody>tr>td, .table>tbody>tr>th, .table>tfoot>tr>td, .table>tfoot>tr>th, .table>thead>tr>td, .table>thead>tr>th {
-                padding: 8px;
-                line-height: 1.42857143;
+                padding: 6px;
+                line-height: 6px;
                 vertical-align: top;
                 border-top: 1px solid #000;
+                border-right: 1px solid #000;
+            }
+
+            .leftbr {
+              border-left: 1px solid #000;
             }
 
             .last > td {
@@ -45,7 +50,8 @@
             }
             .blanks {
                 border-top: none !important;
-                height: 20px !important;
+                line-height: 8px;
+                border-right: none !important;
             }
             @media print {
              #footer {
@@ -63,8 +69,8 @@
         <?php $count++?>
         <table class="">
             <tr>
-                <td width="350px" style="font-size: 14px">{{ $config->msyscompname }}</td>
-                <td colspan="2" style="font-size: 14px">Nota Penjualan</td>
+                <td width="350px" style="font-size: 18px">{{ $config->msyscompname }}</td>
+                <td colspan="2" style="font-size: 18px">Nota Penjualan</td>
             </tr>
             <tr>
                 <td>{{ $config->msyscompaddress }}</td>
@@ -95,8 +101,8 @@
                 <td colspan="3">
                     <table class="table">
                         <tr>
-                            <td class="bold" style="width: 220px">Nama Produk</td>
-                            <td class="bold">Jumlah Barang</td>
+                            <td class="bold leftbr" style="width: 220px">Nama Produk</td>
+                            <td class="bold">Jumlah</td>
                             <td class="bold" style="width: 70px">Multi Satuan</td>
                             <td class="bold" style="width: 100px">Harga Jual</td>
                             <td class="bold" style="width: 100px">Subtotal</td>
@@ -104,7 +110,7 @@
                         </tr>
                         @foreach($c['details'] as $d)
                             <tr>
-                                <td>{{ $d->mdinvoicegoodsid }} - {{ $d->mdinvoicegoodsname }}</td>
+                                <td class="leftbr">{{ $d->mdinvoicegoodsid }} - {{ $d->mdinvoicegoodsname }}</td>
                                 <td>{{ $d->mdinvoicegoodsqty }}</td>
                                 <td>{{ $d['qty_label'] }}</td>
                                 <td class="right">{{ number_format($d->mdinvoicegoodsprice,$decimals,$dec_point,$thousands_sep)}}</td>
@@ -122,7 +128,7 @@
                          ?>
                         @else
                             <tr class="last">
-                                <td colspan="4">#item {{ count($c['details']) }}</td>
+                                <td colspan="4" class="leftbr">#item {{ count($c['details']) }}</td>
                                 <td>TOTAL</td>
                                 <td colspan="5" class="right">{{ number_format($c['chunk_subtotal'],$decimals,$dec_point,$thousands_sep) }}</td>
                             </tr>
