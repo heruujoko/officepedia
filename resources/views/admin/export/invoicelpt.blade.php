@@ -43,6 +43,7 @@
             }
             .blanks {
                 border-top: none !important;
+                height: 20px !important;
             }
             @media print {
              #footer {
@@ -110,7 +111,7 @@
                             </tr>
                         @endforeach
                         @if(count($c['details']) < $per_page)
-                        <?php $diff = $per_page - count($c['details']);
+                        <?php $diff = $per_page - count($c['details']) -4;
 
                             for($i=0;$i<$diff;$i++){
                                 echo "<tr><td class='blanks'></td></tr>";

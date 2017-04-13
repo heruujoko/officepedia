@@ -130,7 +130,7 @@ class SalesInvoiceController extends Controller
         foreach($inv_details as $dtl){
             array_push($inv_details_arr,$dtl);
         }
-        $data['per_page'] = 8;
+        $data['per_page'] = 7;
         $chunks = array_chunk($inv_details_arr,$data['per_page']);
         $inv_details_chunked = [];
         foreach ($chunks as $c) {
@@ -174,7 +174,7 @@ class SalesInvoiceController extends Controller
         // $htt = view('admin.export.invoicelpt',$data);
 
         $pdf = PDF::loadview('admin.export.invoicelpt',$data);
-        $pdf->setPaper('a5','landscape');
+        $pdf->setPaper([0, 0, 612, 396], 'potrait');
         return $pdf->stream('invoice.pdf');
 //        $htt = LPTPrintHelper::toTextPage($data);
         // return $htt;
