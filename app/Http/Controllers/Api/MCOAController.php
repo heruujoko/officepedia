@@ -14,6 +14,7 @@ use Exception;
 use App\MConfig;
 use Auth;
 use App\Helper\DBHelper;
+use App\MJournal;
 
 class MCOAController extends Controller
 {
@@ -149,14 +150,17 @@ class MCOAController extends Controller
         $gp = MCOAGrandParent::on(Auth::user()->db_name)->get();
         foreach ($gp as $g) {
             $g['type'] = 'gp';
+            $g['branchsaldo'] = MJournal::account_saldo_by_branch($g->mcoagrandparentcode,'gp');
             array_push($all_list,$g);
             $pr = MCOAParent::on(Auth::user()->db_name)->where('mcoagrandparentcode',$g->mcoagrandparentcode)->get();
             foreach($pr as $p){
                 $p['type'] = 'p';
+                $p['branchsaldo'] = MJournal::account_saldo_by_branch($g->mcoaparentcode,'p');
                 array_push($all_list,$p);
                 $mcoa = MCOA::on(Auth::user()->db_name)->where('mcoaparentcode',$p->mcoaparentcode)->get();
                 foreach($mcoa as $coa){
                     $coa['type'] = 'coa';
+                    $coa['branchsaldo'] = MJournal::account_saldo_by_branch($g->mcoacode,'coa');
                     array_push($all_list,$coa);
                 }
             }

@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 use Carbon\Carbon;
 use Auth;
 use App\MBRANCH;
+use App\MCOA;
 
 class MJournal extends Model
 {
@@ -98,5 +99,47 @@ class MJournal extends Model
         $journal->mjournalbranchcode = $branch->mbranchcode;
         $journal->mjournalbranchname = $branch->mbranchname;
         $journal->save();
+    }
+
+    public static function account_saldo_by_branch($coa,$type){
+      $sum_saldo = 0;
+      $branch_code = Auth::user()->defaultbranch;
+      $branch = MBRANCH::on(Auth::user()->db_name)->where('id',$branch_code)->first();
+
+      if($type == 'gp'){
+        $coas = MCOA::on(Auth::user()->db_name)->where('mcoagrandparentcode',$coa)->get();
+        $coa_ids = [];
+        foreach ($coas as $c) {
+          array_push($coa_ids,$c->mcoacode);
+        }
+        $journals = MJournal::on(Auth::user()->db_name)->whereIn('mjournalcoa',$coa_ids)->where('mjournalbranchcode',$branch->mbranchcode)->get();
+        foreach ($journals as $j) {
+          $sum_saldo += $j->mjournaldebit;
+          $sum_saldo -= $j->mjournalcredit;
+        }
+      }
+
+      if($type == 'p'){
+        $coas = MCOA::on(Auth::user()->db_name)->where('mcoaparentcode',$coa)->get();
+        $coa_ids = [];
+        foreach ($coas as $c) {
+          array_push($coa_ids,$c->mcoacode);
+        }
+        $journals = MJournal::on(Auth::user()->db_name)->whereIn('mjournalcoa',$coa_ids)->where('mjournalbranchcode',$branch->mbranchcode)->get();
+        foreach ($journals as $j) {
+          $sum_saldo += $j->mjournaldebit;
+          $sum_saldo -= $j->mjournalcredit;
+        }
+      }
+
+      if($type == 'coa'){
+        $journals = MJournal::on(Auth::user()->db_name)->whereIn('mjournalcoa',$coa)->where('mjournalbranchcode',$branch->mbranchcode)->get();
+        foreach ($journals as $j) {
+          $sum_saldo += $j->mjournaldebit;
+          $sum_saldo -= $j->mjournalcredit;
+        }
+      }
+
+      return $sum_saldo;
     }
 }

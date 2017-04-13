@@ -24,7 +24,7 @@
             </div>
         </div>
         <hr>
-        <ledgeraccount v-if="view_mode == 'account'" v-bind:num="num_format" mode="mode"></ledgeraccount>
+        <ledgeraccount v-if="view_mode == 'account'" v-bind:num="num_format" v-bind:mode="mode"></ledgeraccount>
         <div v-if="view_mode == 'table'">
             <div class="row">
                 <div class="col-md-12">
@@ -184,6 +184,7 @@
         mounted(){
             // this.fetchBanks();
             // this.fetchJournals();
+            console.log('rep',this.mode);
             this.$on('selection',( data ) => {
                 console.log('selection',data);
                 this.selected_account = data;

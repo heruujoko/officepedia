@@ -18,6 +18,9 @@ class GeneralJournalController extends Controller
        try{
            DB::connection(Auth::user()->db_name)->beginTransaction();
 
+           $branch_code = Auth::user()->defaultbranch;
+           $branch = MBRANCH::on(Auth::user()->db_name)->where('id',$branch_code)->first();
+
            foreach($request->items as $item){
 //               MJournal::record_journal("","Jurnal Umum",$item['mcoacode'],$item['debit'],$item['credit'],"","","");
                $journal = new MJournal;
@@ -32,6 +35,8 @@ class GeneralJournalController extends Controller
                $journal->mdpayap_ref = "";
                $journal->mdpayar_ref = "";
                $journal->general_journal_detail_id = $item['general_journal_detail_id'];
+               $journal->mjournalbranchcode = $branch->mbranchcode;
+               $journal->mjournalbranchname = $branch->mbranchname;
                $journal->save();
                // update saldo
                $coa = MCOA::on(Auth::user()->db_name)->where('mcoacode',$journal->mjournalcoa)->first();

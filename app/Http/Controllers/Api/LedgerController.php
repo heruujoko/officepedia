@@ -10,6 +10,7 @@ use Auth;
 use App\MJournal;
 use Carbon\Carbon;
 use App\MCOA;
+use App\MBRANCH;
 
 class LedgerController extends Controller
 {
@@ -17,6 +18,8 @@ class LedgerController extends Controller
 
         $coa = base64_decode($request->coa);
         $coa = json_decode($coa);
+
+        $branch = MBRANCH::on(Auth::user()->db_name)->where('id',Auth::user()->defaultbranch)->first();
 
         $group_data = [];
 
@@ -30,6 +33,8 @@ class LedgerController extends Controller
             if($request->has('end')){
                 $ledger_query->whereDate('mjournaldate','<=',Carbon::parse($request->end));
             }
+
+            $ledger_query->where('mjournalbranchcode',$branch->mbranchcode);
 
             $data = $ledger_query->get();
 
@@ -54,11 +59,12 @@ class LedgerController extends Controller
     }
 
     private function account_last_saldo($coa,$offset){
+        $branch = MBRANCH::on(Auth::user()->db_name)->where('id',Auth::user()->defaultbranch)->first();
         $first_day =  Carbon::parse(date('Y-01-01'));
         if($first_day->diffInDays(Carbon::parse($offset)) > 0){
             $debit = 0;
             $credit = 0;
-            $journal_data = MJournal::on(Auth::user()->db_name)->where('mjournalcoa',$coa)->whereDate('mjournaldate','<',Carbon::parse($offset))->get();
+            $journal_data = MJournal::on(Auth::user()->db_name)->where('mjournalcoa',$coa)->whereDate('mjournaldate','<',Carbon::parse($offset))->where('mjournalbranchcode',$branch->mbranchcode)->get();
             foreach($journal_data as $j){
                 $debit += $j->mjournaldebit;
                 $credit += $j->mjournalcredit;

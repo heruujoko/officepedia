@@ -34,7 +34,7 @@
                     <td style="width: 5%">Aktifa / Aset</td>
                     <td style="width: 2%" v-if="acc.saldo >= 0">D</td>
                     <td style="width: 2%" v-if="acc.saldo < 0">K</td>
-                    <td style="text-align: right;width: 5%"><span v-priceformatlabel="num">{{ acc.saldo }}</span></td>
+                    <td style="text-align: right;width: 5%"><span v-priceformatlabel="num">{{ acc.branchsaldo }}</span></td>
                     <td style="width: 1%" v-if="acc.type == 'coa'">
                         <input type="checkbox" @click="select_account(index)">
                     </td>
@@ -91,6 +91,7 @@
             }
         },
         created(){
+            console.log('acc',this.mode);
             this.fetchAccounts();
         }
 
