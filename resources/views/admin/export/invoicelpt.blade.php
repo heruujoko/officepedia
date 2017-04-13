@@ -125,7 +125,7 @@
         @endforeach
         <table id="footer">
             <tr>
-                <td width="50%">Cap dan tanda-tangan {{ $c['chunk_subtotal'] }}</td>
+                <td width="50%">Cap dan tanda-tangan</td>
                 <td>Jumlah {{ $allitem }} Unit</td>
                 <td>{{ number_format($invoice->mhinvoicesubtotal,$decimals,$dec_point,$thousands_sep) }}</td>
                 <td></td>
