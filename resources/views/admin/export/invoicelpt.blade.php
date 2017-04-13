@@ -5,9 +5,11 @@
         <title></title>
         <style>
             body {
-                font-size: 12px;
+                font-size: 11px;
+                font-family: Sans-Serif;
             }
             .wrapper {
+                margin-top: -10px;
                 width: 100%;
             }
 
@@ -119,11 +121,11 @@
                             </tr>
                         @endif
                     </table>
-                    <p style="float: right">halaman {{ $count }} dari {{ count($chunks) }}</p>
                 </td>
             </tr>
         </table>
         @if($count != count($chunks))
+            <p style="float: right">halaman {{ $count }} dari {{ count($chunks) }}</p>
             <div class="pbreak"></div>
         @endif
         @endforeach
