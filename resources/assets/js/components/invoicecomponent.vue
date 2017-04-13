@@ -806,7 +806,7 @@
           }
           var status_message ="";
           if(err.response.status == 500){
-            status_message = "Transaksi gagal, periksa kembali input";
+            status_message = status_message = err.response.data.data;
           } else {
             status_message = "Stok tidak bisa minus";
           }
@@ -859,6 +859,7 @@
           }
         })
         .catch((err) => {
+          console.log(err.response.data.data);
           if(this.mode == 'edit'){
               $('#edit_loading_modal').modal('toggle');
           } else {
@@ -866,7 +867,7 @@
           }
           var status_message ="";
           if(err.response.status == 500){
-            status_message = "Transaksi gagal, periksa kembali input";
+            status_message = err.response.data.data;
           } else {
             status_message = "Stok tidak bisa minus";
           }
@@ -874,7 +875,7 @@
             title: "Oops!",
             text: status_message,
             type: "error",
-            timer: 1000
+            timer: 1500
           });
         });
       },

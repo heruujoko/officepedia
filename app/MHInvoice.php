@@ -4,6 +4,7 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\QueryException;
 use App\MConfig;
 use Auth;
 use App\Helper\DBHelper;
@@ -258,7 +259,7 @@ class MHInvoice extends Model
         DB::connection(Auth::user()->db_name)->rollBack();
         $resp = [
             'status' => 'err',
-            'data' => $e
+            'data' => $e->getMessage()
         ];
         return $resp;
       }
@@ -658,7 +659,7 @@ class MHInvoice extends Model
         DB::connection(Auth::user()->db_name)->rollBack();
         $resp = [
             'status' => 'err',
-            'data' => $e
+            'data' => $e->getMessage()
         ];
         return $resp;
       }
@@ -747,7 +748,10 @@ class MHInvoice extends Model
 
         } catch(\Exception $e){
             DB::connection(Auth::user()->db_name)->rollBack();
-            dd($e);
+            $resp = [
+                'status' => 'err',
+                'data' => $e->getMessage()
+            ];
             return 'err';
         }
     }
