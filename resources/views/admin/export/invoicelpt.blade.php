@@ -13,6 +13,10 @@
                 width: 100%;
             }
 
+            .right {
+              text-align: right;
+            }
+
             .table {
                 width: 100%;
             }
@@ -100,9 +104,9 @@
                                 <td>{{ $d->mdinvoicegoodsid }} - {{ $d->mdinvoicegoodsname }}</td>
                                 <td>{{ $d->mdinvoicegoodsqty }}</td>
                                 <td>{{ $d['qty_label'] }}</td>
-                                <td>{{ number_format($d->mdinvoicegoodsprice,$decimals,$dec_point,$thousands_sep)}}</td>
-                                <td>{{ number_format($d->mdinvoicegoodsgrossamount,$decimals,$dec_point,$thousands_sep)}}</td>
-                                <td>{{ number_format($d->mdinvoicegoodsdiscount,$decimals,$dec_point,$thousands_sep)}}</td>
+                                <td class="right">{{ number_format($d->mdinvoicegoodsprice,$decimals,$dec_point,$thousands_sep)}}</td>
+                                <td class="right">{{ number_format($d->mdinvoicegoodsgrossamount,$decimals,$dec_point,$thousands_sep)}}</td>
+                                <td class="right">{{ number_format($d->mdinvoicegoodsdiscount,$decimals,$dec_point,$thousands_sep)}}</td>
                             </tr>
                         @endforeach
                         @if(count($c['details']) < $per_page)
@@ -117,7 +121,7 @@
                             <tr class="last">
                                 <td colspan="4">#item {{ count($c['details']) }}</td>
                                 <td>TOTAL</td>
-                                <td colspan="5">{{ number_format($c['chunk_subtotal'],$decimals,$dec_point,$thousands_sep) }}</td>
+                                <td colspan="5" class="right">{{ number_format($c['chunk_subtotal'],$decimals,$dec_point,$thousands_sep) }}</td>
                             </tr>
                         @endif
                     </table>
@@ -133,25 +137,25 @@
             <tr>
                 <td width="50%">Cap dan tanda-tangan</td>
                 <td>Jumlah {{ $allitem }} Unit</td>
-                <td>{{ number_format($invoice->mhinvoicesubtotal,$decimals,$dec_point,$thousands_sep) }}</td>
+                <td class="right">{{ number_format($invoice->mhinvoicesubtotal,$decimals,$dec_point,$thousands_sep) }}</td>
                 <td></td>
             </tr>
             <tr>
                 <td width="33%"></td>
                 <td>Subtotal</td>
-                <td>{{ number_format($invoice->mhinvoicesubtotal,$decimals,$dec_point,$thousands_sep) }}</td>
+                <td class="right">{{ number_format($invoice->mhinvoicesubtotal,$decimals,$dec_point,$thousands_sep) }}</td>
                 <td></td>
             </tr>
             <tr>
                 <td width="33%"></td>
                 <td>Discount(Sudah Termasuk Cash Disc.) 1.000 %</td>
-                <td>{{ number_format($invoice->mhinvoicediscounttotal,$decimals,$dec_point,$thousands_sep) }}</td>
+                <td class="right">{{ number_format($invoice->mhinvoicediscounttotal,$decimals,$dec_point,$thousands_sep) }}</td>
                 <td></td>
             </tr>
             <tr>
                 <td width="33%"></td>
                 <td>PPn 10%</td>
-                <td>{{ number_format($invoice->mhinvoicetaxtotal,$decimals,$dec_point,$thousands_sep) }}</td>
+                <td class="right">{{ number_format($invoice->mhinvoicetaxtotal,$decimals,$dec_point,$thousands_sep) }}</td>
                 <td></td>
             </tr>
             <tr>
@@ -163,7 +167,7 @@
             <tr>
                 <td width="33%"> <span>Toko / Pembeli</span> <span style="margin-left: 130px">Otorisasi</span> </td>
                 <td class="bold">TOTAL</td>
-                <td class="bold">{{ number_format($invoice->mhinvoicegrandtotal,$decimals,$dec_point,$thousands_sep) }}</td>
+                <td class="bold right">{{ number_format($invoice->mhinvoicegrandtotal,$decimals,$dec_point,$thousands_sep) }}</td>
                 <td></td>
             </tr>
             <tr class="footline">
