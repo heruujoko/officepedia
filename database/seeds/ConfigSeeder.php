@@ -83,7 +83,8 @@ class ConfigSeeder extends Seeder
           'msysaccsellingexpense' => '5100.01',
           'msysaccreturnpurchase' => '5100.05',
           'msysaccpaidcapital' => '3100.02',
-          'msysaccretainedearning' => '3200.01'
+          'msysaccretainedearning' => '3200.01',
+          'msysinvlptdirectprinting' => 1
         ]);
     }
 }
