@@ -339,6 +339,11 @@
                     @else
                       <li><a href="{{ url('admin-nano/reports/ledger') }}">Buku Besar</a></li>
                     @endif
+                    @if($active == 'ledger')
+                      <li class="active"><a href="{{ url('admin-nano/reports/expenses') }}">Pengeluaran</a></li>
+                    @else
+                      <li><a href="{{ url('admin-nano/reports/expenses') }}">Pengeluaran</a></li>
+                    @endif
                 @endif
                 @if(Auth::user()->has_role('R_stockvaluereport'))
                     @if($active == 'cogshistory')
