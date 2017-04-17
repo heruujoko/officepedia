@@ -11,6 +11,7 @@ use Datatables;
 use Exception;
 use Auth;
 use App\UserBranch;
+use App\MWarehouse;
 
 class MBranchController extends Controller
 {
@@ -61,6 +62,14 @@ class MBranchController extends Controller
 				$user_branch->userid = Auth::user()->id;
 				$user_branch->branchid = $mbranch->id;
 				$user_branch->save();
+
+				$wh = new MWarehouse;
+        $wh->setConnection(Auth::user()->db_name);
+				$wh->mwarehousename = $request->mbranchname;
+				$wh->mwarehousebranchid = $mbranch->mbranchcode;
+        $wh->void = 0;
+        $wh->save();
+
 				return response()->json($mbranch);
 			} catch(Exception $e){
 				return response()->json($e,400);
