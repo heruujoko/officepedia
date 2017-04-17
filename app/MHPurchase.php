@@ -18,6 +18,7 @@ use App\MCOGS;
 use App\HPPHistory;
 use App\MJournal;
 use App\MCOA;
+use App\MGoodsWarehouse;
 
 class MHPurchase extends Model
 {
@@ -124,7 +125,14 @@ class MHPurchase extends Model
 
                 $mgoods->mgoodspricein = $g['buy_price'];
                 $mgoods->save();
-                $last_stock = $mgoods->mgoodsstock;
+                // change mgoodsstock to warehousestock
+                $warehousestock = [];
+                $warehousestock = MGoodsWarehouse::on(Auth::user()->db_name)->where('mgoodscode',$g['goods']['mgoodscode'])->where('mwarehouseid',$g['warehouse'])->first();
+                if($warehousestock == null){
+                  $warehousestock = MGoodsWarehouse::createWarehouseStock($g['goods']['mgoodscode'],$g['warehouse']);
+                }
+                // $last_stock = $mgoods->mgoodsstock;
+                $last_stock = $warehousestock->stock;
 
                 $detail = new MDPurchase;
                 $detail->setConnection(Auth::user()->db_name);
@@ -186,6 +194,10 @@ class MHPurchase extends Model
                 $stock_card->save();
                 $mgoods->save();
 
+                // update stock warehouse
+                $warehousestock->stock += $g['usage'];
+                $warehousestock->save();
+
                 // update stock reference untuk deleting
                 $detail->stock_ref = $stock_card->id;
                 $detail->save();
@@ -228,6 +240,7 @@ class MHPurchase extends Model
             return 'ok';
         } catch (\Exception $e){
             DB::connection(Auth::user()->db_name)->rollBack();
+            dd($e);
             return 'err';
         }
     }
@@ -327,8 +340,11 @@ class MHPurchase extends Model
                 // var_dump($invoice_detail);
                 if($invoice_detail != null ){
                     $mgoods = MGoods::on(Auth::user()->db_name)->where('mgoodscode',$g['goods']['mgoodscode'])->first();
-                    var_dump($mgoods->mgoodscode." ".$mgoods->mgoodsname." : ".$mgoods->mgoodsstock);
-                    $goods_stock_count = $mgoods->mgoodsstock;
+                    $warehousestock = MGoodsWarehouse::on(Auth::user()->db_name)->where('mgoodscode',$g['goods']['mgoodscode'])->where('mwarehouseid',$g['warehouse'])->first();
+                    // var_dump($mgoods->mgoodscode." ".$mgoods->mgoodsname." : ".$mgoods->mgoodsstock);
+                    var_dump($mgoods->mgoodscode." ".$mgoods->mgoodsname." : ".$warehousestock->stock);
+                    // $goods_stock_count = $mgoods->mgoodsstock;
+                    $goods_stock_count = $warehousestock->stock;
                     $mgoods->mgoodspricein = $g['buy_price'];
                     $mgoods->save();
                     $last_stock = MStockCard::on(Auth::user()->db_name)->where('mstockcardtransno',$trans_header->mhpurchaseno)->where('mstockcardgoodsid',$mgoods->mgoodscode)->get()->last();
@@ -397,8 +413,12 @@ class MHPurchase extends Model
                         $stock_card->mstockcardremark = "Revisi Transaksi ".$request->type." oleh ".Auth::user()->name."/".Auth::user()->id." ".$g['remark'];
                         $stock_card->mstockcardstockin = 0;
                         $stock_card->mstockcardstockout = $old_qty;
+
                         // $stock_card->mstockcardstocktotal = $mgoods->mgoodsstock;
                         $stock_card->mstockcardstocktotal = $mgoods->mgoodsstock -= $old_qty;
+                        // affect the warehouse stock too
+                        $warehousestock->stock -= $old_qty;
+
                         $stock_card->mstockcardwhouse = $g['warehouse'];
                         $stock_card->mstockcarduserid = Auth::user()->id;
                         $stock_card->mstockcardusername = Auth::user()->name;
@@ -430,7 +450,11 @@ class MHPurchase extends Model
                         $stock_card->mstockcardremark = "Revisi Transaksi ".$request->type." oleh ".Auth::user()->name."/".Auth::user()->id." ".$g['remark'];
                         $stock_card->mstockcardstockin = $g['usage'];
                         $stock_card->mstockcardstockout = 0;
+
                         $stock_card->mstockcardstocktotal = $mgoods->mgoodsstock += $g['usage'];
+                        // affect the warehouse stock too
+                        $warehousestock->stock += $g['usage'];
+
                         $stock_card->mstockcardwhouse = $g['warehouse'];
                         $stock_card->mstockcarduserid = Auth::user()->id;
                         $stock_card->mstockcardusername = Auth::user()->name;
@@ -445,6 +469,7 @@ class MHPurchase extends Model
                         var_dump('after add '.$goods_stock_count);
                         $mgoods->mgoodsstock = $goods_stock_count;
                         $mgoods->save();
+                        $warehousestock->save();
 
                         // cek jika hpp bukan history terakhir
                         $future_hpp = HPPHistory::on(Auth::user()->db_name)->where('id','>',$invoice_detail->cogs_ref)->get();
@@ -466,6 +491,13 @@ class MHPurchase extends Model
                     $goods_coa = MCOA::on(Auth::user()->db_name)->where('mcoacode',$mgoods->mgoodscoa)->first();
                     $mgoods->mgoodspricein = $g['buy_price'];
                     $mgoods->save();
+
+                    // change mgoodsstock to warehousestock
+                    $warehousestock = [];
+                    $warehousestock = MGoodsWarehouse::on(Auth::user()->db_name)->where('mgoodscode',$g['goods']['mgoodscode'])->where('mwarehouseid',$g['warehouse'])->first();
+                    if($warehousestock == null){
+                      $warehousestock = MGoodsWarehouse::createWarehouseStock($g['goods']['mgoodscode'],$g['warehouse']);
+                    }
 
                     $detail = new MDPurchase;
                     $detail->setConnection(Auth::user()->db_name);
@@ -530,7 +562,7 @@ class MHPurchase extends Model
                     $stock_card->mstockcardremark = "Transaksi ".$request->type." oleh ".Auth::user()->name."/".Auth::user()->id." ".$g['remark'];
                     $stock_card->mstockcardstockin = $g['usage'];
                     $stock_card->mstockcardstockout = 0;
-                    $stock_card->mstockcardstocktotal = $mgoods->mgoodsstock;
+                    $stock_card->mstockcardstocktotal = $warehousestock->stock;
                     $stock_card->mstockcardwhouse = $g['warehouse'];
                     $stock_card->mstockcarduserid = Auth::user()->id;
                     $stock_card->mstockcardusername = Auth::user()->name;
@@ -540,9 +572,11 @@ class MHPurchase extends Model
                     $stock_card->save();
 
                     // update goods
-                    $last_stock = $mgoods->mgoodsstock;
+                    $last_stock = $warehousestock->stock;
                     $mgoods->mgoodsstock += $g['usage'];
                     $mgoods->save();
+                    $warehousestock->stock += $g['usage'];
+                    $warehousestock->save();
 
                     // update COGS
 

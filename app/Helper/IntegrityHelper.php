@@ -11,6 +11,8 @@ use App\MJournal;
 use App\MCOA;
 use App\MDPurchase;
 use App\MGoods;
+use App\MGoodsWarehouse;
+use App\MBRANCH;
 
 class IntegrityHelper {
 
@@ -181,8 +183,11 @@ class IntegrityHelper {
      *  on create purchase
      */
     public static function calculateCOGS($mgoods,$mdpurchasegoodsgrossamount,$buy_amount,$purchaseno,$remarks = "Pembelian"){
-        $lastcogs = HPPHistory::on(Auth::user()->db_name)->where('hpphistorygoodsid',$mgoods->mgoodscode)->where('void',0)->where('type','purchase')->get()->last();
-        $cogs = MCOGS::on(Auth::user()->db_name)->where('mcogsgoodscode',$mgoods->mgoodscode)->first();
+
+        $branch = MBRANCH::on(Auth::user()->db_name)->where('id',Auth::user()->defaultbranch)->first();
+
+        $lastcogs = HPPHistory::on(Auth::user()->db_name)->where('hpphistorygoodsid',$mgoods->mgoodscode)->where('void',0)->where('type','purchase')->where('branchid',$branch->mbranchcode)->get()->last();
+        $cogs = MCOGS::on(Auth::user()->db_name)->where('mcogsgoodscode',$mgoods->mgoodscode)->where('branchid',$branch->mbranchcode)->first();
         $lastcogsvalue = 0;
         $lastqtysvalue = 0;
         $cogs_num = 0;
@@ -194,6 +199,7 @@ class IntegrityHelper {
             $cogs->mcogsgoodstotalqty = $mgoods->mgoodsstock;
             $cogs->mcogslastcogs = $mdpurchasegoodsgrossamount / $mgoods->mgoodsstock;
             $cogs->mcogsremarks = $remarks;
+            $cogs->branchid = $branch->mbranchcode;
             $cogs->save();
             $cogs_num = $cogs->mcogslastcogs;
         } else {
@@ -228,6 +234,7 @@ class IntegrityHelper {
         $h->transno = $purchaseno;
         $h->buyprice = ($mdpurchasegoodsgrossamount / $buy_amount);
         $h->hpphistoryremarks = $remarks;
+        $h->branchid = $branch->mbranchcode;
         $h->save();
 
         return $h->id;
