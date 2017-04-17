@@ -688,9 +688,12 @@ class MHPurchase extends Model
                 $stock_card->edited = 0;
                 $stock_card->save();
 
+                $warehousestock = MGoodsWarehouse::on(Auth::user()->db_name)->where('mgoodscode',$mgoods->mgoodscode)->where('mwarehouseid',$detail->mdpurchasegoodsidwhouse)->first();
+
                 // update goods stock
-                $last_stock = $mgoods->mgoodsstock;
+                $last_stock = $warehousestock->stock;
                 $last_stock -= $stock_card->mstockcardstockout;
+                $mgoods->mgoodsstock -= $stock_card->mstockcardstockout;
 
                 // check if deletion cause minus
                 if($last_stock < 0){
@@ -698,7 +701,9 @@ class MHPurchase extends Model
                     return 'empty';
                 }
 
-                $mgoods->mgoodsstock = $last_stock;
+                // $mgoods->mgoodsstock = $last_stock;
+                $warehousestock->stock = $last_stock;
+                $warehousestock->save();
                 $mgoods->save();
 
                 $ref_cogs = HPPHistory::on(Auth::user()->db_name)->where('id',$detail->cogs_ref)->first();
@@ -726,7 +731,7 @@ class MHPurchase extends Model
                 // $goods_cogs->mcogsgoodstotalqty = $mgoods->mgoodsstock;
                 // $goods_cogs->save();
 
-                IntegrityHelper::deleteCOGS($mgoods,$ref_cogs->hpphistorypurchase,'void');
+                IntegrityHelper::deleteCOGS($mgoods,$ref_cogs->hpphistorypurchase,'void',$stock_ref->mstockcardwhouse);
 
                 // void APCard;
                 $ap = MAPCard::on(Auth::user()->db_name)->where('mapcardtransno',$detail->mhpurchaseno)->first();

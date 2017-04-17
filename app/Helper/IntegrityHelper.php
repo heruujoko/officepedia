@@ -13,6 +13,7 @@ use App\MDPurchase;
 use App\MGoods;
 use App\MGoodsWarehouse;
 use App\MBRANCH;
+use App\MWarehouse;
 
 class IntegrityHelper {
 
@@ -318,9 +319,12 @@ class IntegrityHelper {
     /*
      *  on delete purchase
      */
-    public static function deleteCOGS($mgoods,$mdpurchasegoodsgrossamount,$remarks = ""){
-        $lastcogs = HPPHistory::on(Auth::user()->db_name)->where('hpphistorygoodsid',$mgoods->mgoodscode)->where('void',0)->where('type','purchase')->get()->last();
-        $cogs = MCOGS::on(Auth::user()->db_name)->where('mcogsgoodscode',$mgoods->mgoodscode)->first();
+    public static function deleteCOGS($mgoods,$mdpurchasegoodsgrossamount,$remarks = "",$mstockcardwhouse){
+
+        $wh = MWarehouse::on(Auth::user()->db_name)->where('id',$mstockcardwhouse)->first();
+        $branchid = $wh->mwarehousebranchid;
+        $lastcogs = HPPHistory::on(Auth::user()->db_name)->where('hpphistorygoodsid',$mgoods->mgoodscode)->where('void',0)->where('type','purchase')->where('branchid',$branchid)->get()->last();
+        $cogs = MCOGS::on(Auth::user()->db_name)->where('mcogsgoodscode',$mgoods->mgoodscode)->where('branchid',$branchid)->first();
         $cogs_num = 0;
 
             // $cogs->mcogslastcogs -= $lastcogs->hpphistorycogs;
