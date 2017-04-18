@@ -5,6 +5,7 @@ namespace App;
 use Illuminate\Database\Eloquent\Model;
 use App\MGoods;
 use Auth;
+use App\MBRANCH;
 
 class HPPHistory extends Model
 {
@@ -18,10 +19,11 @@ class HPPHistory extends Model
         $same = true;
         $count = 0;
         $prev_trans = [];
+        $branch = MBRANCH::on(Auth::user()->db_name)->where('id',Auth::user()->defaultbranch)->first();
         while($same){
             $count++;
             $hist = HPPHistory::on(Auth::user()->db_name)->where('id',($this->id -$count))->first();
-            if(($hist->transno != $this->transno) && ($hist->void == 0)){
+            if(($hist->transno != $this->transno) && ($hist->void == 0) && ($hist->branchid == $branch->mbranchcode)){
                 $same = false;
                 $prev_trans = $hist;
             }

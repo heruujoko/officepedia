@@ -26,7 +26,7 @@ class IntegrityHelper {
         $mgoods->mgoodsstock = $edited_history->lastqty - $mdinvoice->mdinvoicegoodsqty;
         $mgoods->save();
         // var_dump('goods nya jadi '.$mgoods->mgoodsstock);
-
+        $branch = MBRANCH::on(Auth::user()->db_name)->where('id',Auth::user()->defaultbranch)->first();
       // save cogs log
       $h = new HPPHistory;
       $h->setConnection(Auth::user()->db_name);
@@ -41,6 +41,7 @@ class IntegrityHelper {
       $h->transno = $mdinvoice->mhinvoiceno;
       $h->buyprice = 0;
       $h->hpphistoryremarks = "Revisi Penjualan";
+      $h->branchid = $branch->mbranchcode;
       $h->save();
       $h->created_at = $edited_history->created_at;
       $h->save();
@@ -65,7 +66,7 @@ class IntegrityHelper {
                   $hpp_coa->update_saldo('-',$hpp_journal->mjournaldebit);
                   $persediaan_coa->update_saldo('+',$persediaan_journal->mjournalcredit);
 
-                  $cogs = MCOGS::on(Auth::user()->db_name)->where('mcogsgoodscode',$mdi->mdinvoicegoodsid)->first();
+                  $cogs = MCOGS::on(Auth::user()->db_name)->where('mcogsgoodscode',$mdi->mdinvoicegoodsid)->where('branchid',$branch->mbranchcode)->first();
 
                   $hpp_journal->mjournaldebit = $mdi->mdinvoicegoodsqty * $cogs->mcogslastcogs;
                   // var_dump('debit '.$hpp_journal->mjournaldebit);
@@ -84,8 +85,11 @@ class IntegrityHelper {
               $mdpurchase = MDPurchase::on(Auth::user()->db_name)->where('mhpurchaseno',$af->transno)->get();
               foreach($mdpurchase as $mdp){
                   $mgoods = MGoods::on(Auth::user()->db_name)->where('mgoodscode',$mdp->mdpurchasegoodsid)->first();
+                  $warehousegoods = MGoodsWarehouse::on(Auth::user()->db_name)->where('mgoodscode',$mdp->mdpurchasegoodsid)->where('mwarehouseid',$mdp->mdpurchasegoodsidwhouse)->first();
                   $mgoods->mgoodsstock += $mdp->mdpurchasegoodsqty;
                   $mgoods->save();
+                  $warehousegoods->stock += $mdp->mdpurchasegoodsqty;
+                  $warehousegoods->save();
                   $mdp->cogs_ref = IntegrityHelper::updateCOGS($mgoods,$mdp,$mdp->mdpurchasegoodsqty,$af,$remarks = "Revisi Pembelian Turunan");
                   $mdp->save();
               }
@@ -352,9 +356,9 @@ class IntegrityHelper {
     /*
      *  on delete sales
      */
-    public static function restoreCOGS($mgoods,$invoiceno,$usage,$remarks = ""){
-
-        $cogs = MCOGS::on(Auth::user()->db_name)->where('mcogsgoodscode',$mgoods->mgoodscode)->first();
+    public static function restoreCOGS($mgoods,$warehousegoods,$invoiceno,$usage,$remarks = ""){
+        $branch = MBRANCH::on(Auth::user()->db_name)->where('id',Auth::user()->defaultbranch)->first();
+        $cogs = MCOGS::on(Auth::user()->db_name)->where('mcogsgoodscode',$mgoods->mgoodscode)->where('branchid',$branch->mbranchcode)->first();
         $history = HPPHistory::on(Auth::user()->db_name)->where('transno',$invoiceno)->first();
         $history->void = 1;
         $history->save();
@@ -362,13 +366,13 @@ class IntegrityHelper {
         $cogs->mcogslastcogs = $history->prev()->hpphistorycogs;
         $cogs->save();
 
-        $mgoods->mgoodsstock = $cogs->mcogsgoodstotalqty;
+        $warehousegoods->stock = $cogs->mcogsgoodstotalqty;
         $mgoods->save();
 
         // var_dump('STOCK dalam helper '.$mgoods->mgoodsstock);
         $start_state = $history->prev();
 
-        $affected_transaction = HPPHistory::on(Auth::user()->db_name)->where('id','>', $start_state->id)->where('hpphistorygoodsid',$mgoods->mgoodscode)->where('void',0)->where('transno','!=',$invoiceno)->get();
+        $affected_transaction = HPPHistory::on(Auth::user()->db_name)->where('id','>', $start_state->id)->where('hpphistorygoodsid',$mgoods->mgoodscode)->where('void',0)->where('transno','!=',$invoiceno)->where('branchid',$branch->mbranchcode)->get();
         $count = 0;
         $first_purcahse_since = true;
         foreach($affected_transaction as $tr){
@@ -381,25 +385,32 @@ class IntegrityHelper {
                     $first_purcahse_since = false;
                 }
 
-                $hpp = (($mgoods->mgoodsstock * $tr->lastcogs) + ($tr->usage * $tr->buyprice)) / ($mgoods->mgoodsstock + $tr->usage);
+//                $hpp = (($mgoods->mgoodsstock * $tr->lastcogs) + ($tr->usage * $tr->buyprice)) / ($mgoods->mgoodsstock + $tr->usage);
+                $hpp = (($warehousegoods->stock * $tr->lastcogs) + ($tr->usage * $tr->buyprice)) / ($warehousegoods->stock + $tr->usage);
                 // var_dump('hpp '.$tr->id.' - '.$tr->transno.' = '.$hpp);
                 $tr->hpphistorycogs = $hpp;
                 $tr->save();
 
                 $mgoods->mgoodsstock += $tr->usage;
                 $mgoods->save();
+                $warehousegoods->stock += $tr->usage;
+                $warehousegoods->save();
+
                 $cogs->mcogslastcogs = $hpp;
-                $cogs->mcogsgoodstotalqty = $mgoods->mgoodsstock;
+                $cogs->mcogsgoodstotalqty = $warehousegoods->stock;
                 $cogs->save();
                 // var_dump('stock '.$mgoods->mgoodsstock);
             } else if($tr->type == 'sales') {
                 // var_dump('sales '.$tr->id.' - '.$tr->transno);
                 $mgoods->mgoodsstock -= $tr->usage;
                 $mgoods->save();
+                $warehousegoods->stock -= $tr->usage;
+                $warehousegoods->save();
+
                 $tr->hpphistorycogs = $cogs->mcogslastcogs;
                 $tr->lastcogs = $cogs->mcogslastcogs;
                 $tr->lastqty = $tr->prev()->hpphistoryqty;
-                $tr->hpphistoryqty = $mgoods->mgoodsstock;
+                $tr->hpphistoryqty = $warehousegoods->stock;
                 $tr->save();
                 // var_dump('stock '.$mgoods->mgoodsstock);
             } else {
