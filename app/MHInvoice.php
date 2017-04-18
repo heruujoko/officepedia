@@ -19,6 +19,8 @@ use Exception;
 use App\MJournal;
 use App\MCOA;
 use App\HPPHistory;
+use App\MGoodsWarehouse;
+use App\MBRANCH;
 
 class MHInvoice extends Model
 {
@@ -116,8 +118,18 @@ class MHInvoice extends Model
         foreach($request->goods as $g){
 
           $mgoods = MGoods::on(Auth::user()->db_name)->where('mgoodscode',$g['goods']['mgoodscode'])->first();
+          $warehousegoods = MGoodsWarehouse::on(Auth::user()->db_name)->where('mgoodscode',$g['goods']['mgoodscode'])->where('mwarehouseid',$g['warehouse'])->first();
           $mgoods->mgoodspriceout = $g['sell_price'];
           $mgoods->save();
+
+          if($warehousegoods == null){
+              DB::connection(Auth::user()->db_name)->rollBack();
+              $resp = [
+                  'status' => 'empty',
+                  'data' => null
+              ];
+              return $resp;
+          }
 
           $invoice_detail = new MDInvoice;
           $invoice_detail->setConnection(Auth::user()->db_name);
@@ -171,13 +183,16 @@ class MHInvoice extends Model
           // update master barang
           $mgoods->mgoodsstock = $mgoods->mgoodsstock - $g['usage'];
           $mgoods->save();
+          $warehousegoods->stock = $warehousegoods->stock - $g['usage'];
+          $warehousegoods->save();
 
           // update detail stock refs
           $invoice_detail->stock_ref = $stock_card->id;
           $invoice_detail->save();
 
-          $hpp = HPPHistory::on(Auth::user()->db_name)->where('hpphistorygoodsid',$g['goods']['mgoodscode'])->get()->last();
-
+//          $hpp = HPPHistory::on(Auth::user()->db_name)->where('hpphistorygoodsid',$g['goods']['mgoodscode'])->get()->last();
+          $branch = MBRANCH::on(Auth::user()->db_name)->where('id',Auth::user()->defaultbranch)->first();
+          $hpp = MCOGS::on(Auth::user()->db_name)->where('mcogsgoodscode',$g['goods']['mgoodscode'])->where('branchid',$branch->mbranchcode)->first();
           $hpp_price = $hpp->hpphistorycogs * $g['usage'];
 
 
@@ -194,7 +209,7 @@ class MHInvoice extends Model
           $h->hpphistorygoodsid = $mgoods->mgoodscode;
           $h->hpphistorypurchase = 0;
           $h->hpphistoryqty = $mgoods->mgoodsstock;
-          $h->hpphistorycogs = $hpp->hpphistorycogs;
+          $h->hpphistorycogs = $hpp->mcogslastcogs;
           $h->lastcogs = $last_purchase->hpphistorycogs;
           $h->type = 'sales';
           $h->usage = $g['usage'];
@@ -204,7 +219,7 @@ class MHInvoice extends Model
           $h->save();
 
           //check allow minus
-          if($allow_minus == 0 && ($mgoods->mgoodsstock < 0)){
+          if($allow_minus == 0 && ($warehousegoods->stock < 0)){
             DB::connection(Auth::user()->db_name)->rollBack();
             $resp = [
                 'status' => 'empty',
@@ -261,6 +276,7 @@ class MHInvoice extends Model
             'status' => 'err',
             'data' => $e->getMessage()
         ];
+        dd($e);
         return $resp;
       }
 
