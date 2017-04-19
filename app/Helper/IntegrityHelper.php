@@ -187,7 +187,7 @@ class IntegrityHelper {
     /*
      *  on create purchase
      */
-    public static function calculateCOGS($mgoods,$mdpurchasegoodsgrossamount,$buy_amount,$purchaseno,$remarks = "Pembelian"){
+    public static function calculateCOGS($mgoods,$mdpurchase,$buy_amount,$purchaseno,$remarks = "Pembelian"){
 
         $branch = MBRANCH::on(Auth::user()->db_name)->where('id',Auth::user()->defaultbranch)->first();
 
@@ -196,20 +196,23 @@ class IntegrityHelper {
         $lastcogsvalue = 0;
         $lastqtysvalue = 0;
         $cogs_num = 0;
+        $warehousestock = MGoodsWarehouse::on(Auth::user()->db_name)->where('mgoodscode',$mgoods->mgoodscode)->where('mwarehouseid',$mdpurchase->mdpurchasegoodsidwhouse)->first();
         if($cogs == null){
+            var_dump('cogs null');
             $cogs = new MCOGS;
             $cogs->setConnection(Auth::user()->db_name);
             $cogs->mcogsgoodscode = $mgoods->mgoodscode;
             $cogs->mcogsgoodsname = $mgoods->mgoodsname;
-            $cogs->mcogsgoodstotalqty = $mgoods->mgoodsstock;
-            $cogs->mcogslastcogs = $mdpurchasegoodsgrossamount / $mgoods->mgoodsstock;
+            $cogs->mcogsgoodstotalqty = $buy_amount;
+            $cogs->mcogslastcogs = $mdpurchase->mdpurchasegoodsgrossamount / $buy_amount;
             $cogs->mcogsremarks = $remarks;
             $cogs->branchid = $branch->mbranchcode;
             $cogs->save();
             $cogs_num = $cogs->mcogslastcogs;
         } else {
             // var_dump($mgoods->mgoodsstock.' - '.$buy_amount);
-            $last_stock = $mgoods->mgoodsstock - $buy_amount;
+
+            $last_stock = $warehousestock->stock - $buy_amount;
             $histories =  HPPHistory::on(Auth::user()->db_name)->where('hpphistorygoodsid',$mgoods->mgoodscode)->where('void',0)->get();
             $last_history = $histories->last();
             $lastqtysvalue = $last_history->hpphistoryqty;
@@ -218,10 +221,10 @@ class IntegrityHelper {
             // var_dump('last stock '.$lastcogsvalue);
             // var_dump('mdpurchasegoodsgrossamount '.$mdpurchasegoodsgrossamount);
             // var_dump('all stock '.$mgoods->mgoodsstock);
-            $cogs_num = (($last_stock * $lastcogsvalue) + $mdpurchasegoodsgrossamount ) / $mgoods->mgoodsstock;
+            $cogs_num = (($last_stock * $lastcogsvalue) + $mdpurchase->mdpurchasegoodsgrossamount ) / $warehousestock->stock;
 
             $cogs->mcogslastcogs = $cogs_num;
-            $cogs->mcogsgoodstotalqty = $mgoods->mgoodsstock;
+            $cogs->mcogsgoodstotalqty = $warehousestock->stock;
             $cogs->save();
         }
 
@@ -229,15 +232,15 @@ class IntegrityHelper {
         $h = new HPPHistory;
         $h->setConnection(Auth::user()->db_name);
         $h->hpphistorygoodsid = $mgoods->mgoodscode;
-        $h->hpphistorypurchase = $mdpurchasegoodsgrossamount;
-        $h->hpphistoryqty = $mgoods->mgoodsstock;
+        $h->hpphistorypurchase = $mdpurchase->mdpurchasegoodsgrossamount;
+        $h->hpphistoryqty = $warehousestock->stock;
         $h->hpphistorycogs = $cogs_num;
         $h->lastcogs = $lastcogsvalue;
         $h->lastqty = $lastqtysvalue;
         $h->type = 'purchase';
         $h->usage = $buy_amount;
         $h->transno = $purchaseno;
-        $h->buyprice = ($mdpurchasegoodsgrossamount / $buy_amount);
+        $h->buyprice = ($mdpurchase->mdpurchasegoodsgrossamount / $buy_amount);
         $h->hpphistoryremarks = $remarks;
         $h->branchid = $branch->mbranchcode;
         $h->save();

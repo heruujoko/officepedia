@@ -153,12 +153,16 @@ const stockvaluereport = new Vue({
 				console.log(err);
 			});
 		},
-        fetchStockValues(){
-            $('#loading_modal').modal('toggle');
-            var self = this;
-			Axios.get('/admin-api/stockvalues?goods='+this.selected_goods+"&spl="+this.selected_supplier+"&end="+this.invoice_date_end).then(function(res){
-				$('#loading_modal').modal('toggle');
-				self.stockvalues = res.data;
+    fetchStockValues(){
+      $('#loading_modal').modal('toggle');
+      if(this.selected_warehouse == ""){
+        this.selected_warehouse = "Semua"
+      }
+      var self = this;
+      self.stockvalues = [];
+			Axios.get('/admin-api/stockvalues?goods='+this.selected_goods+"&spl="+this.selected_supplier+"&end="+this.invoice_date_end+"&wh="+this.selected_warehouse).then(function(res){
+			     $('#loading_modal').modal('toggle');
+			     self.stockvalues = res.data;
 			})
 			.catch(function(){
 				console.log(err);
@@ -166,6 +170,7 @@ const stockvaluereport = new Vue({
         },
         fetchWarehouses(){
             var self = this;
+            self.warehouses = [];
 			Axios.get('/admin-api/mwarehouse/datalist').then(function(res){
 				self.warehouses = res.data;
 			})
@@ -174,16 +179,16 @@ const stockvaluereport = new Vue({
 			});
         },
         printTable(){
-            window.open('/admin-nano/reports/stockvalue/export/print?goods='+this.selected_goods+"&spl="+this.selected_supplier+"&end="+this.invoice_date_end);
+            window.open('/admin-nano/reports/stockvalue/export/print?goods='+this.selected_goods+"&spl="+this.selected_supplier+"&end="+this.invoice_date_end+"&wh="+this.selected_warehouse);
         },
         pdfTable(){
-            window.open('/admin-nano/reports/stockvalue/export/pdf?goods='+this.selected_goods+"&spl="+this.selected_supplier+"&end="+this.invoice_date_end);
+            window.open('/admin-nano/reports/stockvalue/export/pdf?goods='+this.selected_goods+"&spl="+this.selected_supplier+"&end="+this.invoice_date_end+"&wh="+this.selected_warehouse);
         },
         excelTable(){
-            window.open('/admin-nano/reports/stockvalue/export/excel?goods='+this.selected_goods+"&spl="+this.selected_supplier+"&end="+this.invoice_date_end);
+            window.open('/admin-nano/reports/stockvalue/export/excel?goods='+this.selected_goods+"&spl="+this.selected_supplier+"&end="+this.invoice_date_end+"&wh="+this.selected_warehouse);
         },
         csvTable(){
-            window.open('/admin-nano/reports/stockvalue/export/csv?goods='+this.selected_goods+"&spl="+this.selected_supplier+"&end="+this.invoice_date_end);
+            window.open('/admin-nano/reports/stockvalue/export/csv?goods='+this.selected_goods+"&spl="+this.selected_supplier+"&end="+this.invoice_date_end+"&wh="+this.selected_warehouse);
         }
     },
     created(){
@@ -193,5 +198,12 @@ const stockvaluereport = new Vue({
         this.fetchGoods();
         this.fetchWarehouses();
         this.fetchStockValues();
+        this.$on('changebranch',() => {
+          this.selected_warehouse = "Semua";
+          this.fetchWarehouses();
+          this.fetchStockValues();
+        })
     }
 });
+
+window.stockvaluereport = stockvaluereport;

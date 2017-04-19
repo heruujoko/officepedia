@@ -84,7 +84,7 @@
                                             <div class="row">
                                                 <p class="col-md-1 report-label">Gudang</p>
                                                 <select v-selecttwo class="col-md-4" v-model="selected_warehouse">
-                                                    <option value="">Semua</option>
+                                                    <option value="Semua">Semua</option>
                                                     <option v-for="c in warehouses" :value="c.id">@{{ c.mwarehousename }}</option>
                                                 </select>
                                             </div>
@@ -188,6 +188,11 @@
 
 @section('js')
     <script src="{{ url('/js/stockvaluereport.js') }}"></script>
+    <script>
+      function refreshWarehouses(){
+        stockvaluereport.$emit('changebranch');
+      }
+    </script>
 @stop
 
 @section('css')

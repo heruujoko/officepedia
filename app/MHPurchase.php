@@ -203,7 +203,7 @@ class MHPurchase extends Model
                 $detail->save();
 
                 // update COGS
-                $detail->cogs_ref = IntegrityHelper::calculateCOGS($mgoods,$detail->mdpurchasegoodsgrossamount,$g['usage'],$detail->mhpurchaseno);
+                $detail->cogs_ref = IntegrityHelper::calculateCOGS($mgoods,$detail,$g['usage'],$detail->mhpurchaseno);
                 $detail->save();
             }
 
