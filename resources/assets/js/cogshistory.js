@@ -137,5 +137,10 @@ const cogshistoryapp = new Vue({
         this.fetchConfig();
         this.fetchGoods();
         this.fetchHistories();
+        this.$on('refreshWarehouses', () => {
+          this.fetchHistories();
+        })
     }
 });
+
+window.cogshistoryapp = cogshistoryapp;

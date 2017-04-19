@@ -12,6 +12,7 @@ use Auth;
 use PDF;
 use Excel;
 use App\MGoods;
+use App\MBRANCH;
 
 class COGSHistoryController extends Controller
 {
@@ -24,7 +25,7 @@ class COGSHistoryController extends Controller
 
     public function cogshistory_print(Request $request){
         $history_query = HPPHistory::on(Auth::user()->db_name);
-
+        $branch = MBRANCH::on(Auth::user()->db_name)->where('id',Auth::user()->defaultbranch)->first();
         if($request->has('goods')){
             $history_query->where('hpphistorygoodsid',$request->goods);
         }
@@ -32,7 +33,7 @@ class COGSHistoryController extends Controller
         if($request->has('end')){
             $history_query->whereDate('created_at','<=',Carbon::parse($request->end));
         }
-
+        $history_query->where('branchid',$branch->mbranchcode);
         $histories = $history_query->groupBy('hpphistorygoodsid')->get();
 
         $history_data = [];
@@ -49,6 +50,7 @@ class COGSHistoryController extends Controller
             if($request->has('end')){
                 $childs_q->whereDate('created_at','<=',Carbon::parse($request->end));
             }
+            $childs_q->where('branchid',$branch->mbranchcode);
             $childs = $childs_q->orderBy('created_at','asc')->get();
             foreach($childs as $ch){
                 $ch['data'] = 'data';
@@ -96,7 +98,7 @@ class COGSHistoryController extends Controller
 
     public function cogshistory_pdf(Request $request){
         $history_query = HPPHistory::on(Auth::user()->db_name);
-
+        $branch = MBRANCH::on(Auth::user()->db_name)->where('id',Auth::user()->defaultbranch)->first();
         if($request->has('goods')){
             $history_query->where('hpphistorygoodsid',$request->goods);
         }
@@ -104,7 +106,7 @@ class COGSHistoryController extends Controller
         if($request->has('end')){
             $history_query->whereDate('created_at','<=',Carbon::parse($request->end));
         }
-
+        $history_query->where('branchid',$branch->mbranchcode);
         $histories = $history_query->groupBy('hpphistorygoodsid')->get();
 
         $history_data = [];
@@ -121,6 +123,7 @@ class COGSHistoryController extends Controller
             if($request->has('end')){
                 $childs_q->whereDate('created_at','<=',Carbon::parse($request->end));
             }
+            $childs_q->where('branchid',$branch->mbranchcode);
             $childs = $childs_q->orderBy('created_at','asc')->get();
             foreach($childs as $ch){
                 $ch['data'] = 'data';
@@ -169,7 +172,7 @@ class COGSHistoryController extends Controller
 
     public function cogshistory_excel(Request $request){
         $history_query = HPPHistory::on(Auth::user()->db_name);
-
+        $branch = MBRANCH::on(Auth::user()->db_name)->where('id',Auth::user()->defaultbranch)->first();
         if($request->has('goods')){
             $history_query->where('hpphistorygoodsid',$request->goods);
         }
@@ -177,7 +180,7 @@ class COGSHistoryController extends Controller
         if($request->has('end')){
             $history_query->whereDate('created_at','<=',Carbon::parse($request->end));
         }
-
+        $history_query->where('branchid',$branch->mbranchcode);
         $histories = $history_query->groupBy('hpphistorygoodsid')->get();
 
         $history_data = [];
@@ -190,10 +193,12 @@ class COGSHistoryController extends Controller
             ];
             $qtys = 0;
             array_push($history_data,$header);
+
             $childs_q = HPPHistory::on(Auth::user()->db_name)->where('void',0)->where('hpphistorygoodsid',$h->hpphistorygoodsid);
             if($request->has('end')){
                 $childs_q->whereDate('created_at','<=',Carbon::parse($request->end));
             }
+            $childs_q->where('branchid',$branch->mbranchcode);
             $childs = $childs_q->orderBy('created_at','asc')->get();
             foreach($childs as $ch){
                 $ch['data'] = 'data';
@@ -330,7 +335,7 @@ class COGSHistoryController extends Controller
 
     public function cogshistory_csv(Request $request){
         $history_query = HPPHistory::on(Auth::user()->db_name);
-
+        $branch = MBRANCH::on(Auth::user()->db_name)->where('id',Auth::user()->defaultbranch)->first();
         if($request->has('goods')){
             $history_query->where('hpphistorygoodsid',$request->goods);
         }
@@ -338,7 +343,7 @@ class COGSHistoryController extends Controller
         if($request->has('end')){
             $history_query->whereDate('created_at','<=',Carbon::parse($request->end));
         }
-
+        $history_query->where('branchid',$branch->mbranchcode);
         $histories = $history_query->groupBy('hpphistorygoodsid')->get();
 
         $history_data = [];
@@ -351,10 +356,12 @@ class COGSHistoryController extends Controller
             ];
             $qtys = 0;
             array_push($history_data,$header);
+
             $childs_q = HPPHistory::on(Auth::user()->db_name)->where('void',0)->where('hpphistorygoodsid',$h->hpphistorygoodsid);
             if($request->has('end')){
                 $childs_q->whereDate('created_at','<=',Carbon::parse($request->end));
             }
+            $childs_q->where('branchid',$branch->mbranchcode);
             $childs = $childs_q->orderBy('created_at','asc')->get();
             foreach($childs as $ch){
                 $ch['data'] = 'data';

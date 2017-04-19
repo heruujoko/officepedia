@@ -170,6 +170,11 @@
 
 @section('js')
     <script src="{{ url('/js/cogshistory.js') }}"></script>
+    <script>
+      function refreshWarehouses(){
+        cogshistoryapp.$emit('refreshWarehouses');
+      }
+    </script>
 @stop
 
 @section('css')
