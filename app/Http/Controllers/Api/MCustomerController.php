@@ -87,10 +87,15 @@ class MCustomerController extends Controller
 	}
 
   public function destroy($id){
-    $mbranch = MCUSTOMER::on(Auth::user()->db_name)->where('id',$id)->first();
-    $mbranch->void = 1;
-	$mbranch->save();
-    return response()->json();
+    $customer = MCUSTOMER::on(Auth::user()->db_name)->where('id',$id)->first();
+		if($customer->used != 1){
+			$supplier->void = 1;
+			$supplier->save();
+	    return response()->json();
+		} else {
+			return response()->json('item sudah digunakan.',500);
+		}
+
   }
 
 	public function datalist(){

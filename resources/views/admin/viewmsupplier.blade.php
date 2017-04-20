@@ -1087,6 +1087,7 @@
             error: function(response){
               swal({
                 title: "Pengubahan Gagal!",
+								text: "Supplier sudah pernah digunakan.",
                 type: "error",
                 timer: 1000
               });

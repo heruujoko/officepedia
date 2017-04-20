@@ -19,6 +19,7 @@ use App\HPPHistory;
 use App\MJournal;
 use App\MCOA;
 use App\MGoodsWarehouse;
+use App\MSupplier;
 
 class MHPurchase extends Model
 {
@@ -95,6 +96,11 @@ class MHPurchase extends Model
             $trans_header->mhpurchaseremark = '';
             $trans_header->save();
 
+            // update supplier used flag;
+            $supplier = MSupplier::on(Auth::user()->db_name)->where('msupplierid',$trans_header->mhpurchasesupplierid)->first();
+            $supplier->used = 1;
+            $supplier->save();
+
             if($request->autogen == true){
                 $trans_header->autogenproc();
             } else {
@@ -122,7 +128,7 @@ class MHPurchase extends Model
             foreach($request->goods as $g){
                 $mgoods = MGoods::on(Auth::user()->db_name)->where('mgoodscode',$g['goods']['mgoodscode'])->first();
                 $coa_persediaan = MCOA::on(Auth::user()->db_name)->where('mcoacode',$mgoods->mgoodscoa)->first();
-
+                $mgoods->used = 1;
                 $mgoods->mgoodspricein = $g['buy_price'];
                 $mgoods->save();
                 // change mgoodsstock to warehousestock

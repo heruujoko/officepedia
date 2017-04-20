@@ -1159,6 +1159,7 @@
                           swal({
                     				title: "Pengubahan Gagal!",
                     				type: "error",
+														text: "Item sudah pernah digunakan.",
                     				timer: 1000
                     			});
                           window.location = "#tableapi";

@@ -84,6 +84,9 @@ class MHInvoice extends Model
           $invoice_header->mhinvoicewithppn = 0;
         }
         $customer = MCUSTOMER::on(Auth::user()->db_name)->where('mcustomerid',$request->mcustomerid)->first();
+        $customer->used = 1;
+        $customer->save();
+        
         $invoice_header->mhinvoicecustomerid = $customer->mcustomerid;
         $invoice_header->mhinvoicecustomername = $customer->mcustomername;
         $invoice_header->mhinvoiceduedate = Carbon::now()->addDays($customer->mcustomerdefaultar);

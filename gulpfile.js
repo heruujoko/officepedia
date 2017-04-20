@@ -22,7 +22,7 @@ Elixir.webpack.mergeConfig({
  */
 
 elixir(mix => {
-    // mix.webpack('salesinvoice.js');
+    mix.webpack('salesinvoice.js');
     // mix.webpack('purchaseinvoice.js');
     // mix.webpack('stockcardreport.js');
     // mix.webpack('salesreport.js');
@@ -32,7 +32,7 @@ elixir(mix => {
     // mix.webpack('stockvaluereport.js');
     // mix.webpack('purchasereport.js');
     // mix.webpack('apreport.js');
-    mix.webpack('cogshistory.js');
+    // mix.webpack('cogshistory.js');
     // mix.webpack('purchasequotation.js');
     // mix.webpack('payap.js');
     // mix.webpack('payar.js');

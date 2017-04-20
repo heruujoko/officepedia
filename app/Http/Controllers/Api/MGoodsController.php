@@ -204,9 +204,15 @@ class MGoodsController extends Controller
 
 	public function destroy($id){
 		$MGoods = MGoods::on(Auth::user()->db_name)->where('id',$id)->first();
-    $MGoods->void = 1;
-    $MGoods->save();
-    return response()->json();
+    if($MGoods->used != 1){
+      $MGoods->void = 1;
+      $MGoods->save();
+      return response()->json();
+    } else {
+      return response()->json("item sudah pernah di gunakan.",500);
+    }
+
+
 	}
 
 	public function gambar(Request $request){

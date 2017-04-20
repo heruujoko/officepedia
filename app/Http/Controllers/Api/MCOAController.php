@@ -238,9 +238,14 @@ class MCOAController extends Controller
     public function destroy($id){
       DBHelper::configureConnection(Auth::user()->db_alias);
       $mcoa = MCOA::on(Auth::user()->db_name)->where('id',$id)->first();
-      $mcoa->void = 1;
-      $mcoa->save();
-      return response()->json();
+      if($mcoa->used != 1){
+        $mcoa->void = 1;
+        $mcoa->save();
+        return response()->json();
+      } else {
+        return response()->json("item sudah di gunakan.",500);
+      }
+
     }
 
     public function tree(){

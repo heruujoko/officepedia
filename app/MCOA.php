@@ -68,12 +68,12 @@ class MCOA extends \LaravelArdent\Ardent\Ardent
     public function update_saldo($updatetype,$amount){
         if($updatetype == "+"){
             $this->saldo += $amount;
-            $this->save();
         } else if($updatetype == "-"){
             $this->saldo -= $amount;
-            $this->save();
         } else {
 
         }
+        $this->used = 1;
+        $this->save();
     }
 }

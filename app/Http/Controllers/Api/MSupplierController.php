@@ -88,10 +88,15 @@ class MSupplierController extends Controller
 
 
    public function destroy($id){
-    $mbranch = MSupplier::on(Auth::user()->db_name)->where('id',$id)->first();
-    $mbranch->void = 1;
-		$mbranch->save();
-    return response()->json();
+    $supplier = MSupplier::on(Auth::user()->db_name)->where('id',$id)->first();
+		if($supplier->used != 1){
+			$supplier->void = 1;
+			$supplier->save();
+			return response()->json();
+		} else {
+	    return response()->json('item sudah pernah di gunakan.',500);
+		}
+
     }
 
 }

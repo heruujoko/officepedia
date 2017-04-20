@@ -1150,6 +1150,7 @@
             error: function(response){
               swal({
                 title: "Pengubahan Gagal!",
+								text: "Customer sudah pernah digunakan.",
                 type: "error",
                 timer: 1000
               });
