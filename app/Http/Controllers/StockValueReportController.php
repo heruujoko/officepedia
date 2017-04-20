@@ -17,6 +17,9 @@ use App\MStockCard;
 use App\MHPurchase;
 use App\MCOGS;
 use App\MGoods;
+use App\MBRANCH;
+use App\MWarehouse;
+use App\MGoodsWarehouse;
 
 class StockValueReportController extends Controller
 {
@@ -70,6 +73,22 @@ class StockValueReportController extends Controller
             $stocks_query->whereDate('mstockcarddate','<=',Carbon::parse($request->end));
         }
 
+        if($request->has('wh')){
+          $whs = [];
+
+          if($request->wh == 'Semua'){
+            $br = MBRANCH::on(Auth::user()->db_name)->where('id',Auth::user()->defaultbranch)->first();
+            $warehouses = MWarehouse::on(Auth::user()->db_name)->where('mwarehousebranchid',$br->mbranchcode)->get();
+            foreach($warehouses as $wh){
+              array_push($whs,$wh->id);
+            }
+          } else {
+            array_push($whs,$request->wh);
+          }
+
+          $stocks_query->whereIn('mstockcardwhouse',$whs);
+        }
+
         $stocks_group_goods = $stocks_query->groupBy('mstockcardgoodsid')->get();
         $goods_group = [];
         foreach ($stocks_group_goods as $st) {
@@ -96,6 +115,24 @@ class StockValueReportController extends Controller
                 $stck['stock'] = $stck->mstockcardstockout + $stck->mstockcardstocktotal;
             }
             $good = MGoods::on(Auth::user()->db_name)->where('mgoodscode',$stck->mstockcardgoodsid)->first();
+
+            if($request->wh == "Semua"){
+              $br = MBRANCH::on(Auth::user()->db_name)->where('id',Auth::user()->defaultbranch)->first();
+              $warehouses = MWarehouse::on(Auth::user()->db_name)->where('mwarehousebranchid',$br->mbranchcode)->get();
+              $whs = [];
+              foreach ($warehouses as $wh) {
+                array_push($whs,$wh->id);
+              }
+              $goods_in_warehouses = MGoodsWarehouse::on(Auth::user()->db_name)->where('mgoodscode',$stck->mstockcardgoodsid)->whereIn('mwarehouseid',$whs)->get();
+              $warehousestock = 0;
+              foreach ($goods_in_warehouses as $gwh) {
+                $warehousestock += $gwh->stock;
+              }
+            } else {
+              $goods_in_warehouses = MGoodsWarehouse::on(Auth::user()->db_name)->where('mgoodscode',$stck->mstockcardgoodsid)->where('mwarehouseid',$request->wh)->first();
+              $warehousestock = $goods_in_warehouses->stock;
+            }
+            $stck['stock'] = $warehousestock;
             $stck['verbs'] = UnitHelper::label($good,$stck['stock']);
             $stck['cogs'] = MCOGS::on(Auth::user()->db_name)->where('mcogsgoodscode',$stck->mstockcardgoodsid)->first()->mcogslastcogs;
             array_push($stocks,$stck);
@@ -149,6 +186,22 @@ class StockValueReportController extends Controller
             $stocks_query->whereDate('mstockcarddate','<=',Carbon::parse($request->end));
         }
 
+        if($request->has('wh')){
+          $whs = [];
+
+          if($request->wh == 'Semua'){
+            $br = MBRANCH::on(Auth::user()->db_name)->where('id',Auth::user()->defaultbranch)->first();
+            $warehouses = MWarehouse::on(Auth::user()->db_name)->where('mwarehousebranchid',$br->mbranchcode)->get();
+            foreach($warehouses as $wh){
+              array_push($whs,$wh->id);
+            }
+          } else {
+            array_push($whs,$request->wh);
+          }
+
+          $stocks_query->whereIn('mstockcardwhouse',$whs);
+        }
+
         $stocks_group_goods = $stocks_query->groupBy('mstockcardgoodsid')->get();
         $goods_group = [];
         foreach ($stocks_group_goods as $st) {
@@ -175,6 +228,23 @@ class StockValueReportController extends Controller
                 $stck['stock'] = $stck->mstockcardstockout + $stck->mstockcardstocktotal;
             }
             $good = MGoods::on(Auth::user()->db_name)->where('mgoodscode',$stck->mstockcardgoodsid)->first();
+            if($request->wh == "Semua"){
+              $br = MBRANCH::on(Auth::user()->db_name)->where('id',Auth::user()->defaultbranch)->first();
+              $warehouses = MWarehouse::on(Auth::user()->db_name)->where('mwarehousebranchid',$br->mbranchcode)->get();
+              $whs = [];
+              foreach ($warehouses as $wh) {
+                array_push($whs,$wh->id);
+              }
+              $goods_in_warehouses = MGoodsWarehouse::on(Auth::user()->db_name)->where('mgoodscode',$stck->mstockcardgoodsid)->whereIn('mwarehouseid',$whs)->get();
+              $warehousestock = 0;
+              foreach ($goods_in_warehouses as $gwh) {
+                $warehousestock += $gwh->stock;
+              }
+            } else {
+              $goods_in_warehouses = MGoodsWarehouse::on(Auth::user()->db_name)->where('mgoodscode',$stck->mstockcardgoodsid)->where('mwarehouseid',$request->wh)->first();
+              $warehousestock = $goods_in_warehouses->stock;
+            }
+            $stck['stock'] = $warehousestock;
             $stck['verbs'] = UnitHelper::label($good,$stck['stock']);
             $stck['cogs'] = MCOGS::on(Auth::user()->db_name)->where('mcogsgoodscode',$stck->mstockcardgoodsid)->first()->mcogslastcogs;
             array_push($stocks,$stck);
@@ -229,6 +299,22 @@ class StockValueReportController extends Controller
             $stocks_query->whereDate('mstockcarddate','<=',Carbon::parse($request->end));
         }
 
+        if($request->has('wh')){
+          $whs = [];
+
+          if($request->wh == 'Semua'){
+            $br = MBRANCH::on(Auth::user()->db_name)->where('id',Auth::user()->defaultbranch)->first();
+            $warehouses = MWarehouse::on(Auth::user()->db_name)->where('mwarehousebranchid',$br->mbranchcode)->get();
+            foreach($warehouses as $wh){
+              array_push($whs,$wh->id);
+            }
+          } else {
+            array_push($whs,$request->wh);
+          }
+
+          $stocks_query->whereIn('mstockcardwhouse',$whs);
+        }
+
         $stocks_group_goods = $stocks_query->groupBy('mstockcardgoodsid')->get();
         $goods_group = [];
         foreach ($stocks_group_goods as $st) {
@@ -255,6 +341,23 @@ class StockValueReportController extends Controller
                 $stck['stock'] = $stck->mstockcardstockout + $stck->mstockcardstocktotal;
             }
             $good = MGoods::on(Auth::user()->db_name)->where('mgoodscode',$stck->mstockcardgoodsid)->first();
+            if($request->wh == "Semua"){
+              $br = MBRANCH::on(Auth::user()->db_name)->where('id',Auth::user()->defaultbranch)->first();
+              $warehouses = MWarehouse::on(Auth::user()->db_name)->where('mwarehousebranchid',$br->mbranchcode)->get();
+              $whs = [];
+              foreach ($warehouses as $wh) {
+                array_push($whs,$wh->id);
+              }
+              $goods_in_warehouses = MGoodsWarehouse::on(Auth::user()->db_name)->where('mgoodscode',$stck->mstockcardgoodsid)->whereIn('mwarehouseid',$whs)->get();
+              $warehousestock = 0;
+              foreach ($goods_in_warehouses as $gwh) {
+                $warehousestock += $gwh->stock;
+              }
+            } else {
+              $goods_in_warehouses = MGoodsWarehouse::on(Auth::user()->db_name)->where('mgoodscode',$stck->mstockcardgoodsid)->where('mwarehouseid',$request->wh)->first();
+              $warehousestock = $goods_in_warehouses->stock;
+            }
+            $stck['stock'] = $warehousestock;
             $stck['verbs'] = UnitHelper::label($good,$stck['stock']);
             $stck['cogs'] = MCOGS::on(Auth::user()->db_name)->where('mcogsgoodscode',$stck->mstockcardgoodsid)->first()->mcogslastcogs;
             array_push($stocks,$stck);
@@ -403,6 +506,22 @@ class StockValueReportController extends Controller
             $stocks_query->whereDate('mstockcarddate','<=',Carbon::parse($request->end));
         }
 
+        if($request->has('wh')){
+          $whs = [];
+
+          if($request->wh == 'Semua'){
+            $br = MBRANCH::on(Auth::user()->db_name)->where('id',Auth::user()->defaultbranch)->first();
+            $warehouses = MWarehouse::on(Auth::user()->db_name)->where('mwarehousebranchid',$br->mbranchcode)->get();
+            foreach($warehouses as $wh){
+              array_push($whs,$wh->id);
+            }
+          } else {
+            array_push($whs,$request->wh);
+          }
+
+          $stocks_query->whereIn('mstockcardwhouse',$whs);
+        }
+
         $stocks_group_goods = $stocks_query->groupBy('mstockcardgoodsid')->get();
         $goods_group = [];
         foreach ($stocks_group_goods as $st) {
@@ -429,6 +548,23 @@ class StockValueReportController extends Controller
                 $stck['stock'] = $stck->mstockcardstockout + $stck->mstockcardstocktotal;
             }
             $good = MGoods::on(Auth::user()->db_name)->where('mgoodscode',$stck->mstockcardgoodsid)->first();
+            if($request->wh == "Semua"){
+              $br = MBRANCH::on(Auth::user()->db_name)->where('id',Auth::user()->defaultbranch)->first();
+              $warehouses = MWarehouse::on(Auth::user()->db_name)->where('mwarehousebranchid',$br->mbranchcode)->get();
+              $whs = [];
+              foreach ($warehouses as $wh) {
+                array_push($whs,$wh->id);
+              }
+              $goods_in_warehouses = MGoodsWarehouse::on(Auth::user()->db_name)->where('mgoodscode',$stck->mstockcardgoodsid)->whereIn('mwarehouseid',$whs)->get();
+              $warehousestock = 0;
+              foreach ($goods_in_warehouses as $gwh) {
+                $warehousestock += $gwh->stock;
+              }
+            } else {
+              $goods_in_warehouses = MGoodsWarehouse::on(Auth::user()->db_name)->where('mgoodscode',$stck->mstockcardgoodsid)->where('mwarehouseid',$request->wh)->first();
+              $warehousestock = $goods_in_warehouses->stock;
+            }
+            $stck['stock'] = $warehousestock;
             $stck['verbs'] = UnitHelper::label($good,$stck['stock']);
             $stck['cogs'] = MCOGS::on(Auth::user()->db_name)->where('mcogsgoodscode',$stck->mstockcardgoodsid)->first()->mcogslastcogs;
             array_push($stocks,$stck);

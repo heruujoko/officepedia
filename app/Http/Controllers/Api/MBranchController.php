@@ -53,7 +53,7 @@ class MBranchController extends Controller
 				$mbranch->city = $request->city;
 				$mbranch->person_in_charge = $request->person_in_charge;
 				$mbranch->information = $request->information;
-				$mbranch->defaultwarehouse = $request->defaultwarehouse;
+				$mbranch->defaultwarehouse = 0;
 				$mbranch->void = 0;
 				$mbranch->save();
 

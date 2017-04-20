@@ -218,19 +218,7 @@
 										</div>
 									</div>
 								</div>
-								<div class="form-group">
-									<label class="col-md-3 control-label"><b>Gudang</b> &nbsp  :</label>
-									<div class="col-md-7">
-										<div class="icon-addon addon-md">
-											<select id="insert-warehouse" class="select2 form-control">
-                                                <option value="">kosong</option>
-												@foreach($whouses as $wh)
-													<option value="{{ $wh->id }}">{{ $wh->mwarehousename }}</option>
-												@endforeach
-											</select>
-										</div>
-									</div>
-								</div>
+
 								<input type="hidden" name="void" value="0">
 								<center>
 									<div class="row">
@@ -403,18 +391,7 @@
 										</div>
 									</div>
 								</div>
-								<div class="form-group">
-									<label class="col-md-3 control-label"><b>Gudang</b> &nbsp  :</label>
-									<div class="col-md-7">
-										<div class="icon-addon addon-md">
-											<select id="edit-warehouse" class="select2 form-control">
-												@foreach($whouses as $wh)
-													<option value="{{ $wh->id }}">{{ $wh->mwarehousename }}</option>
-												@endforeach
-											</select>
-										</div>
-									</div>
-								</div>
+
 								<center>
 									<div class="row">
 										<div class="col-md-12">
@@ -571,18 +548,7 @@
 										</div>
 									</div>
 								</div>
-								<div style="height: 21px;" class="form-group">
-									<label class="col-md-3 control-label"><b>Gudang</b> &nbsp  :</label>
-									<div class="col-md-7">
-										<div class="icon-addon addon-md">
-											<select disabled id="view-warehouse" class="select2 form-control">
-												@foreach($whouses as $wh)
-													<option value="{{ $wh->id }}">{{ $wh->mwarehousename }}</option>
-												@endforeach
-											</select>
-										</div>
-									</div>
-								</div>
+								
 								<center>
 									<div class="row">
 										<div class="col-md-12">

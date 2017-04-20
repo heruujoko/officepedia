@@ -243,13 +243,13 @@
         @endif
         @if(Auth::user()->has_role('R_warehouse'))
             @if($active == 'mwarehouse')
-              <li class="active">
+              <!-- <li class="active">
                 <a href="{{URL::to('/')}}/admin-nano/mwarehouse">Master Gudang</a>
-              </li>
+              </li> -->
             @else
-              <li>
+              <!-- <li>
                 <a href="{{URL::to('/')}}/admin-nano/mwarehouse">Master Gudang</a>
-              </li>
+              </li> -->
             @endif
         @endif
     </ul>
