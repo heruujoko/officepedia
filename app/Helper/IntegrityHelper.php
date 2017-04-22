@@ -117,7 +117,10 @@ class IntegrityHelper {
                 foreach($mdinvoices as $mdi){
                     $hpp_coa = MCOA::on(Auth::user()->db_name)->where('mcoacode','5100.01')->first();
                     // TODO persediaan nya dari mgoods
-                    $persediaan_coa = MCOA::on(Auth::user()->db_name)->where('mcoacode','1105.01')->first();
+                    $mgoods = MGoods::on(Auth::user()->db_name)->where('mgoodscode',$mdi->mdinvoicegoodsid)->first();
+                    $goodswarehouse = MGoodsWarehouse::on(Auth::user()->db_name)->where('mgoodscode',$mgoods->mgoodscode)->where('mwarehouseid',$mdi->mdinvoicegoodsidwhouse)->first();
+
+                    $persediaan_coa = MCOA::on(Auth::user()->db_name)->where('mcoacode',$mgoods->mgoodscoa)->first();
 
                     $hpp_journal = MJournal::on(Auth::user()->db_name)->where('mjournaltransno',$mdi->mhinvoiceno)->where('mjournalcoa','5100.01')->first();
                     $persediaan_journal = MJournal::on(Auth::user()->db_name)->where('mjournaltransno',$mdi->mhinvoiceno)->where('mjournalcoa','1105.01')->first();
@@ -137,7 +140,9 @@ class IntegrityHelper {
                     $af->hpphistorycogs = $cogs->mcogslastcogs;
                     $af->save();
 
-                    $mgoods = MGoods::on(Auth::user()->db_name)->where('mgoodscode',$mdi->mdinvoicegoodsid)->first();
+
+                    $goodswarehouse->stock -= $mdi->mdinvoicegoodsqty;
+                    $goodswarehouse->save();
                     $mgoods->mgoodsstock -= $mdi->mdinvoicegoodsqty;
                     $mgoods->save();
 
@@ -148,10 +153,10 @@ class IntegrityHelper {
                     $h->setConnection(Auth::user()->db_name);
                     $h->hpphistorygoodsid = $mgoods->mgoodscode;
                     $h->hpphistorypurchase = 0;
-                    $h->hpphistoryqty = $mgoods->mgoodsstock;
+                    $h->hpphistoryqty = $goodswarehouse->stock;
                     $h->hpphistorycogs = $af->hpphistorycogs;
                     $h->lastcogs = $af->lastcogs;
-                    $h->lastqty = $mgoods->mgoodsstock + $mdi->mdinvoicegoodsqty;
+                    $h->lastqty = $goodswarehouse->stock + $mdi->mdinvoicegoodsqty;
                     $h->type = 'sales';
                     $h->usage = $mdi->mdinvoicegoodsqty;
                     $h->transno = $mdi->mhinvoiceno;
