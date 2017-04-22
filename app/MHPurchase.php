@@ -270,6 +270,7 @@ class MHPurchase extends Model
             $transaction_date_in_past = Carbon::now()->diffInDays(Carbon::parse($request->date),false) < 0;
             if($purchase_date_changed || $transaction_date_in_past ){
                 $should_calculate_cogs_again = true;
+                var_dump('calculate COGS again');
             }else {
                 var_dump('date not changed');
             }
@@ -634,7 +635,8 @@ class MHPurchase extends Model
             }
 
             if($should_calculate_cogs_again){
-                IntegrityHelper::recalculateTransactionFrom($oldest_details);
+                // IntegrityHelper::recalculateTransactionFrom($oldest_details);
+                IntegrityHelper::recalculateTransactionFrom($trans_header->mhpurchasedate);
             }
 
             DB::connection(Auth::user()->db_name)->commit();
