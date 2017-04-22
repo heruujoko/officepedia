@@ -772,8 +772,8 @@ class MHInvoice extends Model
                 // $last_stock += $stock_card->mstockcardstockin;
                 // $mgoods->mgoodsstock = $last_stock;
                 $mgoods->save();
-
-                IntegrityHelper::restoreCOGS($mgoods,$header->mhinvoiceno,$stock_ref->mstockcardstockout);
+                $warehousegoods = MGoodsWarehouse::on(Auth::user()->db_name)->where('mgoodscode',$mgoods->mgoodscode)->where('mwarehouseid',$stock_card->mstockcardwhouse)->first();
+                IntegrityHelper::restoreCOGS($mgoods,$warehousegoods,$header->mhinvoiceno,$stock_ref->mstockcardstockout);
             }
 
             // void ar
