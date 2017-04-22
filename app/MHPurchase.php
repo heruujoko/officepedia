@@ -246,7 +246,7 @@ class MHPurchase extends Model
             return 'ok';
         } catch (\Exception $e){
             DB::connection(Auth::user()->db_name)->rollBack();
-            dd($e);
+            // var_dump($e->getMessage().' on '.$e->getFile().' line '.$e->getLine());
             return 'err';
         }
     }
@@ -643,7 +643,6 @@ class MHPurchase extends Model
             return 'ok';
         } catch(\Exception $e){
             DB::connection(Auth::user()->db_name)->rollBack();
-            dd($e);
             return 'err';
         }
     }

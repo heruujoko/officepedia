@@ -224,7 +224,7 @@ class IntegrityHelper {
         $cogs_num = 0;
         $warehousestock = MGoodsWarehouse::on(Auth::user()->db_name)->where('mgoodscode',$mgoods->mgoodscode)->where('mwarehouseid',$mdpurchase->mdpurchasegoodsidwhouse)->first();
         if($cogs == null){
-            var_dump('cogs null');
+            // var_dump('cogs null');
             $cogs = new MCOGS;
             $cogs->setConnection(Auth::user()->db_name);
             $cogs->mcogsgoodscode = $mgoods->mgoodscode;

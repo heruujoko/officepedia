@@ -18,6 +18,7 @@ $factory->define(App\User::class, function (Faker\Generator $faker) {
         'password' => bcrypt("12345"),
         'db_alias' => 'mysql',
         'db_name' => 'mysql',
+        'defaultbranch' => 1,
         'remember_token' => str_random(10),
     ];
 });
@@ -44,6 +45,9 @@ $factory->define(App\MGoods::class, function (Faker\Generator $faker) {
         'mgoodssuppliercode' => "SPL000001",
         'mgoodssuppliername' => "Umum",
         'mgoodsunit' => "Unit",
+        'mgoodscoa' => '1105.01',
+        'mgoodsdisplayon' => 'all',
+        'mgoodsdisplayin' => 'all'
     ];
 });
 
