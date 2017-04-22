@@ -49,7 +49,7 @@ class COGSHistoryController extends Controller
                 $childs_q->whereDate('created_at','<=',Carbon::parse($request->end));
             }
             $childs_q->where('branchid',$branch->mbranchcode);
-            $childs = $childs_q->orderBy('updated_at','asc')->get();
+            $childs = $childs_q->orderBy('id','asc')->get();
             foreach($childs as $ch){
                 $ch['data'] = 'data';
 
