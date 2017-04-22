@@ -280,6 +280,8 @@ class IntegrityHelper {
      */
     public static function updateCOGS($mgoods,$mdpurchase,$buy_amount,$edited_history,$remarks = "Revisi Pembelian",$isFirstHistory = false){
         // $lastcogs = HPPHistory::on(Auth::user()->db_name)->where('hpphistorygoodsid',$mgoods->mgoodscode)->where('void',0)->where('type','purchase')->where('created_at','<',Carbon::parse($edited_history->created_at))->orderBy('created_at','asc')->get()->last();
+        $edited_history->void = 1;
+        $edited_history->save();
         $listcogs = HPPHistory::on(Auth::user()->db_name)->where('hpphistorygoodsid',$mgoods->mgoodscode)->where('void',0)->where('hpphistorydate','<=',Carbon::parse($edited_history->hpphistorydate))->orderBy('id','asc')->get();
         foreach($listcogs as $li){
           var_dump('hist '.$li->id);
@@ -293,8 +295,9 @@ class IntegrityHelper {
 
         $lastcogsvalue = 0;
         $lastqtyvalue = 0;
-        var_dump('last_cogs_id '.$lastcogs->id);
+
         if($lastcogs != null){
+          var_dump('last_cogs_id '.$lastcogs->id);
             // var_dump('lastcogs id = '.$lastcogs->id);
             if($isFirstHistory){
               var_dump('first nol');
@@ -339,8 +342,7 @@ class IntegrityHelper {
 
         // void edited history
         // $lastcogs->void = 1;
-        $edited_history->void = 1;
-        $edited_history->save();
+
         $branch = MBRANCH::on(Auth::user()->db_name)->where('id',Auth::user()->defaultbranch)->first();
         // save cogs log
         $h = new HPPHistory;

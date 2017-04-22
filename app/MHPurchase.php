@@ -267,7 +267,8 @@ class MHPurchase extends Model
             $last_purchase_date = Carbon::parse($trans_header->mhpurchasedate);
 
             $purchase_date_changed = Carbon::parse($request->date)->diffInDays($last_purchase_date) != 0;
-            if($purchase_date_changed){
+            $transaction_date_in_past = Carbon::now()->diffInDays(Carbon::parse($request->date),false) < 0;
+            if($purchase_date_changed || $transaction_date_in_past ){
                 $should_calculate_cogs_again = true;
             }else {
                 var_dump('date not changed');
