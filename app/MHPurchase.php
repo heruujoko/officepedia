@@ -738,7 +738,7 @@ class MHPurchase extends Model
                 // $goods_cogs->mcogsgoodstotalqty = $mgoods->mgoodsstock;
                 // $goods_cogs->save();
 
-                IntegrityHelper::deleteCOGS($mgoods,$ref_cogs->hpphistorypurchase,'void',$stock_ref->mstockcardwhouse);
+                IntegrityHelper::deleteCOGS($mgoods,$ref_cogs->hpphistorypurchase,$header->mhpurchaseno,'void',$stock_ref->mstockcardwhouse);
 
                 // void APCard;
                 $ap = MAPCard::on(Auth::user()->db_name)->where('mapcardtransno',$detail->mhpurchaseno)->first();
@@ -751,6 +751,7 @@ class MHPurchase extends Model
 
                 $header->void = 1;
                 $header->save();
+                IntegrityHelper::recalculateTransactionFrom($header->mhpurchasedate);
 
             }
 

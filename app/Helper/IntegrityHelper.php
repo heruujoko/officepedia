@@ -372,32 +372,23 @@ class IntegrityHelper {
     /*
      *  on delete purchase
      */
-    public static function deleteCOGS($mgoods,$mdpurchasegoodsgrossamount,$remarks = "",$mstockcardwhouse){
+    public static function deleteCOGS($mgoods,$mdpurchasegoodsgrossamount,$purchaseno,$remarks = "",$mstockcardwhouse){
 
         $wh = MWarehouse::on(Auth::user()->db_name)->where('id',$mstockcardwhouse)->first();
         $branchid = $wh->mwarehousebranchid;
-        $lastcogs = HPPHistory::on(Auth::user()->db_name)->where('hpphistorygoodsid',$mgoods->mgoodscode)->where('void',0)->where('type','purchase')->where('branchid',$branchid)->get()->last();
+        $lastcogs = HPPHistory::on(Auth::user()->db_name)->where('hpphistorygoodsid',$mgoods->mgoodscode)->where('void',0)->where('type','purchase')->where('branchid',$branchid)->where('transno',$purchaseno)->first();
+        var_dump('****************');
+        var_dump('last cogs delete '.$lastcogs->id);
         $cogs = MCOGS::on(Auth::user()->db_name)->where('mcogsgoodscode',$mgoods->mgoodscode)->where('branchid',$branchid)->first();
-        $cogs_num = 0;
-
-            // $cogs->mcogslastcogs -= $lastcogs->hpphistorycogs;
-            $cogs->mcogsgoodstotalqty = $lastcogs->lastqty;
-            $cogs->mcogslastcogs = $lastcogs->lastcogs;
-            $cogs->save();
+        // $cogs_num = 0;
+        //
+        //     // $cogs->mcogslastcogs -= $lastcogs->hpphistorycogs;
+        //     $cogs->mcogsgoodstotalqty = $lastcogs->lastqty;
+        //     $cogs->mcogslastcogs = $lastcogs->lastcogs;
+        //     $cogs->save();
 
         $lastcogs->void = 1;
         $lastcogs->save();
-        // save cogs log
-        // $h = new HPPHistory;
-        // $h->setConnection(Auth::user()->db_name);
-        // $h->hpphistorygoodsid = $mgoods->mgoodscode;
-        // $h->hpphistorypurchase = 0;
-        // $h->hpphistoryqty = $mgoods->mgoodsstock;
-        // $h->hpphistorycogs = $cogs_num;
-        // $h->hpphistoryremarks = $remarks;
-        // $h->save();
-        //
-        // return $h->id;
 
     }
 
