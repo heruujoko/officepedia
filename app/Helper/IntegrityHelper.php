@@ -112,11 +112,12 @@ class IntegrityHelper {
             // var_dump('loop date '.$loop_date);
             // $mdinvoices = MDInvoice::on(Auth::user()->db_name)->whereDate('mdinvoicedate','=',$loop_date)->get();
             if($af->type == 'sales'){
-                // var_dump('recalculate sales');
+              var_dump('recalculate sales');
+              var_dump('-------------------------------------------------');
                 $mdinvoices = MDInvoice::on(Auth::user()->db_name)->where('mhinvoiceno',$af->transno)->get();
                 foreach($mdinvoices as $mdi){
                     $hpp_coa = MCOA::on(Auth::user()->db_name)->where('mcoacode','5100.01')->first();
-                    // TODO persediaan nya dari mgoods
+
                     $mgoods = MGoods::on(Auth::user()->db_name)->where('mgoodscode',$mdi->mdinvoicegoodsid)->first();
                     $goodswarehouse = MGoodsWarehouse::on(Auth::user()->db_name)->where('mgoodscode',$mgoods->mgoodscode)->where('mwarehouseid',$mdi->mdinvoicegoodsidwhouse)->first();
 
@@ -149,10 +150,10 @@ class IntegrityHelper {
                     // var_dump('stock '.$mgoods->mgoodsstock);
                     $branch = MBRANCH::on(Auth::user()->db_name)->where('id',Auth::user()->defaultbranch)->first();
 
-                    $now = Carbon::now();
-                    $hour = $now->hour;
-                    $minute = $now->minute;
-                    $second = $now->second;
+                    $historyTime = Carbon::parse($af->hpphistorydate);
+                    $hour = $historyTime->hour;
+                    $minute = $historyTime->minute;
+                    $second = $historyTime->second;
 
                     // save cogs log
                     $h = new HPPHistory;
@@ -301,6 +302,7 @@ class IntegrityHelper {
           var_dump('target historydate '.$li->hpphistorydate);
         }
         $lastcogs = $listcogs->last();
+
         $branch = MBRANCH::on(Auth::user()->db_name)->where('id',Auth::user()->defaultbranch)->first();
         $cogs = MCOGS::on(Auth::user()->db_name)->where('mcogsgoodscode',$mgoods->mgoodscode)->where('branchid',$branch->mbranchcode)->first();
         $cogs_num = 0;
@@ -311,6 +313,7 @@ class IntegrityHelper {
         $lastqtyvalue = 0;
 
         if($lastcogs != null){
+          var_dump('taking historydate '.$lastcogs->hpphistorydate);
           var_dump('last_cogs_id '.$lastcogs->id);
             // var_dump('lastcogs id = '.$lastcogs->id);
             if($isFirstHistory){
@@ -340,6 +343,7 @@ class IntegrityHelper {
             $cogs->mcogsgoodstotalqty = $goodswarehouse->stock;
             $cogs->save();
         } else {
+            var_dump('taking null');
             // var_dump('is first history');
             $cogs_num = $mdpurchase->mdpurchasegoodsgrossamount / $mdpurchase->mdpurchasegoodsqty;
 

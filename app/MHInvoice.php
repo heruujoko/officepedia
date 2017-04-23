@@ -206,12 +206,17 @@ class MHInvoice extends Model
           $purchase_histories = HPPHistory::on(Auth::user()->db_name)->where('hpphistorygoodsid',$mgoods->mgoodscode)->where('type','purchase')->where('void',0)->get();
           $last_purchase = $purchase_histories->last();
 
+          $now = Carbon::now();
+          $hour = $now->hour;
+          $minute = $now->minute;
+          $second = $now->second;
+
           // save cogs log
           $h = new HPPHistory;
           $h->setConnection(Auth::user()->db_name);
           $h->hpphistorygoodsid = $mgoods->mgoodscode;
           $h->hpphistorypurchase = 0;
-          $h->hpphistoryqty = $mgoods->mgoodsstock;
+          $h->hpphistoryqty = $warehousegoods->stock;
           $h->hpphistorycogs = $hpp->mcogslastcogs;
           $h->lastcogs = $last_purchase->hpphistorycogs;
           $h->type = 'sales';
@@ -220,6 +225,7 @@ class MHInvoice extends Model
           $h->lastqty = $last_purchase->hpphistoryqty;
           $h->hpphistoryremarks = 'Penjualan';
           $h->branchid = $branch->mbranchcode;
+          $h->hpphistorydate = Carbon::parse($invoice_header->mhinvoicedate)->addHour($hour)->addMinute($minute)->addSecond($second);
           $h->save();
 
           //check allow minus
@@ -489,7 +495,7 @@ class MHInvoice extends Model
                 // jika qty barang berubah maka mempengaruhi stock lain nya
                 // var_dump('qty berubah, lakukan perhitungan ulang');
 
-                IntegrityHelper::recalculateSalesTransactionFrom($invoice_detail->created_at,$hpp_history,$invoice_detail);
+                // IntegrityHelper::recalculateSalesTransactionFrom($invoice_detail->created_at,$hpp_history,$invoice_detail);
 
               } else {
                 // data tdk berubah
@@ -692,6 +698,8 @@ class MHInvoice extends Model
 
         $journal_hpp->save();
         $journal_persediaan->save();
+
+        IntegrityHelper::recalculateTransactionFrom($request->date);
 
         DB::connection(Auth::user()->db_name)->commit();
         $resp = [
