@@ -148,6 +148,12 @@ class IntegrityHelper {
 
                     // var_dump('stock '.$mgoods->mgoodsstock);
                     $branch = MBRANCH::on(Auth::user()->db_name)->where('id',Auth::user()->defaultbranch)->first();
+
+                    $now = Carbon::now();
+                    $hour = $now->hour;
+                    $minute = $now->minute;
+                    $second = $now->second;
+
                     // save cogs log
                     $h = new HPPHistory;
                     $h->setConnection(Auth::user()->db_name);
@@ -163,6 +169,7 @@ class IntegrityHelper {
                     $h->buyprice = 0;
                     $h->hpphistoryremarks = "Revisi Penjualan Turunan";
                     $h->branchid = $branch->mbranchcode;
+                    $h->hpphistorydate = Carbon::parse($mdi->mdinvoicedate)->addHour($hour)->addMinute($minute)->addSecond($second+$count);
                     $h->save();
                     $h->created_at = $af->created_at;
                     $h->save();
@@ -182,7 +189,7 @@ class IntegrityHelper {
                     $goodswarehouse = MGoodsWarehouse::on(Auth::user()->db_name)->where('mgoodscode',$mgoods->mgoodscode)->where('mwarehouseid',$mdp->mdpurchasegoodsidwhouse)->first();
 
                     if($count == 1){
-                      $last_history = HPPHistory::on(Auth::user()->db_name)->where('hpphistorygoodsid',$mgoods->mgoodscode)->where('created_at','<',Carbon::parse($date))->where('void',0)->orderBy('created_at','asc')->get()->last();
+                      $last_history = HPPHistory::on(Auth::user()->db_name)->where('hpphistorygoodsid',$mgoods->mgoodscode)->where('hpphistorydate','<',Carbon::parse($date))->where('void',0)->orderBy('hpphistorydate','asc')->get()->last();
                       if($last_history != null){
                           var_dump('last history '.$last_history->hpphistoryqty);
                           $goodswarehouse->stock = $last_history->hpphistoryqty;
@@ -203,7 +210,7 @@ class IntegrityHelper {
                     $goodswarehouse->stock += $mdp->mdpurchasegoodsqty;
                     var_dump('stock warehouse '.$goodswarehouse->mgoodscode.' '.$goodswarehouse->stock);
                     $goodswarehouse->save();
-                    $mdp->cogs_ref = IntegrityHelper::updateCOGS($mgoods,$mdp,$mdp->mdpurchasegoodsqty,$af,$remarks = "Revisi Pembelian Turunan",$isFirstHistory);
+                    $mdp->cogs_ref = IntegrityHelper::updateCOGS($mgoods,$mdp,$mdp->mdpurchasegoodsqty,$af,$remarks = "Revisi Pembelian Turunan",$isFirstHistory,$count);
                     $mdp->save();
                 }
             }
@@ -254,6 +261,11 @@ class IntegrityHelper {
             $cogs->save();
         }
 
+        $now = Carbon::now();
+        $hour = $now->hour;
+        $minute = $now->minute;
+        $second = $now->second;
+
         // save cogs log
         $h = new HPPHistory;
         $h->setConnection(Auth::user()->db_name);
@@ -269,7 +281,7 @@ class IntegrityHelper {
         $h->buyprice = ($mdpurchase->mdpurchasegoodsgrossamount / $buy_amount);
         $h->hpphistoryremarks = $remarks;
         $h->branchid = $branch->mbranchcode;
-        $h->hpphistorydate = Carbon::parse($mdpurchase->mdpurchasedate);
+        $h->hpphistorydate = Carbon::parse($mdpurchase->mdpurchasedate)->addHour($hour)->addMinute($minute)->addSecond($second);
         $h->save();
         return $h->id;
 
@@ -278,13 +290,15 @@ class IntegrityHelper {
     /*
      *  on update purchase
      */
-    public static function updateCOGS($mgoods,$mdpurchase,$buy_amount,$edited_history,$remarks = "Revisi Pembelian",$isFirstHistory = false){
+    public static function updateCOGS($mgoods,$mdpurchase,$buy_amount,$edited_history,$remarks = "Revisi Pembelian",$isFirstHistory = false,$sequence = 1){
         // $lastcogs = HPPHistory::on(Auth::user()->db_name)->where('hpphistorygoodsid',$mgoods->mgoodscode)->where('void',0)->where('type','purchase')->where('created_at','<',Carbon::parse($edited_history->created_at))->orderBy('created_at','asc')->get()->last();
         $edited_history->void = 1;
         $edited_history->save();
-        $listcogs = HPPHistory::on(Auth::user()->db_name)->where('hpphistorygoodsid',$mgoods->mgoodscode)->where('void',0)->where('hpphistorydate','<=',Carbon::parse($edited_history->hpphistorydate))->orderBy('id','asc')->get();
+        var_dump('edit historydate '.$edited_history->hpphistorydate);
+        $listcogs = HPPHistory::on(Auth::user()->db_name)->where('hpphistorygoodsid',$mgoods->mgoodscode)->where('void',0)->where('hpphistorydate','<',Carbon::parse($edited_history->hpphistorydate))->orderBy('id','asc')->get();
         foreach($listcogs as $li){
           var_dump('hist '.$li->id);
+          var_dump('target historydate '.$li->hpphistorydate);
         }
         $lastcogs = $listcogs->last();
         $branch = MBRANCH::on(Auth::user()->db_name)->where('id',Auth::user()->defaultbranch)->first();
@@ -344,6 +358,12 @@ class IntegrityHelper {
         // $lastcogs->void = 1;
 
         $branch = MBRANCH::on(Auth::user()->db_name)->where('id',Auth::user()->defaultbranch)->first();
+
+        $historyTime = Carbon::parse($edited_history->hpphistorydate);
+        $hour = $historyTime->hour;
+        $minute = $historyTime->minute;
+        $second = $historyTime->second;
+
         // save cogs log
         $h = new HPPHistory;
         $h->setConnection(Auth::user()->db_name);
@@ -359,7 +379,7 @@ class IntegrityHelper {
         $h->buyprice = ($mdpurchase->mdpurchasegoodsgrossamount / $mdpurchase->mdpurchasegoodsqty);
         $h->hpphistoryremarks = $remarks;
         $h->branchid = $branch->mbranchcode;
-        $h->hpphistorydate = Carbon::parse($mdpurchase->mdpurchasedate);
+        $h->hpphistorydate = Carbon::parse($mdpurchase->mdpurchasedate)->addHour($hour)->addMinute($minute)->addSecond($second+$sequence);
         $h->save();
 
         $h->created_at = $edited_history->created_at;
