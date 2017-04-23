@@ -286,6 +286,7 @@ class MHInvoice extends Model
             'status' => 'err',
             'data' => $e->getMessage()
         ];
+        var_dump($e->getMessage().' on '.$e->getFile().' line '.$e->getLine());
         return $resp;
       }
 

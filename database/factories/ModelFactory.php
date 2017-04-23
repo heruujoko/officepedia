@@ -60,3 +60,16 @@ $factory->define(App\MSupplier::class, function (Faker\Generator $faker) {
         'void' => 0
     ];
 });
+
+$factory->define(App\MCustomer::class, function (Faker\Generator $faker) {
+    return [
+        'mcustomerid' => 'CUS001',
+        'mcustomername' => 'Dilo',
+        'mcustomercoa' => 8,
+        'mcustomercategory' => 1,
+        'mcustomertop' => 'credit',
+        'mcustomerdefaultar' => 14,
+        'used' => 0,
+        'void' => 0
+    ];
+});

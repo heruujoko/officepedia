@@ -297,6 +297,13 @@ class IntegrityHelper {
         $edited_history->save();
         var_dump('edit historydate '.$edited_history->hpphistorydate);
         $listcogs = HPPHistory::on(Auth::user()->db_name)->where('hpphistorygoodsid',$mgoods->mgoodscode)->where('void',0)->where('hpphistorydate','<',Carbon::parse($edited_history->hpphistorydate))->orderBy('id','asc')->get();
+        // $alllistcogs = HPPHistory::on(Auth::user()->db_name)->where('hpphistorygoodsid',$mgoods->mgoodscode)->where('void',0)->orderBy('id','asc')->get();
+        //
+        // foreach ($alllistcogs as $all) {
+        //   var_dump('all_hist '.$all->id);
+        //   var_dump('all_target historydate '.$all->hpphistorydate);
+        // }
+
         foreach($listcogs as $li){
           var_dump('hist '.$li->id);
           var_dump('target historydate '.$li->hpphistorydate);
@@ -383,7 +390,8 @@ class IntegrityHelper {
         $h->buyprice = ($mdpurchase->mdpurchasegoodsgrossamount / $mdpurchase->mdpurchasegoodsqty);
         $h->hpphistoryremarks = $remarks;
         $h->branchid = $branch->mbranchcode;
-        $h->hpphistorydate = Carbon::parse($mdpurchase->mdpurchasedate)->addHour($hour)->addMinute($minute)->addSecond($second+$sequence);
+        // $h->hpphistorydate = Carbon::parse($mdpurchase->mdpurchasedate)->addHour($hour)->addMinute($minute)->addSecond($second+$sequence);
+        $h->hpphistorydate = Carbon::parse($mdpurchase->mdpurchasedate)->addHour($hour)->addMinute($minute)->addSecond($second);
         $h->save();
 
         $h->created_at = $edited_history->created_at;
